@@ -1,6 +1,21 @@
 {
   "extends": "@react-native/typescript-config",
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "atoms/*": ["src/components/atoms/*"],
+      "molecule/*": ["src/components/molecules/*"],
+      "organism/*": ["src/components/organisms/*"],
+      "template/*": ["src/components/templates/*"],
+      "assets/*": ["src/assets/*"],
+      "constants/*": ["src/constants/*"],
+      "navigation/*": ["src/navigation/*"],
+      "screens/*": ["src/screens/*"],
+      "services/*": ["src/serviceManager/*"],
+      "store/*": ["src/store/*"],
+      "utils/*": ["src/utils/*"]
+    },
     "types": ["jest"]
   },
   "include": ["**/*.ts", "**/*.tsx"],
