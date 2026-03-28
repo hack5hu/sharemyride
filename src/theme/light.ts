@@ -38,7 +38,7 @@ export const LightTheme: Theme = {
     surface_container_high: '#e0e6e0',
     surface_container_highest: '#d6ddd6',
 
-    outline: '#737873',
+    outline: '#cbd5e1',
     outline_variant: '#bdcac0', // Ghost border at 15% opacity usually
 
     shadow: '#171d19',

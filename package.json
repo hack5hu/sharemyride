@@ -17,6 +17,7 @@
     "@types/styled-components": "^5.1.36",
     "@types/styled-components-react-native": "^5.2.5",
     "axios": "^1.13.6",
+    "formik": "^2.4.9",
     "lodash": "^4.17.23",
     "react": "19.2.3",
     "react-native": "0.84.1",
