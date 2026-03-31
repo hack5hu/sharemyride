@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { useTheme } from 'styled-components/native';
-import { Container, StyledInput, LabelText, ErrorText } from './Input.styles';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Container, InputWrapper, InnerInput, IconContainer, LabelText, ErrorText } from './Input.styles';
 import { InputProps } from './types';
 
 export const Input: React.FC<InputProps> = ({
   label,
   error,
+  leftIcon,
+  rightIcon,
   containerStyle,
   onFocus,
   onBlur,
@@ -27,15 +30,25 @@ export const Input: React.FC<InputProps> = ({
   return (
     <Container style={containerStyle}>
       {label && <LabelText>{label}</LabelText>}
-      <StyledInput
-        isFocused={isFocused}
-        hasError={!!error}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        placeholderTextColor={theme.colors.on_surface_variant + '66'} // 40% opacity
-        selectionColor={theme.colors.primary}
-        {...props}
-      />
+      <InputWrapper isFocused={isFocused} hasError={!!error}>
+        {leftIcon && (
+          <IconContainer>
+            <Icon name={leftIcon} size={20} color={theme.colors.on_surface_variant} />
+          </IconContainer>
+        )}
+        <InnerInput
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          placeholderTextColor={theme.colors.on_surface_variant + '66'} // 40% opacity
+          selectionColor={theme.colors.primary}
+          {...props}
+        />
+        {rightIcon && (
+          <IconContainer>
+            <Icon name={rightIcon} size={20} color={theme.colors.on_surface_variant} />
+          </IconContainer>
+        )}
+      </InputWrapper>
       {error && <ErrorText>{error}</ErrorText>}
     </Container>
   );

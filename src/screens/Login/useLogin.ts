@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useFormik } from 'formik';
+import { useNavigation } from '@react-navigation/native';
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation<any>();
 
   const handleGetOtp = (phone: string) => {
     setLoading(true);
@@ -10,6 +12,7 @@ export const useLogin = () => {
     setTimeout(() => {
       setLoading(false);
       console.log('OTP sent to:', phone);
+      navigation.navigate('OTPVerification', { phoneNumber: phone });
     }, 2000);
   };
 

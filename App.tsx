@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
 import { LightTheme as theme } from '@/theme';
 import { RootNavigator } from '@/navigation';
 import { useAuthStore } from '@/store';
-import { LoginScreen } from '@/screens/Login';
 
 const App = () => {
-  const initialize = useAuthStore((state) => state.initialize);
+  const initialize = useAuthStore(state => state.initialize);
 
   useEffect(() => {
     initialize();
@@ -16,8 +16,9 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <ThemeProvider theme={theme}>
-        {/* <RootNavigator /> */}
-        <LoginScreen/>
+        <NavigationContainer>
+          <RootNavigator />
+        </NavigationContainer>
       </ThemeProvider>
     </SafeAreaProvider>
   );
