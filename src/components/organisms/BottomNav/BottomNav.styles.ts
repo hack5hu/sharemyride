@@ -7,15 +7,20 @@ export const Container = styled.View`
   align-items: center;
   padding-bottom: ${verticalScale(20)}px;
   padding-top: ${verticalScale(12)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
+  background-color: ${({ theme }) => theme.colors.surface_container_lowest + 'CC'};
   border-top-left-radius: ${moderateScale(24)}px;
   border-top-right-radius: ${moderateScale(24)}px;
   elevation: 10;
   shadow-color: #000;
-  shadow-offset: 0px -4px;
-  shadow-opacity: 0.05;
+  shadow-offset: 0px -10px;
+  shadow-opacity: 0.1;
   shadow-radius: 20px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 `;
+
 
 export const NavItem = styled.TouchableOpacity<{ active?: boolean }>`
   align-items: center;

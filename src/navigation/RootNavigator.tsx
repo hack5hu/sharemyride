@@ -5,8 +5,10 @@ import { OTPVerificationScreen } from '@/screens/Auth/OTPVerification/OTPVerific
 import { ProfileSetupScreen } from '@/screens/Profile/ProfileSetup';
 import { ProfileHubScreen } from '@/screens/Profile/ProfileHub';
 import { DummyScreen } from '@/screens/Common/Dummy';
+import { EditProfileScreen } from '@/screens/Profile/EditProfile';
+import { TravelPreferencesScreen } from '@/screens/Profile/TravelPreferences';
+import { VehicleDetailsScreen } from '@/screens/Profile/VehicleDetails';
 import { RootStackParamList } from './types';
-
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -27,8 +29,12 @@ export const RootNavigator = () => {
       <Stack.Screen name="ProfileSetup" component={ProfileSetupScreen} />
       <Stack.Screen name="ProfileHub" component={ProfileHubScreen} />
       <Stack.Screen name="Dummy" component={DummyScreen as any} />
+      <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+      <Stack.Screen name="TravelPreferences" component={TravelPreferencesScreen} />
+      <Stack.Screen name="VehicleDetails" component={VehicleDetailsScreen} />
     </Stack.Navigator>
-
   );
 };
+
+
 

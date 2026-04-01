@@ -96,10 +96,100 @@ export interface ProfileHubTranslations {
   navProfile: string;
 }
 
+export interface EditProfileTranslations {
+  headerTitle: string;
+  successMessage: string;
+  updatePhoto: string;
+  fullNameLabel: string;
+  fullNamePlaceholder: string;
+  emailLabel: string;
+  emailPlaceholder: string;
+  phoneLabel: string;
+  phonePlaceholder: string;
+  dobLabel: string;
+  genderLabel: string;
+  bioLabel: string;
+  bioPlaceholder: string;
+  cancel: string;
+  saveChanges: string;
+  fullNameRequired: string;
+  fullNameMin: string;
+  emailRequired: string;
+  emailInvalid: string;
+  phoneRequired: string;
+  phoneInvalid: string;
+  dobRequired: string;
+  genderRequired: string;
+  bioMax: string;
+}
+
+export interface DummyContentTranslations {
+  aboutTitle: string;
+  aboutBody: string;
+  helpTitle: string;
+  helpBody: string;
+  termsTitle: string;
+  termsBody: string;
+}
+
+export interface TravelPreferencesTranslations {
+  headerTitle: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  nonSmoking: string;
+  nonSmokingDescr: string;
+  womenOnly: string;
+  womenOnlyDescr: string;
+  musicPreference: string;
+  bollywood: string;
+  pop: string;
+  jazz: string;
+  podcast: string;
+  silence: string;
+  luggageAllowed: string;
+  petFriendly: string;
+  savePreferences: string;
+  enabled: string;
+  disabled: string;
+}
+
+export interface VehicleDetailsTranslations {
+  headerTitle: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  basicIdentity: string;
+  vehicleCompany: string;
+  companyPlaceholder: string;
+  carModel: string;
+  modelPlaceholder: string;
+  technicalSpecs: string;
+  numberPlate: string;
+  platePlaceholder: string;
+  vehicleType: string;
+  appearance: string;
+  manufacturingYear: string;
+  color: string;
+  colorPlaceholder: string;
+  saveVehicle: string;
+  successMessage: string;
+  sedan: string;
+  suv: string;
+  hatchback: string;
+  bike: string;
+}
+
 export interface Translations {
   login: LoginTranslations;
   otpVerification: OtpVerificationTranslations;
   profileSetup: ProfileSetupTranslations;
   profileHub: ProfileHubTranslations;
+  editProfile: EditProfileTranslations;
+  dummyContent: DummyContentTranslations;
+  travelPreferences: TravelPreferencesTranslations;
+  vehicleDetails: VehicleDetailsTranslations;
 }
+
+
+
+
 

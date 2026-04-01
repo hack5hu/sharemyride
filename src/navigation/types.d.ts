@@ -5,5 +5,15 @@ export type RootStackParamList = {
   };
   ProfileSetup: undefined;
   ProfileHub: undefined;
-  Dummy: { title: string; activeTab: string };
+  Dummy: { 
+    title: string; 
+    activeTab?: string; 
+    showBottomNav?: boolean; 
+    showBack?: boolean;
+    contentKey?: 'about' | 'help' | 'terms';
+  };
+
+  EditProfile: undefined;
+  TravelPreferences: undefined;
+  VehicleDetails: undefined;
 };

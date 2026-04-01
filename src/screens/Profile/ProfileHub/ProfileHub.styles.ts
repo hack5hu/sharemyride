@@ -11,8 +11,9 @@ export const Container = styled.ScrollView`
 export const Content = styled.View`
   padding: ${moderateScale(24)}px;
   gap: ${moderateScale(24)}px;
-  padding-bottom: ${verticalScale(40)}px;
+  padding-bottom: ${verticalScale(120)}px;
 `;
+
 
 export const Section = styled.View`
   gap: ${moderateScale(16)}px;

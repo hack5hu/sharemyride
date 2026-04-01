@@ -9,13 +9,14 @@ export const Container = styled.View`
 export const InputWrapper = styled.View<{
   isFocused: boolean;
   hasError: boolean;
+  multiline?: boolean;
 }>`
   width: 100%;
-  height: ${verticalScale(52)}px;
+  min-height: ${({ multiline }) => (multiline ? verticalScale(120) : verticalScale(52))}px;
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   border-radius: ${({ theme }) => theme.roundness.md}px;
   flex-direction: row;
-  align-items: center;
+  align-items: ${({ multiline }) => (multiline ? 'flex-start' : 'center')};
   border-width: 1px;
   border-color: ${({ theme, isFocused, hasError }) => {
     if (hasError) return theme.colors.error;
@@ -23,16 +24,19 @@ export const InputWrapper = styled.View<{
     return theme.colors.outline;
   }};
   padding-horizontal: ${scale(8)}px;
+  padding-vertical: ${({ multiline }) => (multiline ? verticalScale(8) : 0)}px;
 `;
 
-export const InnerInput = styled.TextInput`
+export const InnerInput = styled.TextInput<{ multiline?: boolean }>`
   flex: 1;
   height: 100%;
   padding-horizontal: ${scale(8)}px;
   font-family: 'Plus Jakarta Sans';
   font-size: ${scale(14)}px;
   color: ${({ theme }) => theme.colors.on_surface};
+  text-align-vertical: ${({ multiline }) => (multiline ? 'top' : 'center')};
 `;
+
 
 export const IconContainer = styled.View`
   width: ${scale(24)}px;

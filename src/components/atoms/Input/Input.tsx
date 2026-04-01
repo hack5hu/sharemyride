@@ -30,7 +30,7 @@ export const Input: React.FC<InputProps> = ({
   return (
     <Container style={containerStyle}>
       {label && <LabelText>{label}</LabelText>}
-      <InputWrapper isFocused={isFocused} hasError={!!error}>
+      <InputWrapper isFocused={isFocused} hasError={!!error} multiline={props.multiline}>
         {leftIcon && (
           <IconContainer>
             <Icon name={leftIcon} size={20} color={theme.colors.on_surface_variant} />
@@ -41,8 +41,10 @@ export const Input: React.FC<InputProps> = ({
           onBlur={handleBlur}
           placeholderTextColor={theme.colors.on_surface_variant + '66'} // 40% opacity
           selectionColor={theme.colors.primary}
+          multiline={props.multiline}
           {...props}
         />
+
         {rightIcon && (
           <IconContainer>
             <Icon name={rightIcon} size={20} color={theme.colors.on_surface_variant} />
