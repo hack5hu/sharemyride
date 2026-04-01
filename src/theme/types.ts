@@ -42,7 +42,23 @@ export interface ThemeColors {
   inverse_surface: string;
   inverse_on_surface: string;
   inverse_primary: string;
+
+  primary_fixed: string;
+  primary_fixed_dim: string;
+  on_primary_fixed: string;
+  on_primary_fixed_variant: string;
+
+  secondary_fixed: string;
+  secondary_fixed_dim: string;
+  on_secondary_fixed: string;
+  on_secondary_fixed_variant: string;
+
+  tertiary_fixed: string;
+  tertiary_fixed_dim: string;
+  on_tertiary_fixed: string;
+  on_tertiary_fixed_variant: string;
 }
+
 
 export interface Theme {
   name: 'light' | 'dark';

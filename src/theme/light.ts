@@ -46,7 +46,23 @@ export const LightTheme: Theme = {
     inverse_surface: '#171d19',
     inverse_on_surface: '#f5fbf4',
     inverse_primary: '#04885b',
+
+    primary_fixed: '#8df7c1',
+    primary_fixed_dim: '#71dba6',
+    on_primary_fixed: '#002113',
+    on_primary_fixed_variant: '#005235',
+
+    secondary_fixed: '#c2ecd2',
+    secondary_fixed_dim: '#a7d0b7',
+    on_secondary_fixed: '#002113',
+    on_secondary_fixed_variant: '#294e3b',
+
+    tertiary_fixed: '#e1e0ff',
+    tertiary_fixed_dim: '#c0c1ff',
+    on_tertiary_fixed: '#080764',
+    on_tertiary_fixed_variant: '#3a3d8f',
   },
+
   roundness: {
     none: 0,
     xs: 4,

@@ -61,8 +61,45 @@ export interface ProfileSetupTranslations {
   footerVersion: string;
 }
 
+export interface ProfileHubTranslations {
+  headerTitle: string;
+  identityVerified: string;
+  proPooler: string;
+  rating: string;
+  rides: string;
+  memberSince: string;
+  trustScore: string;
+  trustScoreDescr: string;
+  accountManagement: string;
+  supportLegal: string;
+  editProfile: string;
+  editProfileDescr: string;
+  identityVerification: string;
+  identityVerificationDescr: string;
+  travelPreferences: string;
+  travelPreferencesDescr: string;
+  paymentMethods: string;
+  paymentMethodsDescr: string;
+  ratingsReviews: string;
+  ratingsReviewsDescr: string;
+  changePassword: string;
+  changePasswordDescr: string;
+  helpSupport: string;
+  aboutUs: string;
+  termsPrivacy: string;
+  logout: string;
+  deleteAccount: string;
+  navBook: string;
+  navPublish: string;
+  navMyRides: string;
+  navChats: string;
+  navProfile: string;
+}
+
 export interface Translations {
   login: LoginTranslations;
   otpVerification: OtpVerificationTranslations;
   profileSetup: ProfileSetupTranslations;
+  profileHub: ProfileHubTranslations;
 }
+

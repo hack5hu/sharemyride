@@ -4,4 +4,6 @@ export type RootStackParamList = {
     phoneNumber: string;
   };
   ProfileSetup: undefined;
+  ProfileHub: undefined;
+  Dummy: { title: string; activeTab: string };
 };
