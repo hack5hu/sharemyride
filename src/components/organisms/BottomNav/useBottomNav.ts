@@ -16,6 +16,9 @@ export const useBottomNav = (activeTab: BottomTabType) => {
       case 'PROFILE':
         navigation.navigate('ProfileHub');
         break;
+      case 'CHATS':
+        navigation.navigate('ChatList');
+        break;
       default:
         navigation.navigate('Dummy', { 
           title: t(`profileHub.nav${tab.replace('_', '').toLowerCase().charAt(0).toUpperCase() + tab.replace('_', '').toLowerCase().slice(1)}`),

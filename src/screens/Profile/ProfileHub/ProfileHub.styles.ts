@@ -1,8 +1,9 @@
 import styled from 'styled-components/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { moderateScale, verticalScale } from '@/styles';
-import { View, SafeAreaView } from 'react-native';
+import { View } from 'react-native';
 
-export const ScreenWrapper = styled.SafeAreaView`
+export const ScreenWrapper = styled(SafeAreaView)`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.surface};
 `;

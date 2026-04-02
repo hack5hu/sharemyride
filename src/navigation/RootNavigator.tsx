@@ -8,14 +8,17 @@ import { DummyScreen } from '@/screens/Common/Dummy';
 import { EditProfileScreen } from '@/screens/Profile/EditProfile';
 import { TravelPreferencesScreen } from '@/screens/Profile/TravelPreferences';
 import { VehicleDetailsScreen } from '@/screens/Profile/VehicleDetails';
-import { RootStackParamList } from './types';
+import { ChatListScreen } from '@/screens/Chat/ChatList';
+import { ChatDetailsScreen } from '@/screens/Chat/ChatDetails';
+import { SelectLocationScreen } from '@/screens/Chat/SelectLocation';
+import { RootStackParamList } from './types.d';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 export const RootNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="ProfileHub"
+      initialRouteName="ChatList"
       screenOptions={{
         headerShown: false,
         cardStyle: { backgroundColor: 'transparent' },
@@ -32,9 +35,9 @@ export const RootNavigator = () => {
       <Stack.Screen name="EditProfile" component={EditProfileScreen} />
       <Stack.Screen name="TravelPreferences" component={TravelPreferencesScreen} />
       <Stack.Screen name="VehicleDetails" component={VehicleDetailsScreen} />
+      <Stack.Screen name="ChatList" component={ChatListScreen} />
+      <Stack.Screen name="ChatDetails" component={ChatDetailsScreen as any} />
+      <Stack.Screen name="SelectLocation" component={SelectLocationScreen} />
     </Stack.Navigator>
   );
 };
-
-
-

@@ -4,11 +4,11 @@ import { TypographyProps, TypographyVariant, TypographySize, TypographyWeight } 
 
 const getFontSize = (variant: TypographyVariant, size: TypographySize) => {
   const sizes = {
-    display: { sm: 36, md: 44, lg: 52, xl: 60 },
-    headline: { sm: 24, md: 28, lg: 32, xl: 36 },
-    title: { sm: 14, md: 16, lg: 20, xl: 22 },
-    body: { sm: 12, md: 14, lg: 16, xl: 18 },
-    label: { sm: 10, md: 11, lg: 12, xl: 14 },
+    display: { xxs: 24, xs: 30, sm: 36, md: 44, lg: 52, xl: 60 },
+    headline: { xxs: 16, xs: 20, sm: 24, md: 28, lg: 32, xl: 36 },
+    title: { xxs: 10, xs: 12, sm: 14, md: 16, lg: 20, xl: 22 },
+    body: { xxs: 8, xs: 10, sm: 12, md: 14, lg: 16, xl: 18 },
+    label: { xxs: 8, xs: 9, sm: 10, md: 11, lg: 12, xl: 14 },
   };
   return responsiveFont(sizes[variant][size]);
 };

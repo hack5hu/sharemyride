@@ -178,6 +178,17 @@ export interface VehicleDetailsTranslations {
   bike: string;
 }
 
+export interface ChatTranslations {
+  headerTitle: string;
+  searchPlaceholder: string;
+  recentMessages: string;
+  noMessages: string;
+  newMessage: string;
+  rideLabel: string;
+  yesterday: string;
+  activeDrivers: string;
+}
+
 export interface Translations {
   login: LoginTranslations;
   otpVerification: OtpVerificationTranslations;
@@ -187,6 +198,7 @@ export interface Translations {
   dummyContent: DummyContentTranslations;
   travelPreferences: TravelPreferencesTranslations;
   vehicleDetails: VehicleDetailsTranslations;
+  chat: ChatTranslations;
 }
 
 

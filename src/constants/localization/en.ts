@@ -166,10 +166,20 @@ export const en: Translations = {
     colorPlaceholder: 'Emerald Green',
     saveVehicle: 'Save Vehicle',
     successMessage: 'Vehicle registered successfully!',
-    sedan: 'Sedan',
-    suv: 'SUV',
-    hatchback: 'Hatchback',
     bike: 'Bike',
+    hatchback: 'Hatchback',
+    suv: 'SUV',
+    sedan: 'Sedan',
+  },
+  chat: {
+    headerTitle: 'Messages',
+    searchPlaceholder: 'Search conversations...',
+    recentMessages: 'Recent Messages',
+    noMessages: 'No messages yet',
+    newMessage: 'New Message',
+    rideLabel: 'Ride:',
+    yesterday: 'Yesterday',
+    activeDrivers: 'Active Drivers',
   },
 };
 

@@ -166,10 +166,20 @@ export const hi: Translations = {
     colorPlaceholder: 'पन्ना हरा',
     saveVehicle: 'वाहन सहेजें',
     successMessage: 'वाहन सफलतापूर्वक पंजीकृत किया गया!',
-    sedan: 'सेडान',
-    suv: 'एसयूवी',
-    hatchback: 'हैचबैक',
     bike: 'बाइक',
+    hatchback: 'हैचबैक',
+    suv: 'एसयूवी',
+    sedan: 'सेडान',
+  },
+  chat: {
+    headerTitle: 'संदेश',
+    searchPlaceholder: 'बातचीत खोजें...',
+    recentMessages: 'हाल के संदेश',
+    noMessages: 'अभी तक कोई संदेश नहीं',
+    newMessage: 'नया संदेश',
+    rideLabel: 'सवारी:',
+    yesterday: 'कल',
+    activeDrivers: 'सक्रिय चालक',
   },
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar } from 'react-native';
+import { Platform } from 'react-native';
 import { Typography } from '@/components/atoms/Typography';
 import { LoginForm } from '@/components/organisms/LoginForm';
 import { SocialSection } from '@/components/organisms/SocialSection';
@@ -30,12 +30,6 @@ export const LoginScreen: React.FC = () => {
 
   return (
     <Container behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        translucent
-      />
-
       {/* Background Decorative Elements */}
       <BackgroundBubble top="-5%" left="-5%" />
       <BackgroundBubble bottom="-5%" right="-5%" />

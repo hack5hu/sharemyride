@@ -16,4 +16,10 @@ export type RootStackParamList = {
   EditProfile: undefined;
   TravelPreferences: undefined;
   VehicleDetails: undefined;
+  ChatList: undefined;
+  ChatDetails: {
+    chatId: string;
+    name: string;
+  };
+  SelectLocation: undefined;
 };

@@ -8,4 +8,6 @@ export interface AvatarProps {
   border?: boolean;
   placeholder?: string;
   style?: ViewStyle;
+  status?: 'online' | 'offline' | 'none';
+  isVerified?: boolean;
 }

@@ -1,8 +1,9 @@
 import styled from 'styled-components/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { scale, verticalScale, responsiveFont } from '../../../styles';
 import { Platform, KeyboardAvoidingView } from 'react-native';
 
-export const SafeArea = styled.SafeAreaView`
+export const SafeArea = styled(SafeAreaView)`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.surface};
 `;
