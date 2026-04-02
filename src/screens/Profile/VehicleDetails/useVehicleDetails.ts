@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -13,8 +13,27 @@ const validationSchema = Yup.object().shape({
   color: Yup.string().required('Color is required'),
 });
 
+
 export const useVehicleDetails = () => {
   const navigation = useNavigation();
+
+  const vehicleTypes = useMemo(() => [
+    { type: 'sedan', icon: 'directions-car' },
+    { type: 'suv', icon: 'commute' },
+    { type: 'hatchback', icon: 'drive-eta' },
+    { type: 'bike', icon: 'motorcycle' },
+  ] as const, []);
+
+  const carColors = useMemo(() => [
+    { label: 'White', value: '#FFFFFF' },
+    { label: 'Black', value: '#000000' },
+    { label: 'Silver', value: '#C0C0C0' },
+    { label: 'Grey', value: '#808080' },
+    { label: 'Red', value: '#FF0000' },
+    { label: 'Blue', value: '#0000FF' },
+    { label: 'Green', value: '#008000' },
+  ], []);
+
 
   const formik = useFormik<VehicleDetailsState>({
     initialValues: {
@@ -43,9 +62,12 @@ export const useVehicleDetails = () => {
 
   return {
     formik,
+    vehicleTypes,
+    carColors,
     setVehicleType,
     setColor,
     goBack: () => navigation.goBack(),
   };
 };
+
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { View, SafeAreaView, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
@@ -10,13 +9,14 @@ import { VehicleTypeCard } from '@/components/molecules/VehicleTypeCard';
 import { ColorChip } from '@/components/atoms/ColorChip';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useVehicleDetails } from './useVehicleDetails';
-import { VehicleType } from './types';
-
 import {
   Container,
+  ScreenWrapper,
+  HeaderContainer,
+  ScrollContainer,
   HeroSection,
   HeroImage,
-  HeroOverlay,
+  HeroTint,
   HeroContent,
   IconBox,
   FormWrapper,
@@ -27,72 +27,43 @@ import {
   BottomAction,
 } from './VehicleDetails.styles';
 
-
-
 export const VehicleDetailsScreen: React.FC = () => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const { formik, setVehicleType, setColor, goBack } = useVehicleDetails();
-
-
-  const vehicleTypes: { type: VehicleType; icon: string }[] = [
-    { type: 'sedan', icon: 'directions-car' },
-    { type: 'suv', icon: 'commute' },
-    { type: 'hatchback', icon: 'drive-eta' },
-    { type: 'bike', icon: 'motorcycle' },
-  ];
-
-  const carColors = [
-    { label: 'White', value: '#FFFFFF' },
-    { label: 'Black', value: '#000000' },
-    { label: 'Silver', value: '#C0C0C0' },
-    { label: 'Grey', value: '#808080' },
-    { label: 'Red', value: '#FF0000' },
-    { label: 'Blue', value: '#0000FF' },
-    { label: 'Green', value: '#008000' },
-  ];
-
+  const { formik, vehicleTypes, carColors, setVehicleType, setColor, goBack } = useVehicleDetails();
 
   return (
     <Container>
-      <SafeAreaView style={{ backgroundColor: theme.colors.surface }}>
-        <View style={{ height: 64, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16 }}>
+      <ScreenWrapper>
+        <HeaderContainer>
           <IconButton icon="arrow-back" variant="surface" onPress={goBack} />
           <Typography variant="title" size="md" weight="bold" color="primary" style={{ marginLeft: 16 }}>
             {t('vehicleDetails.headerTitle')}
           </Typography>
-        </View>
-      </SafeAreaView>
+        </HeaderContainer>
+      </ScreenWrapper>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
+      <ScrollContainer>
         <HeroSection>
           <HeroImage 
             source={{ uri: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop' }} 
             resizeMode="cover"
           />
-          <View style={{ 
-            position: 'absolute', 
-            top: 0, 
-            left: 0, 
-            right: 0, 
-            bottom: 0, 
-            backgroundColor: theme.colors.primary + '33' // 20% primary tint for better visibility
-          }} />
+          <HeroTint />
           <HeroContent>
             <IconBox>
               <Icon name="directions-car" size={32} color={theme.colors.on_primary} />
             </IconBox>
-            <View style={{ flex: 1 }}>
+            <FormWrapper style={{ flex: 1, padding: 0 }}>
               <Typography variant="title" size="lg" weight="bold" color="on_primary" numberOfLines={1} adjustsFontSizeToFit>
                 {t('vehicleDetails.heroTitle')}
               </Typography>
               <Typography variant="body" size="sm" color="on_primary" style={{ opacity: 0.9, marginTop: 4 }}>
                 {t('vehicleDetails.heroSubtitle')}
               </Typography>
-            </View>
+            </FormWrapper>
           </HeroContent>
         </HeroSection>
-
 
         <FormWrapper>
           <CardSection>
@@ -102,7 +73,7 @@ export const VehicleDetailsScreen: React.FC = () => {
                 {t('vehicleDetails.basicIdentity')}
               </Typography>
             </SectionHeader>
-            <View style={{ gap: 16 }}>
+            <FormWrapper style={{ padding: 0, gap: 16 }}>
               <Input 
                 label={t('vehicleDetails.vehicleCompany')} 
                 placeholder={t('vehicleDetails.companyPlaceholder')} 
@@ -117,7 +88,7 @@ export const VehicleDetailsScreen: React.FC = () => {
                 onChangeText={formik.handleChange('model')}
                 error={formik.touched.model ? formik.errors.model : undefined}
               />
-            </View>
+            </FormWrapper>
           </CardSection>
 
           <CardSection>
@@ -136,11 +107,11 @@ export const VehicleDetailsScreen: React.FC = () => {
               style={{ fontFamily: 'monospace', letterSpacing: 4, fontWeight: 'bold' }}
             />
             
-            <View style={{ marginTop: 24 }}>
+            <FormWrapper style={{ padding: 0, marginTop: 24, gap: 0 }}>
               <Typography variant="label" size="sm" weight="bold" color="on_surface_variant" style={{ marginBottom: 12, marginLeft: 4 }}>
                 {t('vehicleDetails.vehicleType')}
               </Typography>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
+              <ColorRow style={{ flexWrap: 'wrap', gap: 12 }}>
                 {vehicleTypes.map(item => (
                   <VehicleTypeCard 
                     key={item.type}
@@ -150,9 +121,8 @@ export const VehicleDetailsScreen: React.FC = () => {
                     onPress={() => setVehicleType(item.type)}
                   />
                 ))}
-              </View>
-
-            </View>
+              </ColorRow>
+            </FormWrapper>
           </CardSection>
 
           <CardSection>
@@ -162,7 +132,7 @@ export const VehicleDetailsScreen: React.FC = () => {
                 {t('vehicleDetails.appearance')}
               </Typography>
             </SectionHeader>
-            <View style={{ gap: 16 }}>
+            <FormWrapper style={{ padding: 0, gap: 16 }}>
               <Input 
                 label={t('vehicleDetails.manufacturingYear')} 
                 value={formik.values.year}
@@ -170,7 +140,7 @@ export const VehicleDetailsScreen: React.FC = () => {
                 error={formik.touched.year ? formik.errors.year : undefined}
                 placeholder="2024"
               />
-              <View style={{ marginTop: 8 }}>
+              <FormWrapper style={{ padding: 0, marginTop: 8, gap: 0 }}>
                 <Typography variant="label" size="sm" weight="bold" color="on_surface_variant" style={{ marginLeft: 4 }}>
                   {t('vehicleDetails.color')}
                 </Typography>
@@ -185,7 +155,6 @@ export const VehicleDetailsScreen: React.FC = () => {
                         label={color.label}
                       />
                     ))}
-
                   </ColorRow>
                 </ColorScroll>
                 {formik.touched.color && formik.errors.color && (
@@ -193,9 +162,8 @@ export const VehicleDetailsScreen: React.FC = () => {
                     {formik.errors.color || ''}
                   </Typography>
                 )}
-              </View>
-
-            </View>
+              </FormWrapper>
+            </FormWrapper>
           </CardSection>
         </FormWrapper>
 
@@ -209,8 +177,8 @@ export const VehicleDetailsScreen: React.FC = () => {
             {t('vehicleDetails.saveVehicle')}
           </Button>
         </BottomAction>
-      </ScrollView>
-
+      </ScrollContainer>
     </Container>
   );
 };
+

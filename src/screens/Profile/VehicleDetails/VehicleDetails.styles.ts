@@ -1,14 +1,30 @@
 import styled from 'styled-components/native';
-import { scale, verticalScale, moderateScale } from '@/styles';
+import { verticalScale, moderateScale } from '@/styles';
+
 
 export const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.surface};
 `;
 
-export const ScrollLayout = styled.ScrollView`
+export const ScreenWrapper = styled.SafeAreaView`
+  background-color: ${({ theme }) => theme.colors.surface};
+`;
+
+export const HeaderContainer = styled.View`
+  height: ${verticalScale(64)}px;
+  flex-direction: row;
+  align-items: center;
+  padding-horizontal: ${moderateScale(16)}px;
+`;
+
+export const ScrollContainer = styled.ScrollView.attrs(() => ({
+  showsVerticalScrollIndicator: false,
+  contentContainerStyle: { paddingBottom: verticalScale(40) }
+}))`
   flex: 1;
 `;
+
 
 export const HeroSection = styled.View`
   height: ${verticalScale(200)}px;
@@ -33,6 +49,16 @@ export const HeroOverlay = styled.View`
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.4);
 `;
+
+export const HeroTint = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: ${({ theme }) => theme.colors.primary + '33'};
+`;
+
 
 export const HeroContent = styled.View`
   position: absolute;

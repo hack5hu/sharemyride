@@ -1,12 +1,22 @@
 import styled from 'styled-components/native';
-import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
+import { verticalScale, moderateScale } from '@/styles';
 
-export const Container = styled.View`
+
+export const ScreenWrapper = styled.SafeAreaView`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.surface};
 `;
 
-export const ScrollLayout = styled.ScrollView`
+export const HeaderContainer = styled.View`
+  height: ${verticalScale(64)}px;
+  flex-direction: row;
+  align-items: center;
+  padding-horizontal: ${moderateScale(16)}px;
+`;
+
+export const ScrollContainer = styled.ScrollView.attrs(() => ({
+  showsVerticalScrollIndicator: false,
+}))`
   flex: 1;
 `;
 
@@ -18,6 +28,26 @@ export const HeroSection = styled.View`
   border-radius: ${moderateScale(24)}px;
   position: relative;
 `;
+
+export const HeroTint = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 107, 71, 0.4);
+`;
+
+export const IconContainer = styled.View<{ color?: string }>`
+  width: ${moderateScale(44)}px;
+  height: ${moderateScale(44)}px;
+  border-radius: ${moderateScale(22)}px;
+  background-color: ${({ theme, color }) => color || theme.colors.surface_container};
+  align-items: center;
+  justify-content: center;
+  margin-right: ${moderateScale(16)}px;
+`;
+
 
 export const HeroImage = styled.Image`
   width: 100%;

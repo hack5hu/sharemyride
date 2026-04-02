@@ -1,6 +1,12 @@
 import styled from 'styled-components/native';
 import { moderateScale, verticalScale } from '@/styles';
-import { View } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
+
+export const ScreenWrapper = styled.SafeAreaView`
+  flex: 1;
+  background-color: ${({ theme }) => theme.colors.surface};
+`;
+
 
 export const Container = styled.ScrollView`
   flex: 1;

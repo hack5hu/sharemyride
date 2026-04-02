@@ -1,39 +1,14 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { Typography } from '../../atoms/Typography';
+import { Typography } from '@/components/atoms/Typography';
 import { Container, NavItem } from './BottomNav.styles';
-import { useTranslation } from '@/hooks/useTranslation';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '@/navigation/types';
-
-export type BottomTabType = 'BOOK' | 'PUBLISH' | 'MY_RIDES' | 'CHATS' | 'PROFILE';
-
-export interface BottomNavProps {
-  activeTab: BottomTabType;
-}
+import { BottomTabType, BottomNavProps } from './types';
+import { useBottomNav } from './useBottomNav';
 
 export const BottomNav: React.FC<BottomNavProps> = ({ activeTab }) => {
-  const { t } = useTranslation();
   const theme = useTheme();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-
-  const handlePress = (tab: BottomTabType) => {
-    if (tab === activeTab) return;
-
-    switch (tab) {
-      case 'PROFILE':
-        navigation.navigate('ProfileHub');
-        break;
-      default:
-        navigation.navigate('Dummy', { 
-          title: t(`profileHub.nav${tab.replace('_', '').toLowerCase().charAt(0).toUpperCase() + tab.replace('_', '').toLowerCase().slice(1)}`),
-          activeTab: tab 
-        });
-        break;
-    }
-  };
+  const { t, handlePress } = useBottomNav(activeTab);
 
   const renderItem = (tab: BottomTabType, icon: string, labelKey: string) => {
     const isActive = activeTab === tab;
@@ -66,3 +41,4 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab }) => {
     </Container>
   );
 };
+

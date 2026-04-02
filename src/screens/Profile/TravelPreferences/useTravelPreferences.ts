@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { TravelPreferenceState } from './types';
 
@@ -11,6 +11,9 @@ export const useTravelPreferences = () => {
     luggage: true,
     pets: false,
   });
+
+  const musicOptions = useMemo(() => ['Bollywood', 'Pop', 'Jazz', 'Podcast', 'Silence'], []);
+
 
   const togglePreference = useCallback((key: keyof Omit<TravelPreferenceState, 'music'>) => {
     setPreferences(prev => ({
@@ -29,14 +32,18 @@ export const useTravelPreferences = () => {
   const handleSave = useCallback(() => {
     // In a real app, this would call the API service
     // For now, we'll navigate back
+    console.log('Saving preferences:', preferences);
     navigation.goBack();
   }, [navigation, preferences]);
 
+
   return {
     preferences,
+    musicOptions,
     togglePreference,
     setMusicPreference,
     handleSave,
     goBack: () => navigation.goBack(),
   };
 };
+

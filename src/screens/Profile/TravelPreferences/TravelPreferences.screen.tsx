@@ -1,24 +1,26 @@
 import React from 'react';
-import { View, SafeAreaView, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { Typography } from 'atoms/Typography';
-import { Toggle } from 'atoms/Toggle';
-import { Chip } from 'atoms/Chip';
-import { Button } from 'atoms/Button';
-import { IconButton } from 'atoms/IconButton';
-import { PreferenceCard } from 'molecule/PreferenceCard';
-
+import { Typography } from '@/components/atoms/Typography';
+import { Toggle } from '@/components/atoms/Toggle';
+import { Chip } from '@/components/atoms/Chip';
+import { Button } from '@/components/atoms/Button';
+import { IconButton } from '@/components/atoms/IconButton';
+import { PreferenceCard } from '@/components/molecules/PreferenceCard';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTravelPreferences } from './useTravelPreferences';
 import {
-  Container,
+  ScreenWrapper,
+  HeaderContainer,
+  ScrollContainer,
   HeroSection,
   HeroImage,
+  HeroTint,
   HeroContent,
   Section,
   SectionTitleWrapper,
   PreferenceItem,
+  IconContainer,
   TextWrapper,
   ChipGroup,
   BentoGrid,
@@ -30,38 +32,34 @@ export const TravelPreferencesScreen: React.FC = () => {
   const { t } = useTranslation();
   const { 
     preferences, 
+    musicOptions,
     togglePreference, 
     setMusicPreference, 
     handleSave,
     goBack 
   } = useTravelPreferences();
 
-  const musicOptions = ['Bollywood', 'Pop', 'Jazz', 'Podcast', 'Silence'];
-
   return (
-    <Container>
-      <SafeAreaView style={{ backgroundColor: theme.colors.surface }}>
-        <View style={{ height: 64, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16 }}>
-          <IconButton icon="arrow-back" variant="surface" onPress={goBack} />
-          <Typography variant="title" size="md" weight="bold" color="primary" style={{ marginLeft: 16 }}>
-            {t('travelPreferences.headerTitle')}
-          </Typography>
-        </View>
-      </SafeAreaView>
+    <ScreenWrapper>
+      <HeaderContainer>
+        <IconButton icon="arrow-back" variant="surface" onPress={goBack} />
+        <Typography variant="title" size="md" weight="bold" color="primary" style={{ marginLeft: 16 }}>
+          {t('travelPreferences.headerTitle')}
+        </Typography>
+      </HeaderContainer>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollContainer>
         <HeroSection>
           <HeroImage 
-            source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCBrVamBTHQbNIgFh7Su6Rpq1fD2TpbBkgAv0cFAZPW0k8Cxp6gXWo79shNEVk7FL2nm0_gtRFKJ0q9yu_s8WScIqvI7cl4v08a3lcitqZw3n3BnUuVuuJQ1PUnALTPMXO1Vw2quNLcyMWySAOuIzIzFY1rUKAJjLS7C2wk_5thO64ywhOxfSUuyJDPcBoBUgTbbUJXVtPB9WrCocWo3VEkAbjPuYTiZT_0wF38tK7ReoQJybI8UfuJJ_UQ24QZoy6Qt3-gqIsDmQKo' }} 
+            source={{ uri: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=2069' }} 
             resizeMode="cover"
           />
-          <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,107,71,0.4)' }} />
+          <HeroTint />
           <HeroContent>
-            <Typography variant="display" size="sm" weight="bold" color="on_primary_container">
+            <Typography variant="display" size="sm" weight="bold" color="on_primary">
               {t('travelPreferences.heroTitle')}
             </Typography>
-
-            <Typography variant="body" size="sm" color="on_primary_container" style={{ opacity: 0.9, marginTop: 4 }}>
+            <Typography variant="body" size="sm" color="on_primary" style={{ opacity: 0.9, marginTop: 4 }}>
               {t('travelPreferences.heroSubtitle')}
             </Typography>
           </HeroContent>
@@ -69,9 +67,9 @@ export const TravelPreferencesScreen: React.FC = () => {
 
         <Section>
           <PreferenceItem>
-            <View style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: theme.colors.surface_container, alignItems: 'center', justifyContent: 'center', marginRight: 16 }}>
+            <IconContainer>
               <Icon name="smoke-free" size={24} color={theme.colors.primary} />
-            </View>
+            </IconContainer>
             <TextWrapper>
               <Typography variant="title" size="sm" weight="bold">
                 {t('travelPreferences.nonSmoking')}
@@ -79,15 +77,14 @@ export const TravelPreferencesScreen: React.FC = () => {
               <Typography variant="body" size="sm" color="on_surface_variant">
                 {t('travelPreferences.nonSmokingDescr')}
               </Typography>
-
             </TextWrapper>
             <Toggle value={preferences.nonSmoking} onValueChange={() => togglePreference('nonSmoking')} />
           </PreferenceItem>
 
-          <PreferenceItem style={{ borderWidth: 2, borderColor: theme.colors.primary_container + '33' }}>
-            <View style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: theme.colors.secondary_container, alignItems: 'center', justifyContent: 'center', marginRight: 16 }}>
+          <PreferenceItem>
+            <IconContainer color={theme.colors.secondary_container}>
               <Icon name="female" size={24} color={theme.colors.primary} />
-            </View>
+            </IconContainer>
             <TextWrapper>
               <Typography variant="title" size="sm" weight="bold">
                 {t('travelPreferences.womenOnly')}
@@ -95,7 +92,6 @@ export const TravelPreferencesScreen: React.FC = () => {
               <Typography variant="body" size="sm" color="on_surface_variant">
                 {t('travelPreferences.womenOnlyDescr')}
               </Typography>
-
             </TextWrapper>
             <Toggle value={preferences.womenOnly} onValueChange={() => togglePreference('womenOnly')} />
           </PreferenceItem>
@@ -134,16 +130,13 @@ export const TravelPreferencesScreen: React.FC = () => {
           </BentoGrid>
 
           <BottomAction>
-            <Button 
-              onPress={handleSave}
-              variant="primary"
-            >
+            <Button onPress={handleSave} variant="primary">
               {t('travelPreferences.savePreferences')}
             </Button>
           </BottomAction>
-
         </Section>
-      </ScrollView>
-    </Container>
+      </ScrollContainer>
+    </ScreenWrapper>
   );
 };
+
