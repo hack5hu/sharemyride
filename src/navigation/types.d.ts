@@ -22,4 +22,8 @@ export type RootStackParamList = {
     name: string;
   };
   SelectLocation: undefined;
+  MyRides: undefined;
+  RideDetails: {
+    rideId: string;
+  };
 };

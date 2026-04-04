@@ -11,7 +11,10 @@ import { VehicleDetailsScreen } from '@/screens/Profile/VehicleDetails';
 import { ChatListScreen } from '@/screens/Chat/ChatList';
 import { ChatDetailsScreen } from '@/screens/Chat/ChatDetails';
 import { SelectLocationScreen } from '@/screens/Chat/SelectLocation';
+import { MyRidesScreen } from '@/screens/Chat/MyRides';
+import { RideDetailsScreen } from '@/screens/RideDetails';
 import { RootStackParamList } from './types.d';
+
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -38,6 +41,9 @@ export const RootNavigator = () => {
       <Stack.Screen name="ChatList" component={ChatListScreen} />
       <Stack.Screen name="ChatDetails" component={ChatDetailsScreen as any} />
       <Stack.Screen name="SelectLocation" component={SelectLocationScreen} />
+      <Stack.Screen name="MyRides" component={MyRidesScreen} />
+      <Stack.Screen name="RideDetails" component={RideDetailsScreen as any} />
     </Stack.Navigator>
+
   );
 };

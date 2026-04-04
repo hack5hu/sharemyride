@@ -189,6 +189,27 @@ export interface ChatTranslations {
   activeDrivers: string;
 }
 
+export interface RideDetailsTranslations {
+  headerTitle: string;
+  liveTracking: string;
+  pickupLabel: string;
+  stopLabel: string;
+  destinationLabel: string;
+  estimatedArrival: string;
+  minsAway: string;
+  totalFare: string;
+  verified: string;
+  otherRiders: string;
+  spotsLeft: string;
+  coRider: string;
+  joiningAt: string;
+  trustTitle: string;
+  trustDescription: string;
+  cancelRide: string;
+  chat: string;
+}
+
+
 export interface Translations {
   login: LoginTranslations;
   otpVerification: OtpVerificationTranslations;
@@ -199,7 +220,9 @@ export interface Translations {
   travelPreferences: TravelPreferencesTranslations;
   vehicleDetails: VehicleDetailsTranslations;
   chat: ChatTranslations;
+  rideDetails: RideDetailsTranslations;
 }
+
 
 
 

@@ -181,7 +181,27 @@ export const en: Translations = {
     yesterday: 'Yesterday',
     activeDrivers: 'Active Drivers',
   },
+  rideDetails: {
+    headerTitle: 'My Rides',
+    liveTracking: 'Live Tracking',
+    pickupLabel: 'Pickup',
+    stopLabel: 'Stop {count}',
+    destinationLabel: 'Destination',
+    estimatedArrival: 'Estimated Arrival',
+    minsAway: '{count} mins away',
+    totalFare: 'Total Fare',
+    verified: 'Verified',
+    otherRiders: 'Other Riders',
+    spotsLeft: '{count} Spots Left',
+    coRider: 'Co-rider',
+    joiningAt: 'Joining {stop}',
+    trustTitle: 'Verdant Trust Protection',
+    trustDescription: 'Your ride is covered by our comprehensive safety protocols. Real-time emergency sharing is active.',
+    cancelRide: 'Cancel Ride',
+    chat: 'Chat',
+  },
 };
+
 
 
 

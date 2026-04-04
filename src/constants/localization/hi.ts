@@ -181,7 +181,28 @@ export const hi: Translations = {
     yesterday: 'कल',
     activeDrivers: 'सक्रिय चालक',
   },
+  rideDetails: {
+    headerTitle: 'मेरी सवारी',
+    liveTracking: 'लाइव ट्रैकिंग',
+    pickupLabel: 'पिकअप',
+    stopLabel: 'स्टॉप {count}',
+    destinationLabel: 'गंतव्य',
+    estimatedArrival: 'अनुमानित आगमन',
+    minsAway: '{count} मिनट दूर',
+    totalFare: 'कुल किराया',
+    verified: 'सत्यापित',
+    otherRiders: 'अन्य यात्री',
+    spotsLeft: '{count} सीटें शेष',
+    coRider: 'सह-यात्री',
+    joiningAt: '{stop} पर जुड़ रहे हैं',
+    trustTitle: 'वरदंत ट्रस्ट सुरक्षा',
+    trustDescription: 'आपकी सवारी हमारे व्यापक सुरक्षा प्रोटोकॉल द्वारा कवर की गई है। रीयल-टाइम आपातकालीन शेयरिंग सक्रिय है।',
+    cancelRide: 'सवारी रद्द करें',
+    chat: 'चैट',
+  },
 };
+
+
 
 
 
