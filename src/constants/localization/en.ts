@@ -200,7 +200,32 @@ export const en: Translations = {
     cancelRide: 'Cancel Ride',
     chat: 'Chat',
   },
+  cancelRide: {
+    title: 'Cancel Ride?',
+    subtitle: 'Please let us know why you’re cancelling. This helps us improve your ride experience.',
+    reasonDriverFar: 'Driver is too far',
+    reasonChangedMind: 'Changed my mind',
+    reasonCheaperRide: 'Found a cheaper ride',
+    reasonWaitLong: 'Wait time is too long',
+    reasonOther: 'Other reason',
+    confirmCancel: 'Confirm Cancellation',
+    keepRide: 'Keep My Ride',
+    otherReasonPlaceholder: 'Please specify...',
+  },
+  locationSelection: {
+    titlePrefix: 'Where are we ',
+    titleHighlight: 'drifting',
+    titleSuffix: ' to?',
+    subtitle: "Let's start your journey by picking the coordinates.",
+    startLabel: 'Starting Point',
+    startPlaceholder: 'Pick-up location...',
+    destinationLabel: 'Final Destination',
+    destinationPlaceholder: 'Where to?',
+    continueJourney: 'Continue Journey',
+    contextualInfo: 'Your location remains private until you confirm a drift partner. Precision is key for the best matches.',
+  },
 };
+
 
 
 

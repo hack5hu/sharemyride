@@ -22,10 +22,18 @@ export const useBottomNav = (activeTab: BottomTabType) => {
       case 'MY_RIDES':
         navigation.navigate('MyRides');
         break;
+      case 'PUBLISH':
+        navigation.navigate('LocationSelection');
+        break;
       default:
-        navigation.navigate('Dummy', { 
-          title: t(`profileHub.nav${tab.replace('_', '').toLowerCase().charAt(0).toUpperCase() + tab.replace('_', '').toLowerCase().slice(1)}`),
-          activeTab: tab 
+        navigation.navigate('Dummy', {
+          title: t(
+            `profileHub.nav${
+              tab.replace('_', '').toLowerCase().charAt(0).toUpperCase() +
+              tab.replace('_', '').toLowerCase().slice(1)
+            }`,
+          ),
+          activeTab: tab,
         });
         break;
     }

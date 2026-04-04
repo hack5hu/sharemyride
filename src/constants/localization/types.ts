@@ -209,6 +209,33 @@ export interface RideDetailsTranslations {
   chat: string;
 }
 
+export interface CancelRideTranslations {
+  title: string;
+  subtitle: string;
+  reasonDriverFar: string;
+  reasonChangedMind: string;
+  reasonCheaperRide: string;
+  reasonWaitLong: string;
+  reasonOther: string;
+  confirmCancel: string;
+  keepRide: string;
+  otherReasonPlaceholder: string;
+}
+
+
+
+export interface LocationSelectionTranslations {
+  titlePrefix: string;
+  titleHighlight: string;
+  titleSuffix: string;
+  subtitle: string;
+  startLabel: string;
+  startPlaceholder: string;
+  destinationLabel: string;
+  destinationPlaceholder: string;
+  continueJourney: string;
+  contextualInfo: string;
+}
 
 export interface Translations {
   login: LoginTranslations;
@@ -221,7 +248,10 @@ export interface Translations {
   vehicleDetails: VehicleDetailsTranslations;
   chat: ChatTranslations;
   rideDetails: RideDetailsTranslations;
+  cancelRide: CancelRideTranslations;
+  locationSelection: LocationSelectionTranslations;
 }
+
 
 
 

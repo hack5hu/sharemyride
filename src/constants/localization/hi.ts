@@ -200,7 +200,32 @@ export const hi: Translations = {
     cancelRide: 'सवारी रद्द करें',
     chat: 'चैट',
   },
+  cancelRide: {
+    title: 'सवारी रद्द करें?',
+    subtitle: 'कृपया हमें बताएं कि आप सवारी क्यों रद्द कर रहे हैं। इससे हमें आपके सवारी अनुभव को बेहतर बनाने में मदद मिलेगी।',
+    reasonDriverFar: 'ड्राइवर बहुत दूर है',
+    reasonChangedMind: 'मेरा मन बदल गया',
+    reasonCheaperRide: 'एक सस्ती सवारी मिल गई',
+    reasonWaitLong: 'प्रतीक्षा का समय बहुत लंबा है',
+    reasonOther: 'अन्य कारण',
+    confirmCancel: 'रद्दीकरण की पुष्टि करें',
+    keepRide: 'मेरी सवारी बनाए रखें',
+    otherReasonPlaceholder: 'कृपया विवरण दें...',
+  },
+  locationSelection: {
+    titlePrefix: 'हम कहाँ ',
+    titleHighlight: 'जा रहे',
+    titleSuffix: ' हैं?',
+    subtitle: 'निर्देशांक चुनकर अपनी यात्रा शुरू करें।',
+    startLabel: 'प्रस्थान बिंदु',
+    startPlaceholder: 'पिक-अप स्थान...',
+    destinationLabel: 'अंतिम गंतव्य',
+    destinationPlaceholder: 'कहाँ जाना है?',
+    continueJourney: 'यात्रा जारी रखें',
+    contextualInfo: 'जब तक आप किसी भागीदार की पुष्टि नहीं करते तब तक आपका स्थान निजी रहता है। सर्वोत्तम मिलान के लिए सटीकता महत्वपूर्ण है।',
+  },
 };
+
 
 
 

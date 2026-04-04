@@ -13,6 +13,8 @@ import { ChatDetailsScreen } from '@/screens/Chat/ChatDetails';
 import { SelectLocationScreen } from '@/screens/Chat/SelectLocation';
 import { MyRidesScreen } from '@/screens/Chat/MyRides';
 import { RideDetailsScreen } from '@/screens/RideDetails';
+import { CancelRideScreen } from '@/screens/CancelRide';
+import { LocationSelectionScreen } from '@/screens/LocationSelection';
 import { RootStackParamList } from './types.d';
 
 
@@ -41,8 +43,14 @@ export const RootNavigator = () => {
       <Stack.Screen name="ChatList" component={ChatListScreen} />
       <Stack.Screen name="ChatDetails" component={ChatDetailsScreen as any} />
       <Stack.Screen name="SelectLocation" component={SelectLocationScreen} />
+      <Stack.Screen name="LocationSelection" component={LocationSelectionScreen} />
       <Stack.Screen name="MyRides" component={MyRidesScreen} />
       <Stack.Screen name="RideDetails" component={RideDetailsScreen as any} />
+      <Stack.Screen 
+        name="CancelRide" 
+        component={CancelRideScreen as any}
+        options={{ presentation: 'transparentModal' }}
+      />
     </Stack.Navigator>
 
   );

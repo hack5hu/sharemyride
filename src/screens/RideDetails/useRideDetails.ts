@@ -60,9 +60,8 @@ export const useRideDetails = () => {
   }, [navigation]);
 
   const handleCancel = useCallback(() => {
-    // Implement cancel logic or show modal
-    console.log('Cancel Ride pressed');
-  }, []);
+    navigation.navigate('CancelRide' as never);
+  }, [navigation]);
 
   const handleChat = useCallback(() => {
     // Navigate to Chat
