@@ -36,6 +36,8 @@ export type RootStackParamList = {
   MiddleStopMap: undefined;
   DateSelection: undefined;
   TimeSelection: undefined;
+  SeatSelection: undefined;
+  PriceSelection: undefined;
   MyRides: undefined;
   RideDetails: {
     rideId: string;

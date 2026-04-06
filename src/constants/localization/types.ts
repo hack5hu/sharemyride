@@ -346,6 +346,48 @@ export interface Translations {
   middleStopMap: MiddleStopMapTranslations;
   dateSelection: DateSelectionTranslations;
   timeSelection: TimeSelectionTranslations;
+  seatSelection: SeatSelectionTranslations;
+  priceSelection: PriceSelectionTranslations;
+}
+
+export interface PriceSelectionTranslations {
+  headerTitle: string;
+  title: string;
+  subtitle: string;
+  basePriceLabel: string;
+  recommendedBadge: string;
+  frontSeatPremiumTitle: string;
+  frontSeatPremiumDesc: string;
+  premiumAmountLabel: string;
+  maxLimitNote: string;
+  multiStopTitle: string;
+  multiStopSubtitle: string;
+  customizePricing: string;
+  continueButton: string;
+  segmentSheetTitle: string;
+  segmentSheetSubtitle: string;
+  segmentLabel: string;
+  minPriceLabel: string;
+  maxPriceLabel: string;
+  cancelButton: string;
+  saveButton: string;
+  frontSeatProjectedLabel: string;
+}
+
+export interface SeatSelectionTranslations {
+  headerTitle: string;
+  stepIndicator: string;
+  title: string;
+  subtitle: string;
+  fiveSeater: string;
+  sevenSeater: string;
+  driverLabel: string;
+  legendSelected: string;
+  legendAvailable: string;
+  legendOccupied: string;
+  seatsOffering: string;
+  estEarnings: string;
+  continue: string;
 }
 
 

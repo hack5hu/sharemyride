@@ -68,10 +68,8 @@ export const useTimeSelection = () => {
   }, [navigation]);
 
   const handleContinuePress = useCallback(() => {
-    const pad = (n: number) => String(n).padStart(2, '0');
-    console.log(`Proceeding with time: ${pad(selectedHour)}:${pad(selectedMinute)}`);
-    // navigation.navigate('NextStep');
-  }, [selectedHour, selectedMinute]);
+    (navigation.navigate as any)('SeatSelection');
+  }, [navigation]);
 
   return {
     selectedHour,
