@@ -15,7 +15,7 @@ const App = () => {
   }, [initialize]);
 
   return (
-    <SafeAreaProvider style={{ paddingTop: 12 }}>
+    <SafeAreaProvider >
       <ThemeProvider theme={theme}>
         <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
         <NavigationContainer>

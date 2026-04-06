@@ -15,6 +15,12 @@ import { MyRidesScreen } from '@/screens/Chat/MyRides';
 import { RideDetailsScreen } from '@/screens/RideDetails';
 import { CancelRideScreen } from '@/screens/CancelRide';
 import { LocationSelectionScreen } from '@/screens/LocationSelection';
+import { MapPickerScreen } from '@/screens/MapPicker';
+import { RouteSelectionScreen } from '@/screens/RouteSelection';
+import { MiddleStopsScreen } from '@/screens/MiddleStops';
+import { MiddleStopMapScreen } from '@/screens/MiddleStopMap';
+import { DateSelectionScreen } from '@/screens/DateSelection';
+import { TimeSelectionScreen } from '@/screens/TimeSelection';
 import { RootStackParamList } from './types.d';
 
 
@@ -44,6 +50,12 @@ export const RootNavigator = () => {
       <Stack.Screen name="ChatDetails" component={ChatDetailsScreen as any} />
       <Stack.Screen name="SelectLocation" component={SelectLocationScreen} />
       <Stack.Screen name="LocationSelection" component={LocationSelectionScreen} />
+      <Stack.Screen name="MapPicker" component={MapPickerScreen as any} />
+      <Stack.Screen name="RouteSelection" component={RouteSelectionScreen as any} />
+      <Stack.Screen name="MiddleStops" component={MiddleStopsScreen as any} />
+      <Stack.Screen name="MiddleStopMap" component={MiddleStopMapScreen as any} />
+      <Stack.Screen name="DateSelection" component={DateSelectionScreen as any} />
+      <Stack.Screen name="TimeSelection" component={TimeSelectionScreen as any} />
       <Stack.Screen name="MyRides" component={MyRidesScreen} />
       <Stack.Screen name="RideDetails" component={RideDetailsScreen as any} />
       <Stack.Screen 

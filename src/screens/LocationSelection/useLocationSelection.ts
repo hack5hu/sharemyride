@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useState, useCallback, useEffect } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/navigation/types';
 
@@ -7,28 +7,37 @@ type NavigationProp = StackNavigationProp<RootStackParamList, 'LocationSelection
 
 export const useLocationSelection = () => {
   const navigation = useNavigation<NavigationProp>();
+  const route = useRoute();
   const [startLocationName, setStartLocationName] = useState<string>('');
   const [destinationLocationName, setDestinationLocationName] = useState<string>('');
 
   const handlePressStart = useCallback(() => {
-    // Navigate to a real picker or map screen for the start point
-    // e.g. navigation.navigate('LocationPicker', { type: 'start' })
-    console.log('Navigate to Start Location Picker');
-  }, []);
+    navigation.navigate('MapPicker', { type: 'start' });
+  }, [navigation]);
 
   const handlePressDestination = useCallback(() => {
-    // Navigate to a real picker or map screen for destination
-    // e.g. navigation.navigate('LocationPicker', { type: 'destination' })
-    console.log('Navigate to Destination Picker');
-  }, []);
+    navigation.navigate('MapPicker', { type: 'destination' });
+  }, [navigation]);
+
+  useEffect(() => {
+    if ((route.params as any)?.updatedLocation && (route.params as any)?.type) {
+      const { updatedLocation, type } = (route.params as any);
+      if (type === 'start') {
+        setStartLocationName(updatedLocation.name);
+      } else if (type === 'destination') {
+        setDestinationLocationName(updatedLocation.name);
+      }
+      // Clear params so it doesn't apply again unexpectedly
+      navigation.setParams({ updatedLocation: undefined, type: undefined });
+    }
+  }, [route.params, navigation]);
 
   const handleContinue = useCallback(() => {
-    console.log('Continue with locations:', { startLocationName, destinationLocationName });
-    // Navigate to next step
-  }, [startLocationName, destinationLocationName]);
+    navigation.navigate('RouteSelection');
+  }, [navigation]);
 
   // Optionally set these manually for demonstration or integration later
-  const canContinue = !!startLocationName && !!destinationLocationName;
+   const canContinue =  true ||!!startLocationName && !!destinationLocationName;
 
   return {
     startLocationName,

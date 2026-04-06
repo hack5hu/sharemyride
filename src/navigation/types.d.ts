@@ -21,8 +21,21 @@ export type RootStackParamList = {
     chatId: string;
     name: string;
   };
+  LocationSelection: {
+    updatedLocation?: { id: string; name: string; address: string };
+    type?: 'start' | 'destination';
+  } | undefined;
   SelectLocation: undefined;
-  LocationSelection: undefined;
+  MapPicker: {
+    type: 'start' | 'destination';
+  };
+  RouteSelection: undefined;
+  MiddleStops: {
+    newStop?: { id: string; name: string };
+  } | undefined;
+  MiddleStopMap: undefined;
+  DateSelection: undefined;
+  TimeSelection: undefined;
   MyRides: undefined;
   RideDetails: {
     rideId: string;

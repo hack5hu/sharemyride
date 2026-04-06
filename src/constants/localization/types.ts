@@ -237,6 +237,55 @@ export interface LocationSelectionTranslations {
   contextualInfo: string;
 }
 
+export interface MapPickerTranslations {
+  title: string;
+  searchPlaceholder: string;
+  setPickup: string;
+  setDestination: string;
+  selectedArea: string;
+  selectLocation: string;
+}
+
+export interface RouteSelectionTranslations {
+  headerTitle: string;
+  stepIndicator: string;
+  title: string;
+  subtitle: string;
+  recommended: string;
+  trustBadge: string;
+  continue: string;
+}
+
+export interface MiddleStopsTranslations {
+  headerTitle: string;
+  stepIndicator: string;
+  title: string;
+  subtitle: string;
+  startPointLabel: string;
+  stopLabel: string;
+  addMiddleStop: string;
+  addMiddleStopSub: string;
+  destinationLabel: string;
+  optimizedRoute: string;
+  continue: string;
+}
+
+export interface MiddleStopMapTranslations {
+  headerTitle: string;
+  stepIndicator: string;
+  searchPlaceholder: string;
+  whereWillYouStop: string;
+  addingStopsIncreasesInfo: string;
+  suggestedStoppages: string;
+  popular: string;
+  quickExit: string;
+  recentHistory: string;
+  currentRoute: string;
+  selectedStop: string;
+  addedStops: string;
+  continue: string;
+}
+
 export interface Translations {
   login: LoginTranslations;
   otpVerification: OtpVerificationTranslations;
@@ -250,6 +299,53 @@ export interface Translations {
   rideDetails: RideDetailsTranslations;
   cancelRide: CancelRideTranslations;
   locationSelection: LocationSelectionTranslations;
+  mapPicker: MapPickerTranslations;
+  routeSelection: RouteSelectionTranslations;
+}
+
+export interface DateSelectionTranslations {
+  headerTitle: string;
+  stepIndicator: string;
+  title: string;
+  subtitle: string;
+  currentLabel: string;
+  daysOfWeek: string[];
+  selectedDate: string;
+  noneSelected: string;
+  next: string;
+}
+
+export interface TimeSelectionTranslations {
+  headerTitle: string;
+  stepIndicator: string;
+  title: string;
+  titleHighlight: string;
+  subtitle: string;
+  selectedTimeLabel: string;
+  formatLabel: string;
+  arrivalNote: string;
+  continue: string;
+}
+
+export interface Translations {
+  login: LoginTranslations;
+  otpVerification: OtpVerificationTranslations;
+  profileSetup: ProfileSetupTranslations;
+  profileHub: ProfileHubTranslations;
+  editProfile: EditProfileTranslations;
+  dummyContent: DummyContentTranslations;
+  travelPreferences: TravelPreferencesTranslations;
+  vehicleDetails: VehicleDetailsTranslations;
+  chat: ChatTranslations;
+  rideDetails: RideDetailsTranslations;
+  cancelRide: CancelRideTranslations;
+  locationSelection: LocationSelectionTranslations;
+  mapPicker: MapPickerTranslations;
+  routeSelection: RouteSelectionTranslations;
+  middleStops: MiddleStopsTranslations;
+  middleStopMap: MiddleStopMapTranslations;
+  dateSelection: DateSelectionTranslations;
+  timeSelection: TimeSelectionTranslations;
 }
 
 
