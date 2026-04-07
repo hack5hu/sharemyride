@@ -286,22 +286,6 @@ export interface MiddleStopMapTranslations {
   continue: string;
 }
 
-export interface Translations {
-  login: LoginTranslations;
-  otpVerification: OtpVerificationTranslations;
-  profileSetup: ProfileSetupTranslations;
-  profileHub: ProfileHubTranslations;
-  editProfile: EditProfileTranslations;
-  dummyContent: DummyContentTranslations;
-  travelPreferences: TravelPreferencesTranslations;
-  vehicleDetails: VehicleDetailsTranslations;
-  chat: ChatTranslations;
-  rideDetails: RideDetailsTranslations;
-  cancelRide: CancelRideTranslations;
-  locationSelection: LocationSelectionTranslations;
-  mapPicker: MapPickerTranslations;
-  routeSelection: RouteSelectionTranslations;
-}
 
 export interface DateSelectionTranslations {
   headerTitle: string;
@@ -327,6 +311,37 @@ export interface TimeSelectionTranslations {
   continue: string;
 }
 
+export interface RequestTypeTranslations {
+  headerTitle: string;
+  title: string;
+  subtitle: string;
+  instantBookingTitle: string;
+  instantBookingSubtitle: string;
+  requestReviewTitle: string;
+  requestReviewSubtitle: string;
+  proTipTitle: string;
+  proTipText: string;
+  continueButton: string;
+}
+
+export interface SummaryPublishTranslations {
+  headerTitle: string;
+  title: string;
+  subtitle: string;
+  departureLabel: string;
+  arrivalLabel: string;
+  vehicleLabel: string;
+  availabilityLabel: string;
+  ridePreferencesLabel: string;
+  noSmoking: string;
+  petsAllowed: string;
+  chillMusic: string;
+  publishRideButton: string;
+  termsText1: string;
+  termsLink: string;
+  termsText2: string;
+}
+
 export interface Translations {
   login: LoginTranslations;
   otpVerification: OtpVerificationTranslations;
@@ -348,6 +363,18 @@ export interface Translations {
   timeSelection: TimeSelectionTranslations;
   seatSelection: SeatSelectionTranslations;
   priceSelection: PriceSelectionTranslations;
+  requestType: RequestTypeTranslations;
+  summaryPublish: SummaryPublishTranslations;
+  publishSuccess: PublishSuccessTranslations;
+}
+
+export interface PublishSuccessTranslations {
+  title: string;
+  subtitle: string;
+  infoTitle: string;
+  infoText: string;
+  primaryCTA: string;
+  secondaryCTA: string;
 }
 
 export interface PriceSelectionTranslations {

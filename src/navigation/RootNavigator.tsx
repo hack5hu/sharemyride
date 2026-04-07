@@ -23,6 +23,9 @@ import { DateSelectionScreen } from '@/screens/DateSelection';
 import { TimeSelectionScreen } from '@/screens/TimeSelection';
 import { SeatSelectionScreen } from '@/screens/SeatSelection';
 import { PriceSelectionScreen } from '@/screens/PriceSelection';
+import { RequestTypeScreen } from '@/screens/RequestType';
+import { SummaryPublishScreen } from '@/screens/SummaryPublish';
+import { PublishSuccessScreen } from '@/screens/PublishSuccess';
 import { RootStackParamList } from './types.d';
 
 
@@ -67,6 +70,9 @@ export const RootNavigator = () => {
         component={CancelRideScreen as any}
         options={{ presentation: 'transparentModal' }}
       />
+      <Stack.Screen name="RequestType" component={RequestTypeScreen} />
+      <Stack.Screen name="SummaryPublish" component={SummaryPublishScreen} />
+      <Stack.Screen name="PublishSuccess" component={PublishSuccessScreen} />
     </Stack.Navigator>
 
   );

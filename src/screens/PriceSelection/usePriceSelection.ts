@@ -45,9 +45,8 @@ export const usePriceSelection = () => {
   }, [navigation]);
 
   const handleContinue = useCallback(() => {
-    console.log('Continuing with price setup');
-    // navigation.navigate('NextStep');
-  }, []);
+    navigation.navigate('RequestType' as any);
+  }, [navigation]);
 
   const handleCustomizePricing = useCallback(() => {
     setSheetVisible(true);

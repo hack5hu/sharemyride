@@ -45,4 +45,7 @@ export type RootStackParamList = {
   CancelRide: {
     rideId?: string;
   };
+  RequestType: undefined;
+  SummaryPublish: undefined;
+  PublishSuccess: undefined;
 };
