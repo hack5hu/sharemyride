@@ -38,7 +38,9 @@ export type RootStackParamList = {
   MiddleStopMap: undefined;
   DateSelection: undefined;
   TimeSelection: undefined;
-  SeatSelection: undefined;
+  SeatSelection: {
+    flow: 'publish' | 'book';
+  };
   PriceSelection: undefined;
   MyRides: undefined;
   RideDetails: {
@@ -53,4 +55,5 @@ export type RootStackParamList = {
   BookRideInfo: undefined;
   AvailableRides: undefined;
   RideInformation: { rideId: string };
+  BookingConfirmed: { rideId: string };
 };

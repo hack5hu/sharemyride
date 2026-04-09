@@ -10,15 +10,11 @@ const BarWrapper = styled.View`
   left: 0;
   right: 0;
   padding-horizontal: ${scale(24)}px;
-  padding-bottom: ${verticalScale(32)}px;
-`;
-
-const GradientBg = styled(LinearGradient)`
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: -${verticalScale(40)}px;
+  padding-bottom: ${verticalScale(40)}px;
+  padding-top: ${verticalScale(24)}px;
+  background-color: ${({ theme }) => theme.colors.surface}E6;
+  border-top-width: 1px;
+  border-color: ${({ theme }) => theme.colors.surface_container_highest};
 `;
 
 const SummaryRow = styled.View`
@@ -33,25 +29,26 @@ const SummaryBlock = styled.View<{ alignEnd?: boolean }>`
   align-items: ${({ alignEnd }) => (alignEnd ? 'flex-end' : 'flex-start')};
 `;
 
-const SummaryLabel = styled.Text`
+const SummaryLabel = styled.Text<{ color?: string }>`
   font-family: 'Plus Jakarta Sans';
   font-size: ${responsiveFont(12)}px;
   font-weight: 500;
-  color: ${({ theme }) => theme.colors.on_surface_variant};
+  color: ${({ theme, color }) => color || theme.colors.on_surface_variant};
 `;
 
-const SeatCountText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(18)}px;
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
-const EarningsText = styled.Text`
+const MoneyValueText = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 700;
   font-size: ${responsiveFont(18)}px;
   color: ${({ theme }) => theme.colors.on_surface};
+`;
+
+const SeatCountText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 800;
+  font-size: ${responsiveFont(22)}px;
+  color: ${({ theme }) => theme.colors.on_surface};
+  letter-spacing: -0.5px;
 `;
 
 const ContinueButton = styled.TouchableOpacity<{ disabled: boolean }>`
@@ -61,15 +58,15 @@ const ContinueButton = styled.TouchableOpacity<{ disabled: boolean }>`
 
 const ContinueGradient = styled(LinearGradient)`
   width: 100%;
-  padding-vertical: ${verticalScale(16)}px;
-  border-radius: ${moderateScale(12)}px;
+  padding-vertical: ${verticalScale(18)}px;
+  border-radius: ${moderateScale(16)}px;
   align-items: center;
   justify-content: center;
   shadow-color: ${({ theme }) => theme.colors.primary};
-  shadow-offset: 0px 12px;
+  shadow-offset: 0px 8px;
   shadow-opacity: 0.2;
-  shadow-radius: 20px;
-  elevation: 6;
+  shadow-radius: 12px;
+  elevation: 8;
 `;
 
 const ContinueText = styled.Text`
@@ -80,52 +77,72 @@ const ContinueText = styled.Text`
 `;
 
 export interface SeatSummaryBarProps {
+  flow: 'publish' | 'book';
   seatCount: number;
-  estEarnings: string;
-  seatsLabel: string;
-  earningsLabel: string;
+  moneyValue: string;
+  summaryTitle: string;
+  moneyLabel: string;
   continueLabel: string;
+  seatIdLabel?: string;
+  holdTimerNote?: string;
   onContinue: () => void;
 }
 
 export const SeatSummaryBar: React.FC<SeatSummaryBarProps> = ({
+  flow,
   seatCount,
-  estEarnings,
-  seatsLabel,
-  earningsLabel,
+  moneyValue,
+  summaryTitle,
+  moneyLabel,
   continueLabel,
+  seatIdLabel,
+  holdTimerNote,
   onContinue,
 }) => {
   const theme = useTheme();
   const disabled = seatCount === 0;
+  const isBook = flow === 'book';
 
   return (
     <BarWrapper>
-      <GradientBg
-        colors={['transparent', theme.colors.surface]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-        pointerEvents="none"
-      />
       <SummaryRow>
         <SummaryBlock>
-          <SummaryLabel>{seatsLabel}</SummaryLabel>
-          <SeatCountText>{seatCount} Seats</SeatCountText>
+          <SummaryLabel 
+            color={isBook ? theme.colors.primary_container : undefined}
+            style={{ textTransform: 'uppercase', letterSpacing: 1.5, fontWeight: '800' }}
+          >
+            {summaryTitle}
+          </SummaryLabel>
+          <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4 }}>
+            <SeatCountText>{seatCount} {seatCount === 1 ? 'Seat' : 'Seats'}</SeatCountText>
+            {isBook && seatIdLabel && (
+              <SummaryLabel style={{ fontSize: responsiveFont(14), fontWeight: '500' }}>
+                ({seatIdLabel})
+              </SummaryLabel>
+            )}
+          </View>
         </SummaryBlock>
         <SummaryBlock alignEnd>
-          <SummaryLabel>{earningsLabel}</SummaryLabel>
-          <EarningsText>{estEarnings}</EarningsText>
+          <SummaryLabel style={{ fontWeight: '700', textTransform: 'uppercase' }}>{moneyLabel}</SummaryLabel>
+          <MoneyValueText style={{ fontSize: isBook ? responsiveFont(20) : responsiveFont(18), fontWeight: '800' }}>
+            {moneyValue}
+          </MoneyValueText>
         </SummaryBlock>
       </SummaryRow>
       <ContinueButton onPress={onContinue} activeOpacity={0.9} disabled={disabled}>
         <ContinueGradient
-          colors={[theme.colors.primary, theme.colors.primary_container]}
+          colors={[theme.colors.primary_container, theme.colors.primary]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
           <ContinueText>{continueLabel}</ContinueText>
         </ContinueGradient>
       </ContinueButton>
+      {isBook && holdTimerNote && (
+        <SummaryLabel style={{ textAlign: 'center', marginTop: 16, fontSize: responsiveFont(10), fontStyle: 'italic', opacity: 0.7 }}>
+          {holdTimerNote}
+        </SummaryLabel>
+      )}
     </BarWrapper>
   );
 };

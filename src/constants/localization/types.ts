@@ -371,6 +371,23 @@ export interface Translations {
   rideFilters: RideFiltersTranslations;
   rideInformation: RideInformationTranslations;
   selectSeat: SelectSeatTranslations;
+  bookingConfirmed: BookingConfirmedTranslations;
+}
+
+export interface BookingConfirmedTranslations {
+  successTitle: string;
+  successSubtitle: string;
+  driverLabel: string;
+  verifiedLabel: string;
+  pickupTimeLabel: string;
+  arrivingIn: string;
+  seatNumberLabel: string;
+  windowPreference: string;
+  safetyGuardTitle: string;
+  safetyGuardSubtitle: string;
+  primaryCTA: string;
+  secondaryCTA: string;
+  plateLabel: string;
 }
 
 export interface BookRideInfoTranslations {

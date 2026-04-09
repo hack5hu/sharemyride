@@ -446,6 +446,21 @@ export const en: Translations = {
     continue: 'Continue',
     holdTimerNote: 'Seats are held for 5:00 minutes to ensure a fair booking experience.',
   },
+  bookingConfirmed: {
+    successTitle: 'Booking Successful!',
+    successSubtitle: 'Your ride is confirmed and being prepared.',
+    driverLabel: 'Driver',
+    verifiedLabel: 'VERIFIED',
+    pickupTimeLabel: 'Pickup Time',
+    arrivingIn: 'Arriving in {min} mins',
+    seatNumberLabel: 'Seat Number',
+    windowPreference: 'Window side preferred',
+    safetyGuardTitle: 'Safety Guard Active',
+    safetyGuardSubtitle: 'Your journey is GPS tracked and insured by Kinetic Sanctuary.',
+    primaryCTA: 'Go to My Rides',
+    secondaryCTA: 'Share Trip Details',
+    plateLabel: 'Plate',
+  },
 };
 
 

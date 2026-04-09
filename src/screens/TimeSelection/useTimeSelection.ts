@@ -68,7 +68,7 @@ export const useTimeSelection = () => {
   }, [navigation]);
 
   const handleContinuePress = useCallback(() => {
-    (navigation.navigate as any)('SeatSelection');
+    (navigation.navigate as any)('SeatSelection', { flow: 'publish' });
   }, [navigation]);
 
   return {

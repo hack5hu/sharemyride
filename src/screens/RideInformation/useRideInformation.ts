@@ -48,7 +48,7 @@ export const useRideInformation = (rideId: string) => {
   }, [navigation]);
 
   const handleBook = useCallback(() => {
-    (navigation.navigate as any)('SeatSelection');
+    (navigation.navigate as any)('SeatSelection', { flow: 'book' });
   }, [navigation]);
 
   return {

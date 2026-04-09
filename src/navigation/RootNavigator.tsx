@@ -29,6 +29,7 @@ import { PublishSuccessScreen } from '@/screens/PublishSuccess';
 import { BookRideInfoScreen } from '@/screens/BookRideInfo';
 import { AvailableRidesScreen } from '@/screens/AvailableRides';
 import { RideInformationScreen } from '@/screens/RideInformation';
+import { BookingConfirmedScreen } from '@/screens/BookingConfirmed';
 import { RootStackParamList } from './types.d';
 
 
@@ -79,6 +80,7 @@ export const RootNavigator = () => {
       <Stack.Screen name="BookRideInfo" component={BookRideInfoScreen} />
       <Stack.Screen name="AvailableRides" component={AvailableRidesScreen} />
       <Stack.Screen name="RideInformation" component={RideInformationScreen} />
+      <Stack.Screen name="BookingConfirmed" component={BookingConfirmedScreen} />
     </Stack.Navigator>
 
   );

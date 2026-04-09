@@ -1,18 +1,23 @@
-import { useState, useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useState, useCallback, useMemo } from 'react';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { useLocale } from '@/constants/localization';
+import { RootStackParamList } from '@/navigation/types.d';
+
+const PRICE_PER_SEAT = 14.50; // Mock price for booking
+const EARNINGS_PER_SEAT = 112.5; // Mock earnings for publishing (₹112.50)
 
 export const useSeatSelection = () => {
   const navigation = useNavigation();
-  const { selectSeat: t } = useLocale();
+  const route = useRoute<RouteProp<RootStackParamList, 'SeatSelection'>>();
+  const { selectSeat: tSelect, seatSelection: tPublish } = useLocale();
 
-  // We default to No Selection as per design
+  const flow = route.params?.flow || 'publish';
+  const t = flow === 'book' ? tSelect : tPublish;
+
   const [selectedSeats, setSelectedSeats] = useState<Set<string>>(new Set());
 
   const handleSeatPress = useCallback((id: string) => {
     setSelectedSeats((prev) => {
-      // For this booking demo, we might allow multiple or single selection.
-      // The design shows "1 Seat selected", suggesting multi-select is possible but summary updates.
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
@@ -23,20 +28,37 @@ export const useSeatSelection = () => {
     });
   }, []);
 
+  const moneyValue = useMemo(() => {
+    const rate = flow === 'book' ? PRICE_PER_SEAT : EARNINGS_PER_SEAT;
+    const total = selectedSeats.size * rate;
+    const symbol = flow === 'book' ? '$' : '₹';
+    return `${symbol}${total.toFixed(2)}`;
+  }, [selectedSeats, flow]);
+
+  const seatIdsLabel = useMemo(() => {
+    return Array.from(selectedSeats).join(', ');
+  }, [selectedSeats]);
+
   const handleBackPress = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
 
   const handleContinue = useCallback(() => {
     if (selectedSeats.size > 0) {
-      // In a real app, this would lead to checkout/payment.
-      // For now, we'll navigate to a success summary or back.
-      navigation.goBack();
+      if (flow === 'publish') {
+        (navigation.navigate as any)('PriceSelection');
+      } else {
+        // For booking, either go back or to a success/payment screen
+        navigation.goBack();
+      }
     }
-  }, [selectedSeats, navigation]);
+  }, [selectedSeats, navigation, flow]);
 
   return {
+    flow,
     selectedSeats,
+    moneyValue,
+    seatIdsLabel,
     handleSeatPress,
     handleBackPress,
     handleContinue,
