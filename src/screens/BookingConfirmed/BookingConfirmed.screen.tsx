@@ -22,11 +22,11 @@ export const BookingConfirmedScreen: React.FC = () => {
     <S.Container>
       {/* Glass-blurred header */}
       <S.Header>
-        <S.BrandTitle>Kinetic Sanctuary</S.BrandTitle>
+        <S.BrandTitle>Ride Pool Company</S.BrandTitle>
         <TouchableOpacity onPress={handleMenuPress}>
-           <Avatar 
-            size="sm" 
-            source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCT8CtvbR50leYL8XxUP9zBxvxtvIdEFm9TMFjFtbTR2ARvypHTHMyAVrQU1IA0JHOzndM_R8TI6h6xaHSxwTrYV2x0LGbf4nZ8iV53UHviumUHqV_x3-p6fCmcY7Q03AV0DTqlrT1XB9yrh-4QV2bb9tGuf4DaJ5cz1Pf5snop55Y4K6MhTj90ZeEjlluxARZaUj1YvC53Lq1zFoO5LlCaKzNf5NF6SHmuRpKR_lThpbz6-On3dm5bZfEL_iXs81RuVLKBTH8JWOCD' }} 
+          <Avatar
+            size="sm"
+            source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCT8CtvbR50leYL8XxUP9zBxvxtvIdEFm9TMFjFtbTR2ARvypHTHMyAVrQU1IA0JHOzndM_R8TI6h6xaHSxwTrYV2x0LGbf4nZ8iV53UHviumUHqV_x3-p6fCmcY7Q03AV0DTqlrT1XB9yrh-4QV2bb9tGuf4DaJ5cz1Pf5snop55Y4K6MhTj90ZeEjlluxARZaUj1YvC53Lq1zFoO5LlCaKzNf5NF6SHmuRpKR_lThpbz6-On3dm5bZfEL_iXs81RuVLKBTH8JWOCD' }}
             style={{ borderWidth: 2, borderColor: theme.colors.primary_container + '33' }}
           />
         </TouchableOpacity>
@@ -159,12 +159,12 @@ export const BookingConfirmedScreen: React.FC = () => {
         {/* Trust Indicators */}
         <View style={{ alignItems: 'center', opacity: 0.5, paddingBottom: 40 }}>
           <S.Row style={{ marginBottom: 8, gap: 16 }}>
-             <MaterialIcons name="verified-user" size={16} />
-             <MaterialIcons name="eco" size={16} />
-             <MaterialIcons name="electric-car" size={16} />
+            <MaterialIcons name="verified-user" size={16} />
+            <MaterialIcons name="eco" size={16} />
+            <MaterialIcons name="electric-car" size={16} />
           </S.Row>
           <Typography variant="label" size="xxs" weight="bold" style={{ textTransform: 'uppercase', letterSpacing: 1.5 }}>
-            Kinetic Sanctuary Carbon Neutral Transit
+            Ride Pool Company Carbon Neutral Transit
           </Typography>
         </View>
       </S.MainContent>

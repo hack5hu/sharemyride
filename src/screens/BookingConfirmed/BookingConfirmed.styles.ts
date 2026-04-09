@@ -17,6 +17,7 @@ export const Header = styled.View`
   align-items: center;
   padding: ${verticalScale(48)}px ${scale(24)}px ${verticalScale(16)}px;
   background-color: ${({ theme }) => theme.colors.surface}CC;
+  
 `;
 
 export const BrandTitle = styled.Text`
@@ -29,7 +30,7 @@ export const BrandTitle = styled.Text`
 
 export const MainContent = styled.ScrollView`
   flex: 1;
-  padding-top: ${verticalScale(100)}px;
+  padding-top: ${verticalScale(50)}px;
   padding-horizontal: ${scale(24)}px;
 `;
 

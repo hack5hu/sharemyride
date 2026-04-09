@@ -25,6 +25,7 @@ export const ProfileHubScreen: React.FC = () => {
     navigateToEditProfile,
     navigateToVehicleDetails,
     navigateToTravelPreferences,
+    navigateToSettings,
     navigateToDummy,
     handleLogout,
     handleDeleteAccount,
@@ -43,6 +44,7 @@ export const ProfileHubScreen: React.FC = () => {
               memberSince={2023}
               avatarUri="https://randomuser.me/api/portraits/men/32.jpg"
               onEditPress={navigateToEditProfile}
+              onSettingsPress={navigateToSettings}
             />
             <TrustScoreCard score={98} />
           </BentoGrid>

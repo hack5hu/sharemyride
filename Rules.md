@@ -2,15 +2,15 @@
 
 ⸻
 
-
 # 📜 Development Rules & Best Practices
 
 ## 🧱 1. Architecture & SOLID
+
 - Always follow **SOLID principles** strictly.
 - Maintain clear **separation of concerns**:
-  - UI → Components  
-  - Logic → Hooks  
-  - Data/API → Services  
+  - UI → Components
+  - Logic → Hooks
+  - Data/API → Services
 - Avoid tightly coupled modules.
 - Prefer reusable, testable, and modular code.
 - Follow **Atomic Design** strictly (atoms → molecules → organisms → templates).
@@ -18,6 +18,7 @@
 ---
 
 ## 📦 2. File & Component Rules
+
 - Every file MUST have a maximum of **200 lines**.
 - Follow strict component structure:
 
@@ -35,6 +36,7 @@ index.ts
 ---
 
 ## 🎨 3. Styling Rules
+
 - Use **styled-components** for all styling.
 - NEVER write styles inside `.tsx` files.
 - Always use theme from `src/styles/theme`.
@@ -47,6 +49,7 @@ index.ts
 ---
 
 ## 📱 4. Responsiveness
+
 - UI must adapt to:
 - small phones
 - large phones
@@ -61,6 +64,7 @@ index.ts
 ---
 
 ## ⌨️ 5. Keyboard Handling
+
 - TextInput must NEVER be hidden behind the keyboard.
 - Use:
 - `KeyboardAvoidingView`
@@ -70,8 +74,9 @@ index.ts
 ---
 
 ## 🎯 6. Design Fidelity
+
 - DO NOT change provided designs.
-- Maintain exact **"Kinetic Sanctuary" aesthetics**.
+- Maintain exact **"Ride Pool Company" aesthetics**.
 - Follow:
 - spacing
 - typography
@@ -81,6 +86,7 @@ index.ts
 ---
 
 ## ✅ 7. Validation
+
 - Implement validation for all inputs.
 - Validate:
 - required fields
@@ -90,6 +96,7 @@ index.ts
 ---
 
 ## 🧠 8. State Management
+
 - Use **Zustand** for global state.
 - Keep stores:
 - minimal
@@ -100,6 +107,7 @@ index.ts
 ---
 
 ## 🌐 9. API & Networking
+
 - Use centralized **Axios client**.
 - Implement:
 - request interceptors
@@ -110,6 +118,7 @@ index.ts
 ---
 
 ## 🔐 10. Storage & Security
+
 - Use **Keychain** for sensitive data (tokens).
 - Use **MMKV** for local storage.
 - Never store sensitive data in plain storage.
@@ -118,6 +127,7 @@ index.ts
 ---
 
 ## 🚀 11. Performance
+
 - Avoid unnecessary re-renders.
 - Use:
 - `useMemo`
@@ -129,58 +139,59 @@ index.ts
 ---
 
 ## 📂 12. Imports & Structure
+
 - Use alias imports:
 
 @/components/...
 
-	•	Avoid relative imports like:
+    •	Avoid relative imports like:
 
 ../../components/...
 
-
-	•	Keep folder structure clean and consistent.
+    •	Keep folder structure clean and consistent.
 
 ⸻
 
 🧹 13. Code Quality
-	•	Fix all ESLint issues.
-	•	Fix all TypeScript errors.
-	•	Remove:
-	•	unused variables
-	•	dead code
-	•	console logs (unless required)
-	•	Maintain consistent naming conventions.
+• Fix all ESLint issues.
+• Fix all TypeScript errors.
+• Remove:
+• unused variables
+• dead code
+• console logs (unless required)
+• Maintain consistent naming conventions.
 
 ⸻
 
 🔄 14. Reusability
-	•	Extract reusable logic into hooks.
-	•	Avoid duplication across components.
-	•	Create shared UI components when needed.
+• Extract reusable logic into hooks.
+• Avoid duplication across components.
+• Create shared UI components when needed.
 
 ⸻
 
 🧪 15. Testing (Recommended)
-	•	Write unit tests for:
-	•	hooks
-	•	utilities
-	•	Use Jest + React Native Testing Library.
-	•	Ensure critical flows are covered.
+• Write unit tests for:
+• hooks
+• utilities
+• Use Jest + React Native Testing Library.
+• Ensure critical flows are covered.
 
 ⸻
 
 ⚠️ 16. Critical Rules
-	•	Do NOT break existing functionality.
-	•	Do NOT change business logic unnecessarily.
-	•	Focus on:
-	•	scalability
-	•	readability
-	•	maintainability
-	•	production readiness
+• Do NOT break existing functionality.
+• Do NOT change business logic unnecessarily.
+• Focus on:
+• scalability
+• readability
+• maintainability
+• production readiness
 
 ---
 
 ## 🚀 17. Performance
+
 - Keep all the text in baseLocalization.
 - Use:
 - call all the text from baseLocalization

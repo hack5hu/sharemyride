@@ -56,4 +56,5 @@ export type RootStackParamList = {
   AvailableRides: undefined;
   RideInformation: { rideId: string };
   BookingConfirmed: { rideId: string };
+  Settings: undefined;
 };

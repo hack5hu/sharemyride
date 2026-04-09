@@ -25,6 +25,7 @@ export interface ProfileHeaderProps {
   isVerified?: boolean;
   avatarUri?: string;
   onEditPress?: () => void;
+  onSettingsPress?: () => void;
 }
 
 export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
@@ -35,13 +36,14 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   isVerified = true,
   avatarUri,
   onEditPress,
+  onSettingsPress,
 }) => {
   const { t } = useTranslation();
   const theme = useTheme();
 
   return (
     <HeaderCard>
-      <IconButton icon="settings" variant="surface" onPress={() => { }} style={{ position: 'absolute', top: 10, right: 10 }} />
+      <IconButton icon="settings" variant="surface" onPress={onSettingsPress} style={{ position: 'absolute', top: 10, right: 10 }} />
       <IdentitySection>
         <View style={{ position: 'relative' }}>
           <Avatar 

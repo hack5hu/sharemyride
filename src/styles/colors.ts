@@ -1,7 +1,7 @@
 import { LightTheme, DarkTheme } from '@/theme';
 
 /**
- * Kinetic Sanctuary Theme System
+ * RidePoolCompany Theme System
  * Migrated to src/theme for better structure and types.
  */
 export const SunlightTheme = LightTheme.colors;

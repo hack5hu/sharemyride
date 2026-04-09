@@ -35,7 +35,6 @@ export const HeaderTitle = styled.Text`
 /* Hero Section */
 export const HeroSection = styled.View`
   padding-horizontal: ${scale(24)}px;
-  margin-top: ${verticalScale(24)}px;
   margin-bottom: ${verticalScale(32)}px;
 `;
 

@@ -372,6 +372,31 @@ export interface Translations {
   rideInformation: RideInformationTranslations;
   selectSeat: SelectSeatTranslations;
   bookingConfirmed: BookingConfirmedTranslations;
+  settings: SettingsTranslations;
+}
+
+export interface SettingsTranslations {
+  headerTitle: string;
+  appName: string;
+  notifications: string;
+  pushNotifications: string;
+  pushNotificationsDesc: string;
+  appearance: string;
+  theme: string;
+  lightMode: string;
+  darkMode: string;
+  darkModeToggle: string;
+  preferences: string;
+  language: string;
+  languageEn: string;
+  languageHi: string;
+  region: string;
+  emailSettings: string;
+  promotions: string;
+  rideReceipts: string;
+  accountSecurity: string;
+  logout: string;
+  version: string;
 }
 
 export interface BookingConfirmedTranslations {

@@ -3,7 +3,7 @@
 This document serves as the primary technical context and rulebook for AI agents working on the ShareMyRide (Tuktuk) codebase.
 
 ## 🚀 Project Overview
-ShareMyRide is a premium cab and bike-pooling application designed for a GenZ demographic. It balances high-energy movement with unwavering safety through a "Kinetic Sanctuary" design language.
+ShareMyRide is a premium cab and bike-pooling application designed for a GenZ demographic. It balances high-energy movement with unwavering safety through a "Ride Pool Company" design language.
 
 ## 🛠️ Architecture: Atomic Design
 We follow a strict Atomic Design hierarchy for components:
@@ -33,7 +33,7 @@ ComponentName/
     - Always refer to the global `theme` from `src/theme`.
 4. **Responsiveness**: Screens MUST be dynamic. Use the scaling utilities (`scale`, `verticalScale`, etc.) to ensure the UI adapts to any screen size automatically.
 5. **Keyboard Handling**: Ensure `TextInput` elements are always focused and visible above the keyboard (never hidden behind it).
-6. **Design Fidelity**: DO NOT change the design of screens provided by the user. Keep the visual "Kinetic Sanctuary" aesthetics exactly as specified.
+6. **Design Fidelity**: DO NOT change the design of screens provided by the user. Keep the visual "Ride Pool Company" aesthetics exactly as specified.
 7. **Validation**: Always implement field validation from the start to ensure data integrity.
 
 # Agent Rule Guide: ShareMyRide
@@ -109,7 +109,7 @@ index.ts
 
 ## 🎯 6. Design Fidelity
 - DO NOT change provided designs.
-- Maintain exact **"Kinetic Sanctuary" aesthetics**.
+- Maintain exact **"Ride Pool Company" aesthetics**.
 - Follow:
 - spacing
 - typography
@@ -223,7 +223,7 @@ index.ts
 - Use:
 - call all the text from baseLocalization
 
-## 🎨 Design System: "Kinetic Sanctuary"
+## 🎨 Design System: "Ride Pool Company"
 **Creative North Star**: Editorial Fluidity & Organic Sophistication.
 
 ### Core Styling Rules:

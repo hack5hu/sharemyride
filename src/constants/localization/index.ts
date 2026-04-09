@@ -7,22 +7,12 @@ import { hi } from './hi';
 
 const translations: Record<Locale, Translations> = { en, hi };
 
-// ─── Locale Store (Zustand) ───────────────────────────────────────────────────
-
-interface LocaleState {
-  locale: Locale;
-  setLocale: (locale: Locale) => void;
-}
-
-export const useLocaleStore = create<LocaleState>(set => ({
-  locale: 'en',
-  setLocale: locale => set({ locale }),
-}));
+import { useSettingsStore } from '../../store/settings';
 
 // ─── Hook ─────────────────────────────────────────────────────────────────────
 
 export const useLocale = (): Translations => {
-  const locale = useLocaleStore(state => state.locale);
+  const locale = useSettingsStore(state => state.language);
   return translations[locale];
 };
 

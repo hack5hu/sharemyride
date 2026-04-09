@@ -2,7 +2,7 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import * as Keychain from 'react-native-keychain';
 
 const apiClient = axios.create({
-  baseURL: 'https://api.sharemyride.com', // Placeholder
+  baseURL: 'https://api.ridepoolcompany.com', // Placeholder
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

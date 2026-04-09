@@ -28,6 +28,9 @@ export const useProfileHub = () => {
     navigation.navigate('Dummy', { title, ...options });
   }, [navigation]);
 
+  const navigateToSettings = useCallback(() => {
+    navigation.navigate('Settings');
+  }, [navigation]);
 
   const handleLogout = useCallback(() => {
     console.log('Logging out...');
@@ -44,6 +47,7 @@ export const useProfileHub = () => {
     navigateToEditProfile,
     navigateToVehicleDetails,
     navigateToTravelPreferences,
+    navigateToSettings,
     navigateToDummy,
     handleLogout,
     handleDeleteAccount,

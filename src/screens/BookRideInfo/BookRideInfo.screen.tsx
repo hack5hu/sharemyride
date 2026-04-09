@@ -79,7 +79,7 @@ export const BookRideInfoScreen: React.FC = () => {
     <Container edges={['top']}>
       <ScrollContent showsVerticalScrollIndicator={false}>
         <Header>
-          <HeaderTitle>Kinetic Sanctuary</HeaderTitle>
+          <HeaderTitle>Ride Pool Company</HeaderTitle>
         </Header>
 
         <HeroSection>
@@ -89,14 +89,14 @@ export const BookRideInfoScreen: React.FC = () => {
 
         <BookingCard>
           <DecorativeAccent />
-          
+
           <RouteContainer>
             <RouteIndicator>
               <MaterialIcons name="my-location" size={moderateScale(20)} color={theme.colors.primary} />
               <IndicatorLine />
               <MaterialIcons name="location-on" size={moderateScale(20)} color={theme.colors.tertiary} />
             </RouteIndicator>
-            
+
             <InputColumn>
               <InputGroup>
                 <InputLabel>{t.pickupLabel}</InputLabel>
@@ -106,7 +106,7 @@ export const BookRideInfoScreen: React.FC = () => {
                   </LocationValueText>
                 </LocationBox>
               </InputGroup>
-              
+
               <InputGroup>
                 <InputLabel>{t.destinationLabel}</InputLabel>
                 <LocationBox activeOpacity={0.7} onPress={handlePressDestination}>
@@ -133,7 +133,7 @@ export const BookRideInfoScreen: React.FC = () => {
               <StepperLabel>{t.peopleCountLabel}</StepperLabel>
               <StepperSub>{t.peopleCountSub}</StepperSub>
             </StepperLabelGroup>
-            
+
             <StepperControls>
               <StepperButton activeOpacity={0.7} onPress={decrementPeople}>
                 <MaterialIcons name="remove" size={moderateScale(18)} color={theme.colors.primary} />

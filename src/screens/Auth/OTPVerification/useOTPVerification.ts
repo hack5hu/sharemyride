@@ -2,12 +2,14 @@ import { useState, useRef, useEffect } from 'react';
 import { TextInput } from 'react-native';
 import { useFormik } from 'formik';
 import { useNavigation } from '@react-navigation/native';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export const useOTPVerification = () => {
   const [timer, setTimer] = useState(45);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation<any>();
   const inputRefs = useRef<(TextInput | null)[]>([]);
+  const { setAuth } = useAuthStore();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -20,8 +22,9 @@ export const useOTPVerification = () => {
     initialValues: { otp: ['', '', '', '', '', ''] },
     onSubmit: values => {
       const code = values.otp.join('');
-      handleVerify(code);
-      navigation.navigate('ProfileSetup');
+      if (code.length === 6) {
+        handleVerify(code);
+      }
     },
   });
 
@@ -47,10 +50,17 @@ export const useOTPVerification = () => {
 
   const handleVerify = async (code: string) => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    // Simulate API verification call
+    setTimeout(async () => {
       console.log('Verifying OTP:', code);
-      // Navigation or Toast logic here
+      // Store auth state (mock user data)
+      await setAuth(
+        { id: '123', name: 'John Doe', phone: '1234567890' },
+        'mock_jwt_token_safe_storage'
+      );
+      setLoading(false);
+      // Navigate to BookRideInfo (Home/Main screen)
+      navigation.navigate('BookRideInfo');
     }, 1500);
   };
 
