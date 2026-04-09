@@ -1,23 +1,18 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { VehicleType } from '@/components/molecules/VehicleToggle';
-
-const PRICE_PER_SEAT = 112.5; // ₹112.50 per seat (₹450 / 4 seats)
+import { useLocale } from '@/constants/localization';
 
 export const useSeatSelection = () => {
   const navigation = useNavigation();
+  const { selectSeat: t } = useLocale();
 
-  const [vehicleType, setVehicleType] = useState<VehicleType>('5');
+  // We default to No Selection as per design
   const [selectedSeats, setSelectedSeats] = useState<Set<string>>(new Set());
-
-  const handleVehicleTypeChange = useCallback((type: VehicleType) => {
-    setVehicleType(type);
-    // Reset selection when switching layout — seat IDs may differ
-    setSelectedSeats(new Set());
-  }, []);
 
   const handleSeatPress = useCallback((id: string) => {
     setSelectedSeats((prev) => {
+      // For this booking demo, we might allow multiple or single selection.
+      // The design shows "1 Seat selected", suggesting multi-select is possible but summary updates.
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
@@ -28,28 +23,23 @@ export const useSeatSelection = () => {
     });
   }, []);
 
-  const estEarnings = useMemo(() => {
-    const total = selectedSeats.size * PRICE_PER_SEAT;
-    return `₹${total.toFixed(2)}`;
-  }, [selectedSeats]);
-
   const handleBackPress = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
 
   const handleContinue = useCallback(() => {
     if (selectedSeats.size > 0) {
-      (navigation.navigate as any)('PriceSelection');
+      // In a real app, this would lead to checkout/payment.
+      // For now, we'll navigate to a success summary or back.
+      navigation.goBack();
     }
   }, [selectedSeats, navigation]);
 
   return {
-    vehicleType,
     selectedSeats,
-    estEarnings,
-    handleVehicleTypeChange,
     handleSeatPress,
     handleBackPress,
     handleContinue,
+    t,
   };
 };

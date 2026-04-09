@@ -8,15 +8,16 @@ type NavigationProp = StackNavigationProp<RootStackParamList, 'LocationSelection
 export const useLocationSelection = () => {
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute();
+
   const [startLocationName, setStartLocationName] = useState<string>('');
   const [destinationLocationName, setDestinationLocationName] = useState<string>('');
 
   const handlePressStart = useCallback(() => {
-    navigation.navigate('MapPicker', { type: 'start' });
+    navigation.navigate('MapPicker', { type: 'start', returnTo: 'LocationSelection' });
   }, [navigation]);
 
   const handlePressDestination = useCallback(() => {
-    navigation.navigate('MapPicker', { type: 'destination' });
+    navigation.navigate('MapPicker', { type: 'destination', returnTo: 'LocationSelection' });
   }, [navigation]);
 
   useEffect(() => {
@@ -35,6 +36,8 @@ export const useLocationSelection = () => {
   const handleContinue = useCallback(() => {
     navigation.navigate('RouteSelection');
   }, [navigation]);
+
+
 
   // Optionally set these manually for demonstration or integration later
    const canContinue =  true ||!!startLocationName && !!destinationLocationName;

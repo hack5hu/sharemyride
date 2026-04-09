@@ -24,10 +24,12 @@ export type RootStackParamList = {
   LocationSelection: {
     updatedLocation?: { id: string; name: string; address: string };
     type?: 'start' | 'destination';
+    flow?: 'publish' | 'book';
   } | undefined;
   SelectLocation: undefined;
   MapPicker: {
     type: 'start' | 'destination';
+    returnTo?: keyof RootStackParamList;
   };
   RouteSelection: undefined;
   MiddleStops: {
@@ -48,4 +50,7 @@ export type RootStackParamList = {
   RequestType: undefined;
   SummaryPublish: undefined;
   PublishSuccess: undefined;
+  BookRideInfo: undefined;
+  AvailableRides: undefined;
+  RideInformation: { rideId: string };
 };

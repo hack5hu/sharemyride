@@ -23,6 +23,8 @@ export const useMapPicker = () => {
   const route = useRoute<MapPickerRouteProp>();
   
   const pickerType = route.params?.type || 'start';
+  const returnTo = route.params?.returnTo || 'LocationSelection';
+
 
   const [selectedLocation, setSelectedLocation] = useState<MockLocation | null>(null);
 
@@ -37,7 +39,7 @@ export const useMapPicker = () => {
   const handleConfirmLocation = useCallback(() => {
     if (selectedLocation) {
       (navigation.navigate as any)({
-        name: 'LocationSelection',
+        name: returnTo,
         params: {
           updatedLocation: selectedLocation,
           type: pickerType,

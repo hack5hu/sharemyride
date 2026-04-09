@@ -366,6 +366,96 @@ export interface Translations {
   requestType: RequestTypeTranslations;
   summaryPublish: SummaryPublishTranslations;
   publishSuccess: PublishSuccessTranslations;
+  bookRideInfo: BookRideInfoTranslations;
+  availableRides: AvailableRidesTranslations;
+  rideFilters: RideFiltersTranslations;
+  rideInformation: RideInformationTranslations;
+  selectSeat: SelectSeatTranslations;
+}
+
+export interface BookRideInfoTranslations {
+  heroTitle: string;
+  heroSubtitle: string;
+  pickupLabel: string;
+  pickupPlaceholder: string;
+  destinationLabel: string;
+  destinationPlaceholder: string;
+  travelDateLabel: string;
+  peopleCountLabel: string;
+  peopleCountSub: string;
+  searchButton: string;
+  recentSearchesTitle: string;
+  clearAll: string;
+  trustTitle: string;
+  trustDescription: string;
+}
+
+export interface AvailableRidesTranslations {
+  heroTitle: string;
+  heroSubtitle: string;
+  timeFilterLabel: string;
+  noSmokingFilterLabel: string;
+  ladiesOnlyFilterLabel: string;
+  topRatedFilterLabel: string;
+  frequentCoRiderBadge: string;
+  perSeatLabel: string;
+  seatsLeftLabel: string;
+  bookButton: string;
+  detailsButton: string;
+  stopLabel: string;
+  searchSummaryDate: string;
+  searchSummarySeats: string;
+}
+
+export interface RideFiltersTranslations {
+  title: string;
+  proximityTitle: string;
+  nearPickup: string;
+  nearDropoff: string;
+  departureTimeTitle: string;
+  preferencesTitle: string;
+  seatAvailabilityTitle: string;
+  seatsRequiredLabel: string;
+  applyFilters: string;
+  clearAll: string;
+}
+
+export interface RideInformationTranslations {
+  title: string;
+  distanceRemaining: string;
+  driverInfoTitle: string;
+  carInfoTitle: string;
+  timelineTitle: string;
+  rulesTitle: string;
+  amenitiesTitle: string;
+  fareDetailsTitle: string;
+  seatFareLabel: string;
+  serviceFeeLabel: string;
+  sustainabilityFeeLabel: string;
+  bookSeatButton: string;
+  guidelinesNote: string;
+  noSmoking: string;
+  petsAllowed: string;
+  freeWifi: string;
+  usbCharging: string;
+}
+
+export interface SelectSeatTranslations {
+  title: string;
+  subtitle: string;
+  headerTitle: string;
+  driverLabel: string;
+  verifiedVehicle: string;
+  arrivingIn: string;
+  estimatedFare: string;
+  legendAvailable: string;
+  legendSelected: string;
+  legendBooked: string;
+  summaryTitle: string;
+  seatSelected: string;
+  totalPayable: string;
+  continue: string;
+  holdTimerNote: string;
 }
 
 export interface PublishSuccessTranslations {

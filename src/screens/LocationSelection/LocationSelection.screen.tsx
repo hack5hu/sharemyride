@@ -13,6 +13,8 @@ export const LocationSelectionScreen: React.FC = () => {
     canContinue,
   } = useLocationSelection();
 
+
+
   return (
     <LocationSelectionTemplate
       startLocationName={startLocationName}
@@ -22,8 +24,9 @@ export const LocationSelectionScreen: React.FC = () => {
       onPressContinue={handleContinue}
       canContinue={canContinue}
       navBar={
-        <BottomNav activeTab="PUBLISH" />
+        <BottomNav activeTab={ 'PUBLISH'} />
       }
     />
+
   );
 };

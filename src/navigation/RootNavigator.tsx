@@ -26,6 +26,9 @@ import { PriceSelectionScreen } from '@/screens/PriceSelection';
 import { RequestTypeScreen } from '@/screens/RequestType';
 import { SummaryPublishScreen } from '@/screens/SummaryPublish';
 import { PublishSuccessScreen } from '@/screens/PublishSuccess';
+import { BookRideInfoScreen } from '@/screens/BookRideInfo';
+import { AvailableRidesScreen } from '@/screens/AvailableRides';
+import { RideInformationScreen } from '@/screens/RideInformation';
 import { RootStackParamList } from './types.d';
 
 
@@ -34,7 +37,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 export const RootNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="ChatList"
+      initialRouteName="BookRideInfo"
       screenOptions={{
         headerShown: false,
         cardStyle: { backgroundColor: 'transparent' },
@@ -73,6 +76,9 @@ export const RootNavigator = () => {
       <Stack.Screen name="RequestType" component={RequestTypeScreen} />
       <Stack.Screen name="SummaryPublish" component={SummaryPublishScreen} />
       <Stack.Screen name="PublishSuccess" component={PublishSuccessScreen} />
+      <Stack.Screen name="BookRideInfo" component={BookRideInfoScreen} />
+      <Stack.Screen name="AvailableRides" component={AvailableRidesScreen} />
+      <Stack.Screen name="RideInformation" component={RideInformationScreen} />
     </Stack.Navigator>
 
   );

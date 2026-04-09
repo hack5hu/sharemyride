@@ -13,6 +13,9 @@ export const useBottomNav = (activeTab: BottomTabType) => {
     if (tab === activeTab) return;
 
     switch (tab) {
+      case 'BOOK':
+        navigation.navigate('BookRideInfo');
+        break;
       case 'PROFILE':
         navigation.navigate('ProfileHub');
         break;

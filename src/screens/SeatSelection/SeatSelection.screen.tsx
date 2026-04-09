@@ -1,13 +1,10 @@
 import React from 'react';
-import { SeatSelectionTemplate } from '@/components/templates/SeatSelectionTemplate';
+import { SeatSelectionTemplate } from '@/components/templates/SeatSelectionTemplate/SeatSelectionTemplate';
 import { useSeatSelection } from './useSeatSelection';
 
 export const SeatSelectionScreen: React.FC = () => {
   const {
-    vehicleType,
     selectedSeats,
-    estEarnings,
-    handleVehicleTypeChange,
     handleSeatPress,
     handleBackPress,
     handleContinue,
@@ -15,10 +12,7 @@ export const SeatSelectionScreen: React.FC = () => {
 
   return (
     <SeatSelectionTemplate
-      vehicleType={vehicleType}
       selectedSeats={selectedSeats}
-      estEarnings={estEarnings}
-      onVehicleTypeChange={handleVehicleTypeChange}
       onSeatPress={handleSeatPress}
       onBackPress={handleBackPress}
       onContinue={handleContinue}
