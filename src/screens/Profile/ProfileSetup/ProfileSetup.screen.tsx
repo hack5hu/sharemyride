@@ -1,36 +1,32 @@
 import React from 'react';
 import { ScrollView, KeyboardAvoidingView, Platform, View } from 'react-native';
 import { useTheme } from 'styled-components/native';
+import { useNavigation } from '@react-navigation/native';
 import { Button } from '@/components/atoms/Button';
 import { Typography } from '@/components/atoms/Typography';
 import { IconButton } from '@/components/atoms/IconButton';
 import { InfoBar } from '@/components/molecules/InfoBar';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { IdentityProfileCard } from '@/components/organisms/IdentityProfileCard';
 import { PreferencesSection } from '@/components/organisms/PreferencesSection';
 import { useProfileSetup } from './useProfileSetup';
 import {
-  SafeContainer,
-  Header,
-  HeroSection,
   ContentContainer,
+  HeroSection,
   Footer,
   VersionText,
 } from './ProfileSetup.styles';
 
 export const ProfileSetupScreen: React.FC = () => {
   const theme = useTheme();
+  const navigation = useNavigation();
   const { formik, t } = useProfileSetup();
 
   return (
-    <SafeContainer>
-      {/* <Header>
-        <IconButton icon="close" variant="surface" onPress={() => {}} />
-        <Typography variant="title" size="lg" weight="bold" color={theme.colors.primary}>
-          {t('profileSetup.headerTitle')}
-        </Typography>
-        <View style={{ width: 40 }} />
-      </Header> */}
-
+    <ScreenShell
+      title={t('profileSetup.headerTitle')}
+      onBack={() => navigation.goBack()}
+    >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
@@ -92,6 +88,6 @@ export const ProfileSetupScreen: React.FC = () => {
           </ContentContainer>
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeContainer>
+    </ScreenShell>
   );
 };

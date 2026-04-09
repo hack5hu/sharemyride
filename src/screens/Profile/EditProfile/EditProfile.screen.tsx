@@ -4,6 +4,7 @@ import { useTheme } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useEditProfile } from './useEditProfile';
 
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Typography } from '@/components/atoms/Typography';
 import { IconButton } from '@/components/atoms/IconButton';
 import { Avatar } from '@/components/atoms/Avatar';
@@ -13,11 +14,8 @@ import { GenderSelector } from '@/components/molecules/GenderSelector';
 import { Toast } from '@/components/molecules/Toast';
 
 import {
-  Container,
   ScrollContent,
   Content,
-  Header,
-  HeaderLeft,
   AvatarSection,
   AvatarWrapper,
   EditButton,
@@ -46,24 +44,15 @@ export const EditProfileScreen: React.FC = () => {
 
 
   return (
-
-    <Container>
+    <ScreenShell
+      title={t('editProfile.headerTitle')}
+      onBack={() => navigation.goBack()}
+      rightElement={
+        <IconButton icon="settings" variant="surface" onPress={() => { }} />
+      }
+    >
       <BackgroundFlourishTop />
       <BackgroundFlourishBottom />
-
-      <Header>
-        <HeaderLeft>
-          <IconButton
-            icon="arrow-back"
-            variant="surface"
-            onPress={() => navigation.goBack()}
-          />
-          <Typography variant="title" size="md" weight="bold">
-            {t('editProfile.headerTitle')}
-          </Typography>
-        </HeaderLeft>
-        <IconButton icon="settings" variant="surface" onPress={() => { }} />
-      </Header>
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -188,6 +177,6 @@ export const EditProfileScreen: React.FC = () => {
           </Content>
         </ScrollContent>
       </KeyboardAvoidingView>
-    </Container>
+    </ScreenShell>
   );
 };

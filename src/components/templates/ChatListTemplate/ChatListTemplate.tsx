@@ -1,6 +1,7 @@
 import React from 'react';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { useLocale } from '@/constants/localization';
 import { 
-  SafeAreaContainer, 
   ScrollContainer, 
   SearchWrapper, 
   FABContainer 
@@ -13,8 +14,10 @@ export const ChatListTemplate: React.FC<ChatListTemplateProps> = ({
   bottomNav,
   fab,
 }) => {
+  const { chat } = useLocale();
+
   return (
-    <SafeAreaContainer>
+    <ScreenShell title={chat.headerTitle}>
       <ScrollContainer showsVerticalScrollIndicator={false}>
         <SearchWrapper>
           {searchBar}
@@ -30,6 +33,6 @@ export const ChatListTemplate: React.FC<ChatListTemplateProps> = ({
       )}
 
       {bottomNav}
-    </SafeAreaContainer>
+    </ScreenShell>
   );
 };

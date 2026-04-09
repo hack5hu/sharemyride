@@ -4,15 +4,11 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import {
-  Container,
   BackgroundContainer,
   BlobTopLeft,
   BlobBottomRight,
-  Header,
-  HeaderLeft,
-  BackButton,
-  HeaderTitle,
   SaveButton,
   SaveText,
   Content,
@@ -66,25 +62,20 @@ export const SummaryPublishScreen: React.FC = () => {
   };
 
   return (
-    <Container edges={['top']}>
+    <ScreenShell
+      title={t.headerTitle}
+      onBack={handleBackPress}
+      rightElement={
+        <SaveButton onPress={handleSave} activeOpacity={0.7}>
+          <SaveText>Save</SaveText>
+        </SaveButton>
+      }
+    >
       {/* Aesthetic Background */}
       <BackgroundContainer pointerEvents="none">
         <BlobTopLeft />
         <BlobBottomRight />
       </BackgroundContainer>
-
-      {/* Header */}
-      <Header>
-        <HeaderLeft>
-          <BackButton onPress={handleBackPress} activeOpacity={0.7}>
-            <MaterialIcons name="arrow-back" size={moderateScale(24)} color={theme.colors.on_surface} />
-          </BackButton>
-          <HeaderTitle>{t.headerTitle}</HeaderTitle>
-        </HeaderLeft>
-        <SaveButton onPress={handleSave} activeOpacity={0.7}>
-          <SaveText>Save</SaveText>
-        </SaveButton>
-      </Header>
 
       <Content>
         <TitleSection>
@@ -191,6 +182,6 @@ export const SummaryPublishScreen: React.FC = () => {
           {t.termsText2}
         </TermsText>
       </FloatingFooter>
-    </Container>
+    </ScreenShell>
   );
 };

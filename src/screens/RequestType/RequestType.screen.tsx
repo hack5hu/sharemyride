@@ -4,14 +4,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import {
-  Container,
-  Header,
-  HeaderLeft,
-  BackButton,
-  HeaderTitle,
-  SaveButton,
-  SaveText,
   Content,
   TitleSection,
   PageTitle,
@@ -34,6 +28,8 @@ import {
   ContinueButton,
   ContinueGradient,
   ContinueText,
+  SaveButton,
+  SaveText,
 } from './RequestType.styles';
 
 export const RequestTypeScreen: React.FC = () => {
@@ -53,20 +49,15 @@ export const RequestTypeScreen: React.FC = () => {
   };
 
   return (
-    <Container edges={['top']}>
-      {/* Header — No step indicator as requested */}
-      <Header>
-        <HeaderLeft>
-          <BackButton onPress={handleBackPress} activeOpacity={0.7}>
-            <MaterialIcons name="arrow-back" size={moderateScale(24)} color={theme.colors.on_surface} />
-          </BackButton>
-          <HeaderTitle>{t.headerTitle}</HeaderTitle>
-        </HeaderLeft>
+    <ScreenShell
+      title={t.headerTitle}
+      onBack={handleBackPress}
+      rightElement={
         <SaveButton onPress={handleSave} activeOpacity={0.7}>
           <SaveText>Save</SaveText>
         </SaveButton>
-      </Header>
-
+      }
+    >
       <Content>
         <TitleSection>
           <PageTitle>{t.title}</PageTitle>
@@ -143,6 +134,6 @@ export const RequestTypeScreen: React.FC = () => {
           </ContinueGradient>
         </ContinueButton>
       </FloatingFooter>
-    </Container>
+    </ScreenShell>
   );
 };

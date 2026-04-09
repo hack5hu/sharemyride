@@ -4,6 +4,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { moderateScale, scale, verticalScale } from '@/styles';
 import { useBookingConfirmed } from './useBookingConfirmed';
 import * as S from './BookingConfirmed.styles';
@@ -19,10 +20,9 @@ export const BookingConfirmedScreen: React.FC = () => {
   } = useBookingConfirmed();
 
   return (
-    <S.Container>
-      {/* Glass-blurred header */}
-      <S.Header>
-        <S.BrandTitle>Ride Pool Company</S.BrandTitle>
+    <ScreenShell
+      title="Ride Pool Company"
+      rightElement={
         <TouchableOpacity onPress={handleMenuPress}>
           <Avatar
             size="sm"
@@ -30,8 +30,8 @@ export const BookingConfirmedScreen: React.FC = () => {
             style={{ borderWidth: 2, borderColor: theme.colors.primary_container + '33' }}
           />
         </TouchableOpacity>
-      </S.Header>
-
+      }
+    >
       <S.MainContent showsVerticalScrollIndicator={false}>
         {/* Success Header */}
         <S.SuccessArea>
@@ -168,6 +168,6 @@ export const BookingConfirmedScreen: React.FC = () => {
           </Typography>
         </View>
       </S.MainContent>
-    </S.Container>
+    </ScreenShell>
   );
 };

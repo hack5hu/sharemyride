@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export const OverlayContainer = styled(SafeAreaView)`
+export const OverlayContainer = styled.View`
   position: absolute;
   top: 0;
   left: 0;

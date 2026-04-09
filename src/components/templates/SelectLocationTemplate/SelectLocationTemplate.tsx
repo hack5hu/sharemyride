@@ -1,6 +1,6 @@
 import React from 'react';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { 
-  Container, 
   MapWrapper, 
   HeaderWrapper, 
   SearchWrapper, 
@@ -10,19 +10,23 @@ import {
 } from './SelectLocationTemplate.styles';
 import { SelectLocationTemplateProps } from './types.d';
 
-export const SelectLocationTemplate: React.FC<SelectLocationTemplateProps> = ({
+export interface SelectLocationTemplateExtendedProps extends SelectLocationTemplateProps {
+  title?: string;
+  onBack?: () => void;
+}
+
+export const SelectLocationTemplate: React.FC<SelectLocationTemplateExtendedProps> = ({
   mapBackground,
-  header,
+  title,
+  onBack,
   searchBar,
   bottomSheet,
   actionFAB,
   centerPin,
 }) => {
   return (
-    <Container>
+    <ScreenShell title={title} onBack={onBack}>
       <MapWrapper>{mapBackground}</MapWrapper>
-      
-      <HeaderWrapper>{header}</HeaderWrapper>
       
       <SearchWrapper>{searchBar}</SearchWrapper>
       
@@ -33,6 +37,6 @@ export const SelectLocationTemplate: React.FC<SelectLocationTemplateProps> = ({
       <ActionFABWrapper>{actionFAB}</ActionFABWrapper>
       
       <SheetWrapper>{bottomSheet}</SheetWrapper>
-    </Container>
+    </ScreenShell>
   );
 };

@@ -7,6 +7,7 @@ import { Avatar } from '@/components/atoms/Avatar';
 import { VerifiedBadge } from '@/components/atoms/VerifiedBadge';
 import { RideTimeline } from '@/components/molecules/RideTimeline/RideTimeline';
 import { RideInformationTemplateProps } from './types.d';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import * as S from './RideInformationTemplate.styles';
 import { moderateScale } from '@/styles';
 
@@ -19,23 +20,16 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
   const theme = useTheme();
 
   return (
-    <S.Container>
-      {/* Top App Bar */}
-      <S.NavBar>
-        <S.NavLeft>
-          <TouchableOpacity onPress={handleBack}>
-            <Icon name="arrow-back" size={moderateScale(24)} color={theme.colors.primary} />
-          </TouchableOpacity>
-          <Typography variant="title" size="md" weight="bold" color={theme.colors.primary}>
-            {t.title}
-          </Typography>
-        </S.NavLeft>
+    <ScreenShell
+      title={t.title}
+      onBack={handleBack}
+      rightElement={
         <Avatar 
           size="sm" 
           source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBosbgMtsx58eG37CNBKxBWcOvxxw1YUhUf7Uf_yJDXJx-zc6IBV-7yqhqGrBzQ9WroxNjbmxKvoFxFFB58SXwt2tlEwiiHlAQ8XTCsU9QJFFzwXKwRkbB-005vcDr7JLRNmjuyDE4zLYomxspAa-QsZTQAtEOOJQphmBwUC0UCgbiKo6l_CMm87uFP82wkaxf6qsfvIr6kjH4E1Xmuo6Zf1IK-LZiFUgkjrUwDCJNm_RmwJa6_--bUokVeTZQ31VQtQD6xun7eWASA' }} 
         />
-      </S.NavBar>
-
+      }
+    >
       <S.ScrollContent showsVerticalScrollIndicator={false}>
         {/* Map Preview */}
         <S.ContentPadding>
@@ -166,6 +160,6 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
           </S.Footer>
         </S.ContentPadding>
       </S.ScrollContent>
-    </S.Container>
+    </ScreenShell>
   );
 };

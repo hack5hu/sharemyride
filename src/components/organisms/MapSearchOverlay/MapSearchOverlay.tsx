@@ -47,7 +47,7 @@ export const MapSearchOverlay: React.FC<MapSearchOverlayProps> = ({
     : [];
 
   return (
-    <OverlayContainer edges={['top']}>
+    <OverlayContainer>
       <TopBarMockup>
         <BackButton onPress={onBackPress}>
           <MaterialIcons name="arrow-back" size={moderateScale(24)} color={theme.colors.primary} />

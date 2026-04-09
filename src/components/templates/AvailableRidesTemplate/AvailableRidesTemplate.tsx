@@ -1,93 +1,14 @@
 import React from 'react';
-import styled, { useTheme } from 'styled-components/native';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { useTheme } from 'styled-components/native';
+import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Typography } from '@/components/atoms/Typography';
-import { moderateScale, scale, verticalScale } from '@/styles';
+import { moderateScale, verticalScale } from '@/styles';
 import { RideData } from '@/screens/AvailableRides/types.d';
 import { RideCard } from '@/components/organisms/RideCard/RideCard';
 import { RideFiltersModal } from '@/components/organisms/RideFiltersModal';
-import { useLocale } from '@/constants/localization';
-
-const Container = styled.View`
-  flex: 1;
-  background-color: ${({ theme }) => theme.colors.surface};
-`;
-
-const ScrollContent = styled.ScrollView`
-  flex: 1;
-  padding-horizontal: ${scale(24)}px;
-  padding-top: ${verticalScale(24)}px;
-`;
-
-const SearchSummaryCard = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  border-radius: ${moderateScale(24)}px;
-  padding: ${moderateScale(24)}px;
-  margin-bottom: ${verticalScale(24)}px;
-  box-shadow: 0px 4px 24px rgba(23, 29, 25, 0.04);
-  elevation: 2;
-`;
-
-const SummaryRow = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: ${verticalScale(16)}px;
-`;
-
-const RouteInfo = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(12)}px;
-`;
-
-const LocationVertical = styled.View`
-  align-items: center;
-`;
-
-const Line = styled.View`
-  width: ${moderateScale(1)}px;
-  height: ${verticalScale(24)}px;
-  background-color: ${({ theme }) => theme.colors.outline_variant}4D;
-  margin-vertical: ${verticalScale(4)}px;
-`;
-
-const FilterButton = styled.TouchableOpacity`
-  background-color: ${({ theme }) => theme.colors.surface_container_high};
-  padding: ${moderateScale(12)}px;
-  border-radius: ${moderateScale(16)}px;
-`;
-
-const SummaryFooter = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  padding-top: ${verticalScale(16)}px;
-  border-top-width: 1px;
-  border-top-color: ${({ theme }) => theme.colors.outline_variant}1A;
-`;
-
-const FooterItem = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(8)}px;
-`;
-
-const FilterScrollView = styled.ScrollView`
-  margin-bottom: ${verticalScale(24)}px;
-`;
-
-const FilterChip = styled.TouchableOpacity<{ active?: boolean }>`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(8)}px;
-  padding-horizontal: ${scale(16)}px;
-  padding-vertical: ${verticalScale(8)}px;
-  border-radius: ${moderateScale(999)}px;
-  background-color: ${({ theme, active }) => 
-    active ? theme.colors.primary : theme.colors.surface_container_high};
-  margin-right: ${scale(12)}px;
-`;
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import * as S from './AvailableRidesTemplate.styles';
 
 export interface AvailableRidesTemplateProps {
   rides: RideData[];
@@ -124,45 +45,45 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
   ];
 
   return (
-    <Container>
-      <ScrollContent showsVerticalScrollIndicator={false}>
-        <SearchSummaryCard>
-          <SummaryRow>
-            <RouteInfo>
-              <LocationVertical>
+    <ScreenShell title={t.heroTitle}>
+      <S.ScrollContent showsVerticalScrollIndicator={false}>
+        <S.SearchSummaryCard>
+          <S.SummaryRow>
+            <S.RouteInfo>
+              <S.LocationVertical>
                 <Icon name="circle" size={moderateScale(14)} color={theme.colors.primary} style={{ fontVariationSettings: "'FILL' 1" }} />
-                <Line />
+                <S.Line />
                 <Icon name="location-on" size={moderateScale(14)} color={theme.colors.tertiary} style={{ fontVariationSettings: "'FILL' 1" }} />
-              </LocationVertical>
+              </S.LocationVertical>
               <View>
                 <Typography variant="title" size="md" weight="bold">Downtown Hub</Typography>
                 <Typography variant="title" size="md" weight="bold">North Green Valley</Typography>
               </View>
-            </RouteInfo>
-            <FilterButton onPress={onOpenFilters}>
+            </S.RouteInfo>
+            <S.FilterButton onPress={onOpenFilters}>
               <Icon name="tune" size={moderateScale(24)} color={theme.colors.on_surface_variant} />
-            </FilterButton>
-          </SummaryRow>
+            </S.FilterButton>
+          </S.SummaryRow>
 
-          <SummaryFooter>
-            <FooterItem>
+          <S.SummaryFooter>
+            <S.FooterItem>
               <Icon name="calendar-today" size={moderateScale(20)} color={theme.colors.on_surface_variant} />
               <Typography variant="label" size="md" weight="bold" color={theme.colors.on_surface_variant}>
                 {t.searchSummaryDate}
               </Typography>
-            </FooterItem>
-            <FooterItem>
+            </S.FooterItem>
+            <S.FooterItem>
               <Icon name="group" size={moderateScale(20)} color={theme.colors.on_surface_variant} />
               <Typography variant="label" size="md" weight="bold" color={theme.colors.on_surface_variant}>
                 {t.searchSummarySeats.replace('{count}', '2')}
               </Typography>
-            </FooterItem>
-          </SummaryFooter>
-        </SearchSummaryCard>
+            </S.FooterItem>
+          </S.SummaryFooter>
+        </S.SearchSummaryCard>
 
-        <FilterScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <S.FilterScrollView horizontal showsHorizontalScrollIndicator={false}>
           {filters.map((filter) => (
-            <FilterChip 
+            <S.FilterChip 
               key={filter.id} 
               active={selectedFilters.includes(filter.id)}
               onPress={() => onFilterToggle(filter.id)}
@@ -180,16 +101,16 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
               >
                 {filter.label}
               </Typography>
-            </FilterChip>
+            </S.FilterChip>
           ))}
-        </FilterScrollView>
+        </S.FilterScrollView>
 
         {rides.map((ride) => (
           <RideCard key={ride.id} ride={ride} onPress={onRideSelect} />
         ))}
         
         <View style={{ height: verticalScale(32) }} />
-      </ScrollContent>
+      </S.ScrollContent>
 
       <RideFiltersModal 
         isOpen={isFilterModalOpen} 
@@ -197,6 +118,6 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
         onClear={onClearFilters}
         t={ft}
       />
-    </Container>
+    </ScreenShell>
   );
 };

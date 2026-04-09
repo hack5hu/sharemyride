@@ -4,8 +4,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import {
-  Container,
   MainContent,
   SuccessIconWrapper,
   Title,
@@ -36,7 +36,10 @@ export const PublishSuccessScreen: React.FC = () => {
   };
 
   return (
-    <Container edges={['top', 'bottom']}>
+    <ScreenShell
+      title={t.headerTitle}
+      onBack={() => navigation.navigate('Home' as any)}
+    >
       <MainContent>
         <SuccessIconWrapper>
           <MaterialIcons name="check" size={moderateScale(56)} color={theme.colors.on_primary} />
@@ -70,6 +73,6 @@ export const PublishSuccessScreen: React.FC = () => {
           <SecondaryButtonText>{t.secondaryCTA}</SecondaryButtonText>
         </SecondaryButton>
       </ActionArea>
-    </Container>
+    </ScreenShell>
   );
 };

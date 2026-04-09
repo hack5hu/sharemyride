@@ -5,7 +5,6 @@ import { GlassSearchBar } from '@/components/molecules/GlassSearchBar';
 import { LocationBottomSheet } from '@/components/organisms/LocationBottomSheet';
 import { MapPin } from '@/components/atoms/MapPin';
 import { MapActionFAB } from '@/components/organisms/MapActionFAB';
-import { CommonHeader } from '@/components/molecules/CommonHeader'; 
 import { useSelectLocation } from './useSelectLocation';
 import { SelectLocationScreenProps } from './types.d';
 
@@ -32,13 +31,8 @@ export const SelectLocationScreen: React.FC<SelectLocationScreenProps> = ({ navi
             resizeMode="cover"
           />
         }
-        header={
-          <CommonHeader 
-            title="Select Location" 
-            onBackPress={() => navigation.goBack()} 
-            showSearch={true}
-          />
-        }
+        title="Select Location"
+        onBack={() => navigation.goBack()}
         searchBar={
           <GlassSearchBar 
             value={searchText}

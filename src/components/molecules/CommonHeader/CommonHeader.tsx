@@ -5,6 +5,9 @@ import styled from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { scale, verticalScale, moderateScale } from '@/styles';
 
+/**
+ * @deprecated Use ScreenShell and ScreenHeader for unified header management.
+ */
 export interface CommonHeaderProps {
   title: string;
   onBackPress: () => void;
@@ -35,6 +38,9 @@ const IconButton = styled.TouchableOpacity`
   border-radius: ${moderateScale(24)}px;
 `;
 
+/**
+ * @deprecated Use ScreenShell and ScreenHeader for unified header management.
+ */
 export const CommonHeader: React.FC<CommonHeaderProps> = ({ 
   title, 
   onBackPress, 

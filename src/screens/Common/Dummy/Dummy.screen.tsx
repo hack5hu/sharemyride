@@ -1,13 +1,12 @@
 import React from 'react';
 import { View, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
-import { IconButton } from '@/components/atoms/IconButton';
 import { BottomNav, BottomTabType } from '@/components/organisms/BottomNav';
 import { RootStackParamList } from '@/navigation/types';
 import { useTranslation } from '@/hooks/useTranslation';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 
 export const DummyScreen: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'Dummy'>>();
@@ -48,29 +47,10 @@ export const DummyScreen: React.FC = () => {
   const content = getContent();
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.surface }}>
-      <View style={{ 
-        height: 64, 
-        flexDirection: 'row', 
-        alignItems: 'center', 
-        paddingHorizontal: 16,
-        backgroundColor: theme.colors.surface,
-        borderBottomWidth: 1,
-        borderBottomColor: theme.colors.outline_variant + '1A',
-        gap: 12,
-      }}>
-        {showBack && (
-          <IconButton 
-            icon="arrow-back" 
-            variant="surface" 
-            onPress={() => navigation.goBack()} 
-          />
-        )}
-        <Typography variant="title" size="md" weight="bold" color="primary">
-          {title}
-        </Typography>
-      </View>
-
+    <ScreenShell
+      title={title}
+      onBack={showBack ? () => navigation.goBack() : undefined}
+    >
       <ScrollView 
         style={{ flex: 1 }} 
         contentContainerStyle={{ padding: 24 }}
@@ -122,8 +102,6 @@ export const DummyScreen: React.FC = () => {
       {showBottomNav && activeTab && (
         <BottomNav activeTab={activeTab as BottomTabType} />
       )}
-    </SafeAreaView>
+    </ScreenShell>
   );
 };
-
-

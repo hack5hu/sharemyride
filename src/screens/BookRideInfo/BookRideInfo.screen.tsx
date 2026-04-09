@@ -6,8 +6,8 @@ import { format } from 'date-fns';
 import { moderateScale } from '@/styles';
 import { BottomNav } from '@/components/organisms/BottomNav';
 import { useBookRideInfo } from './useBookRideInfo';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import {
-  Container,
   ScrollContent,
   Header,
   HeaderTitle,
@@ -76,7 +76,7 @@ export const BookRideInfoScreen: React.FC = () => {
   } = useBookRideInfo();
 
   return (
-    <Container edges={['top']}>
+    <ScreenShell title={t.heroTitle}>
       <ScrollContent showsVerticalScrollIndicator={false}>
         <Header>
           <HeaderTitle>Ride Pool Company</HeaderTitle>
@@ -215,6 +215,6 @@ export const BookRideInfoScreen: React.FC = () => {
       />
 
       <BottomNav activeTab="BOOK" />
-    </Container>
+    </ScreenShell>
   );
 };

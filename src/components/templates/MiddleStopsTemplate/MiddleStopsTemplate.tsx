@@ -5,23 +5,8 @@ import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';
 import { MiddleStopsList, RouteStop } from '@/components/organisms/MiddleStopsList';
 import { BentoMapPreview } from '@/components/molecules/BentoMapPreview';
-import {
-  Container,
-  TopHeader,
-  HeaderLeft,
-  BackButton,
-  HeaderTitle,
-  StepIndicatorText,
-  StepIndicatorSecondary,
-  ContentLayer,
-  TitleSection,
-  TitleText,
-  SubtitleText,
-  FooterContainer,
-  ContinueButton,
-  ContinueGradient,
-  ContinueButtonText,
-} from './MiddleStopsTemplate.styles';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import * as S from './MiddleStopsTemplate.styles';
 
 export interface MiddleStopsTemplateProps {
   onBackPress: () => void;
@@ -46,26 +31,21 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
   const { middleStops: t } = useLocale();
 
   return (
-    <Container edges={['top']}>
-      {/* Header */}
-      <TopHeader>
-        <HeaderLeft>
-          <BackButton onPress={onBackPress} activeOpacity={0.7}>
-            <MaterialIcons name="arrow-back" size={moderateScale(24)} color={theme.colors.primary} />
-          </BackButton>
-          <HeaderTitle>{t.headerTitle}</HeaderTitle>
-        </HeaderLeft>
-        <StepIndicatorText>
-          3 <StepIndicatorSecondary>/ 9</StepIndicatorSecondary>
-        </StepIndicatorText>
-      </TopHeader>
-
-      <ContentLayer showsVerticalScrollIndicator={false}>
+    <ScreenShell
+      title={t.headerTitle}
+      onBack={onBackPress}
+      rightElement={
+        <S.StepIndicatorText>
+          3 <S.StepIndicatorSecondary>/ 9</S.StepIndicatorSecondary>
+        </S.StepIndicatorText>
+      }
+    >
+      <S.ContentLayer showsVerticalScrollIndicator={false}>
         {/* Title */}
-        <TitleSection>
-          <TitleText>{t.title}</TitleText>
-          <SubtitleText>{t.subtitle}</SubtitleText>
-        </TitleSection>
+        <S.TitleSection>
+          <S.TitleText>{t.title}</S.TitleText>
+          <S.SubtitleText>{t.subtitle}</S.SubtitleText>
+        </S.TitleSection>
 
         {/* Dynamic Stops List */}
         <MiddleStopsList
@@ -78,21 +58,21 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
 
         {/* Map Context Item */}
         <BentoMapPreview />
-      </ContentLayer>
+      </S.ContentLayer>
 
       {/* Floating Footer */}
-      <FooterContainer pointerEvents="box-none">
-        <ContinueButton onPress={onContinuePress} activeOpacity={0.95}>
-          <ContinueGradient 
+      <S.FooterContainer pointerEvents="box-none">
+        <S.ContinueButton onPress={onContinuePress} activeOpacity={0.95}>
+          <S.ContinueGradient 
             colors={[theme.colors.primary, '#00875a']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
-            <ContinueButtonText>{t.continue}</ContinueButtonText>
+            <S.ContinueButtonText>{t.continue}</S.ContinueButtonText>
             <MaterialIcons name="arrow-forward" size={moderateScale(20)} color={theme.colors.on_primary} />
-          </ContinueGradient>
-        </ContinueButton>
-      </FooterContainer>
-    </Container>
+          </S.ContinueGradient>
+        </S.ContinueButton>
+      </S.FooterContainer>
+    </ScreenShell>
   );
 };

@@ -4,8 +4,8 @@ import { Typography } from '@/components/atoms/Typography';
 import { LoginForm } from '@/components/organisms/LoginForm';
 import { SocialSection } from '@/components/organisms/SocialSection';
 import { useLocale } from '@/constants/localization';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import {
-  Container,
   ScrollContent,
   BackgroundBubble,
   BrandHeader,
@@ -29,7 +29,7 @@ export const LoginScreen: React.FC = () => {
   const t = useLocale();
 
   return (
-    <Container behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <ScreenShell>
       {/* Background Decorative Elements */}
       <BackgroundBubble top="-5%" left="-5%" />
       <BackgroundBubble bottom="-5%" right="-5%" />
@@ -61,6 +61,6 @@ export const LoginScreen: React.FC = () => {
           </LoginCard>
         </ContentWrapper>
       </ScrollContent>
-    </Container>
+    </ScreenShell>
   );
 };

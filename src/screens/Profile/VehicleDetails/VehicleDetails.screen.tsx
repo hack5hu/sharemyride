@@ -9,10 +9,8 @@ import { VehicleTypeCard } from '@/components/molecules/VehicleTypeCard';
 import { ColorChip } from '@/components/atoms/ColorChip';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useVehicleDetails } from './useVehicleDetails';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import {
-  Container,
-  ScreenWrapper,
-  HeaderContainer,
   ScrollContainer,
   HeroSection,
   HeroImage,
@@ -33,16 +31,10 @@ export const VehicleDetailsScreen: React.FC = () => {
   const { formik, vehicleTypes, carColors, setVehicleType, setColor, goBack } = useVehicleDetails();
 
   return (
-    <Container>
-      <ScreenWrapper>
-        <HeaderContainer>
-          <IconButton icon="arrow-back" variant="surface" onPress={goBack} />
-          <Typography variant="title" size="md" weight="bold" color="primary" style={{ marginLeft: 16 }}>
-            {t('vehicleDetails.headerTitle')}
-          </Typography>
-        </HeaderContainer>
-      </ScreenWrapper>
-
+    <ScreenShell
+      title={t('vehicleDetails.headerTitle')}
+      onBack={goBack}
+    >
       <ScrollContainer>
         <HeroSection>
           <HeroImage 
@@ -178,7 +170,7 @@ export const VehicleDetailsScreen: React.FC = () => {
           </Button>
         </BottomAction>
       </ScrollContainer>
-    </Container>
+    </ScreenShell>
   );
 };
 

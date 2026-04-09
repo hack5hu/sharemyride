@@ -2,13 +2,12 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Typography } from '@/components/atoms/Typography';
 import { Toggle } from '@/components/atoms/Toggle';
 import { Checkbox } from '@/components/atoms/Checkbox';
 import { useSettings } from './useSettings';
 import {
-  ScreenWrapper,
-  Header,
   ContentContainer,
   Section,
   SectionTitle,
@@ -42,21 +41,15 @@ export const SettingsScreen: React.FC = () => {
   } = useSettings();
 
   return (
-    <ScreenWrapper>
-      <Header>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
-          <TouchableOpacity onPress={goBack} style={{ padding: 8 }}>
-            <Icon name="arrow-back" size={24} color={theme.colors.primary} />
-          </TouchableOpacity>
-          <Typography variant="title" size="md" weight="semibold">
-            {t.headerTitle}
-          </Typography>
-        </View>
+    <ScreenShell
+      title={t.headerTitle}
+      onBack={goBack}
+      rightElement={
         <Typography variant="title" size="md" weight="bold" color={theme.colors.primary}>
           {t.appName}
         </Typography>
-      </Header>
-
+      }
+    >
       <ContentContainer showsVerticalScrollIndicator={false}>
         {/* Notifications */}
         <Section>
@@ -177,6 +170,6 @@ export const SettingsScreen: React.FC = () => {
         </Section>
 
       </ContentContainer>
-    </ScreenWrapper>
+    </ScreenShell>
   );
 };

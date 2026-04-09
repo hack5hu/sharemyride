@@ -1,12 +1,12 @@
 import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
-export const Container = styled(SafeAreaView)`
+export const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.surface};
 `;

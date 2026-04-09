@@ -7,11 +7,10 @@ import { Chip } from '@/components/atoms/Chip';
 import { Button } from '@/components/atoms/Button';
 import { IconButton } from '@/components/atoms/IconButton';
 import { PreferenceCard } from '@/components/molecules/PreferenceCard';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTravelPreferences } from './useTravelPreferences';
 import {
-  ScreenWrapper,
-  HeaderContainer,
   ScrollContainer,
   HeroSection,
   HeroImage,
@@ -40,14 +39,10 @@ export const TravelPreferencesScreen: React.FC = () => {
   } = useTravelPreferences();
 
   return (
-    <ScreenWrapper>
-      <HeaderContainer>
-        <IconButton icon="arrow-back" variant="surface" onPress={goBack} />
-        <Typography variant="title" size="md" weight="bold" color="primary" style={{ marginLeft: 16 }}>
-          {t('travelPreferences.headerTitle')}
-        </Typography>
-      </HeaderContainer>
-
+    <ScreenShell
+      title={t('travelPreferences.headerTitle')}
+      onBack={goBack}
+    >
       <ScrollContainer>
         <HeroSection>
           <HeroImage 
@@ -136,7 +131,7 @@ export const TravelPreferencesScreen: React.FC = () => {
           </BottomAction>
         </Section>
       </ScrollContainer>
-    </ScreenWrapper>
+    </ScreenShell>
   );
 };
 

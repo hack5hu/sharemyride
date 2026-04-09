@@ -1,13 +1,14 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
+import { useNavigation } from '@react-navigation/native';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { OtpInput } from '../../../components/molecules/OtpInput';
 import { Toast } from '../../../components/molecules/Toast';
 import { useOTPVerification } from './useOTPVerification';
 import { OTPVerificationProps } from './types';
 import { useLocale } from '../../../constants/localization';
 import {
-  SafeArea,
   KeyboardContainer,
   ScrollContainer,
   BackgroundBlob,
@@ -38,6 +39,7 @@ export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
   phoneNumber = '+1 (555) 000-8492',
 }) => {
   const theme = useTheme();
+  const navigation = useNavigation();
   const [toastConfig, setToastConfig] = React.useState<{
     isVisible: boolean;
     type: 'success' | 'error' | 'info';
@@ -61,7 +63,10 @@ export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
   const { otpVerification: t } = useLocale();
 
   return (
-    <SafeArea>
+    <ScreenShell
+      title={t.titleHighlight}
+      onBack={() => navigation.goBack()}
+    >
       <Toast
         type={toastConfig.type}
         message={toastConfig.message}
@@ -163,6 +168,6 @@ export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
         <DotSeparator />
         <LinkText>{t.supportCenter}</LinkText>
       </LinksRow>
-    </SafeArea>
+    </ScreenShell>
   );
 };

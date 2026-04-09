@@ -1,8 +1,8 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { 
-  Container, 
   ScrollLayout, 
   Section, 
   ListWrapper, 
@@ -25,7 +25,7 @@ export const MyRidesTemplate: React.FC<MyRidesTemplateProps> = ({
   const theme = useTheme();
 
   return (
-    <Container>
+    <ScreenShell>
       {header}
       
       <ScrollLayout>
@@ -57,6 +57,6 @@ export const MyRidesTemplate: React.FC<MyRidesTemplateProps> = ({
         </FABGradient>
       </FABContainer>
       {bottomNav}
-    </Container>
+    </ScreenShell>
   );
 };

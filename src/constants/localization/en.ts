@@ -359,6 +359,7 @@ export const en: Translations = {
     termsText2: ' and community policies.',
   },
   publishSuccess: {
+    headerTitle: 'Publish Success',
     title: 'Publish Successful!',
     subtitle: 'Your ride is now live and travelers can start sending requests.',
     infoTitle: 'SAFETY GUARD ACTIVE',

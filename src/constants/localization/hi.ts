@@ -359,12 +359,13 @@ export const hi: Translations = {
     termsText2: ' and community policies.',
   },
   publishSuccess: {
-    title: 'Publish Successful!',
-    subtitle: 'Your ride is now live.',
-    infoTitle: 'SAFETY GUARD ACTIVE',
+    headerTitle: 'प्रकाशन सफल',
+    title: 'प्रकाशन सफल!',
+    subtitle: 'आपकी सवारी अब लाइव है।',
+    infoTitle: 'सुरक्षा गार्ड सक्रिय',
     infoText: 'आपकी यात्रा जीपीएस ट्रैक की गई है और RidePoolCompany द्वारा बीमित है।',
-    primaryCTA: 'Go to My Rides',
-    secondaryCTA: 'Share Trip Details',
+    primaryCTA: 'मेरी सवारी पर जाएं',
+    secondaryCTA: 'यात्रा विवरण साझा करें',
   },
   bookRideInfo: {
     heroTitle: 'Where to next?',

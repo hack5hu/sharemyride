@@ -1,7 +1,7 @@
 import React from 'react';
-import { Platform, KeyboardAvoidingView, View, Keyboard } from 'react-native';
+import { Platform, KeyboardAvoidingView, View } from 'react-native';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { 
-  SafeAreaContainer, 
   ScreenContainer, 
   ScrollLayout, 
 } from './ChatDetailsTemplate.styles';
@@ -13,7 +13,7 @@ export const ChatDetailsTemplate: React.FC<ChatDetailsTemplateProps> = ({
   input,
 }) => {
   return (
-    <SafeAreaContainer edges={['top', 'bottom']}>
+    <ScreenShell>
       <KeyboardAvoidingView 
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
@@ -35,6 +35,6 @@ export const ChatDetailsTemplate: React.FC<ChatDetailsTemplateProps> = ({
           </View>
         </ScreenContainer>
       </KeyboardAvoidingView>
-    </SafeAreaContainer>
+    </ScreenShell>
   );
 };

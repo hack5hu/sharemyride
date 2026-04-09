@@ -1,27 +1,11 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
-import { moderateScale, scale, verticalScale } from '@/styles';
+import { scale, verticalScale } from '@/styles';
 import { TimePickerCard } from '@/components/organisms/TimePickerCard';
-import {
-  Container,
-  TopHeader,
-  HeaderLeft,
-  BackButton,
-  HeaderTitle,
-  TitleSection,
-  TitleText,
-  TitleHighlight,
-  SubtitleText,
-  FloatingFooter,
-  FooterGradient,
-  ContinueButton,
-  ContinueGradient,
-  ContinueText,
-  ArrivalNote,
-} from './TimeSelectionTemplate.styles';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import * as S from './TimeSelectionTemplate.styles';
 
 export interface TimeSelectionTemplateProps {
   selectedHour: number;
@@ -48,39 +32,27 @@ export const TimeSelectionTemplate: React.FC<TimeSelectionTemplateProps> = ({
   const { timeSelection: t } = useLocale();
 
   return (
-    <Container edges={['top']}>
-      {/* Header */}
-      <TopHeader>
-        <HeaderLeft>
-          <BackButton onPress={onBackPress} activeOpacity={0.7}>
-            <MaterialIcons
-              name="arrow-back"
-              size={moderateScale(24)}
-              color={theme.colors.primary}
-            />
-          </BackButton>
-          <HeaderTitle>{t.headerTitle}</HeaderTitle>
-        </HeaderLeft>
-      </TopHeader>
-
+    <ScreenShell
+      title={t.headerTitle}
+      onBack={onBackPress}
+    >
       <ScrollView
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled={true}
         contentContainerStyle={{
           paddingHorizontal: scale(24),
-          // paddingTop: verticalScale(16),
           paddingBottom: verticalScale(120),
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <TitleSection>
-          <TitleText>
+        <S.TitleSection>
+          <S.TitleText>
             {t.title}
             {'\n'}
-            <TitleHighlight>{t.titleHighlight}</TitleHighlight>
-          </TitleText>
-          <SubtitleText>{t.subtitle}</SubtitleText>
-        </TitleSection>
+            <S.TitleHighlight>{t.titleHighlight}</S.TitleHighlight>
+          </S.TitleText>
+          <S.SubtitleText>{t.subtitle}</S.SubtitleText>
+        </S.TitleSection>
 
         <TimePickerCard
           selectedHour={selectedHour}
@@ -93,23 +65,23 @@ export const TimeSelectionTemplate: React.FC<TimeSelectionTemplateProps> = ({
       </ScrollView>
 
       {/* Floating footer */}
-      <FloatingFooter pointerEvents="box-none">
-        <FooterGradient
+      <S.FloatingFooter pointerEvents="box-none">
+        <S.FooterGradient
           colors={['transparent', theme.colors.surface, theme.colors.surface]}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
           pointerEvents="none"
         />
-        <ContinueButton onPress={onContinuePress} activeOpacity={0.9}>
-          <ContinueGradient
+        <S.ContinueButton onPress={onContinuePress} activeOpacity={0.9}>
+          <S.ContinueGradient
             colors={[theme.colors.primary, theme.colors.primary_container]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
-            <ContinueText>{t.continue}</ContinueText>
-          </ContinueGradient>
-        </ContinueButton>
-      </FloatingFooter>
-    </Container>
+            <S.ContinueText>{t.continue}</S.ContinueText>
+          </S.ContinueGradient>
+        </S.ContinueButton>
+      </S.FloatingFooter>
+    </ScreenShell>
   );
 };

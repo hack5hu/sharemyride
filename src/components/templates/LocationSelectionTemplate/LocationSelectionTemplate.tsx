@@ -4,8 +4,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useLocale } from '@/constants/localization';
 import { LocationInputsBento } from '@/components/organisms/LocationInputsBento';
 // import { HeaderBar } from '@/components/molecules/HeaderBar';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import {
-  SafeContainer,
   MainContent,
   HeaderSection,
   TitleContainer,
@@ -31,14 +31,10 @@ export const LocationSelectionTemplate: React.FC<LocationSelectionTemplateProps>
   navBar,
 }) => {
   const theme = useTheme();
-  const { locationSelection } = useLocale();
+  const { locationSelection, routeSelection } = useLocale();
 
   return (
-    <SafeContainer>
-      {/* <HeaderBar 
-        title="The Ethereal Utility" 
-        onBackPress={() => {}} // Usually bound at screen level if needed, or mapped via navigation
-      /> */}
+    <ScreenShell title={routeSelection.headerTitle}>
       <MainContent>
         <HeaderSection>
           <TitleContainer>
@@ -57,7 +53,10 @@ export const LocationSelectionTemplate: React.FC<LocationSelectionTemplateProps>
         />
 
         <ContinueButtonSection>
-          <ContinueGradient style={{ opacity: canContinue ? 1 : 0.6 }}>
+          <ContinueGradient 
+            colors={['#45617f', '#bfddff']}
+            style={{ opacity: canContinue ? 1 : 0.6 }}
+          >
             <ContinueButton
               onPress={onPressContinue}
               disabled={!canContinue}
@@ -85,6 +84,6 @@ export const LocationSelectionTemplate: React.FC<LocationSelectionTemplateProps>
         </ContextualInfoBox>
       </MainContent>
       {navBar}
-    </SafeContainer>
+    </ScreenShell>
   );
 };

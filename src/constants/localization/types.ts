@@ -501,6 +501,7 @@ export interface SelectSeatTranslations {
 }
 
 export interface PublishSuccessTranslations {
+  headerTitle: string;
   title: string;
   subtitle: string;
   infoTitle: string;

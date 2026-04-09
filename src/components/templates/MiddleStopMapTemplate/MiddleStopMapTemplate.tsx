@@ -5,22 +5,8 @@ import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';
 import { LocationOption, MiddleStopSearchOverlay } from '@/components/organisms/MiddleStopSearchOverlay';
 import { MapContextOverlay } from '@/components/organisms/MapContextOverlay';
-
-import {
-  Container,
-  TopHeader,
-  HeaderLeft,
-  BackButton,
-  HeaderTitle,
-  HeaderStepText,
-  ContentArea,
-  SearchFloatingFooter,
-  FooterLeftText,
-  FooterLabel,
-  FooterValue,
-  SearchContinueButton,
-  SearchContinueText,
-} from './MiddleStopMapTemplate.styles';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import * as S from './MiddleStopMapTemplate.styles';
 
 export interface MiddleStopMapTemplateProps {
   isSearching: boolean;
@@ -53,9 +39,12 @@ export const MiddleStopMapTemplate: React.FC<MiddleStopMapTemplateProps> = ({
   const { middleStopMap: t } = useLocale();
 
   return (
-    <Container edges={['top', 'bottom']}>
-      {/* Content Layer */}
-      <ContentArea>
+    <ScreenShell
+      title={t.headerTitle}
+      onBack={onBackPress}
+      rightElement={<S.HeaderStepText>{t.stepIndicator}</S.HeaderStepText>}
+    >
+      <S.ContentArea>
         {isSearching ? (
           <MiddleStopSearchOverlay
             searchQuery={searchQuery}
@@ -72,32 +61,20 @@ export const MiddleStopMapTemplate: React.FC<MiddleStopMapTemplateProps> = ({
             routeTitle={routeTitle}
           />
         )}
-      </ContentArea>
+      </S.ContentArea>
 
-      {/* Glass Header (Above everything) */}
-      <TopHeader>
-        <HeaderLeft>
-          <BackButton onPress={onBackPress} activeOpacity={0.7}>
-            <MaterialIcons name="arrow-back" size={moderateScale(24)} color={theme.colors.primary} />
-          </BackButton>
-          <HeaderTitle>{t.headerTitle}</HeaderTitle>
-        </HeaderLeft>
-        <HeaderStepText>{t.stepIndicator}</HeaderStepText>
-      </TopHeader>
-
-      {/* Floating Footer specifically for Search State (when active or empty selection but staying in search) */}
+      {/* Floating Footer specifically for Search State */}
       {isSearching && (
-        <SearchFloatingFooter>
-          <FooterLeftText>
-            <FooterLabel>{t.addedStops}</FooterLabel>
-            <FooterValue>02 Stops</FooterValue>
-          </FooterLeftText>
-          <SearchContinueButton onPress={onBackPress} activeOpacity={0.9}>
-            <SearchContinueText>{t.continue}</SearchContinueText>
-          </SearchContinueButton>
-        </SearchFloatingFooter>
+        <S.SearchFloatingFooter>
+          <S.FooterLeftText>
+            <S.FooterLabel>{t.addedStops}</S.FooterLabel>
+            <S.FooterValue>02 Stops</S.FooterValue>
+          </S.FooterLeftText>
+          <S.SearchContinueButton onPress={onBackPress} activeOpacity={0.9}>
+            <S.SearchContinueText>{t.continue}</S.SearchContinueText>
+          </S.SearchContinueButton>
+        </S.SearchFloatingFooter>
       )}
-
-    </Container>
+    </ScreenShell>
   );
 };

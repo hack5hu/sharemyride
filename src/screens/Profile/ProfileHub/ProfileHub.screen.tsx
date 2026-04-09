@@ -7,8 +7,8 @@ import { TrustScoreCard } from '@/components/organisms/TrustScoreCard';
 import { ProfileMenuItem } from '@/components/molecules/ProfileMenuItem';
 import { BottomNav } from '@/components/organisms/BottomNav';
 import { useProfileHub } from './useProfileHub';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { 
-  ScreenWrapper,
   Container, 
   Content, 
   Section, 
@@ -33,7 +33,7 @@ export const ProfileHubScreen: React.FC = () => {
   const theme = useTheme();
 
   return (
-    <ScreenWrapper>
+    <ScreenShell>
       <Container showsVerticalScrollIndicator={false}>
         <Content>
           <BentoGrid>
@@ -131,7 +131,7 @@ export const ProfileHubScreen: React.FC = () => {
       </Container>
 
       <BottomNav activeTab="PROFILE" />
-    </ScreenWrapper>
+    </ScreenShell>
   );
 };
 

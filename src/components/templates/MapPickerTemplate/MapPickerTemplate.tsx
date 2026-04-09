@@ -6,8 +6,8 @@ import { useLocale } from '@/constants/localization';
 import { MapSearchOverlayProps, MapSearchOverlay } from '@/components/organisms/MapSearchOverlay';
 import { LocationDetailsCardProps, LocationDetailsCard } from '@/components/molecules/LocationDetailsCard';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import {
-  Container,
   MapImageBackground,
   GradientOverlay,
   PinContainer,
@@ -55,9 +55,9 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
   }, [bounceAnim]);
 
   return (
-    <Container>
+    <ScreenShell>
       <MapImageBackground source={{ uri: mapImageSource }} resizeMode="cover" />
-      <GradientOverlay />
+      <GradientOverlay colors={['transparent', 'transparent']} />
 
       <MapSearchOverlay {...searchOverlayProps} />
 
@@ -80,6 +80,6 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
       <MapControlsFABs />
 
       <LocationDetailsCard {...locationDetailsProps} />
-    </Container>
+    </ScreenShell>
   );
 };
