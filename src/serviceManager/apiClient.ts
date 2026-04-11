@@ -27,6 +27,26 @@ const processQueue = (error: any, token: string | null = null) => {
 
 apiClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
+    console.log(`\n🚀 [API Request] ${config.method?.toUpperCase()} ${config.url}`);
+    console.log(`[API Request Headers]`, JSON.stringify(config.headers, null, 2));
+    
+    if (config.data) {
+      if (config.data instanceof FormData) {
+        // FormData doesn't stringify well, so we log its parts if available
+        console.log(`[API Request FormData] parts:`, (config.data as any).getParts ? (config.data as any).getParts() : 'FormData Instance');
+        
+        // CRITICAL FIX: Delete any explicit Content-Type to allow React Native's native fetch
+        // layer to automatically inject `multipart/form-data; boundary=...` 
+        // A missing boundary causes 500 Internal Server Error in Spring/Tomcat backends.
+        if (config.headers) {
+          delete config.headers['Content-Type'];
+          delete config.headers['content-type'];
+        }
+      } else {
+        console.log(`[API Request Data]`, JSON.stringify(config.data, null, 2));
+      }
+    }
+
     try {
       const credentials = await Keychain.getGenericPassword({ service: 'auth_token' });
       if (credentials) {
@@ -41,9 +61,18 @@ apiClient.interceptors.request.use(
 );
 
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log(`\n✅ [API Response Success] ${response.status} ${response.config.url}`);
+    console.log(`[API Response Data]`, JSON.stringify(response.data, null, 2));
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
+    
+    console.log(`\n❌ [API Error] ${error.response?.status} ${originalRequest?.url}`);
+    if (error.response?.data) {
+      console.log(`[API Error Response]`, JSON.stringify(error.response.data, null, 2));
+    }
 
     // Handle 401 Unauthorized errors (Expired Token)
     if (error.response?.status === 401 && !originalRequest._retry) {
@@ -73,6 +102,7 @@ apiClient.interceptors.response.use(
         });
 
         const { token, refreshToken: newRefreshToken } = response.data;
+        
 
         // Save new token to Keychain (Single source of truth)
         await Keychain.setGenericPassword('auth_token', token, { service: 'auth_token' });

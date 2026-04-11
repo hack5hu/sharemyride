@@ -9,7 +9,7 @@ import { Typography } from '../../atoms/Typography';
 export interface AvatarPickerProps {
   uri?: string;
   dob?: string;
-  onImageSelected?: (uri: string) => void;
+  onImageSelected?: (asset: { uri: string; name?: string; type?: string }) => void;
   style?: ViewStyle;
 }
 
@@ -26,7 +26,14 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({
     });
 
     if (result.assets && result.assets[0].uri) {
-      onImageSelected?.(result.assets[0].uri);
+      const asset = result.assets[0];
+      if (asset.uri) {
+        onImageSelected?.({
+          uri: asset.uri,
+          name: asset.fileName,
+          type: asset.type,
+        });
+      }
     }
   };
 

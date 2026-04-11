@@ -76,12 +76,6 @@ export const ProfileSetupScreen: React.FC = () => {
                 style={{ marginTop: 8 }}
               />
             )}
-            {formik.submitCount > 0 && !formik.isValid && (
-              <InfoBar
-                variant="error"
-                title={t('profileSetup.dobRequiredError')}
-              />
-            )}
 
             <Footer>
               <Button

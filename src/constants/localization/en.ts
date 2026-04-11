@@ -35,6 +35,7 @@ export const en: Translations = {
     heroSubtitle:
       "Let's curate your digital identity to tailor your experience.",
     dobRequiredError: 'Please provide your legal Date of Birth to proceed.',
+    requiredFieldsError: 'Please fill all mandatory fields to continue.',
     identityProfile: 'Identity Profile',
     publicPresence: 'Public Presence',
     fullNameLabel: 'Full Name',

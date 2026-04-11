@@ -17,6 +17,7 @@ export const hi: Translations = {
   otpVerification: {
     titlePrefix: 'पुष्टि करें कि यह',
     titleHighlight: 'आप',
+    screenName: 'OTP सत्यापन',
     subtitle:
       'हमने आपके पंजीकृत मोबाइल नंबर पर 6 अंकों का सत्यापन कोड भेजा है:',
     verifyButton: 'पहचान सत्यापित करें',
@@ -36,6 +37,7 @@ export const hi: Translations = {
       'आइए आपके अनुभव को बेहतर बनाने के लिए आपकी डिजिटल पहचान को व्यवस्थित करें।',
     dobRequiredError:
       'आगे बढ़ने के लिए कृपया अपनी कानूनी जन्म तिथि प्रदान करें।',
+    requiredFieldsError: 'जारी रखने के लिए कृपया सभी अनिवार्य फ़ील्ड भरें।',
     identityProfile: 'पहचान प्रोफ़ाइल',
     publicPresence: 'सार्वजनिक उपस्थिति',
     fullNameLabel: 'पूरा नाम',

@@ -14,15 +14,21 @@ export interface IdentityProfileCardProps {
   values: any;
   setFieldValue: (field: string, value: any) => void;
   errors?: any;
+  submitCount?: number;
+  maxDate?: Date;
 }
 
 export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = ({
   values,
   setFieldValue,
   errors,
+  submitCount = 0,
+  maxDate,
 }) => {
   const { t } = useTranslation();
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+
+  const showError = submitCount > 0;
 
   const handleDateConfirm = (date: Date) => {
     setIsDatePickerOpen(false);
@@ -39,8 +45,8 @@ export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = ({
       <HeaderRow>
         <AvatarPicker
           dob={values.dob}
-          onImageSelected={(uri) => setFieldValue('profileImage', uri)}
-          uri={values.profileImage}
+          onImageSelected={(asset) => setFieldValue('profileImage', asset)}
+          uri={values.profileImage?.uri}
         />
         <InfoContainer>
           <Typography variant="title" size="lg" weight="bold">
@@ -64,7 +70,8 @@ export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = ({
           value={values.fullName}
           onChangeText={(text) => setFieldValue('fullName', text)}
           placeholder={t('profileSetup.fullNamePlaceholder')}
-          error={errors?.fullName}
+          error={showError ? errors?.fullName : undefined}
+          required
         />
 
         <View style={{ flexDirection: 'row', gap: 16 }}>
@@ -76,8 +83,9 @@ export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = ({
               placeholder="DD/MM/YYYY"
               onFocus={() => setIsDatePickerOpen(true)}
               rightIcon="calendar-today"
-              error={errors?.dob}
+              error={showError ? errors?.dob : undefined}
               keyboardType="numeric"
+              required
             />
           </View>
         </View>
@@ -94,6 +102,7 @@ export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = ({
         open={isDatePickerOpen}
         date={parseDateFromDDMMYYYY(values.dob || '')}
         mode="date"
+        maximumDate={maxDate}
         onConfirm={handleDateConfirm}
         onCancel={() => setIsDatePickerOpen(false)}
       />

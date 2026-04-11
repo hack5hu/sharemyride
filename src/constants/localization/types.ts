@@ -34,6 +34,7 @@ export interface ProfileSetupTranslations {
   heroTitle: string;
   heroSubtitle: string;
   dobRequiredError: string;
+  requiredFieldsError: string;
   identityProfile: string;
   publicPresence: string;
   fullNameLabel: string;

@@ -6,4 +6,7 @@ export const API_ENDPOINTS = {
     RESEND_OTP: 'auth/resend-otp',
     LOGOUT: 'auth/logout',
   },
+  USER: {
+    PROFILE: '/user/profile',
+  },
 } as const;

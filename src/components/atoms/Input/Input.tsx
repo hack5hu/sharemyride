@@ -10,6 +10,7 @@ export const Input: React.FC<InputProps> = ({
   leftIcon,
   rightIcon,
   prefix,
+  required,
   containerStyle,
   onFocus,
   onBlur,
@@ -30,7 +31,12 @@ export const Input: React.FC<InputProps> = ({
 
   return (
     <Container style={containerStyle}>
-      {label && <LabelText>{label}</LabelText>}
+      {label && (
+        <LabelText>
+          {label}
+          {required && <LabelText style={{ color: theme.colors.error }}> *</LabelText>}
+        </LabelText>
+      )}
       <InputWrapper isFocused={isFocused} hasError={!!error} multiline={props.multiline}>
         {leftIcon && (
           <IconContainer>

@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Button } from '../../atoms/Button';
 import { Typography } from '../../atoms/Typography';
+import { useTheme } from 'styled-components/native';
 import { Container, ButtonRow } from './GenderSelector.styles';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -9,14 +10,17 @@ export interface GenderSelectorProps {
   label: string;
   value: string;
   onValueChange: (value: string) => void;
+  required?: boolean;
 }
 
 export const GenderSelector: React.FC<GenderSelectorProps> = ({
   label,
   value,
   onValueChange,
+  required,
 }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
 
   const options = [
     { label: t('profileSetup.genderFemale'), value: 'female' },
@@ -34,6 +38,7 @@ export const GenderSelector: React.FC<GenderSelectorProps> = ({
         style={{ marginBottom: 8, textTransform: 'uppercase' }}
       >
         {label}
+        {required && <Typography variant="label" size="sm" color="error"> *</Typography>}
       </Typography>
       <ButtonRow>
         {options.map((option) => (

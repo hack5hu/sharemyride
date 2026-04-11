@@ -60,36 +60,6 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
           </ToggleRow>
         </Surface>
       </View>
-
-      <Surface elevation="lowest" rounded="md" padding="lg">
-        <SectionHeader>
-          <Typography
-            variant="label"
-            size="sm"
-            weight="bold"
-            color="on_surface_variant"
-            style={{ textTransform: 'uppercase', letterSpacing: 1.5 }}
-          >
-            {t('profileSetup.contentPreferences')}
-          </Typography>
-        </SectionHeader>
-        <TagWrapper>
-          {interests.map((interest) => (
-            <Tag
-              key={interest.key}
-              active={values.interests.includes(interest.key)}
-              onPress={() => {
-                const newInterests = values.interests.includes(interest.key)
-                  ? values.interests.filter((i: string) => i !== interest.key)
-                  : [...values.interests, interest.key];
-                setFieldValue('interests', newInterests);
-              }}
-            >
-              {interest.label}
-            </Tag>
-          ))}
-        </TagWrapper>
-      </Surface>
     </View>
   );
 };
