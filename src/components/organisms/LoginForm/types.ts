@@ -6,4 +6,6 @@ export interface LoginFormProps {
   onSubmit: () => void;
   isValid: boolean;
   loading?: boolean;
+  isTermsAccepted: boolean;
+  onToggleTerms: () => void;
 }

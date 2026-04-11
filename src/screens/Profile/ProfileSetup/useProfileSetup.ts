@@ -1,9 +1,12 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useAuthStore } from '@/store/useAuthStore';
+import { Alert } from 'react-native';
 
 export const useProfileSetup = () => {
   const { t } = useTranslation();
+  const { setProfileCompleted } = useAuthStore();
 
   const validationSchema = Yup.object().shape({
     fullName: Yup.string().required('Required'),
@@ -24,9 +27,18 @@ export const useProfileSetup = () => {
       interests: ['interestMinimalism'],
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log('Form submitted:', values);
-      // Handle submission
+    onSubmit: async (values) => {
+      try {
+        console.log('Form submitted:', values);
+        // Simulate API call for profile update
+        // In a real app, you'd call an authService.updateProfile(values)
+        
+        // Mark profile as completed to trigger RootNavigator stack switch
+        setProfileCompleted(true);
+        Alert.alert('Success', 'Profile setup complete!');
+      } catch (error) {
+        Alert.alert('Error', 'Failed to save profile. Please try again.');
+      }
     },
   });
 

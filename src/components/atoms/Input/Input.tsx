@@ -9,6 +9,7 @@ export const Input: React.FC<InputProps> = ({
   error,
   leftIcon,
   rightIcon,
+  prefix,
   containerStyle,
   onFocus,
   onBlur,
@@ -34,6 +35,11 @@ export const Input: React.FC<InputProps> = ({
         {leftIcon && (
           <IconContainer>
             <Icon name={leftIcon} size={20} color={theme.colors.on_surface_variant} />
+          </IconContainer>
+        )}
+        {prefix && (
+          <IconContainer style={{ paddingRight: 0 }}>
+            <LabelText style={{ marginBottom: 0, color: theme.colors.on_surface }}>{prefix}</LabelText>
           </IconContainer>
         )}
         <InnerInput

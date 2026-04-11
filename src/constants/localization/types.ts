@@ -16,6 +16,7 @@ export interface LoginTranslations {
 export interface OtpVerificationTranslations {
   titlePrefix: string;
   titleHighlight: string;
+  screenName: string;
   subtitle: string;
   verifyButton: string;
   verifyingButton: string;
@@ -222,8 +223,6 @@ export interface CancelRideTranslations {
   otherReasonPlaceholder: string;
 }
 
-
-
 export interface LocationSelectionTranslations {
   titlePrefix: string;
   titleHighlight: string;
@@ -285,7 +284,6 @@ export interface MiddleStopMapTranslations {
   addedStops: string;
   continue: string;
 }
-
 
 export interface DateSelectionTranslations {
   headerTitle: string;
@@ -549,10 +547,3 @@ export interface SeatSelectionTranslations {
   estEarnings: string;
   continue: string;
 }
-
-
-
-
-
-
-

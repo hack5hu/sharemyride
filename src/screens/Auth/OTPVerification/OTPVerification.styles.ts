@@ -15,7 +15,7 @@ export const KeyboardContainer = styled(KeyboardAvoidingView).attrs({
   background-color: #ffffff;
   border-radius: ${scale(16)}px;
   margin: ${scale(20)}px;
-  margin-top: ${verticalScale(30)}px;
+  margin-top: ${verticalScale(12)}px;
   elevation: 2;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
   border: 1px solid ${({ theme }) => theme.colors.surface_container_highest};
@@ -128,13 +128,6 @@ export const ResendActionText = styled.Text<{ active: boolean }>`
   margin-left: ${scale(4)}px;
 `;
 
-export const FooterContainer = styled.View`
-  margin-top: auto;
-  padding-top: ${verticalScale(32)}px;
-  border-top-width: 1px;
-  border-top-color: ${({ theme }) => theme.colors.surface_container_highest};
-  align-items: center;
-`;
 
 export const SupportRow = styled.View`
   flex-direction: row;

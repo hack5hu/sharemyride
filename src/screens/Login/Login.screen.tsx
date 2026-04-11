@@ -25,6 +25,8 @@ export const LoginScreen: React.FC = () => {
     handleSubmit,
     isValid,
     handleSocialLogin,
+    isTermsAccepted,
+    toggleTerms,
   } = useLogin();
   const t = useLocale();
 
@@ -57,6 +59,8 @@ export const LoginScreen: React.FC = () => {
               onSubmit={handleSubmit}
               isValid={isValid}
               loading={loading}
+              isTermsAccepted={isTermsAccepted}
+              onToggleTerms={toggleTerms}
             />
           </LoginCard>
         </ContentWrapper>

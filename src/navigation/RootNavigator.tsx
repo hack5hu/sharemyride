@@ -32,57 +32,75 @@ import { RideInformationScreen } from '@/screens/RideInformation';
 import { BookingConfirmedScreen } from '@/screens/BookingConfirmed';
 import { SettingsScreen } from '@/screens/Settings';
 import { RootStackParamList } from './types.d';
+import { useAuthStore } from '@/store/useAuthStore';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 export const RootNavigator = () => {
+  const { isAuthenticated, isProfileCompleted } = useAuthStore();
+
   return (
     <Stack.Navigator
-      initialRouteName="BookRideInfo"
       screenOptions={{
         headerShown: false,
         cardStyle: { backgroundColor: 'transparent' },
       }}
     >
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen
-        name="OTPVerification"
-        component={OTPVerificationScreen as any}
-      />
-      <Stack.Screen name="ProfileSetup" component={ProfileSetupScreen} />
-      <Stack.Screen name="ProfileHub" component={ProfileHubScreen} />
-      <Stack.Screen name="Dummy" component={DummyScreen as any} />
-      <Stack.Screen name="EditProfile" component={EditProfileScreen} />
-      <Stack.Screen name="TravelPreferences" component={TravelPreferencesScreen} />
-      <Stack.Screen name="VehicleDetails" component={VehicleDetailsScreen} />
-      <Stack.Screen name="ChatList" component={ChatListScreen} />
-      <Stack.Screen name="ChatDetails" component={ChatDetailsScreen as any} />
-      <Stack.Screen name="SelectLocation" component={SelectLocationScreen} />
-      <Stack.Screen name="LocationSelection" component={LocationSelectionScreen} />
-      <Stack.Screen name="MapPicker" component={MapPickerScreen as any} />
-      <Stack.Screen name="RouteSelection" component={RouteSelectionScreen as any} />
-      <Stack.Screen name="MiddleStops" component={MiddleStopsScreen as any} />
-      <Stack.Screen name="MiddleStopMap" component={MiddleStopMapScreen as any} />
-      <Stack.Screen name="DateSelection" component={DateSelectionScreen as any} />
-      <Stack.Screen name="TimeSelection" component={TimeSelectionScreen as any} />
-      <Stack.Screen name="SeatSelection" component={SeatSelectionScreen as any} />
-      <Stack.Screen name="PriceSelection" component={PriceSelectionScreen as any} />
-      <Stack.Screen name="MyRides" component={MyRidesScreen} />
-      <Stack.Screen name="RideDetails" component={RideDetailsScreen as any} />
-      <Stack.Screen 
-        name="CancelRide" 
-        component={CancelRideScreen as any}
-        options={{ presentation: 'transparentModal' }}
-      />
-      <Stack.Screen name="RequestType" component={RequestTypeScreen} />
-      <Stack.Screen name="SummaryPublish" component={SummaryPublishScreen} />
-      <Stack.Screen name="PublishSuccess" component={PublishSuccessScreen} />
-      <Stack.Screen name="BookRideInfo" component={BookRideInfoScreen} />
-      <Stack.Screen name="AvailableRides" component={AvailableRidesScreen} />
-      <Stack.Screen name="RideInformation" component={RideInformationScreen} />
-      <Stack.Screen name="BookingConfirmed" component={BookingConfirmedScreen} />
-      <Stack.Screen name="Settings" component={SettingsScreen} />
+      {!isAuthenticated ? (
+        // Auth Stack
+        <>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen
+            name="OTPVerification"
+            component={OTPVerificationScreen as any}
+          />
+        </>
+      ) : !isProfileCompleted ? (
+        // Profile Setup Stack (Mandatory)
+        <Stack.Screen 
+          name="ProfileSetup" 
+          component={ProfileSetupScreen} 
+          options={{
+            gestureEnabled: false, // Prevent back swipe on iOS
+          }}
+        />
+      ) : (
+        // Main App Stack
+        <>
+          <Stack.Screen name="BookRideInfo" component={BookRideInfoScreen} />
+          <Stack.Screen name="AvailableRides" component={AvailableRidesScreen} />
+          <Stack.Screen name="RideInformation" component={RideInformationScreen} />
+          <Stack.Screen name="BookingConfirmed" component={BookingConfirmedScreen} />
+          <Stack.Screen name="ProfileHub" component={ProfileHubScreen} />
+          <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+          <Stack.Screen name="TravelPreferences" component={TravelPreferencesScreen} />
+          <Stack.Screen name="VehicleDetails" component={VehicleDetailsScreen} />
+          <Stack.Screen name="ChatList" component={ChatListScreen} />
+          <Stack.Screen name="ChatDetails" component={ChatDetailsScreen as any} />
+          <Stack.Screen name="SelectLocation" component={SelectLocationScreen} />
+          <Stack.Screen name="LocationSelection" component={LocationSelectionScreen} />
+          <Stack.Screen name="MapPicker" component={MapPickerScreen as any} />
+          <Stack.Screen name="RouteSelection" component={RouteSelectionScreen as any} />
+          <Stack.Screen name="MiddleStops" component={MiddleStopsScreen as any} />
+          <Stack.Screen name="MiddleStopMap" component={MiddleStopMapScreen as any} />
+          <Stack.Screen name="DateSelection" component={DateSelectionScreen as any} />
+          <Stack.Screen name="TimeSelection" component={TimeSelectionScreen as any} />
+          <Stack.Screen name="SeatSelection" component={SeatSelectionScreen as any} />
+          <Stack.Screen name="PriceSelection" component={PriceSelectionScreen as any} />
+          <Stack.Screen name="MyRides" component={MyRidesScreen} />
+          <Stack.Screen name="RideDetails" component={RideDetailsScreen as any} />
+          <Stack.Screen 
+            name="CancelRide" 
+            component={CancelRideScreen as any}
+            options={{ presentation: 'transparentModal' }}
+          />
+          <Stack.Screen name="RequestType" component={RequestTypeScreen} />
+          <Stack.Screen name="SummaryPublish" component={SummaryPublishScreen} />
+          <Stack.Screen name="PublishSuccess" component={PublishSuccessScreen} />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen name="Dummy" component={DummyScreen as any} />
+        </>
+      )}
     </Stack.Navigator>
-
   );
 };

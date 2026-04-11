@@ -13,30 +13,22 @@ import {
   ScrollContainer,
   BackgroundBlob,
   IconContainer,
-  Title,
   Subtitle,
   PhoneRow,
   PhoneText,
-  EditButton,
   VerifyButton,
   VerifyButtonText,
   ResendContainer,
   ResendHintText,
   ResendActionRow,
   ResendActionText,
-  FooterContainer,
-  SupportRow,
-  AvatarImage,
-  SupportTextCol,
-  SupportLabel,
-  SupportSub,
   LinksRow,
   LinkText,
   DotSeparator,
 } from './OTPVerification.styles';
 
 export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
-  phoneNumber = '+1 (555) 000-8492',
+  phoneNumber: propPhoneNumber,
 }) => {
   const theme = useTheme();
   const navigation = useNavigation();
@@ -47,13 +39,13 @@ export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
   }>({ isVisible: false, type: 'info', message: '' });
 
   const {
-    formik,
     timer,
     loading,
-    inputRefs,
-    handleOtpChange,
-    handleKeyPress,
+    otpValue,
+    handleTextChange,
+    handleVerify,
     handleResend,
+    phoneNumber: dynamicPhoneNumber,
   } = useOTPVerification();
 
   const hideToast = () => setToastConfig({ ...toastConfig, isVisible: false });
@@ -62,9 +54,11 @@ export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
 
   const { otpVerification: t } = useLocale();
 
+  const isButtonDisabled = otpValue.length < 6 || loading;
+
   return (
     <ScreenShell
-      title={t.titleHighlight}
+      title={t.screenName}
       onBack={() => navigation.goBack()}
     >
       <Toast
@@ -85,34 +79,23 @@ export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
             />
           </IconContainer>
 
-          <Title>
-            {t.titlePrefix}{' '}
-            <Title style={{ color: theme.colors.primary }}>
-              {t.titleHighlight}
-            </Title>
-          </Title>
           <Subtitle>{t.subtitle}</Subtitle>
 
           <PhoneRow>
-            <PhoneText>{phoneNumber}</PhoneText>
-            <EditButton>
-              <Icon name="edit" size={20} color={theme.colors.primary} />
-            </EditButton>
+            <PhoneText>+91 {dynamicPhoneNumber || propPhoneNumber}</PhoneText>
           </PhoneRow>
 
           <OtpInput
             length={6}
-            values={formik.values.otp}
-            refs={inputRefs}
-            onChangeText={handleOtpChange}
-            onKeyPress={handleKeyPress}
+            onTextChange={handleTextChange}
+            onFilled={handleVerify}
             error={false}
           />
 
           <VerifyButton
-            onPress={() => formik.handleSubmit()}
+            onPress={() => handleVerify(otpValue)}
             activeOpacity={0.8}
-            disabled={loading}
+            disabled={isButtonDisabled}
           >
             <VerifyButtonText>
               {loading ? t.verifyingButton : t.verifyButton}
@@ -140,20 +123,6 @@ export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
               </ResendActionText>
             </ResendActionRow>
           </ResendContainer>
-
-          <FooterContainer>
-            <SupportRow>
-              <AvatarImage
-                source={{
-                  uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCcPdOwGM5q9KVqnJhNOKhYKjdCqLHPB0Yw19BaVuK65j8SnuMa1XRpWYiskYjFHOTKoKa2F56K44A_AB4PX4ulZpv1OCqbhDWRLjkf8TJrFwZiA2w6QvK0NrKZYSPEhRyAhtDW8A0kMoAprlCkYeLt1ydZa4zvZN2vkaEU6kJNKbgopW7FAyiVJVz31PDpIzBa3w7tevcEl4nQy7Jn2CgOOitZvq7uA8W_O_pCh-ExfAdl9puRHleZruqBFTxWhcraYQbuojF1AVZs',
-                }}
-              />
-              <SupportTextCol>
-                <SupportLabel>{t.secureAuth}</SupportLabel>
-                <SupportSub>{t.needHelp}</SupportSub>
-              </SupportTextCol>
-            </SupportRow>
-          </FooterContainer>
         </ScrollContainer>
       </KeyboardContainer>
       <LinksRow

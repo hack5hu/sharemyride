@@ -2,13 +2,14 @@ import { Translations } from './types';
 
 export const hi: Translations = {
   login: {
-    brandName: 'द डिजिटल क्यूरेटर',
-    brandTagline: 'अपने डिजिटल अभयारण्य में कदम रखें।',
+    brandName: 'Ride Pool Company',
+    brandTagline: 'सत्यापित सामुदायिक भागीदारों के साथ अपनी यात्रा पूरी करें।',
     phoneLabel: 'फ़ोन नंबर',
-    phonePlaceholder: '+91 98765 43210',
+    phonePlaceholder: '1234567890',
     phoneError: 'कृपया एक वैध फ़ोन नंबर दर्ज करें',
     getOtp: 'OTP प्राप्त करें',
-    otpInfoBox: 'आपके खाते को सुरक्षित रूप से सत्यापित करने के लिए हम 6-अंकीय कोड भेजेंगे।',
+    otpInfoBox:
+      'आपके खाते को सुरक्षित रूप से सत्यापित करने के लिए हम 6-अंकीय कोड भेजेंगे।',
     noAccount: 'खाता नहीं है?',
     signUp: 'साइन अप करें',
     orContinueWith: 'या इसके साथ जारी रखें',
@@ -16,7 +17,8 @@ export const hi: Translations = {
   otpVerification: {
     titlePrefix: 'पुष्टि करें कि यह',
     titleHighlight: 'आप',
-    subtitle: 'हमने आपके पंजीकृत मोबाइल नंबर पर 6 अंकों का सत्यापन कोड भेजा है:',
+    subtitle:
+      'हमने आपके पंजीकृत मोबाइल नंबर पर 6 अंकों का सत्यापन कोड भेजा है:',
     verifyButton: 'पहचान सत्यापित करें',
     verifyingButton: 'सत्यापित किया जा रहा है...',
     didNotReceive: 'कोड प्राप्त नहीं हुआ?',
@@ -30,8 +32,10 @@ export const hi: Translations = {
   profileSetup: {
     headerTitle: 'वरदंत ट्रस्ट',
     heroTitle: 'घर वापसी पर स्वागत है।',
-    heroSubtitle: 'आइए आपके अनुभव को बेहतर बनाने के लिए आपकी डिजिटल पहचान को व्यवस्थित करें।',
-    dobRequiredError: 'आगे बढ़ने के लिए कृपया अपनी कानूनी जन्म तिथि प्रदान करें।',
+    heroSubtitle:
+      'आइए आपके अनुभव को बेहतर बनाने के लिए आपकी डिजिटल पहचान को व्यवस्थित करें।',
+    dobRequiredError:
+      'आगे बढ़ने के लिए कृपया अपनी कानूनी जन्म तिथि प्रदान करें।',
     identityProfile: 'पहचान प्रोफ़ाइल',
     publicPresence: 'सार्वजनिक उपस्थिति',
     fullNameLabel: 'पूरा नाम',
@@ -67,7 +71,8 @@ export const hi: Translations = {
     rides: 'सवारियां',
     memberSince: 'सदस्यता की शुरुआत',
     trustScore: 'विश्वास स्कोर',
-    trustScoreDescr: 'आपकी निरंतरता समुदाय को सभी के लिए सुरक्षित और अधिक विश्वसनीय बनाती है।',
+    trustScoreDescr:
+      'आपकी निरंतरता समुदाय को सभी के लिए सुरक्षित और अधिक विश्वसनीय बनाती है।',
     accountManagement: 'खाता प्रबंधन',
     supportLegal: 'सहायता और कानूनी',
     editProfile: 'प्रोफ़ाइल संपादित करें',
@@ -102,11 +107,12 @@ export const hi: Translations = {
     emailLabel: 'ईमेल पता',
     emailPlaceholder: 'जैसे: julianne@sharmyride.com',
     phoneLabel: 'फ़ोन नंबर',
-    phonePlaceholder: '+1 (555) 000-0000',
+    phonePlaceholder: '1234567890',
     dobLabel: 'जन्म तिथि',
     genderLabel: 'लिंग',
     bioLabel: 'संक्षिप्त विवरण',
-    bioPlaceholder: 'प्रो पूलर • डाउनटाउन और सिलिकॉन वैली के बीच निरंतर यात्री...',
+    bioPlaceholder:
+      'प्रो पूलर • डाउनटाउन और सिलिकॉन वैली के बीच निरंतर यात्री...',
     cancel: 'रद्द करें',
     saveChanges: 'बदलाव सुरक्षित करें',
     fullNameRequired: 'पूरा नाम अनिवार्य है',
@@ -121,11 +127,14 @@ export const hi: Translations = {
   },
   dummyContent: {
     aboutTitle: 'हमारी कहानी',
-    aboutBody: 'RidePoolCompany सिर्फ एक कारपूलिंग ऐप नहीं है। हम एक "RPC कम्युनिटी" हैं—एक पेशेवर समुदाय जो समय, विश्वसनीयता और सामाजिक जुड़ाव को महत्व देता है। 2024 में स्थापित, हमारा मिशन हर यात्रा को जुड़ाव और साझा उत्पादकता की एक उद्देश्यपूर्ण यात्रा में बदलना है।',
+    aboutBody:
+      'RidePoolCompany सिर्फ एक कारपूलिंग ऐप नहीं है। हम एक "RPC कम्युनिटी" हैं—एक पेशेवर समुदाय जो समय, विश्वसनीयता और सामाजिक जुड़ाव को महत्व देता है। 2024 में स्थापित, हमारा मिशन हर यात्रा को जुड़ाव और साझा उत्पादकता की एक उद्देश्यपूर्ण यात्रा में बदलना है।',
     helpTitle: 'सहायता चाहिए?',
-    helpBody: 'चाहे आप पिकअप पॉइंट पर फंसे हों या कोई तकनीकी समस्या हो, हमारी 24/7 सहायता टीम यहाँ है। हमारे सामुदायिक मंच से जुड़ें या अपनी सभी शंकाओं के त्वरित समाधान के लिए हमारी एआई सहायक "सारा" से चैट करें।',
+    helpBody:
+      'चाहे आप पिकअप पॉइंट पर फंसे हों या कोई तकनीकी समस्या हो, हमारी 24/7 सहायता टीम यहाँ है। हमारे सामुदायिक मंच से जुड़ें या अपनी सभी शंकाओं के त्वरित समाधान के लिए हमारी एआई सहायक "सारा" से चैट करें।',
     termsTitle: 'उपयोगकर्ता समझौता',
-    termsBody: 'RidePoolCompany का उपयोग करके, आप हमारे सामुदायिक सुरक्षा मानकों का सम्मान करने के लिए सहमत होते हैं। इसमें समय की पाबंदी, वाहन की स्वच्छता बनाए रखना और आधार और ड्राइविंग क्रेडेंशियल के माध्यम से अपनी पहचान सत्यापित करना शामिल है।',
+    termsBody:
+      'मैंने RidePool Company की शर्तों और गोपनीयता नीति को पढ़ लिया है और मैं उनसे सहमत हूँ।',
   },
   travelPreferences: {
     headerTitle: 'यात्रा प्राथमिकताएं',
@@ -196,13 +205,15 @@ export const hi: Translations = {
     coRider: 'सह-यात्री',
     joiningAt: '{stop} पर जुड़ रहे हैं',
     trustTitle: 'वरदंत ट्रस्ट सुरक्षा',
-    trustDescription: 'आपकी सवारी हमारे व्यापक सुरक्षा प्रोटोकॉल द्वारा कवर की गई है। रीयल-टाइम आपातकालीन शेयरिंग सक्रिय है।',
+    trustDescription:
+      'आपकी सवारी हमारे व्यापक सुरक्षा प्रोटोकॉल द्वारा कवर की गई है। रीयल-टाइम आपातकालीन शेयरिंग सक्रिय है।',
     cancelRide: 'सवारी रद्द करें',
     chat: 'चैट',
   },
   cancelRide: {
     title: 'सवारी रद्द करें?',
-    subtitle: 'कृपया हमें बताएं कि आप सवारी क्यों रद्द कर रहे हैं। इससे हमें आपके सवारी अनुभव को बेहतर बनाने में मदद मिलेगी।',
+    subtitle:
+      'कृपया हमें बताएं कि आप सवारी क्यों रद्द कर रहे हैं। इससे हमें आपके सवारी अनुभव को बेहतर बनाने में मदद मिलेगी।',
     reasonDriverFar: 'ड्राइवर बहुत दूर है',
     reasonChangedMind: 'मेरा मन बदल गया',
     reasonCheaperRide: 'एक सस्ती सवारी मिल गई',
@@ -222,7 +233,8 @@ export const hi: Translations = {
     destinationLabel: 'अंतिम गंतव्य',
     destinationPlaceholder: 'कहाँ जाना है?',
     continueJourney: 'यात्रा जारी रखें',
-    contextualInfo: 'जब तक आप किसी भागीदार की पुष्टि नहीं करते तब तक आपका स्थान निजी रहता है। सर्वोत्तम मिलान के लिए सटीकता महत्वपूर्ण है।',
+    contextualInfo:
+      'जब तक आप किसी भागीदार की पुष्टि नहीं करते तब तक आपका स्थान निजी रहता है। सर्वोत्तम मिलान के लिए सटीकता महत्वपूर्ण है।',
   },
   mapPicker: {
     title: 'अपना स्थान चुनें',
@@ -236,16 +248,19 @@ export const hi: Translations = {
     headerTitle: 'राइड प्रकाशित करें',
     stepIndicator: 'चरण 2/9',
     title: 'अपना मार्ग चुनें',
-    subtitle: 'वह रास्ता चुनें जो आपकी यात्रा और यात्रियों के लिए सबसे अच्छा हो।',
+    subtitle:
+      'वह रास्ता चुनें जो आपकी यात्रा और यात्रियों के लिए सबसे अच्छा हो।',
     recommended: 'अनुशंसित',
-    trustBadge: 'हमारे एल्गोरिदम ने आपकी सुरक्षा के लिए इन अनुकूलित पारगमन मार्गों का सुझाव देने के लिए 1.2 मिलियन पैटर्न का विश्लेषण किया।',
+    trustBadge:
+      'हमारे एल्गोरिदम ने आपकी सुरक्षा के लिए इन अनुकूलित पारगमन मार्गों का सुझाव देने के लिए 1.2 मिलियन पैटर्न का विश्लेषण किया।',
     continue: 'जारी रखें',
   },
   middleStops: {
     headerTitle: 'राइड प्रकाशित करें',
     stepIndicator: '3 / 9',
     title: 'अपने मार्ग की योजना बनाएं',
-    subtitle: 'वहां स्टॉप जोड़ें जहां आप यात्रियों को लेने या छोड़ने में सहज हों।',
+    subtitle:
+      'वहां स्टॉप जोड़ें जहां आप यात्रियों को लेने या छोड़ने में सहज हों।',
     startPointLabel: 'शुरुआती बिंदु',
     stopLabel: 'स्टॉप',
     addMiddleStop: 'मध्य स्टॉप जोड़ें',
@@ -259,7 +274,8 @@ export const hi: Translations = {
     stepIndicator: '५ में से ३ कदम',
     searchPlaceholder: 'मार्ग पर एक स्टॉप खोजें...',
     whereWillYouStop: 'आप कहाँ रुकेंगे?',
-    addingStopsIncreasesInfo: 'मध्य स्टॉप जोड़ने से यात्रियों को खोजने की आपकी संभावना बढ़ जाती है',
+    addingStopsIncreasesInfo:
+      'मध्य स्टॉप जोड़ने से यात्रियों को खोजने की आपकी संभावना बढ़ जाती है',
     suggestedStoppages: 'सुझाए गए स्टॉप',
     popular: 'लोकप्रिय',
     quickExit: 'त्वरित निकास',
@@ -313,7 +329,8 @@ export const hi: Translations = {
     basePriceLabel: 'प्रति सीट आधार मूल्य',
     recommendedBadge: 'अनुशंसित मूल्य',
     frontSeatPremiumTitle: 'फ्रंट सीट प्रीमियम जोड़ें',
-    frontSeatPremiumDesc: 'उन यात्रियों के लिए फ्रंट सीट उपलब्ध कराएं जो अधिक जगह चाहते हैं।',
+    frontSeatPremiumDesc:
+      'उन यात्रियों के लिए फ्रंट सीट उपलब्ध कराएं जो अधिक जगह चाहते हैं।',
     premiumAmountLabel: 'प्रीमियम राशि',
     maxLimitNote: 'अधिकतम सीमा (+10%)',
     multiStopTitle: 'बहु-स्टॉप यात्रा स्वीकृत',
@@ -332,9 +349,11 @@ export const hi: Translations = {
   requestType: {
     headerTitle: 'Publish Ride',
     title: 'How should passengers join?',
-    subtitle: 'Decide if you want to manually approve every request or let travelers book instantly.',
+    subtitle:
+      'Decide if you want to manually approve every request or let travelers book instantly.',
     instantBookingTitle: 'Instant Booking',
-    instantBookingSubtitle: 'Passengers can book without waiting for your approval.',
+    instantBookingSubtitle:
+      'Passengers can book without waiting for your approval.',
     requestReviewTitle: 'Request & Review',
     requestReviewSubtitle: 'Review passenger profiles before confirming.',
     proTipTitle: 'PRO TIP',
@@ -363,7 +382,8 @@ export const hi: Translations = {
     title: 'प्रकाशन सफल!',
     subtitle: 'आपकी सवारी अब लाइव है।',
     infoTitle: 'सुरक्षा गार्ड सक्रिय',
-    infoText: 'आपकी यात्रा जीपीएस ट्रैक की गई है और RidePoolCompany द्वारा बीमित है।',
+    infoText:
+      'आपकी यात्रा जीपीएस ट्रैक की गई है और RidePoolCompany द्वारा बीमित है।',
     primaryCTA: 'मेरी सवारी पर जाएं',
     secondaryCTA: 'यात्रा विवरण साझा करें',
   },
@@ -381,7 +401,8 @@ export const hi: Translations = {
     recentSearchesTitle: 'Recent Searches',
     clearAll: 'Clear all',
     trustTitle: 'Safe and Verified',
-    trustDescription: 'RidePoolCompany में प्रत्येक पूल सदस्य पहचान-सत्यापित है। हमारी जांची गई कम्युनिटी के साथ शांति से यात्रा करें।',
+    trustDescription:
+      'RidePoolCompany में प्रत्येक पूल सदस्य पहचान-सत्यापित है। हमारी जांची गई कम्युनिटी के साथ शांति से यात्रा करें।',
   },
   availableRides: {
     heroTitle: 'Available Rides',
@@ -457,7 +478,8 @@ export const hi: Translations = {
     seatNumberLabel: 'सीट नंबर',
     windowPreference: 'विंडो साइड की प्राथमिकता',
     safetyGuardTitle: 'सुरक्षा गार्ड सक्रिय',
-    safetyGuardSubtitle: 'आपकी यात्रा जीपीएस ट्रैक की गई है और RidePoolCompany द्वारा बीमित है।',
+    safetyGuardSubtitle:
+      'आपकी यात्रा जीपीएस ट्रैक की गई है और RidePoolCompany द्वारा बीमित है।',
     primaryCTA: 'मेरी सवारी पर जाएं',
     secondaryCTA: 'यात्रा साझा करें',
     plateLabel: 'नंबर प्लेट',

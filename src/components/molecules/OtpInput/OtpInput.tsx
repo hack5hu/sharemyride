@@ -1,43 +1,56 @@
-import React, { useRef, useState } from 'react';
-import {
-  TextInput,
-  NativeSyntheticEvent,
-  TextInputKeyPressEventData,
-} from 'react-native';
-import { Container, DigitInput } from './OtpInput.styles';
-import { OtpInputProps } from './types';
+import React from 'react';
+import { OtpInput as ThirdPartyOtpInput } from 'react-native-otp-entry';
+import { useTheme } from 'styled-components/native';
+import { Container } from './OtpInput.styles';
+import { scale } from '@/styles';
+
+export interface OtpInputProps {
+  length?: number;
+  onTextChange: (text: string) => void;
+  onFilled?: (text: string) => void;
+  error?: boolean;
+}
 
 export const OtpInput: React.FC<OtpInputProps> = ({
   length = 6,
-  values,
-  refs,
-  onChangeText,
-  onKeyPress,
+  onTextChange,
+  onFilled,
   error,
 }) => {
-  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
+  const theme = useTheme();
 
   return (
     <Container>
-      {Array(length)
-        .fill(0)
-        .map((_, index) => (
-          <DigitInput
-            key={index}
-            ref={(el: any) => (refs.current[index] = el)}
-            value={values[index] || ''}
-            onChangeText={(text: string) => onChangeText(text, index)}
-            onKeyPress={e => onKeyPress(e, index)}
-            onFocus={() => setFocusedIndex(index)}
-            onBlur={() => setFocusedIndex(-1)}
-            isFocused={focusedIndex === index}
-            hasError={error}
-            maxLength={1}
-            keyboardType="number-pad"
-            returnKeyType="done"
-            textContentType="oneTimeCode"
-          />
-        ))}
+      <ThirdPartyOtpInput
+        numberOfDigits={length}
+        focusColor={error ? theme.colors.error : theme.colors.primary}
+        onTextChange={onTextChange}
+        onFilled={onFilled}
+        theme={{
+          containerStyle: {
+            width: '100%',
+            justifyContent: 'space-between',
+          },
+          pinCodeContainerStyle: {
+            backgroundColor: theme.colors.surface_container_lowest,
+            width: scale(48),
+            height: scale(56),
+            borderRadius: theme.roundness.md,
+            borderWidth: 1,
+            borderColor: error ? theme.colors.error : theme.colors.outline_variant,
+          },
+          pinCodeTextStyle: {
+            fontFamily: 'Plus Jakarta Sans',
+            fontSize: 20,
+            fontWeight: '600',
+            color: theme.colors.on_surface,
+          },
+          focusedPinCodeContainerStyle: {
+            borderColor: error ? theme.colors.error : theme.colors.primary,
+            borderWidth: 2,
+          },
+        }}
+      />
     </Container>
   );
 };

@@ -2,10 +2,10 @@ import { Translations } from './types';
 
 export const en: Translations = {
   login: {
-    brandName: 'The Digital Curator',
-    brandTagline: 'Step into your intentional digital sanctuary.',
+    brandName: 'The RPC',
+    brandTagline: 'Navigate your journey with verified community partners.',
     phoneLabel: 'Phone Number',
-    phonePlaceholder: '+1 (555) 000-0000',
+    phonePlaceholder: '1234567890',
     phoneError: 'Please enter a valid phone number',
     getOtp: 'Get OTP',
     otpInfoBox: "We'll send a 6-digit code to verify your account securely.",
@@ -16,7 +16,9 @@ export const en: Translations = {
   otpVerification: {
     titlePrefix: "Confirm it's",
     titleHighlight: 'you',
-    subtitle: "We've sent a 6-digit verification code to your registered mobile number:",
+    screenName: 'OTP Verification',
+    subtitle:
+      "We've sent a 6-digit verification code to your registered mobile number:",
     verifyButton: 'Verify Identity',
     verifyingButton: 'Verifying...',
     didNotReceive: "Didn't receive the code?",
@@ -30,7 +32,8 @@ export const en: Translations = {
   profileSetup: {
     headerTitle: 'Verdant Trust',
     heroTitle: 'Welcome home.',
-    heroSubtitle: "Let's curate your digital identity to tailor your experience.",
+    heroSubtitle:
+      "Let's curate your digital identity to tailor your experience.",
     dobRequiredError: 'Please provide your legal Date of Birth to proceed.',
     identityProfile: 'Identity Profile',
     publicPresence: 'Public Presence',
@@ -67,7 +70,8 @@ export const en: Translations = {
     rides: 'Rides',
     memberSince: 'Member Since',
     trustScore: 'Trust Score',
-    trustScoreDescr: 'Your consistency makes the community safer and more reliable for everyone.',
+    trustScoreDescr:
+      'Your consistency makes the community safer and more reliable for everyone.',
     accountManagement: 'Account Management',
     supportLegal: 'Support & Legal',
     editProfile: 'Edit Profile',
@@ -102,11 +106,12 @@ export const en: Translations = {
     emailLabel: 'Email Address',
     emailPlaceholder: 'E.g. julianne@sharmyride.com',
     phoneLabel: 'Phone Number',
-    phonePlaceholder: '+1 (555) 000-0000',
+    phonePlaceholder: '+1234567890',
     dobLabel: 'Date of Birth',
     genderLabel: 'Gender',
     bioLabel: 'Short Bio',
-    bioPlaceholder: 'Pro Pooler • Frequent traveler between Downtown and Silicon Valley...',
+    bioPlaceholder:
+      'Pro Pooler • Frequent traveler between Downtown and Silicon Valley...',
     cancel: 'Cancel',
     saveChanges: 'Save Changes',
     fullNameRequired: 'Full name is required',
@@ -121,11 +126,14 @@ export const en: Translations = {
   },
   dummyContent: {
     aboutTitle: 'Our Story',
-    aboutBody: 'RidePoolCompany is more than just a carpooling app. We are an RPC community—a professional network that values time, reliability, and social connectivity. Founded in 2024, our mission is to turn every commute into an intentional journey of connection and shared productivity.',
+    aboutBody:
+      'RidePoolCompany is more than just a carpooling app. We are an RPC community—a professional network that values time, reliability, and social connectivity. Founded in 2024, our mission is to turn every commute into an intentional journey of connection and shared productivity.',
     helpTitle: 'Need Assistance?',
-    helpBody: 'Whether you are stuck at a pickup point or have a technical glitch, our 24/7 support team is here. Join our community forum or chat with Sarah, our AI assistant, to get instant resolutions for all your queries.',
+    helpBody:
+      'Whether you are stuck at a pickup point or have a technical glitch, our 24/7 support team is here. Join our community forum or chat with Sarah, our AI assistant, to get instant resolutions for all your queries.',
     termsTitle: 'User Agreement',
-    termsBody: 'By using RidePoolCompany, you agree to respect our community safety standards. This includes maintaining punctuality, vehicle cleanliness, and verifying your identity through Aadhaar and driving credentials.',
+    termsBody:
+      'I have read and agree to the T&C and Privacy Policy of RidePool Company.',
   },
   travelPreferences: {
     headerTitle: 'Travel Preferences',
@@ -196,13 +204,15 @@ export const en: Translations = {
     coRider: 'Co-rider',
     joiningAt: 'Joining {stop}',
     trustTitle: 'Verdant Trust Protection',
-    trustDescription: 'Your ride is covered by our comprehensive safety protocols. Real-time emergency sharing is active.',
+    trustDescription:
+      'Your ride is covered by our comprehensive safety protocols. Real-time emergency sharing is active.',
     cancelRide: 'Cancel Ride',
     chat: 'Chat',
   },
   cancelRide: {
     title: 'Cancel Ride?',
-    subtitle: 'Please let us know why you’re cancelling. This helps us improve your ride experience.',
+    subtitle:
+      'Please let us know why you’re cancelling. This helps us improve your ride experience.',
     reasonDriverFar: 'Driver is too far',
     reasonChangedMind: 'Changed my mind',
     reasonCheaperRide: 'Found a cheaper ride',
@@ -222,7 +232,8 @@ export const en: Translations = {
     destinationLabel: 'Final Destination',
     destinationPlaceholder: 'Where to?',
     continueJourney: 'Continue Journey',
-    contextualInfo: 'Your location remains private until you confirm a drift partner. Precision is key for the best matches.',
+    contextualInfo:
+      'Your location remains private until you confirm a drift partner. Precision is key for the best matches.',
   },
   mapPicker: {
     title: 'Pick your location',
@@ -236,16 +247,19 @@ export const en: Translations = {
     headerTitle: 'Publish Ride',
     stepIndicator: 'STEP 2/9',
     title: 'Select your route',
-    subtitle: 'Choose the path that works best for your journey and passengers.',
+    subtitle:
+      'Choose the path that works best for your journey and passengers.',
     recommended: 'RECOMMENDED',
-    trustBadge: 'Our algorithm analyzed 1.2M patterns to suggest these optimized transit routes for your safety.',
+    trustBadge:
+      'Our algorithm analyzed 1.2M patterns to suggest these optimized transit routes for your safety.',
     continue: 'Continue',
   },
   middleStops: {
     headerTitle: 'Publish Ride',
     stepIndicator: '3 / 9',
     title: 'Plan your route',
-    subtitle: "Add stops where you're comfortable picking up or dropping off passengers.",
+    subtitle:
+      "Add stops where you're comfortable picking up or dropping off passengers.",
     startPointLabel: 'Start Point',
     stopLabel: 'Stop',
     addMiddleStop: 'Add Middle Stop',
@@ -259,7 +273,8 @@ export const en: Translations = {
     stepIndicator: 'Step 3 of 5',
     searchPlaceholder: 'Search for a stop along the route...',
     whereWillYouStop: 'Where will you stop?',
-    addingStopsIncreasesInfo: 'Adding middle stops increases your chances of finding passengers by up to',
+    addingStopsIncreasesInfo:
+      'Adding middle stops increases your chances of finding passengers by up to',
     suggestedStoppages: 'SUGGESTED STOPPAGES',
     popular: 'POPULAR',
     quickExit: 'QUICK EXIT',
@@ -309,11 +324,13 @@ export const en: Translations = {
   priceSelection: {
     headerTitle: 'Publish Ride',
     title: 'Set your price',
-    subtitle: 'Based on your route and distance, we suggest a fair price per passenger.',
+    subtitle:
+      'Based on your route and distance, we suggest a fair price per passenger.',
     basePriceLabel: 'Base Price per seat',
     recommendedBadge: 'Recommended Price',
     frontSeatPremiumTitle: 'Add front seat premium',
-    frontSeatPremiumDesc: 'Offer the front seat for passengers who want extra leg space. You can charge up to 10% more for this seat.',
+    frontSeatPremiumDesc:
+      'Offer the front seat for passengers who want extra leg space. You can charge up to 10% more for this seat.',
     premiumAmountLabel: 'Premium amount',
     maxLimitNote: 'Max limit reached (+10%)',
     multiStopTitle: 'Multi-stop journey detected',
@@ -332,13 +349,17 @@ export const en: Translations = {
   requestType: {
     headerTitle: 'Publish Ride',
     title: 'How should passengers join?',
-    subtitle: 'Decide if you want to manually approve every request or let travelers book instantly.',
+    subtitle:
+      'Decide if you want to manually approve every request or let travelers book instantly.',
     instantBookingTitle: 'Instant Booking',
-    instantBookingSubtitle: 'Passengers can book without waiting for your approval. Best for filling seats fast.',
+    instantBookingSubtitle:
+      'Passengers can book without waiting for your approval. Best for filling seats fast.',
     requestReviewTitle: 'Request & Review',
-    requestReviewSubtitle: 'Review passenger profiles and reviews before confirming. Total control of your ride.',
+    requestReviewSubtitle:
+      'Review passenger profiles and reviews before confirming. Total control of your ride.',
     proTipTitle: 'PRO TIP',
-    proTipText: '"Instant Booking rides are 3x more likely to be fully booked. Travelers love the convenience of immediate confirmation."',
+    proTipText:
+      '"Instant Booking rides are 3x more likely to be fully booked. Travelers love the convenience of immediate confirmation."',
     continueButton: 'Continue',
   },
   summaryPublish: {
@@ -363,7 +384,8 @@ export const en: Translations = {
     title: 'Publish Successful!',
     subtitle: 'Your ride is now live and travelers can start sending requests.',
     infoTitle: 'SAFETY GUARD ACTIVE',
-    infoText: 'Your journey is GPS tracked and insured by RidePoolCompany. Passenger identity verification is mandatory for every ride.',
+    infoText:
+      'Your journey is GPS tracked and insured by RidePoolCompany. Passenger identity verification is mandatory for every ride.',
     primaryCTA: 'Go to My Rides',
     secondaryCTA: 'Share Trip Details',
   },
@@ -381,7 +403,8 @@ export const en: Translations = {
     recentSearchesTitle: 'Recent Searches',
     clearAll: 'Clear all',
     trustTitle: 'Safe and Verified',
-    trustDescription: 'Every pool member in RidePoolCompany is identity-verified. Ride with peace of mind in our vetted community.',
+    trustDescription:
+      'Every pool member in RidePoolCompany is identity-verified. Ride with peace of mind in our vetted community.',
   },
   availableRides: {
     heroTitle: 'Available Rides',
@@ -424,7 +447,8 @@ export const en: Translations = {
     serviceFeeLabel: 'Platform service fee',
     sustainabilityFeeLabel: 'Sustainability offset',
     bookSeatButton: 'Book Seat',
-    guidelinesNote: 'By booking, you agree to our Community Guidelines and Cancellation Policy.',
+    guidelinesNote:
+      'By booking, you agree to our Community Guidelines and Cancellation Policy.',
     noSmoking: 'No Smoking',
     petsAllowed: 'Pets Allowed',
     freeWifi: 'Free Wi-Fi',
@@ -445,7 +469,8 @@ export const en: Translations = {
     seatSelected: '{count} Seat selected',
     totalPayable: 'Total Payable',
     continue: 'Continue',
-    holdTimerNote: 'Seats are held for 5:00 minutes to ensure a fair booking experience.',
+    holdTimerNote:
+      'Seats are held for 5:00 minutes to ensure a fair booking experience.',
   },
   bookingConfirmed: {
     successTitle: 'Booking Successful!',
@@ -457,7 +482,8 @@ export const en: Translations = {
     seatNumberLabel: 'Seat Number',
     windowPreference: 'Window side preferred',
     safetyGuardTitle: 'Safety Guard Active',
-    safetyGuardSubtitle: 'Your journey is GPS tracked and insured by RidePoolCompany.',
+    safetyGuardSubtitle:
+      'Your journey is GPS tracked and insured by RidePoolCompany.',
     primaryCTA: 'Go to My Rides',
     secondaryCTA: 'Share Trip Details',
     plateLabel: 'Plate',
@@ -486,10 +512,3 @@ export const en: Translations = {
     version: 'App Version 4.12.0-verdant',
   },
 };
-
-
-
-
-
-
-

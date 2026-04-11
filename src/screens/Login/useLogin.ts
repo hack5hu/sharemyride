@@ -1,19 +1,31 @@
 import { useState } from 'react';
 import { useFormik } from 'formik';
 import { useNavigation } from '@react-navigation/native';
+import { authService } from '@/serviceManager/authService';
+import { Alert } from 'react-native';
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const navigation = useNavigation<any>();
 
-  const handleGetOtp = (phone: string) => {
+  const toggleTerms = () => setIsTermsAccepted((prev) => !prev);
+
+  const handleGetOtp = async (phone: string) => {
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const response = await authService.login(phone, true);
+      
+      if (response.data.status === 'success' || response.status === 200) {
+        navigation.navigate('OTPVerification', { phoneNumber: phone });
+      } else {
+        Alert.alert('Login', response.data.message || 'Verification failed');
+      }
+    } catch (error: any) {
+      Alert.alert('Verification Error', error.message || 'Something went wrong');
+    } finally {
       setLoading(false);
-      console.log('OTP sent to:', phone);
-      navigation.navigate('OTPVerification', { phoneNumber: phone });
-    }, 2000);
+    }
   };
 
   const formik = useFormik({
@@ -47,5 +59,7 @@ export const useLogin = () => {
     handleSubmit: formik.handleSubmit,
     isValid: formik.isValid && formik.dirty,
     handleSocialLogin,
+    isTermsAccepted,
+    toggleTerms,
   };
 };

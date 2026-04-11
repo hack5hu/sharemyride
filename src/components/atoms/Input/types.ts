@@ -5,5 +5,6 @@ export interface InputProps extends TextInputProps {
   error?: string;
   leftIcon?: string;
   rightIcon?: string;
+  prefix?: string;
   containerStyle?: any;
 }

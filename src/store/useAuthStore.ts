@@ -7,8 +7,10 @@ interface AuthState {
   token: string | null;
   user: any | null;
   isAuthenticated: boolean;
-  setAuth: (user: any, token: string) => Promise<void>;
-  logout: () => Promise<void>;
+  isProfileCompleted: boolean;
+  setAuth: (user: any, token: string, isProfileCompleted?: boolean) => void;
+  setProfileCompleted: (value: boolean) => void;
+  logout: () => void;
   initialize: () => Promise<void>;
 }
 
@@ -18,19 +20,22 @@ export const useAuthStore = create<AuthState>()(
       token: null,
       user: null,
       isAuthenticated: false,
+      isProfileCompleted: false,
       
-      setAuth: async (user, token) => {
-        await Keychain.setGenericPassword('auth_token', token);
-        set({ user, token, isAuthenticated: true });
+      setAuth: (user, token, isProfileCompleted = false) => {
+        set({ user, token, isAuthenticated: true, isProfileCompleted });
+      },
+
+      setProfileCompleted: (value) => {
+        set({ isProfileCompleted: value });
       },
       
-      logout: async () => {
-        await Keychain.resetGenericPassword();
-        set({ user: null, token: null, isAuthenticated: false });
+      logout: () => {
+        set({ user: null, token: null, isAuthenticated: false, isProfileCompleted: false });
       },
       
       initialize: async () => {
-        const credentials = await Keychain.getGenericPassword();
+        const credentials = await Keychain.getGenericPassword({ service: 'auth_token' });
         if (credentials) {
           set({ 
             token: credentials.password, 
@@ -42,6 +47,8 @@ export const useAuthStore = create<AuthState>()(
     {
       name: 'auth-storage',
       storage: createJSONStorage(() => mmkvStorage),
+      // We explicitly don't persist tokens in MMKV here; Keychain is the source of truth.
+      // But we persist 'token' in state for easy access in UI if needed.
     }
   )
 );

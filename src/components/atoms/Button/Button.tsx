@@ -39,7 +39,12 @@ export const Button: React.FC<ButtonProps> = ({
     return (
       <StyledButton disabled={disabled || loading} activeOpacity={0.8} {...props}>
         <GradientBackground
-          colors={[theme.colors.primary, theme.colors.primary_container]}
+          colors={
+            disabled || loading
+              ? [theme.colors.outline_variant, theme.colors.outline_variant]
+              : [theme.colors.primary, theme.colors.primary_container]
+          }
+          disabled={disabled || loading}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >

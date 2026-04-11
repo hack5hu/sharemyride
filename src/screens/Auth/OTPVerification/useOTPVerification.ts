@@ -1,14 +1,17 @@
-import { useState, useRef, useEffect } from 'react';
-import { TextInput } from 'react-native';
-import { useFormik } from 'formik';
-import { useNavigation } from '@react-navigation/native';
+import { useState, useEffect } from 'react';
+import { Alert } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { authService } from '@/serviceManager/authService';
 import { useAuthStore } from '@/store/useAuthStore';
 
 export const useOTPVerification = () => {
   const [timer, setTimer] = useState(45);
   const [loading, setLoading] = useState(false);
+  const [otpValue, setOtpValue] = useState('');
   const navigation = useNavigation<any>();
-  const inputRefs = useRef<(TextInput | null)[]>([]);
+  const route = useRoute<any>();
+  const { phoneNumber } = route.params || {};
+  
   const { setAuth } = useAuthStore();
 
   useEffect(() => {
@@ -18,64 +21,61 @@ export const useOTPVerification = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const formik = useFormik({
-    initialValues: { otp: ['', '', '', '', '', ''] },
-    onSubmit: values => {
-      const code = values.otp.join('');
-      if (code.length === 6) {
-        handleVerify(code);
-      }
-    },
-  });
-
-  const handleOtpChange = (text: string, index: number) => {
-    const newOtp = [...formik.values.otp];
-    newOtp[index] = text.slice(-1);
-    formik.setFieldValue('otp', newOtp);
-
-    if (text && index < 5) {
-      inputRefs.current[index + 1]?.focus();
-    }
-  };
-
-  const handleKeyPress = (e: any, index: number) => {
-    if (
-      e.nativeEvent.key === 'Backspace' &&
-      !formik.values.otp[index] &&
-      index > 0
-    ) {
-      inputRefs.current[index - 1]?.focus();
-    }
+  const handleTextChange = (text: string) => {
+    setOtpValue(text);
   };
 
   const handleVerify = async (code: string) => {
+    if (!phoneNumber) {
+      Alert.alert('Error', 'Phone number missing');
+      return;
+    }
+    
     setLoading(true);
-    // Simulate API verification call
-    setTimeout(async () => {
-      console.log('Verifying OTP:', code);
-      // Store auth state (mock user data)
-      await setAuth(
-        { id: '123', name: 'John Doe', phone: '1234567890' },
-        'mock_jwt_token_safe_storage'
-      );
+    try {
+      const response = await authService.verifyOtp(phoneNumber, code);
+      
+      if (response.data.status === 'success' || response.status === 200) {
+        const { token, userId, userProfileCompleted } = response.data;
+        
+        // Store auth state in Zustand
+        await setAuth(
+          { id: userId, phone: phoneNumber },
+          token,
+          userProfileCompleted
+        );
+
+        setLoading(false);
+        
+        // Navigation is handled by RootNavigator reacting to store changes
+        // but we can also trigger it here if needed. 
+        // For now, let's let the RootNavigator handle the switch.
+      } else {
+        Alert.alert('Verification Failed', response.data.message || 'Invalid OTP');
+        setLoading(false);
+      }
+    } catch (error: any) {
+      Alert.alert('Error', error.message || 'Verification failed');
       setLoading(false);
-      // Navigate to BookRideInfo (Home/Main screen)
-      navigation.navigate('BookRideInfo');
-    }, 1500);
+    }
   };
 
-  const handleResend = () => {
+  const handleResend = async () => {
     setTimer(45);
-    console.log('OTP Resent');
+    try {
+      await authService.resendOtp(phoneNumber);
+    } catch (error: any) {
+      Alert.alert('Error', error.message || 'Failed to resend OTP');
+    }
   };
 
   return {
-    formik,
     timer,
     loading,
-    inputRefs,
-    handleOtpChange,
-    handleKeyPress,
+    otpValue,
+    handleTextChange,
+    handleVerify,
     handleResend,
+    phoneNumber,
   };
 };

@@ -53,7 +53,7 @@ export const LabelText = styled.Text`
   text-transform: uppercase;
   letter-spacing: 1px;
   color: ${({ theme }) => theme.colors.on_surface_variant};
-  padding-left: ${scale(4)}px;
+
 `;
 
 export const ErrorText = styled.Text`

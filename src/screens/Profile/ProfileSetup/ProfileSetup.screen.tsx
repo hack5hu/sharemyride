@@ -1,10 +1,8 @@
-import React from 'react';
-import { ScrollView, KeyboardAvoidingView, Platform, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { ScrollView, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
 import { useTheme } from 'styled-components/native';
-import { useNavigation } from '@react-navigation/native';
 import { Button } from '@/components/atoms/Button';
 import { Typography } from '@/components/atoms/Typography';
-import { IconButton } from '@/components/atoms/IconButton';
 import { InfoBar } from '@/components/molecules/InfoBar';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { IdentityProfileCard } from '@/components/organisms/IdentityProfileCard';
@@ -19,13 +17,27 @@ import {
 
 export const ProfileSetupScreen: React.FC = () => {
   const theme = useTheme();
-  const navigation = useNavigation();
   const { formik, t } = useProfileSetup();
+
+  // Prevent hardware back button on Android to enforce mandatory flow
+  useEffect(() => {
+    const backAction = () => {
+      // Return true to prevent default back action
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <ScreenShell
       title={t('profileSetup.headerTitle')}
-      onBack={() => navigation.goBack()}
+      // onBack is omitted to hide the back button in the header
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -44,8 +56,6 @@ export const ProfileSetupScreen: React.FC = () => {
                 {t('profileSetup.heroSubtitle')}
               </Typography>
             </HeroSection>
-
-           
 
             <IdentityProfileCard
               values={formik.values}
@@ -78,6 +88,7 @@ export const ProfileSetupScreen: React.FC = () => {
                 variant="primary"
                 onPress={() => formik.handleSubmit()}
                 style={{ marginTop: 16 }}
+                loading={formik.isSubmitting}
               >
                 {t('profileSetup.completeSetup')}
               </Button>
