@@ -34,7 +34,7 @@ export const LocationSelectionTemplate: React.FC<LocationSelectionTemplateProps>
   const { locationSelection, routeSelection } = useLocale();
 
   return (
-    <ScreenShell title={routeSelection.headerTitle}>
+    <ScreenShell>
       <MainContent>
         <HeaderSection>
           <TitleContainer>

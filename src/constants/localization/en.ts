@@ -243,6 +243,7 @@ export const en: Translations = {
     setDestination: 'SET DESTINATION',
     selectedArea: 'Selected Area',
     selectLocation: 'Select Location',
+    recentSearches: 'Recent Searches',
   },
   routeSelection: {
     headerTitle: 'Publish Ride',

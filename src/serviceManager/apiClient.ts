@@ -1,9 +1,9 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import * as Keychain from 'react-native-keychain';
-import { API_ENDPOINTS } from '@/constants/apiEndpoints';
+import { API_ENDPOINTS, BASE_URL } from '@/constants/apiEndpoints';
 
 const apiClient = axios.create({
-  baseURL: 'http://13.61.176.230:8080',
+  baseURL: BASE_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

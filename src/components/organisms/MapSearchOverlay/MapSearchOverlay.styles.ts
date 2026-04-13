@@ -3,12 +3,8 @@ import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const OverlayContainer = styled.View`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  padding: 0 ${verticalScale(16)}px ${verticalScale(5)}px;
   z-index: 30;
-  padding: ${moderateScale(24)}px;
 `;
 
 export const TopBarMockup = styled.View`

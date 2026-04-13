@@ -5,28 +5,47 @@ import { useMapPicker } from './useMapPicker';
 export const MapPickerScreen: React.FC = () => {
   const {
     pickerType,
-    mapImageSource,
-    mockLocations,
+    region,
+    searchQuery,
+    setSearchQuery,
+    searchResults,
+    history,
     selectedLocation,
     handleBackPress,
     handleSearchSelect,
+    handleRegionChangeComplete,
     handleConfirmLocation,
+    cameraRef,
+    mapRef,
+    isReverseGeocoding,
+    isInitiallyCentered,
+    setIsInitiallyCentered,
+    isMapVisible,
   } = useMapPicker();
 
   return (
     <MapPickerTemplate
       pickerType={pickerType}
-      mapImageSource={mapImageSource}
+      region={region}
+      onRegionChangeComplete={handleRegionChangeComplete}
+      mapRef={mapRef}
+      cameraRef={cameraRef}
+      isMapVisible={isMapVisible}
+      isInitiallyCentered={isInitiallyCentered}
+      setIsInitiallyCentered={setIsInitiallyCentered}
       searchOverlayProps={{
         onBackPress: handleBackPress,
         onSelectLocation: handleSearchSelect,
-        mockLocations,
+        searchQuery,
+        onSearchChange: setSearchQuery,
+        results: searchResults,
+        history,
       }}
       locationDetailsProps={{
-        locationName: selectedLocation?.name,
-        locationAddress: selectedLocation?.address,
+        locationName: isReverseGeocoding ? 'Locating...' : selectedLocation?.name,
+        locationAddress: isReverseGeocoding ? 'Please wait...' : selectedLocation?.address,
         onSelect: handleConfirmLocation,
-        disabled: !selectedLocation,
+        disabled: !selectedLocation || isReverseGeocoding,
       }}
     />
   );

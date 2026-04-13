@@ -244,6 +244,7 @@ export interface MapPickerTranslations {
   setDestination: string;
   selectedArea: string;
   selectLocation: string;
+  recentSearches: string;
 }
 
 export interface RouteSelectionTranslations {

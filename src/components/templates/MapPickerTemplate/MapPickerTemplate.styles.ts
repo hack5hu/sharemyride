@@ -2,6 +2,8 @@ import styled from 'styled-components/native';
 import { Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
+import { Map } from '@maplibre/maplibre-react-native';
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -10,10 +12,11 @@ export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container};
 `;
 
-export const MapImageBackground = styled.ImageBackground`
-  width: ${width}px;
-  height: ${height}px;
-  position: absolute;
+
+export const StyledMapView = styled(Map)`
+  flex: 1;
+  width: 100%;
+  height: 100%;
 `;
 
 export const GradientOverlay = styled(LinearGradient).attrs(({ theme }) => ({
@@ -59,22 +62,6 @@ export const TooltipText = styled.Text`
   letter-spacing: 1px;
 `;
 
-export const PinCircle = styled.View`
-  width: ${moderateScale(48)}px;
-  height: ${moderateScale(48)}px;
-  border-radius: 9999px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  border-width: ${moderateScale(4)}px;
-  border-color: ${({ theme }) => theme.colors.on_primary};
-  align-items: center;
-  justify-content: center;
-  shadow-color: rgb(0,0,0);
-  shadow-offset: 0px 20px;
-  shadow-opacity: 0.3;
-  shadow-radius: 20px;
-  elevation: 10;
-`;
-
 export const PinShadow = styled.View`
   position: absolute;
   bottom: -4px;
@@ -82,4 +69,36 @@ export const PinShadow = styled.View`
   height: ${verticalScale(4)}px;
   background-color: rgba(0,0,0,0.2);
   border-radius: 9999px;
+`;
+
+export const SelectButtonContainer = styled.View`
+  margin: ${verticalScale(24)}px;
+`;
+
+export const SelectGradient = styled(LinearGradient).attrs(({ theme }) => ({
+  colors: [theme.colors.primary, theme.colors.primary_container] as string[],
+  start: { x: 0, y: 0 },
+  end: { x: 1, y: 1 },
+}))`
+  width: 100%;
+  padding-vertical: ${verticalScale(20)}px;
+  border-radius: ${moderateScale(16)}px;
+  align-items: center;
+  shadow-color: ${({ theme }) => theme.colors.primary};
+  shadow-offset: 0px 12px;
+  shadow-opacity: 0.25;
+  shadow-radius: 24px;
+  elevation: 8;
+`;
+
+export const SelectButton = styled.TouchableOpacity`
+  width: 100%;
+  align-items: center;
+`;
+
+export const SelectButtonText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 800;
+  font-size: ${responsiveFont(18)}px;
+  color: ${({ theme }) => theme.colors.on_primary};
 `;

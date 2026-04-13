@@ -59,7 +59,7 @@ export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
   return (
     <ScreenShell
       title={t.screenName}
-      onBack={() => navigation.goBack()}
+      onBack={true}
     >
       <Toast
         type={toastConfig.type}

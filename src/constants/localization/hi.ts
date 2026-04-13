@@ -245,6 +245,7 @@ export const hi: Translations = {
     setDestination: 'गंतव्य सेट करें',
     selectedArea: 'चयनित क्षेत्र',
     selectLocation: 'स्थान चुनें',
+    recentSearches: 'हाल की खोजें',
   },
   routeSelection: {
     headerTitle: 'राइड प्रकाशित करें',

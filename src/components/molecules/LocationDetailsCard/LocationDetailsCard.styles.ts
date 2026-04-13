@@ -71,7 +71,7 @@ export const LocationSubtitle = styled.Text`
 `;
 
 export const SelectButtonContainer = styled.View`
-  margin-top: ${verticalScale(32)}px;
+  margin: ${verticalScale(32)}px;
 `;
 
 export const SelectGradient = styled(LinearGradient).attrs(({ theme }) => ({

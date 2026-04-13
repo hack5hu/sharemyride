@@ -4,10 +4,6 @@ import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import {
   OverlayContainer,
-  TopBarMockup,
-  BackButton,
-  Title,
-  Spacer,
   SearchInputContainer,
   SearchInput,
   LocationButton,
@@ -19,49 +15,40 @@ import {
   ResultSubtitle,
 } from './MapSearchOverlay.styles';
 import { moderateScale } from '@/styles';
-
-interface MockLocation {
-  id: string;
-  name: string;
-  address: string;
-}
+import { Location } from '@/store/useLocationStore';
 
 export interface MapSearchOverlayProps {
   onBackPress: () => void;
-  onSelectLocation: (location: MockLocation) => void;
-  mockLocations: MockLocation[];
+  onSelectLocation: (location: Location) => void;
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
+  results: Location[];
+  history: Location[];
 }
 
 export const MapSearchOverlay: React.FC<MapSearchOverlayProps> = ({
   onBackPress,
   onSelectLocation,
-  mockLocations,
+  searchQuery,
+  onSearchChange,
+  results,
+  history,
 }) => {
   const theme = useTheme();
   const { mapPicker } = useLocale();
-  const [searchQuery, setSearchQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
-  const filteredLocations = searchQuery.trim().length > 0
-    ? mockLocations.filter(loc => loc.name.toLowerCase().includes(searchQuery.toLowerCase()))
-    : [];
+  const displayList = searchQuery.trim().length > 0 ? results : history;
+  const isHistory = searchQuery.trim().length === 0;
 
   return (
     <OverlayContainer>
-      <TopBarMockup>
-        <BackButton onPress={onBackPress}>
-          <MaterialIcons name="arrow-back" size={moderateScale(24)} color={theme.colors.primary} />
-        </BackButton>
-        <Title>{mapPicker.title}</Title>
-        <Spacer />
-      </TopBarMockup>
-
       <SearchInputContainer $isFocused={isFocused}>
         <MaterialIcons name="search" size={moderateScale(24)} color={theme.colors.on_surface_variant} />
         <SearchInput
           placeholder={mapPicker.searchPlaceholder}
           value={searchQuery}
-          onChangeText={setSearchQuery}
+          onChangeText={onSearchChange}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
         />
@@ -70,19 +57,25 @@ export const MapSearchOverlay: React.FC<MapSearchOverlayProps> = ({
         </LocationButton>
       </SearchInputContainer>
 
-      {searchQuery.trim().length > 0 && filteredLocations.length > 0 && (
+      {displayList.length > 0 && (
         <SearchResultsBox>
-          {filteredLocations.map((loc, idx) => (
-            <ResultItem key={loc.id} onPress={() => {
-              setSearchQuery(''); 
-              onSelectLocation(loc);
-            }}>
+          {isHistory && (
+             <ResultTitle style={{ paddingHorizontal: moderateScale(16), paddingVertical: moderateScale(8), fontSize: moderateScale(12), color: theme.colors.on_surface_variant }}>
+               {mapPicker.recentSearches || 'Recent Searches'}
+             </ResultTitle>
+          )}
+          {displayList.map((loc) => (
+            <ResultItem key={loc.id} onPress={() => onSelectLocation(loc)}>
               <ResultIconBox>
-                <MaterialIcons name="place" size={moderateScale(20)} color={theme.colors.primary} />
+                <MaterialIcons 
+                  name={isHistory ? "history" : "place"} 
+                  size={moderateScale(20)} 
+                  color={theme.colors.primary} 
+                />
               </ResultIconBox>
               <ResultTextContainer>
                 <ResultTitle>{loc.name}</ResultTitle>
-                <ResultSubtitle>{loc.address}</ResultSubtitle>
+                <ResultSubtitle numberOfLines={1}>{loc.address}</ResultSubtitle>
               </ResultTextContainer>
             </ResultItem>
           ))}
@@ -91,3 +84,4 @@ export const MapSearchOverlay: React.FC<MapSearchOverlayProps> = ({
     </OverlayContainer>
   );
 };
+

@@ -1,4 +1,5 @@
-import apiClient from './apiClient';
+import * as Keychain from 'react-native-keychain';
+import { BASE_URL, API_ENDPOINTS } from '@/constants/apiEndpoints';
 
 export interface ProfileUpdateData {
   fullName: string;
@@ -12,7 +13,7 @@ export const userService = {
     try {
       const formData = new FormData();
 
-      // Convert DD/MM/YYYY -> YYYY-MM-DD if needed
+      // Convert DD/MM/YYYY -> YYYY-MM-DD
       let formattedDate = data.dob;
       if (formattedDate && formattedDate.includes('/')) {
         const parts = formattedDate.split('/');
@@ -21,34 +22,42 @@ export const userService = {
         }
       }
 
-      const profilePayload = {
-        name: data.fullName,
-        date: '2001-01-2000',
-        gender: data.gender ? data.gender.toUpperCase() : 'OTHER',
-      };
-
-      // We pass it as an object with `string` and `type` so that React Native's FormData
-      // adds the `Content-Type: application/json` header for this specific part,
-      // avoiding a 415 Unsupported Media Type error from the backend.
-      formData.append('profile', {
-        string: JSON.stringify(profilePayload),
-        type: 'application/json',
-      } as any);
+      // Appending as separate strings as confirmed working for the backend
+      formData.append('name', data.fullName);
+      formData.append('date', formattedDate);
+      formData.append('gender', data.gender ? data.gender.toUpperCase() : 'OTHER');
 
       // Append the profile image if selected
       if (data.profileImage?.uri) {
-        // The backend expects the key 'file' according to the Postman snippet.
         formData.append('file', {
           uri: data.profileImage.uri,
-          type: 'image/jpeg', // A generic type for image
+          type: 'image/jpeg',
           name: 'profile_image.jpg',
         } as any);
       }
 
-      // API interceptor will automatically wipe 'Content-Type' so RN assigns the boundary.
-      const response = await apiClient.post('/user/profile', formData);
+      const credentials = await Keychain.getGenericPassword({ service: 'auth_token' });
+      if (!credentials) {
+        throw new Error('No authentication token found');
+      }
 
-      return response.data;
+      // Using native fetch for reliable multipart/form-data boundary generation in RN
+      const response = await fetch(`${BASE_URL}${API_ENDPOINTS.USER.PROFILE}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${credentials.password}`,
+          // Note: Content-Type is omitted so fetch automatically adds boundary
+        },
+        body: formData,
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(responseData.message || `Server Error ${response.status}`);
+      }
+
+      return responseData;
     } catch (error) {
       console.error('Error updating profile:', error);
       throw error;

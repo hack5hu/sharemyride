@@ -56,16 +56,16 @@ export const RootNavigator = () => {
           />
         </>
       ) : 
-      // !isProfileCompleted ? (
-      //   // Profile Setup Stack (Mandatory)
-      //   <Stack.Screen 
-      //       name="BookRideInfo" 
-      //     component={ProfileSetupScreen} 
-      //     options={{
-      //       gestureEnabled: false, // Prevent back swipe on iOS
-      //     }}
-      //   />
-      // ) : 
+      !isProfileCompleted ? (
+        // Profile Setup Stack (Mandatory)
+        <Stack.Screen 
+            name="BookRideInfo" 
+          component={ProfileSetupScreen} 
+          options={{
+            gestureEnabled: false, // Prevent back swipe on iOS
+          }}
+        />
+      ) : 
       (
         // Main App Stack
         <>

@@ -3,41 +3,75 @@ import { Animated } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
-import { MapSearchOverlayProps, MapSearchOverlay } from '@/components/organisms/MapSearchOverlay';
-import { LocationDetailsCardProps, LocationDetailsCard } from '@/components/molecules/LocationDetailsCard';
-import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { TransformRequestManager, Camera, UserLocation } from '@maplibre/maplibre-react-native';
+import { getOlaStyleUrl, OLA_API_KEY } from '@/constants/OlaStyle';
 import {
-  MapImageBackground,
-  GradientOverlay,
+  StyledMapView,
   PinContainer,
   TooltipBubble,
   TooltipText,
-  PinCircle,
   PinShadow,
+  SelectButtonContainer,
+  SelectButton,
+  SelectGradient,
+  SelectButtonText,
+  GradientOverlay
 } from './MapPickerTemplate.styles';
+import { MapSearchOverlayProps, MapSearchOverlay } from '@/components/organisms/MapSearchOverlay';
+import { LocationDetailsCardProps } from '@/components/molecules/LocationDetailsCard';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import { moderateScale } from '@/styles';
 
 export interface MapPickerTemplateProps {
   pickerType: 'start' | 'destination';
-  mapImageSource: any; // using static image for now per requirements
+  region: {
+    latitude: number;
+    longitude: number;
+  };
+  onRegionChangeComplete: (feature: any) => void;
   searchOverlayProps: MapSearchOverlayProps;
   locationDetailsProps: LocationDetailsCardProps;
+  mapRef?: React.RefObject<any>;
+  cameraRef?: React.RefObject<any>;
+  isInitiallyCentered: boolean;
+  setIsInitiallyCentered: (val: boolean) => void;
+  isMapVisible: boolean;
 }
 
 export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
   pickerType,
-  mapImageSource,
+  region,
+  mapRef,
+  cameraRef,
+  onRegionChangeComplete,
   searchOverlayProps,
   locationDetailsProps,
+  isInitiallyCentered,
+  setIsInitiallyCentered,
+  isMapVisible,
 }) => {
   const theme = useTheme();
   const { mapPicker } = useLocale();
-  
   const bounceAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Simple bobbing animation for the pin mimicking the HTML hover
+    // Setup global credentials for Ola Maps API v11
+    TransformRequestManager.addUrlSearchParam({
+      id: "ola-api-key",
+      match: /api\.olamaps\.io/,
+      name: "api_key",
+      value: OLA_API_KEY,
+    });
+
+    // Strip out any redundant 'key=' parameters from the style JSON
+    TransformRequestManager.addUrlTransform({
+      id: "ola-key-cleanup",
+      match: "api\\.olamaps\\.io",
+      find: "([?&])key=[^&?]+",
+      replace: "$1",
+    });
+
     Animated.loop(
       Animated.sequence([
         Animated.timing(bounceAnim, {
@@ -52,34 +86,65 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
         }),
       ])
     ).start();
-  }, [bounceAnim]);
+
+    if (!isInitiallyCentered) {
+      setIsInitiallyCentered(true);
+    }
+  }, [bounceAnim, isInitiallyCentered, setIsInitiallyCentered]);
 
   return (
-    <ScreenShell>
-      <MapImageBackground source={{ uri: mapImageSource }} resizeMode="cover" />
-      <GradientOverlay colors={['transparent', 'transparent']} />
+    <ScreenShell title='Select Location' onBack={true}>
 
-      <MapSearchOverlay {...searchOverlayProps} />
+      {isMapVisible ? (
+        <>
+          <StyledMapView
+            ref={mapRef}
+            mapStyle={'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json'}
+            onRegionDidChange={onRegionChangeComplete}
+          >
+            <Camera
+              ref={cameraRef}
+              center={[region.longitude, region.latitude]}
+              zoom={14}
+            />
+            <UserLocation />
+          </StyledMapView>
 
-      {/* Center Map Pin */}
-      <PinContainer>
-        <TooltipBubble>
-          <TooltipText>
-            {pickerType === 'start' ? mapPicker.setPickup : mapPicker.setDestination}
-          </TooltipText>
-        </TooltipBubble>
-        
-        <PinShadow />
-        <Animated.View style={{ transform: [{ translateY: bounceAnim }] }}>
-          <PinCircle>
-            <MaterialIcons name="location-on" size={moderateScale(28)} color={theme.colors.on_primary} />
-          </PinCircle>
-        </Animated.View>
-      </PinContainer>
+          <GradientOverlay colors={['transparent', 'rgba(0,0,0,0.05)']} />
 
-      <MapControlsFABs />
+          <PinContainer pointerEvents="none">
+            <TooltipBubble>
+              <TooltipText>
+                {pickerType === 'start' ? mapPicker.setPickup : mapPicker.setDestination}
+              </TooltipText>
+            </TooltipBubble>
 
-      <LocationDetailsCard {...locationDetailsProps} />
+            <PinShadow />
+            <Animated.View style={{ transform: [{ translateY: bounceAnim }] }}>
+
+              <MaterialIcons name="location-on" size={moderateScale(28)} color={theme.colors.on_primary} />
+
+            </Animated.View>
+          </PinContainer>
+
+          <SelectButtonContainer>
+            <SelectButton
+              onPress={locationDetailsProps.onSelect}
+              disabled={locationDetailsProps.disabled || !locationDetailsProps.locationName}
+              activeOpacity={0.9}
+            >
+              <SelectGradient
+                colors={['transparent', 'transparent']}
+                style={{ opacity: (locationDetailsProps.disabled || !locationDetailsProps.locationName) ? 0.6 : 1 }}
+              >
+                <SelectButtonText>{mapPicker.selectLocation}</SelectButtonText>
+              </SelectGradient>
+            </SelectButton>
+          </SelectButtonContainer>
+
+          <MapControlsFABs />
+        </>
+      ) : <MapSearchOverlay {...searchOverlayProps} />}
     </ScreenShell>
   );
 };
