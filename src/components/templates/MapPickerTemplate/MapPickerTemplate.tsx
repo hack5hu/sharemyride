@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
-import { Animated } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { Animated, View } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { TransformRequestManager, Camera, UserLocation } from '@maplibre/maplibre-react-native';
@@ -15,13 +15,16 @@ import {
   SelectButton,
   SelectGradient,
   SelectButtonText,
-  GradientOverlay
+  GradientOverlay,
+  LocationPreviewContainer,
+  LocationPreviewTitle,
+  LocationPreviewText
 } from './MapPickerTemplate.styles';
 import { MapSearchOverlayProps, MapSearchOverlay } from '@/components/organisms/MapSearchOverlay';
 import { LocationDetailsCardProps } from '@/components/molecules/LocationDetailsCard';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
-import { moderateScale } from '@/styles';
+import { moderateScale, scale } from '@/styles';
 
 export interface MapPickerTemplateProps {
   pickerType: 'start' | 'destination';
@@ -37,6 +40,10 @@ export interface MapPickerTemplateProps {
   isInitiallyCentered: boolean;
   setIsInitiallyCentered: (val: boolean) => void;
   isMapVisible: boolean;
+  onZoomIn?: () => void;
+  onZoomOut?: () => void;
+  zoom?: number;
+  setIsMapVisible: (val: boolean) => void;
 }
 
 export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
@@ -50,10 +57,13 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
   isInitiallyCentered,
   setIsInitiallyCentered,
   isMapVisible,
+  onZoomIn,
+  onZoomOut,
+  zoom,
+  setIsMapVisible,
 }) => {
   const theme = useTheme();
   const { mapPicker } = useLocale();
-  const bounceAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     // Setup global credentials for Ola Maps API v11
@@ -72,44 +82,45 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
       replace: "$1",
     });
 
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(bounceAnim, {
-          toValue: -10,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(bounceAnim, {
-          toValue: 0,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
-
     if (!isInitiallyCentered) {
       setIsInitiallyCentered(true);
     }
-  }, [bounceAnim, isInitiallyCentered, setIsInitiallyCentered]);
-
+  }, [isInitiallyCentered, setIsInitiallyCentered]);
+  console.log(locationDetailsProps)
   return (
     <ScreenShell title='Select Location' onBack={true}>
+      <MapSearchOverlay 
+        {...searchOverlayProps} 
+        isCondensed={isMapVisible} 
+        setIsCondensed={setIsMapVisible}
+      />
 
-      {isMapVisible ? (
+      {/* Map Layer - Warm Mounted */}
+      <StyledMapView
+        ref={mapRef}
+        mapStyle={'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json'}
+        onRegionDidChange={onRegionChangeComplete}
+        style={{ 
+          opacity: isMapVisible ? 1 : 0,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 0
+        }}
+        pointerEvents={isMapVisible ? 'auto' : 'none'}
+      >
+        <Camera
+          ref={cameraRef}
+          center={[region.longitude, region.latitude]}
+          zoom={zoom ?? 14}
+        />
+        <UserLocation />
+      </StyledMapView>
+
+      {isMapVisible && (
         <>
-          <StyledMapView
-            ref={mapRef}
-            mapStyle={'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json'}
-            onRegionDidChange={onRegionChangeComplete}
-          >
-            <Camera
-              ref={cameraRef}
-              center={[region.longitude, region.latitude]}
-              zoom={14}
-            />
-            <UserLocation />
-          </StyledMapView>
-
           <GradientOverlay colors={['transparent', 'rgba(0,0,0,0.05)']} />
 
           <PinContainer pointerEvents="none">
@@ -119,22 +130,40 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
               </TooltipText>
             </TooltipBubble>
 
-            <PinShadow />
-            <Animated.View style={{ transform: [{ translateY: bounceAnim }] }}>
-
-              <MaterialIcons name="location-on" size={moderateScale(28)} color={theme.colors.on_primary} />
-
-            </Animated.View>
+            <Ionicons
+              name="pin-sharp" 
+              size={moderateScale(28)} 
+              color={theme.colors.primary_container} 
+            />
           </PinContainer>
 
           <SelectButtonContainer>
+            <LocationPreviewContainer>
+              <Ionicons
+                name="locate-sharp"
+                size={moderateScale(18)}
+                color={theme.colors.primary}
+                style={{ marginRight: scale(8) }}
+              />
+              <View style={{ flex: 1, justifyContent: 'center' }}>
+                <LocationPreviewTitle numberOfLines={1}>
+                  {locationDetailsProps.locationName || 'Select a spot on the map'}
+                </LocationPreviewTitle>
+                {!!locationDetailsProps.locationAddress && (
+                  <LocationPreviewText numberOfLines={1}>
+                    {locationDetailsProps.locationAddress}
+                  </LocationPreviewText>
+                )}
+              </View>
+            </LocationPreviewContainer>
+
             <SelectButton
               onPress={locationDetailsProps.onSelect}
               disabled={locationDetailsProps.disabled || !locationDetailsProps.locationName}
               activeOpacity={0.9}
             >
               <SelectGradient
-                colors={['transparent', 'transparent']}
+                colors={[theme.colors.primary, theme.colors.primary]}
                 style={{ opacity: (locationDetailsProps.disabled || !locationDetailsProps.locationName) ? 0.6 : 1 }}
               >
                 <SelectButtonText>{mapPicker.selectLocation}</SelectButtonText>
@@ -142,9 +171,9 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
             </SelectButton>
           </SelectButtonContainer>
 
-          <MapControlsFABs />
+          <MapControlsFABs onZoomIn={onZoomIn} onZoomOut={onZoomOut} />
         </>
-      ) : <MapSearchOverlay {...searchOverlayProps} />}
+      )}
     </ScreenShell>
   );
 };

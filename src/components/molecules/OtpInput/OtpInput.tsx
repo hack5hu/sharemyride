@@ -33,11 +33,12 @@ export const OtpInput: React.FC<OtpInputProps> = ({
           },
           pinCodeContainerStyle: {
             backgroundColor: theme.colors.surface_container_lowest,
-            width: scale(48),
-            height: scale(56),
+            width: scale(42),
+            height: scale(50),
             borderRadius: theme.roundness.md,
             borderWidth: 1,
             borderColor: error ? theme.colors.error : theme.colors.outline_variant,
+            margin:2,
           },
           pinCodeTextStyle: {
             fontFamily: 'Plus Jakarta Sans',

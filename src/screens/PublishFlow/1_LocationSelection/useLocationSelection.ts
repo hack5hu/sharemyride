@@ -1,7 +1,8 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/navigation/types';
+import { useRidePublishStore } from '@/store/useRidePublishStore';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'LocationSelection'>;
 
@@ -9,8 +10,20 @@ export const useLocationSelection = () => {
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute();
 
-  const [startLocationName, setStartLocationName] = useState<string>('');
-  const [destinationLocationName, setDestinationLocationName] = useState<string>('');
+  const { 
+    startLocation, 
+    destinationLocation, 
+    setStartLocation, 
+    setDestinationLocation,
+    clearPublishState
+  } = useRidePublishStore();
+
+  // Clear state when the publish flow is completely exited
+  useEffect(() => {
+    return () => {
+      clearPublishState();
+    };
+  }, [clearPublishState]);
 
   const handlePressStart = useCallback(() => {
     navigation.navigate('MapPicker', { type: 'start', returnTo: 'LocationSelection' });
@@ -24,30 +37,29 @@ export const useLocationSelection = () => {
     if ((route.params as any)?.updatedLocation && (route.params as any)?.type) {
       const { updatedLocation, type } = (route.params as any);
       if (type === 'start') {
-        setStartLocationName(updatedLocation.name);
+        setStartLocation(updatedLocation);
       } else if (type === 'destination') {
-        setDestinationLocationName(updatedLocation.name);
+        setDestinationLocation(updatedLocation);
       }
       // Clear params so it doesn't apply again unexpectedly
       navigation.setParams({ updatedLocation: undefined, type: undefined });
     }
-  }, [route.params, navigation]);
+  }, [route.params, navigation, setStartLocation, setDestinationLocation]);
 
   const handleContinue = useCallback(() => {
     navigation.navigate('RouteSelection');
   }, [navigation]);
 
-
-
-  // Optionally set these manually for demonstration or integration later
-   const canContinue =  true ||!!startLocationName && !!destinationLocationName;
+  // Enforce validation: Must have both start and destination to proceed
+  const canContinue = !!startLocation && !!destinationLocation;
 
   return {
-    startLocationName,
-    destinationLocationName,
+    startLocationName: startLocation?.name || '',
+    destinationLocationName: destinationLocation?.name || '',
     handlePressStart,
     handlePressDestination,
     handleContinue,
     canContinue,
   };
 };
+

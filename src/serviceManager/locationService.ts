@@ -1,9 +1,4 @@
-import axios from 'axios';
-
-const OLA_MAPS_BASE_URL = 'https://api.olamaps.io/places/v1';
-export const API_KEY = 'LqlaA77D09ngpTaBVVAnHAEsvBycEoGmb76reivs';
-export const OLA_TILE_URL = `https://api.olamaps.io/tiles/v1/styles/default-light-standard/{z}/{x}/{y}.png?api_key=${API_KEY}`;
-export const OLA_STYLE_URL = `https://api.olamaps.io/tiles/v1/styles/default-light-standard/style.json?api_key=${API_KEY}`;
+import olaClient from './olaClient';
 
 export interface OlaPrediction {
   description: string;
@@ -23,6 +18,7 @@ export interface OlaPrediction {
 export interface OlaReverseGeocodeResponse {
   results: Array<{
     formatted_address: string;
+    name?: string;
     place_id: string;
     geometry: {
       location: {
@@ -39,13 +35,10 @@ export const locationService = {
     try {
       if (!input.trim()) return [];
       
-      const response = await axios.get(`${OLA_MAPS_BASE_URL}/autocomplete`, {
-        params: {
-          input,
-          api_key: API_KEY,
-        },
+      const response = await olaClient.get('/places/v1/autocomplete', {
+        params: { input },
       });
-
+      
       return response.data.predictions || [];
     } catch (error) {
       console.error('Ola Maps Autocomplete Error:', error);
@@ -53,22 +46,28 @@ export const locationService = {
     }
   },
 
-  reverseGeocode: async (latitude: number, longitude: number): Promise<string> => {
+  reverseGeocode: async (latitude: number, longitude: number): Promise<{ name: string; address: string }> => {
     try {
-      const response = await axios.get(`${OLA_MAPS_BASE_URL}/reverse-geocode`, {
+      const response = await olaClient.get('/places/v1/reverse-geocode', {
         params: {
           latlng: `${latitude},${longitude}`,
-          api_key: API_KEY,
         },
       });
 
       if (response.data.status === 'ok' && response.data.results?.length > 0) {
-        return response.data.results[0].formatted_address;
+        const result = response.data.results[0];
+        // Capture specific name if available, otherwise fallback to neighborhood/first part of address
+        const name = result.name || result.formatted_address.split(',')[0];
+        
+        return {
+          name: name,
+          address: result.formatted_address,
+        };
       }
-      return '';
+      return { name: 'Picked Location', address: '' };
     } catch (error) {
       console.error('Ola Maps Reverse Geocode Error:', error);
-      return '';
+      return { name: 'Picked Location', address: '' };
     }
   },
 };

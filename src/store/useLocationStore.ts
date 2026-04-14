@@ -22,10 +22,10 @@ export const useLocationStore = create<LocationStore>()(
       history: [],
       addSearchHistory: (location) =>
         set((state) => {
-          // Avoid duplicates and limit to 10 items
+          // Avoid duplicates and limit to 5 items
           const filteredHistory = state.history.filter((item) => item.id !== location.id);
           return {
-            history: [location, ...filteredHistory].slice(0, 10),
+            history: [location, ...filteredHistory].slice(0, 5),
           };
         }),
       clearHistory: () => set({ history: [] }),

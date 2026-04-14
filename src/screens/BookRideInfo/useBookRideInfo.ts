@@ -29,6 +29,7 @@ export const useBookRideInfo = () => {
 
   useEffect(() => {
     const params = route.params as any;
+    console.log(params)
     if (params?.updatedLocation && params?.type) {
       if (params.type === 'start') {
         setPickup(params.updatedLocation.name);

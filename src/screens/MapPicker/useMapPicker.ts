@@ -30,6 +30,21 @@ export const useMapPicker = () => {
   const [isReverseGeocoding, setIsReverseGeocoding] = useState(false);
   const [isInitiallyCentered, setIsInitiallyCentered] = useState(false);
   const [isMapVisible, setIsMapVisible] = useState(false);
+  const zoomRef = useRef(14);
+  const geocodingCache = useRef<Record<string, { name: string; address: string }>>({});
+
+  const handleZoom = useCallback((increment: number) => {
+    const newZoom = Math.min(Math.max(zoomRef.current + increment, 3), 20);
+    zoomRef.current = newZoom;
+    
+    cameraRef.current?.setStop({
+      zoom: newZoom,
+      duration: 300,
+    });
+  }, []);
+
+  const handleZoomIn = useCallback(() => handleZoom(1), [handleZoom]);
+  const handleZoomOut = useCallback(() => handleZoom(-1), [handleZoom]);
 
   // Debounced search logic
   const debouncedSearch = useRef(
@@ -87,32 +102,49 @@ export const useMapPicker = () => {
   }, []);
 
   const handleRegionChangeComplete = useCallback(async (event: any) => {
-    // v11: event is NativeSyntheticEvent<ViewStateChangeEvent>
-    // We extract coordinates from center: [longitude, latitude]
+    // 1. Guard: Only geocode if map is visible to user
+    if (!isMapVisible) return;
+
     const viewState = event?.nativeEvent || event;
-    
-    if (!viewState?.center) {
-      console.log('Skipping region change: missing center in ViewState');
-      return;
-    }
+    if (!viewState?.center) return;
 
     const [longitude, latitude] = viewState.center;
+    const currentZoom = viewState.zoom;
+    
+    if (currentZoom !== undefined) {
+      zoomRef.current = currentZoom;
+    }
+
+    // 2. Memoization: Use a cache key based on coordinates rounded to 5 decimal places
+    const cacheKey = `${latitude.toFixed(5)},${longitude.toFixed(5)}`;
     
     setRegion({ latitude, longitude });
     setIsReverseGeocoding(true);
+
+    let locationData = { name: '', address: '' };
     
-    const address = await locationService.reverseGeocode(latitude, longitude);
+    if (geocodingCache.current[cacheKey]) {
+      console.log('💎 [Cache Hit] Using memoized address for:', cacheKey);
+      locationData = geocodingCache.current[cacheKey];
+    } else {
+      console.log('📡 [Network Call] Fetching reverse geocode for:', cacheKey);
+      const result = await locationService.reverseGeocode(latitude, longitude);
+      if (result) {
+        locationData = result;
+        geocodingCache.current[cacheKey] = result;
+      }
+    }
     
     setSelectedLocation({
       id: `picked-${Date.now()}`,
-      name: address.split(',')[0] || 'Selected Location',
-      address: address || 'Custom coordinates',
+      name: locationData.name || 'Selected Location',
+      address: locationData.address || 'Custom coordinates',
       latitude: latitude,
       longitude: longitude,
     });
     
     setIsReverseGeocoding(false);
-  }, []);
+  }, [isMapVisible]);
 
   const handleConfirmLocation = useCallback(() => {
     if (selectedLocation) {
@@ -142,11 +174,15 @@ export const useMapPicker = () => {
     handleSearchSelect,
     handleRegionChangeComplete,
     handleConfirmLocation,
+    handleZoomIn,
+    handleZoomOut,
     mapRef,
     cameraRef,
     isReverseGeocoding,
     isInitiallyCentered,
     setIsInitiallyCentered,
     isMapVisible,
+    setIsMapVisible,
+    currentZoom: zoomRef.current,
   };
 };

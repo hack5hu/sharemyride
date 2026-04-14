@@ -1,23 +1,27 @@
-import React from 'react';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components/native';
 import { FABsContainer, FABControl, Separator } from './MapControlsFABs.styles';
 import { moderateScale } from '@/styles';
 
-export const MapControlsFABs: React.FC = () => {
+export interface MapControlsFABsProps {
+  onZoomIn?: () => void;
+  onZoomOut?: () => void;
+}
+
+export const MapControlsFABs: React.FC<MapControlsFABsProps> = ({ onZoomIn, onZoomOut }) => {
   const theme = useTheme();
   
   return (
     <FABsContainer>
-      <FABControl>
-        <MaterialIcons name="add" size={moderateScale(24)} color={theme.colors.on_surface_variant} />
+      <FABControl onPress={onZoomIn} activeOpacity={0.7}>
+        <Ionicons name="add-sharp" size={moderateScale(24)} color={theme.colors.on_surface_variant} />
       </FABControl>
-      <FABControl>
-        <MaterialIcons name="remove" size={moderateScale(24)} color={theme.colors.on_surface_variant} />
+      <FABControl onPress={onZoomOut} activeOpacity={0.7}>
+        <Ionicons name="remove-sharp" size={moderateScale(24)} color={theme.colors.on_surface_variant} />
       </FABControl>
       <Separator />
-      <FABControl>
-        <MaterialIcons name="layers" size={moderateScale(24)} color={theme.colors.on_surface_variant} />
+      <FABControl activeOpacity={0.7}>
+        <Ionicons name="layers-sharp" size={moderateScale(24)} color={theme.colors.on_surface_variant} />
       </FABControl>
     </FABsContainer>
   );

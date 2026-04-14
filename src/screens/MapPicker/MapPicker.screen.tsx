@@ -15,12 +15,16 @@ export const MapPickerScreen: React.FC = () => {
     handleSearchSelect,
     handleRegionChangeComplete,
     handleConfirmLocation,
+    handleZoomIn,
+    handleZoomOut,
     cameraRef,
     mapRef,
     isReverseGeocoding,
     isInitiallyCentered,
     setIsInitiallyCentered,
     isMapVisible,
+    currentZoom,
+    setIsMapVisible
   } = useMapPicker();
 
   return (
@@ -31,8 +35,12 @@ export const MapPickerScreen: React.FC = () => {
       mapRef={mapRef}
       cameraRef={cameraRef}
       isMapVisible={isMapVisible}
+      setIsMapVisible={setIsMapVisible}
+      zoom={currentZoom}
       isInitiallyCentered={isInitiallyCentered}
       setIsInitiallyCentered={setIsInitiallyCentered}
+      onZoomIn={handleZoomIn}
+      onZoomOut={handleZoomOut}
       searchOverlayProps={{
         onBackPress: handleBackPress,
         onSelectLocation: handleSearchSelect,
