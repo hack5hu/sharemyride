@@ -27,7 +27,7 @@ import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import { moderateScale, scale } from '@/styles';
 
 export interface MapPickerTemplateProps {
-  pickerType: 'start' | 'destination';
+  pickerType: 'start' | 'destination' | 'middleStop';
   region: {
     latitude: number;
     longitude: number;
@@ -112,7 +112,11 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
           <PinContainer pointerEvents="none">
             <TooltipBubble>
               <TooltipText>
-                {pickerType === 'start' ? mapPicker.setPickup : mapPicker.setDestination}
+                {pickerType === 'start' 
+                  ? mapPicker.setPickup 
+                  : pickerType === 'destination' 
+                    ? mapPicker.setDestination 
+                    : mapPicker.setStop}
               </TooltipText>
             </TooltipBubble>
 

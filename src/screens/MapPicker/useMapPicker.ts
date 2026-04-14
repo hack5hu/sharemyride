@@ -12,14 +12,16 @@ const DEFAULT_REGION = {
 
 type MapPickerRouteProp = RouteProp<RootStackParamList, 'MapPicker'>;
 
+const EMPTY_HISTORY: Location[] = [];
+
 export const useMapPicker = () => {
   const navigation = useNavigation();
   const route = useRoute<MapPickerRouteProp>();
-  const addSearchHistory = useLocationStore((state) => state.addSearchHistory);
-  const history = useLocationStore((state) => state.history);
   
   const pickerType = route.params?.type || 'start';
   const returnTo = route.params?.returnTo || 'LocationSelection';
+  const module = (route.params as any)?.module || 'publish';
+  const contextKey = `${module}_${pickerType}`;
 
   const mapRef = useRef<any>(null);
   const cameraRef = useRef<any>(null);
@@ -32,6 +34,10 @@ export const useMapPicker = () => {
   const [isMapVisible, setIsMapVisible] = useState(false);
   const zoomRef = useRef(14);
   const geocodingCache = useRef<Record<string, { name: string; address: string }>>({});
+
+  // Scoped history derived from the current context
+  const addSearchHistory = useLocationStore((state) => state.addSearchHistory);
+  const history = useLocationStore((state) => state.history[contextKey] || EMPTY_HISTORY);
 
   const handleZoom = useCallback((increment: number) => {
     const newZoom = Math.min(Math.max(zoomRef.current + increment, 3), 20);
@@ -148,7 +154,7 @@ export const useMapPicker = () => {
 
   const handleConfirmLocation = useCallback(() => {
     if (selectedLocation) {
-      addSearchHistory(selectedLocation);
+      addSearchHistory(selectedLocation, contextKey);
       (navigation.navigate as any)({
         name: returnTo,
         params: {
@@ -160,7 +166,7 @@ export const useMapPicker = () => {
     } else {
       navigation.goBack();
     }
-  }, [navigation, selectedLocation, pickerType, returnTo, addSearchHistory]);
+  }, [navigation, selectedLocation, pickerType, returnTo, addSearchHistory, contextKey]);
 
   return {
     pickerType,

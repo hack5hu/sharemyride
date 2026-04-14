@@ -11,24 +11,51 @@ export interface Location {
 }
 
 interface LocationStore {
-  history: Location[];
-  addSearchHistory: (location: Location) => void;
-  clearHistory: () => void;
+  history: Record<string, Location[]>;
+  addSearchHistory: (location: Location, contextKey: string) => void;
+  clearHistory: (contextKey?: string) => void;
 }
 
 export const useLocationStore = create<LocationStore>()(
   persist(
     (set) => ({
-      history: [],
-      addSearchHistory: (location) =>
+      history: {},
+      addSearchHistory: (location, contextKey) =>
         set((state) => {
-          // Avoid duplicates and limit to 5 items
-          const filteredHistory = state.history.filter((item) => item.id !== location.id);
+          const currentBucket = state.history[contextKey] || [];
+          
+          // Deduplicate by ID or identical coordinates (lat/lng)
+          const filteredBucket = currentBucket.filter((item) => {
+            const isSameId = item.id === location.id;
+            const isSameCoords = 
+              item.latitude === location.latitude && 
+              item.longitude === location.longitude;
+            
+            return !isSameId && !isSameCoords;
+          });
+
+          // Prepend new location and limit history size
+          const updatedBucket = [location, ...filteredBucket].slice(0, 5);
+          
           return {
-            history: [location, ...filteredHistory].slice(0, 5),
+            history: {
+              ...state.history,
+              [contextKey]: updatedBucket,
+            },
           };
         }),
-      clearHistory: () => set({ history: [] }),
+      clearHistory: (contextKey) =>
+        set((state) => {
+          if (contextKey) {
+            return {
+              history: {
+                ...state.history,
+                [contextKey]: [],
+              },
+            };
+          }
+          return { history: {} };
+        }),
     }),
     {
       name: 'location-storage',

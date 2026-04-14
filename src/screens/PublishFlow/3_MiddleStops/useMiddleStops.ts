@@ -14,22 +14,34 @@ export const useMiddleStops = () => {
     removeMiddleStop
   } = useRidePublishStore();
 
-  // Handle incoming new stops from MapPicker/MiddleStopMap
+  const updatedLocation = (route.params as any)?.updatedLocation;
+  const type = (route.params as any)?.type;
+
+  // Handle incoming new stops from MapPicker
   useEffect(() => {
-    const params = route.params as any;
-    if (params?.newStop) {
-      addMiddleStop(params.newStop);
-      // Clear params to avoid duplicate adds on re-focus
-      navigation.setParams({ newStop: undefined } as any);
+    // Condition: only select for 'middleStop' type to avoid cross-contamination
+    if (updatedLocation && type === 'middleStop') {
+      addMiddleStop(updatedLocation);
+      
+      // Clear params to avoid duplicate adds on re-focus or state updates
+      navigation.setParams({ 
+        updatedLocation: undefined,
+        type: undefined 
+      } as any);
     }
-  }, [route.params, navigation, addMiddleStop]);
+  }, [updatedLocation, type, navigation, addMiddleStop]);
 
   const handleBackPress = useCallback(() => {
-    navigation.goBack();
+    (navigation.navigate as any)('RouteSelection');
   }, [navigation]);
 
   const handleAddStop = useCallback(() => {
-    (navigation.navigate as any)('MiddleStopMap');
+    // Navigate to MapPicker with specific context for MiddleStops
+    (navigation.navigate as any)('MapPicker', {
+      returnTo: 'MiddleStops',
+      type: 'middleStop',
+      module: 'publish'
+    });
   }, [navigation]);
 
   const handleRemoveStop = useCallback((id: string) => {
@@ -43,7 +55,10 @@ export const useMiddleStops = () => {
   return {
     startLocation: startLocation?.name || startLocation?.address || 'Pick Start Location',
     destination: destinationLocation?.name || destinationLocation?.address || 'Pick Destination',
-    middleStops: middleStops.map(s => ({ id: s.id, name: s.name || s.address })),
+    startLocationRaw: startLocation,
+    destinationLocationRaw: destinationLocation,
+    middleStops: middleStops.map(s => ({ id: s.id, name: s.name || s.address || 'Unknown Stop' })),
+    middleStopsRaw: middleStops,
     handleBackPress,
     handleAddStop,
     handleRemoveStop,

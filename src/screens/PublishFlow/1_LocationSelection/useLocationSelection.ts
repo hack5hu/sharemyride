@@ -26,16 +26,26 @@ export const useLocationSelection = () => {
   }, [clearPublishState]);
 
   const handlePressStart = useCallback(() => {
-    navigation.navigate('MapPicker', { type: 'start', returnTo: 'LocationSelection' });
+    navigation.navigate('MapPicker', { 
+      type: 'start', 
+      returnTo: 'LocationSelection',
+      module: 'publish'
+    });
   }, [navigation]);
 
   const handlePressDestination = useCallback(() => {
-    navigation.navigate('MapPicker', { type: 'destination', returnTo: 'LocationSelection' });
+    navigation.navigate('MapPicker', { 
+      type: 'destination', 
+      returnTo: 'LocationSelection',
+      module: 'publish'
+    });
   }, [navigation]);
 
+  const updatedLocation = (route.params as any)?.updatedLocation;
+  const type = (route.params as any)?.type;
+
   useEffect(() => {
-    if ((route.params as any)?.updatedLocation && (route.params as any)?.type) {
-      const { updatedLocation, type } = (route.params as any);
+    if (updatedLocation && type) {
       if (type === 'start') {
         setStartLocation(updatedLocation);
       } else if (type === 'destination') {
@@ -44,7 +54,7 @@ export const useLocationSelection = () => {
       // Clear params so it doesn't apply again unexpectedly
       navigation.setParams({ updatedLocation: undefined, type: undefined });
     }
-  }, [route.params, navigation, setStartLocation, setDestinationLocation]);
+  }, [updatedLocation, type, navigation, setStartLocation, setDestinationLocation]);
 
   const handleContinue = useCallback(() => {
     navigation.navigate('RouteSelection');

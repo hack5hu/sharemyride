@@ -241,6 +241,7 @@ export const en: Translations = {
     searchPlaceholder: 'Search location...',
     setPickup: 'SET PICKUP',
     setDestination: 'SET DESTINATION',
+    setStop: 'SET STOP',
     selectedArea: 'Selected Area',
     selectLocation: 'Select Location',
     recentSearches: 'Recent Searches',

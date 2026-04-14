@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export interface ScreenHeaderProps {
   title: string;
-  onBack: boolean;
+  onBack?: boolean | (() => void);
   rightElement?: React.ReactNode;
 }
 
@@ -21,7 +21,11 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
   
   const navigation = useNavigation();
   const onBackfn = () => {
-    navigation.goBack();
+    if (typeof onBack === 'function') {
+      onBack();
+    } else {
+      navigation.goBack();
+    }
   };
   return (
     <Wrapper>

@@ -242,6 +242,7 @@ export interface MapPickerTranslations {
   searchPlaceholder: string;
   setPickup: string;
   setDestination: string;
+  setStop: string;
   selectedArea: string;
   selectLocation: string;
   recentSearches: string;

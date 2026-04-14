@@ -28,12 +28,14 @@ export type RootStackParamList = {
   } | undefined;
   SelectLocation: undefined;
   MapPicker: {
-    type: 'start' | 'destination';
+    type: 'start' | 'destination' | 'middleStop';
     returnTo?: keyof RootStackParamList;
+    module?: 'publish' | 'search';
   };
   RouteSelection: undefined;
   MiddleStops: {
-    newStop?: { id: string; name: string };
+    updatedLocation?: { id: string; name: string; address: string };
+    type?: string;
   } | undefined;
   MiddleStopMap: undefined;
   DateSelection: undefined;

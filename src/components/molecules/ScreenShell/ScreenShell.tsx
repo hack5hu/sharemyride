@@ -7,7 +7,7 @@ export interface ScreenShellProps {
   /** Screen title shown in the header. Pass undefined to hide the header entirely. */
   title?: string;
   /** Called when back arrow is pressed. Required when title is provided. */
-  onBack?: boolean;
+  onBack?: boolean | (() => void);
   /** Optional element rendered on the right side of the header */
   rightElement?: React.ReactNode;
   /** Whether the shell should have a transparent background (e.g. for modals) */

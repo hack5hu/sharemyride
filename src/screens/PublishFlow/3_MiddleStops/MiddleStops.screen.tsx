@@ -7,6 +7,9 @@ export const MiddleStopsScreen: React.FC = () => {
     startLocation,
     destination,
     middleStops,
+    startLocationRaw,
+    destinationLocationRaw,
+    middleStopsRaw,
     handleBackPress,
     handleAddStop,
     handleRemoveStop,
@@ -20,6 +23,9 @@ export const MiddleStopsScreen: React.FC = () => {
       startLocation={startLocation}
       destination={destination}
       middleStops={middleStops}
+      startLocationRaw={startLocationRaw}
+      destinationLocationRaw={destinationLocationRaw}
+      middleStopsRaw={middleStopsRaw}
       onAddStop={handleAddStop}
       onRemoveStop={handleRemoveStop}
     />

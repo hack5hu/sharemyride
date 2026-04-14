@@ -3,6 +3,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';
+import { Location } from '@/store/useLocationStore';
 import { MiddleStopsList, RouteStop } from '@/components/organisms/MiddleStopsList';
 import { BentoMapPreview } from '@/components/molecules/BentoMapPreview';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
@@ -14,6 +15,9 @@ export interface MiddleStopsTemplateProps {
   startLocation: string;
   destination: string;
   middleStops: RouteStop[];
+  startLocationRaw?: Location | null;
+  destinationLocationRaw?: Location | null;
+  middleStopsRaw: Location[];
   onAddStop: () => void;
   onRemoveStop: (id: string) => void;
 }
@@ -24,6 +28,9 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
   startLocation,
   destination,
   middleStops,
+  startLocationRaw,
+  destinationLocationRaw,
+  middleStopsRaw,
   onAddStop,
   onRemoveStop,
 }) => {
@@ -32,8 +39,8 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
 
   return (
     <ScreenShell
-      title={t.headerTitle}
-      onBack={true}
+      title={"Add stops"}
+      onBack={onBackPress}
     >
       <S.ContentLayer showsVerticalScrollIndicator={false}>
         {/* Title */}
@@ -51,8 +58,12 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
           onRemoveStop={onRemoveStop}
         />
 
-        {/* Map Context Item */}
-        <BentoMapPreview />
+        {/* TODO: will do it later Map Context Item */}
+        {/* <BentoMapPreview 
+          startLocation={startLocationRaw}
+          destinationLocation={destinationLocationRaw}
+          middleStops={middleStopsRaw}
+        /> */}
       </S.ContentLayer>
 
       {/* Floating Footer */}

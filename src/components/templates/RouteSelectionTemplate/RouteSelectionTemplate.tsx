@@ -70,24 +70,54 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
     });
   };
 
-  const allRoutesGeoJSON: GeoJSON.FeatureCollection = {
-    type: 'FeatureCollection',
-    features: routesData.map(routeData => ({
+  const allRoutesGeoJSON = React.useMemo((): GeoJSON.FeatureCollection => {
+    const features: GeoJSON.Feature[] = routesData.map(routeData => ({
       type: 'Feature',
       id: routeData.uiData.id,
       properties: {
         id: routeData.uiData.id,
+        type: 'route',
       },
       geometry: {
         type: 'LineString',
         coordinates: routeData.coordinates,
       },
-    })),
-  };
+    }));
+
+    // Add Start and End markers for the selected route
+    if (selectedRouteData) {
+      const coords = selectedRouteData.coordinates;
+      if (coords.length > 0) {
+        features.push({
+          type: 'Feature',
+          id: 'marker-start',
+          properties: { type: 'marker', role: 'start' },
+          geometry: {
+            type: 'Point',
+            coordinates: coords[0],
+          },
+        });
+        features.push({
+          type: 'Feature',
+          id: 'marker-end',
+          properties: { type: 'marker', role: 'end' },
+          geometry: {
+            type: 'Point',
+            coordinates: coords[coords.length - 1],
+          },
+        });
+      }
+    }
+
+    return {
+      type: 'FeatureCollection',
+      features,
+    };
+  }, [routesData, selectedRouteData]);
 
   const handleMapRoutePress = (event: any) => {
     const feature = event?.features?.[0];
-    if (feature?.properties?.id) {
+    if (feature?.properties?.id && feature.properties.type === 'route') {
       onSelectRoute(feature.properties.id);
     }
   };
@@ -114,7 +144,7 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
               <Layer
                 id="routes-unselected-layer"
                 type="line"
-                filter={['!=', ['get', 'id'], selectedRouteId || '']}
+                filter={['==', ['get', 'type'], 'route']}
                 paint={{
                   'line-color': theme.colors.outline_variant,
                   'line-width': 4,
@@ -130,7 +160,7 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
               <Layer
                 id="routes-selected-layer"
                 type="line"
-                filter={['==', ['get', 'id'], selectedRouteId || '']}
+                filter={['all', ['==', ['get', 'type'], 'route'], ['==', ['get', 'id'], selectedRouteId || '']]}
                 paint={{
                   'line-color': theme.colors.primary,
                   'line-width': 6,
@@ -138,6 +168,32 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
                 layout={{
                   'line-cap': 'round',
                   'line-join': 'round',
+                }}
+              />
+
+              {/* Start Marker */}
+              <Layer
+                id="marker-start-layer"
+                type="circle"
+                filter={['all', ['==', ['get', 'type'], 'marker'], ['==', ['get', 'role'], 'start']]}
+                paint={{
+                  'circle-color': '#00875a', // Green
+                  'circle-radius': 8,
+                  'circle-stroke-width': 3,
+                  'circle-stroke-color': '#FFFFFF',
+                }}
+              />
+
+              {/* End Marker */}
+              <Layer
+                id="marker-end-layer"
+                type="circle"
+                filter={['all', ['==', ['get', 'type'], 'marker'], ['==', ['get', 'role'], 'end']]}
+                paint={{
+                  'circle-color': theme.colors.error, // Red
+                  'circle-radius': 8,
+                  'circle-stroke-width': 3,
+                  'circle-stroke-color': '#FFFFFF',
                 }}
               />
             </GeoJSONSource>
