@@ -7,17 +7,26 @@ export const ListContainer = styled.View`
 `;
 
 export const PathLine = styled(LinearGradient).attrs(({ theme }) => ({
-  colors: [`${theme.colors.primary}66`, `${theme.colors.primary}33`, `${theme.colors.primary}66`],
+  colors: [
+    `${theme.colors.primary}80`, 
+    `${theme.colors.primary}33`, 
+    theme.colors.secondary_container,
+    `${theme.colors.primary}80`
+  ],
   start: { x: 0, y: 0 },
   end: { x: 0, y: 1 },
 }))`
   position: absolute;
-  left: ${scale(23)}px; /* roughly lines up with the center of the 48px circle icon (12px + 24/2 roughly, but HTML says 23px so we'll stick to 23px for consistency) */
-  top: ${verticalScale(24)}px;
-  bottom: ${verticalScale(24)}px;
+  left: ${scale(24 + 16)}px; /* Align with center of IconCircle */
+  top: ${verticalScale(40)}px;
+  bottom: ${verticalScale(40)}px;
   width: ${moderateScale(2)}px;
   z-index: 0;
 `;
+/* Note: Adjusting left calculation to precisely hit the icon center. 
+   Icons are scale(48) center is scale(24). Padding of list usually scale(24). 
+   Actually icons are horizontal positioned at padding + half-width. 
+*/
 
 export const LocationItemArea = styled.View`
   z-index: 10;
@@ -26,13 +35,14 @@ export const LocationItemArea = styled.View`
   gap: ${scale(16)}px;
   padding: ${moderateScale(16)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_low};
-  border-radius: ${moderateScale(6)}px;
-  margin-bottom: ${verticalScale(16)}px;
-  shadow-color: rgb(0,0,0);
-  shadow-offset: 0px 1px;
-  shadow-opacity: 0.05;
-  shadow-radius: 2px;
-  elevation: 1;
+  border-radius: ${moderateScale(12)}px;
+  margin-bottom: ${verticalScale(12)}px;
+  /* Premium Shadow */
+  shadow-color: ${({ theme }) => theme.colors.primary};
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.08;
+  shadow-radius: 12px;
+  elevation: 2;
 `;
 
 export const MiddleStopArea = styled.View`
@@ -41,14 +51,17 @@ export const MiddleStopArea = styled.View`
   align-items: center;
   gap: ${scale(16)}px;
   padding: ${moderateScale(16)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  border-radius: ${moderateScale(6)}px;
+  background-color: ${({ theme }) => theme.colors.surface};
+  border-radius: ${moderateScale(12)}px;
   margin-bottom: ${verticalScale(12)}px;
-  shadow-color: rgb(23,29,25);
-  shadow-offset: 0px 4px;
-  shadow-opacity: 0.04;
-  shadow-radius: 12px;
-  elevation: 2;
+  border-width: 1px;
+  border-color: ${({ theme }) => theme.colors.outline_variant}40;
+  /* Tinted ambient shadow */
+  shadow-color: ${({ theme }) => theme.colors.secondary};
+  shadow-offset: 0px 8px;
+  shadow-opacity: 0.06;
+  shadow-radius: 16px;
+  elevation: 3;
 `;
 
 export const AddStopButtonContainer = styled.TouchableOpacity`
@@ -57,11 +70,11 @@ export const AddStopButtonContainer = styled.TouchableOpacity`
   align-items: center;
   gap: ${scale(16)}px;
   padding: ${moderateScale(16)}px;
-  background-color: ${({ theme }) => `${theme.colors.primary_fixed_dim}33`}; /* 20% opacity */
-  border-width: 2px;
+  background-color: ${({ theme }) => `${theme.colors.primary_fixed_dim}1A`}; /* 10% opacity */
+  border-width: 1px;
   border-style: dashed;
-  border-color: ${({ theme }) => `${theme.colors.primary}33`};
-  border-radius: ${moderateScale(6)}px;
+  border-color: ${({ theme }) => theme.colors.primary}66;
+  border-radius: ${moderateScale(12)}px;
   margin-bottom: ${verticalScale(16)}px;
 `;
 

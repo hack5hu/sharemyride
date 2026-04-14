@@ -12,13 +12,6 @@ export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container};
 `;
 
-
-export const StyledMapView = styled(Map)`
-  flex: 1;
-  width: 100%;
-  height: 100%;
-`;
-
 export const GradientOverlay = styled(LinearGradient).attrs(({ theme }) => ({
   colors: [`${theme.colors.surface}E6`, 'transparent', 'transparent', `${theme.colors.surface}E6`],
   locations: [0, 0.2, 0.8, 1],

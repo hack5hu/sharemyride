@@ -6,7 +6,6 @@ import { useLocale } from '@/constants/localization';
 import { TransformRequestManager, Camera, UserLocation } from '@maplibre/maplibre-react-native';
 import { getOlaStyleUrl, OLA_API_KEY } from '@/constants/OlaStyle';
 import {
-  StyledMapView,
   PinContainer,
   TooltipBubble,
   TooltipText,
@@ -20,6 +19,7 @@ import {
   LocationPreviewTitle,
   LocationPreviewText
 } from './MapPickerTemplate.styles';
+import { OlaMap } from '@/components/organisms/OlaMap';
 import { MapSearchOverlayProps, MapSearchOverlay } from '@/components/organisms/MapSearchOverlay';
 import { LocationDetailsCardProps } from '@/components/molecules/LocationDetailsCard';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
@@ -66,22 +66,6 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
   const { mapPicker } = useLocale();
 
   useEffect(() => {
-    // Setup global credentials for Ola Maps API v11
-    TransformRequestManager.addUrlSearchParam({
-      id: "ola-api-key",
-      match: /api\.olamaps\.io/,
-      name: "api_key",
-      value: OLA_API_KEY,
-    });
-
-    // Strip out any redundant 'key=' parameters from the style JSON
-    TransformRequestManager.addUrlTransform({
-      id: "ola-key-cleanup",
-      match: "api\\.olamaps\\.io",
-      find: "([?&])key=[^&?]+",
-      replace: "$1",
-    });
-
     if (!isInitiallyCentered) {
       setIsInitiallyCentered(true);
     }
@@ -96,11 +80,13 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
       />
 
       {/* Map Layer - Warm Mounted */}
-      <StyledMapView
+      <OlaMap
         ref={mapRef}
-        mapStyle={'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json'}
         onRegionDidChange={onRegionChangeComplete}
         style={{ 
+          flex: 1,
+          width: '100%',
+          height: '100%',
           opacity: isMapVisible ? 1 : 0,
           position: 'absolute',
           top: 0,
@@ -117,7 +103,7 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
           zoom={zoom ?? 14}
         />
         <UserLocation />
-      </StyledMapView>
+      </OlaMap>
 
       {isMapVisible && (
         <>

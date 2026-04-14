@@ -33,12 +33,7 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
   return (
     <ScreenShell
       title={t.headerTitle}
-      onBack={onBackPress}
-      rightElement={
-        <S.StepIndicatorText>
-          3 <S.StepIndicatorSecondary>/ 9</S.StepIndicatorSecondary>
-        </S.StepIndicatorText>
-      }
+      onBack={true}
     >
       <S.ContentLayer showsVerticalScrollIndicator={false}>
         {/* Title */}

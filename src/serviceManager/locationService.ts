@@ -30,6 +30,26 @@ export interface OlaReverseGeocodeResponse {
   status: string;
 }
 
+export interface OlaRoutingRoute {
+  legs?: Array<{
+    distance: number;
+    duration: number;
+  }>;
+  overview_polyline?: string;
+  distance?: number;
+  duration?: number;
+  geometry?: string;
+  has_toll?: boolean;
+  toll_price?: number;
+  weight_name?: string;
+  summary?: string;
+}
+
+export interface OlaRoutingResponse {
+  routes: Array<OlaRoutingRoute>;
+  status: string;
+}
+
 export const locationService = {
   autocomplete: async (input: string): Promise<OlaPrediction[]> => {
     try {
@@ -68,6 +88,34 @@ export const locationService = {
     } catch (error) {
       console.error('Ola Maps Reverse Geocode Error:', error);
       return { name: 'Picked Location', address: '' };
+    }
+  },
+
+  getDirections: async (
+    originLat: number, 
+    originLng: number, 
+    destLat: number, 
+    destLng: number
+  ): Promise<OlaRoutingRoute[]> => {
+    try {
+      const response = await olaClient.post('/routing/v1/directions', null, {
+        params: {
+          origin: `${originLat},${originLng}`,
+          destination: `${destLat},${destLng}`,
+          alternatives: true,
+          steps: false,
+          overview: 'full',
+          mode: 'driving'
+        },
+      });
+
+      if (response.data.status === 'SUCCESS' || response.data.routes) {
+        return response.data.routes;
+      }
+      return [];
+    } catch (error) {
+      console.error('Ola Maps Directions Error:', error);
+      return [];
     }
   },
 };

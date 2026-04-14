@@ -64,7 +64,7 @@ export const StepText = styled.Text`
 
 /* Map Canvas Elements */
 export const MapSection = styled.View`
-  height: ${verticalScale(397)}px;
+  height: ${verticalScale(300)}px;
   width: ${width}px;
   position: relative;
   overflow: hidden;
@@ -88,17 +88,13 @@ export const ContentLayer = styled.ScrollView.attrs({
   }
 })`
   flex: 1;
-  background-color: transparent;
-  z-index: 10;
+  background-color: ${({ theme }) => theme.colors.surface};
 `;
 
 export const RouteWrapper = styled.View`
   background-color: ${({ theme }) => theme.colors.surface};
-  border-top-left-radius: ${moderateScale(32)}px;
-  border-top-right-radius: ${moderateScale(32)}px;
-  margin-top: -${verticalScale(32)}px;
   padding-horizontal: ${scale(24)}px;
-  padding-top: ${verticalScale(32)}px;
+  padding-top: ${verticalScale(24)}px;
   padding-bottom: ${verticalScale(32)}px;
   min-height: 100%;
 `;
@@ -114,6 +110,22 @@ export const ContentTitle = styled.Text`
   color: ${({ theme }) => theme.colors.on_surface};
   margin-bottom: ${verticalScale(4)}px;
   letter-spacing: -0.5px;
+`;
+
+export const SelectedRouteBadge = styled.View`
+  align-self: flex-start;
+  padding-horizontal: ${scale(12)}px;
+  padding-vertical: ${verticalScale(6)}px;
+  background-color: ${({ theme }) => theme.colors.primary_container};
+  border-radius: ${moderateScale(12)}px;
+  margin-bottom: ${verticalScale(12)}px;
+`;
+
+export const SelectedRouteText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 700;
+  font-size: ${responsiveFont(14)}px;
+  color: ${({ theme }) => theme.colors.on_primary_container};
 `;
 
 export const ContentSubtitle = styled.Text`

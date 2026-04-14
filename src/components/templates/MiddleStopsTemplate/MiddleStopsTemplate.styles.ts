@@ -66,11 +66,12 @@ export const TitleSection = styled.View`
 
 export const TitleText = styled.Text`
   font-family: 'Plus Jakarta Sans';
-  font-size: ${responsiveFont(30)}px;
+  font-size: ${responsiveFont(28)}px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.on_surface};
-  letter-spacing: -1px;
-  margin-bottom: ${verticalScale(8)}px;
+  letter-spacing: -1.2px;
+  line-height: ${responsiveFont(34)}px;
+  margin-bottom: ${verticalScale(4)}px;
 `;
 
 export const SubtitleText = styled.Text`
@@ -87,24 +88,25 @@ export const FooterContainer = styled.View`
   left: 0;
   right: 0;
   padding-horizontal: ${scale(24)}px;
-  padding-bottom: ${verticalScale(24)}px;
+  padding-bottom: ${verticalScale(32)}px;
   padding-top: ${verticalScale(24)}px;
-  background-color: ${({ theme }) => `${theme.colors.surface}CC`}; /* 80% opacity */
-  /* Backdrop blur equivalent using opacity/background in standard RN. For true blur we'd need @react-native-community/blur */
+  background-color: ${({ theme }) => theme.colors.surface};
+  border-top-width: 1px;
+  border-top-color: ${({ theme }) => theme.colors.outline_variant}33;
   z-index: 50;
 `;
 
 export const ContinueGradient = styled(LinearGradient)`
   width: 100%;
   padding-vertical: ${verticalScale(16)}px;
-  border-radius: ${moderateScale(6)}px;
+  border-radius: ${moderateScale(12)}px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: ${scale(8)}px;
   shadow-color: ${({ theme }) => theme.colors.primary};
   shadow-offset: 0px 8px;
-  shadow-opacity: 0.25;
+  shadow-opacity: 0.3;
   shadow-radius: 24px;
   elevation: 6;
 `;

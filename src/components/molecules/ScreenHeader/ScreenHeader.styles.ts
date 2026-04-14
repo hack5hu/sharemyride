@@ -6,7 +6,7 @@ export const Wrapper = styled.View`
   align-items: center;
   justify-content: space-between;
   padding-horizontal: ${scale(8)}px;
-  padding-vertical: ${verticalScale(8)}px;
+  padding-bottom: ${verticalScale(8)}px;
   background-color: ${({ theme }) => theme.colors.surface};
   z-index:100;
 `;
