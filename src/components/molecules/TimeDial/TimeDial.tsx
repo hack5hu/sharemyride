@@ -36,6 +36,7 @@ const SelectorHighlight = styled.View`
   shadow-radius: 4px;
   elevation: 2;
   z-index: 0;
+  pointer-events: none;
 `;
 
 const FadeTop = styled.View`
@@ -125,7 +126,7 @@ export const TimeDial: React.FC<TimeDialProps> = ({
 
   return (
     <DialWrapper>
-      <SelectorHighlight />
+      <SelectorHighlight pointerEvents="none" />
       <FadeTop pointerEvents="none" />
       <FadeBottom pointerEvents="none" />
       <ScrollView

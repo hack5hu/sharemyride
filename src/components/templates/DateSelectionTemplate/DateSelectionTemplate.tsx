@@ -37,23 +37,11 @@ export const DateSelectionTemplate: React.FC<DateSelectionTemplateProps> = ({
 
   return (
     <ScreenShell
-      title={t.headerTitle}
+      title={"Select a date"}
       onBack={onBackPress}
-      rightElement={
-        <S.StepBadge>
-          <S.StepBadgeText>{t.stepIndicator}</S.StepBadgeText>
-        </S.StepBadge>
-      }
     >
-      {/* Progress title and bar */}
       <S.ProgressSection>
-        <S.ProgressTitleRow>
-          <S.TitleText>{t.title}</S.TitleText>
-          <S.SubtitleText>{t.subtitle}</S.SubtitleText>
-        </S.ProgressTitleRow>
-        <S.ProgressBarContainer>
-          <S.ProgressBar />
-        </S.ProgressBarContainer>
+        <S.TitleText>{t.title}</S.TitleText>
       </S.ProgressSection>
 
       {/* Scrollable calendar */}

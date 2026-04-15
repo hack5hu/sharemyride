@@ -11,10 +11,11 @@ export const Container = styled(KeyboardAvoidingView)`
 export const ScrollContent = styled(ScrollView).attrs({
   contentContainerStyle: {
     flexGrow: 1,
-    justifyContent: 'center',
     paddingHorizontal: scale(24),
-    paddingVertical: verticalScale(48),
+    paddingBottom: verticalScale(48),
+    marginTop: '25%',
   },
+  keyboardShouldPersistTaps: 'handled',
 })``;
 
 export const BackgroundBubble = styled(View)<{
@@ -32,8 +33,6 @@ export const BackgroundBubble = styled(View)<{
   left: ${({ left }) => left || 'auto'};
   bottom: ${({ bottom }) => bottom || 'auto'};
   right: ${({ right }) => right || 'auto'};
-  /* Note: HTML uses blur-[80px]. Native RN Views do not support blur filters; 
-     consider using an Image with blurRadius if higher fidelity is needed. */
 `;
 
 export const BrandHeader = styled(View)`

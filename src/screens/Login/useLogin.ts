@@ -2,14 +2,17 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 import { useNavigation } from '@react-navigation/native';
 import { authService } from '@/serviceManager/authService';
-import { Alert } from 'react-native';
+import { Alert, Keyboard } from 'react-native';
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const navigation = useNavigation<any>();
 
-  const toggleTerms = () => setIsTermsAccepted((prev) => !prev);
+  const toggleTerms = () => {
+    Keyboard.dismiss();
+    setIsTermsAccepted((prev) => !prev);
+  };
 
   const handleGetOtp = async (phone: string) => {
     setLoading(true);
@@ -42,6 +45,7 @@ export const useLogin = () => {
       return errors;
     },
     onSubmit: values => {
+      Keyboard.dismiss();
       handleGetOtp(values.phone);
     },
   });

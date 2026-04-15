@@ -5,18 +5,21 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
 import { scale, verticalScale } from '@/styles';
-import { CarFloorPlan, FIVE_SEATER_ROWS } from '@/components/organisms/CarFloorPlan';
+import { CarFloorPlan, FIVE_SEATER_ROWS, SEVEN_SEATER_ROWS } from '@/components/organisms/CarFloorPlan';
 import { SeatLegend } from '@/components/molecules/SeatLegend/SeatLegend';
 import { SeatSummaryBar } from '@/components/molecules/SeatSummaryBar/SeatSummaryBar';
+import { VehicleToggle, VehicleType } from '@/components/molecules/VehicleToggle/VehicleToggle';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import * as S from './SeatSelectionTemplate.styles';
 
 export interface SeatSelectionTemplateProps {
   flow: 'publish' | 'book';
   selectedSeats: Set<string>;
+  vehicleType: VehicleType;
   moneyValue: string;
   seatIdsLabel: string;
   onSeatPress: (id: string) => void;
+  onVehicleTypeChange: (type: VehicleType) => void;
   onBackPress: () => void;
   onContinue: () => void;
   t: any;
@@ -25,19 +28,22 @@ export interface SeatSelectionTemplateProps {
 export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> = ({
   flow,
   selectedSeats,
+  vehicleType,
   moneyValue,
   seatIdsLabel,
   onSeatPress,
+  onVehicleTypeChange,
   onBackPress,
   onContinue,
   t,
 }) => {
   const theme = useTheme();
   const isBook = flow === 'book';
+  const rows = vehicleType === '7' ? SEVEN_SEATER_ROWS : FIVE_SEATER_ROWS;
 
   return (
     <ScreenShell
-      title={t.headerTitle}
+      title={t.headerTitle || 'Select your seats'}
       onBack={onBackPress}
       rightElement={isBook ? (
         <S.HeaderRight>
@@ -51,7 +57,7 @@ export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> = ({
           </S.DriverMeta>
           <Avatar 
             size="sm" 
-            source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCS37mTysRp3QqEQyUxkiwJnoSjFJkJpBQM6pz9jlBc_AVoagCQUejNgCkHQsTGaaHNAomXkz-iZa2nNpytZ0LZBTlQsGoPm5QFAhz2x-MslGGAmMJy5gSvcEvPFhZfcV0MD88vGJbM9KhQei67fC3peCgByygY6BLrsi-ACcZaibIdl9OjOgqQqeRgUGAalBhV7Xn7yWMKJRc4KP_7z9-X94kaCAnKK0W0WbSokoMEMfsRZbfN_Ht8qe75xtN0Jw5_n-LmANWZA9av' }} 
+            source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCS37mTysRp3QqEQyUxkiwJnoSjFJkJpBQM6pz9jlBc_AVoagCQUejNgCkHQsTGaaHNAomXkz-iZa2nNpytZ0LZBTlQsGoPm5QFAhz2x-MslGGAmMJy5gSvcEvPFhZfcV0MD88vGJbM9KhQei67fC3pyCgByygY6BLrsi-ACcZaibIdl9OjOgqQqeRgUGAalBhV7Xn7yWMKJRc4KP_7z9-X94kaCAnKK0W0WbSokoMEMfsRZbfN_Ht8qe75xtN0Jw5_n-LmANWZA9av' }} 
             style={{ borderWidth: 2, borderColor: theme.colors.primary_fixed }}
           />
         </S.HeaderRight>
@@ -79,21 +85,32 @@ export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> = ({
         )}
 
         {!isBook && (
-          <View style={{ paddingHorizontal: scale(24), marginTop: verticalScale(12), marginBottom: verticalScale(24) }}>
+          <View style={{ paddingHorizontal: scale(24), marginTop: verticalScale(12), marginBottom: verticalScale(8) }}>
             <Typography variant="title" size="md" weight="bold">{t.title}</Typography>
             <Typography variant="body" size="sm" color={theme.colors.on_surface_variant}>{t.subtitle}</Typography>
           </View>
         )}
 
-        <SeatLegend
-          availableLabel={t.legendAvailable || 'Available'}
-          selectedLabel={t.legendSelected || 'Selected'}
-          occupiedLabel={t.legendOccupied || 'Occupied'}
-        />
+        <View style={{ paddingHorizontal: scale(24) }}>
+          {!isBook && (
+            <VehicleToggle
+              selected={vehicleType}
+              onSelect={onVehicleTypeChange}
+              fiveSeaterLabel={t.fiveSeater || '5 Seater'}
+              sevenSeaterLabel={t.sevenSeater || '7 Seater'}
+            />
+          )}
+
+          <SeatLegend
+            availableLabel={t.legendAvailable || 'Available'}
+            selectedLabel={t.legendSelected || 'Selected'}
+            occupiedLabel={t.legendOccupied || 'Occupied'}
+          />
+        </View>
 
         <View style={{ marginTop: verticalScale(24) }}>
           <CarFloorPlan
-            rows={FIVE_SEATER_ROWS}
+            rows={rows}
             selectedSeats={selectedSeats}
             onSeatPress={onSeatPress}
             driverLabel={t.driverLabel}
@@ -104,7 +121,7 @@ export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> = ({
       <SeatSummaryBar
         flow={flow}
         seatCount={selectedSeats.size}
-        moneyValue={moneyValue}
+        moneyValue={!isBook ? '' : moneyValue} // Hide earnings for publish flow
         seatIdLabel={seatIdsLabel}
         summaryTitle={isBook ? (t.summaryTitle || 'Reservation Summary') : (t.seatsOffering || 'Seats Offered')}
         moneyLabel={isBook ? (t.totalPayable || 'Total Payable') : (t.estEarnings || 'Est. Earnings')}

@@ -14,6 +14,7 @@ export const MainContent = styled.ScrollView.attrs({
     paddingTop: verticalScale(32),
     paddingBottom: verticalScale(120),
   },
+  keyboardShouldPersistTaps: 'handled',
 })`
   flex: 1;
 `;

@@ -122,12 +122,14 @@ export const SeatSummaryBar: React.FC<SeatSummaryBarProps> = ({
             )}
           </View>
         </SummaryBlock>
-        <SummaryBlock alignEnd>
-          <SummaryLabel style={{ fontWeight: '700', textTransform: 'uppercase' }}>{moneyLabel}</SummaryLabel>
-          <MoneyValueText style={{ fontSize: isBook ? responsiveFont(20) : responsiveFont(18), fontWeight: '800' }}>
-            {moneyValue}
-          </MoneyValueText>
-        </SummaryBlock>
+        {!!moneyValue && (
+          <SummaryBlock alignEnd>
+            <SummaryLabel style={{ fontWeight: '700', textTransform: 'uppercase' }}>{moneyLabel}</SummaryLabel>
+            <MoneyValueText style={{ fontSize: isBook ? responsiveFont(20) : responsiveFont(18), fontWeight: '800' }}>
+              {moneyValue}
+            </MoneyValueText>
+          </SummaryBlock>
+        )}
       </SummaryRow>
       <ContinueButton onPress={onContinue} activeOpacity={0.9} disabled={disabled}>
         <ContinueGradient

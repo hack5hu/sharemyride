@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react';
+import { Keyboard } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/navigation/types';
@@ -26,6 +27,7 @@ export const useLocationSelection = () => {
   }, [clearPublishState]);
 
   const handlePressStart = useCallback(() => {
+    Keyboard.dismiss();
     navigation.navigate('MapPicker', { 
       type: 'start', 
       returnTo: 'LocationSelection',
@@ -34,6 +36,7 @@ export const useLocationSelection = () => {
   }, [navigation]);
 
   const handlePressDestination = useCallback(() => {
+    Keyboard.dismiss();
     navigation.navigate('MapPicker', { 
       type: 'destination', 
       returnTo: 'LocationSelection',
@@ -57,6 +60,7 @@ export const useLocationSelection = () => {
   }, [updatedLocation, type, navigation, setStartLocation, setDestinationLocation]);
 
   const handleContinue = useCallback(() => {
+    Keyboard.dismiss();
     navigation.navigate('RouteSelection');
   }, [navigation]);
 

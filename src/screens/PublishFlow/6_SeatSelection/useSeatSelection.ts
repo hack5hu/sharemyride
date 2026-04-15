@@ -15,6 +15,7 @@ export const useSeatSelection = () => {
   const t = flow === 'book' ? tSelect : tPublish;
 
   const [selectedSeats, setSelectedSeats] = useState<Set<string>>(new Set());
+  const [vehicleType, setVehicleType] = useState<'5' | '7'>('5');
 
   const handleSeatPress = useCallback((id: string) => {
     setSelectedSeats((prev) => {
@@ -26,6 +27,11 @@ export const useSeatSelection = () => {
       }
       return next;
     });
+  }, []);
+
+  const handleVehicleTypeChange = useCallback((type: '5' | '7') => {
+    setVehicleType(type);
+    setSelectedSeats(new Set()); // Reset selection when car layout changes
   }, []);
 
   const moneyValue = useMemo(() => {
@@ -58,8 +64,10 @@ export const useSeatSelection = () => {
     flow,
     selectedSeats,
     moneyValue,
+    vehicleType,
     seatIdsLabel,
     handleSeatPress,
+    handleVehicleTypeChange,
     handleBackPress,
     handleContinue,
     t,
