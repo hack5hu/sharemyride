@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { locationService } from '@/serviceManager/locationService';
 import { PricingTier } from '@/constants/pricing';
@@ -9,13 +9,18 @@ import { buildSegments, StopSegment } from '@/components/organisms/SegmentPricin
 
 export const usePriceSelection = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const params = route.params as any;
+  const returnTo = params?.returnTo;
+
   const { 
     startLocation, 
     destinationLocation, 
     middleStops,
     routeDetails,
     setRouteDetails,
-    seatCount
+    seatCount,
+    setPricing
   } = useRidePublishStore();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -148,8 +153,18 @@ export const usePriceSelection = () => {
   }, [navigation]);
 
   const handleContinue = useCallback(() => {
-    navigation.navigate('RequestType' as any);
-  }, [navigation]);
+    setPricing({
+      price,
+      premiumEnabled,
+      premiumPercentage,
+      segmentPrices: segmentPricesState,
+    });
+    if (returnTo === 'SummaryPublish') {
+      (navigation.navigate as any)('SummaryPublish');
+    } else {
+      (navigation.navigate as any)('RequestType');
+    }
+  }, [navigation, setPricing, price, premiumEnabled, premiumPercentage, segmentPricesState, returnTo]);
 
   const handleCustomizePricing = useCallback(() => {
     setSheetVisible(true);

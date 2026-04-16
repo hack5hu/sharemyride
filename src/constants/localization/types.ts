@@ -341,6 +341,10 @@ export interface SummaryPublishTranslations {
   termsText1: string;
   termsLink: string;
   termsText2: string;
+  routeSummaryLabel: string;
+  departureScheduleLabel: string;
+  addVehicleLabel: string;
+  addPreferencesLabel: string;
 }
 
 export interface Translations {

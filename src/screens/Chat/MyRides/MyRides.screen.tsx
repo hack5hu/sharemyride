@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { MyRidesTemplate } from '@/components/templates/MyRidesTemplate';
 import { MyRidesHeader } from '@/components/organisms/MyRidesHeader';
@@ -8,6 +8,8 @@ import { UpcomingRideCard } from '@/components/organisms/UpcomingRideCard';
 import { CompactRideItem } from '@/components/molecules/CompactRideItem';
 import { useMyRides } from './useMyRides';
 import { BottomNav } from '@/components/organisms/BottomNav';
+import * as Keychain from 'react-native-keychain';
+
 
 export const MyRidesScreen: React.FC = () => {
   const {
@@ -22,7 +24,6 @@ export const MyRidesScreen: React.FC = () => {
   } = useMyRides();
 
   const userAvatar = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDExpYK8xVP2mpLZ72YLG07-Nvi79pQHHE3Bf4HEGBRuFOCym2D4P_hlE3flaGGaR4XKpWguxkVxRruV_VNmRQoLa2Sg179Af0ZYu5OuAE0XnhnyKnoGtEty2IKdSCPEpm4wlGP2YlXb08qxB2BkWjHpVIUO0XH8BgWiYyR4o6Ku2xPiwHS4dYGdV-aBsCeqKoBrDgJExj0TgYQDrb9mu-4Y4YSLPxze3tWxwjfF5l8SSkYi3zPx0RDth6HTJ54yE4zdBFrhiC14HB5';
-
   const highlightsSection = (
     <View>
       <SectionHeader title="New Requests" badgeLabel="2 Pending" />
@@ -57,18 +58,37 @@ export const MyRidesScreen: React.FC = () => {
         onPress={() => onRidePress('upcoming-ride-456')}
       />
     </View>
-  );
-
+  ); 
+  const drafts = []
   const draftsSection = (
     <View>
-      <SectionHeader title="Drafts" actionLabel="Clear All" onActionPress={onClearDrafts} />
-      <CompactRideItem 
-        title="Airport Terminal 2"
-        subtitle="Incomplete booking • 3 days ago"
-        icon="edit-note"
-        type="draft"
-        onPress={() => onRidePress('draft-ride-789')}
+      <SectionHeader 
+        title="Drafts" 
+        actionLabel={drafts.length > 0 ? "Clear All" : undefined} 
+        onActionPress={onClearDrafts} 
       />
+      {drafts.length > 0 ? (
+        <View style={{ gap: 12 }}>
+          {drafts.map((draft) => (
+            <CompactRideItem 
+              key={draft.id}
+              title={draft.title}
+              subtitle={draft.subtitle}
+              icon="edit-note"
+              type="draft"
+              onPress={() => onRidePress(draft.id)}
+            />
+          ))}
+        </View>
+      ) : (
+        <CompactRideItem 
+          title="No drafts yet"
+          subtitle="Your saved rides will appear here"
+          icon="drafts"
+          type="draft"
+          onPress={() => {}}
+        />
+      )}
     </View>
   );
 

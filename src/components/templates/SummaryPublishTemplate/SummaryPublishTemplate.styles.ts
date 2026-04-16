@@ -1,68 +1,6 @@
 import styled from 'styled-components/native';
-import { View } from 'react-native';
-import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 import LinearGradient from 'react-native-linear-gradient';
-
-export const Container = styled.View`
-  flex: 1;
-  background-color: ${({ theme }) => theme.colors.surface};
-`;
-
-/* DECORATIVE BACKGROUND BLOBS */
-export const BackgroundContainer = styled.View`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-`;
-
-export const BlobTopLeft = styled.View`
-  position: absolute;
-  top: -10%;
-  left: -20%;
-  width: ${scale(250)}px;
-  height: ${scale(250)}px;
-  border-radius: 9999px;
-  background-color: ${({ theme }) => `${theme.colors.primary_container}20`};
-`;
-
-export const BlobBottomRight = styled.View`
-  position: absolute;
-  bottom: 10%;
-  right: -20%;
-  width: ${scale(300)}px;
-  height: ${scale(300)}px;
-  border-radius: 9999px;
-  background-color: ${({ theme }) => `${theme.colors.secondary_container}30`};
-`;
-
-
-export const Header = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding-horizontal: ${scale(24)}px;
-  padding-vertical: ${verticalScale(14)}px;
-`;
-
-export const HeaderLeft = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(16)}px;
-`;
-
-export const BackButton = styled.TouchableOpacity`
-  padding: ${moderateScale(4)}px;
-`;
-
-export const HeaderTitle = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(18)}px;
-  color: ${({ theme }) => theme.colors.on_surface};
-`;
+import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 
 export const SaveButton = styled.TouchableOpacity`
   padding-right: ${moderateScale(24)}px;
@@ -74,6 +12,7 @@ export const SaveText = styled.Text`
   font-size: ${responsiveFont(14)}px;
   color: ${({ theme }) => theme.colors.on_surface};
 `;
+
 
 export const Content = styled.ScrollView.attrs({
   contentContainerStyle: {
@@ -118,16 +57,9 @@ export const GlassCard = styled.View`
 `;
 
 /* ROUTE SUMMARY */
-export const RouteHeaderRow = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-`;
-
 export const RouteLayout = styled.View`
   flex-direction: row;
   gap: ${scale(12)}px;
-  flex: 1;
 `;
 
 export const TimelineLine = styled.View`
@@ -184,17 +116,35 @@ export const StopLocation = styled.Text`
   color: ${({ theme }) => theme.colors.on_surface};
 `;
 
-export const StopTime = styled.Text`
+/* SECTION HEADER */
+export const SectionHeader = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${verticalScale(12)}px;
+`;
+
+export const SectionLabel = styled.Text`
   font-family: 'Plus Jakarta Sans';
-  font-size: ${responsiveFont(13)}px;
+  font-weight: 800;
+  font-size: ${responsiveFont(10)}px;
   color: ${({ theme }) => theme.colors.on_surface_variant};
-  margin-top: ${verticalScale(2)}px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 `;
 
 export const EditButton = styled.TouchableOpacity`
   padding: ${moderateScale(6)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_low};
   border-radius: 9999px;
+`;
+
+/* DATE TIME BOX */
+export const DateTimeValue = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 800;
+  font-size: ${responsiveFont(16)}px;
+  color: ${({ theme }) => theme.colors.on_surface};
 `;
 
 /* GRID ROW */
@@ -213,23 +163,6 @@ export const GridCard = styled.View`
   border-color: ${({ theme }) => `${theme.colors.on_surface}1A`};
 `;
 
-export const GridCardHeader = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: ${verticalScale(12)}px;
-`;
-
-export const GridCardLabel = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${responsiveFont(10)}px;
-  color: ${({ theme }) => theme.colors.on_surface_variant};
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: ${verticalScale(2)}px;
-`;
-
 export const GridCardValue = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 800;
@@ -239,30 +172,27 @@ export const GridCardValue = styled.Text`
 
 export const GridCardSub = styled.Text`
   font-family: 'Plus Jakarta Sans';
-  font-weight: 500;
-  font-size: ${responsiveFont(13)}px;
-  color: ${({ theme }) => theme.colors.on_surface};
-  opacity: 0.7;
-  margin-top: ${verticalScale(4)}px;
+  font-size: ${responsiveFont(12)}px;
+  color: ${({ theme }) => theme.colors.on_surface_variant};
+  margin-top: ${verticalScale(2)}px;
+`;
+
+/* EMPTY STATE */
+export const EmptyStateWrapper = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(8)}px;
+  padding-vertical: ${verticalScale(4)}px;
+`;
+
+export const EmptyStateText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 600;
+  font-size: ${responsiveFont(14)}px;
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 /* PREFERENCES */
-export const PrefHeader = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: ${verticalScale(12)}px;
-`;
-
-export const PrefLabel = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${responsiveFont(10)}px;
-  color: ${({ theme }) => theme.colors.on_surface_variant};
-  text-transform: uppercase;
-  letter-spacing: 1px;
-`;
-
 export const BadgeRow = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
@@ -329,6 +259,10 @@ export const PublishText = styled.Text`
   font-size: ${responsiveFont(16)}px;
   color: ${({ theme }) => theme.colors.on_primary};
 `;
+
+export const LoadingIndicator = styled.ActivityIndicator.attrs({
+  size: 'small',
+})``;
 
 export const TermsText = styled.Text`
   font-family: 'Plus Jakarta Sans';

@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRidePublishStore } from '@/store/useRidePublishStore';
 
 const getNextRounded5 = (date: Date) => {
   const minutes = date.getMinutes();
@@ -37,13 +38,29 @@ export const useTimeSelection = () => {
     return { minHour: h, minMinute: m };
   }, [isToday]);
 
+  const { setDepartureTime, departureTime } = useRidePublishStore();
+
+  // Parse previously stored time (e.g. "08:30 AM") to pre-fill the picker
+  const storedTime = useMemo(() => {
+    if (!departureTime) return null;
+    const match = departureTime.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+    if (!match) return null;
+    let h = parseInt(match[1], 10);
+    const m = parseInt(match[2], 10);
+    const isPM = match[3].toUpperCase() === 'PM';
+    if (isPM && h !== 12) h += 12;
+    if (!isPM && h === 12) h = 0;
+    return { h, m };
+  }, [departureTime]);
+
   const initialTime = useMemo(() => {
+    // Prefer previously stored time (when returning from Summary)
+    if (storedTime) return storedTime;
     if (minHour !== undefined && minMinute !== undefined) {
       return { h: minHour, m: minMinute };
     }
-    // Default to 08:00
     return { h: 8, m: 0 };
-  }, [minHour, minMinute]);
+  }, [storedTime, minHour, minMinute]);
 
   const [selectedHour, setSelectedHour] = useState(initialTime.h);
   const [selectedMinute, setSelectedMinute] = useState(initialTime.m);
@@ -67,9 +84,22 @@ export const useTimeSelection = () => {
     navigation.goBack();
   }, [navigation]);
 
+
   const handleContinuePress = useCallback(() => {
-    (navigation.navigate as any)('SeatSelection', { flow: 'publish' });
-  }, [navigation]);
+    const timeString = `${selectedHour.toString().padStart(2, '0')}:${selectedMinute.toString().padStart(2, '0')} ${selectedHour >= 12 ? 'PM' : 'AM'}`;
+    // Simple 12h conversion would be better but let's keep it consistent
+    const hour12 = selectedHour % 12 || 12;
+    const ampm = selectedHour >= 12 ? 'PM' : 'AM';
+    const displayTime = `${hour12.toString().padStart(2, '0')}:${selectedMinute.toString().padStart(2, '0')} ${ampm}`;
+    
+    setDepartureTime(displayTime);
+
+    if (params?.returnTo === 'SummaryPublish') {
+      (navigation.navigate as any)('SummaryPublish');
+    } else {
+      (navigation.navigate as any)('SeatSelection', { flow: 'publish' });
+    }
+  }, [selectedHour, selectedMinute, navigation, setDepartureTime, params]);
 
   return {
     selectedHour,

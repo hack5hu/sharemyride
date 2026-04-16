@@ -10,6 +10,7 @@ export const useSeatSelection = () => {
   const { selectSeat: tSelect, seatSelection: tPublish } = useLocale();
 
   const flow = route.params?.flow || 'publish';
+  const returnTo = (route.params as any)?.returnTo;
   const t = flow === 'book' ? tSelect : tPublish;
 
   const [selectedSeats, setSelectedSeats] = useState<Set<string>>(new Set());
@@ -40,19 +41,21 @@ export const useSeatSelection = () => {
     navigation.goBack();
   }, [navigation]);
 
-  const { setSeatCount } = useRidePublishStore();
+  const { setSeatCount, setSelectedSeatIds, setPublishVehicleType } = useRidePublishStore();
 
   const handleContinue = useCallback(() => {
     if (selectedSeats.size > 0) {
       if (flow === 'publish') {
         setSeatCount(selectedSeats.size);
-        (navigation.navigate as any)('PriceSelection');
+        setSelectedSeatIds(Array.from(selectedSeats));
+        setPublishVehicleType(vehicleType);
+        (navigation.navigate as any)('PriceSelection', { returnTo });
       } else {
-        // For booking, either go back or to a success/payment screen
+        // For booking, either go back or to a payment screen
         navigation.goBack();
       }
     }
-  }, [selectedSeats, navigation, flow, setSeatCount]);
+  }, [selectedSeats, navigation, flow, setSeatCount, setSelectedSeatIds, setPublishVehicleType, vehicleType, returnTo]);
 
   return {
     flow,

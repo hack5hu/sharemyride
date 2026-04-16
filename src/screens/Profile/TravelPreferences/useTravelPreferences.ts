@@ -1,15 +1,18 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { TravelPreferenceState } from './types';
 
 export const useTravelPreferences = () => {
   const navigation = useNavigation();
+  const { preferences: storedPrefs, setPreferences: setStoredPrefs } = useRidePublishStore();
+
   const [preferences, setPreferences] = useState<TravelPreferenceState>({
-    nonSmoking: true,
-    womenOnly: false,
-    music: 'Bollywood',
-    luggage: true,
-    pets: false,
+    nonSmoking: storedPrefs?.nonSmoking ?? true,
+    womenOnly: storedPrefs?.womenOnly ?? false,
+    music: storedPrefs?.music ?? 'Bollywood',
+    luggage: storedPrefs?.luggage ?? true,
+    pets: storedPrefs?.pets ?? false,
   });
 
   const musicOptions = useMemo(() => ['Bollywood', 'Pop', 'Jazz', 'Podcast', 'Silence'], []);
@@ -31,10 +34,10 @@ export const useTravelPreferences = () => {
 
   const handleSave = useCallback(() => {
     // In a real app, this would call the API service
-    // For now, we'll navigate back
+    setStoredPrefs(preferences);
     console.log('Saving preferences:', preferences);
     navigation.goBack();
-  }, [navigation, preferences]);
+  }, [navigation, preferences, setStoredPrefs]);
 
 
   return {

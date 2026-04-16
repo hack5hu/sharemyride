@@ -381,6 +381,10 @@ export const en: Translations = {
     termsText1: 'By publishing, you agree to our ',
     termsLink: 'Safety Guidelines',
     termsText2: ' and community policies.',
+    routeSummaryLabel: 'Route Summary',
+    departureScheduleLabel: 'Departure Schedule',
+    addVehicleLabel: 'Add Vehicle',
+    addPreferencesLabel: 'Set Preferences',
   },
   publishSuccess: {
     headerTitle: 'Publish Success',

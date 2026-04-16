@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';
@@ -38,9 +39,12 @@ export const RequestTypeScreen: React.FC = () => {
   // State for booking type: 'instant' or 'review'
   const [bookingType, setBookingType] = React.useState<'instant' | 'review'>('instant');
 
+  const { setRequestType } = useRidePublishStore();
+
   const handleBackPress = () => navigation.goBack();
   const handleContinue = () => {
-    navigation.navigate('SummaryPublish' as any);
+    setRequestType(bookingType);
+    (navigation.navigate as any)('SummaryPublish');
   };
 
   return (

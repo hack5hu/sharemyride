@@ -243,6 +243,7 @@ export const hi: Translations = {
     searchPlaceholder: 'स्थान खोजें...',
     setPickup: 'पिकअप सेट करें',
     setDestination: 'गंतव्य सेट करें',
+    setStop: 'स्टॉप सेट करें',
     selectedArea: 'चयनित क्षेत्र',
     selectLocation: 'स्थान चुनें',
     recentSearches: 'हाल की खोजें',
@@ -379,6 +380,10 @@ export const hi: Translations = {
     termsText1: 'By publishing, you agree to our ',
     termsLink: 'Safety Guidelines',
     termsText2: ' and community policies.',
+    routeSummaryLabel: 'Route Summary',
+    departureScheduleLabel: 'Departure Schedule',
+    addVehicleLabel: 'Add Vehicle',
+    addPreferencesLabel: 'Set Preferences',
   },
   publishSuccess: {
     headerTitle: 'प्रकाशन सफल',

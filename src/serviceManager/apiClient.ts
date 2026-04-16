@@ -29,6 +29,10 @@ apiClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     console.log(`\n🚀 [API Request] ${config.method?.toUpperCase()} ${config.url}`);
     console.log(`[API Request Headers]`, JSON.stringify(config.headers, null, 2));
+     console.log(
+       `[Token]`,
+       config.headers.Authorization,
+     );
     
     if (config.data) {
       if (config.data instanceof FormData) {
