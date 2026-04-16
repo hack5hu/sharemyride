@@ -4,124 +4,126 @@ import styled, { useTheme } from 'styled-components/native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 import { CounterButton } from '@/components/atoms/CounterButton';
 
+import { PriceCounter } from '@/components/molecules/PriceCounter';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { calculateFrontSeatPrice } from '@/utils/pricing';
+
 export interface SegmentPrice {
-  segmentId: string;
-  min: number;
-  max: number;
+  basePrice: number;
+  minPrice: number;
+  maxPrice: number;
 }
 
 /* ──── Styles ──── */
 const Card = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_low};
-  border-radius: ${moderateScale(12)}px;
+  border-radius: ${moderateScale(16)}px;
   padding: ${moderateScale(16)}px;
+  gap: ${verticalScale(12)}px;
 `;
 
 const HeaderRow = styled.View`
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: ${verticalScale(14)}px;
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(10)}px;
 `;
 
 const SegmentBadge = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  padding-horizontal: ${scale(12)}px;
+  background-color: ${({ theme }) => theme.colors.primary_container};
+  padding-horizontal: ${scale(8)}px;
   padding-vertical: ${verticalScale(4)}px;
-  border-radius: 9999px;
-  shadow-color: rgb(0,0,0);
-  shadow-offset: 0px 1px;
-  shadow-opacity: 0.06;
-  shadow-radius: 2px;
-  elevation: 1;
+  border-radius: ${moderateScale(6)}px;
 `;
 
 const SegmentBadgeText = styled.Text`
   font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(10)}px;
-  color: ${({ theme }) => theme.colors.primary};
+  font-weight: 800;
+  font-size: ${responsiveFont(9)}px;
+  color: ${({ theme }) => theme.colors.on_primary_container};
   text-transform: uppercase;
-  letter-spacing: 1px;
+`;
+
+const RouteContainer = styled.View`
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(6)}px;
 `;
 
 const RouteText = styled.Text`
+  flex: 1;
   font-family: 'Plus Jakarta Sans';
-  font-size: ${responsiveFont(12)}px;
-  font-weight: 500;
-  color: ${({ theme }) => theme.colors.outline};
-`;
-
-const InputRow = styled.View`
-  flex-direction: row;
-  align-items: flex-end;
-  gap: ${scale(8)}px;
-`;
-
-const InputGroup = styled.View`flex: 1;`;
-
-const InputLabel = styled.Text`
-  font-family: 'Plus Jakarta Sans';
+  font-size: ${responsiveFont(14)}px;
   font-weight: 700;
-  font-size: ${responsiveFont(10)}px;
-  color: ${({ theme }) => theme.colors.outline_variant};
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: ${verticalScale(6)}px;
+  color: ${({ theme }) => theme.colors.on_surface};
 `;
 
-const PriceControlRow = styled.View`
+const PriceSection = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  
-  border-radius: ${moderateScale(10)}px;
-  padding-horizontal: ${scale(4)}px;
-  height: ${moderateScale(48)}px;
-`;
-
-const PriceValue = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(15)}px;
-  color: ${({ theme }) => theme.colors.primary};
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  padding:12px 20px;
-  border-radius:12px;
+  padding: ${moderateScale(12)}px;
+  border-radius: ${moderateScale(12)}px;
 `;
 
-const Separator = styled.Text`
+const PriceLabel = styled.Text`
   font-family: 'Plus Jakarta Sans';
-  font-size: ${responsiveFont(16)}px;
-  color: ${({ theme }) => theme.colors.outline_variant};
-  padding-bottom: ${verticalScale(12)}px;
-  font-weight: 500;
+  font-size: ${responsiveFont(11)}px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.outline};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 `;
 
-/* Front seat row — shown conditionally */
-const FrontSeatRow = styled.View`
+/* Front seat section — Using 'No-Line' rule with subtle surface variance */
+const FrontSeatSection = styled.View`
+  padding: ${moderateScale(14)}px;
+  background-color: ${({ theme }) => `${theme.colors.secondary_container}20`};
+  border-radius: ${moderateScale(12)}px;
+  gap: ${verticalScale(4)}px;
+`;
+
+const FrontSeatTop = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: ${verticalScale(12)}px;
-  padding-top: ${verticalScale(10)}px;
-  border-top-width: 1px;
-  border-top-color: ${({ theme }) => `${theme.colors.outline_variant}1A`};
+`;
+
+const FrontSeatLabelRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(6)}px;
 `;
 
 const FrontSeatLabel = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 700;
-  font-size: ${responsiveFont(10)}px;
-  color: ${({ theme }) => theme.colors.outline};
+  font-size: ${responsiveFont(11)}px;
+  color: ${({ theme }) => theme.colors.secondary};
   text-transform: uppercase;
-  letter-spacing: 0.8px;
 `;
 
-const FrontSeatValue = styled.Text`
+const MathBreakdown = styled.Text`
   font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(14)}px;
-  color: ${({ theme }) => theme.colors.primary};
+  font-weight: 600;
+  font-size: ${responsiveFont(13)}px;
+  color: ${({ theme }) => theme.colors.on_surface_variant};
+  letter-spacing: 0.2px;
+`;
+
+const TotalFrontSeatPrice = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 800;
+  font-size: ${responsiveFont(18)}px;
+  color: ${({ theme }) => theme.colors.on_surface};
+`;
+
+const HelperText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-size: ${responsiveFont(10)}px;
+  color: ${({ theme }) => theme.colors.outline};
+  font-style: italic;
 `;
 
 /* ──── Component ──── */
@@ -130,51 +132,29 @@ export interface SegmentPricingCardProps {
   from: string;
   to: string;
   segmentPrice: SegmentPrice;
-  onChange: (updated: SegmentPrice) => void;
+  onPriceChange: (price: number) => void;
   segmentLabel: string;
-  minLabel: string;
-  maxLabel: string;
   premiumEnabled: boolean;
-  basePrice: number;
   frontSeatLabel: string;
+  premiumPercentage: number;
 }
-
-const calcFrontSeatPrice = (min: number, basePrice: number): number =>
-  min + Math.round(basePrice * 0.1 / 10) * 10;
 
 export const SegmentPricingCard: React.FC<SegmentPricingCardProps> = ({
   index,
   from,
   to,
   segmentPrice,
-  onChange,
+  onPriceChange,
   segmentLabel,
-  minLabel,
-  maxLabel,
   premiumEnabled,
-  basePrice,
   frontSeatLabel,
+  premiumPercentage,
 }) => {
   const theme = useTheme();
-  const frontSeatPrice = calcFrontSeatPrice(segmentPrice.min, basePrice);
-
-  const STEP = 10;
-
-  const handleMinDec = useCallback(() => {
-    onChange({ ...segmentPrice, min: Math.max(0, segmentPrice.min - STEP) });
-  }, [segmentPrice, onChange]);
-
-  const handleMinInc = useCallback(() => {
-    onChange({ ...segmentPrice, min: segmentPrice.min + STEP });
-  }, [segmentPrice, onChange]);
-
-  const handleMaxDec = useCallback(() => {
-    onChange({ ...segmentPrice, max: Math.max(0, segmentPrice.max - STEP) });
-  }, [segmentPrice, onChange]);
-
-  const handleMaxInc = useCallback(() => {
-    onChange({ ...segmentPrice, max: segmentPrice.max + STEP });
-  }, [segmentPrice, onChange]);
+  
+  // Calculate front seat price dynamically based on current basePrice
+  const totalFrontSeatPrice = calculateFrontSeatPrice(segmentPrice.basePrice, premiumPercentage);
+  const premiumAmount = totalFrontSeatPrice - segmentPrice.basePrice;
 
   return (
     <Card>
@@ -184,24 +164,42 @@ export const SegmentPricingCard: React.FC<SegmentPricingCardProps> = ({
             {segmentLabel} {String(index + 1).padStart(2, '0')}
           </SegmentBadgeText>
         </SegmentBadge>
-        <RouteText>{from} → {to}</RouteText>
+        <RouteContainer>
+          <MaterialIcons name="trip-origin" size={moderateScale(14)} color={theme.colors.primary} />
+          <RouteText numberOfLines={1}>{from} – {to}</RouteText>
+        </RouteContainer>
       </HeaderRow>
 
-      <InputRow>
-        <InputGroup>
-          <PriceControlRow>
-            <CounterButton type="remove" onPress={handleMaxDec} disabled={segmentPrice.max <= 0} />
-            <PriceValue>₹{segmentPrice.max}</PriceValue>
-            <CounterButton type="add" onPress={handleMaxInc} />
-          </PriceControlRow>
-        </InputGroup>
-      </InputRow>
+      <PriceSection>
+        <PriceLabel>Per Seat Price</PriceLabel>
+        <PriceCounter 
+          variant="compact"
+          price={segmentPrice.basePrice}
+          onPriceChange={onPriceChange}
+          minPrice={segmentPrice.minPrice}
+          maxPrice={segmentPrice.maxPrice}
+          step={10}
+        />
+      </PriceSection>
 
       {premiumEnabled && (
-        <FrontSeatRow>
-          <FrontSeatLabel>{frontSeatLabel}</FrontSeatLabel>
-          <FrontSeatValue>₹{frontSeatPrice}</FrontSeatValue>
-        </FrontSeatRow>
+        <FrontSeatSection>
+          <FrontSeatTop>
+            <FrontSeatLabelRow>
+              <MaterialIcons name="event-seat" size={moderateScale(16)} color={theme.colors.secondary} />
+              <FrontSeatLabel>{frontSeatLabel}</FrontSeatLabel>
+            </FrontSeatLabelRow>
+            <TotalFrontSeatPrice>₹{totalFrontSeatPrice}</TotalFrontSeatPrice>
+          </FrontSeatTop>
+          
+          <MathBreakdown>
+            ₹{segmentPrice.basePrice} + ₹{premiumAmount} = ₹{totalFrontSeatPrice}
+          </MathBreakdown>
+          
+          <HelperText>
+            Base + {Math.round(premiumPercentage)}% premium calculated for this leg
+          </HelperText>
+        </FrontSeatSection>
       )}
     </Card>
   );

@@ -2,9 +2,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { useLocale } from '@/constants/localization';
 import { RootStackParamList } from '@/navigation/types.d';
-
-const PRICE_PER_SEAT = 14.50; // Mock price for booking
-const EARNINGS_PER_SEAT = 112.5; // Mock earnings for publishing (₹112.50)
+import { useRidePublishStore } from '@/store/useRidePublishStore';
 
 export const useSeatSelection = () => {
   const navigation = useNavigation();
@@ -34,13 +32,6 @@ export const useSeatSelection = () => {
     setSelectedSeats(new Set()); // Reset selection when car layout changes
   }, []);
 
-  const moneyValue = useMemo(() => {
-    const rate = flow === 'book' ? PRICE_PER_SEAT : EARNINGS_PER_SEAT;
-    const total = selectedSeats.size * rate;
-    const symbol = flow === 'book' ? '$' : '₹';
-    return `${symbol}${total.toFixed(2)}`;
-  }, [selectedSeats, flow]);
-
   const seatIdsLabel = useMemo(() => {
     return Array.from(selectedSeats).join(', ');
   }, [selectedSeats]);
@@ -49,21 +40,23 @@ export const useSeatSelection = () => {
     navigation.goBack();
   }, [navigation]);
 
+  const { setSeatCount } = useRidePublishStore();
+
   const handleContinue = useCallback(() => {
     if (selectedSeats.size > 0) {
       if (flow === 'publish') {
+        setSeatCount(selectedSeats.size);
         (navigation.navigate as any)('PriceSelection');
       } else {
         // For booking, either go back or to a success/payment screen
         navigation.goBack();
       }
     }
-  }, [selectedSeats, navigation, flow]);
+  }, [selectedSeats, navigation, flow, setSeatCount]);
 
   return {
     flow,
     selectedSeats,
-    moneyValue,
     vehicleType,
     seatIdsLabel,
     handleSeatPress,

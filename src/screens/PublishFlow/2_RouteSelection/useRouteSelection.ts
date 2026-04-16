@@ -13,7 +13,7 @@ export interface RouteData {
 
 export const useRouteSelection = () => {
   const navigation = useNavigation();
-  const { startLocation, destinationLocation } = useRidePublishStore();
+  const { startLocation, destinationLocation, setSelectedRoute } = useRidePublishStore();
   console.log(startLocation, destinationLocation);
   const [routesData, setRoutesData] = useState<RouteData[]>([]);
   const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null);
@@ -109,8 +109,13 @@ export const useRouteSelection = () => {
   }, []);
 
   const handleContinuePress = useCallback(() => {
+    const selectedRoute = routesData.find(r => r.uiData.id === selectedRouteId);
+    if (selectedRoute) {
+      setSelectedRoute(selectedRoute);
+    }
+    console.log(selectedRoute)
     navigation.navigate('MiddleStops' as never);
-  }, [navigation]);
+  }, [navigation, routesData, selectedRouteId, setSelectedRoute]);
 
   return {
     routes: routesData.map(r => r.uiData),

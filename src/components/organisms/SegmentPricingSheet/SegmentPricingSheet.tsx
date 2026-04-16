@@ -1,9 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import {
-  Modal,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -12,6 +8,9 @@ import styled, { useTheme } from 'styled-components/native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 import { SegmentPricingCard, SegmentPrice } from '@/components/molecules/SegmentPricingCard';
 import { StopSegment } from './utils';
+
+/* ──── Styles ──── */
+import { PricingTier } from '@/constants/pricing';
 
 /* ──── Styles ──── */
 const Overlay = styled.View`
@@ -25,7 +24,7 @@ const Sheet = styled.View`
   border-top-left-radius: ${moderateScale(40)}px;
   border-top-right-radius: ${moderateScale(40)}px;
   max-height: 88%;
-  padding-bottom: ${verticalScale(8)}px;
+  padding-bottom: ${verticalScale(40)}px;
 `;
 
 const DragHandle = styled.View`
@@ -59,9 +58,8 @@ const SheetSubtitle = styled.Text`
   margin-top: ${verticalScale(2)}px;
 `;
 
-// Crucial: flex-grow ensures the ScrollView fills the space but allows header/footer
 const CardList = styled.ScrollView`
-  flex-grow: 0;
+  flex-grow: 1;
 `;
 
 const ButtonRow = styled.View`
@@ -69,6 +67,7 @@ const ButtonRow = styled.View`
   gap: ${scale(10)}px;
   padding-horizontal: ${scale(28)}px;
   padding-vertical: ${verticalScale(20)}px;
+  background-color: ${({ theme }) => theme.colors.surface};
 `;
 
 const CancelButton = styled.TouchableOpacity`
@@ -111,30 +110,15 @@ const SaveText = styled.Text`
   color: ${({ theme }) => theme.colors.on_primary};
 `;
 
-/* ──── Helper: build defaults ──── */
-export const buildDefaults = (
-  segments: StopSegment[],
-  base: number
-): Record<string, SegmentPrice> => {
-  const result: Record<string, SegmentPrice> = {};
-  segments.forEach((seg) => {
-    result[seg.id] = {
-      segmentId: seg.id,
-      min: Math.round(base * 0.4 / 10) * 10,
-      max: Math.round(base * 0.7 / 10) * 10,
-    };
-  });
-  return result;
-};
-
 /* ──── Component ──── */
 export interface SegmentPricingSheetProps {
   visible: boolean;
-  segments: StopSegment[];
-  basePrice: number;
+  segments: (StopSegment & { distanceKm: number })[];
+  segmentPrices: Record<string, SegmentPrice>;
   premiumEnabled: boolean;
+  premiumPercentage: number;
   onClose: () => void;
-  onSave: (prices: Record<string, SegmentPrice>) => void;
+  onSave: (prices: Record<string, { basePrice: number }>) => void;
   t: {
     title: string;
     subtitle: string;
@@ -150,92 +134,102 @@ export interface SegmentPricingSheetProps {
 export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
   visible,
   segments,
-  basePrice,
+  segmentPrices,
   premiumEnabled,
+  premiumPercentage,
   onClose,
   onSave,
   t,
 }) => {
   const theme = useTheme();
-  const [prices, setPrices] = useState<Record<string, SegmentPrice>>({});
+  
+  // localPrices tracks basePrice for each segment
+  const [localPrices, setLocalPrices] = useState<Record<string, number>>({});
 
-  // Sync internal state when opened or segments change
   React.useEffect(() => {
     if (visible) {
-      setPrices(buildDefaults(segments, basePrice));
+      const initial: Record<string, number> = {};
+      Object.keys(segmentPrices).forEach(id => {
+        initial[id] = segmentPrices[id].basePrice;
+      });
+      setLocalPrices(initial);
     }
-  }, [visible, segments, basePrice]);
+  }, [visible, segmentPrices]);
 
-  const handleChange = useCallback((updated: SegmentPrice) => {
-    setPrices((prev) => ({ ...prev, [updated.segmentId]: updated }));
+  const handlePriceChange = useCallback((id: string, price: number) => {
+    setLocalPrices(prev => ({ ...prev, [id]: price }));
   }, []);
 
   const handleSave = useCallback(() => {
-    onSave(prices);
+    const final: Record<string, { basePrice: number }> = {};
+    Object.keys(localPrices).forEach(id => {
+      final[id] = { basePrice: localPrices[id] };
+    });
+    onSave(final);
     onClose();
-  }, [prices, onSave, onClose]);
+  }, [localPrices, onSave, onClose]);
 
   if (!visible) return null;
 
   return (
     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 999, elevation: 999 }}>
       <Overlay>
-        {/* Main backdrop button to close */}
         <TouchableWithoutFeedback onPress={onClose}>
           <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
         </TouchableWithoutFeedback>
 
         <Sheet>
-            <DragHandle />
-            <SheetHeader>
-              <SheetTitle>{t.title}</SheetTitle>
-              <SheetSubtitle>{t.subtitle}</SheetSubtitle>
-            </SheetHeader>
+          <DragHandle />
+          <SheetHeader>
+            <SheetTitle>{t.title}</SheetTitle>
+            <SheetSubtitle>{t.subtitle}</SheetSubtitle>
+          </SheetHeader>
 
-            <View style={{ maxHeight: verticalScale(500) }}>
-              <CardList
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps="handled"
-                contentContainerStyle={{
-                  paddingHorizontal: scale(28),
-                  paddingBottom: verticalScale(20),
-                  gap: verticalScale(14),
-                }}
+          <View style={{ maxHeight: verticalScale(500) }}>
+            <CardList
+              showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps="handled"
+              contentContainerStyle={{
+                paddingHorizontal: scale(28),
+                paddingBottom: verticalScale(20),
+                gap: verticalScale(14),
+              }}
+            >
+              {segments.map((seg, i) => (
+                <SegmentPricingCard
+                  key={seg.id}
+                  index={i}
+                  from={seg.from}
+                  to={seg.to}
+                  segmentPrice={{
+                    ...segmentPrices[seg.id],
+                    basePrice: localPrices[seg.id] ?? segmentPrices[seg.id]?.basePrice ?? 0
+                  }}
+                  onPriceChange={(price) => handlePriceChange(seg.id, price)}
+                  segmentLabel={t.segmentLabel}
+                  premiumEnabled={premiumEnabled}
+                  frontSeatLabel={t.frontSeatProjectedLabel}
+                  premiumPercentage={premiumPercentage}
+                />
+              ))}
+            </CardList>
+          </View>
+
+          <ButtonRow>
+            <CancelButton onPress={onClose} activeOpacity={0.8}>
+              <CancelText>{t.cancelButton}</CancelText>
+            </CancelButton>
+            <SaveButton onPress={handleSave} activeOpacity={0.9}>
+              <SaveGradient
+                colors={[theme.colors.primary, theme.colors.primary_container]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
               >
-                {segments.map((seg, i) => (
-                  <SegmentPricingCard
-                    key={seg.id}
-                    index={i}
-                    from={seg.from}
-                    to={seg.to}
-                    segmentPrice={prices[seg.id] ?? { segmentId: seg.id, min: 0, max: 0 }}
-                    onChange={handleChange}
-                    segmentLabel={t.segmentLabel}
-                    minLabel={t.minPriceLabel}
-                    maxLabel={t.maxPriceLabel}
-                    premiumEnabled={premiumEnabled}
-                    basePrice={basePrice}
-                    frontSeatLabel={t.frontSeatProjectedLabel}
-                  />
-                ))}
-              </CardList>
-            </View>
-
-            <ButtonRow>
-              <CancelButton onPress={onClose} activeOpacity={0.8}>
-                <CancelText>{t.cancelButton}</CancelText>
-              </CancelButton>
-              <SaveButton onPress={handleSave} activeOpacity={0.9}>
-                <SaveGradient
-                  colors={[theme.colors.primary, theme.colors.primary_container]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                >
-                  <SaveText>{t.saveButton}</SaveText>
-                </SaveGradient>
-              </SaveButton>
-            </ButtonRow>
-          </Sheet>
+                <SaveText>{t.saveButton}</SaveText>
+              </SaveGradient>
+            </SaveButton>
+          </ButtonRow>
+        </Sheet>
       </Overlay>
     </View>
   );

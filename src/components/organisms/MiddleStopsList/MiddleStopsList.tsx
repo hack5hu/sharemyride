@@ -21,6 +21,7 @@ import {
 export interface RouteStop {
   id: string;
   name: string;
+  distanceText?: string;
 }
 
 export interface MiddleStopsListProps {
@@ -65,6 +66,7 @@ export const MiddleStopsList: React.FC<MiddleStopsListProps> = ({
           <TextContainer>
             <LabelText variant="stop">{`${t.stopLabel} ${index + 1}`}</LabelText>
             <TitleText>{stop.name}</TitleText>
+            {stop.distanceText && <AddSubtitleText style={{ marginTop: 2 }}>{stop.distanceText}</AddSubtitleText>}
           </TextContainer>
           <RemoveButton onPress={() => onRemoveStop(stop.id)} activeOpacity={0.7}>
             <MaterialIcons name="close" size={moderateScale(24)} color={theme.colors.tertiary} />

@@ -8,7 +8,6 @@ const ToggleContainer = styled.View`
   padding: ${moderateScale(6)}px;
   border-radius: ${moderateScale(12)}px;
   flex-direction: row;
-  margin-bottom: ${verticalScale(32)}px;
 `;
 
 const ToggleButton = styled.TouchableOpacity<{ isActive: boolean }>`

@@ -6,7 +6,6 @@ export const SeatSelectionScreen: React.FC = () => {
   const {
     flow,
     selectedSeats,
-    moneyValue,
     vehicleType,
     seatIdsLabel,
     handleSeatPress,
@@ -21,7 +20,6 @@ export const SeatSelectionScreen: React.FC = () => {
       flow={flow}
       selectedSeats={selectedSeats}
       vehicleType={vehicleType}
-      moneyValue={moneyValue}
       seatIdsLabel={seatIdsLabel}
       onSeatPress={handleSeatPress}
       onVehicleTypeChange={handleVehicleTypeChange}

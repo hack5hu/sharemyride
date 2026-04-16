@@ -6,41 +6,56 @@ import { useTheme } from 'styled-components/native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 import { CounterButton } from '@/components/atoms/CounterButton';
 
-const Card = styled.View`
+
+
+export interface PriceCounterProps {
+  price: number;
+  onPriceChange: (price: number) => void;
+  label?: string;
+  badgeLabel?: string;
+  variant?: 'default' | 'compact';
+  step?: number;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
+const Card = styled.View<{ variant: 'default' | 'compact' }>`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   border-radius: ${moderateScale(12)}px;
-  padding: ${moderateScale(32)}px ${scale(24)}px;
+  padding: ${({ variant }) => variant === 'compact' 
+    ? `${moderateScale(12)}px ${scale(16)}px` 
+    : `${moderateScale(32)}px ${scale(24)}px`};
   align-items: center;
   shadow-color: rgb(23,29,25);
   shadow-offset: 0px 4px;
   shadow-opacity: 0.04;
   shadow-radius: 24px;
   elevation: 2;
-  gap: ${verticalScale(20)}px;
+  gap: ${({ variant }) => variant === 'compact' ? verticalScale(8) : verticalScale(20)}px;
 `;
 
-const PriceLabel = styled.Text`
+const PriceLabel = styled.Text<{ variant: 'default' | 'compact' }>`
   font-family: 'Plus Jakarta Sans';
   font-weight: 500;
-  font-size: ${responsiveFont(12)}px;
+  font-size: ${({ variant }) => variant === 'compact' ? responsiveFont(10) : responsiveFont(12)}px;
   color: ${({ theme }) => theme.colors.on_surface_variant};
   text-transform: uppercase;
   letter-spacing: 1px;
 `;
 
-const PriceRow = styled.View`
+const PriceRow = styled.View<{ variant: 'default' | 'compact' }>`
   flex-direction: row;
   align-items: center;
-  gap: ${scale(24)}px;
+  gap: ${({ variant }) => variant === 'compact' ? scale(12) : scale(24)}px;
 `;
 
-const PriceText = styled.Text`
+const PriceText = styled.Text<{ variant: 'default' | 'compact' }>`
   font-family: 'Plus Jakarta Sans';
   font-weight: 800;
-  font-size: ${responsiveFont(52)}px;
+  font-size: ${({ variant }) => variant === 'compact' ? responsiveFont(28) : responsiveFont(52)}px;
   color: ${({ theme }) => theme.colors.on_surface};
-  letter-spacing: -2px;
-  min-width: ${scale(110)}px;
+  letter-spacing: -1px;
+  min-width: ${({ variant }) => variant === 'compact' ? scale(70) : scale(110)}px;
   text-align: center;
 `;
 
@@ -63,40 +78,56 @@ const BadgeText = styled.Text`
   letter-spacing: 0.5px;
 `;
 
-const STEP = 50;
-const MIN_PRICE = 50;
-const MAX_PRICE = 2000;
-
-export interface PriceCounterProps {
-  price: number;
-  onPriceChange: (price: number) => void;
-  label: string;
-  badgeLabel: string;
-}
+const DEFAULT_STEP = 50;
+const DEFAULT_MIN = 50;
+const DEFAULT_MAX = 2000;
 
 export const PriceCounter: React.FC<PriceCounterProps> = ({
   price,
   onPriceChange,
   label,
   badgeLabel,
+  variant = 'default',
+  step = DEFAULT_STEP,
+  minPrice = DEFAULT_MIN,
+  maxPrice = DEFAULT_MAX,
 }) => {
   const theme = useTheme();
 
-  const handleDecrement = () => onPriceChange(Math.max(MIN_PRICE, price - STEP));
-  const handleIncrement = () => onPriceChange(Math.min(MAX_PRICE, price + STEP));
+  const handleDecrement = React.useCallback(() => 
+    onPriceChange(Math.max(minPrice, price - step)), 
+    [onPriceChange, minPrice, price, step]
+  );
+
+  const handleIncrement = React.useCallback(() => 
+    onPriceChange(Math.min(maxPrice, price + step)), 
+    [onPriceChange, maxPrice, price, step]
+  );
 
   return (
-    <Card>
-      <PriceLabel>{label}</PriceLabel>
-      <PriceRow>
-        <CounterButton type="remove" onPress={handleDecrement} disabled={price <= MIN_PRICE} />
-        <PriceText>₹{price}</PriceText>
-        <CounterButton type="add" onPress={handleIncrement} disabled={price >= MAX_PRICE} />
+    <Card variant={variant}>
+      {label && <PriceLabel variant={variant}>{label}</PriceLabel>}
+      <PriceRow variant={variant}>
+        <CounterButton 
+          type="remove" 
+          onPress={handleDecrement} 
+          disabled={price <= minPrice}
+          size={variant === 'compact' ? 'small' : 'medium'}
+        />
+        <PriceText variant={variant}>₹{price}</PriceText>
+        <CounterButton 
+          type="add" 
+          onPress={handleIncrement} 
+          disabled={price >= maxPrice}
+          size={variant === 'compact' ? 'small' : 'medium'}
+        />
       </PriceRow>
-      <RecommendedBadge>
-        <MaterialIcons name="verified" size={moderateScale(16)} color={theme.colors.on_primary_fixed_variant} />
-        <BadgeText>{badgeLabel}</BadgeText>
-      </RecommendedBadge>
+      {!variant.includes('compact') && badgeLabel && (
+        <RecommendedBadge>
+          <MaterialIcons name="verified" size={moderateScale(16)} color={theme.colors.on_primary_fixed_variant} />
+          <BadgeText>{badgeLabel}</BadgeText>
+        </RecommendedBadge>
+      )}
     </Card>
   );
 };

@@ -47,13 +47,13 @@ import {
   TermsText,
   TermsLink,
 } from './SummaryPublish.styles';
+import { BackgroundBubble } from '@/screens/Login/Login.styles';
 
 export const SummaryPublishScreen: React.FC = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const { summaryPublish: t } = useLocale();
 
-  const handleBackPress = () => navigation.goBack();
   const handleSave = () => {
     // Save draft logic
   };
@@ -63,8 +63,8 @@ export const SummaryPublishScreen: React.FC = () => {
 
   return (
     <ScreenShell
-      title={t.headerTitle}
-      onBack={handleBackPress}
+      title={'Publish Summary'}
+      onBack={true}
       rightElement={
         <SaveButton onPress={handleSave} activeOpacity={0.7}>
           <SaveText>Save</SaveText>
@@ -72,10 +72,11 @@ export const SummaryPublishScreen: React.FC = () => {
       }
     >
       {/* Aesthetic Background */}
-      <BackgroundContainer pointerEvents="none">
+      {/* <BackgroundContainer pointerEvents="none">
         <BlobTopLeft />
         <BlobBottomRight />
-      </BackgroundContainer>
+      </BackgroundContainer> */}
+       <BackgroundBubble top="8%" left="-5%" />
 
       <Content>
         <TitleSection>
@@ -106,9 +107,6 @@ export const SummaryPublishScreen: React.FC = () => {
                 </RouteStop>
               </RouteDetailsStack>
             </RouteLayout>
-            <EditButton activeOpacity={0.7}>
-              <MaterialIcons name="edit" size={moderateScale(16)} color={theme.colors.primary} />
-            </EditButton>
           </RouteHeaderRow>
         </GlassCard>
 

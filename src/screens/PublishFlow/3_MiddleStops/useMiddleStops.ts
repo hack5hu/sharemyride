@@ -1,6 +1,7 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
+import { locationService } from '@/serviceManager/locationService';
 
 export const useMiddleStops = () => {
   const navigation = useNavigation();
@@ -10,33 +11,80 @@ export const useMiddleStops = () => {
     startLocation, 
     destinationLocation, 
     middleStops,
-    addMiddleStop,
-    removeMiddleStop
+    setMiddleStops,
+    removeMiddleStop,
+    setRouteDetails
   } = useRidePublishStore();
+
+  const [isSorting, setIsSorting] = useState(false);
 
   const updatedLocation = (route.params as any)?.updatedLocation;
   const type = (route.params as any)?.type;
 
   // Handle incoming new stops from MapPicker
   useEffect(() => {
-    // Condition: only select for 'middleStop' type to avoid cross-contamination
-    if (updatedLocation && type === 'middleStop') {
-      addMiddleStop(updatedLocation);
-      
-      // Clear params to avoid duplicate adds on re-focus or state updates
-      navigation.setParams({ 
-        updatedLocation: undefined,
-        type: undefined 
-      } as any);
-    }
-  }, [updatedLocation, type, navigation, addMiddleStop]);
+    const handleNewStop = async () => {
+      if (updatedLocation && type === 'middleStop' && startLocation) {
+        setIsSorting(true);
+        try {
+          // Fetch distance from start to this new stop to determine its positio
+          console.log("startLocation", startLocation)
+          console.log("updatedLocation", updatedLocation)
+          const results = await locationService.getDirections(
+            startLocation.latitude,
+            startLocation.longitude,
+            updatedLocation.latitude,
+            updatedLocation.longitude
+          );
+          console.log("results", JSON.stringify(results, null, 2))
+          
+          let distanceMeters = 0;
+          if (results && results.length > 0) {
+            const mainRoute = results[0];
+            distanceMeters = mainRoute.distance ?? (mainRoute.legs?.reduce((acc, leg) => acc + (leg.distance || 0), 0) || 0);
+          }
+          
+          console.log("distanceMeters", distanceMeters)
+          // Add stop with distance metadata
+          const stopWithDistance = {
+            ...updatedLocation,
+            distanceFromStart: distanceMeters
+          };
+          
+          // Create new array with existing stops + new stop
+          const updatedStops = [...middleStops, stopWithDistance];
+          
+          // Sort by distance from start
+          updatedStops.sort((a, b) => 
+            (a as any).distanceFromStart - (b as any).distanceFromStart
+          );
+          console.log("updatedStops", updatedStops)
+          setMiddleStops(updatedStops);
+        } catch (error) {
+          console.error('Failed to calculate stop distance:', error);
+          const fallbackStops = [...middleStops, updatedLocation];
+          setMiddleStops(fallbackStops);
+        } finally {
+          setIsSorting(false);
+          // Clear params
+          navigation.setParams({ 
+            updatedLocation: undefined,
+            type: undefined 
+          } as any);
+        }
+      }
+    };
+
+    handleNewStop();
+  }, [updatedLocation, type, navigation, setMiddleStops, middleStops, startLocation]);
+
+  const sortedStops = middleStops; // Already sorted in store
 
   const handleBackPress = useCallback(() => {
     (navigation.navigate as any)('RouteSelection');
   }, [navigation]);
 
   const handleAddStop = useCallback(() => {
-    // Navigate to MapPicker with specific context for MiddleStops
     (navigation.navigate as any)('MapPicker', {
       returnTo: 'MiddleStops',
       type: 'middleStop',
@@ -48,20 +96,70 @@ export const useMiddleStops = () => {
     removeMiddleStop(id);
   }, [removeMiddleStop]);
 
-  const handleContinuePress = useCallback(() => {
-    (navigation.navigate as any)('DateSelection');
-  }, [navigation]);
+  const handleContinuePress = useCallback(async () => {
+    if (!startLocation || !destinationLocation) {
+      navigation.navigate('DateSelection' as any);
+      return;
+    }
+
+    setIsSorting(true);
+    try {
+      const waypoints = middleStops.length > 0 
+        ? middleStops.map(s => `${s.latitude},${s.longitude}`).join('|')
+        : undefined;
+
+      const results = await locationService.getDirections(
+        startLocation.latitude,
+        startLocation.longitude,
+        destinationLocation.latitude,
+        destinationLocation.longitude,
+        waypoints
+      );
+
+      if (results && results.length > 0) {
+        const mainRoute = results[0];
+        const legs = mainRoute.legs?.map((leg, i) => ({
+          distanceMeters: leg.distance,
+          durationSeconds: leg.duration,
+          startAddress: i === 0 ? startLocation.name : (middleStops[i-1]?.name || 'Stop'),
+          endAddress: i === (mainRoute.legs?.length || 0) - 1 ? destinationLocation.name : (middleStops[i]?.name || 'Stop')
+        })) || [];
+
+        const details = {
+          totalDistanceMeters: mainRoute.distance ?? legs.reduce((acc, leg) => acc + leg.distanceMeters, 0),
+          totalDurationSeconds: mainRoute.duration ?? legs.reduce((acc, leg) => acc + leg.durationSeconds, 0),
+          legs
+        };
+        setRouteDetails(details);
+      } else {
+        setRouteDetails(null as any);
+      }
+    } catch (error) {
+      console.error('Failed to calculate full route details:', error);
+      setRouteDetails(null as any);
+    } finally {
+      setIsSorting(false);
+      (navigation.navigate as any)('DateSelection');
+    }
+  }, [navigation, setRouteDetails, startLocation, destinationLocation, middleStops]);
 
   return {
     startLocation: startLocation?.name || startLocation?.address || 'Pick Start Location',
     destination: destinationLocation?.name || destinationLocation?.address || 'Pick Destination',
     startLocationRaw: startLocation,
     destinationLocationRaw: destinationLocation,
-    middleStops: middleStops.map(s => ({ id: s.id, name: s.name || s.address || 'Unknown Stop' })),
-    middleStopsRaw: middleStops,
+    middleStops: sortedStops.map(s => ({ 
+      id: s.id, 
+      name: s.name || s.address || 'Unknown Stop',
+      distanceText: (s as any).distanceFromStart 
+        ? `${((s as any).distanceFromStart / 1000).toFixed(1)} km from start`
+        : undefined
+    })),
+    middleStopsRaw: sortedStops,
     handleBackPress,
     handleAddStop,
     handleRemoveStop,
     handleContinuePress,
+    isLoading: isSorting
   };
 };

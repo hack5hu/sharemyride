@@ -65,7 +65,7 @@ export const HeaderTitle = styled.Text`
 `;
 
 export const SaveButton = styled.TouchableOpacity`
-  padding: ${moderateScale(4)}px;
+  padding-right: ${moderateScale(24)}px;
 `;
 
 export const SaveText = styled.Text`

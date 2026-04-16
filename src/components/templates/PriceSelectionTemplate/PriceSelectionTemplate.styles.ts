@@ -60,9 +60,88 @@ export const SegmentRowTitle = styled.Text`
 
 export const SegmentRowSub = styled.Text`
   font-family: 'Plus Jakarta Sans';
+  font-size: ${responsiveFont(11)}px;
+  color: ${({ theme }) => theme.colors.primary};
+  font-weight: 500;
+`;
+
+export const TierCard = styled.View`
+  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
+  border-radius: ${moderateScale(20)}px;
+  padding: ${moderateScale(28)}px ${scale(20)}px;
+  align-items: center;
+  shadow-color: rgb(0,0,0);
+  shadow-offset: 0px 8px;
+  shadow-opacity: 0.05;
+  shadow-radius: 20px;
+  elevation: 3;
+`;
+
+export const TierLabel = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 700;
   font-size: ${responsiveFont(12)}px;
   color: ${({ theme }) => theme.colors.outline};
-  margin-top: ${verticalScale(2)}px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+`;
+
+export const TierPriceRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(12)}px;
+  margin-top: ${verticalScale(8)}px;
+  margin-bottom: ${verticalScale(24)}px;
+`;
+
+export const TierPriceText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 800;
+  font-size: ${responsiveFont(52)}px;
+  color: ${({ theme }) => theme.colors.on_surface};
+  letter-spacing: -2px;
+`;
+
+export const TierBadge = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(4)}px;
+  background-color: ${({ theme }) => theme.colors.primary_container};
+  padding: ${verticalScale(4)}px ${scale(10)}px;
+  border-radius: 9999px;
+`;
+
+export const TierBadgeText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 700;
+  font-size: ${responsiveFont(10)}px;
+  color: ${({ theme }) => theme.colors.on_primary_container};
+  text-transform: uppercase;
+`;
+
+export const TierToggleRow = styled.View`
+  flex-direction: row;
+  background-color: ${({ theme }) => theme.colors.surface_container};
+  border-radius: ${moderateScale(12)}px;
+  padding: ${moderateScale(6)}px;
+  width: 100%;
+`;
+
+export const TierToggleItem = styled.TouchableOpacity<{ active: boolean }>`
+  flex: 1;
+  padding-vertical: ${verticalScale(10)}px;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ active, theme }) => active ? theme.colors.surface : 'transparent'};
+  border-radius: ${moderateScale(8)}px;
+  ${({ active }) => active && 'shadow-color: rgba(0,0,0,0.1); shadow-offset: 0px 2px; shadow-opacity: 0.1; shadow-radius: 4px; elevation: 2;'}
+`;
+
+export const TierToggleText = styled.Text<{ active: boolean }>`
+  font-family: 'Plus Jakarta Sans';
+  font-size: ${responsiveFont(13)}px;
+  font-weight: ${({ active }) => active ? '700' : '600'};
+  color: ${({ active, theme }) => active ? theme.colors.primary : theme.colors.outline};
 `;
 
 export const SegmentTextStack = styled.View`

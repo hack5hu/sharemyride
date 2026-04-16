@@ -28,8 +28,6 @@ import {
   ContinueButton,
   ContinueGradient,
   ContinueText,
-  SaveButton,
-  SaveText,
 } from './RequestType.styles';
 
 export const RequestTypeScreen: React.FC = () => {
@@ -41,22 +39,14 @@ export const RequestTypeScreen: React.FC = () => {
   const [bookingType, setBookingType] = React.useState<'instant' | 'review'>('instant');
 
   const handleBackPress = () => navigation.goBack();
-  const handleSave = () => {
-    // Save draft logic here
-  };
   const handleContinue = () => {
     navigation.navigate('SummaryPublish' as any);
   };
 
   return (
     <ScreenShell
-      title={t.headerTitle}
+      title={'Request Type'}
       onBack={handleBackPress}
-      rightElement={
-        <SaveButton onPress={handleSave} activeOpacity={0.7}>
-          <SaveText>Save</SaveText>
-        </SaveButton>
-      }
     >
       <Content>
         <TitleSection>

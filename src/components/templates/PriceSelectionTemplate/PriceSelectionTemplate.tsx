@@ -1,56 +1,68 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, ActivityIndicator } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { moderateScale, scale, verticalScale } from '@/styles';
 import { PriceCounter } from '@/components/molecules/PriceCounter';
 import { FrontSeatPremium } from '@/components/molecules/FrontSeatPremium';
-import { SegmentPricingSheet, StopSegment } from '@/components/organisms/SegmentPricingSheet';
-import { SegmentPrice } from '@/components/molecules/SegmentPricingCard';
+import { SegmentPricingSheet } from '@/components/organisms/SegmentPricingSheet';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { PricingTier } from '@/constants/pricing';
+import { SegmentPrice } from '@/components/molecules/SegmentPricingCard';
 import * as S from './PriceSelectionTemplate.styles';
 
 /* ── Template Props ── */
 export interface PriceSelectionTemplateProps {
   price: number;
+  minPrice: number;
+  maxPrice: number;
   onPriceChange: (v: number) => void;
   premiumEnabled: boolean;
   onTogglePremium: () => void;
   premium: number;
+  premiumPercentage: number;
   onPremiumChange: (v: number) => void;
   onBackPress: () => void;
   onContinue: () => void;
   onCustomizePricing: () => void;
   sheetVisible: boolean;
-  segments: StopSegment[];
+  segments: any[];
+  segmentPrices: Record<string, SegmentPrice>;
   onSheetClose: () => void;
-  onSaveSegmentPrices: (prices: Record<string, SegmentPrice>) => void;
+  onSaveSegmentPrices: (prices: Record<string, { basePrice: number }>) => void;
+  isLoading?: boolean;
+  isRecommended?: boolean;
 }
 
 export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
   price,
+  minPrice,
+  maxPrice,
   onPriceChange,
   premiumEnabled,
   onTogglePremium,
   premium,
+  premiumPercentage,
   onPremiumChange,
   onBackPress,
   onContinue,
   onCustomizePricing,
   sheetVisible,
   segments,
+  segmentPrices,
   onSheetClose,
   onSaveSegmentPrices,
+  isLoading = false,
+  isRecommended = false,
 }) => {
   const theme = useTheme();
   const { priceSelection: t } = useLocale();
 
   return (
-    <View style={{ flex: 1 }}>
       <ScreenShell
-        title={t.headerTitle}
-        onBack={onBackPress}
+        title={'Select the Price'}
+        onBack={true}
       >
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -70,7 +82,10 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
             price={price}
             onPriceChange={onPriceChange}
             label={t.basePriceLabel}
-            badgeLabel={t.recommendedBadge}
+            badgeLabel={isRecommended ? t.recommendedBadge : undefined}
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            step={10}
           />
 
           {/* Front seat premium */}
@@ -86,27 +101,29 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
             maxNote={t.maxLimitNote}
           />
 
-          {/* Segment pricing entry row — opens the sheet */}
-          <S.SegmentRow
-            onPress={onCustomizePricing}
-            activeOpacity={0.7}
-            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          >
-            <S.SegmentRowLeft>
-              <S.SegmentIconBox>
-                <MaterialIcons name="route" size={moderateScale(22)} color={theme.colors.primary} />
-              </S.SegmentIconBox>
-              <S.SegmentTextStack>
-                <S.SegmentRowTitle>{t.multiStopTitle}</S.SegmentRowTitle>
-                <S.SegmentRowSub>{t.customizePricing}</S.SegmentRowSub>
-              </S.SegmentTextStack>
-            </S.SegmentRowLeft>
-            <MaterialIcons
-              name="chevron-right"
-              size={moderateScale(24)}
-              color={theme.colors.outline}
-            />
-          </S.SegmentRow>
+          {/* Segment pricing entry row — only show if there are middle stops (more than 1 leg) */}
+          {segments.length > 1 && (
+            <S.SegmentRow
+              onPress={onCustomizePricing}
+              activeOpacity={0.7}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <S.SegmentRowLeft>
+                <S.SegmentIconBox>
+                  <MaterialIcons name="route" size={moderateScale(22)} color={theme.colors.primary} />
+                </S.SegmentIconBox>
+                <S.SegmentTextStack>
+                  <S.SegmentRowTitle>{t.multiStopTitle}</S.SegmentRowTitle>
+                  <S.SegmentRowSub>{t.customizePricing}</S.SegmentRowSub>
+                </S.SegmentTextStack>
+              </S.SegmentRowLeft>
+              <MaterialIcons
+                name="chevron-right"
+                size={moderateScale(24)}
+                color={theme.colors.outline}
+              />
+            </S.SegmentRow>
+          )}
         </ScrollView>
 
         {/* Floating CTA */}
@@ -117,25 +134,27 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
             end={{ x: 0, y: 1 }}
             pointerEvents="none"
           />
-          <S.ContinueButton onPress={onContinue} activeOpacity={0.9}>
+          <S.ContinueButton onPress={onContinue} activeOpacity={0.9} disabled={isLoading}>
             <S.ContinueGradient
               colors={[theme.colors.primary, theme.colors.primary_container]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
+              style={{ opacity: isLoading ? 0.6 : 1 }}
             >
               <S.ContinueText>{t.continueButton}</S.ContinueText>
               <MaterialIcons name="chevron-right" size={moderateScale(20)} color={theme.colors.on_primary} />
             </S.ContinueGradient>
           </S.ContinueButton>
         </S.FloatingFooter>
-      </ScreenShell>
+     
 
       {/* ──── Modals (Rendered at root for Modal reliability) ──── */}
       <SegmentPricingSheet
         visible={sheetVisible}
         segments={segments}
-        basePrice={price}
+        segmentPrices={segmentPrices}
         premiumEnabled={premiumEnabled}
+        premiumPercentage={premiumPercentage}
         onClose={onSheetClose}
         onSave={onSaveSegmentPrices}
         t={{
@@ -149,6 +168,6 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
           frontSeatProjectedLabel: t.frontSeatProjectedLabel,
         }}
       />
-    </View>
+    </ScreenShell>
   );
 };

@@ -95,13 +95,15 @@ export const locationService = {
     originLat: number, 
     originLng: number, 
     destLat: number, 
-    destLng: number
+    destLng: number,
+    waypoints?: string // format: "lat1,lng1|lat2,lng2"
   ): Promise<OlaRoutingRoute[]> => {
     try {
       const response = await olaClient.post('/routing/v1/directions', null, {
         params: {
           origin: `${originLat},${originLng}`,
           destination: `${destLat},${destLng}`,
+          waypoints: waypoints || undefined,
           alternatives: true,
           steps: false,
           overview: 'full',

@@ -5,10 +5,16 @@ import { usePriceSelection } from './usePriceSelection';
 export const PriceSelectionScreen: React.FC = () => {
   const {
     price,
+    minPrice,
+    maxPrice,
+    isRecommended,
     premiumEnabled,
     premium,
+    premiumPercentage,
     sheetVisible,
     segments,
+    segmentPrices,
+    isLoading,
     handlePriceChange,
     handleTogglePremium,
     handlePremiumChange,
@@ -22,18 +28,24 @@ export const PriceSelectionScreen: React.FC = () => {
   return (
     <PriceSelectionTemplate
       price={price}
+      minPrice={minPrice}
+      maxPrice={maxPrice}
+      isRecommended={isRecommended}
       onPriceChange={handlePriceChange}
       premiumEnabled={premiumEnabled}
       onTogglePremium={handleTogglePremium}
       premium={premium}
+      premiumPercentage={premiumPercentage}
       onPremiumChange={handlePremiumChange}
       onBackPress={handleBackPress}
       onContinue={handleContinue}
       onCustomizePricing={handleCustomizePricing}
       sheetVisible={sheetVisible}
       segments={segments}
+      segmentPrices={segmentPrices}
       onSheetClose={handleSheetClose}
       onSaveSegmentPrices={handleSaveSegmentPrices}
+      isLoading={isLoading}
     />
   );
 };
