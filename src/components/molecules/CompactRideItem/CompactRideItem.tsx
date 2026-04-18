@@ -11,6 +11,7 @@ import {
 } from './CompactRideItem.styles';
 import { CompactRideItemProps } from './types.d';
 import { moderateScale } from '@/styles';
+import { TouchableOpacity } from 'react-native';
 
 export const CompactRideItem: React.FC<CompactRideItemProps> = ({
   title,
@@ -19,7 +20,9 @@ export const CompactRideItem: React.FC<CompactRideItemProps> = ({
   icon,
   iconBg,
   type,
-  onPress
+  onPress,
+  actionIcon,
+  onActionPress
 }) => {
   const theme = useTheme();
   const isDraft = type === 'draft';
@@ -41,7 +44,23 @@ export const CompactRideItem: React.FC<CompactRideItemProps> = ({
         <SubAddress numberOfLines={1}>{subtitle}</SubAddress>
       </TextContent>
       {price && <PriceText>{price}</PriceText>}
-      {isDraft && (
+      
+      {actionIcon && onActionPress ? (
+        <TouchableOpacity 
+          onPress={(e) => {
+            e.stopPropagation();
+            onActionPress();
+          }} 
+          activeOpacity={0.6}
+          style={{ padding: moderateScale(8) }}
+        >
+          <Icon 
+            name={actionIcon} 
+            size={moderateScale(20)} 
+            color={theme.colors.error} 
+          />
+        </TouchableOpacity>
+      ) : isDraft && (
         <Icon 
           name="arrow-forward" 
           size={moderateScale(18)} 

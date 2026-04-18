@@ -23,8 +23,8 @@ const Card = styled.View`
 `;
 
 const HeaderRow = styled.View`
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: ${scale(10)}px;
 `;
 
@@ -45,11 +45,21 @@ const SegmentBadgeText = styled.Text`
 
 const RouteContainer = styled.View`
   flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const RouteItem = styled.View`
   flex-direction: row;
   align-items: center;
   gap: ${scale(6)}px;
 `;
-
+const Line = styled.View`
+  width: ${scale(2)}px;
+  height: ${verticalScale(20)}px;
+  background-color: ${({ theme }) => theme.colors.primary};
+  margin-left: ${scale(6)}px;
+`
 const RouteText = styled.Text`
   flex: 1;
   font-family: 'Plus Jakarta Sans';
@@ -63,14 +73,15 @@ const PriceSection = styled.View`
   align-items: center;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  padding: ${moderateScale(12)}px;
+  padding: ${moderateScale(12)}px ${moderateScale(4)}px;
   border-radius: ${moderateScale(12)}px;
+  gap: ${scale(10)}px;
 `;
 
 const PriceLabel = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-size: ${responsiveFont(11)}px;
-  font-weight: 600;
+  font-weight: 700;
   color: ${({ theme }) => theme.colors.outline};
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -103,6 +114,15 @@ const FrontSeatLabel = styled.Text`
   color: ${({ theme }) => theme.colors.secondary};
   text-transform: uppercase;
 `;
+
+const SeatLabel = styled.Text`
+font - family: 'Plus Jakarta Sans';
+font - weight: 700;
+font - size: ${ responsiveFont(11) } px;
+color: ${ ({ theme }) => theme.colors.secondary };
+text - transform: uppercase;
+`;
+
 
 const MathBreakdown = styled.Text`
   font-family: 'Plus Jakarta Sans';
@@ -151,7 +171,7 @@ export const SegmentPricingCard: React.FC<SegmentPricingCardProps> = ({
   premiumPercentage,
 }) => {
   const theme = useTheme();
-  
+
   // Calculate front seat price dynamically based on current basePrice
   const totalFrontSeatPrice = calculateFrontSeatPrice(segmentPrice.basePrice, premiumPercentage);
   const premiumAmount = totalFrontSeatPrice - segmentPrice.basePrice;
@@ -165,14 +185,22 @@ export const SegmentPricingCard: React.FC<SegmentPricingCardProps> = ({
           </SegmentBadgeText>
         </SegmentBadge>
         <RouteContainer>
-          <MaterialIcons name="trip-origin" size={moderateScale(14)} color={theme.colors.primary} />
-          <RouteText numberOfLines={1}>{from} – {to}</RouteText>
+          <RouteItem>
+            <MaterialIcons name="trip-origin" size={moderateScale(14)} color={theme.colors.primary} />
+            <RouteText numberOfLines={1}>{from}</RouteText>
+          </RouteItem>
+          <Line />
+          <RouteItem>
+            <MaterialIcons name="trip-origin" size={moderateScale(14)} color={theme.colors.primary} />
+            <RouteText numberOfLines={1}> {to}</RouteText>
+          </RouteItem>
+
         </RouteContainer>
       </HeaderRow>
 
       <PriceSection>
-        <PriceLabel>Per Seat Price</PriceLabel>
-        <PriceCounter 
+        <FrontSeatLabel>Per Seat Price</FrontSeatLabel>
+        <PriceCounter
           variant="compact"
           price={segmentPrice.basePrice}
           onPriceChange={onPriceChange}
@@ -191,11 +219,11 @@ export const SegmentPricingCard: React.FC<SegmentPricingCardProps> = ({
             </FrontSeatLabelRow>
             <TotalFrontSeatPrice>₹{totalFrontSeatPrice}</TotalFrontSeatPrice>
           </FrontSeatTop>
-          
+
           <MathBreakdown>
             ₹{segmentPrice.basePrice} + ₹{premiumAmount} = ₹{totalFrontSeatPrice}
           </MathBreakdown>
-          
+
           <HelperText>
             Base + {Math.round(premiumPercentage)}% premium calculated for this leg
           </HelperText>

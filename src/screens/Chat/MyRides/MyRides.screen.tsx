@@ -8,7 +8,6 @@ import { UpcomingRideCard } from '@/components/organisms/UpcomingRideCard';
 import { CompactRideItem } from '@/components/molecules/CompactRideItem';
 import { useMyRides } from './useMyRides';
 import { BottomNav } from '@/components/organisms/BottomNav';
-import * as Keychain from 'react-native-keychain';
 
 
 export const MyRidesScreen: React.FC = () => {
@@ -20,10 +19,17 @@ export const MyRidesScreen: React.FC = () => {
     onAddPress,
     onAcceptRide,
     onRidePress,
+    onRemoveDraft,
+    onCancelRide,
     onClearDrafts,
+    drafts,
+    upcoming,
+    past,
+    isLoading,
   } = useMyRides();
 
   const userAvatar = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDExpYK8xVP2mpLZ72YLG07-Nvi79pQHHE3Bf4HEGBRuFOCym2D4P_hlE3flaGGaR4XKpWguxkVxRruV_VNmRQoLa2Sg179Af0ZYu5OuAE0XnhnyKnoGtEty2IKdSCPEpm4wlGP2YlXb08qxB2BkWjHpVIUO0XH8BgWiYyR4o6Ku2xPiwHS4dYGdV-aBsCeqKoBrDgJExj0TgYQDrb9mu-4Y4YSLPxze3tWxwjfF5l8SSkYi3zPx0RDth6HTJ54yE4zdBFrhiC14HB5';
+  
   const highlightsSection = (
     <View>
       <SectionHeader title="New Requests" badgeLabel="2 Pending" />
@@ -42,24 +48,35 @@ export const MyRidesScreen: React.FC = () => {
 
   const upcomingSection = (
     <View>
-      <SectionHeader title="Upcoming Rides" />
-      <UpcomingRideCard 
-        timerLabel="Starts in 12m 45s"
-        driverName="Jordan Smith"
-        carModel="Tesla Model 3 • White"
-        rating={4.8}
-        price="$24.50"
-        avatarUri="https://lh3.googleusercontent.com/aida-public/AB6AXuBzd3wC9d_WrmBWeqpfiKtEn4QbdW5TO-mx3xKASLsWXYzGYVY3OIWi-eq52FPRLspevhCFvEKZtrVMIMTtRfTYYq6Z1Eivg5wt_rOKKMml6cT6KmAHxRmr2HMmWU4k7_Usq_miiRiVzBEB1uqT98lo25VgHDQW5h6z0y7hoCai03tXnXU5m4tu3UW8dpY-WVZA2ce6Z3rR2Polq1gfyVqT5JqCWxqiMkHkDotN_B1yGOZ5RM72Miral1-NDoqtEtwACqykSN3i2XXS"
-        pickupTime="08:30 AM"
-        pickupLocation="The Grand Library"
-        dropoffTime="09:15 AM"
-        dropoffLocation="Silicon Forest Office"
-        onMorePress={() => {}}
-        onPress={() => onRidePress('upcoming-ride-456')}
-      />
+      <SectionHeader title="Your Published Rides" />
+      {upcoming.length > 0 ? (
+        <View style={{ gap: 12 }}>
+          {upcoming.map((ride) => (
+            <CompactRideItem 
+              key={ride.id}
+              title={ride.title}
+              subtitle={ride.subtitle}
+              price={ride.price}
+              icon={ride.icon}
+              type="upcoming"
+              actionIcon="cancel"
+              onActionPress={() => onCancelRide(ride.id)}
+              onPress={() => onRidePress(ride.id)}
+            />
+          ))}
+        </View>
+      ) : (
+        <CompactRideItem 
+          title="No upcoming rides"
+          subtitle="Rides you publish will appear here"
+          icon="event-note"
+          type="upcoming"
+          onPress={() => {}}
+        />
+      )}
     </View>
   ); 
-  const drafts = []
+
   const draftsSection = (
     <View>
       <SectionHeader 
@@ -76,6 +93,8 @@ export const MyRidesScreen: React.FC = () => {
               subtitle={draft.subtitle}
               icon="edit-note"
               type="draft"
+              actionIcon="delete-outline"
+              onActionPress={() => onRemoveDraft(draft.id)}
               onPress={() => onRidePress(draft.id)}
             />
           ))}
@@ -94,25 +113,30 @@ export const MyRidesScreen: React.FC = () => {
 
   const completedSection = (
     <View>
-      <SectionHeader title="Completed" />
-      <View style={{ gap: 12 }}>
+      <SectionHeader title="Recently Completed" />
+      {past.length > 0 ? (
+        <View style={{ gap: 12 }}>
+          {past.map((ride) => (
+            <CompactRideItem 
+              key={ride.id}
+              title={ride.title}
+              subtitle={ride.subtitle}
+              price={ride.price}
+              icon={ride.icon}
+              type="completed"
+              onPress={() => onRidePress(ride.id)}
+            />
+          ))}
+        </View>
+      ) : (
         <CompactRideItem 
-          title="Home to Central Mall"
-          subtitle="Oct 14 • Rated 5.0"
-          price="$12.00"
-          icon="check-circle"
+          title="No completed rides"
+          subtitle="Old rides will appear here"
+          icon="history"
           type="completed"
-          onPress={() => onRidePress('completed-ride-101')}
+          onPress={() => {}}
         />
-        <CompactRideItem 
-          title="Workspace A to Station"
-          subtitle="Oct 12 • Rated 4.5"
-          price="$8.50"
-          icon="check-circle"
-          type="completed"
-          onPress={() => onRidePress('completed-ride-102')}
-        />
-      </View>
+      )}
     </View>
   );
 

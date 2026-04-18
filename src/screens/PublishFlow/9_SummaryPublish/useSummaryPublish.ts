@@ -11,7 +11,7 @@ export const useSummaryPublish = () => {
   const navigation = useNavigation();
   const theme = useTheme();
   const publishStore = useRidePublishStore();
-  const { addDraft } = useMyRidesStore();
+  const { addDraft, removeDraft } = useMyRidesStore();
   const [isPublishing, setIsPublishing] = useState(false);
 
   const {
@@ -30,6 +30,7 @@ export const useSummaryPublish = () => {
     segmentPrices,
     clearPublishState,
     selectedRoute,
+    editingDraftId,
   } = publishStore;
 
   const formattedDate = useMemo(() => {
@@ -133,6 +134,11 @@ export const useSummaryPublish = () => {
       console.log('payload======>',payload)
       await rideService.publishRide(payload);
       
+      // If we were editing a draft, remove it now that it is published
+      if (editingDraftId) {
+        removeDraft(editingDraftId);
+      }
+
       (navigation.navigate as any)('PublishSuccess');
       clearPublishState();
     } catch (error) {
@@ -154,14 +160,82 @@ export const useSummaryPublish = () => {
     segmentPrices, 
     price, 
     clearPublishState,
-    selectedRoute
+    selectedRoute,
+    removeDraft,
+    editingDraftId
+  ]);
+
+  const validationError = useMemo(() => {
+    if (!departureDate || !departureTime) return null;
+    
+    // Combine date and time
+    const dateObj = new Date(departureDate);
+    const [timeStr, ampm] = departureTime.split(' ');
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    let h = hours;
+    if (ampm === 'PM' && h !== 12) h += 12;
+    if (ampm === 'AM' && h === 12) h = 0;
+    dateObj.setHours(h, minutes, 0, 0);
+
+    if (dateObj < new Date()) {
+      return 'Please select a future date and time for your ride.';
+    }
+    return null;
+  }, [departureDate, departureTime]);
+
+  const canPublish = useMemo(() => {
+    return !!(startLocation && destinationLocation && departureDate && departureTime && !validationError);
+  }, [startLocation, destinationLocation, departureDate, departureTime, validationError]);
+
+  const handleSave = useCallback(() => {
+    // Capture state to save as draft
+    const currentState = {
+      startLocation,
+      destinationLocation,
+      middleStops,
+      departureDate,
+      departureTime,
+      seatCount,
+      selectedSeatIds,
+      publishVehicleType,
+      vehicleDetails,
+      preferences,
+      price,
+      routeDetails,
+      segmentPrices,
+      selectedRoute,
+      requestType: publishStore.requestType,
+    };
+
+    addDraft(currentState, editingDraftId);
+    clearPublishState();
+    (navigation.navigate as any)('MyRides');
+  }, [
+    addDraft, 
+    editingDraftId,
+    navigation, 
+    startLocation, 
+    destinationLocation, 
+    middleStops, 
+    departureDate, 
+    departureTime, 
+    seatCount, 
+    selectedSeatIds, 
+    publishVehicleType, 
+    vehicleDetails, 
+    preferences, 
+    price, 
+    routeDetails, 
+    segmentPrices, 
+    selectedRoute,
+    publishStore.requestType
   ]);
 
   return {
     routeData: {
       start: startLocation?.name || 'Unknown',
       end: destinationLocation?.name || 'Unknown',
-      stopsCount: middleStops.length,
+      middleStops: middleStops.map(s => s.name),
     },
     schedule: {
       date: formattedDate,
@@ -169,10 +243,12 @@ export const useSummaryPublish = () => {
     },
     vehicleData,
     pricingData,
-    preferencesData: [], // Preferences logic can be restored if needed
+    preferencesData: [], 
     isPublishing,
+    validationError,
+    canPublish,
     handleBack: () => navigation.goBack(),
-    handleSave: () => { /* reuse existing save logic if needed */ },
+    handleSave,
     handlePublish,
     handleEditRoute: () => (navigation.navigate as any)('LocationSelection', { flow: 'publish', returnTo: 'SummaryPublish' }),
     handleEditSchedule: () => (navigation.navigate as any)('DateSelection', { returnTo: 'SummaryPublish' }),

@@ -342,7 +342,7 @@ export const en: Translations = {
     continueButton: 'Continue to Review',
     segmentSheetTitle: 'Segment Pricing',
     segmentSheetSubtitle: 'Adjust prices for each part of your journey',
-    segmentLabel: 'Segment',
+    segmentLabel: 'Route',
     minPriceLabel: 'Min Price',
     maxPriceLabel: 'Max Price',
     cancelButton: 'Cancel',

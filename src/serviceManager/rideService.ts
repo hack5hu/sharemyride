@@ -30,6 +30,24 @@ const rideService = {
       throw error;
     }
   },
+  getMyRides: async () => {
+    try {
+      const response = await apiClient.get(API_ENDPOINTS.RIDE.GET_MY_RIDES);
+      return response.data;
+    } catch (error) {
+      console.error('Fetching my rides failed:', error);
+      throw error;
+    }
+  },
+  cancelRide: async (rideId: string | number) => {
+    try {
+      const response = await apiClient.delete(API_ENDPOINTS.RIDE.CANCEL_RIDE(rideId));
+      return response.data;
+    } catch (error) {
+      console.error('Ride cancellation failed:', error);
+      throw error;
+    }
+  },
 };
 
 export default rideService;

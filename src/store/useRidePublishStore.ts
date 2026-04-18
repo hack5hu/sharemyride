@@ -59,6 +59,9 @@ interface RidePublishState {
   // Strategy
   requestType: 'instant' | 'review';
 
+  // UI / Meta
+  editingDraftId: string | null;
+
   // Setters
   setStartLocation: (location: Location) => void;
   setDestinationLocation: (location: Location) => void;
@@ -81,6 +84,7 @@ interface RidePublishState {
     segmentPrices: Record<string, number> 
   }) => void;
   setRequestType: (type: 'instant' | 'review') => void;
+  setEditingDraftId: (id: string | null) => void;
   clearPublishState: () => void;
 }
 
@@ -108,6 +112,7 @@ export const useRidePublishStore = create<RidePublishState>((set) => ({
   premiumPercentage: 10,
   segmentPrices: {},
   requestType: 'instant',
+  editingDraftId: null,
   
   setStartLocation: (location) => set({ startLocation: location }),
   setDestinationLocation: (location) => set({ destinationLocation: location }),
@@ -129,6 +134,7 @@ export const useRidePublishStore = create<RidePublishState>((set) => ({
   setPreferences: (preferences) => set({ preferences }),
   setPricing: (pricing) => set({ ...pricing }),
   setRequestType: (requestType) => set({ requestType }),
+  setEditingDraftId: (editingDraftId) => set({ editingDraftId }),
   
   clearPublishState: () => set({ 
     startLocation: null, 
@@ -152,5 +158,6 @@ export const useRidePublishStore = create<RidePublishState>((set) => ({
     premiumPercentage: 10,
     segmentPrices: {},
     requestType: 'instant',
+    editingDraftId: null,
   }),
 }));

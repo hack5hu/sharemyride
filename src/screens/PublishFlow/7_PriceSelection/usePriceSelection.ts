@@ -19,23 +19,32 @@ export const usePriceSelection = () => {
     middleStops,
     routeDetails,
     setRouteDetails,
-    seatCount,
+    publishVehicleType,
     setPricing
   } = useRidePublishStore();
 
+  const divisor = useMemo(() => (publishVehicleType === '7' ? 6 : 4), [publishVehicleType]);
+
   const [isLoading, setIsLoading] = useState(false);
-  const [price, setPrice] = useState<number>(0);
+  const totalDistanceKm = (routeDetails?.totalDistanceMeters || 0) / 1000;
+
+  const initialPrice = useMemo(() => {
+    if (totalDistanceKm > 0) {
+      return calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MID, divisor);
+    }
+    return 0;
+  }, [totalDistanceKm, divisor]);
+
+  const [price, setPrice] = useState<number>(initialPrice);
   const [premiumEnabled, setPremiumEnabled] = useState(true);
   const [premiumPercentage, setPremiumPercentage] = useState(10); // 10% default
   const [sheetVisible, setSheetVisible] = useState(false);
   
   const [segmentPricesState, setSegmentPricesState] = useState<Record<string, number>>({});
 
-  const totalDistanceKm = (routeDetails?.totalDistanceMeters || 0) / 1000;
-
-  // Pricing Boundaries (7x to 12x) - Adjusted for Seat Count
-  const minPrice = useMemo(() => calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MIN, seatCount), [totalDistanceKm, seatCount]);
-  const maxPrice = useMemo(() => calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MAX, seatCount), [totalDistanceKm, seatCount]);
+  // Pricing Boundaries (7x to 12x) - Adjusted for Vehicle Capacity
+  const minPrice = useMemo(() => calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MIN, divisor), [totalDistanceKm, divisor]);
+  const maxPrice = useMemo(() => calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MAX, divisor), [totalDistanceKm, divisor]);
 
   // 1. Fetch Finalized Route on Mount
   useEffect(() => {
@@ -44,6 +53,11 @@ export const usePriceSelection = () => {
       
       // If we have route details and price is already set correctly, skip
       if (routeDetails && price > 0) return;
+      
+      // Update price if it was 0 but we have details (redundancy fix)
+      if (routeDetails && price === 0 && initialPrice > 0) {
+        setPrice(initialPrice);
+      }
 
       setIsLoading(true);
       try {
@@ -76,14 +90,15 @@ export const usePriceSelection = () => {
           };
           setRouteDetails(details);
 
-          // Initialize prices based on 10x multiplier
+          // Initialize prices based on recommendation multiplier
           const totalKm = details.totalDistanceMeters / 1000;
-          setPrice(calculateBasePrice(totalKm, PRICING_MULTIPLIERS.MID, seatCount));
+          const calculatedPrice = calculateBasePrice(totalKm, PRICING_MULTIPLIERS.MID, divisor);
+          setPrice(calculatedPrice);
 
           const initialSegmentPrices: Record<string, number> = {};
           legs.forEach((leg, i) => {
             const segId = `seg-${i}`;
-            initialSegmentPrices[segId] = calculateBasePrice(leg.distanceMeters / 1000, PRICING_MULTIPLIERS.MID, seatCount);
+            initialSegmentPrices[segId] = calculateBasePrice(leg.distanceMeters / 1000, PRICING_MULTIPLIERS.MID, divisor);
           });
           setSegmentPricesState(initialSegmentPrices);
         }
@@ -95,7 +110,7 @@ export const usePriceSelection = () => {
     };
 
     fetchFinalRoute();
-  }, [startLocation, destinationLocation, middleStops, routeDetails, setRouteDetails, price, seatCount]);
+  }, [startLocation, destinationLocation, middleStops, routeDetails, setRouteDetails, price, divisor, initialPrice]);
 
   // 2. Pricing Calculations (Premium)
   const premium = useMemo(() => {
@@ -117,7 +132,7 @@ export const usePriceSelection = () => {
   const segmentPrices: Record<string, SegmentPrice> = useMemo(() => {
     const prices: Record<string, SegmentPrice> = {};
     segments.forEach((seg: any) => {
-      const basePrice = segmentPricesState[seg.id] || calculateBasePrice(seg.distanceKm, PRICING_MULTIPLIERS.MID, seatCount);
+      const basePrice = segmentPricesState[seg.id] || calculateBasePrice(seg.distanceKm, PRICING_MULTIPLIERS.MID, divisor);
       
       // Front seat pricing logic for segments: basePrice + calculated premium based on shared percentage
       const legFrontSeatPrice = calculateFrontSeatPrice(basePrice, premiumPercentage);
@@ -125,12 +140,12 @@ export const usePriceSelection = () => {
       prices[seg.id] = {
         basePrice,
         frontSeatPrice: legFrontSeatPrice,
-        minPrice: calculateBasePrice(seg.distanceKm, PRICING_MULTIPLIERS.MIN, seatCount),
-        maxPrice: calculateBasePrice(seg.distanceKm, PRICING_MULTIPLIERS.MAX, seatCount),
+        minPrice: calculateBasePrice(seg.distanceKm, PRICING_MULTIPLIERS.MIN, divisor),
+        maxPrice: calculateBasePrice(seg.distanceKm, PRICING_MULTIPLIERS.MAX, divisor),
       } as any;
     });
     return prices;
-  }, [segments, segmentPricesState, premiumPercentage, seatCount]);
+  }, [segments, segmentPricesState, premiumPercentage, divisor]);
 
   // Handlers
   const handlePriceChange = useCallback((v: number) => {
@@ -186,10 +201,10 @@ export const usePriceSelection = () => {
 
   // Recommended logic: price within +/- 15% of SID suggestion
   const isRecommended = useMemo(() => {
-    const recommendedMid = calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MID, seatCount);
+    const recommendedMid = calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MID, divisor);
     const tolerance = recommendedMid * 0.15;
     return Math.abs(price - recommendedMid) <= tolerance;
-  }, [price, totalDistanceKm, seatCount]);
+  }, [price, totalDistanceKm, divisor]);
 
   return {
     price,

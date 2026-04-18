@@ -1,6 +1,6 @@
 export const PRICING_MULTIPLIERS = {
-  MIN: 5,
-  MID: 7,
+  MIN: 7,
+  MID: 9.5,
   MAX: 12,
 } as const;
 

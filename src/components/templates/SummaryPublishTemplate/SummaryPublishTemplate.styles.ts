@@ -47,12 +47,12 @@ export const PageSubtitle = styled.Text`
 `;
 
 /* CARDS */
-export const GlassCard = styled.View`
+export const GlassCard = styled.View<{ hasError?: boolean }>`
   background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}99`};
   border-radius: ${moderateScale(20)}px;
   padding: ${moderateScale(20)}px;
   border-width: 1px;
-  border-color: ${({ theme }) => `${theme.colors.on_surface}1A`};
+  border-color: ${({ theme, hasError }) => hasError ? theme.colors.error : `${theme.colors.on_surface}1A`};
   margin-bottom: ${verticalScale(16)}px;
 `;
 
@@ -74,6 +74,13 @@ export const TimelineDotOutline = styled.View`
   background-color: ${({ theme }) => theme.colors.primary};
   border-width: 3px;
   border-color: ${({ theme }) => `${theme.colors.primary_container}4D`};
+`;
+
+export const TimelineDotMiddle = styled.View`
+  width: ${moderateScale(8)}px;
+  height: ${moderateScale(8)}px;
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.colors.outline};
 `;
 
 export const TimelineTrack = styled(LinearGradient)`
@@ -263,6 +270,16 @@ export const PublishText = styled.Text`
 export const LoadingIndicator = styled.ActivityIndicator.attrs({
   size: 'small',
 })``;
+
+export const ErrorText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-size: ${responsiveFont(12)}px;
+  color: ${({ theme }) => theme.colors.error};
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: ${verticalScale(12)}px;
+  padding-horizontal: ${scale(24)}px;
+`;
 
 export const TermsText = styled.Text`
   font-family: 'Plus Jakarta Sans';

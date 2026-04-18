@@ -170,7 +170,7 @@ export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
   }, [localPrices, onSave, onClose]);
 
   if (!visible) return null;
-
+  console.log(segments)
   return (
     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 999, elevation: 999 }}>
       <Overlay>

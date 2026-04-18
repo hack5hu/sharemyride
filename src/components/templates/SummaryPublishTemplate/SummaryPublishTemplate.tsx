@@ -12,7 +12,7 @@ export interface SummaryPublishTemplateProps {
   route: {
     start: string;
     end: string;
-    stopsCount: number;
+    middleStops?: string[] | null;
   };
   schedule: {
     date: string | null;
@@ -43,6 +43,9 @@ export interface SummaryPublishTemplateProps {
   onEditVehicle: () => void;
   onEditSeats: () => void;
   onEditPreferences: () => void;
+  isPublishing?: boolean;
+  validationError?: string | null;
+  canPublish?: boolean;
 }
 
 export const SummaryPublishTemplate: React.FC<SummaryPublishTemplateProps> = ({
@@ -60,6 +63,8 @@ export const SummaryPublishTemplate: React.FC<SummaryPublishTemplateProps> = ({
   onEditSeats,
   onEditPreferences,
   isPublishing,
+  validationError,
+  canPublish = true,
 }) => {
   const theme = useTheme();
   const { summaryPublish: t } = useLocale();
@@ -91,7 +96,15 @@ export const SummaryPublishTemplate: React.FC<SummaryPublishTemplateProps> = ({
           <S.RouteLayout>
             <S.TimelineLine>
               <S.TimelineDotOutline />
-              <S.TimelineTrack colors={[theme.colors.primary, theme.colors.secondary_container]} />
+              <S.TimelineTrack colors={[theme.colors.primary, theme.colors.outline]} />
+              
+              {(route.middleStops || []).map((_, i) => (
+                <React.Fragment key={`dot-${i}`}>
+                  <S.TimelineDotMiddle />
+                  <S.TimelineTrack colors={[theme.colors.outline, i === (route.middleStops?.length || 0) - 1 ? theme.colors.primary : theme.colors.outline]} />
+                </React.Fragment>
+              ))}
+              
               <S.TimelineDotEnd />
             </S.TimelineLine>
 
@@ -100,6 +113,14 @@ export const SummaryPublishTemplate: React.FC<SummaryPublishTemplateProps> = ({
                 <S.StopLabel>{t.departureLabel}</S.StopLabel>
                 <S.StopLocation numberOfLines={1}>{route.start}</S.StopLocation>
               </S.RouteStop>
+
+              {(route.middleStops || []).map((stop, i) => (
+                <S.RouteStop key={`stop-${i}`}>
+                  <S.StopLabel>Stop {i + 1}</S.StopLabel>
+                  <S.StopLocation numberOfLines={1}>{stop}</S.StopLocation>
+                </S.RouteStop>
+              ))}
+
               <S.RouteStop>
                 <S.StopLabel>{t.arrivalLabel}</S.StopLabel>
                 <S.StopLocation numberOfLines={1}>{route.end}</S.StopLocation>
@@ -109,7 +130,7 @@ export const SummaryPublishTemplate: React.FC<SummaryPublishTemplateProps> = ({
         </S.GlassCard>
 
         {/* Date & Time Box */}
-        <S.GlassCard>
+        <S.GlassCard hasError={!!validationError}>
           <S.SectionHeader>
             <S.SectionLabel>{t.departureScheduleLabel}</S.SectionLabel>
             <S.EditButton onPress={onEditSchedule} activeOpacity={0.7}>
@@ -191,15 +212,18 @@ export const SummaryPublishTemplate: React.FC<SummaryPublishTemplateProps> = ({
           end={{ x: 0, y: 1 }}
           pointerEvents="none"
         />
+        {validationError && <S.ErrorText>{validationError}</S.ErrorText>}
+
         <S.PublishButton 
           onPress={onPublish} 
           activeOpacity={0.9} 
-          disabled={isPublishing}
+          disabled={!canPublish || isPublishing}
         >
           <S.PublishGradient
             colors={[theme.colors.primary, theme.colors.primary_container]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
+            style={{ opacity: (!canPublish || isPublishing) ? 0.6 : 1 }}
           >
             {isPublishing ? (
               <S.LoadingIndicator color={theme.colors.on_primary} />

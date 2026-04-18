@@ -343,7 +343,7 @@ export const hi: Translations = {
     continueButton: 'समीक्षा के लिए जारी रखें',
     segmentSheetTitle: 'सेगमेंट मूल्य',
     segmentSheetSubtitle: 'अपनी यात्रा के प्रत्येक भाग के लिए मूल्य सेट करें',
-    segmentLabel: 'सेगमेंट',
+    segmentLabel: 'रूट',
     minPriceLabel: 'न्यूनतम मूल्य',
     maxPriceLabel: 'अधिकतम मूल्य',
     cancelButton: 'रद्द करें',

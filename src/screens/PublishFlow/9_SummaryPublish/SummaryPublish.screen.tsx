@@ -18,6 +18,8 @@ export const SummaryPublishScreen: React.FC = () => {
     handleEditSeats,
     handleEditPreferences,
     isPublishing,
+    validationError,
+    canPublish,
   } = useSummaryPublish();
 
   return (
@@ -28,6 +30,8 @@ export const SummaryPublishScreen: React.FC = () => {
       pricing={pricingData}
       preferences={preferencesData}
       isPublishing={isPublishing}
+      validationError={validationError}
+      canPublish={canPublish}
       onBack={handleBack}
       onSave={handleSave}
       onPublish={handlePublish}

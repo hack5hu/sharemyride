@@ -18,5 +18,7 @@ export const API_ENDPOINTS = {
   },
   RIDE: {
     PUBLISH: '/ride',
+    GET_MY_RIDES: '/ride',
+    CANCEL_RIDE: (id: string | number) => `/ride/${id}`,
   },
 } as const;

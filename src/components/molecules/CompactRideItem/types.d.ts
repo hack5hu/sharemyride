@@ -4,6 +4,8 @@ export interface CompactRideItemProps {
   price?: string;
   icon: string;
   iconBg?: string; // Tonal background color key
-  type: 'draft' | 'completed';
+  type: 'draft' | 'completed' | 'upcoming' | 'past';
   onPress: () => void;
+  actionIcon?: string;
+  onActionPress?: () => void;
 }
