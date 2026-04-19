@@ -12,12 +12,12 @@ export const SeatTouchable = styled.TouchableOpacity<{ state: SeatState }>`
   justify-content: center;
   border-width: 2px;
   border-color: ${({ theme, state }) => {
-    if (state === 'driver') return `${theme.colors.outline_variant}`;
+    if (state === 'driver') return `${theme.colors.on_surface_variant}`;
     if (state === 'selected') return 'transparent';
     return `${theme.colors.primary}33`;
   }};
   background-color: ${({ theme, state }) => {
-    if (state === 'driver') return theme.colors.surface_container;
+    if (state === 'driver') return theme.colors.surface_container_lowest;
     if (state === 'selected') return 'transparent';
     return theme.colors.surface_container_lowest;
   }};
@@ -39,7 +39,7 @@ export const DriverLabelText = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 700;
   font-size: ${responsiveFont(8)}px;
-  color: ${({ theme }) => theme.colors.outline};
+  color: ${({ theme }) => theme.colors.on_surface_variant};
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-top: ${moderateScale(4)}px;

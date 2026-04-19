@@ -7,7 +7,8 @@ const LegendRow = styled.View`
   flex-direction: row;
   justify-content: center;
   gap: ${scale(20)}px;
-  margin-top: ${verticalScale(24)}px;
+  margin-top: ${verticalScale(8)}px;
+  margin-bottom: ${verticalScale(8)}px;
 `;
 
 const LegendItem = styled.View<{ dimmed?: boolean }>`

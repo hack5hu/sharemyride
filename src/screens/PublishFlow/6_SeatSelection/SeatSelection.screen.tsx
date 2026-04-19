@@ -8,10 +8,13 @@ export const SeatSelectionScreen: React.FC = () => {
     selectedSeats,
     vehicleType,
     seatIdsLabel,
-    handleSeatPress,
-    handleVehicleTypeChange,
-    handleBackPress,
-    handleContinue,
+    onSeatPress,
+    vehicles,
+    selectedVehicleId,
+    onVehicleSelect,
+    onAddNewVehicle,
+    onBackPress,
+    onContinue,
     t,
   } = useSeatSelection();
 
@@ -21,10 +24,13 @@ export const SeatSelectionScreen: React.FC = () => {
       selectedSeats={selectedSeats}
       vehicleType={vehicleType}
       seatIdsLabel={seatIdsLabel}
-      onSeatPress={handleSeatPress}
-      onVehicleTypeChange={handleVehicleTypeChange}
-      onBackPress={handleBackPress}
-      onContinue={handleContinue}
+      onSeatPress={onSeatPress}
+      vehicles={vehicles}
+      selectedVehicleId={selectedVehicleId}
+      onVehicleSelect={onVehicleSelect}
+      onAddNewVehicle={onAddNewVehicle}
+      onBackPress={onBackPress}
+      onContinue={onContinue}
       t={t}
     />
   );

@@ -22,6 +22,7 @@ export interface SummaryPublishTemplateProps {
     name: string;
     subText: string;
     icon: string;
+    numberplate: string;
   } | null;
   pricing: {
     seatCount: number;
@@ -43,7 +44,6 @@ export interface SummaryPublishTemplateProps {
   onEditVehicle: () => void;
   onEditSeats: () => void;
   onEditPreferences: () => void;
-  isPublishing?: boolean;
   validationError?: string | null;
   canPublish?: boolean;
 }
@@ -57,7 +57,6 @@ export const SummaryPublishTemplate: React.FC<SummaryPublishTemplateProps> = ({
   onBack,
   onSave,
   onPublish,
-  onEditRoute,
   onEditSchedule,
   onEditVehicle,
   onEditSeats,
@@ -158,6 +157,7 @@ export const SummaryPublishTemplate: React.FC<SummaryPublishTemplateProps> = ({
               <>
                 <S.GridCardValue numberOfLines={1}>{vehicle.name}</S.GridCardValue>
                 <S.GridCardSub numberOfLines={1}>{vehicle.subText}</S.GridCardSub>
+                <S.GridCardSub numberOfLines={1}>{vehicle.numberplate}</S.GridCardSub>
               </>
             ) : (
               <S.EmptyStateWrapper onPress={onEditVehicle}>

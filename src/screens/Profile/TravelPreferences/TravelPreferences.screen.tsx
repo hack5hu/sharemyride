@@ -1,5 +1,5 @@
-import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { View } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { Toggle } from '@/components/atoms/Toggle';
@@ -33,8 +33,10 @@ export const TravelPreferencesScreen: React.FC = () => {
     preferences, 
     musicOptions,
     togglePreference, 
-    setMusicPreference, 
+    toggleMusicPreference,
+    updateWaitingTime,
     handleSave,
+    isLoading,
     goBack 
   } = useTravelPreferences();
 
@@ -91,6 +93,21 @@ export const TravelPreferencesScreen: React.FC = () => {
             <Toggle value={preferences.womenOnly} onValueChange={() => togglePreference('womenOnly')} />
           </PreferenceItem>
 
+          <PreferenceItem>
+            <IconContainer color={theme.colors.tertiary_container}>
+              <Icon name="verified-user" size={24} color={theme.colors.primary} />
+            </IconContainer>
+            <TextWrapper>
+              <Typography variant="title" size="sm" weight="bold">
+                {t('travelPreferences.manualApproval')}
+              </Typography>
+              <Typography variant="body" size="sm" color={theme.colors.on_surface_variant}>
+                {t('travelPreferences.manualApprovalDescr')}
+              </Typography>
+            </TextWrapper>
+            <Toggle value={preferences.manualApproval} onValueChange={() => togglePreference('manualApproval')} />
+          </PreferenceItem>
+
           <SectionTitleWrapper style={{ marginTop: 24 }}>
             <Icon name="library-music" size={20} color={theme.colors.primary} />
             <Typography variant="label" size="sm" weight="bold" color="primary" style={{ letterSpacing: 1 }}>
@@ -103,8 +120,8 @@ export const TravelPreferencesScreen: React.FC = () => {
               <Chip 
                 key={option} 
                 label={t(`travelPreferences.${option.toLowerCase()}`)} 
-                selected={preferences.music === option}
-                onPress={() => setMusicPreference(option)}
+                selected={preferences.music.includes(option)}
+                onPress={() => toggleMusicPreference(option)}
               />
             ))}
           </ChipGroup>
@@ -124,8 +141,39 @@ export const TravelPreferencesScreen: React.FC = () => {
             />
           </BentoGrid>
 
+          <PreferenceItem style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 16 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <IconContainer>
+                <Icon name="timer" size={24} color={theme.colors.primary} />
+              </IconContainer>
+              <TextWrapper>
+                <Typography variant="title" size="sm" weight="bold">
+                  {t('travelPreferences.waitingTime')}
+                </Typography>
+                <Typography variant="body" size="sm" color={theme.colors.on_surface_variant}>
+                  {t('travelPreferences.waitingTimeDescr')}
+                </Typography>
+              </TextWrapper>
+            </View>
+            <ChipGroup style={{ marginBottom: 0, marginTop: 4 }}>
+              {[5, 10, 15, 20].map(mins => (
+                <Chip 
+                  key={mins} 
+                  label={`${mins}m`} 
+                  selected={preferences.waitingTime === mins}
+                  onPress={() => updateWaitingTime(mins)}
+                />
+              ))}
+            </ChipGroup>
+          </PreferenceItem>
+
           <BottomAction>
-            <Button onPress={handleSave} variant="primary">
+            <Button 
+              onPress={handleSave} 
+              variant="primary"
+              loading={isLoading}
+              disabled={isLoading}
+            >
               {t('travelPreferences.savePreferences')}
             </Button>
           </BottomAction>

@@ -5,9 +5,10 @@ import { Typography } from '@/components/atoms/Typography';
 import { scale, verticalScale } from '@/styles';
 import { CarFloorPlan, FIVE_SEATER_ROWS, SEVEN_SEATER_ROWS } from '@/components/organisms/CarFloorPlan';
 import { SeatLegend } from '@/components/molecules/SeatLegend/SeatLegend';
-import { SeatSummaryBar } from '@/components/molecules/SeatSummaryBar/SeatSummaryBar';
-import { VehicleToggle, VehicleType } from '@/components/molecules/VehicleToggle/VehicleToggle';
+import { VehicleType } from '@/components/molecules/VehicleToggle/VehicleToggle';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { VehicleHorizontalList } from '@/components/molecules/VehicleHorizontalList/VehicleHorizontalList';
+import { Vehicle } from '@/store/useVehicleStore';
 import * as S from './SeatSelectionTemplate.styles';
 
 export interface SeatSelectionTemplateProps {
@@ -16,7 +17,10 @@ export interface SeatSelectionTemplateProps {
   vehicleType: VehicleType;
   seatIdsLabel: string;
   onSeatPress: (id: string) => void;
-  onVehicleTypeChange: (type: VehicleType) => void;
+  vehicles: Vehicle[];
+  selectedVehicleId: string | null;
+  onVehicleSelect: (id: string) => void;
+  onAddNewVehicle: () => void;
   onBackPress: () => void;
   onContinue: () => void;
   t: any;
@@ -28,14 +32,16 @@ export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> = ({
   vehicleType,
   seatIdsLabel,
   onSeatPress,
-  onVehicleTypeChange,
+  vehicles,
+  selectedVehicleId,
+  onVehicleSelect,
+  onAddNewVehicle,
   onBackPress,
   onContinue,
   t,
 }) => {
   const theme = useTheme();
   const rows = vehicleType === '7' ? SEVEN_SEATER_ROWS : FIVE_SEATER_ROWS;
-
   return (
     <ScreenShell
       title={'Select your seats'}
@@ -47,14 +53,15 @@ export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> = ({
           <Typography variant="body" size="sm" color={theme.colors.on_surface_variant}>{t.subtitle}</Typography>
         </View>
 
-        <View style={{ padding: scale(24) }}>
-
-          <VehicleToggle
-            selected={vehicleType}
-            onSelect={onVehicleTypeChange}
-            fiveSeaterLabel={t.fiveSeater || '5 Seater'}
-            sevenSeaterLabel={t.sevenSeater || '7 Seater'}
+        <View style={{ marginTop: verticalScale(16) }}>
+          <VehicleHorizontalList
+            vehicles={vehicles}
+            selectedId={selectedVehicleId}
+            onSelect={onVehicleSelect}
+            onAddNew={onAddNewVehicle}
+            title={t.yourVehicles || 'Your Vehicles'}
           />
+
           <SeatLegend
             availableLabel={t.legendAvailable || 'Available'}
             selectedLabel={t.legendSelected || 'Selected'}
@@ -71,17 +78,17 @@ export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> = ({
           />
         </View>
       </S.ContentScroll>
-
-      <SeatSummaryBar
-        flow={flow}
-        seatCount={selectedSeats.size}
-        moneyValue={''}
-        seatIdLabel={seatIdsLabel}
-        summaryTitle={t.seatsOffering || 'Seats Offered'}
-        moneyLabel={t.estEarnings || 'Est. Earnings'}
-        continueLabel={t.continue || 'Continue'}
-        onContinue={onContinue}
-      />
+      <S.BarWrapper>
+      <S.ContinueButton onPress={onContinue} activeOpacity={0.9} disabled={selectedSeats.size === 0}>
+        <S.ContinueGradient
+          colors={[theme.colors.primary_container, theme.colors.primary]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        >
+          <S.ContinueText>{selectedSeats.size} {selectedSeats.size === 1 ? 'Seat' : 'Seats'} Selected</S.ContinueText>
+        </S.ContinueGradient>
+      </S.ContinueButton>
+      </S.BarWrapper>
     </ScreenShell>
   );
 };

@@ -1,5 +1,6 @@
 import * as Keychain from 'react-native-keychain';
 import { BASE_URL, API_ENDPOINTS } from '@/constants/apiEndpoints';
+import apiClient from './apiClient';
 
 export interface ProfileUpdateData {
   fullName: string;
@@ -8,7 +9,40 @@ export interface ProfileUpdateData {
   profileImage?: { uri: string } | null;
 }
 
+export interface VehiclePayload {
+  vehicleNumber: string;
+  vehicleTypeId: number;
+  company: string;
+  model: string;
+  color: string;
+}
+
 export const userService = {
+  getProfile: async () => {
+    const response = await apiClient.get(API_ENDPOINTS.USER.PROFILE);
+    return response.data;
+  },
+
+  getVehicles: async () => {
+    const response = await apiClient.get(API_ENDPOINTS.USER.VEHICLES);
+    return response.data;
+  },
+
+  saveVehicle: async (data: VehiclePayload) => {
+    const response = await apiClient.post(API_ENDPOINTS.USER.VEHICLES, data);
+    return response.data;
+  },
+
+  updateVehicle: async (id: string, data: VehiclePayload) => {
+    const response = await apiClient.put(`${API_ENDPOINTS.USER.VEHICLES}/${id}`, data);
+    return response.data;
+  },
+
+  deleteVehicle: async (id: string) => {
+    const response = await apiClient.delete(`${API_ENDPOINTS.USER.VEHICLES}/${id}`);
+    return response.data;
+  },
+
   updateProfile: async (data: ProfileUpdateData) => {
     try {
       const formData = new FormData();

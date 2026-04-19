@@ -22,6 +22,7 @@ import {
 export const ProfileHubScreen: React.FC = () => {
   const { 
     t,
+    user,
     navigateToEditProfile,
     navigateToVehicleDetails,
     navigateToTravelPreferences,
@@ -38,11 +39,11 @@ export const ProfileHubScreen: React.FC = () => {
         <Content>
           <BentoGrid>
             <ProfileHeader 
-              name="Alex Rivera"
+              name={user?.name || 'User'}
               rating={4.9}
               rides={128}
-              memberSince={2023}
-              avatarUri="https://randomuser.me/api/portraits/men/32.jpg"
+              memberSince={2024}
+              avatarUri={user?.profilePhotoUrl}
               onEditPress={navigateToEditProfile}
               onSettingsPress={navigateToSettings}
             />

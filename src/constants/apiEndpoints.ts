@@ -15,10 +15,12 @@ export const API_ENDPOINTS = {
   },
   USER: {
     PROFILE: '/user/profile',
+    VEHICLES: '/user/vehicle',
   },
   RIDE: {
     PUBLISH: '/ride',
     GET_MY_RIDES: '/ride',
     CANCEL_RIDE: (id: string | number) => `/ride/${id}`,
+    PREFERENCES: '/ride/preferences',
   },
 } as const;

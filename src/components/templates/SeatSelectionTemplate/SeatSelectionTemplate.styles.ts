@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
-import { scale, verticalScale, moderateScale } from '@/styles';
+import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
+import LinearGradient from 'react-native-linear-gradient';
 
 export const ContentScroll = styled.ScrollView`
   flex: 1;
@@ -38,4 +39,41 @@ export const IconCircle = styled.View`
   border-radius: 9999px;
   align-items: center;
   justify-content: center;
+`;
+
+export const ContinueButton = styled.TouchableOpacity<{ disabled: boolean }>`
+  width: 100%;
+  opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
+`;
+
+export const ContinueGradient = styled(LinearGradient)`
+  width: 100%;
+  padding-vertical: ${verticalScale(18)}px;
+  border-radius: ${moderateScale(16)}px;
+  align-items: center;
+  justify-content: center;
+  shadow-color: ${({ theme }) => theme.colors.primary};
+  shadow-offset: 0px 8px;
+  shadow-opacity: 0.2;
+  shadow-radius: 12px;
+  elevation: 8;
+`;
+
+export const ContinueText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 700;
+  font-size: ${responsiveFont(16)}px;
+  color: ${({ theme }) => theme.colors.on_primary};
+`;
+export const BarWrapper = styled.View`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-horizontal: ${scale(24)}px;
+  padding-bottom: ${verticalScale(40)}px;
+  padding-top: ${verticalScale(24)}px;
+  background-color: ${({ theme }) => theme.colors.surface}E6;
+  border-top-width: 1px;
+  border-color: ${({ theme }) => theme.colors.surface_container_highest};
 `;

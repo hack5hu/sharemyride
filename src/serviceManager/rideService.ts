@@ -20,6 +20,17 @@ export interface PublishRidePayload {
   routeStops: RouteStop[];
 }
 
+export interface TravelPreferenceData {
+  nonSmoking: boolean;
+  womenOnly: boolean;
+  manualApproval: boolean;
+  musicPreference: string;
+  luggageAllowed: boolean;
+  petFriendly: boolean;
+  maxBackSeats: number;
+  waitingTime: number;
+}
+
 const rideService = {
   publishRide: async (payload: PublishRidePayload) => {
     try {
@@ -45,6 +56,24 @@ const rideService = {
       return response.data;
     } catch (error) {
       console.error('Ride cancellation failed:', error);
+      throw error;
+    }
+  },
+  savePreferences: async (payload: TravelPreferenceData) => {
+    try {
+      const response = await apiClient.post(API_ENDPOINTS.RIDE.PREFERENCES, payload);
+      return response.data;
+    } catch (error) {
+      console.error('Saving preferences failed:', error);
+      throw error;
+    }
+  },
+  getPreferences: async () => {
+    try {
+      const response = await apiClient.get(API_ENDPOINTS.RIDE.PREFERENCES);
+      return response.data;
+    } catch (error) {
+      console.error('Fetching preferences failed:', error);
       throw error;
     }
   },

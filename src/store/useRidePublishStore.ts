@@ -21,6 +21,7 @@ export interface VehicleDetails {
   type: string;
   year: string;
   color: string;
+  seater: '5' | '7';
 }
 
 export interface RidePreferences {

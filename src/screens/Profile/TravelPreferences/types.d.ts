@@ -1,7 +1,9 @@
 export interface TravelPreferenceState {
   nonSmoking: boolean;
   womenOnly: boolean;
-  music: string;
+  music: string[];
   luggage: boolean;
   pets: boolean;
+  manualApproval: boolean;
+  waitingTime: number;
 }

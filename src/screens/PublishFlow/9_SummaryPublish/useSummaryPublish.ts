@@ -6,6 +6,8 @@ import { getColorLabel } from '@/constants/ride';
 import { useMyRidesStore } from '@/store/useMyRidesStore';
 import rideService, { PublishRidePayload, RouteStop } from '@/serviceManager/rideService';
 import { addSeconds } from 'date-fns';
+import { useTravelPrefStore } from '@/store/useTravelPrefStore';
+import { useLocale } from '@/constants/localization';
 
 export const useSummaryPublish = () => {
   const navigation = useNavigation();
@@ -48,7 +50,8 @@ export const useSummaryPublish = () => {
     const colorLabel = getColorLabel(vehicleDetails.color);
     return {
       name: `${vehicleDetails.company} ${vehicleDetails.model}`,
-      subText: `${colorLabel} • ${vehicleDetails.numberPlate}`,
+      subText: `${vehicleDetails.seater}-Seater • ${colorLabel}`,
+      numberplate:vehicleDetails.numberPlate,
       icon: vehicleDetails.type === 'bike' ? 'motorcycle' : 'directions-car',
     };
   }, [vehicleDetails]);
@@ -231,6 +234,45 @@ export const useSummaryPublish = () => {
     publishStore.requestType
   ]);
 
+  const { preferences: storedPrefs } = useTravelPrefStore();
+  const { summaryPublish: st, travelPreferences: pt } = useLocale();
+
+  const preferencesData = useMemo(() => {
+    if (!storedPrefs) return [];
+    
+    const data = [];
+    
+    if (storedPrefs.nonSmoking) {
+      data.push({ id: 'smoking', label: pt.nonSmoking, icon: 'smoke-free' });
+    }
+    
+    if (storedPrefs.womenOnly) {
+      data.push({ id: 'women', label: pt.womenOnly, icon: 'female' });
+    }
+    
+    if (storedPrefs.manualApproval) {
+      data.push({ id: 'approval', label: pt.manualApproval, icon: 'verified-user' });
+    }
+    
+    if (storedPrefs.musicPreference) {
+      data.push({ id: 'music', label: storedPrefs.musicPreference, icon: 'library-music' });
+    }
+    
+    if (storedPrefs.luggageAllowed) {
+      data.push({ id: 'luggage', label: pt.luggageAllowed, icon: 'luggage' });
+    }
+    
+    if (storedPrefs.petFriendly) {
+      data.push({ id: 'pets', label: pt.petFriendly, icon: 'pets' });
+    }
+
+    if (storedPrefs.waitingTime) {
+      data.push({ id: 'waiting', label: `${storedPrefs.waitingTime}m wait`, icon: 'timer' });
+    }
+    
+    return data;
+  }, [storedPrefs, pt]);
+
   return {
     routeData: {
       start: startLocation?.name || 'Unknown',
@@ -243,17 +285,34 @@ export const useSummaryPublish = () => {
     },
     vehicleData,
     pricingData,
-    preferencesData: [], 
+    preferencesData,
     isPublishing,
     validationError,
     canPublish,
     handleBack: () => navigation.goBack(),
     handleSave,
     handlePublish,
-    handleEditRoute: () => (navigation.navigate as any)('LocationSelection', { flow: 'publish', returnTo: 'SummaryPublish' }),
-    handleEditSchedule: () => (navigation.navigate as any)('DateSelection', { returnTo: 'SummaryPublish' }),
-    handleEditVehicle: () => (navigation.navigate as any)('VehicleDetails', { returnTo: 'SummaryPublish' }),
-    handleEditSeats: () => (navigation.navigate as any)('SeatSelection', { flow: 'publish', returnTo: 'SummaryPublish' }),
-    handleEditPreferences: () => (navigation.navigate as any)('TravelPreferences', { returnTo: 'SummaryPublish' }),
+    handleEditRoute: () =>
+      (navigation.navigate as any)('LocationSelection', {
+        flow: 'publish',
+        returnTo: 'SummaryPublish',
+      }),
+    handleEditSchedule: () =>
+      (navigation.navigate as any)('DateSelection', {
+        returnTo: 'SummaryPublish',
+      }),
+    handleEditVehicle: () =>
+      (navigation.navigate as any)('SeatSelection', {
+        returnTo: 'SummaryPublish',
+      }),
+    handleEditSeats: () =>
+      (navigation.navigate as any)('PriceSelection', {
+        flow: 'publish',
+        returnTo: 'SummaryPublish',
+      }),
+    handleEditPreferences: () =>
+      (navigation.navigate as any)('TravelPreferences', {
+        returnTo: 'SummaryPublish',
+      }),
   };
 };

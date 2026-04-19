@@ -7,6 +7,7 @@ import { ProfileHubScreen } from '@/screens/Profile/ProfileHub';
 import { DummyScreen } from '@/screens/Common/Dummy';
 import { EditProfileScreen } from '@/screens/Profile/EditProfile';
 import { TravelPreferencesScreen } from '@/screens/Profile/TravelPreferences';
+import { VehicleListScreen } from '@/screens/Profile/VehicleList';
 import { VehicleDetailsScreen } from '@/screens/Profile/VehicleDetails';
 import { ChatListScreen } from '@/screens/Chat/ChatList';
 import { ChatDetailsScreen } from '@/screens/Chat/ChatDetails';
@@ -76,7 +77,8 @@ export const RootNavigator = () => {
           <Stack.Screen name="ProfileHub" component={ProfileHubScreen} />
           <Stack.Screen name="EditProfile" component={EditProfileScreen} />
           <Stack.Screen name="TravelPreferences" component={TravelPreferencesScreen} />
-          <Stack.Screen name="VehicleDetails" component={VehicleDetailsScreen} />
+          <Stack.Screen name="VehicleList" component={VehicleListScreen} />
+          <Stack.Screen name="VehicleDetails" component={VehicleDetailsScreen as any} />
           <Stack.Screen name="ChatList" component={ChatListScreen} />
           <Stack.Screen name="ChatDetails" component={ChatDetailsScreen as any} />
           <Stack.Screen name="SelectLocation" component={SelectLocationScreen} />

@@ -24,11 +24,14 @@ import {
   ColorRow,
   BottomAction,
 } from './VehicleDetails.styles';
+import { LabelText } from '@/components/atoms/Input/Input.styles';
+import { View } from 'react-native';
+import { moderateScale, verticalScale } from '@/styles';
 
 export const VehicleDetailsScreen: React.FC = () => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const { formik, vehicleTypes, carColors, setVehicleType, setColor, goBack } = useVehicleDetails();
+  const { formik, isLoading, vehicleTypes, carColors, setVehicleType, setSeater, setColor, goBack } = useVehicleDetails();
 
   return (
     <ScreenShell
@@ -37,8 +40,8 @@ export const VehicleDetailsScreen: React.FC = () => {
     >
       <ScrollContainer>
         <HeroSection>
-          <HeroImage 
-            source={{ uri: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop' }} 
+          <HeroImage
+            source={{ uri: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop' }}
             resizeMode="cover"
           />
           <HeroTint />
@@ -66,16 +69,16 @@ export const VehicleDetailsScreen: React.FC = () => {
               </Typography>
             </SectionHeader>
             <FormWrapper style={{ padding: 0, gap: 16 }}>
-              <Input 
-                label={t('vehicleDetails.vehicleCompany')} 
-                placeholder={t('vehicleDetails.companyPlaceholder')} 
+              <Input
+                label={t('vehicleDetails.vehicleCompany')}
+                placeholder={t('vehicleDetails.companyPlaceholder')}
                 value={formik.values.company}
                 onChangeText={formik.handleChange('company')}
                 error={formik.touched.company ? formik.errors.company : undefined}
               />
-              <Input 
-                label={t('vehicleDetails.carModel')} 
-                placeholder={t('vehicleDetails.modelPlaceholder')} 
+              <Input
+                label={t('vehicleDetails.carModel')}
+                placeholder={t('vehicleDetails.modelPlaceholder')}
                 value={formik.values.model}
                 onChangeText={formik.handleChange('model')}
                 error={formik.touched.model ? formik.errors.model : undefined}
@@ -90,80 +93,79 @@ export const VehicleDetailsScreen: React.FC = () => {
                 {t('vehicleDetails.technicalSpecs')}
               </Typography>
             </SectionHeader>
-            <Input 
-              label={t('vehicleDetails.numberPlate')} 
-              placeholder={t('vehicleDetails.platePlaceholder')} 
+            <Input
+              label={t('vehicleDetails.numberPlate')}
+              placeholder={t('vehicleDetails.platePlaceholder')}
               value={formik.values.numberPlate}
-              onChangeText={formik.handleChange('numberPlate')}
+              onChangeText={(text) => formik.setFieldValue('numberPlate', text.toUpperCase())}
+              autoCapitalize="characters"
               error={formik.touched.numberPlate ? formik.errors.numberPlate : undefined}
               style={{ fontFamily: 'monospace', letterSpacing: 4, fontWeight: 'bold' }}
             />
-            
-            <FormWrapper style={{ padding: 0, marginTop: 24, gap: 0 }}>
-              <Typography variant="label" size="sm" weight="bold" color="on_surface_variant" style={{ marginBottom: 12, marginLeft: 4 }}>
-                {t('vehicleDetails.vehicleType')}
-              </Typography>
-              <ColorRow style={{ flexWrap: 'wrap', gap: 12 }}>
-                {vehicleTypes.map(item => (
-                  <VehicleTypeCard 
-                    key={item.type}
-                    icon={item.icon}
-                    label={t(`vehicleDetails.${item.type}`)}
-                    selected={formik.values.type === item.type}
-                    onPress={() => setVehicleType(item.type)}
-                  />
-                ))}
-              </ColorRow>
-            </FormWrapper>
+
+            <View style={{ gap: moderateScale(8), marginTop: verticalScale(16)}}>
+              <LabelText>
+                {t('vehicleDetails.color')}
+              </LabelText>
+              <ColorScroll horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 0,}}>
+                <ColorRow>
+                  {carColors.map(color => (
+                    <ColorChip
+                      key={color.value}
+                      color={color.value}
+                      selected={formik.values.color === color.value}
+                      onPress={() => setColor(color.value)}
+                      label={color.label}
+                    />
+                  ))}
+                </ColorRow>
+              </ColorScroll>
+              {formik.touched.color && formik.errors.color && (
+                <Typography variant="label" size="sm" color={theme.colors.error}>
+                  {formik.errors.color || ''}
+                </Typography>
+              )}
+            </View>
           </CardSection>
 
           <CardSection>
             <SectionHeader>
-              <Icon name="palette" size={18} color={theme.colors.primary} />
+              <Icon name="event-seat" size={18} color={theme.colors.primary} />
               <Typography variant="label" size="sm" weight="bold" color="primary" style={{ letterSpacing: 2, textTransform: 'uppercase' }}>
-                {t('vehicleDetails.appearance')}
+                {t('vehicleDetails.capacity')}
               </Typography>
             </SectionHeader>
-            <FormWrapper style={{ padding: 0, gap: 16 }}>
-              <Input 
-                label={t('vehicleDetails.manufacturingYear')} 
-                value={formik.values.year}
-                onChangeText={formik.handleChange('year')}
-                error={formik.touched.year ? formik.errors.year : undefined}
-                placeholder="2024"
+            <LabelText>
+              {t('vehicleDetails.seaterCount')}
+            </LabelText>
+            <ColorRow style={{ gap: 12, paddingTop: 10 }}>
+              <VehicleTypeCard
+                icon="person"
+                label="5 Seater"
+                selected={formik.values.seater === '5'}
+                onPress={() => setSeater('5')}
               />
-              <FormWrapper style={{ padding: 0, marginTop: 8, gap: 0 }}>
-                <Typography variant="label" size="sm" weight="bold" color="on_surface_variant" style={{ marginLeft: 4 }}>
-                  {t('vehicleDetails.color')}
-                </Typography>
-                <ColorScroll horizontal showsHorizontalScrollIndicator={false}>
-                  <ColorRow>
-                    {carColors.map(color => (
-                      <ColorChip 
-                        key={color.value}
-                        color={color.value}
-                        selected={formik.values.color === color.value}
-                        onPress={() => setColor(color.value)}
-                        label={color.label}
-                      />
-                    ))}
-                  </ColorRow>
-                </ColorScroll>
-                {formik.touched.color && formik.errors.color && (
-                  <Typography variant="label" size="sm" color={theme.colors.error} style={{ marginTop: 4, marginLeft: 4 }}>
-                    {formik.errors.color || ''}
-                  </Typography>
-                )}
-              </FormWrapper>
-            </FormWrapper>
+              <VehicleTypeCard
+                icon="groups"
+                label="7 Seater"
+                selected={formik.values.seater === '7'}
+                onPress={() => setSeater('7')}
+              />
+            </ColorRow>
+            {formik.touched.seater && formik.errors.seater && (
+              <Typography variant="label" size="sm" color={theme.colors.error} style={{ marginLeft: 4 }}>
+                {formik.errors.seater}
+              </Typography>
+            )}
           </CardSection>
         </FormWrapper>
 
         <BottomAction>
-          <Button 
+          <Button
             onPress={formik.handleSubmit as any}
             variant="primary"
             icon="save"
+            loading={isLoading}
             style={{ height: 56, borderRadius: 16 }}
           >
             {t('vehicleDetails.saveVehicle')}

@@ -3,17 +3,19 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/navigation/types';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useCallback } from 'react';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export const useProfileHub = () => {
   const { t } = useTranslation();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const { user } = useAuthStore();
 
   const navigateToEditProfile = useCallback(() => {
     navigation.navigate('EditProfile');
   }, [navigation]);
 
   const navigateToVehicleDetails = useCallback(() => {
-    navigation.navigate('VehicleDetails');
+    navigation.navigate('VehicleList');
   }, [navigation]);
 
   const navigateToTravelPreferences = useCallback(() => {
@@ -44,6 +46,7 @@ export const useProfileHub = () => {
 
   return {
     t,
+    user,
     navigateToEditProfile,
     navigateToVehicleDetails,
     navigateToTravelPreferences,

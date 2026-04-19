@@ -12,6 +12,7 @@ interface AuthState {
   setProfileCompleted: (value: boolean) => void;
   logout: () => void;
   initialize: () => Promise<void>;
+  fetchProfile: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -41,6 +42,30 @@ export const useAuthStore = create<AuthState>()(
             token: credentials.password, 
             isAuthenticated: true 
           });
+          // Background fetch profile after token is loaded
+          useAuthStore.getState().fetchProfile();
+        }
+      },
+
+      fetchProfile: async () => {
+        try {
+          const { userService } = require('@/serviceManager/userService');
+          const profile = await userService.getProfile();
+          if (profile) {
+            set((state) => ({
+              user: { 
+                ...state.user, 
+                ...profile,
+                name: profile.name,
+                dateOfBirth: profile.date, // Map API 'date' to 'dateOfBirth'
+                phoneNumber: profile.phoneNumber,
+                profilePhotoUrl: profile.profilePhotoUrl,
+              },
+              isProfileCompleted: !!profile.name && !!profile.date
+            }));
+          }
+        } catch (error) {
+          console.error('Failed to fetch profile:', error);
         }
       },
     }),

@@ -45,6 +45,17 @@ export const useOTPVerification = () => {
           userProfileCompleted
         );
 
+        // Background sync Profile, Vehicles, and Preferences immediately
+        const { fetchProfile } = useAuthStore.getState();
+        const { useVehicleStore } = require('@/store/useVehicleStore');
+        const { useTravelPrefStore } = require('@/store/useTravelPrefStore');
+        const { syncVehicles } = useVehicleStore.getState();
+        const { syncPreferences } = useTravelPrefStore.getState();
+        
+        fetchProfile();
+        syncVehicles();
+        syncPreferences();
+
         setLoading(false);
         
         // Navigation is handled by RootNavigator reacting to store changes
