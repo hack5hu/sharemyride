@@ -23,8 +23,8 @@ export const GenderSelector: React.FC<GenderSelectorProps> = ({
   const theme = useTheme();
 
   const options = [
-    { label: t('profileSetup.genderFemale'), value: 'female' },
     { label: t('profileSetup.genderMale'), value: 'male' },
+    { label: t('profileSetup.genderFemale'), value: 'female' },
     { label: t('profileSetup.genderOther'), value: 'other' },
   ];
 

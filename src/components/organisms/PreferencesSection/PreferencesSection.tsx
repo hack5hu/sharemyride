@@ -13,7 +13,7 @@ export interface PreferencesSectionProps {
   setFieldValue: (field: string, value: any) => void;
 }
 
-export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
+export const PreferencesSection: React.FC<PreferencesSectionProps> = React.memo(({
   values,
   setFieldValue,
 }) => {
@@ -29,7 +29,7 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
   ];
 
   return (
-    <View style={{ gap: 16 }}>
+    <View style={{ gap: 16, marginTop: 16 }}>
       <View style={{ flexDirection: 'row', gap: 16 }}>
         {/* <Surface elevation="low" rounded="md" padding="lg" style={{ flex: 2 }}>
           <LocationInput
@@ -62,4 +62,4 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = ({
       </View>
     </View>
   );
-};
+});

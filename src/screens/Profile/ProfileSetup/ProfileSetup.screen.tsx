@@ -1,92 +1,82 @@
-import React, { useEffect } from 'react';
-import { ScrollView, KeyboardAvoidingView, Platform, BackHandler } from 'react-native';
-import { useTheme } from 'styled-components/native';
+import React, { useEffect, useMemo } from 'react';
+import { BackHandler } from 'react-native';
 import { Button } from '@/components/atoms/Button';
 import { Typography } from '@/components/atoms/Typography';
 import { InfoBar } from '@/components/molecules/InfoBar';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { IdentityProfileCard } from '@/components/organisms/IdentityProfileCard';
 import { PreferencesSection } from '@/components/organisms/PreferencesSection';
+import { ProfileSetupTemplate } from '@/components/templates/ProfileSetupTemplate';
 import { useProfileSetup } from './useProfileSetup';
-import {
-  ContentContainer,
-  HeroSection,
-  Footer,
-  VersionText,
-} from './ProfileSetup.styles';
+import { HeroSection } from './ProfileSetup.styles';
+import { verticalScale } from '@/styles';
 
 export const ProfileSetupScreen: React.FC = () => {
-  const theme = useTheme();
-  const { formik, t } = useProfileSetup();
+  const { formik, t, handleFieldChange } = useProfileSetup();
 
-  // Prevent hardware back button on Android to enforce mandatory flow
   useEffect(() => {
-    const backAction = () => {
-      // Return true to prevent default back action
-      return true;
-    };
-
+    const backAction = () => true;
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
       backAction,
     );
-
     return () => backHandler.remove();
   }, []);
 
+  const hero = useMemo(() => (
+    <HeroSection>
+      <Typography variant="headline" size="lg" weight="bold">
+        {t('profileSetup.heroTitle')}
+      </Typography>
+      <Typography variant="body" size="md" color="on_surface_variant">
+        {t('profileSetup.heroSubtitle')}
+      </Typography>
+    </HeroSection>
+  ), [t]);
+
+  const identityCard = useMemo(() => (
+    <IdentityProfileCard
+      values={formik.values}
+      setFieldValue={handleFieldChange}
+      errors={formik.errors}
+      submitCount={formik.submitCount}
+    />
+  ), [formik.values, handleFieldChange, formik.errors, formik.submitCount]);
+
+  const preferences = useMemo(() => (
+    <PreferencesSection
+      values={formik.values}
+      setFieldValue={handleFieldChange}
+    />
+  ), [formik.values, handleFieldChange]);
+
+  const infoBar = useMemo(() => 
+    formik.isValid && formik.values.fullName && formik.values.dob ? (
+      <InfoBar
+        variant="success"
+        title={t('profileSetup.almostThere')}
+        subtitle={t('profileSetup.identityVerified')}
+        style={{ marginTop: verticalScale(8) }}
+      />
+    ) : null
+  , [formik.isValid, formik.values.fullName, formik.values.dob, t]);
+
+  const footer = useMemo(() => (
+    <Button
+      variant="primary"
+      onPress={() => formik.handleSubmit()}
+      loading={formik.isSubmitting}
+    >
+      {t('profileSetup.completeSetup')}
+    </Button>
+  ), [formik.isSubmitting, formik.handleSubmit, t]);
+
   return (
-    <ScreenShell>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}
-      >
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 40 }}
-        >
-          <ContentContainer>
-            <HeroSection>
-              <Typography variant="headline" size="lg" weight="bold">
-                {t('profileSetup.heroTitle')}
-              </Typography>
-              <Typography variant="body" size="md" color="on_surface_variant">
-                {t('profileSetup.heroSubtitle')}
-              </Typography>
-            </HeroSection>
-
-            <IdentityProfileCard
-              values={formik.values}
-              setFieldValue={formik.setFieldValue}
-              errors={formik.errors}
-            />
-
-            <PreferencesSection
-              values={formik.values}
-              setFieldValue={formik.setFieldValue}
-            />
-
-            {formik.isValid && formik.values.fullName && formik.values.dob && (
-              <InfoBar
-                variant="success"
-                title={t('profileSetup.almostThere')}
-                subtitle={t('profileSetup.identityVerified')}
-                style={{ marginTop: 8 }}
-              />
-            )}
-
-            <Footer>
-              <Button
-                variant="primary"
-                onPress={() => formik.handleSubmit()}
-                style={{ marginTop: 16 }}
-                loading={formik.isSubmitting}
-              >
-                {t('profileSetup.completeSetup')}
-              </Button>
-            </Footer>
-          </ContentContainer>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </ScreenShell>
+    <ProfileSetupTemplate
+      hero={hero}
+      identityCard={identityCard}
+      preferences={preferences}
+      infoBar={infoBar}
+      footer={footer}
+    />
   );
 };

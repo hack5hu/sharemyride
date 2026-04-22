@@ -1,5 +1,6 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { userService } from '@/serviceManager/userService';
@@ -9,7 +10,7 @@ export const useProfileSetup = () => {
   const { t } = useTranslation();
   const { setProfileCompleted } = useAuthStore();
 
-  const validationSchema = Yup.object().shape({
+  const validationSchema = useMemo(() => Yup.object().shape({
     fullName: Yup.string().required('Required'),
     dob: Yup.string().required(t('profileSetup.dobRequiredError')),
     gender: Yup.string(),
@@ -18,13 +19,13 @@ export const useProfileSetup = () => {
         uri: Yup.string(),
       })
       .nullable(),
-  });
+  }), [t]);
 
   const formik = useFormik({
     initialValues: {
       fullName: '',
       dob: '',
-      gender: 'female',
+      gender: 'male',
       profileImage: null as any,
       newsletter: false,
     },
@@ -40,9 +41,6 @@ export const useProfileSetup = () => {
           profileImage: values.profileImage,
         });
 
-        console.log('✅ Profile Update Success');
-
-        // Mark profile as completed to trigger RootNavigator stack switch
         setProfileCompleted(true);
         Alert.alert('Success', 'Profile setup complete!');
       } catch (error: any) {
@@ -55,13 +53,19 @@ export const useProfileSetup = () => {
     },
   });
 
-  // Derived state to check if all required fields have values
-  const isFormComplete =
-    formik.values.fullName.trim().length > 0 && formik.values.dob.length === 10;
+  const handleFieldChange = useCallback((field: string, value: any) => {
+    formik.setFieldValue(field, value);
+  }, [formik.setFieldValue]);
+
+  const isFormComplete = useMemo(() => 
+    formik.values.fullName.trim().length > 0 && formik.values.dob.length === 10,
+    [formik.values.fullName, formik.values.dob]
+  );
 
   return {
     formik,
     t,
     isFormComplete,
+    handleFieldChange,
   };
 };

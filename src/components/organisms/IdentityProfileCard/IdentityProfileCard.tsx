@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { Pressable, View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { Surface } from '../../atoms/Surface';
 import { Typography } from '../../atoms/Typography';
@@ -8,7 +8,7 @@ import { AvatarPicker } from '../../molecules/AvatarPicker';
 import { GenderSelector } from '../../molecules/GenderSelector';
 import { HeaderRow, InfoContainer, FormContainer } from './IdentityProfileCard.styles';
 import { useTranslation } from '@/hooks/useTranslation';
-import { formatDOBInput, formatDateToDDMMYYYY, parseDateFromDDMMYYYY } from '@/utils/date';
+import { formatDateToDDMMYYYY, parseDateFromDDMMYYYY } from '@/utils/date';
 
 export interface IdentityProfileCardProps {
   values: any;
@@ -18,12 +18,11 @@ export interface IdentityProfileCardProps {
   maxDate?: Date;
 }
 
-export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = ({
+export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = React.memo(({
   values,
   setFieldValue,
   errors,
   submitCount = 0,
-  maxDate,
 }) => {
   const { t } = useTranslation();
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
@@ -35,10 +34,11 @@ export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = ({
     setFieldValue('dob', formatDateToDDMMYYYY(date));
   };
 
-  const handleDOBChange = (text: string) => {
-    const formatted = formatDOBInput(text, values.dob || '');
-    setFieldValue('dob', formatted);
-  };
+  const eighteenYearsAgo = useMemo(() => {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() - 18);
+    return date;
+  }, []);
 
   return (
     <Surface elevation="lowest" rounded="md" padding="lg" >
@@ -76,17 +76,19 @@ export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = ({
 
         <View style={{ flexDirection: 'row', gap: 16 }}>
           <View style={{ flex: 1 }}>
-            <Input
-              label={t('profileSetup.dobLabel')}
-              value={values.dob}
-              onChangeText={handleDOBChange}
-              placeholder="DD/MM/YYYY"
-              onFocus={() => setIsDatePickerOpen(true)}
-              rightIcon="calendar-today"
-              error={showError ? errors?.dob : undefined}
-              keyboardType="numeric"
-              required
-            />
+            <Pressable onPress={() => setIsDatePickerOpen(true)}>
+              <View pointerEvents="none">
+                <Input
+                  label={t('profileSetup.dobLabel')}
+                  value={values.dob}
+                  placeholder="DD/MM/YYYY"
+                  rightIcon="calendar-today"
+                  error={showError ? errors?.dob : undefined}
+                  editable={false}
+                  required
+                />
+              </View>
+            </Pressable>
           </View>
         </View>
 
@@ -100,13 +102,13 @@ export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = ({
       <DatePicker
         modal
         open={isDatePickerOpen}
-        date={parseDateFromDDMMYYYY(values.dob || '')}
+        date={values.dob ? parseDateFromDDMMYYYY(values.dob) : eighteenYearsAgo}
         mode="date"
-        maximumDate={maxDate}
+        maximumDate={eighteenYearsAgo}
         onConfirm={handleDateConfirm}
         onCancel={() => setIsDatePickerOpen(false)}
       />
     </Surface>
   );
-};
+});
 

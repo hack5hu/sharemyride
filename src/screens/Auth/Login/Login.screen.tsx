@@ -1,8 +1,6 @@
 import React from 'react';
-import { Platform } from 'react-native';
 import { Typography } from '@/components/atoms/Typography';
 import { LoginForm } from '@/components/organisms/LoginForm';
-import { SocialSection } from '@/components/organisms/SocialSection';
 import { useLocale } from '@/constants/localization';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import {
@@ -24,7 +22,6 @@ export const LoginScreen: React.FC = () => {
     handleBlur,
     handleSubmit,
     isValid,
-    handleSocialLogin,
     isTermsAccepted,
     toggleTerms,
   } = useLogin();
