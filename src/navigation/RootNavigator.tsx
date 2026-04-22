@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { LoginScreen } from '@/screens/Login';
+import { LoginScreen } from '@/screens/Auth/Login';
 import { OTPVerificationScreen } from '@/screens/Auth/OTPVerification/OTPVerification.screen';
 import { ProfileSetupScreen } from '@/screens/Profile/ProfileSetup';
 import { ProfileHubScreen } from '@/screens/Profile/ProfileHub';
@@ -48,7 +48,7 @@ export const RootNavigator = () => {
       }}
     >
       {!isAuthenticated ? (
-        // Auth Stack
+        // ── Auth Stack ──────────────────────────────────────────────────────────
         <>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen
@@ -56,19 +56,17 @@ export const RootNavigator = () => {
             component={OTPVerificationScreen as any}
           />
         </>
-      ) : 
-      !isProfileCompleted ? (
-        // Profile Setup Stack (Mandatory)
+      ) : !isProfileCompleted ? (
+        // ── Mandatory Profile Setup ─────────────────────────────────────────────
         <Stack.Screen 
-            name="BookRideInfo" 
+          name="ProfileSetup" 
           component={ProfileSetupScreen} 
           options={{
             gestureEnabled: false, // Prevent back swipe on iOS
           }}
         />
-      ) : 
-      (
-        // Main App Stack
+      ) : (
+        // ── Main App Stack ──────────────────────────────────────────────────────
         <>
           <Stack.Screen name="BookRideInfo" component={BookRideInfoScreen} />
           <Stack.Screen name="AvailableRides" component={AvailableRidesScreen} />

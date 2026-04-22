@@ -59,9 +59,9 @@ export const authService = {
     try {
       const response = await apiClient.post<VerifyOtpResponse>(
         API_ENDPOINTS.AUTH.VERIFY_OTP,
-        { phoneNumber, otp }
+        { phoneNumber: Number(phoneNumber), otp: Number(otp) }
       );
-
+      console.log('response', response)
       if (response.data.status === 'success' || response.status === 200) {
         // Store tokens securely
         await Promise.all([

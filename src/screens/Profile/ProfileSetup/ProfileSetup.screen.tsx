@@ -35,10 +35,7 @@ export const ProfileSetupScreen: React.FC = () => {
   }, []);
 
   return (
-    <ScreenShell
-      title={t('profileSetup.headerTitle')}
-      // onBack is omitted to hide the back button in the header
-    >
+    <ScreenShell>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
@@ -86,9 +83,6 @@ export const ProfileSetupScreen: React.FC = () => {
               >
                 {t('profileSetup.completeSetup')}
               </Button>
-              <VersionText>
-                {t('profileSetup.footerVersion')}
-              </VersionText>
             </Footer>
           </ContentContainer>
         </ScrollView>

@@ -4,7 +4,7 @@ import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { BackgroundBubble } from '@/screens/Login/Login.styles';
+import { BackgroundBubble } from '@/screens/Auth/Login/Login.styles';
 import * as S from './SummaryPublishTemplate.styles';
 
 export interface SummaryPublishTemplateProps {

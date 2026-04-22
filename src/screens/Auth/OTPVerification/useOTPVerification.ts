@@ -36,6 +36,7 @@ export const useOTPVerification = () => {
       const response = await authService.verifyOtp(phoneNumber, code);
       
       if (response.data.status === 'success' || response.status === 200) {
+        console.log('we are here')
         const { token, userId, userProfileCompleted } = response.data;
         
         // Store auth state in Zustand
