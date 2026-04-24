@@ -47,6 +47,7 @@ interface RidePublishState {
   // Details
   seatCount: number;
   selectedSeatIds: string[];
+  vehicleId: string | null;
   publishVehicleType: '5' | '7';
   vehicleDetails: VehicleDetails | null;
   preferences: RidePreferences | null;
@@ -75,6 +76,7 @@ interface RidePublishState {
   setDepartureTime: (time: string | null) => void;
   setSeatCount: (count: number) => void;
   setSelectedSeatIds: (ids: string[]) => void;
+  setVehicleId: (id: string | null) => void;
   setPublishVehicleType: (type: '5' | '7') => void;
   setVehicleDetails: (details: VehicleDetails | null) => void;
   setPreferences: (prefs: RidePreferences | null) => void;
@@ -99,6 +101,7 @@ export const useRidePublishStore = create<RidePublishState>((set) => ({
   departureTime: null,
   seatCount: 1,
   selectedSeatIds: [],
+  vehicleId: null,
   publishVehicleType: '5',
   vehicleDetails: null,
   preferences: {
@@ -130,6 +133,7 @@ export const useRidePublishStore = create<RidePublishState>((set) => ({
   setDepartureTime: (time) => set({ departureTime: time }),
   setSeatCount: (count) => set({ seatCount: count }),
   setSelectedSeatIds: (ids) => set({ selectedSeatIds: ids }),
+  setVehicleId: (id) => set({ vehicleId: id }),
   setPublishVehicleType: (type) => set({ publishVehicleType: type }),
   setVehicleDetails: (details) => set({ vehicleDetails: details }),
   setPreferences: (preferences) => set({ preferences }),
@@ -146,6 +150,7 @@ export const useRidePublishStore = create<RidePublishState>((set) => ({
     departureDate: null,
     departureTime: null,
     seatCount: 1,
+    vehicleId: null,
     vehicleDetails: null,
     preferences: {
       nonSmoking: true,

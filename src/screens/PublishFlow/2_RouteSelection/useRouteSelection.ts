@@ -9,6 +9,7 @@ export interface RouteData {
   uiData: RouteOption;
   coordinates: [number, number][];
   bounds: [number, number, number, number];
+  polylineString?: string;
 }
 
 export const useRouteSelection = () => {
@@ -86,6 +87,7 @@ export const useRouteSelection = () => {
             },
             coordinates,
             bounds,
+            polylineString: polyline,
           };
         });
 

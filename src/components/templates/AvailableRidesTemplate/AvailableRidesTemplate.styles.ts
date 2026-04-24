@@ -9,7 +9,6 @@ export const Container = styled.View`
 export const ScrollContent = styled.ScrollView`
   flex: 1;
   padding-horizontal: ${scale(24)}px;
-  padding-top: ${verticalScale(24)}px;
 `;
 
 export const SearchSummaryCard = styled.View`

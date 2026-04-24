@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { MonthData } from '@/components/templates/DateSelectionTemplate';
-import { useRidePublishStore } from '@/store/useRidePublishStore';
+import { useBookRideStore } from '@/store/useBookRideStore';
 
 const getMonthsData = (): MonthData[] => {
   const today = new Date();
@@ -22,15 +22,12 @@ const getMonthsData = (): MonthData[] => {
   return months;
 };
 
-export const useDateSelection = () => {
+export const useBookDateSelection = () => {
   const navigation = useNavigation();
-  const route = useRoute();
-  const params = route.params as any;
-  const { departureDate, setDepartureDate } = useRidePublishStore();
+  const { travelDate, setTravelDate } = useBookRideStore();
 
-  // Pre-fill with previously selected date from store
   const [selectedDate, setSelectedDate] = useState<Date | null>(
-    departureDate ? new Date(departureDate) : null
+    travelDate ? new Date(travelDate) : new Date()
   );
 
   const months = useMemo(() => getMonthsData(), []);
@@ -41,16 +38,13 @@ export const useDateSelection = () => {
 
   const handleSelectDate = useCallback((date: Date) => {
     setSelectedDate(date);
-    setDepartureDate(date.toISOString());
+    setTravelDate(date.toISOString());
     
-    // Slight delay to let the user see the selected state
+    // Auto navigation back
     setTimeout(() => {
-      (navigation.navigate as any)('TimeSelection', {
-        selectedDate: date.toISOString(),
-        returnTo: params?.returnTo,
-      });
+      navigation.goBack();
     }, 200);
-  }, [navigation, setDepartureDate, params]);
+  }, [setTravelDate, navigation]);
 
   return {
     months,

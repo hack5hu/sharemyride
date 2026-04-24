@@ -15,7 +15,6 @@ export interface MonthData {
 
 export interface DateSelectionTemplateProps {
   onBackPress: () => void;
-  onNextPress: () => void;
   months: MonthData[];
   selectedDate: Date | null;
   onSelectDate: (date: Date) => void;
@@ -23,17 +22,11 @@ export interface DateSelectionTemplateProps {
 
 export const DateSelectionTemplate: React.FC<DateSelectionTemplateProps> = ({
   onBackPress,
-  onNextPress,
   months,
   selectedDate,
   onSelectDate,
 }) => {
-  const theme = useTheme();
   const { dateSelection: t } = useLocale();
-
-  const formattedDate = selectedDate
-    ? formatSelectedDate(selectedDate)
-    : t.noneSelected;
 
   return (
     <ScreenShell
@@ -59,35 +52,6 @@ export const DateSelectionTemplate: React.FC<DateSelectionTemplateProps> = ({
           />
         ))}
       </S.ScrollContent>
-
-      {/* Floating action footer */}
-      <S.FloatingFooter>
-        <S.FooterGradient
-          colors={['transparent', theme.colors.surface, theme.colors.surface]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          pointerEvents="none"
-        />
-        {selectedDate && (
-          <SelectionPreviewCard
-            label={t.selectedDate}
-            value={formattedDate}
-          />
-        )}
-        <S.NextButton
-          onPress={onNextPress}
-          activeOpacity={0.9}
-          disabled={!selectedDate}
-        >
-          <S.NextGradient
-            colors={[theme.colors.primary, theme.colors.primary_container]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-          >
-            <S.NextButtonText>{t.next}</S.NextButtonText>
-          </S.NextGradient>
-        </S.NextButton>
-      </S.FloatingFooter>
     </ScreenShell>
   );
 };

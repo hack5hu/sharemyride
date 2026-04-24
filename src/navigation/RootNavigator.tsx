@@ -27,13 +27,14 @@ import { PriceSelectionScreen } from '@/screens/PublishFlow/7_PriceSelection';
 import { RequestTypeScreen } from '@/screens/PublishFlow/8_RequestType';
 import { SummaryPublishScreen } from '@/screens/PublishFlow/9_SummaryPublish';
 import { PublishSuccessScreen } from '@/screens/PublishFlow/10_PublishSuccess';
-import { BookRideInfoScreen } from '@/screens/BookRideInfo';
+import { BookRideInfoScreen } from '@/screens/BookFlow/1_BookRideInfo';
 import { AvailableRidesScreen } from '@/screens/AvailableRides';
 import { RideInformationScreen } from '@/screens/RideInformation';
 import { BookingConfirmedScreen } from '@/screens/BookingConfirmed';
 import { SettingsScreen } from '@/screens/Settings';
 import { RootStackParamList } from './types.d';
 import { useAuthStore } from '@/store/useAuthStore';
+import { BookDateSelectionScreen } from '@/screens/BookFlow/2_BookDateSelection/BookDateSelection.screen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -81,6 +82,7 @@ export const RootNavigator = () => {
           <Stack.Screen name="ChatDetails" component={ChatDetailsScreen as any} />
           <Stack.Screen name="SelectLocation" component={SelectLocationScreen} />
           <Stack.Screen name="LocationSelection" component={LocationSelectionScreen} />
+          <Stack.Screen name="BookDateSelection" component={BookDateSelectionScreen as any} />
           <Stack.Screen name="MapPicker" component={MapPickerScreen as any} />
           <Stack.Screen name="RouteSelection" component={RouteSelectionScreen as any} />
           <Stack.Screen name="MiddleStops" component={MiddleStopsScreen as any} />

@@ -12,11 +12,11 @@ export interface RouteStop {
 }
 
 export interface PublishRidePayload {
-  vehicleType: string;
+  vehicleId: string;
   startTime: string;
   endTime: string;
   offeredSeats: string[];
-  routePath: [number, number][];
+  routePath: string;
   routeStops: RouteStop[];
 }
 
@@ -31,7 +31,26 @@ export interface TravelPreferenceData {
   waitingTime: number;
 }
 
+export interface SearchRidePayload {
+  sourceLat: number;
+  sourceLon: number;
+  destLat: number;
+  destLon: number;
+  travelDate: string; // "YYYY-MM-DDTHH:mm:ss"
+  requestedSeats: number;
+  radiusInMeters: number; // e.g. 10000 for 10km
+}
+
 const rideService = {
+  searchRides: async (payload: SearchRidePayload) => {
+    try {
+      const response = await apiClient.post(API_ENDPOINTS.RIDE.SEARCH, payload);
+      return response.data;
+    } catch (error) {
+      console.error('Ride search failed:', error);
+      throw error;
+    }
+  },
   publishRide: async (payload: PublishRidePayload) => {
     try {
       const response = await apiClient.post(API_ENDPOINTS.RIDE.PUBLISH, payload);

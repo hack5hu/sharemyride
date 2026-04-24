@@ -61,27 +61,48 @@ export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> = ({
             onAddNew={onAddNewVehicle}
             title={t.yourVehicles || 'Your Vehicles'}
           />
-
-          <SeatLegend
-            availableLabel={t.legendAvailable || 'Available'}
-            selectedLabel={t.legendSelected || 'Selected'}
-            occupiedLabel={t.legendOccupied || 'Occupied'}
-          />
         </View>
 
-        <View >
-          <CarFloorPlan
-            rows={rows}
-            selectedSeats={selectedSeats}
-            onSeatPress={onSeatPress}
-            driverLabel={t.driverLabel}
-          />
-        </View>
+        {selectedVehicleId ? (
+          <>
+            <View style={{ marginTop: verticalScale(16) }}>
+              <SeatLegend
+                availableLabel={t.legendAvailable || 'Available'}
+                selectedLabel={t.legendSelected || 'Selected'}
+                occupiedLabel={t.legendOccupied || 'Occupied'}
+              />
+            </View>
+
+            <View>
+              <CarFloorPlan
+                rows={rows}
+                selectedSeats={selectedSeats}
+                onSeatPress={onSeatPress}
+                driverLabel={t.driverLabel}
+              />
+            </View>
+          </>
+        ) : (
+          <View style={{ 
+            marginTop: verticalScale(32), 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            padding: scale(24)
+          }}>
+            <Typography variant="body" size="lg" color={theme.colors.on_surface_variant} style={{ textAlign: 'center' }}>
+              Please select a vehicle to view the seating arrangement.
+            </Typography>
+          </View>
+        )}
       </S.ContentScroll>
       <S.BarWrapper>
-      <S.ContinueButton onPress={onContinue} activeOpacity={0.9} disabled={selectedSeats.size === 0}>
+      <S.ContinueButton onPress={onContinue} activeOpacity={0.9} disabled={selectedSeats.size === 0 || !selectedVehicleId}>
         <S.ContinueGradient
-          colors={[theme.colors.primary_container, theme.colors.primary]}
+          colors={
+            selectedSeats.size > 0 && selectedVehicleId 
+              ? [theme.colors.primary_container, theme.colors.primary]
+              : [theme.colors.surface_variant, theme.colors.surface_variant]
+          }
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >

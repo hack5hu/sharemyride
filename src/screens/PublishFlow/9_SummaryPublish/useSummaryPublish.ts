@@ -5,13 +5,12 @@ import { useTheme } from 'styled-components/native';
 import { getColorLabel } from '@/constants/ride';
 import { useMyRidesStore } from '@/store/useMyRidesStore';
 import rideService, { PublishRidePayload, RouteStop } from '@/serviceManager/rideService';
-import { addSeconds } from 'date-fns';
+import { addSeconds, format } from 'date-fns';
 import { useTravelPrefStore } from '@/store/useTravelPrefStore';
 import { useLocale } from '@/constants/localization';
 
 export const useSummaryPublish = () => {
   const navigation = useNavigation();
-  const theme = useTheme();
   const publishStore = useRidePublishStore();
   const { addDraft, removeDraft } = useMyRidesStore();
   const [isPublishing, setIsPublishing] = useState(false);
@@ -26,6 +25,7 @@ export const useSummaryPublish = () => {
     selectedSeatIds,
     publishVehicleType,
     vehicleDetails,
+    vehicleId,
     preferences,
     price,
     routeDetails,
@@ -91,9 +91,9 @@ export const useSummaryPublish = () => {
       if (ampm === 'PM' && h !== 12) h += 12;
       if (ampm === 'AM' && h === 12) h = 0;
       dateObj.setHours(h, minutes, 0, 0);
-      
-      const startTime = dateObj.toISOString();
-      const endTime = addSeconds(dateObj, routeDetails?.totalDurationSeconds || 0).toISOString();
+      const startTime = format(dateObj, "yyyy-MM-dd'T'HH:mm:ss");
+      const endDateObj = addSeconds(dateObj, routeDetails?.totalDurationSeconds || 0);
+      const endTime = format(endDateObj, "yyyy-MM-dd'T'HH:mm:ss");
 
       // 2. Map Offered Seats
       const offeredSeats = selectedSeatIds.map(id => mapSeatId(id, publishVehicleType));
@@ -112,9 +112,9 @@ export const useSummaryPublish = () => {
           for (let i = 0; i < index; i++) {
             accumulatedDuration += routeDetails.legs[i].durationSeconds;
           }
-          arrivalTime = addSeconds(dateObj, accumulatedDuration).toISOString();
+          arrivalTime = format(addSeconds(dateObj, accumulatedDuration), "yyyy-MM-dd'T'HH:mm:ss");
         }
-
+        console.log(stop)
         return {
           name: stop.name,
           lat: stop.latitude,
@@ -127,11 +127,11 @@ export const useSummaryPublish = () => {
       });
 
       const payload: PublishRidePayload = {
-        vehicleType: publishVehicleType === '7' ? 'CAR_7_SEATER' : 'CAR_5_SEATER',
+        vehicleId: vehicleId,
         startTime,
         endTime,
         offeredSeats,
-        routePath: selectedRoute?.coordinates || [],
+        encodedPolyline: selectedRoute?.polylineString || '',
         routeStops,
       };
       console.log('payload======>',payload)

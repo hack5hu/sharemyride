@@ -120,7 +120,7 @@ export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void
         </DriverInfo>
 
         <PriceGroup>
-          <PriceText>${ride.price.toFixed(2)}</PriceText>
+          <PriceText>₹{ride.price.toFixed(0)}</PriceText>
           <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
             {t.perSeatLabel.toUpperCase()}
           </Typography>
@@ -130,18 +130,28 @@ export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void
       <RideTimeline points={ride.timeline} />
 
       <Footer>
-        {ride.features.map((feature, idx) => (
-          <FeatureBadge key={idx}>
-            <Icon 
-              name={feature === 'noSmoking' ? 'smoke-free' : 'pregnant-woman'} 
-              size={moderateScale(14)} 
-              color={theme.colors.on_surface_variant} 
-            />
-            <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
-              {feature === 'noSmoking' ? 'No Smoking' : 'Ladies Only'}
-            </Typography>
-          </FeatureBadge>
-        ))}
+        {ride.features.map((feature, idx) => {
+          let iconName = 'stars';
+          let label = feature;
+
+          if (feature === 'noSmoking') { iconName = 'smoke-free'; label = 'No Smoking'; }
+          else if (feature === 'ladiesOnly') { iconName = 'pregnant-woman'; label = 'Ladies Only'; }
+          else if (feature === 'petFriendly') { iconName = 'pets'; label = 'Pet Friendly'; }
+          else if (feature === 'luggageAllowed') { iconName = 'luggage'; label = 'Luggage Allowed'; }
+
+          return (
+            <FeatureBadge key={idx}>
+              <Icon 
+                name={iconName} 
+                size={moderateScale(14)} 
+                color={theme.colors.on_surface_variant} 
+              />
+              <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
+                {label}
+              </Typography>
+            </FeatureBadge>
+          );
+        })}
         
         <FeatureBadge>
           <Icon name="event-seat" size={moderateScale(14)} color={theme.colors.on_surface_variant} />

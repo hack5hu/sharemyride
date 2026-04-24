@@ -1,14 +1,14 @@
 import React from 'react';
 import { DateSelectionTemplate } from '@/components/templates/DateSelectionTemplate';
-import { useDateSelection } from './useDateSelection';
+import { useBookDateSelection } from './useBookDateSelection';
 
-export const DateSelectionScreen: React.FC = () => {
+export const BookDateSelectionScreen: React.FC = () => {
   const {
     months,
     selectedDate,
     handleBackPress,
     handleSelectDate,
-  } = useDateSelection();
+  } = useBookDateSelection();
 
   return (
     <DateSelectionTemplate

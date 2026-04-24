@@ -1,6 +1,6 @@
 import React from 'react';
+import { ActivityIndicator } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import DatePicker from 'react-native-date-picker';
 import { useTheme } from 'styled-components/native';
 import { format } from 'date-fns';
 import { moderateScale } from '@/styles';
@@ -62,13 +62,11 @@ export const BookRideInfoScreen: React.FC = () => {
     pickup,
     destination,
     travelDate,
-    isDatePickerOpen,
     peopleCount,
+    isSearching,
     handlePressPickup,
     handlePressDestination,
     handleOpenDatePicker,
-    handleCloseDatePicker,
-    handleDateConfirm,
     incrementPeople,
     decrementPeople,
     handleSearchRides,
@@ -76,7 +74,7 @@ export const BookRideInfoScreen: React.FC = () => {
   } = useBookRideInfo();
 
   return (
-    <ScreenShell title={t.heroTitle}>
+    <ScreenShell>
       <ScrollContent showsVerticalScrollIndicator={false}>
         <Header>
           <HeaderTitle>Ride Pool Company</HeaderTitle>
@@ -145,14 +143,28 @@ export const BookRideInfoScreen: React.FC = () => {
             </StepperControls>
           </StepperContainer>
 
-          <SearchButton activeOpacity={0.9} onPress={handleSearchRides}>
+          <SearchButton 
+            activeOpacity={0.9} 
+            onPress={handleSearchRides} 
+            disabled={isSearching || !pickup || !destination}
+          >
             <SearchGradient
-              colors={[theme.colors.primary, theme.colors.primary_container]}
+              colors={
+                isSearching || !pickup || !destination
+                  ? [theme.colors.surface_variant, theme.colors.surface_variant]
+                  : [theme.colors.primary, theme.colors.primary_container]
+              }
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
             >
-              <SearchText>{t.searchButton}</SearchText>
-              <MaterialIcons name="arrow-forward" size={moderateScale(20)} color={theme.colors.on_primary} />
+              {isSearching ? (
+                <ActivityIndicator color={theme.colors.on_primary} />
+              ) : (
+                <>
+                  <SearchText>{t.searchButton}</SearchText>
+                  <MaterialIcons name="arrow-forward" size={moderateScale(20)} color={theme.colors.on_primary} />
+                </>
+              )}
             </SearchGradient>
           </SearchButton>
         </BookingCard>
@@ -202,17 +214,6 @@ export const BookRideInfoScreen: React.FC = () => {
           </TrustContent>
         </TrustBanner>
       </ScrollContent>
-
-      <DatePicker
-        modal
-        open={isDatePickerOpen}
-        date={travelDate}
-        mode="date"
-        onConfirm={handleDateConfirm}
-        onCancel={handleCloseDatePicker}
-        buttonColor={theme.colors.primary}
-        dividerColor={theme.colors.primary}
-      />
 
       <BottomNav activeTab="BOOK" />
     </ScreenShell>

@@ -174,11 +174,11 @@ export const usePriceSelection = () => {
       premiumPercentage,
       segmentPrices: segmentPricesState,
     });
-    if (returnTo === 'SummaryPublish') {
+    // if (returnTo === 'SummaryPublish') {
       (navigation.navigate as any)('SummaryPublish');
-    } else {
-      (navigation.navigate as any)('RequestType');
-    }
+    // } else {
+      // (navigation.navigate as any)('RequestType');
+    // }
   }, [navigation, setPricing, price, premiumEnabled, premiumPercentage, segmentPricesState, returnTo]);
 
   const handleCustomizePricing = useCallback(() => {

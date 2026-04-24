@@ -38,14 +38,16 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
   const theme = useTheme();
 
   const filters = [
-    { id: 'time', label: t.timeFilterLabel, icon: 'schedule' },
-    { id: 'noSmoking', label: t.noSmokingFilterLabel, icon: 'smoke-free' },
-    { id: 'ladiesOnly', label: t.ladiesOnlyFilterLabel, icon: 'pregnant-woman' },
-    { id: 'topRated', label: t.topRatedFilterLabel, icon: 'star' },
+    { id: 'time', label: t.timeFilterLabel || 'Time', icon: 'schedule' },
+    { id: 'noSmoking', label: t.noSmokingFilterLabel || 'No Smoking', icon: 'smoke-free' },
+    { id: 'ladiesOnly', label: t.ladiesOnlyFilterLabel || 'Ladies Only', icon: 'pregnant-woman' },
+    { id: 'topRated', label: t.topRatedFilterLabel || 'Top Rated', icon: 'star' },
+    { id: 'petFriendly', label: 'Pets', icon: 'pets' },
+    { id: 'luggageAllowed', label: 'Luggage', icon: 'luggage' },
   ];
 
   return (
-    <ScreenShell title={t.heroTitle}>
+    <ScreenShell title={t.heroTitle} onBack>
       <S.ScrollContent showsVerticalScrollIndicator={false}>
         <S.SearchSummaryCard>
           <S.SummaryRow>

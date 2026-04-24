@@ -22,6 +22,8 @@ export const useSeatSelection = () => {
     setPublishVehicleType,
     setVehicleDetails,
     setSeatCount,
+    setVehicleId,
+    vehicleId,
   } = useRidePublishStore();
   
   const { vehicles, selectedVehicleId, setSelectedVehicle } = useVehicleStore();
@@ -31,6 +33,7 @@ export const useSeatSelection = () => {
     const vehicle = vehicles.find(v => v.id === id);
     if (vehicle) {
       setSelectedVehicle(id);
+      setVehicleId(id);
       setPublishVehicleType(vehicle.seater);
       setVehicleDetails({
         company: vehicle.company,
@@ -43,18 +46,16 @@ export const useSeatSelection = () => {
       });
       setSelectedSeats(new Set());
     }
-  }, [vehicles, setSelectedVehicle, setPublishVehicleType, setVehicleDetails]);
+  }, [vehicles, setSelectedVehicle, setVehicleId, setPublishVehicleType, setVehicleDetails]);
 
   useEffect(() => {
     if (isFocused && vehicles.length > 0) {
-      if (!selectedVehicleId) {
-        // If no vehicle selected, pick the first one
-        handleVehicleSelect(vehicles[0].id);
-      } else {
+      if (selectedVehicleId) {
         // If one is selected, ensure publish store is synced with it
         const vehicle = vehicles.find(v => v.id === selectedVehicleId);
-        if (vehicle && publishVehicleType !== vehicle.seater) {
+        if (vehicle && (publishVehicleType !== vehicle.seater || vehicleId !== vehicle.id)) {
           setPublishVehicleType(vehicle.seater);
+          setVehicleId(vehicle.id);
           setVehicleDetails({
             company: vehicle.company,
             model: vehicle.model,
@@ -67,7 +68,7 @@ export const useSeatSelection = () => {
         }
       }
     }
-  }, [isFocused, vehicles, selectedVehicleId, publishVehicleType, handleVehicleSelect, setPublishVehicleType, setVehicleDetails]);
+  }, [isFocused, vehicles, selectedVehicleId, publishVehicleType, vehicleId, setVehicleId, setPublishVehicleType, setVehicleDetails]);
 
   const onSeatPress = useCallback((id: string) => {
     setSelectedSeats((prev) => {
@@ -94,7 +95,7 @@ export const useSeatSelection = () => {
   }, [navigation]);
 
   const onContinue = useCallback(() => {
-    if (selectedSeats.size > 0) {
+    if (selectedSeats.size > 0 && selectedVehicleId) {
       if (flow === 'publish') {
         setSeatCount(selectedSeats.size);
         setSelectedSeatIds(Array.from(selectedSeats));
@@ -110,7 +111,7 @@ export const useSeatSelection = () => {
         navigation.goBack();
       }
     }
-  }, [selectedSeats, navigation, flow, setSeatCount, setSelectedSeatIds, setPublishVehicleType, publishVehicleType, returnTo]);
+  }, [selectedSeats, selectedVehicleId, navigation, flow, setSeatCount, setSelectedSeatIds, setPublishVehicleType, publishVehicleType, returnTo]);
 
   return {
     flow,
