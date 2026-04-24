@@ -131,7 +131,7 @@ export const useSummaryPublish = () => {
         startTime,
         endTime,
         offeredSeats,
-        encodedPolyline: selectedRoute?.polylineString || '',
+        routePath: selectedRoute?.polylineString || '',
         routeStops,
       };
       console.log('payload======>',payload)
