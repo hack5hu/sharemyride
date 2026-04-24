@@ -50,6 +50,9 @@ export interface OlaRoutingResponse {
   status: string;
 }
 
+const directionsCache = new Map<string, OlaRoutingRoute[]>();
+const geocodeCache = new Map<string, { name: string; address: string }>();
+
 export const locationService = {
   autocomplete: async (input: string): Promise<OlaPrediction[]> => {
     try {
@@ -67,6 +70,11 @@ export const locationService = {
   },
 
   reverseGeocode: async (latitude: number, longitude: number): Promise<{ name: string; address: string }> => {
+    const cacheKey = `${latitude.toFixed(6)},${longitude.toFixed(6)}`;
+    if (geocodeCache.has(cacheKey)) {
+      return geocodeCache.get(cacheKey)!;
+    }
+
     try {
       const response = await olaClient.get('/places/v1/reverse-geocode', {
         params: {
@@ -76,13 +84,13 @@ export const locationService = {
 
       if (response.data.status === 'ok' && response.data.results?.length > 0) {
         const result = response.data.results[0];
-        // Capture specific name if available, otherwise fallback to neighborhood/first part of address
         const name = result.name || result.formatted_address.split(',')[0];
-        
-        return {
+        const data = {
           name: name,
           address: result.formatted_address,
         };
+        geocodeCache.set(cacheKey, data);
+        return data;
       }
       return { name: 'Picked Location', address: '' };
     } catch (error) {
@@ -96,8 +104,13 @@ export const locationService = {
     originLng: number, 
     destLat: number, 
     destLng: number,
-    waypoints?: string // format: "lat1,lng1|lat2,lng2"
+    waypoints?: string 
   ): Promise<OlaRoutingRoute[]> => {
+    const cacheKey = `${originLat.toFixed(6)},${originLng.toFixed(6)}|${destLat.toFixed(6)},${destLng.toFixed(6)}|${waypoints || ''}`;
+    if (directionsCache.has(cacheKey)) {
+      return directionsCache.get(cacheKey)!;
+    }
+
     try {
       const response = await olaClient.post('/routing/v1/directions', null, {
         params: {
@@ -112,7 +125,9 @@ export const locationService = {
       });
 
       if (response.data.status === 'SUCCESS' || response.data.routes) {
-        return response.data.routes;
+        const routes = response.data.routes;
+        directionsCache.set(cacheKey, routes);
+        return routes;
       }
       return [];
     } catch (error) {

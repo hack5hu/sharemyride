@@ -35,5 +35,5 @@ export const calculateFrontSeatPrice = (basePrice: number, percentage: number): 
   // percentage is 0-10 (as in 0% to 10%)
   const clampedPercentage = Math.min(percentage, 10) / 100;
   const premium = basePrice * clampedPercentage;
-  return roundToNearest(basePrice + premium, 5);
+  return roundToNearest(basePrice + premium, 10);
 };

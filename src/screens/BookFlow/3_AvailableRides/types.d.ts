@@ -1,4 +1,5 @@
 export interface TimelinePoint {
+  description: string;
   time: string;
   location: string;
   subLocation?: string;
@@ -6,6 +7,7 @@ export interface TimelinePoint {
 }
 
 export interface DriverData {
+  driverPhotoUrl: string | undefined;
   name: string;
   rating: number;
   rideCount: number;
@@ -21,6 +23,21 @@ export interface RideData {
   features: string[];
   seatsLeft: number;
   isFrequentCoRider?: boolean;
+  pickupDistance?: number;
+  dropoffDistance?: number;
+  departureHour?: number;
+  vehicle?: {
+    registration: string;
+    type: string;
+  };
+  totalDistance?: number;
+  routePath?: string;
+  rawStops?: Array<{
+    lat: number;
+    lon: number;
+    name: string;
+    sequence: number;
+  }>;
 }
 
 export interface AvailableRidesProps {

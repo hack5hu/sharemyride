@@ -28,13 +28,14 @@ import { RequestTypeScreen } from '@/screens/PublishFlow/8_RequestType';
 import { SummaryPublishScreen } from '@/screens/PublishFlow/9_SummaryPublish';
 import { PublishSuccessScreen } from '@/screens/PublishFlow/10_PublishSuccess';
 import { BookRideInfoScreen } from '@/screens/BookFlow/1_BookRideInfo';
-import { AvailableRidesScreen } from '@/screens/AvailableRides';
 import { RideInformationScreen } from '@/screens/RideInformation';
 import { BookingConfirmedScreen } from '@/screens/BookingConfirmed';
 import { SettingsScreen } from '@/screens/Settings';
 import { RootStackParamList } from './types.d';
 import { useAuthStore } from '@/store/useAuthStore';
 import { BookDateSelectionScreen } from '@/screens/BookFlow/2_BookDateSelection/BookDateSelection.screen';
+import AvailableRidesScreen from '@/screens/BookFlow/3_AvailableRides';
+import RideRouteMapScreen from '@/screens/BookFlow/4_RideRouteMap';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -72,6 +73,7 @@ export const RootNavigator = () => {
           <Stack.Screen name="BookRideInfo" component={BookRideInfoScreen} />
           <Stack.Screen name="AvailableRides" component={AvailableRidesScreen} />
           <Stack.Screen name="RideInformation" component={RideInformationScreen} />
+          <Stack.Screen name="RideRouteMap" component={RideRouteMapScreen as any} />
           <Stack.Screen name="BookingConfirmed" component={BookingConfirmedScreen} />
           <Stack.Screen name="ProfileHub" component={ProfileHubScreen} />
           <Stack.Screen name="EditProfile" component={EditProfileScreen} />

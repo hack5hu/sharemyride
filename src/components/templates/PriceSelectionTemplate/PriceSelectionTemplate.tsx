@@ -33,6 +33,7 @@ export interface PriceSelectionTemplateProps {
   onSaveSegmentPrices: (prices: Record<string, { basePrice: number }>) => void;
   isLoading?: boolean;
   isRecommended?: boolean;
+  showPremium?: boolean;
 }
 
 export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
@@ -55,6 +56,7 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
   onSaveSegmentPrices,
   isLoading = false,
   isRecommended = false,
+  showPremium = true,
 }) => {
   const theme = useTheme();
   const { priceSelection: t } = useLocale();
@@ -89,17 +91,19 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
           />
 
           {/* Front seat premium */}
-          <FrontSeatPremium
-            checked={premiumEnabled}
-            onToggle={onTogglePremium}
-            premium={premium}
-            onPremiumChange={onPremiumChange}
-            basePrice={price}
-            title={t.frontSeatPremiumTitle}
-            description={t.frontSeatPremiumDesc}
-            amountLabel={t.premiumAmountLabel}
-            maxNote={t.maxLimitNote}
-          />
+          {showPremium && (
+            <FrontSeatPremium
+              checked={premiumEnabled}
+              onToggle={onTogglePremium}
+              premium={premium}
+              onPremiumChange={onPremiumChange}
+              basePrice={price}
+              title={t.frontSeatPremiumTitle}
+              description={t.frontSeatPremiumDesc}
+              amountLabel={t.premiumAmountLabel}
+              maxNote={t.maxLimitNote}
+            />
+          )}
 
           {/* Segment pricing entry row — only show if there are middle stops (more than 1 leg) */}
           {segments.length > 1 && (

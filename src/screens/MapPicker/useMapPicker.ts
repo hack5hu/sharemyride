@@ -33,7 +33,6 @@ export const useMapPicker = () => {
   const [isInitiallyCentered, setIsInitiallyCentered] = useState(false);
   const [isMapVisible, setIsMapVisible] = useState(false);
   const zoomRef = useRef(14);
-  const geocodingCache = useRef<Record<string, { name: string; address: string }>>({});
 
   // Scoped history derived from the current context
   const addSearchHistory = useLocationStore((state) => state.addSearchHistory);
@@ -127,19 +126,7 @@ export const useMapPicker = () => {
     setRegion({ latitude, longitude });
     setIsReverseGeocoding(true);
 
-    let locationData = { name: '', address: '' };
-    
-    if (geocodingCache.current[cacheKey]) {
-      console.log('💎 [Cache Hit] Using memoized address for:', cacheKey);
-      locationData = geocodingCache.current[cacheKey];
-    } else {
-      console.log('📡 [Network Call] Fetching reverse geocode for:', cacheKey);
-      const result = await locationService.reverseGeocode(latitude, longitude);
-      if (result) {
-        locationData = result;
-        geocodingCache.current[cacheKey] = result;
-      }
-    }
+    const locationData = await locationService.reverseGeocode(latitude, longitude);
     
     setSelectedLocation({
       id: `picked-${Date.now()}`,

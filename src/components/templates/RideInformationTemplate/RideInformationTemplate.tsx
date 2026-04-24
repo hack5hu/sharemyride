@@ -16,8 +16,12 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
   t,
   handleBack,
   handleBook,
+  handleViewRoute,
+  handleCopyAddress,
 }) => {
   const theme = useTheme();
+
+  if (!ride) return null;
 
   return (
     <ScreenShell
@@ -33,24 +37,25 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
       <S.ScrollContent showsVerticalScrollIndicator={false}>
         {/* Map Preview */}
         <S.ContentPadding>
-          <S.MapSection>
-            <S.MapImage 
-              source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC9ppZ4XsaXa8yEWbv_wXbvnGYccdP1l0XlyDfAQOr72baIAylPooCCYwQ6QRikRX0FzowHwWAKgIZKbEp7QKzEg8zTFNVvpb8Nm5FyK8sxLyE1-Qx3G64B_foJPKJcCwr7CzTUEOxWE4GEqxp4WjfyHmHseVnNO9qWEs-JV_67pwGzhed9X1ygvZNPnIy2MyAlSnqWa0jblv-vD0V6qOhPBDH1fj8drt7AVk5tWNGLbXxreK3cdWaQPksAViPulXzRuM8Tl2hZgcqv' }} 
+          {/* Route Timeline */}
+          <S.SectionCard>
+            <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant} style={{ marginBottom: 24 }}>
+              {t.timelineTitle.toUpperCase()}
+            </Typography>
+            <RideTimeline 
+              points={ride.timeline} 
+              showActions={true}
+              onMapPress={handleViewRoute} 
+              onCopyAddress={handleCopyAddress}
             />
-            <S.DistanceOverlay>
-              <Icon name="distance" size={moderateScale(14)} color={theme.colors.primary} />
-              <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
-                {t.distanceRemaining.replace('{distance}', '12.4')}
-              </Typography>
-            </S.DistanceOverlay>
-          </S.MapSection>
+          </S.SectionCard>
 
           {/* Reorganized Detail Stack (Driver then Car) */}
           <S.DetailStack>
             <S.DriverCard>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
                 <View>
-                  <Avatar source={{ uri: ride.driver.avatar }} size="md" />
+                  <Avatar source={{ uri: ride.driver.driverPhotoUrl || ride.driver.avatar }} size="md" />
                   <View style={{ position: 'absolute', bottom: -2, right: -2 }}>
                     <VerifiedBadge size={14} />
                   </View>
@@ -70,25 +75,9 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
                 <S.RoundAction><Icon name="call" size={moderateScale(20)} color={theme.colors.primary} /></S.RoundAction>
               </View>
             </S.DriverCard>
-
-            <S.CarCard>
-              <Icon name="electric-car" size={moderateScale(28)} color={theme.colors.primary} />
-              <S.CarTextGroup>
-                <Typography variant="label" size="sm" weight="bold">Tesla Model 3</Typography>
-                <Typography variant="label" size="xs" weight="bold" color={theme.colors.on_surface_variant}>
-                  KNT-4092
-                </Typography>
-              </S.CarTextGroup>
-            </S.CarCard>
           </S.DetailStack>
 
-          {/* Route Timeline */}
-          <S.SectionCard>
-            <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant} style={{ marginBottom: 24 }}>
-              {t.timelineTitle.toUpperCase()}
-            </Typography>
-            <RideTimeline points={ride.timeline} />
-          </S.SectionCard>
+         
 
           {/* Rules & Amenities */}
           <S.GridRow>
@@ -96,29 +85,40 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
               <Typography variant="label" size="xs" weight="bold" color={theme.colors.on_surface_variant} style={{ marginBottom: 4 }}>
                 {t.rulesTitle.toUpperCase()}
               </Typography>
-              <S.AmenityRow>
-                <Icon name="smoke-free" size={moderateScale(18)} color={theme.colors.error} />
-                <Typography variant="label" size="sm" weight="bold">{t.noSmoking}</Typography>
-              </S.AmenityRow>
-              <S.AmenityRow>
-                <Icon name="pets" size={moderateScale(18)} color={theme.colors.primary} />
-                <Typography variant="label" size="sm" weight="bold">{t.petsAllowed}</Typography>
-              </S.AmenityRow>
+              {ride.features.includes('noSmoking') && (
+                <S.AmenityRow>
+                  <Icon name="smoke-free" size={moderateScale(18)} color={theme.colors.error} />
+                  <Typography variant="label" size="sm" weight="bold">{t.noSmoking}</Typography>
+                </S.AmenityRow>
+              )}
+              {ride.features.includes('petFriendly') ? (
+                <S.AmenityRow>
+                  <Icon name="pets" size={moderateScale(18)} color={theme.colors.primary} />
+                  <Typography variant="label" size="sm" weight="bold">{t.petsAllowed}</Typography>
+                </S.AmenityRow>
+              ) : (
+                <S.AmenityRow>
+                  <Icon name="no-pets" size={moderateScale(18)} color={theme.colors.on_surface_variant} />
+                  <Typography variant="label" size="sm" weight="bold">No Pets</Typography>
+                </S.AmenityRow>
+              )}
             </S.GridItem>
 
-            <S.GridItem>
+            {/* <S.GridItem>
               <Typography variant="label" size="xs" weight="bold" color={theme.colors.on_surface_variant} style={{ marginBottom: 4 }}>
                 {t.amenitiesTitle.toUpperCase()}
               </Typography>
+              {ride.features.includes('ladiesOnly') && (
+                <S.AmenityRow>
+                  <Icon name="female" size={moderateScale(18)} color={theme.colors.tertiary} />
+                  <Typography variant="label" size="sm" weight="bold">Ladies Only</Typography>
+                </S.AmenityRow>
+              )}
               <S.AmenityRow>
-                <Icon name="wifi" size={moderateScale(18)} color={theme.colors.primary} />
-                <Typography variant="label" size="sm" weight="bold">{t.freeWifi}</Typography>
+                <Icon name="verified-user" size={moderateScale(18)} color={theme.colors.primary} />
+                <Typography variant="label" size="sm" weight="bold">Verified Ride</Typography>
               </S.AmenityRow>
-              <S.AmenityRow>
-                <Icon name="usb" size={moderateScale(18)} color={theme.colors.primary} />
-                <Typography variant="label" size="sm" weight="bold">{t.usbCharging}</Typography>
-              </S.AmenityRow>
-            </S.GridItem>
+            </S.GridItem> */}
           </S.GridRow>
 
           {/* Pricing */}
@@ -128,21 +128,17 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
                 {t.fareDetailsTitle.toUpperCase()}
               </Typography>
               <Typography variant="title" size="lg" weight="bold" color={theme.colors.primary}>
-                $32.50
+                ₹{ride.price.toFixed(0)}
               </Typography>
             </S.FareRow>
             <View style={{ marginTop: 12 }}>
               <S.FareRow>
                 <Typography variant="label" size="sm" color={theme.colors.on_surface_variant}>{t.seatFareLabel}</Typography>
-                <Typography variant="label" size="sm" weight="bold">$28.00</Typography>
+                <Typography variant="label" size="sm" weight="bold">₹{(ride.price * 0.9).toFixed(0)}</Typography>
               </S.FareRow>
               <S.FareRow>
                 <Typography variant="label" size="sm" color={theme.colors.on_surface_variant}>{t.serviceFeeLabel}</Typography>
-                <Typography variant="label" size="sm" weight="bold">$3.50</Typography>
-              </S.FareRow>
-              <S.FareRow>
-                <Typography variant="label" size="sm" color={theme.colors.on_surface_variant}>{t.sustainabilityFeeLabel}</Typography>
-                <Typography variant="label" size="sm" weight="bold">$1.00</Typography>
+                <Typography variant="label" size="sm" weight="bold">₹{(ride.price * 0.1).toFixed(0)}</Typography>
               </S.FareRow>
             </View>
           </S.FareCard>

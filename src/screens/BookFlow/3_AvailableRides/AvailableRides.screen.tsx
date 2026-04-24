@@ -11,6 +11,7 @@ export const AvailableRidesScreen: React.FC = () => {
     handleOpenFilters,
     handleCloseFilters,
     handleClearFilters,
+    handleApplyFilters,
     handleRideSelect,
     t,
     ft,
@@ -25,6 +26,7 @@ export const AvailableRidesScreen: React.FC = () => {
       isFilterModalOpen={isFilterModalOpen}
       onCloseFilters={handleCloseFilters}
       onClearFilters={handleClearFilters}
+      onApplyFilters={handleApplyFilters}
       onRideSelect={handleRideSelect}
       t={t}
       ft={ft}

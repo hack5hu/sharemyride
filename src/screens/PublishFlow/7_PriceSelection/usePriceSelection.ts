@@ -20,7 +20,12 @@ export const usePriceSelection = () => {
     routeDetails,
     setRouteDetails,
     publishVehicleType,
-    setPricing
+    setPricing,
+    selectedSeatIds,
+    price: storePrice,
+    premiumEnabled: storePremiumEnabled,
+    premiumPercentage: storePremiumPercentage,
+    segmentPrices: storeSegmentPrices,
   } = useRidePublishStore();
 
   const divisor = useMemo(() => (publishVehicleType === '7' ? 6 : 4), [publishVehicleType]);
@@ -35,12 +40,16 @@ export const usePriceSelection = () => {
     return 0;
   }, [totalDistanceKm, divisor]);
 
-  const [price, setPrice] = useState<number>(initialPrice);
-  const [premiumEnabled, setPremiumEnabled] = useState(true);
-  const [premiumPercentage, setPremiumPercentage] = useState(10); // 10% default
+  const showPremium = useMemo(() => {
+    return selectedSeatIds.includes('A1') || selectedSeatIds.includes('front-passenger');
+  }, [selectedSeatIds]);
+
+  const [price, setPrice] = useState<number>(storePrice || initialPrice);
+  const [premiumEnabled, setPremiumEnabled] = useState(storePremiumEnabled ?? false);
+  const [premiumPercentage, setPremiumPercentage] = useState(storePremiumPercentage || 10);
   const [sheetVisible, setSheetVisible] = useState(false);
   
-  const [segmentPricesState, setSegmentPricesState] = useState<Record<string, number>>({});
+  const [segmentPricesState, setSegmentPricesState] = useState<Record<string, number>>(storeSegmentPrices || {});
 
   // Pricing Boundaries (7x to 12x) - Adjusted for Vehicle Capacity
   const minPrice = useMemo(() => calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MIN, divisor), [totalDistanceKm, divisor]);
@@ -51,8 +60,19 @@ export const usePriceSelection = () => {
     const fetchFinalRoute = async () => {
       if (!startLocation || !destinationLocation) return;
       
-      // If we have route details and price is already set correctly, skip
-      if (routeDetails && price > 0) return;
+      // If we have route details and price is already in store or set correctly, skip
+      if (routeDetails && (storePrice > 0 || price > 0)) {
+        // Just sync segment prices if store is empty but we have legs
+        if (Object.keys(segmentPricesState).length === 0 && routeDetails.legs.length > 0) {
+           const initialSegmentPrices: Record<string, number> = {};
+           routeDetails.legs.forEach((leg, i) => {
+             const segId = `seg-${i}`;
+             initialSegmentPrices[segId] = calculateBasePrice(leg.distanceMeters / 1000, PRICING_MULTIPLIERS.MID, divisor);
+           });
+           setSegmentPricesState(initialSegmentPrices);
+        }
+        return;
+      }
       
       // Update price if it was 0 but we have details (redundancy fix)
       if (routeDetails && price === 0 && initialPrice > 0) {
@@ -157,29 +177,45 @@ export const usePriceSelection = () => {
   }, []);
 
   const handlePremiumChange = useCallback((v: number) => {
-    // v is the premium amount (v = frontSeatPrice - basePrice)
-    const basePrice = price || 1; 
-    const percentage = ((v) / basePrice) * 100;
-    setPremiumPercentage(Math.round(Math.min(percentage, 10)));
+    const basePrice = Number(price) || 1; 
+    // Calculate required percentage to reach the desired currency amount
+    const percentage = (v / basePrice) * 100;
+    // Allow for more precision to satisfy step changes in small amounts
+    setPremiumPercentage(Math.min(Number(percentage.toFixed(2)), 10));
   }, [price]);
 
   const handleBackPress = useCallback(() => {
+    const basePriceNum = Number(price) || 0;
+    const premiumPctNum = Number(premiumPercentage) || 0;
+    const frontSeatPrice = premiumEnabled ? roundToNearest(basePriceNum * (1 + premiumPctNum / 100), 10) : basePriceNum;
+
+    setPricing({
+      price: basePriceNum,
+      fullJourneyPrice: basePriceNum,
+      frontSeatPrice,
+      premiumEnabled: showPremium ? premiumEnabled : false,
+      premiumPercentage: premiumPctNum,
+      segmentPrices: segmentPricesState,
+    });
     navigation.goBack();
-  }, [navigation]);
+  }, [navigation, setPricing, price, premiumEnabled, premiumPercentage, segmentPricesState, showPremium]);
 
   const handleContinue = useCallback(() => {
+    const basePriceNum = Number(price) || 0;
+    const premiumPctNum = Number(premiumPercentage) || 0;
+    const frontSeatPrice = premiumEnabled ? roundToNearest(basePriceNum * (1 + premiumPctNum / 100), 10) : basePriceNum;
+    
     setPricing({
-      price,
-      premiumEnabled,
+      price: basePriceNum,
+      fullJourneyPrice: basePriceNum,
+      frontSeatPrice: frontSeatPrice,
+      premiumEnabled: showPremium ? premiumEnabled : false,
       premiumPercentage,
       segmentPrices: segmentPricesState,
     });
-    // if (returnTo === 'SummaryPublish') {
-      (navigation.navigate as any)('SummaryPublish');
-    // } else {
-      // (navigation.navigate as any)('RequestType');
-    // }
-  }, [navigation, setPricing, price, premiumEnabled, premiumPercentage, segmentPricesState, returnTo]);
+
+    (navigation.navigate as any)('SummaryPublish');
+  }, [navigation, setPricing, price, premiumEnabled, premiumPercentage, segmentPricesState, showPremium]);
 
   const handleCustomizePricing = useCallback(() => {
     setSheetVisible(true);
@@ -219,6 +255,7 @@ export const usePriceSelection = () => {
     segmentPrices,
     projectedFrontSeatPrice: price + premium,
     isLoading,
+    showPremium,
     handlePriceChange,
     handleTogglePremium,
     handlePremiumChange,

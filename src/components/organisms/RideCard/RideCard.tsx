@@ -6,7 +6,7 @@ import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
 import { VerifiedBadge } from '@/components/atoms/VerifiedBadge';
 import { moderateScale, scale, verticalScale } from '@/styles';
-import { RideData } from '@/screens/AvailableRides/types.d';
+import { RideData } from '@/screens/BookFlow/3_AvailableRides/types';
 import { RideTimeline } from '@/components/molecules/RideTimeline/RideTimeline';
 import { useLocale } from '@/constants/localization';
 
@@ -15,12 +15,9 @@ const CardContainer = styled.TouchableOpacity<{ isSpecial?: boolean }>`
   border-radius: ${moderateScale(28)}px;
   padding: ${moderateScale(24)}px;
   margin-bottom: ${verticalScale(16)}px;
-  box-shadow: ${({ theme, isSpecial }) => 
-    isSpecial ? '0px 8px 32px rgba(0, 107, 71, 0.06)' : '0px 4px 24px rgba(23, 29, 25, 0.04)'};
-  elevation: 4;
-  border-width: ${({ isSpecial }) => (isSpecial ? 2 : 0)}px;
-  border-color: ${({ theme, isSpecial }) => 
-    isSpecial ? `${theme.colors.primary}1A` : 'transparent'};
+  box-shadow: 0px 4px 20px rgba(23, 29, 25, 0.04);
+  elevation: 3;
+  border: 1px solid ${({ theme }) => theme.colors.primary_container};
 `;
 
 const SpecialBadge = styled.View`
@@ -41,7 +38,7 @@ const Header = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: ${verticalScale(24)}px;
+  margin-bottom: ${verticalScale(12)}px;
 `;
 
 const DriverInfo = styled.View`
@@ -66,20 +63,19 @@ const PriceText = styled(Typography)`
 const Footer = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
-  gap: ${scale(8)}px;
-  padding-top: ${verticalScale(16)}px;
+  gap: ${scale(10)}px;
   border-top-width: 1px;
-  border-top-color: ${({ theme }) => theme.colors.outline_variant}1A;
+  border-top-color: ${({ theme }) => theme.colors.outline_variant}0D;
 `;
 
 const FeatureBadge = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface_container_high};
+  background-color: ${({ theme }) => theme.colors.surface_container_high}80;
   padding-horizontal: ${scale(12)}px;
-  padding-vertical: ${verticalScale(4)}px;
-  border-radius: ${moderateScale(8)}px;
+  padding-vertical: ${verticalScale(6)}px;
+  border-radius: ${moderateScale(12)}px;
   flex-direction: row;
   align-items: center;
-  gap: ${scale(4)}px;
+  gap: ${scale(6)}px;
 `;
 
 export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void }> = ({ ride, onPress }) => {
@@ -100,7 +96,7 @@ export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void
       <Header>
         <DriverInfo>
           <Avatar 
-            source={{ uri: ride.driver.avatar }} 
+            source={{ uri: ride.driver.driverPhotoUrl }} 
             size="md" 
           />
           <DriverTextGroup>
@@ -116,6 +112,14 @@ export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void
                 ({ride.driver.rideCount} rides)
               </Typography>
             </View>
+            {(ride.pickupDistance !== undefined && ride.pickupDistance < 50) && (
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 4 }}>
+                <Icon name="near-me" size={moderateScale(14)} color={theme.colors.primary} />
+                <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
+                  {ride.pickupDistance.toFixed(1)} km from pickup
+                </Typography>
+              </View>
+            )}
           </DriverTextGroup>
         </DriverInfo>
 
@@ -127,7 +131,7 @@ export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void
         </PriceGroup>
       </Header>
 
-      <RideTimeline points={ride.timeline} />
+      <RideTimeline points={ride.timeline.filter((_, i, a) => i === 0 || i === a.length - 1)} />
 
       <Footer>
         {ride.features.map((feature, idx) => {
@@ -138,6 +142,8 @@ export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void
           else if (feature === 'ladiesOnly') { iconName = 'pregnant-woman'; label = 'Ladies Only'; }
           else if (feature === 'petFriendly') { iconName = 'pets'; label = 'Pet Friendly'; }
           else if (feature === 'luggageAllowed') { iconName = 'luggage'; label = 'Luggage Allowed'; }
+          else if (feature === 'manualApproval') { iconName = 'verified-user'; label = 'Manual Approval'; }
+          else if (feature.startsWith('music:')) return;
 
           return (
             <FeatureBadge key={idx}>

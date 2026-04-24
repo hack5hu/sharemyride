@@ -1,5 +1,5 @@
-import React, { useState, useRef, useMemo } from 'react';
-import { Modal, View, TouchableOpacity, PanResponder, Animated } from 'react-native';
+import React, { useState } from 'react';
+import { Modal, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
@@ -11,6 +11,8 @@ export interface RideFiltersModalProps {
   isOpen: boolean;
   onClose: () => void;
   onClear: () => void;
+  onApply: (filters: string[]) => void;
+  selectedFilters: string[];
   t: any;
 }
 
@@ -18,53 +20,42 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
   isOpen,
   onClose,
   onClear,
+  onApply,
+  selectedFilters,
   t,
 }) => {
   const theme = useTheme();
-  const [proximity, setProximity] = useState<'pickup' | 'dropoff'>('pickup');
+  const [proximity, setProximity] = useState<'pickup' | 'dropoff'>(
+    selectedFilters.includes('nearDropoff') ? 'dropoff' : 'pickup'
+  );
   const [seats, setSeats] = useState(2);
   const [preferences, setPreferences] = useState({
-    noSmoking: true,
-    ladiesOnly: false,
-    verifiedOnly: true,
+    noSmoking: selectedFilters.includes('noSmoking'),
+    ladiesOnly: selectedFilters.includes('ladiesOnly'),
+    verifiedOnly: selectedFilters.includes('verifiedOnly'),
+    petFriendly: selectedFilters.includes('petFriendly'),
+    luggageAllowed: selectedFilters.includes('luggageAllowed'),
+    manualApproval: selectedFilters.includes('manualApproval'),
   });
 
-  // Slider State
-  const [trackWidth, setTrackWidth] = useState(0);
-  const [startTimePos, setStartTimePos] = useState(20); // 0-100
-  const [endTimePos, setEndTimePos] = useState(60);   // 0-100
+  const [selectedTimeSlots, setSelectedTimeSlots] = useState<string[]>(
+    selectedFilters.filter((f) => f.startsWith('time_'))
+  );
 
-  const formatTime = (pos: number) => {
-    const totalMinutes = (pos / 100) * 12 * 60; // 12 hours
-    const hour24 = Math.floor(totalMinutes / 60) + 6;
-    const minutes = Math.floor(totalMinutes % 60);
-    const ampm = hour24 >= 12 ? 'PM' : 'AM';
-    const hour12 = hour24 > 12 ? hour24 - 12 : hour24;
-    return `${hour12.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+  const TIME_SLOTS = [
+    { id: 'time_0_4', label: '12-4 AM', icon: 'nights-stay' },
+    { id: 'time_4_8', label: '4-8 AM', icon: 'wb-twilight' },
+    { id: 'time_8_12', label: '8-12 AM', icon: 'wb-sunny' },
+    { id: 'time_12_16', label: '12-4 PM', icon: 'light-mode' },
+    { id: 'time_16_20', label: '4-8 PM', icon: 'wb-cloudy' },
+    { id: 'time_20_24', label: '8-12 PM', icon: 'bedtime' },
+  ];
+
+  const toggleTimeSlot = (id: string) => {
+    setSelectedTimeSlots((prev) =>
+      prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id]
+    );
   };
-
-  const createPanResponder = (type: 'start' | 'end') => PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onMoveShouldSetPanResponder: () => true,
-    onPanResponderMove: (_, gestureState) => {
-      if (trackWidth === 0) return;
-      
-      const deltaPercent = (gestureState.dx / trackWidth) * 100;
-      if (type === 'start') {
-        const newPos = Math.max(0, Math.min(endTimePos - 5, startTimePos + deltaPercent));
-        setStartTimePos(newPos);
-      } else {
-        const newPos = Math.max(startTimePos + 5, Math.min(100, endTimePos + deltaPercent));
-        setEndTimePos(newPos);
-      }
-    },
-    // Resetting gestureState offset is handled by updating base position on release if needed,
-    // but here we use cumulative dx since start of gesture relative to current state.
-    // For simplicity with useState, we can just use the gestureState.dx.
-  });
-
-  const startPanResponder = useMemo(() => createPanResponder('start'), [trackWidth, endTimePos, startTimePos]);
-  const endPanResponder = useMemo(() => createPanResponder('end'), [trackWidth, startTimePos, endTimePos]);
 
   const togglePreference = (key: keyof typeof preferences) => {
     setPreferences(prev => ({ ...prev, [key]: !prev[key] }));
@@ -115,30 +106,30 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
                 <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
                   {t.departureTimeTitle.toUpperCase()}
                 </Typography>
-                <Typography variant="label" size="sm" weight="bold" color={theme.colors.primary}>
-                  {formatTime(startTimePos)} - {formatTime(endTimePos)}
-                </Typography>
               </S.SectionTitle>
-              <S.SliderTrack onLayout={(e) => setTrackWidth(e.nativeEvent.layout.width)}>
-                <S.SliderRange start={startTimePos} end={endTimePos} />
-                <View 
-                  style={{ position: 'absolute', left: `${startTimePos}%`, zIndex: 10 }} 
-                  {...startPanResponder.panHandlers}
-                >
-                  <S.SliderThumb />
-                </View>
-                <View 
-                  style={{ position: 'absolute', left: `${endTimePos}%`, zIndex: 10 }} 
-                  {...endPanResponder.panHandlers}
-                >
-                  <S.SliderThumb />
-                </View>
-              </S.SliderTrack>
-              <S.TimeLabelContainer>
-                <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>06:00 AM</Typography>
-                <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>12:00 PM</Typography>
-                <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>06:00 PM</Typography>
-              </S.TimeLabelContainer>
+              <S.TimeGrid>
+                {TIME_SLOTS.map((slot) => (
+                  <S.TimeCell 
+                    key={slot.id} 
+                    active={selectedTimeSlots.includes(slot.id)}
+                    onPress={() => toggleTimeSlot(slot.id)}
+                  >
+                    <Icon 
+                      name={slot.icon} 
+                      size={moderateScale(20)} 
+                      color={selectedTimeSlots.includes(slot.id) ? theme.colors.primary : theme.colors.on_surface_variant} 
+                    />
+                    <Typography 
+                      variant="label" 
+                      size="xs" 
+                      weight="bold" 
+                      color={selectedTimeSlots.includes(slot.id) ? theme.colors.primary : theme.colors.on_surface_variant}
+                    >
+                      {slot.label}
+                    </Typography>
+                  </S.TimeCell>
+                ))}
+              </S.TimeGrid>
             </S.Section>
 
             {/* Preferences */}
@@ -169,6 +160,27 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
                 </S.PreferenceLeft>
                 <Checkbox checked={preferences.verifiedOnly} onToggle={() => togglePreference('verifiedOnly')} />
               </S.PreferenceItem>
+              <S.PreferenceItem onPress={() => togglePreference('petFriendly')}>
+                <S.PreferenceLeft>
+                  <Icon name="pets" size={moderateScale(20)} color="#8D6E63" />
+                  <Typography variant="label" size="md" weight="bold">Pet Friendly</Typography>
+                </S.PreferenceLeft>
+                <Checkbox checked={preferences.petFriendly} onToggle={() => togglePreference('petFriendly')} />
+              </S.PreferenceItem>
+              <S.PreferenceItem onPress={() => togglePreference('luggageAllowed')}>
+                <S.PreferenceLeft>
+                  <Icon name="luggage" size={moderateScale(20)} color="#546E7A" />
+                  <Typography variant="label" size="md" weight="bold">Luggage Allowed</Typography>
+                </S.PreferenceLeft>
+                <Checkbox checked={preferences.luggageAllowed} onToggle={() => togglePreference('luggageAllowed')} />
+              </S.PreferenceItem>
+              {/* <S.PreferenceItem onPress={() => togglePreference('manualApproval')}>
+                <S.PreferenceLeft>
+                  <Icon name="verified-user" size={moderateScale(20)} color={theme.colors.tertiary} />
+                  <Typography variant="label" size="md" weight="bold">Manual Approval</Typography>
+                </S.PreferenceLeft>
+                <Checkbox checked={preferences.manualApproval} onToggle={() => togglePreference('manualApproval')} />
+              </S.PreferenceItem> */}
             </S.Section>
 
             {/* Seat Availability */}
@@ -195,7 +207,23 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
           </S.ScrollBody>
 
           <S.Footer>
-            <S.ApplyButton onPress={onClose}>
+            <S.ApplyButton onPress={() => {
+              const activeFilters = [];
+              if (preferences.noSmoking) activeFilters.push('noSmoking');
+              if (preferences.ladiesOnly) activeFilters.push('ladiesOnly');
+              if (preferences.verifiedOnly) activeFilters.push('verifiedOnly');
+              if (preferences.petFriendly) activeFilters.push('petFriendly');
+              if (preferences.luggageAllowed) activeFilters.push('luggageAllowed');
+              if (preferences.manualApproval) activeFilters.push('manualApproval');
+              
+              selectedTimeSlots.forEach(slot => activeFilters.push(slot));
+              
+              if (proximity === 'pickup') activeFilters.push('nearPickup');
+              else if (proximity === 'dropoff') activeFilters.push('nearDropoff');
+              
+              onApply(activeFilters);
+              onClose();
+            }}>
               <Typography variant="title" size="sm" weight="bold" color={theme.colors.on_primary}>
                 {t.applyFilters}
               </Typography>

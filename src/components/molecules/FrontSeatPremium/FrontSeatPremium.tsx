@@ -116,7 +116,7 @@ const MaxNote = styled.Text`
   color: ${({ theme }) => theme.colors.tertiary};
 `;
 
-const PREMIUM_STEP = 5;
+const PREMIUM_STEP = 10;
 
 export interface FrontSeatPremiumProps {
   checked: boolean;
@@ -145,7 +145,7 @@ export const FrontSeatPremium: React.FC<FrontSeatPremiumProps> = ({
   const maxPremium = Math.floor(basePrice * 0.1);
   const isMax = premium >= maxPremium;
 
-  const handleDecrement = () => onPremiumChange(Math.max(PREMIUM_STEP, premium - PREMIUM_STEP));
+  const handleDecrement = () => onPremiumChange(Math.max(0, premium - PREMIUM_STEP));
   const handleIncrement = () => onPremiumChange(Math.min(maxPremium, premium + PREMIUM_STEP));
 
   return (
@@ -168,16 +168,16 @@ export const FrontSeatPremium: React.FC<FrontSeatPremiumProps> = ({
           <MiniRow>
             <MiniLabel>{amountLabel}</MiniLabel>
             <MiniCounterPill>
-              <MiniSmallButton onPress={handleDecrement} activeOpacity={0.7} disabled={premium <= PREMIUM_STEP}>
+              <MiniSmallButton onPress={handleDecrement} activeOpacity={0.7} disabled={premium <= 0}>
                 <MaterialIcons name="remove" size={moderateScale(16)} color={theme.colors.outline} />
               </MiniSmallButton>
               <MiniAmountText>₹{premium}</MiniAmountText>
-              <MiniSmallButton onPress={handleIncrement} activeOpacity={0.7} disabled={isMax}>
+              <MiniSmallButton onPress={handleIncrement} activeOpacity={0.7} disabled={premium >= maxPremium}>
                 <MaterialIcons name="add" size={moderateScale(16)} color={theme.colors.outline} />
               </MiniSmallButton>
             </MiniCounterPill>
           </MiniRow>
-          {isMax && <MaxNote>{maxNote}</MaxNote>}
+          {premium >= maxPremium && <MaxNote>{maxNote}</MaxNote>}
         </MiniSection>
       )}
     </Wrapper>

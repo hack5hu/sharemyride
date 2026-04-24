@@ -99,7 +99,7 @@ export const BookRideInfoScreen: React.FC = () => {
               <InputGroup>
                 <InputLabel>{t.pickupLabel}</InputLabel>
                 <LocationBox activeOpacity={0.7} onPress={handlePressPickup}>
-                  <LocationValueText hasValue={!!pickup}>
+                  <LocationValueText hasValue={!!pickup} numberOfLines={1} ellipsizeMode='tail'>
                     {pickup || t.pickupPlaceholder}
                   </LocationValueText>
                 </LocationBox>
@@ -108,7 +108,7 @@ export const BookRideInfoScreen: React.FC = () => {
               <InputGroup>
                 <InputLabel>{t.destinationLabel}</InputLabel>
                 <LocationBox activeOpacity={0.7} onPress={handlePressDestination}>
-                  <LocationValueText hasValue={!!destination}>
+                  <LocationValueText hasValue={!!destination} numberOfLines={1} ellipsizeMode='tail'>
                     {destination || t.destinationPlaceholder}
                   </LocationValueText>
                 </LocationBox>

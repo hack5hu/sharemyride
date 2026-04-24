@@ -6,14 +6,15 @@ import { OlaMapProps } from './types.d';
 // Run setup only once
 let isTransformRequestSetup = false;
 
-export const OlaMap = forwardRef<any, OlaMapProps>(({
-  mapStyle = 'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json',
+const DEFAULT_STYLE = 'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json';
+
+export const OlaMap = React.memo(forwardRef<any, OlaMapProps>(({
+  mapStyle = DEFAULT_STYLE,
   children,
   ...rest
 }, ref) => {
   useEffect(() => {
     if (!isTransformRequestSetup) {
-      // Setup global credentials for Ola Maps API v11
       TransformRequestManager.addUrlSearchParam({
         id: "ola-api-key",
         match: /api\.olamaps\.io/,
@@ -21,7 +22,6 @@ export const OlaMap = forwardRef<any, OlaMapProps>(({
         value: OLA_API_KEY,
       });
 
-      // Strip out any redundant 'key=' parameters from the style JSON
       TransformRequestManager.addUrlTransform({
         id: "ola-key-cleanup",
         match: "api\\.olamaps\\.io",
@@ -37,11 +37,14 @@ export const OlaMap = forwardRef<any, OlaMapProps>(({
     <MapView
       ref={ref}
       mapStyle={mapStyle}
+      logoEnabled={false}
+      attributionEnabled={false}
+      styleURL={mapStyle} // redundant but safe
       {...rest}
     >
       {children}
     </MapView>
   );
-});
+}));
 
 OlaMap.displayName = 'OlaMap';

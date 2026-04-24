@@ -13,11 +13,15 @@ export const ScrollContent = styled.ScrollView`
 
 export const SearchSummaryCard = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  border-radius: ${moderateScale(24)}px;
+  border-radius: ${moderateScale(28)}px;
   padding: ${moderateScale(24)}px;
   margin-bottom: ${verticalScale(24)}px;
-  box-shadow: 0px 4px 24px rgba(23, 29, 25, 0.04);
-  elevation: 2;
+  shadow-color: ${({ theme }) => theme.colors.primary};
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.05;
+  shadow-radius: 20px;
+  elevation: 4;
+  position: relative;
 `;
 
 export const SummaryRow = styled.View`
@@ -31,6 +35,8 @@ export const RouteInfo = styled.View`
   flex-direction: row;
   align-items: center;
   gap: ${scale(12)}px;
+  padding-right: ${scale(48)}px;
+  flex: 1;
 `;
 
 export const LocationVertical = styled.View`
@@ -38,16 +44,19 @@ export const LocationVertical = styled.View`
 `;
 
 export const Line = styled.View`
-  width: ${moderateScale(1)}px;
-  height: ${verticalScale(24)}px;
-  background-color: ${({ theme }) => theme.colors.outline_variant}4D;
-  margin-vertical: ${verticalScale(4)}px;
+  width: ${moderateScale(1.5)}px;
+  height: ${verticalScale(32)}px;
+  background-color: ${({ theme }) => theme.colors.outline_variant}33;
+  margin-vertical: ${verticalScale(2)}px;
 `;
 
 export const FilterButton = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.colors.surface_container_high};
-  padding: ${moderateScale(12)}px;
-  border-radius: ${moderateScale(16)}px;
+  padding: ${moderateScale(10)}px;
+  border-radius: ${moderateScale(14)}px;
+  position: absolute;
+  top: ${moderateScale(12)}px;
+  right: ${moderateScale(-12)}px;
 `;
 
 export const SummaryFooter = styled.View`

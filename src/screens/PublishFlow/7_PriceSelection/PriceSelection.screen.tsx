@@ -15,6 +15,7 @@ export const PriceSelectionScreen: React.FC = () => {
     segments,
     segmentPrices,
     isLoading,
+    showPremium,
     handlePriceChange,
     handleTogglePremium,
     handlePremiumChange,
@@ -46,6 +47,7 @@ export const PriceSelectionScreen: React.FC = () => {
       onSheetClose={handleSheetClose}
       onSaveSegmentPrices={handleSaveSegmentPrices}
       isLoading={isLoading}
+      showPremium={showPremium}
     />
   );
 };

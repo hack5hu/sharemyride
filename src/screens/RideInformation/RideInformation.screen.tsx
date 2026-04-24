@@ -4,7 +4,7 @@ import { useRideInformation } from './useRideInformation';
 import { RideInformationProps } from './types.d';
 
 export const RideInformationScreen: React.FC<RideInformationProps> = ({ route }) => {
-  const { t, handleBack, handleBook, ride } = useRideInformation(route.params.rideId);
+  const { t, handleBack, handleBook, handleViewRoute, handleCopyAddress, ride } = useRideInformation(route.params.rideId);
 
   return (
     <RideInformationTemplate
@@ -12,6 +12,8 @@ export const RideInformationScreen: React.FC<RideInformationProps> = ({ route })
       t={t}
       handleBack={handleBack}
       handleBook={handleBook}
+      handleViewRoute={handleViewRoute}
+      handleCopyAddress={handleCopyAddress}
     />
   );
 };

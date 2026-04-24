@@ -8,6 +8,7 @@ export interface RouteStop {
   sequence: number;
   distanceFromPreviousStop: number;
   priceFromPreviousStop: number;
+  frontSeatPriceFromPreviousStop: number;
   arrivalTime: string;
 }
 
@@ -18,6 +19,8 @@ export interface PublishRidePayload {
   offeredSeats: string[];
   routePath: string;
   routeStops: RouteStop[];
+  fullJourneyPrice: number;
+  frontSeatPrice: number;
 }
 
 export interface TravelPreferenceData {

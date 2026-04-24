@@ -53,10 +53,13 @@ interface RidePublishState {
   preferences: RidePreferences | null;
   
   // Pricing
-  price: number;
+  price: number; // base seat price
+  fullJourneyPrice: number;
+  frontSeatPrice: number;
   premiumEnabled: boolean;
   premiumPercentage: number;
   segmentPrices: Record<string, number>;
+
   
   // Strategy
   requestType: 'instant' | 'review';
@@ -82,6 +85,8 @@ interface RidePublishState {
   setPreferences: (prefs: RidePreferences | null) => void;
   setPricing: (pricing: { 
     price: number; 
+    fullJourneyPrice: number;
+    frontSeatPrice: number;
     premiumEnabled: boolean; 
     premiumPercentage: number; 
     segmentPrices: Record<string, number> 
@@ -112,6 +117,8 @@ export const useRidePublishStore = create<RidePublishState>((set) => ({
     pets: false,
   },
   price: 0,
+  fullJourneyPrice: 0,
+  frontSeatPrice: 0,
   premiumEnabled: true,
   premiumPercentage: 10,
   segmentPrices: {},
@@ -160,6 +167,8 @@ export const useRidePublishStore = create<RidePublishState>((set) => ({
       pets: false,
     },
     price: 0,
+    fullJourneyPrice: 0,
+    frontSeatPrice: 0,
     premiumEnabled: true,
     premiumPercentage: 10,
     segmentPrices: {},

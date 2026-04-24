@@ -8,6 +8,7 @@ import rideService, { PublishRidePayload, RouteStop } from '@/serviceManager/rid
 import { addSeconds, format } from 'date-fns';
 import { useTravelPrefStore } from '@/store/useTravelPrefStore';
 import { useLocale } from '@/constants/localization';
+import { roundToNearest } from '@/utils/pricing';
 
 export const useSummaryPublish = () => {
   const navigation = useNavigation();
@@ -28,6 +29,10 @@ export const useSummaryPublish = () => {
     vehicleId,
     preferences,
     price,
+    fullJourneyPrice,
+    frontSeatPrice,
+    premiumEnabled,
+    premiumPercentage,
     routeDetails,
     segmentPrices,
     clearPublishState,
@@ -102,10 +107,13 @@ export const useSummaryPublish = () => {
       const allStops = [startLocation, ...middleStops, destinationLocation];
       const routeStops: RouteStop[] = allStops.map((stop, index) => {
         const prevStop = index > 0 ? allStops[index - 1] : null;
-        const segmentKey = prevStop ? `${prevStop.id}|${stop.id}` : '';
-        const segmentPrice = index > 0 ? (segmentPrices[segmentKey] || Math.round(price / (allStops.length - 1))) : 0;
+        const segmentId = index > 0 ? `seg-${index - 1}` : '';
+        const segmentPrice = index > 0 ? (Number(segmentPrices[segmentId]) || Math.round(price / (allStops.length - 1))) : 0;
         const stopLeg = index > 0 && routeDetails?.legs ? routeDetails.legs[index - 1] : null;
         
+        // Calculate front seat price for this segment (round to nearest 10)
+        const frontSeatSegmentPrice = premiumEnabled ? roundToNearest(segmentPrice * (1 + (premiumPercentage || 0) / 100), 10) : segmentPrice;
+
         let arrivalTime = startTime;
         if (index > 0 && routeDetails?.legs) {
           let accumulatedDuration = 0;
@@ -114,7 +122,7 @@ export const useSummaryPublish = () => {
           }
           arrivalTime = format(addSeconds(dateObj, accumulatedDuration), "yyyy-MM-dd'T'HH:mm:ss");
         }
-        console.log(stop)
+
         return {
           name: stop.address,
           lat: stop.latitude,
@@ -122,17 +130,20 @@ export const useSummaryPublish = () => {
           sequence: index + 1,
           distanceFromPreviousStop: stopLeg ? stopLeg.distanceMeters / 1000 : 0,
           priceFromPreviousStop: segmentPrice,
+          frontSeatPriceFromPreviousStop: frontSeatSegmentPrice,
           arrivalTime,
         };
       });
 
       const payload: PublishRidePayload = {
-        vehicleId: vehicleId,
+        vehicleId,
         startTime,
         endTime,
         offeredSeats,
         routePath: selectedRoute?.polylineString || '',
         routeStops,
+        fullJourneyPrice,
+        frontSeatPrice,
       };
       console.log('payload======>',payload)
       await rideService.publishRide(payload);

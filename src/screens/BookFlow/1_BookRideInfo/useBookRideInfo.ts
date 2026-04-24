@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import { format } from 'date-fns';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useLocale } from '@/constants/localization';
 import { useBookRideStore } from '@/store/useBookRideStore';
@@ -76,7 +77,7 @@ export const useBookRideInfo = () => {
           sourceLon: startLocation.longitude,
           destLat: destinationLocation.latitude,
           destLon: destinationLocation.longitude,
-          travelDate: travelDate ? travelDate.replace('Z', '') : new Date().toISOString().replace('Z', ''),
+          travelDate: format(travelDate ? new Date(travelDate) : new Date(), "yyyy-MM-dd'T'HH:mm:ss"),
           requestedSeats: seatCount,
           radiusInMeters: 10000,
         };
@@ -85,8 +86,6 @@ export const useBookRideInfo = () => {
         navigation.navigate('AvailableRides' as any);
       } catch (error) {
         console.error('Failed to search rides:', error);
-        setSearchResults([]);
-        navigation.navigate('AvailableRides' as any);
       } finally {
         setIsSearching(false);
       }
@@ -94,8 +93,8 @@ export const useBookRideInfo = () => {
   }, [navigation, startLocation, destinationLocation, travelDate, seatCount, setSearchResults]);
 
   return {
-    pickup: startLocation?.name || '',
-    destination: destinationLocation?.name || '',
+    pickup: startLocation?.address || '',
+    destination: destinationLocation?.address || '',
     travelDate: travelDate ? new Date(travelDate) : new Date(),
     peopleCount: seatCount,
     isSearching,

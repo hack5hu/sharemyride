@@ -123,39 +123,21 @@ export const ApplyButton = styled.TouchableOpacity`
   elevation: 4;
 `;
 
-export const SliderTrack = styled.View`
-  height: ${verticalScale(6)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_high};
-  border-radius: ${moderateScale(3)}px;
-  margin-vertical: ${verticalScale(20)}px;
-  position: relative;
-`;
-
-export const SliderRange = styled.View<{ start: number; end: number }>`
-  position: absolute;
-  left: ${({ start }) => start}%;
-  right: ${({ end }) => 100 - end}%;
-  height: 100%;
-  background-color: ${({ theme }) => theme.colors.primary};
-  border-radius: ${moderateScale(3)}px;
-`;
-
-export const SliderThumb = styled.View`
-  width: ${moderateScale(24)}px;
-  height: ${moderateScale(24)}px;
-  border-radius: ${moderateScale(12)}px;
-  background-color: ${({ theme }) => theme.colors.primary_container};
-  border-width: 4px;
-  border-color: ${({ theme }) => theme.colors.on_primary};
-  margin-left: -${moderateScale(12)}px;
-  margin-top: -${moderateScale(9)}px;
-  shadow-color: #000;
-  shadow-offset: 0px 2px;
-  shadow-opacity: 0.2;
-  shadow-radius: 4px;
-  elevation: 4;
-`;
-export const TimeLabelContainer = styled.View`
+export const TimeGrid = styled.View`
   flex-direction: row;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: ${scale(12)}px;
 `;
+
+export const TimeCell = styled.TouchableOpacity<{ active?: boolean }>`
+  width: ${(scale(327) - scale(48) - scale(24)) / 3}px;
+  background-color: ${({ theme, active }) => active ? theme.colors.primary + '1A' : theme.colors.surface_container_low};
+  border-width: 1px;
+  border-color: ${({ theme, active }) => active ? theme.colors.primary : theme.colors.outline_variant + '33'};
+  border-radius: ${moderateScale(16)}px;
+  padding-vertical: ${verticalScale(16)}px;
+  align-items: center;
+  justify-content: center;
+  gap: ${verticalScale(4)}px;
+`;
+

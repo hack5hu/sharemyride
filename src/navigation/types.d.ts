@@ -58,6 +58,15 @@ export type RootStackParamList = {
   BookRideInfo: undefined;
   AvailableRides: undefined;
   RideInformation: { rideId: string };
+  RideRouteMap: {
+    routePath: string;
+    stops: Array<{
+      lat: number;
+      lon: number;
+      name: string;
+      sequence: number;
+    }>;
+  };
   BookingConfirmed: { rideId: string };
   Settings: undefined;
 };
