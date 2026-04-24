@@ -116,7 +116,7 @@ export const useSummaryPublish = () => {
         }
         console.log(stop)
         return {
-          name: stop.name,
+          name: stop.address,
           lat: stop.latitude,
           lon: stop.longitude,
           sequence: index + 1,
@@ -275,9 +275,9 @@ export const useSummaryPublish = () => {
 
   return {
     routeData: {
-      start: startLocation?.name || 'Unknown',
-      end: destinationLocation?.name || 'Unknown',
-      middleStops: middleStops.map(s => s.name),
+      start: startLocation?.address || 'Unknown',
+      end: destinationLocation?.address || 'Unknown',
+      middleStops: middleStops.map(s => s.address),
     },
     schedule: {
       date: formattedDate,
