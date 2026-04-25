@@ -105,9 +105,9 @@ export const SettingsScreen: React.FC = () => {
                   <Typography variant="label" size="md" weight="medium">{t.region}</Typography>
                 </S.SettingInfo>
                 <S.Badge>
-                  <Typography variant="label" size="xs" weight="bold" color={theme.colors.on_secondary_container} style={{ textTransform: 'uppercase' }}>
+                  <S.BadgeText color={theme.colors.on_secondary_container}>
                     {region}
-                  </Typography>
+                  </S.BadgeText>
                 </S.Badge>
               </S.OptionRow>
             </S.OptionsList>
@@ -133,17 +133,17 @@ export const SettingsScreen: React.FC = () => {
               <Checkbox checked={rideReceipts} onToggle={toggleRideReceipts} />
             </S.EmailCard>
 
-            <S.EmailCard style={{ opacity: 0.5 }}>
+            <S.DisabledEmailCard>
               <S.AlignmentRow>
                 <Icon name="shield" size={24} color={theme.colors.tertiary} />
                 <Typography variant="label" size="md" weight="semibold">{t.accountSecurity}</Typography>
               </S.AlignmentRow>
               <Checkbox checked={accountSecurity} onToggle={() => {}} />
-            </S.EmailCard>
+            </S.DisabledEmailCard>
           </S.Section>
 
           {/* Account Section */}
-          <S.Section style={{ paddingTop: 16, paddingBottom: 32 }}>
+          <S.AccountSection>
             <S.LogoutButton onPress={handleLogout}>
               <Icon name="logout" size={24} color={theme.colors.error} />
               <Typography variant="title" size="sm" weight="bold" color={theme.colors.error}>
@@ -152,11 +152,11 @@ export const SettingsScreen: React.FC = () => {
             </S.LogoutButton>
             
             <S.FooterVersion>
-              <Typography variant="body" size="xs" weight="medium" color={theme.colors.on_surface_variant} style={{ opacity: 0.5 }}>
+              <S.VersionText color={theme.colors.on_surface_variant}>
                 {t.version}
-              </Typography>
+              </S.VersionText>
             </S.FooterVersion>
-          </S.Section>
+          </S.AccountSection>
 
         </S.ContentContainer>
       </ScreenShell>

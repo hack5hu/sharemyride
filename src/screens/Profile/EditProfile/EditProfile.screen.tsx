@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, Platform, KeyboardAvoidingView } from 'react-native';
+import { Platform } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useEditProfile } from './useEditProfile';
-
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Typography } from '@/components/atoms/Typography';
 import { IconButton } from '@/components/atoms/IconButton';
@@ -12,22 +11,7 @@ import { Input } from '@/components/atoms/Input';
 import { DatePickerInput } from '@/components/molecules/DatePickerInput';
 import { GenderSelector } from '@/components/molecules/GenderSelector';
 import { Toast } from '@/components/molecules/Toast';
-
-import {
-  ScrollContent,
-  Content,
-  AvatarSection,
-  AvatarWrapper,
-  EditButton,
-  Row,
-  Column,
-  ActionFooter,
-  CancelButton,
-  SaveButtonGradient,
-  SaveButton,
-  BackgroundFlourishTop,
-  BackgroundFlourishBottom,
-} from './EditProfile.styles';
+import * as S from './EditProfile.styles';
 
 export const EditProfileScreen: React.FC = () => {
   const theme = useTheme();
@@ -35,13 +19,11 @@ export const EditProfileScreen: React.FC = () => {
     formik,
     loading,
     showSuccess,
-    error,
     handleCloseSuccess,
     handleUpdateAvatar,
     navigation,
     t,
   } = useEditProfile();
-
 
   return (
     <ScreenShell
@@ -51,15 +33,14 @@ export const EditProfileScreen: React.FC = () => {
         <IconButton icon="settings" variant="surface" onPress={() => { }} />
       }
     >
-      <BackgroundFlourishTop />
-      <BackgroundFlourishBottom />
+      <S.BackgroundFlourishTop />
+      <S.BackgroundFlourishBottom />
 
-      <KeyboardAvoidingView
+      <S.MainWrapper
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}
       >
-        <ScrollContent showsVerticalScrollIndicator={false}>
-          <Content>
+        <S.ScrollContent showsVerticalScrollIndicator={false}>
+          <S.Content>
             {showSuccess && (
               <Toast
                 message={t('editProfile.successMessage')}
@@ -69,32 +50,24 @@ export const EditProfileScreen: React.FC = () => {
               />
             )}
 
-
-
-            <AvatarSection>
-              <AvatarWrapper>
+            <S.AvatarSection>
+              <S.AvatarWrapper>
                 <Avatar
                   size="xl"
                   source={formik.values.avatarUri ? { uri: formik.values.avatarUri } : undefined}
                   border
                 />
-                <EditButton activeOpacity={0.8} onPress={handleUpdateAvatar}>
+                <S.EditButton activeOpacity={0.8} onPress={handleUpdateAvatar}>
                   <Icon name="edit" size={18} color={theme.colors.on_primary} />
-                </EditButton>
-              </AvatarWrapper>
+                </S.EditButton>
+              </S.AvatarWrapper>
 
-              <Typography
-                variant="label"
-                size="sm"
-                weight="bold"
-                color="on_surface_variant"
-                style={{ marginTop: 16 }}
-              >
+              <S.UpdatePhotoLabel>
                 {t('editProfile.updatePhoto')}
-              </Typography>
-            </AvatarSection>
+              </S.UpdatePhotoLabel>
+            </S.AvatarSection>
 
-            <View style={{ gap: 24 }}>
+            <S.FormFields>
               <Input
                 label={t('editProfile.fullNameLabel')}
                 placeholder={t('editProfile.fullNamePlaceholder')}
@@ -123,16 +96,16 @@ export const EditProfileScreen: React.FC = () => {
                 maxLength={10}
               />
 
-              <Row>
-                <Column>
+              <S.Row>
+                <S.Column>
                   <DatePickerInput
                     label={t('editProfile.dobLabel')}
                     value={formik.values.dob}
                     onDateChange={(date) => formik.setFieldValue('dob', date)}
                     error={formik.touched.dob ? formik.errors.dob as string : undefined}
                   />
-                </Column>
-              </Row>
+                </S.Column>
+              </S.Row>
 
               <GenderSelector
                 label={t('editProfile.genderLabel')}
@@ -149,34 +122,34 @@ export const EditProfileScreen: React.FC = () => {
                 numberOfLines={4}
                 error={formik.touched.bio ? formik.errors.bio : undefined}
               />
-            </View>
+            </S.FormFields>
 
-            <ActionFooter>
-              <CancelButton onPress={() => navigation.goBack()}>
+            <S.ActionFooter>
+              <S.CancelButton onPress={() => navigation.goBack()}>
                 <Typography variant="body" weight="bold">
                   {t('editProfile.cancel')}
                 </Typography>
-              </CancelButton>
-              <SaveButtonGradient
+              </S.CancelButton>
+              <S.SaveButtonGradient
                 colors={[theme.colors.primary, theme.colors.primary_container]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
-                style={{ opacity: loading ? 0.7 : 1 }}
+                isLoading={loading}
               >
-                <SaveButton
+                <S.SaveButton
                   onPress={() => formik.handleSubmit()}
                   disabled={loading}
                 >
                   <Typography variant="body" weight="bold" color="on_primary">
                     {loading ? 'Saving...' : t('editProfile.saveChanges')}
                   </Typography>
-                </SaveButton>
-              </SaveButtonGradient>
+                </S.SaveButton>
+              </S.SaveButtonGradient>
 
-            </ActionFooter>
-          </Content>
-        </ScrollContent>
-      </KeyboardAvoidingView>
+            </S.ActionFooter>
+          </S.Content>
+        </S.ScrollContent>
+      </S.MainWrapper>
     </ScreenShell>
   );
 };

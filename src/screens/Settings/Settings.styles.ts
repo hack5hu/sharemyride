@@ -1,3 +1,4 @@
+import { Typography } from '@/components/atoms/Typography';
 import { verticalScale, scale, moderateScale } from '@/styles';
 import styled from 'styled-components/native';
 
@@ -145,5 +146,30 @@ export const LogoutButton = styled.TouchableOpacity`
 export const FooterVersion = styled.View`
   align-items: center;
   marginTop: ${verticalScale(24)}px;
+`;
+
+export const BadgeText = styled(Typography).attrs({
+  variant: 'label',
+  size: 'xs',
+  weight: 'bold',
+})`
+  text-transform: uppercase;
+`;
+
+export const DisabledEmailCard = styled(EmailCard)`
+  opacity: 0.5;
+`;
+
+export const AccountSection = styled(Section)`
+  padding-top: ${verticalScale(16)}px;
+  padding-bottom: ${verticalScale(32)}px;
+`;
+
+export const VersionText = styled(Typography).attrs({
+  variant: 'body',
+  size: 'xs',
+  weight: 'medium',
+})`
+  opacity: 0.5;
 `;
 

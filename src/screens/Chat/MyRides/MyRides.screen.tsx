@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { MyRidesTemplate } from '@/components/templates/MyRidesTemplate';
 import { MyRidesHeader } from '@/components/organisms/MyRidesHeader';
 import { SectionHeader } from '@/components/atoms/SectionHeader';
 import { MatchedRideBento } from '@/components/organisms/MatchedRideBento';
-import { UpcomingRideCard } from '@/components/organisms/UpcomingRideCard';
 import { CompactRideItem } from '@/components/molecules/CompactRideItem';
 import { useMyRides } from './useMyRides';
 import { BottomNav } from '@/components/organisms/BottomNav';
-
+import * as S from './MyRides.styles';
 
 export const MyRidesScreen: React.FC = () => {
   const {
@@ -25,7 +24,7 @@ export const MyRidesScreen: React.FC = () => {
     drafts,
     upcoming,
     past,
-    isLoading,
+    // removed unused isLoading
   } = useMyRides();
 
   const userAvatar = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDExpYK8xVP2mpLZ72YLG07-Nvi79pQHHE3Bf4HEGBRuFOCym2D4P_hlE3flaGGaR4XKpWguxkVxRruV_VNmRQoLa2Sg179Af0ZYu5OuAE0XnhnyKnoGtEty2IKdSCPEpm4wlGP2YlXb08qxB2BkWjHpVIUO0XH8BgWiYyR4o6Ku2xPiwHS4dYGdV-aBsCeqKoBrDgJExj0TgYQDrb9mu-4Y4YSLPxze3tWxwjfF5l8SSkYi3zPx0RDth6HTJ54yE4zdBFrhiC14HB5';
@@ -50,7 +49,7 @@ export const MyRidesScreen: React.FC = () => {
     <View>
       <SectionHeader title="Your Published Rides" />
       {upcoming.length > 0 ? (
-        <View style={{ gap: 12 }}>
+        <S.ListGap>
           {upcoming.map((ride) => (
             <CompactRideItem 
               key={ride.id}
@@ -64,7 +63,7 @@ export const MyRidesScreen: React.FC = () => {
               onPress={() => onRidePress(ride.id)}
             />
           ))}
-        </View>
+        </S.ListGap>
       ) : (
         <CompactRideItem 
           title="No upcoming rides"
@@ -85,7 +84,7 @@ export const MyRidesScreen: React.FC = () => {
         onActionPress={onClearDrafts} 
       />
       {drafts.length > 0 ? (
-        <View style={{ gap: 12 }}>
+        <S.ListGap>
           {drafts.map((draft) => (
             <CompactRideItem 
               key={draft.id}
@@ -98,7 +97,7 @@ export const MyRidesScreen: React.FC = () => {
               onPress={() => onRidePress(draft.id)}
             />
           ))}
-        </View>
+        </S.ListGap>
       ) : (
         <CompactRideItem 
           title="No drafts yet"
@@ -115,7 +114,7 @@ export const MyRidesScreen: React.FC = () => {
     <View>
       <SectionHeader title="Recently Completed" />
       {past.length > 0 ? (
-        <View style={{ gap: 12 }}>
+        <S.ListGap>
           {past.map((ride) => (
             <CompactRideItem 
               key={ride.id}
@@ -127,7 +126,7 @@ export const MyRidesScreen: React.FC = () => {
               onPress={() => onRidePress(ride.id)}
             />
           ))}
-        </View>
+        </S.ListGap>
       ) : (
         <CompactRideItem 
           title="No completed rides"
@@ -153,7 +152,7 @@ export const MyRidesScreen: React.FC = () => {
       }
       bottomNav={
         <BottomNav activeTab="MY_RIDES" />
-            }
+      }
       activeTab={activeTab}
       highlightsSection={highlightsSection}
       upcomingSection={upcomingSection}

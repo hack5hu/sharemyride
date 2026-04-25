@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { scale, verticalScale } from '@/styles';
 import LinearGradient from 'react-native-linear-gradient';
+import { Typography } from '@/components/atoms/Typography';
 
 export const Container = styled.View`
   flex: 1;
@@ -91,12 +92,30 @@ export const CancelButton = styled.TouchableOpacity`
   align-items: center;
 `;
 
-export const SaveButtonGradient = styled(LinearGradient)`
+export const SaveButtonGradient = styled(LinearGradient)<{ isLoading?: boolean }>`
   flex: 1;
   height: ${verticalScale(56)}px;
   border-radius: ${({ theme }) => theme.roundness.xl}px;
   justify-content: center;
   align-items: center;
+  opacity: ${({ isLoading }) => (isLoading ? 0.7 : 1)};
+`;
+
+export const MainWrapper = styled.KeyboardAvoidingView`
+  flex: 1;
+`;
+
+export const UpdatePhotoLabel = styled(Typography).attrs({
+  variant: 'label',
+  size: 'sm',
+  weight: 'bold',
+  color: 'on_surface_variant',
+})`
+  margin-top: 16px;
+`;
+
+export const FormFields = styled.View`
+  gap: 24px;
 `;
 
 export const SaveButton = styled.TouchableOpacity`

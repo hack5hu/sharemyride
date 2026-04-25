@@ -5,7 +5,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/navigation/types';
-import { profileService, ProfileUpdateData } from '@/serviceManager/profileService';
+import { ProfileUpdateData } from '@/serviceManager/profileService';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export const useEditProfile = () => {
@@ -13,7 +13,6 @@ export const useEditProfile = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -34,7 +33,7 @@ export const useEditProfile = () => {
       .required(t('editProfile.genderRequired')),
     bio: Yup.string()
       .max(200, t('editProfile.bioMax')),
-  }), [t]);
+  }), [t, phoneRegExp]);
 
   const formik = useFormik<ProfileUpdateData>({
     initialValues: {
@@ -47,15 +46,15 @@ export const useEditProfile = () => {
       avatarUri: 'https://randomuser.me/api/portraits/men/32.jpg',
     },
     validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (_values) => {
       setLoading(true);
-      setError(null);
+      // removed unused setError(null);
       try {
         // await profileService.updateProfile(values);
         setShowSuccess(true);
         navigation.navigate('ProfileHub')
       } catch (err: any) {
-        setError(err.message || 'An error occurred while updating profile');
+        // removed unused setError
         console.error('Profile update error:', err);
       } finally {
         setLoading(false);
@@ -82,7 +81,6 @@ export const useEditProfile = () => {
     formik,
     loading,
     showSuccess,
-    error,
     handleCloseSuccess,
     handleUpdateAvatar,
     navigation,
