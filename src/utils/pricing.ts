@@ -1,39 +1,29 @@
-export const PRICING_MULTIPLIERS = {
-  MIN: 7,
-  MID: 9.5,
-  MAX: 12,
-} as const;
+import { RouteStop } from '@/serviceManager/rideService';
 
 /**
- * Rounds a value to the nearest multiple of a given base.
+ * Calculates the segment price using the prefix algorithm (last stop cumulative - first stop cumulative).
+ * Fallback to direct price if prefix calculation isn't possible.
  */
-export const roundToNearest = (value: number, base: number): number => {
-  return Math.round(value / base) * base;
-};
-
-/**
- * Calculates base price based on distance, multiplier, and seat count.
- * Formula: (Distance * Multiplier) / Seats
- * Rounding Rule: nearest multiple of 10.
- */
-export const calculateBasePrice = (
-  distanceKm: number, 
-  multiplier: number = PRICING_MULTIPLIERS.MID,
-  seatCount: number = 1
+export const calculateSegmentPrice = (
+  stops: RouteStop[] | any[],
+  directPrice?: number | null,
+  isFrontSeat: boolean = false
 ): number => {
-  const totalTripCost = distanceKm * multiplier;
-  const pricePerSeat = totalTripCost / Math.max(seatCount, 1);
-  return roundToNearest(pricePerSeat, 10);
-};
+  if (!stops || stops.length === 0) return directPrice ?? 0;
 
-/**
- * Calculates front seat premium.
- * Maximum 10% higher than the base price
- * Rounded to the nearest multiple of 5
- */
-export const calculateFrontSeatPrice = (basePrice: number, percentage: number): number => {
-  // percentage is 0-10 (as in 0% to 10%)
-  const clampedPercentage = Math.min(percentage, 10) / 100;
-  const premium = basePrice * clampedPercentage;
-  return roundToNearest(basePrice + premium, 10);
+  const firstStop = stops[0];
+  const lastStop = stops[stops.length - 1];
+
+  if (!firstStop || !lastStop) return directPrice ?? 0;
+
+  const priceKey = isFrontSeat ? 'frontSeatPriceFromPreviousStop' : 'priceFromPreviousStop';
+  
+  const cumulativeLast = lastStop[priceKey] || 0;
+  const cumulativeFirst = firstStop[priceKey] || 0;
+
+  const calculated = cumulativeLast - cumulativeFirst;
+
+  // We check for directPrice being exactly null or undefined. 
+  // If it's 0, we still respect it as a valid price if it was explicitly provided.
+  return (directPrice !== undefined && directPrice !== null) ? directPrice : calculated;
 };

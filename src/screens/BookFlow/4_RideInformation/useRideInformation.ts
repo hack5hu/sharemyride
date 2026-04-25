@@ -6,6 +6,7 @@ import { useBookRideStore } from '@/store/useBookRideStore';
 
 import { RideData } from '@/screens/BookFlow/3_AvailableRides/types';
 import { calculateDistance } from '@/utils/location';
+import { calculateSegmentPrice } from '@/utils/pricing';
 
 export const useRideInformation = (rideId: string) => {
   const navigation = useNavigation();
@@ -21,7 +22,7 @@ export const useRideInformation = (rideId: string) => {
     if (!rideRaw) return null;
 
     // Mapping logic (same as in useAvailableRides)
-    const totalPrice = rideRaw.stops?.reduce((acc: number, stop: any) => acc + (stop.priceFromPreviousStop || 0), 0) || 0;
+    const totalPrice = calculateSegmentPrice(rideRaw.stops || [], (rideRaw as any).fullJourneyPrice);
     const features: string[] = [];
     if (rideRaw.preferences?.nonSmoking) features.push('noSmoking');
     if (rideRaw.preferences?.womenOnly) features.push('ladiesOnly');

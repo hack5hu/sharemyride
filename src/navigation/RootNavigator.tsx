@@ -28,15 +28,15 @@ import { RequestTypeScreen } from '@/screens/PublishFlow/8_RequestType';
 import { SummaryPublishScreen } from '@/screens/PublishFlow/9_SummaryPublish';
 import { PublishSuccessScreen } from '@/screens/PublishFlow/10_PublishSuccess';
 import { BookRideInfoScreen } from '@/screens/BookFlow/1_BookRideInfo';
-import { RideInformationScreen } from '@/screens/RideInformation';
+import { RideInformationScreen } from '@/screens/BookFlow/4_RideInformation';
 import { BookingConfirmedScreen } from '@/screens/BookingConfirmed';
 import { SettingsScreen } from '@/screens/Settings';
 import { RootStackParamList } from './types.d';
 import { useAuthStore } from '@/store/useAuthStore';
 import { BookDateSelectionScreen } from '@/screens/BookFlow/2_BookDateSelection/BookDateSelection.screen';
 import AvailableRidesScreen from '@/screens/BookFlow/3_AvailableRides';
-import RideRouteMapScreen from '@/screens/BookFlow/4_RideRouteMap';
-import { BookSeatSelectionScreen } from '@/screens/BookFlow/5_BookSeatSelection';
+import RideRouteMapScreen from '@/screens/BookFlow/5_RideRouteMap';
+import { BookSeatSelectionScreen } from '@/screens/BookFlow/6_BookSeatSelection';
 
 const Stack = createStackNavigator<RootStackParamList>();
 

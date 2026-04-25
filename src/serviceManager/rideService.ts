@@ -12,6 +12,13 @@ export interface RouteStop {
   arrivalTime: string;
 }
 
+export interface BookingPayload {
+  requestedSeatIds?: number[];
+  requestedSeats?: string[];
+  sourceStopId: number;
+  destinationStopId: number;
+}
+
 export interface PublishRidePayload {
   vehicleId: string;
   startTime: string;
@@ -96,6 +103,15 @@ const rideService = {
       return response.data;
     } catch (error) {
       console.error('Fetching preferences failed:', error);
+      throw error;
+    }
+  },
+  bookRide: async (rideId: string | number, payload: BookingPayload) => {
+    try {
+      const response = await apiClient.post(API_ENDPOINTS.RIDE.BOOK_RIDE(rideId), payload);
+      return response.data;
+    } catch (error) {
+      console.error('Ride booking failed:', error);
       throw error;
     }
   },

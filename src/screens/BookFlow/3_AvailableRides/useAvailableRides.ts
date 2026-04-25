@@ -4,6 +4,7 @@ import { useLocale } from '@/constants/localization';
 import { RideData } from './types';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import { calculateDistance } from '@/utils/location';
+import { calculateSegmentPrice } from '@/utils/pricing';
 
 export const useAvailableRides = () => {
   const navigation = useNavigation();
@@ -18,8 +19,10 @@ export const useAvailableRides = () => {
     if (!searchResults || searchResults.length === 0) return [];
     
     return searchResults.map((ride, index) => {
-      // Calculate total price from all stops
-      const totalPrice = ride.stops?.reduce((acc: number, stop: any) => acc + (stop.priceFromPreviousStop || 0), 0) || 0;
+      
+      const firstStop = ride.stops?.[0];
+      const lastStop = ride.stops?.[ride.stops?.length - 1];
+      const totalPrice = calculateSegmentPrice(ride.stops || [], ride.fullJourneyPrice);
 
       // Extract features from preferences
       const features: string[] = [];
@@ -29,9 +32,6 @@ export const useAvailableRides = () => {
       if (ride.preferences?.luggageAllowed) features.push('luggageAllowed');
       if (ride.preferences?.manualApproval) features.push('manualApproval');
       if (ride.preferences?.musicPreference) features.push(`music:${ride.preferences.musicPreference}`);
-
-      const firstStop = ride.stops?.[0];
-      const lastStop = ride.stops?.[ride.stops.length - 1];
 
       const pickupDistance = (startLocation && firstStop) 
         ? calculateDistance(startLocation.latitude, startLocation.longitude, firstStop.lat, firstStop.lon)
