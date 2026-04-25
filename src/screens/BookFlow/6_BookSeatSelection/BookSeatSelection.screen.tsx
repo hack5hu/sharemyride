@@ -1,12 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { useTheme } from 'styled-components/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Typography } from '@/components/atoms/Typography';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { CarFloorPlan } from '@/components/organisms/CarFloorPlan/CarFloorPlan';
 import { SeatLegend } from '@/components/molecules/SeatLegend/SeatLegend';
-import { moderateScale, scale, verticalScale } from '@/styles';
+import { verticalScale } from '@/styles';
 import { useBookSeatSelection } from './useBookSeatSelection';
 import { BookSeatSelectionProps } from './types';
 import * as S from './BookSeatSelection.styles';
@@ -28,6 +27,7 @@ export const BookSeatSelectionScreen: React.FC<BookSeatSelectionProps> = ({ rout
     vehicleRegistration,
     departureDate,
     departureTime,
+    isBooking,
   } = useBookSeatSelection(rideId);
 
   const theme = useTheme();
@@ -107,18 +107,22 @@ export const BookSeatSelectionScreen: React.FC<BookSeatSelectionProps> = ({ rout
           </S.SummaryRow>
 
           <S.ConfirmButton
-            disabled={isDisabled}
+            disabled={isDisabled || isBooking}
             onPress={handleConfirm}
             activeOpacity={0.85}
           >
-            <Typography
-              variant="title"
-              size="sm"
-              weight="bold"
-              color={isDisabled ? 'on_surface_variant' : 'on_primary'}
-            >
-              {isDisabled ? 'Pick a Seat to Continue' : 'Book My Seat'}
-            </Typography>
+            {isBooking ? (
+              <ActivityIndicator color={theme.colors.on_primary} />
+            ) : (
+              <Typography
+                variant="title"
+                size="sm"
+                weight="bold"
+                color={isDisabled ? 'on_surface_variant' : 'on_primary'}
+              >
+                {isDisabled ? 'Pick a Seat to Continue' : 'Book My Seat'}
+              </Typography>
+            )}
           </S.ConfirmButton>
         </S.FixedBottom>
       </ScreenShell>

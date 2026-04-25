@@ -129,7 +129,10 @@ export const useBookSeatSelection = (rideId: string) => {
       };
 
       await rideService.bookRide(rideId, payload);
-      navigation.navigate('BookingConfirmed', { rideId });
+      navigation.navigate('BookingConfirmed', { 
+        rideId,
+        bookedSeats: Array.from(selectedSeats)
+      });
     } catch (error) {
       console.error('Booking confirmation failed:', error);
     } finally {
@@ -152,5 +155,6 @@ export const useBookSeatSelection = (rideId: string) => {
     vehicleType,
     departureDate,
     departureTime,
+    isBooking,
   };
 };

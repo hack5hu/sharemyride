@@ -1,3 +1,21 @@
+export const PRICING_MULTIPLIERS = {
+  MIN: 7,
+  MID: 10,
+  MAX: 12,
+};
+
+export const roundToNearest = (value: number, nearest: number = 10) => {
+  return Math.round(value / nearest) * nearest;
+};
+
+export const calculateBasePrice = (distanceKm: number, multiplier: number, divisor: number = 1) => {
+  return roundToNearest((distanceKm * multiplier) / divisor, 10);
+};
+
+export const calculateFrontSeatPrice = (basePrice: number, premiumPercentage: number = 0) => {
+  return roundToNearest(basePrice * (1 + premiumPercentage / 100), 10);
+};
+
 import { RouteStop } from '@/serviceManager/rideService';
 
 /**

@@ -29,7 +29,7 @@ import { SummaryPublishScreen } from '@/screens/PublishFlow/9_SummaryPublish';
 import { PublishSuccessScreen } from '@/screens/PublishFlow/10_PublishSuccess';
 import { BookRideInfoScreen } from '@/screens/BookFlow/1_BookRideInfo';
 import { RideInformationScreen } from '@/screens/BookFlow/4_RideInformation';
-import { BookingConfirmedScreen } from '@/screens/BookingConfirmed';
+import { BookingConfirmedScreen } from '@/screens/BookFlow/7_BookingConfirmed';
 import { SettingsScreen } from '@/screens/Settings';
 import { RootStackParamList } from './types.d';
 import { useAuthStore } from '@/store/useAuthStore';

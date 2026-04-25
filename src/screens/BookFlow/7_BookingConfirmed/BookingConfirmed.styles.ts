@@ -30,13 +30,12 @@ export const BrandTitle = styled.Text`
 
 export const MainContent = styled.ScrollView`
   flex: 1;
-  padding-top: ${verticalScale(50)}px;
   padding-horizontal: ${scale(24)}px;
 `;
 
 export const SuccessArea = styled.View`
   align-items: center;
-  margin-top: ${verticalScale(32)}px;
+  margin-top: ${verticalScale(24)}px;
   margin-bottom: ${verticalScale(40)}px;
 `;
 
@@ -164,4 +163,11 @@ export const SecondaryButton = styled.TouchableOpacity`
   justify-content: center;
   flex-direction: row;
   gap: ${scale(8)}px;
+`;
+export const PlateBadge = styled.View`
+  background-color: ${({ theme }) => theme.colors.surface_container};
+  padding: ${verticalScale(4)}px ${scale(12)}px;
+  border-radius: ${moderateScale(8)}px;
+  align-items: center;
+  justify-content: center;
 `;

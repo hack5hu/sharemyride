@@ -22,15 +22,7 @@ export const BookingConfirmedScreen: React.FC = () => {
   return (
     <ScreenShell
       title="Ride Pool Company"
-      rightElement={
-        <TouchableOpacity onPress={handleMenuPress}>
-          <Avatar
-            size="sm"
-            source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCT8CtvbR50leYL8XxUP9zBxvxtvIdEFm9TMFjFtbTR2ARvypHTHMyAVrQU1IA0JHOzndM_R8TI6h6xaHSxwTrYV2x0LGbf4nZ8iV53UHviumUHqV_x3-p6fCmcY7Q03AV0DTqlrT1XB9yrh-4QV2bb9tGuf4DaJ5cz1Pf5snop55Y4K6MhTj90ZeEjlluxARZaUj1YvC53Lq1zFoO5LlCaKzNf5NF6SHmuRpKR_lThpbz6-On3dm5bZfEL_iXs81RuVLKBTH8JWOCD' }}
-            style={{ borderWidth: 2, borderColor: theme.colors.primary_container + '33' }}
-          />
-        </TouchableOpacity>
-      }
+
     >
       <S.MainContent showsVerticalScrollIndicator={false}>
         {/* Success Header */}
@@ -52,32 +44,34 @@ export const BookingConfirmedScreen: React.FC = () => {
           <S.DriverCard>
             <Avatar size="lg" source={{ uri: rideData.driver.avatar }} />
             <S.DriverMeta>
-              <S.Row style={{ alignItems: 'center', marginBottom: 4, gap: 8 }}>
-                <Typography variant="label" size="xs" weight="bold" color={theme.colors.primary_container} style={{ textTransform: 'uppercase', letterSpacing: 1 }}>
+              {/* <S.Row style={{ alignItems: 'center', marginBottom: verticalScale(4), gap: scale(8) }}> */}
+                {/* <Typography variant="label" size="xs" weight="bold" color={theme.colors.primary_container} style={{ textTransform: 'uppercase', letterSpacing: 1 }}>
                   {t.driverLabel}
-                </Typography>
-                <S.DriverBadge>
+                </Typography> */}
+                {/* <S.DriverBadge>
                   <MaterialIcons name="verified" size={12} color={theme.colors.on_primary_fixed_variant} />
                   <Typography variant="label" size="xxs" weight="bold" color={theme.colors.on_primary_fixed_variant} style={{ marginLeft: 4 }}>
                     {t.verifiedLabel}
                   </Typography>
-                </S.DriverBadge>
-              </S.Row>
-              <S.SuccessTitle style={{ fontSize: 20, marginBottom: 4 }}>{rideData.driver.name}</S.SuccessTitle>
-              <S.Row style={{ alignItems: 'center', gap: 4 }}>
+                </S.DriverBadge> */}
+              {/* </S.Row> */}
+              <Typography variant="title" size="md" weight="bold" style={{ marginBottom: verticalScale(2) }}>
+                {rideData.driver.name}
+              </Typography>
+              <S.Row style={{ alignItems: 'center', gap: scale(4) }}>
                 <MaterialIcons name="star" size={14} color={theme.colors.primary} />
                 <Typography variant="body" size="sm" weight="bold">{rideData.driver.rating}</Typography>
                 <Typography variant="body" size="sm" color={theme.colors.on_surface_variant}>• {rideData.driver.car}</Typography>
               </S.Row>
             </S.DriverMeta>
-            <View style={{ alignItems: 'flex-end' }}>
-              <Typography variant="label" size="xs" weight="bold" color={theme.colors.on_surface_variant} style={{ textTransform: 'uppercase' }}>
+            {/* <S.PlateBadge>
+              <Typography variant="label" size="xxs" weight="bold" color={theme.colors.on_surface_variant} style={{ textTransform: 'uppercase', opacity: 0.7 }}>
                 {t.plateLabel}
               </Typography>
-              <Typography variant="title" size="sm" weight="bold" style={{ letterSpacing: 1.5 }}>
+              <Typography variant="label" size="xs" weight="bold" style={{ letterSpacing: 1 }}>
                 {rideData.driver.plate}
               </Typography>
-            </View>
+            </S.PlateBadge> */}
           </S.DriverCard>
 
           {/* Time & Seat details */}
@@ -93,9 +87,9 @@ export const BookingConfirmedScreen: React.FC = () => {
               </View>
               <View style={{ marginTop: 12 }}>
                 <Typography variant="title" size="md" weight="bold">{rideData.pickupTime}</Typography>
-                <Typography variant="label" size="xs" weight="bold" color={theme.colors.primary_container}>
+                {/* <Typography variant="label" size="xs" weight="bold" color={theme.colors.primary_container}>
                   {t.arrivingIn.replace('{min}', rideData.arrivalInMins.toString())}
-                </Typography>
+                </Typography> */}
               </View>
             </S.DetailCard>
 

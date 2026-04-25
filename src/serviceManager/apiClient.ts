@@ -27,30 +27,7 @@ const processQueue = (error: any, token: string | null = null) => {
 
 apiClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    console.log(`\n🚀 [API Request] ${config.method?.toUpperCase()} ${config.url}`);
-    console.log(`[API Request Headers]`, JSON.stringify(config.headers, null, 2));
-     console.log(
-       `[Token]`,
-       config.headers.Authorization,
-     );
-    
-    if (config.data) {
-      if (config.data instanceof FormData) {
-        // FormData doesn't stringify well, so we log its parts if available
-        console.log(`[API Request FormData] parts:`, (config.data as any).getParts ? (config.data as any).getParts() : 'FormData Instance');
-        
-        // CRITICAL FIX: Delete any explicit Content-Type to allow React Native's native fetch
-        // layer to automatically inject `multipart/form-data; boundary=...` 
-        // A missing boundary causes 500 Internal Server Error in Spring/Tomcat backends.
-        if (config.headers) {
-          delete config.headers['Content-Type'];
-          delete config.headers['content-type'];
-        }
-      } else {
-        console.log(`[API Request Data]`, JSON.stringify(config.data, null, 2));
-      }
-    }
-
+    // 1. Fetch token from Keychain if available
     try {
       const credentials = await Keychain.getGenericPassword({ service: 'auth_token' });
       if (credentials) {
@@ -59,6 +36,32 @@ apiClient.interceptors.request.use(
     } catch (error) {
       console.error('Keychain access error', error);
     }
+
+    // 2. Enhanced Logging
+    console.log('\n---------------------------------------------------------');
+    console.log(`🚀 [API Request] ${config.method?.toUpperCase()} ${config.url}`);
+    
+    if (config.headers.Authorization) {
+      console.log(`🔑 [Token] ${config.headers.Authorization}`);
+    } else {
+      console.log('🔑 [Token] No Authorization token attached');
+    }
+
+    if (config.data) {
+      if (config.data instanceof FormData) {
+        console.log(`📦 [Request FormData]`, (config.data as any).getParts ? (config.data as any).getParts() : 'FormData Instance');
+        
+        // CRITICAL FIX for boundary issues
+        if (config.headers) {
+          delete config.headers['Content-Type'];
+          delete config.headers['content-type'];
+        }
+      } else {
+        console.log(`📦 [Request Data]`, JSON.stringify(config.data, null, 2));
+      }
+    }
+    console.log('---------------------------------------------------------\n');
+
     return config;
   },
   (error) => Promise.reject(error)
