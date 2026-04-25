@@ -1,9 +1,9 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { moderateScale, scale, verticalScale } from '@/styles';
 import { TimelinePoint } from '@/screens/BookFlow/3_AvailableRides/types';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Container = styled.View`
   padding-top: ${verticalScale(6)}px;
@@ -57,7 +57,7 @@ const LeftContent = styled.View`
 const RightContent = styled.View`
   flex: 1;
   padding-left: ${scale(16)}px;
-  padding-bottom: ${verticalScale(32)}px;
+  padding-bottom: ${verticalScale(24)}px;
   align-items: flex-start;
 `;
 
@@ -93,14 +93,15 @@ const InlineActionGroup = styled.View`
 
 const FeedbackText = styled(Typography)`
   position: absolute;
-  top: -${verticalScale(24)}px;
+  top: ${verticalScale(28)}px;
   right: 0;
   background-color: ${({ theme }) => theme.colors.on_surface};
   color: ${({ theme }) => theme.colors.surface};
   padding-horizontal: ${scale(10)}px;
-  padding-vertical: ${verticalScale(4)}px;
+  padding-vertical: ${verticalScale(9)}px;
   border-radius: ${moderateScale(8)}px;
   z-index: 10;
+  width: ${scale(54)}px;
 `;
 
 const LocationWrapper = styled.View`
@@ -124,7 +125,6 @@ const DescriptionText = styled(Typography)`
 `;
 
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const RideTimeline: React.FC<{ 
   points: TimelinePoint[]; 
@@ -178,7 +178,7 @@ export const RideTimeline: React.FC<{
                   <InlineActionGroup>
                     <IconButton onPress={() => handleCopy(point.location, index)}>
                       {copiedIndex === index && <FeedbackText variant="label" size="xs">Copied!</FeedbackText>}
-                      <Icon name={copiedIndex === index ? "check" : "content-copy"} size={moderateScale(16)} color={copiedIndex === index ? theme.colors.primary : theme.colors.on_surface_variant} />
+                      <Icon name={copiedIndex === index ? "check" : "content-copy"} size={moderateScale(16)} />
                     </IconButton>
                     <IconButton onPress={() => onMapPress?.(index)}>
                       <Icon name="map" size={moderateScale(18)} color={theme.colors.primary} />

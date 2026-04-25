@@ -38,7 +38,11 @@ export const usePriceSelection = () => {
   }, [totalDistanceKm, divisor]);
 
   const showPremium = useMemo(() => {
-    return selectedSeatIds.includes('A1') || selectedSeatIds.includes('front-passenger');
+    return (
+      selectedSeatIds.includes('1A') ||
+      selectedSeatIds.includes('A1') ||
+      selectedSeatIds.includes('front-passenger')
+    );
   }, [selectedSeatIds]);
 
   const [price, setPrice] = useState<number>(storePrice || initialPrice);

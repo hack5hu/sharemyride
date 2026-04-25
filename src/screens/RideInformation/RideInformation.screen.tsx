@@ -8,9 +8,10 @@ export const RideInformationScreen: React.FC<RideInformationProps> = ({ route })
     t, 
     handleBack, 
     handleBook, 
+    handleChat,
+    handleDriverProfile,
     handleViewRoute, 
     handleCopyAddress, 
-    handleExternalMapOpen,
     ride 
   } = useRideInformation(route.params.rideId);
 
@@ -20,9 +21,10 @@ export const RideInformationScreen: React.FC<RideInformationProps> = ({ route })
       t={t}
       handleBack={handleBack}
       handleBook={handleBook}
+      handleChat={handleChat}
+      handleDriverProfile={handleDriverProfile}
       handleViewRoute={handleViewRoute}
       handleCopyAddress={handleCopyAddress}
-      handleExternalMapOpen={handleExternalMapOpen}
     />
   );
 };

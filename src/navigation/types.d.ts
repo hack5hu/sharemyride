@@ -66,7 +66,9 @@ export type RootStackParamList = {
       name: string;
       sequence: number;
     }>;
+    initialStopIndex?: number;
   };
+  BookSeatSelection: { rideId: string };
   BookingConfirmed: { rideId: string };
   Settings: undefined;
 };

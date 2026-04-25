@@ -84,7 +84,7 @@ export const useSummaryPublish = () => {
   };
 
   const handlePublish = useCallback(async () => {
-    if (!startLocation || !destinationLocation || !departureDate || !departureTime) return;
+    if (!startLocation || !destinationLocation || !departureDate || !departureTime || !vehicleId) return;
 
     setIsPublishing(true);
     try {
@@ -103,16 +103,23 @@ export const useSummaryPublish = () => {
       // 2. Map Offered Seats
       const offeredSeats = selectedSeatIds.map(id => mapSeatId(id, publishVehicleType));
 
-      // 3. Map Route Stops
+      // 3. Map Route Stops with Cumulative Pricing (Prefix Algo)
       const allStops = [startLocation, ...middleStops, destinationLocation];
+      let cumulativePrice = 0;
+      let cumulativeFrontSeatPrice = 0;
+
       const routeStops: RouteStop[] = allStops.map((stop, index) => {
-        // removed unused prevStop
         const segmentId = index > 0 ? `seg-${index - 1}` : '';
         const segmentPrice = index > 0 ? (Number(segmentPrices[segmentId]) || Math.round(price / (allStops.length - 1))) : 0;
-        const stopLeg = index > 0 && routeDetails?.legs ? routeDetails.legs[index - 1] : null;
         
         // Calculate front seat price for this segment (round to nearest 10)
         const frontSeatSegmentPrice = premiumEnabled ? roundToNearest(segmentPrice * (1 + (premiumPercentage || 0) / 100), 10) : segmentPrice;
+
+        // Update cumulative prices
+        cumulativePrice += segmentPrice;
+        cumulativeFrontSeatPrice += frontSeatSegmentPrice;
+
+        const stopLeg = index > 0 && routeDetails?.legs ? routeDetails.legs[index - 1] : null;
 
         let arrivalTime = startTime;
         if (index > 0 && routeDetails?.legs) {
@@ -129,8 +136,8 @@ export const useSummaryPublish = () => {
           lon: stop.longitude,
           sequence: index + 1,
           distanceFromPreviousStop: stopLeg ? stopLeg.distanceMeters / 1000 : 0,
-          priceFromPreviousStop: segmentPrice,
-          frontSeatPriceFromPreviousStop: frontSeatSegmentPrice,
+          priceFromPreviousStop: cumulativePrice,
+          frontSeatPriceFromPreviousStop: cumulativeFrontSeatPrice,
           arrivalTime,
         };
       });

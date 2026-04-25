@@ -31,7 +31,7 @@ export const Footer = styled.View`
 `;
 
 export const MapButtonGradient = styled(LinearGradient).attrs(({ theme }) => ({
-  colors: [theme.colors.inverse_surface, '#333333'],
+  colors: [theme.colors.primary, theme.colors.primary],
   start: { x: 0, y: 0 },
   end: { x: 1, y: 1 },
 }))`

@@ -81,7 +81,7 @@ const FeatureBadge = styled.View`
 export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void }> = ({ ride, onPress }) => {
   const theme = useTheme();
   const { availableRides: t } = useLocale();
-
+  console.log(ride.price)
   return (
     <CardContainer isSpecial={ride.isFrequentCoRider} onPress={() => onPress?.(ride.id)}>
       {ride.isFrequentCoRider && (

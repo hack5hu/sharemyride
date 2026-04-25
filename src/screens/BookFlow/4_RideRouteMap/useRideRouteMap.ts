@@ -10,7 +10,11 @@ export const useRideRouteMap = (routePath: string, stops: any[]) => {
   }, [navigation]);
 
   const mapData = useMemo(() => {
-    const coordinates = decodePolyline(routePath, 1e5);
+    // If we have a polyline, decode it. Otherwise fall back to connecting stop coords.
+    const decoded = routePath ? decodePolyline(routePath, 1e5) : [];
+    const coordinates = decoded.length > 0
+      ? decoded
+      : stops.map(s => [s.lon, s.lat]);
     const bounds = getBoundingBox(coordinates);
     
     const stopMarkers = stops.map((stop, idx) => ({

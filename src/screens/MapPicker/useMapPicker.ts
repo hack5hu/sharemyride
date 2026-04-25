@@ -126,7 +126,7 @@ export const useMapPicker = () => {
     const locationData = await locationService.reverseGeocode(latitude, longitude);
     
     setSelectedLocation({
-      id: `picked-${Date.now()}`,
+      id: `picked-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
       name: locationData.name || 'Selected Location',
       address: locationData.address || 'Custom coordinates',
       latitude: latitude,

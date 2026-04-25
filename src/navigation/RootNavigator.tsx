@@ -36,6 +36,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { BookDateSelectionScreen } from '@/screens/BookFlow/2_BookDateSelection/BookDateSelection.screen';
 import AvailableRidesScreen from '@/screens/BookFlow/3_AvailableRides';
 import RideRouteMapScreen from '@/screens/BookFlow/4_RideRouteMap';
+import { BookSeatSelectionScreen } from '@/screens/BookFlow/5_BookSeatSelection';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -74,6 +75,7 @@ export const RootNavigator = () => {
           <Stack.Screen name="AvailableRides" component={AvailableRidesScreen} />
           <Stack.Screen name="RideInformation" component={RideInformationScreen} />
           <Stack.Screen name="RideRouteMap" component={RideRouteMapScreen as any} />
+          <Stack.Screen name="BookSeatSelection" component={BookSeatSelectionScreen as any} />
           <Stack.Screen name="BookingConfirmed" component={BookingConfirmedScreen} />
           <Stack.Screen name="ProfileHub" component={ProfileHubScreen} />
           <Stack.Screen name="EditProfile" component={EditProfileScreen} />

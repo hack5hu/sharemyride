@@ -25,18 +25,19 @@ export const useMiddleStops = () => {
   useEffect(() => {
     const handleNewStop = async () => {
       if (updatedLocation && type === 'middleStop' && startLocation) {
+        // Prevent duplicate addition if effect triggers twice before params clear
+        const isAlreadyAdded = middleStops.some(s => s.id === updatedLocation.id);
+        if (isAlreadyAdded) return;
+
         setIsSorting(true);
         try {
-          // Fetch distance from start to this new stop to determine its positio
-          console.log("startLocation", startLocation)
-          console.log("updatedLocation", updatedLocation)
+          // Fetch distance from start to this new stop to determine its position
           const results = await locationService.getDirections(
             startLocation.latitude,
             startLocation.longitude,
             updatedLocation.latitude,
             updatedLocation.longitude
           );
-          console.log("results", JSON.stringify(results, null, 2))
           
           let distanceMeters = 0;
           if (results && results.length > 0) {
@@ -44,7 +45,6 @@ export const useMiddleStops = () => {
             distanceMeters = mainRoute.distance ?? (mainRoute.legs?.reduce((acc, leg) => acc + (leg.distance || 0), 0) || 0);
           }
           
-          console.log("distanceMeters", distanceMeters)
           // Add stop with distance metadata
           const stopWithDistance = {
             ...updatedLocation,
@@ -58,7 +58,6 @@ export const useMiddleStops = () => {
           updatedStops.sort((a, b) => 
             (a as any).distanceFromStart - (b as any).distanceFromStart
           );
-          console.log("updatedStops", updatedStops)
           setMiddleStops(updatedStops);
         } catch (error) {
           console.error('Failed to calculate stop distance:', error);
@@ -66,7 +65,7 @@ export const useMiddleStops = () => {
           setMiddleStops(fallbackStops);
         } finally {
           setIsSorting(false);
-          // Clear params
+          // Clear params immediately to prevent re-trigger
           navigation.setParams({ 
             updatedLocation: undefined,
             type: undefined 

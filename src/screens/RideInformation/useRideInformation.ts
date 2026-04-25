@@ -73,11 +73,19 @@ export const useRideInformation = (rideId: string) => {
         ? Math.round((new Date(lastStop.arrivalTime).getTime() - new Date(firstStop.arrivalTime).getTime()) / (1000 * 60))
         : 0,
       routePath: rideRaw.routePath,
+      departureDate: firstStop?.arrivalTime
+        ? new Date(firstStop.arrivalTime).toLocaleDateString('en-IN', {
+            weekday: 'short',
+            day: 'numeric',
+            month: 'short',
+          })
+        : 'Today',
       rawStops: rideRaw.stops?.map((s: any) => ({
         lat: s.lat,
         lon: s.lon,
         name: s.name,
         sequence: s.sequence,
+        arrivalTime: s.arrivalTime,
       })),
     } as any;
   }, [rideId, searchResults, startLocation, destinationLocation]);
@@ -87,17 +95,24 @@ export const useRideInformation = (rideId: string) => {
   }, [navigation]);
 
   const handleBook = useCallback(() => {
-    (navigation.navigate as any)('SeatSelection', { flow: 'book' });
-  }, [navigation]);
+    (navigation.navigate as any)('BookSeatSelection', { rideId });
+  }, [navigation, rideId]);
+
+  const handleChat = useCallback(() => {
+    (navigation.navigate as any)('ChatDetails', {
+      chatId: ride?.id ?? 'driver',
+      name: ride?.driver.name ?? 'Driver',
+    });
+  }, [navigation, ride]);
 
   const handleViewRoute = useCallback((index?: number) => {
-    if (ride?.routePath) {
-      (navigation.navigate as any)('RideRouteMap', { 
-        routePath: ride.routePath,
-        stops: ride.rawStops,
-        initialStopIndex: index,
-      });
-    }
+    const stops = ride?.rawStops;
+    if (!stops || stops.length === 0) return;
+    (navigation.navigate as any)('RideRouteMap', {
+      routePath: ride?.routePath ?? '',
+      stops,
+      initialStopIndex: index,
+    });
   }, [navigation, ride]);
 
   const handleCopyAddress = useCallback((address: string) => {
@@ -118,10 +133,16 @@ export const useRideInformation = (rideId: string) => {
     });
   }, []);
 
+  const handleDriverProfile = useCallback(() => {
+    (navigation.navigate as any)('ProfileHub', { driverId: ride?.driver?.name });
+  }, [navigation, ride]);
+
   return {
     t,
     handleBack,
     handleBook,
+    handleChat,
+    handleDriverProfile,
     handleViewRoute,
     handleCopyAddress,
     handleExternalMapOpen,

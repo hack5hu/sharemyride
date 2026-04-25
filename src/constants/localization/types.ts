@@ -485,6 +485,12 @@ export interface RideInformationTranslations {
   petsAllowed: string;
   freeWifi: string;
   usbCharging: string;
+  fellowTravelers: string;
+  journeyComfort: string;
+  seatsOpen: string;
+  departure: string;
+  journey: string;
+  seatsLeft: string;
 }
 
 export interface SelectSeatTranslations {

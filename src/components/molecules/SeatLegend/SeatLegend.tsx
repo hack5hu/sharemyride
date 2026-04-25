@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 import styled from 'styled-components/native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 
@@ -15,20 +14,21 @@ const LegendItem = styled.View<{ dimmed?: boolean }>`
   flex-direction: row;
   align-items: center;
   gap: ${scale(6)}px;
-  opacity: ${({ dimmed }) => (dimmed ? 0.4 : 1)};
+  opacity: ${({ dimmed }) => (dimmed ? 0.6 : 1)};
 `;
 
 const LegendDot = styled.View<{ variant: 'selected' | 'available' | 'occupied' }>`
-  width: ${moderateScale(12)}px;
-  height: ${moderateScale(12)}px;
-  border-radius: ${moderateScale(3)}px;
+  width: ${moderateScale(16)}px;
+  height: ${moderateScale(16)}px;
+  border-radius: ${moderateScale(4)}px;
   background-color: ${({ theme, variant }) => {
     if (variant === 'selected') return theme.colors.primary;
     if (variant === 'available') return theme.colors.surface_container_lowest;
-    return theme.colors.surface_container;
+    return theme.colors.outline_variant;
   }};
-  border-width: ${({ variant }) => (variant === 'selected' ? 0 : 1)}px;
-  border-color: ${({ theme }) => theme.colors.outline_variant};
+  border-width: 1px;
+  border-color: ${({ theme, variant }) => 
+    variant === 'available' ? theme.colors.primary + '40' : theme.colors.outline_variant};
 `;
 
 const LegendLabel = styled.Text`
