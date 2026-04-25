@@ -1,6 +1,8 @@
 import styled from 'styled-components/native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 import LinearGradient from 'react-native-linear-gradient';
+import { OlaMap } from '@/components/organisms/OlaMap';
+
 
 export const Container = styled.View`
   margin-top: ${verticalScale(32)}px;
@@ -9,6 +11,20 @@ export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container};
   height: ${verticalScale(192)}px; /* ~48 in tailwind size */
   position: relative;
+`;
+export const MapWrapper = styled.View`
+  flex: 1;
+`;
+
+export const StyledOlaMap = styled(OlaMap)`
+  flex: 1;
+`;
+
+export const ControlsWrapper = styled.View`
+  position: absolute;
+  right: ${moderateScale(12)}px;
+  bottom: ${moderateScale(40)}px;
+  z-index: 10;
 `;
 
 export const MapImage = styled.Image`

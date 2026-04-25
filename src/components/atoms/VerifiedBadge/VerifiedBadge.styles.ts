@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { moderateScale } from '@/styles';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const Container = styled.View<{ size: number }>`
   width: ${({ size }) => moderateScale(size)}px;
@@ -11,3 +12,8 @@ export const Container = styled.View<{ size: number }>`
   align-items: center;
   justify-content: center;
 `;
+
+export const StyledIcon = styled(Icon)`
+  font-variation-settings: 'FILL' 1;
+`;
+

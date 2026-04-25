@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { View } from 'react-native';
 import { scale, verticalScale, moderateScale } from '@/styles';
 
 export const SafeContainer = styled.View`

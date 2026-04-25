@@ -1,4 +1,5 @@
-import { verticalScale, responsiveSize } from '@/styles';
+// removed unused imports
+import { } from '@/styles';
 // import {Dimensions, PixelRatio, Platform} from 'react-native';
 
 // // --- 1. Screen Setup

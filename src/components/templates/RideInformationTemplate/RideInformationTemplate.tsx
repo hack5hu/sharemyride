@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
@@ -27,12 +27,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
     <ScreenShell
       title={t.title}
       onBack={handleBack}
-      rightElement={
-        <Avatar 
-          size="sm" 
-          source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBosbgMtsx58eG37CNBKxBWcOvxxw1YUhUf7Uf_yJDXJx-zc6IBV-7yqhqGrBzQ9WroxNjbmxKvoFxFFB58SXwt2tlEwiiHlAQ8XTCsU9QJFFzwXKwRkbB-005vcDr7JLRNmjuyDE4zLYomxspAa-QsZTQAtEOOJQphmBwUC0UCgbiKo6l_CMm87uFP82wkaxf6qsfvIr6kjH4E1Xmuo6Zf1IK-LZiFUgkjrUwDCJNm_RmwJa6_--bUokVeTZQ31VQtQD6xun7eWASA' }} 
-        />
-      }
+
     >
       <S.ScrollContent showsVerticalScrollIndicator={false}>
         {/* Map Preview */}
@@ -42,12 +37,21 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
             <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant} style={{ marginBottom: 24 }}>
               {t.timelineTitle.toUpperCase()}
             </Typography>
-            <RideTimeline 
-              points={ride.timeline} 
+            <RideTimeline
+              points={ride.timeline}
               showActions={true}
-              onMapPress={handleViewRoute} 
+              onMapPress={handleViewRoute}
               onCopyAddress={handleCopyAddress}
             />
+
+            {ride.totalDuration > 0 && (
+              <S.AmenityRow style={{ marginTop: 16 }}>
+                <Icon name="schedule" size={moderateScale(18)} color={theme.colors.primary} />
+                <Typography variant="label" size="sm" weight="bold">
+                  Estimated Travel Time: {Math.floor(ride.totalDuration / 60)}h {ride.totalDuration % 60}m
+                </Typography>
+              </S.AmenityRow>
+            )}
           </S.SectionCard>
 
           {/* Reorganized Detail Stack (Driver then Car) */}
@@ -77,7 +81,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
             </S.DriverCard>
           </S.DetailStack>
 
-         
+
 
           {/* Rules & Amenities */}
           <S.GridRow>
@@ -104,21 +108,6 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
               )}
             </S.GridItem>
 
-            {/* <S.GridItem>
-              <Typography variant="label" size="xs" weight="bold" color={theme.colors.on_surface_variant} style={{ marginBottom: 4 }}>
-                {t.amenitiesTitle.toUpperCase()}
-              </Typography>
-              {ride.features.includes('ladiesOnly') && (
-                <S.AmenityRow>
-                  <Icon name="female" size={moderateScale(18)} color={theme.colors.tertiary} />
-                  <Typography variant="label" size="sm" weight="bold">Ladies Only</Typography>
-                </S.AmenityRow>
-              )}
-              <S.AmenityRow>
-                <Icon name="verified-user" size={moderateScale(18)} color={theme.colors.primary} />
-                <Typography variant="label" size="sm" weight="bold">Verified Ride</Typography>
-              </S.AmenityRow>
-            </S.GridItem> */}
           </S.GridRow>
 
           {/* Pricing */}

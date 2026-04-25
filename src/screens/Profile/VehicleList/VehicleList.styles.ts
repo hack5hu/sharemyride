@@ -40,3 +40,7 @@ export const FloatingButtonContainer = styled.View`
   left: ${scale(20)}px;
   right: ${scale(20)}px;
 `;
+
+export const Loader = styled.ActivityIndicator`
+  margin-top: ${verticalScale(40)}px;
+`;

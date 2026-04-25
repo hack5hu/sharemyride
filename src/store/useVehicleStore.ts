@@ -29,7 +29,6 @@ interface VehicleState {
 const SEATER_TO_TYPE_ID: Record<string, number> = { '5': 1, '7': 2 };
 const TYPE_ID_TO_SEATER: Record<number, '5' | '7'> = { 1: '5', 2: '7' };
 
-const SEATER_TO_TYPE_STRING: Record<string, string> = { '5': 'CAR_5_SEATER', '7': 'CAR_7_SEATER' };
 const TYPE_STRING_TO_SEATER: Record<string, '5' | '7'> = { 'CAR_5_SEATER': '5', 'CAR_7_SEATER': '7' };
 
 export const useVehicleStore = create<VehicleState>()(

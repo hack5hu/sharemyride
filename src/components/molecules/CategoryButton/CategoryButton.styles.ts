@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { scale, verticalScale, moderateScale } from '@/styles';
+import { scale, moderateScale } from '@/styles';
 
 export const Container = styled.TouchableOpacity<{ isSelected: boolean }>`
   flex-direction: row;

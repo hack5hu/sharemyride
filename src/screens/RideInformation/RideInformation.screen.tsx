@@ -4,7 +4,15 @@ import { useRideInformation } from './useRideInformation';
 import { RideInformationProps } from './types.d';
 
 export const RideInformationScreen: React.FC<RideInformationProps> = ({ route }) => {
-  const { t, handleBack, handleBook, handleViewRoute, handleCopyAddress, ride } = useRideInformation(route.params.rideId);
+  const { 
+    t, 
+    handleBack, 
+    handleBook, 
+    handleViewRoute, 
+    handleCopyAddress, 
+    handleExternalMapOpen,
+    ride 
+  } = useRideInformation(route.params.rideId);
 
   return (
     <RideInformationTemplate
@@ -14,6 +22,7 @@ export const RideInformationScreen: React.FC<RideInformationProps> = ({ route })
       handleBook={handleBook}
       handleViewRoute={handleViewRoute}
       handleCopyAddress={handleCopyAddress}
+      handleExternalMapOpen={handleExternalMapOpen}
     />
   );
 };

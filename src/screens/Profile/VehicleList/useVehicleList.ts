@@ -31,7 +31,7 @@ export const useVehicleList = (): UseVehicleListReturn => {
           onPress: async () => {
             try {
               await removeVehicle(id);
-            } catch (error) {
+            } catch {
               Alert.alert('Error', 'Could not delete vehicle. Please try again.');
             }
           }

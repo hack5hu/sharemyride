@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useMemo } from 'react';
-import { View } from 'react-native';
+// Removed unused View import
+
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { Location } from '@/store/useLocationStore';
@@ -103,7 +104,8 @@ export const BentoMapPreview: React.FC<BentoMapPreviewProps> = ({
 
   return (
     <S.Container>
-      <OlaMap style={{ flex: 1 }}>
+      <S.MapWrapper>
+        <S.StyledOlaMap>
         <Camera 
           ref={cameraRef} 
           center={initialCenter}
@@ -111,7 +113,6 @@ export const BentoMapPreview: React.FC<BentoMapPreviewProps> = ({
         />
         
         <GeoJSONSource id="points-source" data={pointsGeoJSON}>
-           {/* Markers implementation... */}
           <Layer
             id="start-point"
             type="circle"
@@ -146,14 +147,16 @@ export const BentoMapPreview: React.FC<BentoMapPreviewProps> = ({
             }}
           />
         </GeoJSONSource>
-      </OlaMap>
+      </S.StyledOlaMap>
+      </S.MapWrapper>
 
-      <View style={{ position: 'absolute', right: moderateScale(12), bottom: moderateScale(40), zIndex: 10 }}>
+
+      <S.ControlsWrapper>
         <MapControlsFABs
           onZoomIn={() => setZoom(prev => Math.min(prev + 1, 20))}
           onZoomOut={() => setZoom(prev => Math.max(prev - 1, 3))}
         />
-      </View>
+      </S.ControlsWrapper>
 
       <S.GradientOverlay 
         colors={[theme.colors.surface_container, 'transparent']} 

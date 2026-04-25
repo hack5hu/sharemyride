@@ -2,16 +2,13 @@ import { useState, useCallback, useEffect, useMemo } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { locationService } from '@/serviceManager/locationService';
-import { PricingTier } from '@/constants/pricing';
 import { calculateBasePrice, calculateFrontSeatPrice, PRICING_MULTIPLIERS, roundToNearest } from '@/utils/pricing';
 import { SegmentPrice } from '@/components/molecules/SegmentPricingCard';
-import { buildSegments, StopSegment } from '@/components/organisms/SegmentPricingSheet/utils';
+import { StopSegment } from '@/components/organisms/SegmentPricingSheet/utils';
 
 export const usePriceSelection = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const params = route.params as any;
-  const returnTo = params?.returnTo;
 
   const { 
     startLocation, 
@@ -130,7 +127,7 @@ export const usePriceSelection = () => {
     };
 
     fetchFinalRoute();
-  }, [startLocation, destinationLocation, middleStops, routeDetails, setRouteDetails, price, divisor, initialPrice]);
+  }, [startLocation, destinationLocation, middleStops, routeDetails, setRouteDetails, price, divisor, initialPrice, segmentPricesState, storePrice]);
 
   // 2. Pricing Calculations (Premium)
   const premium = useMemo(() => {

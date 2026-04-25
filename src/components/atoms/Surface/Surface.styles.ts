@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
-import { scale, moderateScale } from '@/styles';
-import { SurfaceProps, SurfaceElevation, SurfaceRounded, SurfacePadding } from './types';
+import { SurfaceElevation, SurfaceRounded, SurfacePadding } from './types';
 
 const getElevationStyle = (elevation: SurfaceElevation, theme: any) => {
   switch (elevation) {

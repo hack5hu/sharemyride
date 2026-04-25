@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
-import { View } from 'react-native';
 import { verticalScale, moderateScale } from '@/styles';
+import { Input } from '@/components/atoms/Input';
+import { Typography } from '@/components/atoms/Typography';
 
 export const Container = styled.View`
   flex: 1;
@@ -70,6 +71,20 @@ export const HeroContent = styled.View`
   gap: ${moderateScale(12)}px;
 `;
 
+export const HeroTextWrapper = styled.View`
+  flex: 1;
+  padding: 0;
+`;
+
+export const HeroSubtitle = styled(Typography).attrs({
+  variant: 'body',
+  size: 'sm',
+  color: 'on_primary',
+})`
+  opacity: 0.9;
+  margin-top: 4px;
+`;
+
 export const IconBox = styled.View`
   padding: ${moderateScale(12)}px;
   background-color: ${({ theme }) => theme.colors.primary_container};
@@ -79,6 +94,11 @@ export const IconBox = styled.View`
 export const FormWrapper = styled.View`
   padding: ${moderateScale(20)}px;
   gap: ${moderateScale(24)}px;
+`;
+
+export const InputGroup = styled(FormWrapper)`
+  padding: 0;
+  gap: 16px;
 `;
 
 export const CardSection = styled.View`
@@ -100,6 +120,16 @@ export const SectionHeader = styled.View`
   margin-bottom: ${moderateScale(16)}px;
 `;
 
+export const SectionTitleText = styled(Typography).attrs({
+  variant: 'label',
+  size: 'sm',
+  weight: 'bold',
+  color: 'primary',
+})`
+  letter-spacing: 2px;
+  text-transform: uppercase;
+`;
+
 export const InputGrid = styled.View`
   flex-direction: row;
   gap: ${moderateScale(12)}px;
@@ -117,6 +147,32 @@ export const ColorScroll = styled.ScrollView`
 export const ColorRow = styled.View`
   flex-direction: row;
   align-items: center;
+`;
+
+export const ColorGroup = styled.View`
+  gap: ${moderateScale(8)}px;
+  margin-top: ${verticalScale(16)}px;
+`;
+
+export const PlateInput = styled(Input).attrs({
+  autoCapitalize: 'characters',
+})`
+  font-family: 'monospace';
+  letter-spacing: 4px;
+  font-weight: bold;
+`;
+
+export const CapacityRow = styled(ColorRow)`
+  gap: 12px;
+  padding-top: 10px;
+`;
+
+export const CapacityError = styled(Typography).attrs({
+  variant: 'label',
+  size: 'sm',
+  color: 'error',
+})`
+  margin-left: 4px;
 `;
 
 export const BottomAction = styled.View`

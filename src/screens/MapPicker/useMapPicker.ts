@@ -119,9 +119,6 @@ export const useMapPicker = () => {
     if (currentZoom !== undefined) {
       zoomRef.current = currentZoom;
     }
-
-    // 2. Memoization: Use a cache key based on coordinates rounded to 5 decimal places
-    const cacheKey = `${latitude.toFixed(5)},${longitude.toFixed(5)}`;
     
     setRegion({ latitude, longitude });
     setIsReverseGeocoding(true);

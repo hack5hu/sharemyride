@@ -15,6 +15,17 @@ import {
 } from './DriverProfileSummary.styles';
 import { DriverProfileSummaryProps } from './types.d';
 import { moderateScale } from '@/styles';
+import styled from 'styled-components/native';
+
+const BadgeWrapper = styled.View`
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+`;
+
+const StyledStarIcon = styled(Icon)`
+  font-variation-settings: 'FILL' 1;
+`;
 
 export const DriverProfileSummary: React.FC<DriverProfileSummaryProps> = ({
   name,
@@ -35,9 +46,9 @@ export const DriverProfileSummary: React.FC<DriverProfileSummaryProps> = ({
         <AvatarWrapper>
           <Avatar source={{ uri: avatarUri }} />
           {isVerified && (
-            <View style={{ position: 'absolute', bottom: -2, right: -2 }}>
+            <BadgeWrapper>
                <VerifiedBadge size={16} />
-            </View>
+            </BadgeWrapper>
           )}
         </AvatarWrapper>
         
@@ -46,11 +57,10 @@ export const DriverProfileSummary: React.FC<DriverProfileSummaryProps> = ({
           <RatingRow>
             {rating && (
               <>
-                <Icon 
+                <StyledStarIcon 
                   name="star" 
                   size={moderateScale(12)} 
                   color={iconColor} 
-                  style={{ fontVariationSettings: "'FILL' 1" }}
                 />
                 <SubInfo variant={variant}>{rating} {totalRides ? `• ${totalRides}` : ''}</SubInfo>
               </>
@@ -67,4 +77,4 @@ export const DriverProfileSummary: React.FC<DriverProfileSummaryProps> = ({
   );
 };
 
-import { View } from 'react-native';
+

@@ -1,5 +1,5 @@
 import { verticalScale } from '@/styles';
-import {Platform} from 'react-native';
+// removed unused Platform
 
 export const Elevation = {
   NONE: 0,

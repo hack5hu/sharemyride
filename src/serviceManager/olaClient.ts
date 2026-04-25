@@ -10,7 +10,7 @@ const olaClient = axios.create({
   timeout: 10000,
 });
 
-const pendingRequests = new Map();
+// removed unused pendingRequests
 const cache = new Map<string, { data: any; timestamp: number }>();
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 

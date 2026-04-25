@@ -31,6 +31,7 @@ export interface RideData {
     type: string;
   };
   totalDistance?: number;
+  totalDuration: number;
   routePath?: string;
   rawStops?: Array<{
     lat: number;

@@ -18,7 +18,7 @@ export const Toggle: React.FC<ToggleProps> = ({
       duration: 200,
       useNativeDriver: false,
     }).start();
-  }, [value]);
+  }, [value, animatedValue]);
 
   const handlePress = () => {
     onValueChange?.(!value);

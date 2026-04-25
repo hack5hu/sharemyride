@@ -1,20 +1,9 @@
+import { verticalScale, scale, moderateScale } from '@/styles';
 import styled from 'styled-components/native';
-import { View } from 'react-native';
-import { verticalScale, scale } from '@/styles/responsive';
 
 export const ScreenWrapper = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.surface};
-`;
-
-export const Header = styled.View`
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: ${verticalScale(16)}px ${scale(16)}px;
-  background-color: ${({ theme }) => theme.colors.surface};
-  border-bottom-width: 1px;
-  border-bottom-color: ${({ theme }) => theme.colors.outline_variant}30;
 `;
 
 export const ContentContainer = styled.ScrollView.attrs({
@@ -52,6 +41,20 @@ export const SettingCard = styled.View`
   border-color: ${({ theme }) => theme.colors.outline_variant}30;
 `;
 
+export const SettingInfo = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(16)}px;
+`;
+
+export const IconBox = styled.View<{ color?: string }>`
+  background-color: ${({ theme, color }) => (color || theme.colors.primary) + '20'};
+  padding: ${moderateScale(12)}px;
+  border-radius: ${moderateScale(12)}px;
+`;
+
+export const SettingLabelGroup = styled.View``;
+
 export const EmailCard = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   border-radius: 16px;
@@ -82,6 +85,21 @@ export const ThemeCard = styled.View<{ isCurrent?: boolean }>`
   justify-content: space-between;
 `;
 
+export const ThemeInfo = styled.View`
+  margin-top: ${verticalScale(24)}px;
+`;
+
+export const ThemeToggleRow = styled.View`
+  align-items: flex-end;
+`;
+
+export const ThemeSwitchLabel = styled.View`
+  margin-top: ${verticalScale(24)}px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 export const OptionsList = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container};
   border-radius: 16px;
@@ -97,6 +115,19 @@ export const OptionRow = styled.TouchableOpacity`
   border-bottom-color: ${({ theme }) => theme.colors.outline_variant}20;
 `;
 
+export const AlignmentRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(8)}px;
+`;
+
+export const Badge = styled.View`
+  background-color: ${({ theme }) => theme.colors.secondary_container};
+  padding-horizontal: ${scale(12)}px;
+  padding-vertical: ${verticalScale(4)}px;
+  border-radius: 20px;
+`;
+
 export const LogoutButton = styled.TouchableOpacity`
   width: 100%;
   padding: ${verticalScale(16)}px;
@@ -110,3 +141,9 @@ export const LogoutButton = styled.TouchableOpacity`
   gap: ${scale(12)}px;
   margin-top: ${verticalScale(16)}px;
 `;
+
+export const FooterVersion = styled.View`
+  align-items: center;
+  marginTop: ${verticalScale(24)}px;
+`;
+

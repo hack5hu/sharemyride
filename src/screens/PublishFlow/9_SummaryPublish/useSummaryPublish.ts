@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
-import { useTheme } from 'styled-components/native';
+// removed unused useTheme
 import { getColorLabel } from '@/constants/ride';
 import { useMyRidesStore } from '@/store/useMyRidesStore';
 import rideService, { PublishRidePayload, RouteStop } from '@/serviceManager/rideService';
@@ -106,7 +106,7 @@ export const useSummaryPublish = () => {
       // 3. Map Route Stops
       const allStops = [startLocation, ...middleStops, destinationLocation];
       const routeStops: RouteStop[] = allStops.map((stop, index) => {
-        const prevStop = index > 0 ? allStops[index - 1] : null;
+        // removed unused prevStop
         const segmentId = index > 0 ? `seg-${index - 1}` : '';
         const segmentPrice = index > 0 ? (Number(segmentPrices[segmentId]) || Math.round(price / (allStops.length - 1))) : 0;
         const stopLeg = index > 0 && routeDetails?.legs ? routeDetails.legs[index - 1] : null;
@@ -176,7 +176,12 @@ export const useSummaryPublish = () => {
     clearPublishState,
     selectedRoute,
     removeDraft,
-    editingDraftId
+    editingDraftId,
+    premiumEnabled,
+    premiumPercentage,
+    fullJourneyPrice,
+    frontSeatPrice,
+    vehicleId,
   ]);
 
   const validationError = useMemo(() => {
@@ -242,11 +247,13 @@ export const useSummaryPublish = () => {
     routeDetails, 
     segmentPrices, 
     selectedRoute,
-    publishStore.requestType
+    publishStore.requestType,
+    clearPublishState,
   ]);
 
   const { preferences: storedPrefs } = useTravelPrefStore();
-  const { summaryPublish: st, travelPreferences: pt } = useLocale();
+  const { travelPreferences: pt } = useLocale();
+  // removed unused summaryPublish st
 
   const preferencesData = useMemo(() => {
     if (!storedPrefs) return [];

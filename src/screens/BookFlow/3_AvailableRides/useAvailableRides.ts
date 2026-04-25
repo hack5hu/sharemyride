@@ -74,10 +74,13 @@ export const useAvailableRides = () => {
         isFrequentCoRider: false,
         pickupDistance,
         dropoffDistance,
+        totalDuration: (ride.stops && firstStop?.arrivalTime && lastStop?.arrivalTime)
+          ? Math.round((new Date(lastStop.arrivalTime).getTime() - new Date(firstStop.arrivalTime).getTime()) / (1000 * 60))
+          : 0,
         departureHour: firstStop?.arrivalTime
           ? new Date(firstStop.arrivalTime).getHours()
           : undefined,
-      } as RideData;
+      } as any;
     });
   }, [searchResults, startLocation, destinationLocation]);
 

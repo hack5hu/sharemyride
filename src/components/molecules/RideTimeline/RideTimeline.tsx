@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import styled, { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { moderateScale, scale, verticalScale } from '@/styles';
@@ -79,16 +79,48 @@ const ActionGroup = styled.View`
   margin-top: ${verticalScale(10)}px;
 `;
 
-const ActionButton = styled.TouchableOpacity`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(6)}px;
-  padding-horizontal: ${scale(12)}px;
-  padding-vertical: ${verticalScale(6)}px;
+const IconButton = styled.TouchableOpacity`
+  padding: ${moderateScale(4)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_low};
-  border-radius: ${moderateScale(12)}px;
-  border-width: 1px;
-  border-color: ${({ theme }) => theme.colors.outline_variant}20;
+  border-radius: ${moderateScale(8)}px;
+`;
+
+const InlineActionGroup = styled.View`
+  flex-direction: row;
+  gap: ${scale(8)}px;
+  align-items: center;
+`;
+
+const FeedbackText = styled(Typography)`
+  position: absolute;
+  top: -${verticalScale(24)}px;
+  right: 0;
+  background-color: ${({ theme }) => theme.colors.on_surface};
+  color: ${({ theme }) => theme.colors.surface};
+  padding-horizontal: ${scale(10)}px;
+  padding-vertical: ${verticalScale(4)}px;
+  border-radius: ${moderateScale(8)}px;
+  z-index: 10;
+`;
+
+const LocationWrapper = styled.View`
+  width: 100%;
+`;
+
+const LocationHeaderRow = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex: 1;
+`;
+
+const LocationPressable = styled.TouchableOpacity`
+  flex: 1;
+  padding-right: ${scale(8)}px;
+`;
+
+const DescriptionText = styled(Typography)`
+  margin-vertical: ${verticalScale(2)}px;
 `;
 
 
@@ -97,10 +129,17 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 export const RideTimeline: React.FC<{ 
   points: TimelinePoint[]; 
   showActions?: boolean;
-  onMapPress?: () => void;
+  onMapPress?: (index: number) => void;
   onCopyAddress?: (address: string) => void;
 }> = ({ points, showActions, onMapPress, onCopyAddress }) => {
   const theme = useTheme();
+  const [copiedIndex, setCopiedIndex] = React.useState<number | null>(null);
+
+  const handleCopy = (address: string, index: number) => {
+    onCopyAddress?.(address);
+    setCopiedIndex(index);
+    setTimeout(() => setCopiedIndex(null), 2000);
+  };
 
   return (
     <Container>
@@ -118,35 +157,36 @@ export const RideTimeline: React.FC<{
           </DashColumn>
 
           <RightContent>
-            <LocationInfo>
-              <TouchableOpacity onPress={onMapPress} disabled={!onMapPress} activeOpacity={0.7}>
-                <Typography variant="body" size="md" weight="bold" numberOfLines={2} ellipsizeMode='tail'>
-                  {point.location}
-                </Typography>
-                {point.description && (
-                  <Typography variant="label" size="xs" color={theme.colors.on_surface_variant} numberOfLines={2} ellipsizeMode='tail' style={{ marginVertical: 2 }}>
-                    {point.description}
+            <LocationWrapper>
+              <LocationHeaderRow>
+                <LocationPressable 
+                  onPress={() => onMapPress?.(index)} 
+                  disabled={!onMapPress} 
+                  activeOpacity={0.7} 
+                >
+                  <Typography variant="body" size="md" weight="bold" numberOfLines={2} ellipsizeMode='tail'>
+                    {point.location}
                   </Typography>
-                )}
-              </TouchableOpacity>
+                  {point.description && (
+                    <DescriptionText variant="label" size="xs" color={theme.colors.on_surface_variant} numberOfLines={2} ellipsizeMode='tail'>
+                      {point.description}
+                    </DescriptionText>
+                  )}
+                </LocationPressable>
 
-              {showActions && (
-                <ActionGroup>
-                  <ActionButton onPress={() => onCopyAddress?.(point.location)}>
-                    <Icon name="content-copy" size={moderateScale(14)} color={theme.colors.on_surface_variant} />
-                    <Typography variant="label" size="xs" weight="bold" color={theme.colors.on_surface_variant}>
-                      Copy
-                    </Typography>
-                  </ActionButton>
-                  <ActionButton onPress={onMapPress}>
-                    <Icon name="map-outline" size={moderateScale(16)} color={theme.colors.primary} />
-                    <Typography variant="label" size="xs" weight="bold" color={theme.colors.primary}>
-                      View Map
-                    </Typography>
-                  </ActionButton>
-                </ActionGroup>
-              )}
-            </LocationInfo>
+                {showActions && (index === 0 || index === points.length - 1) && (
+                  <InlineActionGroup>
+                    <IconButton onPress={() => handleCopy(point.location, index)}>
+                      {copiedIndex === index && <FeedbackText variant="label" size="xs">Copied!</FeedbackText>}
+                      <Icon name={copiedIndex === index ? "check" : "content-copy"} size={moderateScale(16)} color={copiedIndex === index ? theme.colors.primary : theme.colors.on_surface_variant} />
+                    </IconButton>
+                    <IconButton onPress={() => onMapPress?.(index)}>
+                      <Icon name="map" size={moderateScale(18)} color={theme.colors.primary} />
+                    </IconButton>
+                  </InlineActionGroup>
+                )}
+              </LocationHeaderRow>
+            </LocationWrapper>
           </RightContent>
         </TimelineRow>
       ))}

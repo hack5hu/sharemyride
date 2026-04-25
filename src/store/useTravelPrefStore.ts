@@ -24,7 +24,7 @@ const DEFAULT_PREFERENCES: TravelPreferenceData = {
 
 export const useTravelPrefStore = create<TravelPrefStore>()(
   persist(
-    (set, get) => ({
+    (set, _get) => ({
       preferences: DEFAULT_PREFERENCES,
       isLoading: false,
 

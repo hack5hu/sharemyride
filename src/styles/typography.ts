@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { responsiveFont, isSmallDevice, selectByWidth } from './responsive';
+import { responsiveFont,  selectByWidth } from './responsive';
 
 const IOS_BASE = 16;
 const ANDROID_BASE = 16;

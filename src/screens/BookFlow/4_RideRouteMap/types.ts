@@ -1,5 +1,3 @@
-import { TimelinePoint } from '../3_AvailableRides/types';
-
 export interface RideRouteMapParams {
   routePath: string;
   stops: Array<{
@@ -8,6 +6,7 @@ export interface RideRouteMapParams {
     name: string;
     sequence: number;
   }>;
+  initialStopIndex?: number;
 }
 
 export interface RideRouteMapProps {

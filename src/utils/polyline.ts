@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 /**
  * Decodes a Google encoded polyline string into an array of [longitude, latitude] coordinates.
  * Compatible with MapLibre/GeoJSON which expects [lng, lat] order.

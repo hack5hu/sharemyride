@@ -128,6 +128,14 @@ export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void
           <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
             {t.perSeatLabel.toUpperCase()}
           </Typography>
+          {ride.totalDuration > 0 && (
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 2 }}>
+              <Icon name="schedule" size={moderateScale(12)} color={theme.colors.primary} />
+              <Typography variant="label" size="xs" weight="bold" color={theme.colors.primary}>
+                {Math.floor(ride.totalDuration / 60)}h {ride.totalDuration % 60}m
+              </Typography>
+            </View>
+          )}
         </PriceGroup>
       </Header>
 

@@ -1,7 +1,6 @@
 import * as Keychain from 'react-native-keychain';
 import apiClient from './apiClient';
 import { API_ENDPOINTS } from '@/constants/apiEndpoints';
-import { Alert } from 'react-native';
 import { useAuthStore } from '@/store/useAuthStore';
 
 export interface LoginResponse {
@@ -61,7 +60,6 @@ export const authService = {
         API_ENDPOINTS.AUTH.VERIFY_OTP,
         { phoneNumber: Number(phoneNumber), otp: Number(otp) }
       );
-      console.log('response', response)
       if (response.data.status === 'success' || response.status === 200) {
         // Store tokens securely
         await Promise.all([

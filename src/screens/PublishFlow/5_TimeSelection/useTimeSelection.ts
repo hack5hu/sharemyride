@@ -86,7 +86,7 @@ export const useTimeSelection = () => {
 
 
   const handleContinuePress = useCallback(() => {
-    const timeString = `${selectedHour.toString().padStart(2, '0')}:${selectedMinute.toString().padStart(2, '0')} ${selectedHour >= 12 ? 'PM' : 'AM'}`;
+    // removed unused timeString
     // Simple 12h conversion would be better but let's keep it consistent
     const hour12 = selectedHour % 12 || 12;
     const ampm = selectedHour >= 12 ? 'PM' : 'AM';

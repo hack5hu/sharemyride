@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { View } from 'react-native';
 import { verticalScale, moderateScale } from '@/styles';
+import { Typography } from '@/components/atoms/Typography';
 
 export const ScreenWrapper = styled.View`
   flex: 1;
@@ -61,6 +61,15 @@ export const HeroContent = styled.View`
   left: ${moderateScale(24)}px;
 `;
 
+export const HeroSubtitle = styled(Typography).attrs({
+  variant: 'body',
+  size: 'sm',
+  color: 'on_primary',
+})`
+  opacity: 0.9;
+  margin-top: 4px;
+`;
+
 export const Section = styled.View`
   padding: ${moderateScale(16)}px;
 `;
@@ -70,6 +79,19 @@ export const SectionTitleWrapper = styled.View`
   align-items: center;
   gap: ${moderateScale(8)}px;
   margin-bottom: ${moderateScale(16)}px;
+`;
+
+export const MusicSectionHeader = styled(SectionTitleWrapper)`
+  margin-top: 24px;
+`;
+
+export const SectionTitleText = styled(Typography).attrs({
+  variant: 'label',
+  size: 'sm',
+  weight: 'bold',
+  color: 'primary',
+})`
+  letter-spacing: 1px;
 `;
 
 export const PreferenceItem = styled.View`
@@ -107,4 +129,20 @@ export const BentoGrid = styled.View`
 export const BottomAction = styled.View`
   padding: ${moderateScale(24)}px;
   background-color: transparent;
+`;
+
+export const TimerItem = styled(PreferenceItem)`
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+`;
+
+export const TimerHeader = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const TimerChipGroup = styled(ChipGroup)`
+  margin-bottom: 0;
+  margin-top: 4px;
 `;

@@ -1,9 +1,8 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Alert } from 'react-native';
+import { Alert, Clipboard, Linking, Platform } from 'react-native';
 import { useLocale } from '@/constants/localization';
 import { useBookRideStore } from '@/store/useBookRideStore';
-// ... existing imports ...
 
 import { RideData } from '@/screens/BookFlow/3_AvailableRides/types';
 import { calculateDistance } from '@/utils/location';
@@ -70,6 +69,9 @@ export const useRideInformation = (rideId: string) => {
         type: (rideRaw.vehicleType || 'CAR_5_SEATER').replace('_', ' ').toLowerCase(),
       },
       totalDistance: rideRaw.stops?.reduce((acc: number, stop: any) => acc + (stop.distanceFromPreviousStop || 0), 0) || 0,
+      totalDuration: (rideRaw.stops && firstStop?.arrivalTime && lastStop?.arrivalTime)
+        ? Math.round((new Date(lastStop.arrivalTime).getTime() - new Date(firstStop.arrivalTime).getTime()) / (1000 * 60))
+        : 0,
       routePath: rideRaw.routePath,
       rawStops: rideRaw.stops?.map((s: any) => ({
         lat: s.lat,
@@ -77,7 +79,7 @@ export const useRideInformation = (rideId: string) => {
         name: s.name,
         sequence: s.sequence,
       })),
-    } as RideData;
+    } as any;
   }, [rideId, searchResults, startLocation, destinationLocation]);
 
   const handleBack = useCallback(() => {
@@ -88,18 +90,32 @@ export const useRideInformation = (rideId: string) => {
     (navigation.navigate as any)('SeatSelection', { flow: 'book' });
   }, [navigation]);
 
-  const handleViewRoute = useCallback(() => {
+  const handleViewRoute = useCallback((index?: number) => {
     if (ride?.routePath) {
       (navigation.navigate as any)('RideRouteMap', { 
         routePath: ride.routePath,
         stops: ride.rawStops,
+        initialStopIndex: index,
       });
     }
   }, [navigation, ride]);
 
   const handleCopyAddress = useCallback((address: string) => {
-    // In a real app, use Clipboard.setString(address)
-    Alert.alert('Address Copied', address);
+    // Address is now handled by the inline UI feedback in RideTimeline
+    Clipboard.setString(address);
+    console.log('Address copied to clipboard:', address);
+  }, []);
+
+  const handleExternalMapOpen = useCallback((lat?: number, lon?: number, label?: string) => {
+    if (!lat || !lon) return;
+    const url = Platform.select({
+      ios: `maps:0,0?q=${label || 'Location'}@${lat},${lon}`,
+      android: `geo:0,0?q=${lat},${lon}(${label || 'Location'})`,
+    }) || `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+    
+    Linking.openURL(url).catch(() => {
+      Alert.alert('Error', 'Could not open map application');
+    });
   }, []);
 
   return {
@@ -108,6 +124,7 @@ export const useRideInformation = (rideId: string) => {
     handleBook,
     handleViewRoute,
     handleCopyAddress,
+    handleExternalMapOpen,
     ride,
   };
 };

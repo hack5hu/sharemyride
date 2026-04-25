@@ -1,5 +1,4 @@
 import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
@@ -21,7 +20,7 @@ export const VehicleListScreen: React.FC = () => {
     onAdd, 
     onBack 
   } = useVehicleList();
-  console.log(vehicles)
+
   return (
     <ScreenShell
       title={t('vehicleDetails.headerTitle')}
@@ -39,7 +38,7 @@ export const VehicleListScreen: React.FC = () => {
           </S.ListHeader>
 
           {isLoading && vehicles.length === 0 ? (
-            <ActivityIndicator size="large" color={theme.colors.primary} style={{ marginTop: 40 }} />
+            <S.Loader size="large" color={theme.colors.primary} />
           ) : vehicles.length > 0 ? (
             <S.ListContainer>
               {vehicles.map((vehicle) => (
