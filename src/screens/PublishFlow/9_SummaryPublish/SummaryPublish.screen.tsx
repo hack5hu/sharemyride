@@ -1,5 +1,5 @@
 import React from 'react';
-import { SummaryPublishTemplate } from '@/components/templates/SummaryPublishTemplate';
+import { SummaryPublishTemplate } from '@/components/templates/SummaryPublishTemplate/SummaryPublishTemplate';
 import { useSummaryPublish } from './useSummaryPublish';
 
 export const SummaryPublishScreen: React.FC = () => {

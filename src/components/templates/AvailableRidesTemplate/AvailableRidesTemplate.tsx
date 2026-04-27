@@ -10,6 +10,7 @@ import { RideData } from '@/screens/BookFlow/3_AvailableRides/types.d';
 import { RideCard } from '@/components/organisms/RideCard/RideCard';
 import { RideFiltersModal } from '@/components/organisms/RideFiltersModal';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { EmptyState } from '@/components/molecules/EmptyState';
 import * as S from './AvailableRidesTemplate.styles';
 
 export interface AvailableRidesTemplateProps {
@@ -138,6 +139,13 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
               ))}
             </S.FilterScrollView>
           </View>
+        }
+        ListEmptyComponent={
+          <EmptyState 
+            icon="search-off"
+            title="No Rides Found"
+            description="We couldn't find any rides for this route and date. Try adjusting your filters or checking a different time."
+          />
         }
         ListFooterComponent={
           isFetchingMore ? (

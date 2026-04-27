@@ -235,7 +235,17 @@ index.ts
 - do not use direct ref to any component or hook or utility. use alias imports.
 - we are making a ride pool company app so try to make it more attractive and user-friendly.
 - make the ui more attractive and user-friendly.
-
+- handle all the edge cases.
+- show smooth transitions for screen navigation.
+- use fade animation for screens where needed.
+- handle errors and show them to the user in a user-friendly way.
+- create one custom loader component from **src/components/atoms**.
+- create a proper logger, for development and production.
+- create a proper notification system for the app.
+- create a proper error boundary for the app.
+- create a proper modal for showing the error or alerts or confirmations.
+- create a custom hook from **src/hooks** for handling the API requests.
+- do not use fetch API, use axios.
 
 ## 🎨 Design System: "Ride Pool Company"
 **Creative North Star**: Editorial Fluidity & Organic Sophistication.

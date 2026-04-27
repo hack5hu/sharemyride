@@ -1,6 +1,28 @@
 import styled from 'styled-components/native';
-import LinearGradient from 'react-native-linear-gradient';
+import { View } from 'react-native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+
+export const Container = styled.View`
+  flex: 1;
+  background-color: ${({ theme }) => theme.colors.surface};
+`;
+
+export const BackgroundBubble = styled(View)<{
+  top?: string;
+  left?: string;
+  bottom?: string;
+  right?: string;
+}>`
+  position: absolute;
+  width: 30%;
+  aspect-ratio: 1;
+  background-color: ${({ theme }) => theme.colors.primary}0D; /* 5% opacity */
+  border-radius: 9999px;
+  top: ${({ top }) => top || 'auto'};
+  left: ${({ left }) => left || 'auto'};
+  bottom: ${({ bottom }) => bottom || 'auto'};
+  right: ${({ right }) => right || 'auto'};
+`;
 
 export const SaveButton = styled.TouchableOpacity`
   padding-right: ${moderateScale(24)}px;
@@ -12,7 +34,6 @@ export const SaveText = styled.Text`
   font-size: ${responsiveFont(14)}px;
   color: ${({ theme }) => theme.colors.on_surface};
 `;
-
 
 export const Content = styled.ScrollView.attrs({
   contentContainerStyle: {
@@ -44,253 +65,4 @@ export const PageSubtitle = styled.Text`
   font-size: ${responsiveFont(14)}px;
   color: ${({ theme }) => theme.colors.on_surface_variant};
   line-height: ${responsiveFont(22)}px;
-`;
-
-/* CARDS */
-export const GlassCard = styled.View<{ hasError?: boolean }>`
-  background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}99`};
-  border-radius: ${moderateScale(20)}px;
-  padding: ${moderateScale(20)}px;
-  border-width: 1px;
-  border-color: ${({ theme, hasError }) => hasError ? theme.colors.error : `${theme.colors.on_surface}1A`};
-  margin-bottom: ${verticalScale(16)}px;
-`;
-
-/* ROUTE SUMMARY */
-export const RouteLayout = styled.View`
-  flex-direction: row;
-  gap: ${scale(12)}px;
-`;
-
-export const TimelineLine = styled.View`
-  align-items: center;
-  padding-top: ${verticalScale(4)}px;
-`;
-
-export const TimelineDotOutline = styled.View`
-  width: ${moderateScale(12)}px;
-  height: ${moderateScale(12)}px;
-  border-radius: 6px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  border-width: 3px;
-  border-color: ${({ theme }) => `${theme.colors.primary_container}4D`};
-`;
-
-export const TimelineDotMiddle = styled.View`
-  width: ${moderateScale(8)}px;
-  height: ${moderateScale(8)}px;
-  border-radius: 4px;
-  background-color: ${({ theme }) => theme.colors.outline};
-`;
-
-export const TimelineTrack = styled(LinearGradient)`
-  width: 2px;
-  height: ${verticalScale(40)}px;
-  margin-vertical: ${verticalScale(4)}px;
-`;
-
-export const TimelineDotEnd = styled.View`
-  width: ${moderateScale(12)}px;
-  height: ${moderateScale(12)}px;
-  border-radius: 6px;
-  border-width: 2px;
-  border-color: ${({ theme }) => theme.colors.primary};
-  background-color: ${({ theme }) => theme.colors.on_primary};
-`;
-
-export const RouteDetailsStack = styled.View`
-  gap: ${verticalScale(24)}px;
-  flex: 1;
-`;
-
-export const RouteStop = styled.View``;
-
-export const StopLabel = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${responsiveFont(10)}px;
-  color: ${({ theme }) => theme.colors.primary};
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  opacity: 0.8;
-  margin-bottom: ${verticalScale(2)}px;
-`;
-
-export const StopLocation = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${responsiveFont(16)}px;
-  color: ${({ theme }) => theme.colors.on_surface};
-`;
-
-/* SECTION HEADER */
-export const SectionHeader = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: ${verticalScale(12)}px;
-`;
-
-export const SectionLabel = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${responsiveFont(10)}px;
-  color: ${({ theme }) => theme.colors.on_surface_variant};
-  text-transform: uppercase;
-  letter-spacing: 1px;
-`;
-
-export const EditButton = styled.TouchableOpacity`
-  padding: ${moderateScale(6)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_low};
-  border-radius: 9999px;
-`;
-
-/* DATE TIME BOX */
-export const DateTimeValue = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${responsiveFont(16)}px;
-  color: ${({ theme }) => theme.colors.on_surface};
-`;
-
-/* GRID ROW */
-export const GridRow = styled.View`
-  flex-direction: row;
-  gap: ${scale(12)}px;
-  margin-bottom: ${verticalScale(16)}px;
-`;
-
-export const GridCard = styled.View`
-  flex: 1;
-  background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}99`};
-  border-radius: ${moderateScale(20)}px;
-  padding: ${moderateScale(16)}px;
-  border-width: 1px;
-  border-color: ${({ theme }) => `${theme.colors.on_surface}1A`};
-`;
-
-export const GridCardValue = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${responsiveFont(15)}px;
-  color: ${({ theme }) => theme.colors.on_surface};
-`;
-
-export const GridCardSub = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-size: ${responsiveFont(12)}px;
-  color: ${({ theme }) => theme.colors.on_surface_variant};
-  margin-top: ${verticalScale(2)}px;
-`;
-
-/* EMPTY STATE */
-export const EmptyStateWrapper = styled.TouchableOpacity`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(8)}px;
-  padding-vertical: ${verticalScale(4)}px;
-`;
-
-export const EmptyStateText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 600;
-  font-size: ${responsiveFont(14)}px;
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
-/* PREFERENCES */
-export const BadgeRow = styled.View`
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: ${scale(8)}px;
-`;
-
-export const PrefBadge = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(6)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_low};
-  padding-horizontal: ${scale(12)}px;
-  padding-vertical: ${verticalScale(6)}px;
-  border-radius: 9999px;
-  border-width: 1px;
-  border-color: ${({ theme }) => `${theme.colors.on_surface}10`};
-`;
-
-export const PrefBadgeText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-size: ${responsiveFont(12)}px;
-  font-weight: 500;
-  color: ${({ theme }) => theme.colors.on_surface_variant};
-`;
-
-/* FLOATING FOOTER */
-export const FloatingFooter = styled.View`
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding-horizontal: ${scale(24)}px;
-  padding-bottom: ${verticalScale(32)}px;
-`;
-
-export const FooterGradient = styled(LinearGradient)`
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: -${verticalScale(48)}px;
-`;
-
-export const PublishButton = styled.TouchableOpacity`
-  width: 100%;
-`;
-
-export const PublishGradient = styled(LinearGradient)`
-  width: 100%;
-  height: ${moderateScale(56)}px;
-  border-radius: ${moderateScale(16)}px;
-  align-items: center;
-  justify-content: center;
-  shadow-color: ${({ theme }) => theme.colors.primary};
-  shadow-offset: 0px 8px;
-  shadow-opacity: 0.25;
-  shadow-radius: 24px;
-  elevation: 8;
-`;
-
-export const PublishText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${responsiveFont(16)}px;
-  color: ${({ theme }) => theme.colors.on_primary};
-`;
-
-export const LoadingIndicator = styled.ActivityIndicator.attrs({
-  size: 'small',
-})``;
-
-export const ErrorText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-size: ${responsiveFont(12)}px;
-  color: ${({ theme }) => theme.colors.error};
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: ${verticalScale(12)}px;
-  padding-horizontal: ${scale(24)}px;
-`;
-
-export const TermsText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-size: ${responsiveFont(11)}px;
-  color: ${({ theme }) => theme.colors.on_surface_variant};
-  text-align: center;
-  margin-top: ${verticalScale(16)}px;
-`;
-
-export const TermsLink = styled.Text`
-  color: ${({ theme }) => theme.colors.primary};
-  text-decoration-line: underline;
-  text-decoration-color: ${({ theme }) => theme.colors.primary_container};
 `;

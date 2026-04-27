@@ -8,6 +8,7 @@ import { MatchedRideBento } from '@/components/organisms/MatchedRideBento';
 import { CompactRideItem } from '@/components/molecules/CompactRideItem';
 import { useMyRides } from './useMyRides';
 import { BottomNav } from '@/components/organisms/BottomNav';
+import { EmptyState } from '@/components/molecules/EmptyState';
 import { verticalScale } from '@/styles';
 
 export const MyRidesScreen: React.FC = () => {
@@ -80,12 +81,10 @@ export const MyRidesScreen: React.FC = () => {
   );
 
   const emptyComponent = (
-    <CompactRideItem 
+    <EmptyState 
+      icon={activeTab === 'upcoming' ? "event-note" : activeTab === 'drafts' ? "edit-note" : activeTab === 'ongoing' ? "play-circle-outline" : "history"}
       title={activeTab === 'upcoming' ? "No upcoming rides" : activeTab === 'drafts' ? "No drafts yet" : activeTab === 'ongoing' ? "No ongoing rides" : "No completed rides"}
-      subtitle={activeTab === 'upcoming' ? "Rides you publish will appear here" : activeTab === 'drafts' ? "Your saved rides will appear here" : activeTab === 'ongoing' ? "Trips in progress will show here" : "Old rides will appear here"}
-      icon={activeTab === 'upcoming' ? "event-note" : activeTab === 'drafts' ? "drafts" : activeTab === 'ongoing' ? "play-circle-outline" : "history"}
-      type={activeTab === 'upcoming' ? "upcoming" : activeTab === 'drafts' ? "draft" : "completed"}
-      onPress={() => {}}
+      description={activeTab === 'upcoming' ? "Rides you publish will appear here" : activeTab === 'drafts' ? "Your saved rides will appear here" : activeTab === 'ongoing' ? "Trips in progress will show here" : "Old rides will appear here"}
     />
   );
 
