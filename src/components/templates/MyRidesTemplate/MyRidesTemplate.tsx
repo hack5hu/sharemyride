@@ -1,26 +1,38 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
+import { FlatList, View, RefreshControl } from 'react-native';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { 
-  ScrollLayout, 
-  Section, 
-  ListWrapper, 
   FABContainer, 
-  FABGradient 
+  FABGradient,
 } from './MyRidesTemplate.styles';
 import { MyRidesTemplateProps } from './types.d';
-import { moderateScale } from '@/styles';
+import { moderateScale, scale, verticalScale } from '@/styles';
 
-export const MyRidesTemplate: React.FC<MyRidesTemplateProps> = ({
+export const MyRidesTemplate: React.FC<MyRidesTemplateProps & { 
+  data: any[], 
+  renderItem: any,
+  ListEmptyComponent?: any,
+  ListHeaderComponent?: any,
+  ListFooterComponent?: any,
+  onRefresh?: () => void,
+  refreshing?: boolean,
+  onEndReached?: () => void,
+  onEndReachedThreshold?: number
+}> = ({
   header,
-  activeTab,
-  upcomingSection,
-  draftsSection,
-  completedSection,
-  highlightsSection,
   onAddPress,
-  bottomNav
+  bottomNav,
+  data,
+  renderItem,
+  ListEmptyComponent,
+  ListHeaderComponent,
+  ListFooterComponent,
+  onRefresh,
+  refreshing = false,
+  onEndReached,
+  onEndReachedThreshold = 0.5,
 }) => {
   const theme = useTheme();
 
@@ -28,24 +40,35 @@ export const MyRidesTemplate: React.FC<MyRidesTemplateProps> = ({
     <ScreenShell>
       {header}
       
-      <ScrollLayout>
-        {activeTab === 'upcoming' && (
-          <>
-            {highlightsSection && (
-              <Section>{highlightsSection}</Section>
-            )}
-            <Section>{upcomingSection}</Section>
-          </>
-        )}
-        
-        {activeTab === 'drafts' && (
-          <Section>{draftsSection}</Section>
-        )}
-        
-        {activeTab === 'completed' && (
-          <Section>{completedSection}</Section>
-        )}
-      </ScrollLayout>
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingHorizontal: scale(24),
+          paddingBottom: verticalScale(120),
+        }}
+        ListHeaderComponent={
+          <View>
+            {ListHeaderComponent}
+          </View>
+        }
+        ListEmptyComponent={ListEmptyComponent}
+        ListFooterComponent={ListFooterComponent}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={onEndReachedThreshold}
+        refreshControl={
+          onRefresh ? (
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={theme.colors.primary}
+              colors={[theme.colors.primary]}
+            />
+          ) : undefined
+        }
+      />
 
       <FABContainer onPress={onAddPress} activeOpacity={0.8}>
         <FABGradient colors={[theme.colors.primary, theme.colors.primary_container]} start={{x: 0, y: 0}} end={{x: 1, y: 1}}>

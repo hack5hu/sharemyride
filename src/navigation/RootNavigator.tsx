@@ -12,7 +12,7 @@ import { VehicleDetailsScreen } from '@/screens/Profile/VehicleDetails';
 import { ChatListScreen } from '@/screens/Chat/ChatList';
 import { ChatDetailsScreen } from '@/screens/Chat/ChatDetails';
 import { SelectLocationScreen } from '@/screens/Chat/SelectLocation';
-import { MyRidesScreen } from '@/screens/Chat/MyRides';
+import { MyRidesScreen } from '@/screens/MyRideFlow/1_MyRides';
 import { RideDetailsScreen } from '@/screens/RideDetails';
 import { CancelRideScreen } from '@/screens/CancelRide';
 import { LocationSelectionScreen } from '@/screens/PublishFlow/1_LocationSelection';

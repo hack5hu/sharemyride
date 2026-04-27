@@ -255,7 +255,8 @@ export const SearchText = styled.Text`
 /* Recent Searches */
 export const SectionContainer = styled.View`
   padding-horizontal: ${scale(24)}px;
-  margin-top: ${verticalScale(40)}px;
+  margin-top: ${verticalScale(32)}px;
+  padding-bottom: ${verticalScale(32)}px;
 `;
 
 export const SectionHeader = styled.View`
@@ -282,18 +283,25 @@ export const ClearButtonText = styled.Text`
 
 export const RecentItem = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.colors.surface_container_low};
-  border-radius: ${moderateScale(20)}px;
+  border-radius: ${moderateScale(24)}px;
   padding: ${moderateScale(16)}px;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: ${verticalScale(12)}px;
+  margin-bottom: ${verticalScale(16)}px;
+  border-width: 1.5px;
+  border-color: ${({ theme }) => `${theme.colors.outline_variant}10`};
+  shadow-color: #000;
+  shadow-offset: 0px 2px;
+  shadow-opacity: 0.03;
+  shadow-radius: 8px;
+  elevation: 2;
 `;
 
 export const RecentLeft = styled.View`
+  flex: 1;
   flex-direction: row;
   align-items: center;
-  gap: ${scale(16)}px;
+  gap: ${scale(14)}px;
 `;
 
 export const RecentIconBox = styled.View<{ colorType?: 'primary' | 'tertiary' | 'secondary' }>`
@@ -305,7 +313,10 @@ export const RecentIconBox = styled.View<{ colorType?: 'primary' | 'tertiary' | 
   justify-content: center;
 `;
 
-export const RecentContent = styled.View``;
+export const RecentContent = styled.View`
+  flex: 1;
+  padding-right: ${scale(8)}px;
+`;
 
 export const RecentTitle = styled.Text`
   font-family: 'Plus Jakarta Sans';

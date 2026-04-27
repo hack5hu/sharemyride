@@ -24,5 +24,6 @@ export const API_ENDPOINTS = {
     CANCEL_RIDE: (id: string | number) => `/ride/${id}`,
     BOOK_RIDE: (id: string | number) => `/ride/${id}/book`,
     PREFERENCES: '/ride/preferences',
+    PUBLISHED: '/ride/published',
   },
 } as const;

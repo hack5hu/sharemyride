@@ -8,35 +8,45 @@ export interface DraftRide {
   state: any; // This will hold the entire publish store state
 }
 
+export type RideCategory = 'UPCOMING' | 'COMPLETED' | 'ONGOING';
+
+interface CategoryState {
+  data: any[];
+  page: number;
+  hasMore: boolean;
+}
+
 interface MyRidesState {
   drafts: DraftRide[];
-  upcoming: any[];
-  past: any[];
+  rides: Record<RideCategory, CategoryState>;
 
   // Actions
   addDraft: (state: any, id?: string | null) => void;
   removeDraft: (id: string) => void;
   clearDrafts: () => void;
-  setUpcoming: (rides: any[]) => void;
-  setPast: (rides: any[]) => void;
+  setRides: (category: RideCategory, rides: any[], hasMore: boolean) => void;
+  appendRides: (category: RideCategory, rides: any[], hasMore: boolean) => void;
+  setPage: (category: RideCategory, page: number) => void;
+  resetCategory: (category: RideCategory) => void;
 }
 
 export const useMyRidesStore = create<MyRidesState>()(
   persist(
     (set) => ({
       drafts: [],
-      upcoming: [],
-      past: [],
+      rides: {
+        UPCOMING: { data: [], page: 0, hasMore: true },
+        COMPLETED: { data: [], page: 0, hasMore: true },
+        ONGOING: { data: [], page: 0, hasMore: true },
+      },
 
       addDraft: (state, id) => set((prevState) => {
         if (id) {
-          // Update existing
           const newDrafts = prevState.drafts.map((d) => 
             d.id === id ? { ...d, state, savedAt: new Date().toISOString() } : d
           );
           return { drafts: newDrafts };
         } else {
-          // Add new
           return {
             drafts: [
               {
@@ -55,12 +65,43 @@ export const useMyRidesStore = create<MyRidesState>()(
       })),
 
       clearDrafts: () => set({ drafts: [] }),
-      setUpcoming: (upcoming) => set({ upcoming }),
-      setPast: (past) => set({ past }),
+
+      setRides: (category, data, hasMore) => set((state) => ({
+        rides: {
+          ...state.rides,
+          [category]: { ...state.rides[category], data, hasMore, page: 0 }
+        }
+      })),
+
+      appendRides: (category, data, hasMore) => set((state) => ({
+        rides: {
+          ...state.rides,
+          [category]: { 
+            ...state.rides[category], 
+            data: [...state.rides[category].data, ...data], 
+            hasMore 
+          }
+        }
+      })),
+
+      setPage: (category, page) => set((state) => ({
+        rides: {
+          ...state.rides,
+          [category]: { ...state.rides[category], page }
+        }
+      })),
+
+      resetCategory: (category) => set((state) => ({
+        rides: {
+          ...state.rides,
+          [category]: { data: [], page: 0, hasMore: true }
+        }
+      })),
     }),
     {
       name: 'my-rides-storage',
       storage: createJSONStorage(() => mmkvStorage),
+      partialize: (state) => ({ drafts: state.drafts }), // Only persist drafts
     }
   )
 );

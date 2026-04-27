@@ -1,4 +1,4 @@
-export type MyRidesTab = 'upcoming' | 'drafts' | 'completed';
+export type MyRidesTab = 'upcoming' | 'ongoing' | 'drafts' | 'completed';
 
 export interface MyRidesHeaderProps {
   activeTab: MyRidesTab;

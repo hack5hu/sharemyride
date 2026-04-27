@@ -74,6 +74,15 @@ export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({ navigation
     </View>
   );
 
+  const renderMessageItem = ({ item }: { item: any }) => (
+    <MessageBubble 
+      content={item.type === 'map' ? renderMapContent(item.locationData!) : item.text}
+      timestamp={item.timestamp}
+      isSender={item.isSender}
+      status={item.status}
+    />
+  );
+
   return (
     <>
       <ChatDetailsTemplate
@@ -87,28 +96,16 @@ export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({ navigation
             onReportPress={() => setIsReportModalVisible(true)}
           />
         }
-        content={
-          <>
-            <RideSummaryCard 
-              pickup="Downtown Commercial Hub"
-              dropoff="Tech Park East Wing"
-              date="Oct 24"
-              time="10:45 AM"
-              type="Upcoming Ride"
-            />
-            
-            <View style={{ gap: verticalScale(8) }}>
-              {messages.map((msg) => (
-                <MessageBubble 
-                  key={msg.id}
-                  content={msg.type === 'map' ? renderMapContent(msg.locationData!) : msg.text}
-                  timestamp={msg.timestamp}
-                  isSender={msg.isSender}
-                  status={msg.status}
-                />
-              ))}
-            </View>
-          </>
+        data={messages}
+        renderItem={renderMessageItem}
+        ListHeaderComponent={
+          <RideSummaryCard 
+            pickup="Downtown Commercial Hub"
+            dropoff="Tech Park East Wing"
+            date="Oct 24"
+            time="10:45 AM"
+            type="Upcoming Ride"
+          />
         }
         input={
           <ChatInputSection 

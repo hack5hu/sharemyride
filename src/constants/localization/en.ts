@@ -413,6 +413,7 @@ export const en: Translations = {
     destinationLabel: 'Destination',
     destinationPlaceholder: 'Enter destination',
     travelDateLabel: 'Travel Date',
+    datePlaceholder: 'Select Date',
     peopleCountLabel: 'Number of People',
     peopleCountSub: 'Including yourself',
     searchButton: 'Search Available Rides',

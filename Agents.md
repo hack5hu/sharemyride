@@ -36,9 +36,9 @@ ComponentName/
 6. **Design Fidelity**: DO NOT change the design of screens provided by the user. Keep the visual "Ride Pool Company" aesthetics exactly as specified.
 7. **Validation**: Always implement field validation from the start to ensure data integrity.
 
-# Agent Rule Guide: ShareMyRide
 
-⸻
+
+# Agent Rule Guide: ShareMyRide
 
 
 # 📜 Development Rules & Best Practices
@@ -81,6 +81,7 @@ index.ts
 - spacing
 - font sizes
 - Use only **design tokens from theme**.
+- don't use the React Native Components and use the custom made components from **src/components/atoms**, **src/components/molecules**, **src/components/organisms**.
 
 ---
 
@@ -222,6 +223,19 @@ index.ts
 - Keep all the text in baseLocalization.
 - Use:
 - call all the text from baseLocalization
+
+## 🚀 18. keep in mind
+- do the memorization for every file if needed
+- use the components from **src/components/atoms**, **src/components/molecules**, **src/components/organisms**. and dont use react native components directly.
+- always responsive
+- never write a seprate button or component or hook if already exists in **src/components/atoms**, **src/components/molecules**, **src/components/organisms**.
+- and always remember, we are building a ride pool company application, so keep the design consistent with the brand.
+- do not cross more than 200 lines 
+- do not use hardcoded values anywhere. use theme or baseLocalization.
+- do not use direct ref to any component or hook or utility. use alias imports.
+- we are making a ride pool company app so try to make it more attractive and user-friendly.
+- make the ui more attractive and user-friendly.
+
 
 ## 🎨 Design System: "Ride Pool Company"
 **Creative North Star**: Editorial Fluidity & Organic Sophistication.

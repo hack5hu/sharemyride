@@ -49,6 +49,8 @@ export interface SearchRidePayload {
   travelDate: string; // "YYYY-MM-DDTHH:mm:ss"
   requestedSeats: number;
   radiusInMeters: number; // e.g. 10000 for 10km
+  page?: number;
+  size?: number;
 }
 
 const rideService = {
@@ -70,12 +72,12 @@ const rideService = {
       throw error;
     }
   },
-  getMyRides: async () => {
+  getMyRides: async (filter: 'UPCOMING' | 'COMPLETED' | 'ONGOING', page: number = 0, size: number = 15) => {
     try {
-      const response = await apiClient.get(API_ENDPOINTS.RIDE.GET_MY_RIDES);
+      const response = await apiClient.get(`${API_ENDPOINTS.RIDE.PUBLISHED}?filter=${filter}&page=${page}&size=${size}`);
       return response.data;
     } catch (error) {
-      console.error('Fetching my rides failed:', error);
+      console.error(`Fetching ${filter} rides failed:`, error);
       throw error;
     }
   },

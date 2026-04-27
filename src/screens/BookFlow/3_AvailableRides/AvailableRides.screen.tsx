@@ -7,6 +7,9 @@ export const AvailableRidesScreen: React.FC = () => {
     mockRides,
     selectedFilters,
     isFilterModalOpen,
+    isFetchingMore,
+    handleLoadMore,
+    hasMore,
     toggleFilter,
     handleOpenFilters,
     handleCloseFilters,
@@ -20,7 +23,7 @@ export const AvailableRidesScreen: React.FC = () => {
   return (
     <AvailableRidesTemplate
       rides={mockRides}
-        selectedFilters={selectedFilters}
+      selectedFilters={selectedFilters}
       onFilterToggle={toggleFilter}
       onOpenFilters={handleOpenFilters}
       isFilterModalOpen={isFilterModalOpen}
@@ -28,6 +31,9 @@ export const AvailableRidesScreen: React.FC = () => {
       onClearFilters={handleClearFilters}
       onApplyFilters={handleApplyFilters}
       onRideSelect={handleRideSelect}
+      onLoadMore={handleLoadMore}
+      isFetchingMore={isFetchingMore}
+      hasMore={hasMore}
       t={t}
       ft={ft}
     />

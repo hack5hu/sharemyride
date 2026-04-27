@@ -1,34 +1,52 @@
 import React from 'react';
-import { Platform, KeyboardAvoidingView, View } from 'react-native';
+import { Platform, KeyboardAvoidingView, View, FlatList } from 'react-native';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { 
   ScreenContainer, 
-  ScrollLayout, 
 } from './ChatDetailsTemplate.styles';
-import { ChatDetailsTemplateProps } from './types.d';
+import { moderateScale } from '@/styles';
+
+export interface ChatDetailsTemplateProps {
+  header: React.ReactNode;
+  data: any[];
+  renderItem: any;
+  ListHeaderComponent?: React.ReactNode;
+  input: React.ReactNode;
+}
 
 export const ChatDetailsTemplate: React.FC<ChatDetailsTemplateProps> = ({
   header,
-  content,
+  data,
+  renderItem,
+  ListHeaderComponent,
   input,
 }) => {
   return (
     <ScreenShell>
       <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{ flex: 1 }}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
       >
         <ScreenContainer>
           {header}
           
-          <ScrollLayout 
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
             keyboardDismissMode="on-drag"
-          >
-            {content}
-          </ScrollLayout>
+            contentContainerStyle={{
+              padding: moderateScale(24),
+              gap: moderateScale(12)
+            }}
+            ListHeaderComponent={
+              <View style={{ marginBottom: moderateScale(16) }}>
+                {ListHeaderComponent}
+              </View>
+            }
+          />
 
           <View>
             {input}

@@ -9,10 +9,68 @@ import { calculateSegmentPrice } from '@/utils/pricing';
 export const useAvailableRides = () => {
   const navigation = useNavigation();
   const { availableRides: t, rideFilters: ft } = useLocale();
-  const { searchResults, startLocation, destinationLocation } = useBookRideStore();
-
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+
+  const { 
+    searchResults, 
+    startLocation, 
+    destinationLocation, 
+    travelDate,
+    seatCount,
+    currentPage, 
+    setCurrentPage, 
+    hasMore, 
+    appendSearchResults 
+  } = useBookRideStore();
+
+  const handleLoadMore = useCallback(async () => {
+    if (isFetchingMore || !hasMore || !startLocation || !destinationLocation || !travelDate) return;
+
+    try {
+      setIsFetchingMore(true);
+      const nextPage = currentPage + 1;
+      
+      const payload = {
+        sourceLat: startLocation.latitude,
+        sourceLon: startLocation.longitude,
+        destLat: destinationLocation.latitude,
+        destLon: destinationLocation.longitude,
+        travelDate: travelDate, // travelDate in store is already ISO or formatted
+        requestedSeats: seatCount,
+        radiusInMeters: 10000,
+        page: nextPage,
+        size: 15,
+      };
+
+      const response = await rideService.searchRides(payload);
+      const newRides = response.data || response;
+      
+      if (newRides && newRides.length > 0) {
+        appendSearchResults(newRides);
+        setCurrentPage(nextPage);
+      } else {
+        // No more rides
+        // hasMore is already updated via appendSearchResults inside store logic 
+        // if store logic checks length. (I updated store to check length >= 15)
+      }
+    } catch (error) {
+      console.error('Failed to load more rides:', error);
+    } finally {
+      setIsFetchingMore(false);
+    }
+  }, [
+    isFetchingMore, 
+    hasMore, 
+    currentPage, 
+    startLocation, 
+    destinationLocation, 
+    travelDate, 
+    seatCount, 
+    appendSearchResults, 
+    setCurrentPage
+  ]);
 
   // Safely map backend data to RideData if present, otherwise an empty array.
   const mappedRides: RideData[] = useMemo(() => {
@@ -188,6 +246,7 @@ export const useAvailableRides = () => {
     mockRides: filteredRides,
     selectedFilters,
     isFilterModalOpen,
+    isFetchingMore,
     toggleFilter,
     handleOpenFilters,
     handleCloseFilters,
@@ -196,6 +255,8 @@ export const useAvailableRides = () => {
     handleBack,
     handleRideSelect,
     handleViewDetails,
+    handleLoadMore,
+    hasMore,
     t,
     ft,
   };

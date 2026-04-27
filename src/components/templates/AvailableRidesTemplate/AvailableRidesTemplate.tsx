@@ -1,12 +1,12 @@
 import React from 'react';
 import { format } from 'date-fns';
 import { useTheme } from 'styled-components/native';
-import { View } from 'react-native';
+import { View, FlatList, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Typography } from '@/components/atoms/Typography';
-import { moderateScale, verticalScale } from '@/styles';
+import { moderateScale, verticalScale, scale } from '@/styles';
 import { useBookRideStore } from '@/store/useBookRideStore';
-import { RideData } from '@/screens/AvailableRides/types.d';
+import { RideData } from '@/screens/BookFlow/3_AvailableRides/types.d';
 import { RideCard } from '@/components/organisms/RideCard/RideCard';
 import { RideFiltersModal } from '@/components/organisms/RideFiltersModal';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
@@ -22,6 +22,9 @@ export interface AvailableRidesTemplateProps {
   onClearFilters: () => void;
   onApplyFilters: (filters: string[]) => void;
   onRideSelect: (id: string) => void;
+  onLoadMore?: () => void;
+  isFetchingMore?: boolean;
+  hasMore?: boolean;
   t: any;
   ft: any;
 }
@@ -36,6 +39,9 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
   onClearFilters,
   onApplyFilters,
   onRideSelect,
+  onLoadMore,
+  isFetchingMore,
+  hasMore,
   t,
   ft,
 }) => {
@@ -49,83 +55,100 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
     { id: 'ladiesOnly', label: t.ladiesOnlyFilterLabel || 'Ladies Only', icon: 'pregnant-woman' },
     { id: 'topRated', label: t.topRatedFilterLabel || 'Top Rated', icon: 'star' },
     { id: 'petFriendly', label: 'Pets', icon: 'pets' },
-
-
   ];
 
   const { startLocation, destinationLocation, seatCount, travelDate } = useBookRideStore();
 
   return (
     <ScreenShell title={t.heroTitle} onBack>
-      <S.ScrollContent showsVerticalScrollIndicator={false}>
-        <S.SearchSummaryCard>
-          <S.SummaryRow>
-            <S.RouteInfo>
-              <S.LocationVertical>
-                <Icon name="circle" size={moderateScale(14)} color={theme.colors.primary} style={{ fontVariationSettings: "'FILL' 1" }} />
-                <S.Line />
-                <Icon name="location-on" size={moderateScale(14)} color={theme.colors.tertiary} style={{ fontVariationSettings: "'FILL' 1" }} />
-              </S.LocationVertical>
-              <View style={{ flex: 1, gap: verticalScale(32) }}>
-                <Typography variant="title" size="sm" weight="bold" numberOfLines={1} ellipsizeMode="tail">
-                  {startLocation?.address || 'Unknown'}
-                </Typography>
-                <Typography variant="title" size="sm" weight="bold" numberOfLines={1} ellipsizeMode="tail" color={theme.colors.on_surface_variant}>
-                  {destinationLocation?.address || 'Unknown'}
-                </Typography>
-              </View>
-            </S.RouteInfo>
-            <S.FilterButton onPress={onOpenFilters}>
-              <Icon name="tune" size={moderateScale(24)} color={theme.colors.on_surface_variant} />
-            </S.FilterButton>
-          </S.SummaryRow>
+      <FlatList
+        data={rides}
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+        onEndReached={onLoadMore}
+        onEndReachedThreshold={0.5}
+        contentContainerStyle={{
+          paddingHorizontal: scale(24),
+          paddingBottom: verticalScale(100),
+        }}
+        renderItem={({ item }) => (
+          <RideCard ride={item} onPress={onRideSelect} />
+        )}
+        ListHeaderComponent={
+          <View>
+            <S.SearchSummaryCard>
+              <S.SummaryRow>
+                <S.RouteInfo>
+                  <S.LocationVertical>
+                    <Icon name="circle" size={moderateScale(14)} color={theme.colors.primary} style={{ fontVariationSettings: "'FILL' 1" }} />
+                    <S.Line />
+                    <Icon name="location-on" size={moderateScale(14)} color={theme.colors.tertiary} style={{ fontVariationSettings: "'FILL' 1" }} />
+                  </S.LocationVertical>
+                  <View style={{ flex: 1, gap: verticalScale(32) }}>
+                    <Typography variant="title" size="sm" weight="bold" numberOfLines={1} ellipsizeMode="tail">
+                      {startLocation?.address || 'Unknown'}
+                    </Typography>
+                    <Typography variant="title" size="sm" weight="bold" numberOfLines={1} ellipsizeMode="tail" color={theme.colors.on_surface_variant}>
+                      {destinationLocation?.address || 'Unknown'}
+                    </Typography>
+                  </View>
+                </S.RouteInfo>
+                <S.FilterButton onPress={onOpenFilters}>
+                  <Icon name="tune" size={moderateScale(24)} color={theme.colors.on_surface_variant} />
+                </S.FilterButton>
+              </S.SummaryRow>
 
-          <S.SummaryFooter>
-            <S.FooterItem>
-              <Icon name="calendar-today" size={moderateScale(20)} color={theme.colors.on_surface_variant} />
-              <Typography variant="label" size="md" weight="bold" color={theme.colors.on_surface_variant}>
-                {travelDate ? format(new Date(travelDate), 'EEE, dd MMM') : t.searchSummaryDate}
-              </Typography>
-            </S.FooterItem>
-            <S.FooterItem>
-              <Icon name="group" size={moderateScale(20)} color={theme.colors.on_surface_variant} />
-              <Typography variant="label" size="md" weight="bold" color={theme.colors.on_surface_variant}>
-                {t.searchSummarySeats.replace('{count}', seatCount.toString())}
-              </Typography>
-            </S.FooterItem>
-          </S.SummaryFooter>
-        </S.SearchSummaryCard>
+              <S.SummaryFooter>
+                <S.FooterItem>
+                  <Icon name="calendar-today" size={moderateScale(20)} color={theme.colors.on_surface_variant} />
+                  <Typography variant="label" size="md" weight="bold" color={theme.colors.on_surface_variant}>
+                    {travelDate ? format(new Date(travelDate), 'EEE, dd MMM') : t.searchSummaryDate}
+                  </Typography>
+                </S.FooterItem>
+                <S.FooterItem>
+                  <Icon name="group" size={moderateScale(20)} color={theme.colors.on_surface_variant} />
+                  <Typography variant="label" size="md" weight="bold" color={theme.colors.on_surface_variant}>
+                    {t.searchSummarySeats.replace('{count}', seatCount.toString())}
+                  </Typography>
+                </S.FooterItem>
+              </S.SummaryFooter>
+            </S.SearchSummaryCard>
 
-        <S.FilterScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {filters.map((filter) => (
-            <S.FilterChip
-              key={filter.id}
-              active={selectedFilters.includes(filter.id)}
-              onPress={() => onFilterToggle(filter.id)}
-            >
-              <Icon
-                name={filter.icon}
-                size={moderateScale(18)}
-                color={selectedFilters.includes(filter.id) ? theme.colors.on_primary : theme.colors.on_surface_variant}
-              />
-              <Typography
-                variant="label"
-                size="md"
-                weight="bold"
-                color={selectedFilters.includes(filter.id) ? theme.colors.on_primary : theme.colors.on_surface_variant}
-              >
-                {filter.label}
-              </Typography>
-            </S.FilterChip>
-          ))}
-        </S.FilterScrollView>
-
-        {rides.map((ride) => (
-          <RideCard key={ride.id} ride={ride} onPress={onRideSelect} />
-        ))}
-
-        <View style={{ height: verticalScale(32) }} />
-      </S.ScrollContent>
+            <S.FilterScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {filters.map((filter) => (
+                <S.FilterChip
+                  key={filter.id}
+                  active={selectedFilters.includes(filter.id)}
+                  onPress={() => onFilterToggle(filter.id)}
+                >
+                  <Icon
+                    name={filter.icon}
+                    size={moderateScale(18)}
+                    color={selectedFilters.includes(filter.id) ? theme.colors.on_primary : theme.colors.on_surface_variant}
+                  />
+                  <Typography
+                    variant="label"
+                    size="md"
+                    weight="bold"
+                    color={selectedFilters.includes(filter.id) ? theme.colors.on_primary : theme.colors.on_surface_variant}
+                  >
+                    {filter.label}
+                  </Typography>
+                </S.FilterChip>
+              ))}
+            </S.FilterScrollView>
+          </View>
+        }
+        ListFooterComponent={
+          isFetchingMore ? (
+            <View style={{ paddingVertical: verticalScale(20) }}>
+              <ActivityIndicator color={theme.colors.primary} />
+            </View>
+          ) : (
+            <View style={{ height: verticalScale(32) }} />
+          )
+        }
+      />
 
       <RideFiltersModal
         isOpen={isFilterModalOpen}
