@@ -465,6 +465,10 @@ export interface SettingsTranslations {
   rideReceipts: string;
   accountSecurity: string;
   logout: string;
+  logoutConfirmTitle: string;
+  logoutConfirmMessage: string;
+  logoutConfirmButton: string;
+  logoutConfirmCancel: string;
   version: string;
 }
 

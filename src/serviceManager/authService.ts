@@ -84,17 +84,15 @@ export const authService = {
     }
   },
 
-  /**
-   * Securely logout the user by notifying the backend and clearing local session.
-   */
   logout: async (): Promise<void> => {
     try {
       const refreshCreds = await Keychain.getGenericPassword({ service: 'refresh_token' });
       
       if (refreshCreds) {
-        // Call logout API with refresh_token as a query parameter
-        // apiClient automatically handles the Bearer token in the header
-        await apiClient.post(`${API_ENDPOINTS.AUTH.LOGOUT}?refresh_token=${refreshCreds.password}`);
+        // Call logout API with refreshToken in body
+        await apiClient.post(API_ENDPOINTS.AUTH.LOGOUT, {
+          refreshToken: refreshCreds.password
+        });
       }
     } catch (error) {
       console.error('Logout API error', error);
@@ -104,16 +102,18 @@ export const authService = {
     }
   },
 
-  /**
-   * Clear all local session data from Keychain and Store.
-   */
   clearLocalSession: async (): Promise<void> => {
-    await Promise.all([
-      Keychain.resetGenericPassword({ service: 'auth_token' }),
-      Keychain.resetGenericPassword({ service: 'refresh_token' }),
-    ]);
+    try {
+      await Promise.all([
+        Keychain.resetGenericPassword({ service: 'auth_token' }),
+        Keychain.resetGenericPassword({ service: 'refresh_token' }),
+      ]);
+    } catch (e) {
+      console.error('Failed to reset keychain', e);
+    }
     // Reset Zustand store
-    useAuthStore.getState().logout();
+    const { resetAllStores } = require('@/store/resetAllStores');
+    resetAllStores();
   },
 
   resendOtp: async (

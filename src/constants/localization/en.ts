@@ -535,6 +535,10 @@ export const en: Translations = {
     rideReceipts: 'Ride Receipts',
     accountSecurity: 'Account Security',
     logout: 'Logout',
+    logoutConfirmTitle: 'Logout',
+    logoutConfirmMessage: 'Are you sure you want to logout? You will need to login again to access your account.',
+    logoutConfirmButton: 'Logout',
+    logoutConfirmCancel: 'Stay logged in',
     version: 'App Version 4.12.0-Verdant',
   },
   myRides: {

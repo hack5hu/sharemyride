@@ -6,6 +6,7 @@ import { Typography } from '@/components/atoms/Typography';
 import { Toggle } from '@/components/atoms/Toggle';
 import { Checkbox } from '@/components/atoms/Checkbox';
 import { useSettings } from './useSettings';
+import { ConfirmationModal } from '@/components/organisms/ConfirmationModal';
 import * as S from './Settings.styles';
 
 export const SettingsScreen: React.FC = () => {
@@ -26,6 +27,10 @@ export const SettingsScreen: React.FC = () => {
     accountSecurity,
     goBack,
     handleLogout,
+    isLogoutModalVisible,
+    isLoggingOut,
+    showLogoutConfirmation,
+    hideLogoutConfirmation,
   } = useSettings();
 
   return (
@@ -144,7 +149,7 @@ export const SettingsScreen: React.FC = () => {
 
           {/* Account Section */}
           <S.AccountSection>
-            <S.LogoutButton onPress={handleLogout}>
+            <S.LogoutButton onPress={showLogoutConfirmation}>
               <Icon name="logout" size={24} color={theme.colors.error} />
               <Typography variant="title" size="sm" weight="bold" color={theme.colors.error}>
                 {t.logout}
@@ -160,6 +165,18 @@ export const SettingsScreen: React.FC = () => {
 
         </S.ContentContainer>
       </ScreenShell>
+
+      <ConfirmationModal
+        isVisible={isLogoutModalVisible}
+        onClose={hideLogoutConfirmation}
+        onConfirm={handleLogout}
+        title={t.logoutConfirmTitle}
+        message={t.logoutConfirmMessage}
+        confirmLabel={t.logoutConfirmButton}
+        cancelLabel={t.logoutConfirmCancel}
+        type="danger"
+        isLoading={isLoggingOut}
+      />
     </S.ScreenWrapper>
   );
 };

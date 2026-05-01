@@ -129,7 +129,10 @@ export const LocationValueText = styled.Text<{ hasValue?: boolean }>`
   font-family: 'Plus Jakarta Sans';
   font-weight: 600;
   font-size: ${responsiveFont(14)}px;
-  color: ${({ theme, hasValue }) => hasValue ? theme.colors.on_surface : `${theme.colors.on_surface_variant}80`};
+  color: ${({ theme, hasValue }) =>
+    hasValue
+      ? theme.colors.on_surface
+      : `${theme.colors.on_surface_variant}80`};
 `;
 
 /* Grid Details */
@@ -180,7 +183,10 @@ export const StepperContainer = styled.View`
   margin-bottom: ${verticalScale(24)}px;
 `;
 
-export const StepperLabelGroup = styled.View``;
+export const StepperLabelGroup = styled.View`
+  flex: 1;
+  margin-right: ${scale(12)}px;
+`;
 
 export const StepperLabel = styled.Text`
   font-family: 'Plus Jakarta Sans';
@@ -211,7 +217,8 @@ export const StepperButton = styled.TouchableOpacity<{ primary?: boolean }>`
   width: ${moderateScale(32)}px;
   height: ${moderateScale(32)}px;
   border-radius: ${moderateScale(16)}px;
-  background-color: ${({ theme, primary }) => primary ? theme.colors.primary : theme.colors.surface_container_high};
+  background-color: ${({ theme, primary }) =>
+    primary ? theme.colors.primary : theme.colors.surface_container_high};
   align-items: center;
   justify-content: center;
 `;
@@ -304,7 +311,9 @@ export const RecentLeft = styled.View`
   gap: ${scale(14)}px;
 `;
 
-export const RecentIconBox = styled.View<{ colorType?: 'primary' | 'tertiary' | 'secondary' }>`
+export const RecentIconBox = styled.View<{
+  colorType?: 'primary' | 'tertiary' | 'secondary';
+}>`
   width: ${moderateScale(48)}px;
   height: ${moderateScale(48)}px;
   border-radius: ${moderateScale(24)}px;
@@ -390,7 +399,8 @@ export const NavItem = styled.TouchableOpacity<{ active?: boolean }>`
   justify-content: center;
   padding-horizontal: ${scale(16)}px;
   padding-vertical: ${verticalScale(8)}px;
-  background-color: ${({ theme, active }) => active ? theme.colors.surface_container_high : 'transparent'};
+  background-color: ${({ theme, active }) =>
+    active ? theme.colors.surface_container_high : 'transparent'};
   border-radius: ${moderateScale(16)}px;
 `;
 
@@ -398,6 +408,7 @@ export const NavText = styled.Text<{ active?: boolean }>`
   font-family: 'Plus Jakarta Sans';
   font-size: ${responsiveFont(11)}px;
   font-weight: 600;
-  color: ${({ theme, active }) => active ? theme.colors.primary : theme.colors.on_surface_variant};
+  color: ${({ theme, active }) =>
+    active ? theme.colors.primary : theme.colors.on_surface_variant};
   margin-top: ${verticalScale(2)}px;
 `;

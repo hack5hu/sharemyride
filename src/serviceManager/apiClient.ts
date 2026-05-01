@@ -43,7 +43,7 @@ apiClient.interceptors.request.use(
     console.log(`🚀 [API Request] ${config.method?.toUpperCase()} ${config.url}`);
 
     if (config.headers.Authorization) {
-      console.log(`🔑 [Token] Attached`);
+      console.log(`${config.headers.Authorization}`);
     } else {
       console.log('🔑 [Token] No Authorization token attached');
     }
@@ -136,7 +136,8 @@ apiClient.interceptors.response.use(
         await Keychain.resetGenericPassword({ service: 'refresh_token' });
         
         // Trigger global logout in Zustand store
-        useAuthStore.getState().logout();
+        const { resetAllStores } = require('@/store/resetAllStores');
+        resetAllStores();
         
         return Promise.reject(refreshError);
       } finally {

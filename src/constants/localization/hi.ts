@@ -520,6 +520,10 @@ export const hi: Translations = {
     rideReceipts: 'सवारी रसीदें',
     accountSecurity: 'खाते की सुरक्षा',
     logout: 'लॉगआउट',
+    logoutConfirmTitle: 'लॉगआउट',
+    logoutConfirmMessage: 'क्या आप वाकई लॉगआउट करना चाहते हैं? आपको अपने खाते तक पहुँचने के लिए फिर से लॉग इन करना होगा।',
+    logoutConfirmButton: 'लॉगआउट',
+    logoutConfirmCancel: 'लॉग इन रहें',
     version: 'ऐप संस्करण 4.12.0-वर्डेंट',
   },
   myRides: {

@@ -159,7 +159,7 @@ export const BookRideInfoScreen: React.FC = () => {
               <StepperContainer>
                 <StepperLabelGroup>
                   <StepperLabel>{t.peopleCountLabel}</StepperLabel>
-                  <StepperSub>{t.peopleCountSub}</StepperSub>
+                  <StepperSub numberOfLines={2}>{t.peopleCountSub}</StepperSub>
                 </StepperLabelGroup>
 
                 <StepperControls>
