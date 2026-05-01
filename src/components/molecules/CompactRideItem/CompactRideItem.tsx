@@ -26,9 +26,21 @@ export const CompactRideItem: React.FC<CompactRideItemProps> = ({
 }) => {
   const theme = useTheme();
   const isDraft = type === 'draft';
-  const displayIcon = isDraft ? 'edit-note' : icon;
-  const displayIconColor = isDraft ? theme.colors.outline : theme.colors.on_secondary_fixed_variant;
-  const displayIconBg = isDraft ? theme.colors.surface_container_highest : theme.colors.secondary_fixed;
+  const isCompleted = type === 'completed';
+  
+  const displayIcon = isDraft ? 'edit-note' : isCompleted ? 'check' : icon;
+  
+  const displayIconColor = isDraft 
+    ? theme.colors.on_surface_variant 
+    : isCompleted 
+      ? theme.colors.primary 
+      : theme.colors.on_secondary_fixed_variant;
+      
+  const displayIconBg = isDraft 
+    ? theme.colors.surface_container_high 
+    : isCompleted 
+      ? theme.colors.primary + '15' 
+      : theme.colors.secondary_fixed;
 
   return (
     <Container isDraft={isDraft} onPress={onPress} activeOpacity={0.7}>

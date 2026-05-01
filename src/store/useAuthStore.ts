@@ -36,14 +36,22 @@ export const useAuthStore = create<AuthState>()(
       },
       
       initialize: async () => {
-        const credentials = await Keychain.getGenericPassword({ service: 'auth_token' });
-        if (credentials) {
-          set({ 
-            token: credentials.password, 
-            isAuthenticated: true 
-          });
-          // Background fetch profile after token is loaded
-          useAuthStore.getState().fetchProfile();
+        try {
+          const credentials = await Keychain.getGenericPassword({ service: 'auth_token' });
+          if (credentials && credentials.password) {
+            set({ 
+              token: credentials.password, 
+              isAuthenticated: true 
+            });
+            // Background fetch profile after token is loaded
+            useAuthStore.getState().fetchProfile();
+          } else {
+            // No valid token in keychain — clear any stale persisted state
+            set({ user: null, token: null, isAuthenticated: false, isProfileCompleted: false });
+          }
+        } catch (e) {
+          // Keychain error: treat as logged out
+          set({ user: null, token: null, isAuthenticated: false, isProfileCompleted: false });
         }
       },
 

@@ -1,10 +1,11 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import * as Keychain from 'react-native-keychain';
 import { API_ENDPOINTS, BASE_URL } from '@/constants/apiEndpoints';
+import { useAuthStore } from '@/store/useAuthStore';
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000,
+  timeout: 100000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -27,22 +28,22 @@ const processQueue = (error: any, token: string | null = null) => {
 
 apiClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    // 1. Fetch token from Keychain if available
+    // 1. Attach auth token from Keychain
     try {
-      const credentials = await Keychain.getGenericPassword({ service: 'auth_token' });
-      if (credentials) {
-        config.headers.Authorization = `Bearer ${credentials.password}`;
+      const authCreds = await Keychain.getGenericPassword({ service: 'auth_token' });
+      if (authCreds && authCreds.password) {
+        config.headers.Authorization = `Bearer ${authCreds.password}`;
       }
     } catch (error) {
-      console.error('Keychain access error', error);
+      console.error('[Keychain] Failed to read auth token:', error);
     }
 
-    // 2. Enhanced Logging
+    // 2. Request logging
     console.log('\n---------------------------------------------------------');
     console.log(`🚀 [API Request] ${config.method?.toUpperCase()} ${config.url}`);
-    
+
     if (config.headers.Authorization) {
-      console.log(`🔑 [Token] ${config.headers.Authorization}`);
+      console.log(`🔑 [Token] Attached`);
     } else {
       console.log('🔑 [Token] No Authorization token attached');
     }
@@ -50,8 +51,7 @@ apiClient.interceptors.request.use(
     if (config.data) {
       if (config.data instanceof FormData) {
         console.log(`📦 [Request FormData]`, (config.data as any).getParts ? (config.data as any).getParts() : 'FormData Instance');
-        
-        // CRITICAL FIX for boundary issues
+        // Remove Content-Type to let the browser set the correct multipart boundary
         if (config.headers) {
           delete config.headers['Content-Type'];
           delete config.headers['content-type'];
@@ -64,7 +64,7 @@ apiClient.interceptors.request.use(
 
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 apiClient.interceptors.response.use(
@@ -108,8 +108,12 @@ apiClient.interceptors.response.use(
           refreshToken: refreshCreds.password,
         });
 
-        const { token, refreshToken: newRefreshToken } = response.data;
+        const payload = response.data.data || response.data;
+        const { token, refreshToken: newRefreshToken } = payload;
         
+        if (!token) {
+          throw new Error('Refresh response did not contain a valid token');
+        }
 
         // Save new token to Keychain (Single source of truth)
         await Keychain.setGenericPassword('auth_token', token, { service: 'auth_token' });
@@ -123,10 +127,17 @@ apiClient.interceptors.response.use(
 
         processQueue(null, token);
         return apiClient(originalRequest);
-      } catch (refreshError) {
+      } catch (refreshError: any) {
         processQueue(refreshError, null);
-        // Note: Global logout should be triggered here if needed. 
-        // We'll leave the higher-level error handling to the caller or a global listener.
+        console.error(`❌ [Token Refresh Error]`, refreshError?.response?.data || refreshError?.message);
+        
+        // Clear tokens on refresh failure to prevent infinite loops
+        await Keychain.resetGenericPassword({ service: 'auth_token' });
+        await Keychain.resetGenericPassword({ service: 'refresh_token' });
+        
+        // Trigger global logout in Zustand store
+        useAuthStore.getState().logout();
+        
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;

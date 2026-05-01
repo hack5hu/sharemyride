@@ -3,7 +3,7 @@ import { useLocale } from '@/constants/localization';
 export const useTranslation = () => {
   const translations = useLocale();
 
-  const t = (path: string) => {
+  const t = (path: string, params?: Record<string, string | number>) => {
     const keys = path.split('.');
     let result: any = translations;
     
@@ -15,7 +15,14 @@ export const useTranslation = () => {
       }
     }
     
-    return result as string;
+    let text = result as string;
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        text = text.replace(`{${key}}`, String(value));
+      });
+    }
+    
+    return text;
   };
 
   return { t, translations };

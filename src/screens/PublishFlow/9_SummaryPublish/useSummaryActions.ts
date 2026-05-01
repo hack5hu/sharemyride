@@ -53,7 +53,7 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
 
   const handlePublish = useCallback(async () => {
     if (!startLocation || !destinationLocation || !departureDate || !departureTime || !vehicleId) return;
-
+    console.log('hello')
     setIsPublishing(true);
     try {
       const dateObj = new Date(departureDate);

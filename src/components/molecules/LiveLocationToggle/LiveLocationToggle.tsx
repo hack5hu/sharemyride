@@ -12,12 +12,14 @@ import {
 } from './LiveLocationToggle.styles';
 import { LiveLocationToggleProps } from './types.d';
 import { moderateScale } from '@/styles';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export const LiveLocationToggle: React.FC<LiveLocationToggleProps> = ({ 
   isEnabled, 
   onToggle 
 }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   return (
     <Container>
@@ -30,8 +32,8 @@ export const LiveLocationToggle: React.FC<LiveLocationToggleProps> = ({
           />
         </IconBox>
         <TextContent>
-          <PrimaryText>Share Live Location</PrimaryText>
-          <Description>Let others track your arrival</Description>
+          <PrimaryText>{t('common.shareLiveLocation')}</PrimaryText>
+          <Description>{t('common.letOthersTrack')}</Description>
         </TextContent>
       </LeftSection>
       

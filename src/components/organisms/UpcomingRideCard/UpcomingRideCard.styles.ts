@@ -11,6 +11,7 @@ export const Container = styled.TouchableOpacity`
   shadow-opacity: 0.06;
   shadow-radius: 24px;
   elevation: 4;
+  margin-bottom: ${verticalScale(16)}px;
 `;
 
 export const CardHeader = styled.View`

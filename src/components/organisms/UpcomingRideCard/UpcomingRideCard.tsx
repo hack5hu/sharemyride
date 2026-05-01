@@ -43,13 +43,6 @@ export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = ({
           />
           <TimerText>{timerLabel}</TimerText>
         </TimerBadge>
-        <MoreButton onPress={onMorePress}>
-          <Icon 
-            name="more-vert" 
-            size={moderateScale(20)} 
-            color={theme.colors.outline_variant} 
-          />
-        </MoreButton>
       </CardHeader>
 
       <ProfileWrapper>

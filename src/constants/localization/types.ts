@@ -1,5 +1,31 @@
 export type Locale = 'en' | 'hi';
 
+export interface CommonTranslations {
+  save: string;
+  edit: string;
+  cancel: string;
+  done: string;
+  loading: string;
+  next: string;
+  back: string;
+  delete: string;
+  clear: string;
+  confirm: string;
+  copied: string;
+  pickup: string;
+  dropoff: string;
+  stop: string;
+  vehicle: string;
+  pricing: string;
+  preferences: string;
+  date: string;
+  time: string;
+  seat: string;
+  seats: string;
+  shareLiveLocation: string;
+  letOthersTrack: string;
+}
+
 export interface LoginTranslations {
   brandName: string;
   brandTagline: string;
@@ -348,6 +374,7 @@ export interface SummaryPublishTranslations {
 }
 
 export interface Translations {
+  common: CommonTranslations;
   login: LoginTranslations;
   otpVerification: OtpVerificationTranslations;
   profileSetup: ProfileSetupTranslations;
@@ -378,6 +405,43 @@ export interface Translations {
   selectSeat: SelectSeatTranslations;
   bookingConfirmed: BookingConfirmedTranslations;
   settings: SettingsTranslations;
+  myRides: MyRidesTranslations;
+}
+
+export interface MyRidesTranslations {
+  headerTitle: string;
+  upcomingTab: string;
+  draftsTab: string;
+  completedTab: string;
+  newRequestsTitle: string;
+  pendingBadge: string;
+  publishedRidesTitle: string;
+  draftsTitle: string;
+  clearAll: string;
+  completedTitle: string;
+  noUpcomingTitle: string;
+  noUpcomingDesc: string;
+  noDraftsTitle: string;
+  noDraftsDesc: string;
+  noCompletedTitle: string;
+  noCompletedDesc: string;
+  cancelRideAlertTitle: string;
+  cancelRideAlertMsg: string;
+  cancelRideConfirm: string;
+  cancelRideKeep: string;
+  deleteDraftAlertTitle: string;
+  deleteDraftAlertMsg: string;
+  deleteDraftConfirm: string;
+  deleteDraftCancel: string;
+  clearDraftsAlertTitle: string;
+  clearDraftsAlertMsg: string;
+  clearDraftsConfirm: string;
+  clearDraftsCancel: string;
+  startsIn: string;
+  started: string;
+  mins: string;
+  hours: string;
+  completedStatus: string;
 }
 
 export interface SettingsTranslations {
@@ -428,6 +492,7 @@ export interface BookRideInfoTranslations {
   destinationLabel: string;
   destinationPlaceholder: string;
   travelDateLabel: string;
+  datePlaceholder: string;
   peopleCountLabel: string;
   peopleCountSub: string;
   searchButton: string;
@@ -435,6 +500,7 @@ export interface BookRideInfoTranslations {
   clearAll: string;
   trustTitle: string;
   trustDescription: string;
+  brandName: string;
 }
 
 export interface AvailableRidesTranslations {
@@ -506,9 +572,12 @@ export interface SelectSeatTranslations {
   legendBooked: string;
   summaryTitle: string;
   seatSelected: string;
+  seatsSelected: string;
   totalPayable: string;
   continue: string;
   holdTimerNote: string;
+  pickSeatToContinue: string;
+  bookMySeat: string;
 }
 
 export interface PublishSuccessTranslations {
@@ -543,6 +612,8 @@ export interface PriceSelectionTranslations {
   cancelButton: string;
   saveButton: string;
   frontSeatProjectedLabel: string;
+  perSeatPrice: string;
+  basePlusPremium: string;
 }
 
 export interface SeatSelectionTranslations {

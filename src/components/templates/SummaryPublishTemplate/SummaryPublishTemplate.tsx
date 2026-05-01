@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
-import { useLocale } from '@/constants/localization';
+import { useTranslation } from '@/hooks/useTranslation';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import * as S from './SummaryPublishTemplate.styles';
 import { RouteSummary } from './components/RouteSummary';
@@ -65,15 +65,16 @@ export const SummaryPublishTemplate: React.FC<SummaryPublishTemplateProps> = ({
   validationError,
   canPublish = true,
 }) => {
-  const { summaryPublish: t } = useLocale();
+  const { t, translations } = useTranslation();
+  const st = translations.summaryPublish;
 
   return (
     <ScreenShell
-      title={t.headerTitle}
+      title={st.headerTitle}
       onBack={onBack}
       rightElement={
         <S.SaveButton onPress={onSave} activeOpacity={0.7}>
-          <S.SaveText>Save</S.SaveText>
+          <S.SaveText>{t('common.save')}</S.SaveText>
         </S.SaveButton>
       }
     >
@@ -81,17 +82,17 @@ export const SummaryPublishTemplate: React.FC<SummaryPublishTemplateProps> = ({
 
       <S.Content>
         <S.TitleSection>
-          <S.PageTitle>{t.title}</S.PageTitle>
-          <S.PageSubtitle>{t.subtitle}</S.PageSubtitle>
+          <S.PageTitle>{st.title}</S.PageTitle>
+          <S.PageSubtitle>{st.subtitle}</S.PageSubtitle>
         </S.TitleSection>
 
-        <RouteSummary route={route} onEdit={onEditRoute} t={t} />
+        <RouteSummary route={route} onEdit={onEditRoute} t={st} />
 
         <ScheduleCard 
           schedule={schedule} 
           validationError={validationError} 
           onEdit={onEditSchedule} 
-          t={t} 
+          t={st} 
         />
 
         <GridInfo 
@@ -99,13 +100,13 @@ export const SummaryPublishTemplate: React.FC<SummaryPublishTemplateProps> = ({
           pricing={pricing} 
           onEditVehicle={onEditVehicle} 
           onEditSeats={onEditSeats} 
-          t={t} 
+          t={st} 
         />
 
         <PreferenceList 
           preferences={preferences} 
           onEdit={onEditPreferences} 
-          t={t} 
+          t={st} 
         />
       </S.Content>
 
@@ -114,7 +115,7 @@ export const SummaryPublishTemplate: React.FC<SummaryPublishTemplateProps> = ({
         validationError={validationError} 
         canPublish={canPublish} 
         onPublish={onPublish} 
-        t={t} 
+        t={st} 
       />
     </ScreenShell>
   );

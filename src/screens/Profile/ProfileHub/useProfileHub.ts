@@ -34,15 +34,7 @@ export const useProfileHub = () => {
     navigation.navigate('Settings');
   }, [navigation]);
 
-  const handleLogout = useCallback(() => {
-    console.log('Logging out...');
-    // Add logout logic here
-  }, []);
 
-  const handleDeleteAccount = useCallback(() => {
-    console.log('Deleting account...');
-    // Add delete logic here
-  }, []);
 
   return {
     t,
@@ -52,7 +44,5 @@ export const useProfileHub = () => {
     navigateToTravelPreferences,
     navigateToSettings,
     navigateToDummy,
-    handleLogout,
-    handleDeleteAccount,
   };
 };

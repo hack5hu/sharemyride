@@ -18,6 +18,7 @@ import {
   EditButton
 } from './RouteSummary.styles';
 import { moderateScale } from '@/styles';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface RouteSummaryProps {
   route: {
@@ -29,13 +30,14 @@ interface RouteSummaryProps {
   t: any;
 }
 
-export const RouteSummary: React.FC<RouteSummaryProps> = ({ route, onEdit, t }) => {
+export const RouteSummary: React.FC<RouteSummaryProps> = ({ route, onEdit, t: st }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   return (
     <GlassCard>
       <SectionHeader>
-        <SectionLabel>{t.routeSummaryLabel}</SectionLabel>
+        <SectionLabel>{st.routeSummaryLabel}</SectionLabel>
         <EditButton onPress={onEdit} activeOpacity={0.7}>
           <Icon name="edit" size={moderateScale(16)} color={theme.colors.primary} />
         </EditButton>
@@ -58,19 +60,19 @@ export const RouteSummary: React.FC<RouteSummaryProps> = ({ route, onEdit, t }) 
 
         <RouteDetailsStack>
           <RouteStop>
-            <StopLabel>{t.departureLabel}</StopLabel>
+            <StopLabel>{st.departureLabel}</StopLabel>
             <StopLocation numberOfLines={1}>{route.start}</StopLocation>
           </RouteStop>
 
           {(route.middleStops || []).map((stop, i) => (
             <RouteStop key={`stop-${i}`}>
-              <StopLabel>Stop {i + 1}</StopLabel>
+              <StopLabel>{t('common.stop', { number: i + 1 })}</StopLabel>
               <StopLocation numberOfLines={1}>{stop}</StopLocation>
             </RouteStop>
           ))}
 
           <RouteStop>
-            <StopLabel>{t.arrivalLabel}</StopLabel>
+            <StopLabel>{st.arrivalLabel}</StopLabel>
             <StopLocation numberOfLines={1}>{route.end}</StopLocation>
           </RouteStop>
         </RouteDetailsStack>

@@ -7,6 +7,7 @@ import { CounterButton } from '@/components/atoms/CounterButton';
 import { PriceCounter } from '@/components/molecules/PriceCounter';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { calculateFrontSeatPrice } from '@/utils/pricing';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export interface SegmentPrice {
   basePrice: number;
@@ -171,6 +172,7 @@ export const SegmentPricingCard: React.FC<SegmentPricingCardProps> = ({
   premiumPercentage,
 }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   // Calculate front seat price dynamically based on current basePrice
   const totalFrontSeatPrice = calculateFrontSeatPrice(segmentPrice.basePrice, premiumPercentage);
@@ -199,7 +201,7 @@ export const SegmentPricingCard: React.FC<SegmentPricingCardProps> = ({
       </HeaderRow>
 
       <PriceSection>
-        <FrontSeatLabel>Per Seat Price</FrontSeatLabel>
+        <FrontSeatLabel>{t('priceSelection.perSeatPrice')}</FrontSeatLabel>
         <PriceCounter
           variant="compact"
           price={segmentPrice.basePrice}
@@ -225,7 +227,7 @@ export const SegmentPricingCard: React.FC<SegmentPricingCardProps> = ({
           </MathBreakdown>
 
           <HelperText>
-            Base + {Math.round(premiumPercentage)}% premium calculated for this leg
+            {t('priceSelection.basePlusPremium', { percentage: Math.round(premiumPercentage) })}
           </HelperText>
         </FrontSeatSection>
       )}

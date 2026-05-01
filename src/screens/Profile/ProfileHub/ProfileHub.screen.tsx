@@ -28,8 +28,6 @@ export const ProfileHubScreen: React.FC = () => {
     navigateToTravelPreferences,
     navigateToSettings,
     navigateToDummy,
-    handleLogout,
-    handleDeleteAccount,
   } = useProfileHub();
   const theme = useTheme();
 
@@ -113,21 +111,6 @@ export const ProfileHubScreen: React.FC = () => {
               />
             </ActionGrid>
           </Section>
-
-          <DangerSection>
-            <DangerButton onPress={handleLogout}>
-              <Icon name="logout" size={24} color={theme.colors.error} />
-              <Typography variant="body" weight="bold" color={theme.colors.error}>
-                {t('profileHub.logout')}
-              </Typography>
-            </DangerButton>
-            <DangerButton onPress={handleDeleteAccount}>
-              <Icon name="delete-forever" size={24} color={theme.colors.outline} />
-              <Typography variant="body" weight="bold" color={theme.colors.outline}>
-                {t('profileHub.deleteAccount')}
-              </Typography>
-            </DangerButton>
-          </DangerSection>
         </Content>
       </Container>
 

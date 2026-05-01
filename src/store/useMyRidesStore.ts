@@ -101,7 +101,6 @@ export const useMyRidesStore = create<MyRidesState>()(
     {
       name: 'my-rides-storage',
       storage: createJSONStorage(() => mmkvStorage),
-      partialize: (state) => ({ drafts: state.drafts }), // Only persist drafts
     }
   )
 );

@@ -6,13 +6,22 @@ export const Container = styled.TouchableOpacity<{ isDraft: boolean }>`
   align-items: center;
   padding: ${moderateScale(16)}px;
   background-color: ${({ theme, isDraft }) => 
-    isDraft ? theme.colors.surface_container + '80' : theme.colors.surface_container_lowest};
-  border-radius: ${moderateScale(12)}px;
-  gap: ${scale(12)}px;
-  ${({ isDraft, theme }) => isDraft && `
-    border-width: 1px;
+    isDraft ? theme.colors.surface_container_lowest : theme.colors.surface_container_lowest};
+  border-radius: ${moderateScale(20)}px;
+  gap: ${scale(14)}px;
+  margin-bottom: ${verticalScale(12)}px;
+  
+  ${({ isDraft, theme }) => isDraft ? `
+    border-width: 1.5px;
     border-style: dashed;
-    border-color: ${theme.colors.outline_variant};
+    border-color: ${theme.colors.outline_variant}80;
+    background-color: transparent;
+  ` : `
+    shadow-color: ${theme.colors.shadow};
+    shadow-offset: 0px 4px;
+    shadow-opacity: 0.04;
+    shadow-radius: 12px;
+    elevation: 2;
   `}
 `;
 

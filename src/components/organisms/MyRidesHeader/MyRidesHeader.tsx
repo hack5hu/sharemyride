@@ -18,7 +18,6 @@ import { moderateScale } from '@/styles';
 
 const TABS: { label: string; value: MyRidesTab }[] = [
   { label: 'Upcoming', value: 'upcoming' },
-  { label: 'Ongoing', value: 'ongoing' },
   { label: 'Drafts', value: 'drafts' },
   { label: 'Completed', value: 'completed' },
 ];

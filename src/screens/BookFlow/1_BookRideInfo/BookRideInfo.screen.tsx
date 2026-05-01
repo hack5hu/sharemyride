@@ -105,7 +105,7 @@ export const BookRideInfoScreen: React.FC = () => {
         ListHeaderComponent={
           <>
             <Header>
-              <HeaderTitle>Ride Pool Company</HeaderTitle>
+              <HeaderTitle>{t.brandName}</HeaderTitle>
             </Header>
 
             <HeroSection>

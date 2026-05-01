@@ -69,16 +69,6 @@ export const MyRidesTemplate: React.FC<MyRidesTemplateProps & {
           ) : undefined
         }
       />
-
-      <FABContainer onPress={onAddPress} activeOpacity={0.8}>
-        <FABGradient colors={[theme.colors.primary, theme.colors.primary_container]} start={{x: 0, y: 0}} end={{x: 1, y: 1}}>
-          <Icon 
-            name="add" 
-            size={moderateScale(32)} 
-            color={theme.colors.on_primary} 
-          />
-        </FABGradient>
-      </FABContainer>
       {bottomNav}
     </ScreenShell>
   );

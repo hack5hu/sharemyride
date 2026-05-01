@@ -65,9 +65,9 @@ export const DriverProfileSummary: React.FC<DriverProfileSummaryProps> = ({
                 <SubInfo variant={variant}>{rating} {totalRides ? `• ${totalRides}` : ''}</SubInfo>
               </>
             )}
-            {vehicleInfo && !totalRides && (
+            {/* {vehicleInfo && !totalRides && (
               <SubInfo variant={variant}>{vehicleInfo}</SubInfo>
-            )}
+            )} */}
           </RatingRow>
         </InfoSection>
       </LeftSection>
