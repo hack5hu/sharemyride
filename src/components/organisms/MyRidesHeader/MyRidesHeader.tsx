@@ -1,26 +1,21 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { 
-  Container, 
-  TopSection, 
-  LeftActions, 
-  MenuButton, 
-  TitleText, 
-  ProfileWrapper, 
-  AvatarImage, 
-  TabNavigation, 
-  TabButton, 
-  TabLabel 
+import {
+  Container,
+  TopSection,
+  LeftActions,
+  MenuButton,
+  TitleText,
+  ProfileWrapper,
+  AvatarImage,
+  TabNavigation,
+  TabButton,
+  TabLabel
 } from './MyRidesHeader.styles';
 import { MyRidesHeaderProps, MyRidesTab } from './types.d';
 import { moderateScale } from '@/styles';
-
-const TABS: { label: string; value: MyRidesTab }[] = [
-  { label: 'Upcoming', value: 'upcoming' },
-  { label: 'Drafts', value: 'drafts' },
-  { label: 'Completed', value: 'completed' },
-];
+import { useTranslation } from '@/hooks/useTranslation';
 
 export const MyRidesHeader: React.FC<MyRidesHeaderProps> = ({
   activeTab,
@@ -29,7 +24,15 @@ export const MyRidesHeader: React.FC<MyRidesHeaderProps> = ({
   onProfilePress,
   userAvatarUri,
 }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
+
+  const TABS: { label: string; value: MyRidesTab }[] = [
+    { label: t('myRides.requestsTab'), value: 'requests' },
+    { label: t('myRides.upcomingTab'), value: 'upcoming' },
+    { label: t('myRides.draftsTab'), value: 'drafts' },
+    { label: t('myRides.completedTab'), value: 'completed' },
+  ];
 
   return (
     <Container>
@@ -41,7 +44,7 @@ export const MyRidesHeader: React.FC<MyRidesHeaderProps> = ({
 
       <TabNavigation>
         {TABS.map((tab) => (
-          <TabButton 
+          <TabButton
             key={tab.value}
             isActive={activeTab === tab.value}
             onPress={() => onTabChange(tab.value)}

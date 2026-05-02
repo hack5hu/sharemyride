@@ -19,6 +19,13 @@ export const useMyRides = (): MyRidesHookData => {
     fetchInitialRides
   } = useMyRidesData(activeTab);
 
+  // Auto-switch to requests tab if data exists on first load
+  useState(() => {
+    if (rides?.REQUESTS?.data?.length > 0) {
+      setActiveTab('requests');
+    }
+  });
+
   const {
     onRidePress,
     onRemoveDraft,
@@ -50,37 +57,50 @@ export const useMyRides = (): MyRidesHookData => {
 
   // Optimize mapping by memoizing category results
   const mappedUpcoming = useMemo(() => 
-    rides.UPCOMING.data.map(r => mapBackendRideToUI(r, 'upcoming', t)), 
-  [rides.UPCOMING.data, t]);
+    (rides?.UPCOMING?.data || []).map(r => mapBackendRideToUI(r, 'upcoming', t)), 
+  [rides?.UPCOMING?.data, t]);
 
   const mappedCompleted = useMemo(() => 
-    rides.COMPLETED.data.map(r => mapBackendRideToUI(r, 'completed', t)), 
-  [rides.COMPLETED.data, t]);
+    (rides?.COMPLETED?.data || []).map(r => mapBackendRideToUI(r, 'completed', t)), 
+  [rides?.COMPLETED?.data, t]);
+
+  const mappedRequests = useMemo(() => 
+    (rides?.REQUESTS?.data || []).map(r => mapBackendRideToUI(r, 'requests' as any, t)), 
+  [rides?.REQUESTS?.data, t]);
 
   const currentRides = useMemo(() => {
     const filter = TAB_TO_FILTER[activeTab];
-    if (!filter) return formattedDrafts;
+    if (activeTab === 'drafts') return formattedDrafts;
+    if (activeTab === 'requests') return mappedRequests;
     
     const now = new Date();
-    const allRides = [...mappedUpcoming, ...mappedCompleted];
+    const allRides = activeTab === 'upcoming' ? mappedUpcoming : mappedCompleted;
 
-    // Remove duplicates by ID
-    const uniqueRides = Array.from(new Map(allRides.map(item => [item.id, item])).values());
-
-    // 1. Dynamic filtering based on actual date
-    const filtered = uniqueRides.filter(ride => {
-      if (activeTab === 'upcoming') return (ride.rawDate || new Date()) > now;
-      if (activeTab === 'completed') return (ride.rawDate || new Date()) <= now;
-      return true;
-    });
-
-    // 2. Sorting
-    return filtered.sort((a, b) => {
+    // Sort upcoming rides by date ascending, completed by date descending
+    return [...allRides].sort((a, b) => {
       const timeA = a.rawDate?.getTime() || 0;
       const timeB = b.rawDate?.getTime() || 0;
       return activeTab === 'upcoming' ? timeA - timeB : timeB - timeA;
     });
-  }, [activeTab, mappedUpcoming, mappedCompleted, formattedDrafts]);
+  }, [activeTab, mappedUpcoming, mappedCompleted, mappedRequests, formattedDrafts]);
+
+  const onAcceptBooking = useCallback(async (id: string) => {
+    try {
+      await rideService.acceptBooking(id);
+      onRefresh();
+    } catch (error) {
+      console.error('Failed to accept booking:', error);
+    }
+  }, [onRefresh]);
+
+  const onRejectBooking = useCallback(async (id: string) => {
+    try {
+      await rideService.rejectBooking(id);
+      onRefresh();
+    } catch (error) {
+      console.error('Failed to reject booking:', error);
+    }
+  }, [onRefresh]);
 
   return {
     activeTab,
@@ -93,11 +113,14 @@ export const useMyRides = (): MyRidesHookData => {
     onClearDrafts,
     onRefresh,
     onLoadMore,
-    hasMore: TAB_TO_FILTER[activeTab] ? rides[TAB_TO_FILTER[activeTab]!].hasMore : false,
+    hasMore: TAB_TO_FILTER[activeTab] ? rides?.[TAB_TO_FILTER[activeTab]!]?.hasMore : false,
     currentRides,
     drafts,
+    mappedRequests,
+    hasRequests: mappedRequests.length > 0,
     onMenuPress: () => {},
     onProfilePress: () => {},
-    onAcceptRide: () => {},
+    onAcceptRide: onAcceptBooking,
+    onRejectRide: onRejectBooking,
   };
 };

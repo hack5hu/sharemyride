@@ -8,7 +8,7 @@ export interface DraftRide {
   state: any; // This will hold the entire publish store state
 }
 
-export type RideCategory = 'UPCOMING' | 'COMPLETED' | 'ONGOING';
+export type RideCategory = 'UPCOMING' | 'COMPLETED' | 'ONGOING' | 'REQUESTS';
 
 interface CategoryState {
   data: any[];
@@ -38,6 +38,7 @@ export const useMyRidesStore = create<MyRidesState>()(
         UPCOMING: { data: [], page: 0, hasMore: true },
         COMPLETED: { data: [], page: 0, hasMore: true },
         ONGOING: { data: [], page: 0, hasMore: true },
+        REQUESTS: { data: [], page: 0, hasMore: true },
       },
 
       addDraft: (state, id) => set((prevState) => {

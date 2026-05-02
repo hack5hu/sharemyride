@@ -5,7 +5,11 @@ export interface MatchedRideBentoProps {
   avatarUri: string;
   pickup: string;
   dropoff: string;
+  price?: string;
+  seatCount?: number | string;
+  date?: string;
   onAccept: () => void;
+  onReject?: () => void;
   onPress?: () => void;
 }
 

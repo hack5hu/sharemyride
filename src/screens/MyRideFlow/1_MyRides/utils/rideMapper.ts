@@ -1,17 +1,17 @@
 import { RideCategory } from '@/store/useMyRidesStore';
 
-export const mapBackendRideToUI = (ride: any, type: 'upcoming' | 'completed', t: any) => {
+export const mapBackendRideToUI = (ride: any, type: 'upcoming' | 'completed' | 'requests', t: any) => {
   const startName = ride.sourceStopName || 'Unknown';
   const endName = ride.destinationStopName || 'Unknown';
-  const startTime = ride.startTime ? new Date(ride.startTime) : new Date();
+  const startTime = ride.startTime ? new Date(ride.startTime) : (ride.requestedAt ? new Date(ride.requestedAt) : new Date());
   
-  // Calculate total price if not provided
   const now = new Date();
   const diffMs = startTime.getTime() - now.getTime();
   const diffMins = Math.floor(diffMs / 60000);
   const diffHours = Math.floor(diffMins / 60);
   const isDriver = ride.role === 'DRIVER';
   const isPassenger = ride.role === 'PASSENGER';
+  const isRequest = type === 'requests';
   
   const weekday = startTime.toLocaleDateString('en-US', { weekday: 'short' });
   const dayMonth = startTime.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
@@ -34,29 +34,32 @@ export const mapBackendRideToUI = (ride: any, type: 'upcoming' | 'completed', t:
     } else {
       timerLabel = `${weekday}, ${dayMonth}`;
     }
+  } else if (type === 'requests') {
+    timerLabel = `Requested ${timeStr}`;
+    statusTag = `${ride.seatCount || 1}`;
   } else {
     timerLabel = t('myRides.completedStatus');
   }
 
   return {
-    id: ride.id || ride._id || Math.random().toString(),
+    id: ride.id || ride._id || ride.bookingId || Math.random().toString(),
     title: `${startName.split(',')[0]} to ${endName.split(',')[0]}`,
-    subtitle: `${weekday}, ${dayMonth} • ${timeStr}`,
-    price: isDriver ? undefined : `₹${ride.price}`,
-    icon: type === 'completed' ? 'check-circle' : (isDriver ? 'navigation' : 'directions-car'),
+    subtitle: isRequest ? `${weekday}, ${dayMonth} • ${timeStr}` : `${weekday}, ${dayMonth} • ${timeStr}`,
+    price: `₹${ride.price || ride.totalPrice || 0}`,
+    icon: type === 'completed' ? 'check-circle' : (type === 'requests' ? 'person-add' : (isDriver ? 'navigation' : 'directions-car')),
     type,
-    driverName: isDriver ? undefined : (ride.driverName || 'Driver'),
-    carModel: ride.vehicleRegistration 
+    driverName: isRequest ? (ride.passengerName || 'Passenger') : (isDriver ? undefined : (ride.driverName || 'Driver')),
+    carModel: isRequest ? `Requested by ${ride.passengerName}` : (ride.vehicleRegistration 
       ? `${ride.vehicleType?.replace('_', ' ') || 'CAR'} (${ride.vehicleRegistration})` 
-      : undefined,
-    rating: isDriver ? undefined : (ride.driverRating || 5),
-    avatarUri: isDriver ? undefined : (ride.driverPhotoUrl || 'https://i.pravatar.cc/150'),
+      : undefined),
+    rating: isRequest ? (ride.passengerRating || 5) : (isDriver ? undefined : (ride.driverRating || 5)),
+    avatarUri: isRequest ? (ride.passengerPhotoUrl || 'https://i.pravatar.cc/150') : (isDriver ? undefined : (ride.driverPhotoUrl || 'https://i.pravatar.cc/150')),
     pickupTime: timeStr,
     dropoffTime: ride.endTime 
       ? new Date(ride.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
       : new Date(startTime.getTime() + 3600000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    pickupLocation: startName.split(',')[0],
-    dropoffLocation: endName.split(',')[0],
+    pickupLocation: isRequest ? startName : startName.split(',')[0],
+    dropoffLocation: isRequest ? endName : endName.split(',')[0],
     timerLabel,
     statusTag,
     rawDate: startTime,

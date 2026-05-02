@@ -11,10 +11,14 @@ import {
   StatusTag,
   StatusTagText,
   MoreButton, 
-  ProfileWrapper 
+  ProfileWrapper,
+  ActionRow,
+  ActionButton,
+  ActionText
 } from './UpcomingRideCard.styles';
 import { UpcomingRideCardProps } from './types.d';
 import { moderateScale } from '@/styles';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = ({
   timerLabel,
@@ -28,7 +32,6 @@ export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = ({
   pickupLocation,
   dropoffTime,
   dropoffLocation,
-  statusTag,
   onMorePress,
   onPress,
 }) => {

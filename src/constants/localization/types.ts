@@ -429,8 +429,11 @@ export interface MyRidesTranslations {
   draftsTitle: string;
   clearAll: string;
   completedTitle: string;
+  requestsTab: string;
   noUpcomingTitle: string;
   noUpcomingDesc: string;
+  noRequestsTitle: string;
+  noRequestsDesc: string;
   noDraftsTitle: string;
   noDraftsDesc: string;
   noCompletedTitle: string;

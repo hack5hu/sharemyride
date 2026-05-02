@@ -12,7 +12,12 @@ import {
   StopPoint, 
   StopLabel, 
   ActionButton, 
-  ActionText 
+  SecondaryButton,
+  ActionText,
+  InfoRow,
+  InfoItem,
+  InfoText,
+  ActionButtonRow
 } from './MatchedRideBento.styles';
 import { MatchedRideBentoProps } from './types.d';
 import { moderateScale } from '@/styles';
@@ -24,7 +29,11 @@ export const MatchedRideBento: React.FC<MatchedRideBentoProps> = ({
   avatarUri,
   pickup,
   dropoff,
+  price,
+  seatCount,
+  date,
   onAccept,
+  onReject,
   onPress,
 }) => {
   const theme = useTheme();
@@ -50,18 +59,46 @@ export const MatchedRideBento: React.FC<MatchedRideBentoProps> = ({
       <RouteSummary>
         <RouteItem>
           <Icon name="radio-button-unchecked" size={moderateScale(16)} color={theme.colors.on_primary_fixed_variant} style={{ opacity: 0.6 }} />
-          <StopLabel>{pickup}</StopLabel>
+          <StopLabel numberOfLines={2} ellipsizeMode="tail">{pickup}</StopLabel>
         </RouteItem>
         <StopPoint />
         <RouteItem>
           <Icon name="location-on" size={moderateScale(16)} color={theme.colors.on_primary_fixed_variant} />
-          <StopLabel>{dropoff}</StopLabel>
+          <StopLabel numberOfLines={2} ellipsizeMode="tail">{dropoff}</StopLabel>
         </RouteItem>
       </RouteSummary>
 
-      <ActionButton onPress={onAccept} activeOpacity={0.8}>
-        <ActionText>Accept Ride Request</ActionText>
-      </ActionButton>
+      {(date || price || seatCount) && (
+        <InfoRow>
+          {date && (
+            <InfoItem>
+              <Icon name="event" size={moderateScale(14)} color={theme.colors.on_primary_fixed_variant} />
+              <InfoText>{date}</InfoText>
+            </InfoItem>
+          )}
+          {price && (
+            <InfoItem>
+              <Icon name="payments" size={moderateScale(14)} color={theme.colors.on_primary_fixed_variant} />
+              <InfoText>{price}</InfoText>
+            </InfoItem>
+          )}
+          {seatCount && (
+            <InfoItem>
+              <Icon name="person" size={moderateScale(14)} color={theme.colors.on_primary_fixed_variant} />
+              <InfoText>{seatCount} {typeof seatCount === 'number' && seatCount > 1 ? 'Seats' : 'Seat'}</InfoText>
+            </InfoItem>
+          )}
+        </InfoRow>
+      )}
+
+      <ActionButtonRow>
+        <SecondaryButton onPress={onReject} activeOpacity={0.8}>
+          <ActionText isSecondary>Decline</ActionText>
+        </SecondaryButton>
+        <ActionButton onPress={onAccept} activeOpacity={0.8}>
+          <ActionText>Accept</ActionText>
+        </ActionButton>
+      </ActionButtonRow>
     </Container>
   );
 };

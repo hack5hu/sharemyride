@@ -117,6 +117,33 @@ const rideService = {
       throw error;
     }
   },
+  getPendingBookings: async () => {
+    try {
+      const response = await apiClient.get(API_ENDPOINTS.RIDE.PENDING_BOOKINGS);
+      return response.data;
+    } catch (error) {
+      console.error('Fetching pending bookings failed:', error);
+      throw error;
+    }
+  },
+  acceptBooking: async (bookingId: string | number) => {
+    try {
+      const response = await apiClient.post(API_ENDPOINTS.RIDE.ACCEPT_BOOKING(bookingId));
+      return response.data;
+    } catch (error) {
+      console.error('Accepting booking failed:', error);
+      throw error;
+    }
+  },
+  rejectBooking: async (bookingId: string | number) => {
+    try {
+      const response = await apiClient.post(API_ENDPOINTS.RIDE.REJECT_BOOKING(bookingId));
+      return response.data;
+    } catch (error) {
+      console.error('Rejecting booking failed:', error);
+      throw error;
+    }
+  },
 };
 
 export default rideService;

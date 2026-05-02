@@ -1,4 +1,4 @@
-export type MyRidesTab = 'upcoming' | 'drafts' | 'completed';
+export type MyRidesTab = 'requests' | 'upcoming' | 'drafts' | 'completed';
 
 export interface MyRidesHeaderProps {
   activeTab: MyRidesTab;
@@ -6,4 +6,5 @@ export interface MyRidesHeaderProps {
   onMenuPress: () => void;
   onProfilePress: () => void;
   userAvatarUri: string;
+  hasRequests?: boolean;
 }

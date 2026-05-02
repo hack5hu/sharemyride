@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
 
 export const TAB_TO_FILTER: Record<string, RideCategory | null> = {
+  requests: 'REQUESTS',
   upcoming: 'UPCOMING',
   completed: 'COMPLETED',
   drafts: null,
@@ -30,9 +31,15 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
     if (page === 0) setIsLoading(true);
     
     try {
-      const response = await rideService.getMyRides(category, page, 15);
+      let response;
+      if (category === 'REQUESTS') {
+        response = await rideService.getPendingBookings();
+      } else {
+        response = await rideService.getMyRides(category as any, page, 15);
+      }
+      
       const rideList = parseRideResponse(response);
-      const hasMore = rideList.length >= 15;
+      const hasMore = category === 'REQUESTS' ? false : rideList.length >= 15;
 
       if (append) {
         appendRides(category, rideList, hasMore);
@@ -49,7 +56,11 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
 
   const fetchInitialRides = useCallback(() => {
     const filter = TAB_TO_FILTER[activeTab];
-    if (filter) {
+    
+    // Always fetch requests to know if we should show the tab/bento
+    fetchCategoryRides('REQUESTS', 0, false);
+    
+    if (filter && filter !== 'REQUESTS') {
       fetchCategoryRides(filter, 0, false);
     }
   }, [activeTab, fetchCategoryRides]);
@@ -67,8 +78,10 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
 
   const onLoadMore = useCallback(() => {
     const filter = TAB_TO_FILTER[activeTab];
-    if (filter && rides[filter].hasMore && !isLoading) {
-      const nextPage = rides[filter].page + 1;
+    const categoryState = filter ? rides?.[filter] : null;
+    
+    if (filter && categoryState?.hasMore && !isLoading) {
+      const nextPage = (categoryState?.page || 0) + 1;
       setPage(filter, nextPage);
       fetchCategoryRides(filter, nextPage, true);
     }

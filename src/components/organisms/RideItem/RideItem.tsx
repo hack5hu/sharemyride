@@ -1,6 +1,7 @@
 import React from 'react';
 import { UpcomingRideCard } from '@/components/organisms/UpcomingRideCard';
 import { CompactRideItem } from '@/components/molecules/CompactRideItem';
+import { MatchedRideBento } from '@/components/organisms/MatchedRideBento';
 import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
 
 export interface RideListItem {
@@ -21,6 +22,7 @@ export interface RideListItem {
   dropoffTime?: string;
   dropoffLocation?: string;
   statusTag?: string;
+  showActions?: boolean;
 }
 
 interface RideItemProps {
@@ -29,6 +31,8 @@ interface RideItemProps {
   onRidePress: (id: string) => void;
   onCancelRide: (id: string | number) => void;
   onRemoveDraft: (id: string) => void;
+  onAcceptRide?: (id: string) => void;
+  onRejectRide?: (id: string) => void;
 }
 
 export const RideItem: React.FC<RideItemProps> = React.memo(({ 
@@ -36,8 +40,29 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
   activeTab, 
   onRidePress, 
   onCancelRide, 
-  onRemoveDraft 
+  onRemoveDraft,
+  onAcceptRide,
+  onRejectRide,
 }) => {
+  if (activeTab === 'requests') {
+    return (
+      <MatchedRideBento 
+        driverName={item.driverName || 'Passenger'}
+        rating={item.rating || 5}
+        totalRides={`${item.rating || 5} Rating`}
+        avatarUri={item.avatarUri || ''}
+        pickup={item.pickupLocation || ''}
+        dropoff={item.dropoffLocation || ''}
+        price={item.price}
+        seatCount={item.statusTag}
+        date={item.subtitle}
+        onAccept={() => onAcceptRide?.(item.id)}
+        onReject={() => onRejectRide?.(item.id)}
+        onPress={() => onRidePress(item.id)}
+      />
+    );
+  }
+
   if (activeTab === 'upcoming') {
     return (
       <UpcomingRideCard 

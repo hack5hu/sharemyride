@@ -20,6 +20,7 @@ export const MyRidesScreen: React.FC = () => {
     activeTab,
     onTabChange,
     onAcceptRide,
+    onRejectRide,
     onRidePress,
     onRemoveDraft,
     onCancelRide,
@@ -30,6 +31,8 @@ export const MyRidesScreen: React.FC = () => {
     isLoading,
     currentRides,
     drafts,
+    hasRequests,
+    mappedRequests,
   } = useMyRides();
 
   const theme = useTheme();
@@ -41,6 +44,8 @@ export const MyRidesScreen: React.FC = () => {
       onRidePress={onRidePress}
       onCancelRide={onCancelRide}
       onRemoveDraft={onRemoveDraft}
+      onAcceptRide={onAcceptRide}
+      onRejectRide={onRejectRide}
     />
   );
 
@@ -51,14 +56,15 @@ export const MyRidesScreen: React.FC = () => {
       onClearDrafts={onClearDrafts}
       onAcceptRide={onAcceptRide}
       onRidePress={onRidePress}
+      requests={mappedRequests}
     />
   );
 
   const emptyComponent = (
     <EmptyState 
-      icon={activeTab === 'upcoming' ? "event-note" : activeTab === 'drafts' ? "edit-note" : "history"}
-      title={activeTab === 'upcoming' ? t('myRides.noUpcomingTitle') : activeTab === 'drafts' ? t('myRides.noDraftsTitle') : t('myRides.noCompletedTitle')}
-      description={activeTab === 'upcoming' ? t('myRides.noUpcomingDesc') : activeTab === 'drafts' ? t('myRides.noDraftsDesc') : t('myRides.noCompletedDesc')}
+      icon={activeTab === 'upcoming' ? "event-note" : activeTab === 'requests' ? "person-add" : activeTab === 'drafts' ? "edit-note" : "history"}
+      title={activeTab === 'upcoming' ? t('myRides.noUpcomingTitle') : activeTab === 'requests' ? t('myRides.noRequestsTitle') : activeTab === 'drafts' ? t('myRides.noDraftsTitle') : t('myRides.noCompletedTitle')}
+      description={activeTab === 'upcoming' ? t('myRides.noUpcomingDesc') : activeTab === 'requests' ? t('myRides.noRequestsDesc') : activeTab === 'drafts' ? t('myRides.noDraftsDesc') : t('myRides.noCompletedDesc')}
     />
   );
 
@@ -79,6 +85,7 @@ export const MyRidesScreen: React.FC = () => {
           onMenuPress={() => {}} 
           onProfilePress={() => {}} 
           userAvatarUri={USER_AVATAR}
+          hasRequests={hasRequests}
         />
       }
       bottomNav={<BottomNav activeTab="MY_RIDES" />}
