@@ -8,6 +8,8 @@ import {
   CardHeader, 
   TimerBadge, 
   TimerText, 
+  StatusTag,
+  StatusTagText,
   MoreButton, 
   ProfileWrapper 
 } from './UpcomingRideCard.styles';
@@ -26,6 +28,7 @@ export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = ({
   pickupLocation,
   dropoffTime,
   dropoffLocation,
+  statusTag,
   onMorePress,
   onPress,
 }) => {
@@ -43,19 +46,27 @@ export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = ({
           />
           <TimerText>{timerLabel}</TimerText>
         </TimerBadge>
+
+        {statusTag && (
+          <StatusTag>
+            <StatusTagText>{statusTag}</StatusTagText>
+          </StatusTag>
+        )}
       </CardHeader>
 
-      <ProfileWrapper>
-        <DriverProfileSummary 
-          name={driverName}
-          vehicleInfo={carModel}
-          rating={rating}
-          avatarUri={avatarUri}
-          isVerified={isVerified}
-          price={price}
-          variant="upcoming"
-        />
-      </ProfileWrapper>
+      {(driverName || carModel || rating || avatarUri || price) && (
+        <ProfileWrapper>
+          <DriverProfileSummary 
+            name={driverName}
+            vehicleInfo={carModel}
+            rating={rating}
+            avatarUri={avatarUri}
+            isVerified={isVerified}
+            price={price}
+            variant="upcoming"
+          />
+        </ProfileWrapper>
+      )}
 
       <RideTimestampRow 
         pickupTime={pickupTime}

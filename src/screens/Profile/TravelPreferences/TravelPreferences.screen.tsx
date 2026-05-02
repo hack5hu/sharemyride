@@ -151,19 +151,18 @@ export const TravelPreferencesScreen: React.FC = () => {
               ))}
             </S.TimerChipGroup>
           </S.TimerItem>
-
-          <S.BottomAction>
-            <Button 
-              onPress={handleSave} 
-              variant="primary"
-              loading={isLoading}
-              disabled={isLoading}
-            >
-              {t('travelPreferences.savePreferences')}
-            </Button>
-          </S.BottomAction>
         </S.Section>
       </S.ScrollContainer>
+      <S.BottomAction>
+        <Button
+          onPress={handleSave}
+          variant="primary"
+          loading={isLoading}
+          disabled={isLoading}
+        >
+          {t('travelPreferences.savePreferences')}
+        </Button>
+      </S.BottomAction>
     </ScreenShell>
   );
 };

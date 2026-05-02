@@ -176,6 +176,10 @@ export interface TravelPreferencesTranslations {
   silence: string;
   luggageAllowed: string;
   petFriendly: string;
+  manualApproval: string;
+  manualApprovalDescr: string;
+  waitingTime: string;
+  waitingTimeDescr: string;
   savePreferences: string;
   enabled: string;
   disabled: string;
@@ -204,6 +208,10 @@ export interface VehicleDetailsTranslations {
   suv: string;
   hatchback: string;
   bike: string;
+  capacity: string;
+  seaterCount: string;
+  seater5: string;
+  seater7: string;
 }
 
 export interface ChatTranslations {
@@ -235,6 +243,8 @@ export interface RideDetailsTranslations {
   trustDescription: string;
   cancelRide: string;
   chat: string;
+  myRide: string;
+  groupChat: string;
 }
 
 export interface CancelRideTranslations {
@@ -442,6 +452,8 @@ export interface MyRidesTranslations {
   mins: string;
   hours: string;
   completedStatus: string;
+  requestPending: string;
+  rideConfirmed: string;
 }
 
 export interface SettingsTranslations {

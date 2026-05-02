@@ -4,4 +4,5 @@ export interface DriverSectionProps {
   carInfo: string;
   avatarUrl?: string;
   onChatPress?: () => void;
+  isDriverView?: boolean;
 }

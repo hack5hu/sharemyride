@@ -15,6 +15,11 @@ export const RiderCard: React.FC<RiderCardProps> = ({ name, info, avatarUrl, onP
         ) : (
           <Icon name="person" size={24} color={theme.colors.on_primary_fixed_variant} />
         )}
+        {onCancel && (
+          <S.RemoveButton onPress={onCancel} activeOpacity={0.7}>
+            <Icon name="close" size={12} color="white" />
+          </S.RemoveButton>
+        )}
       </S.AvatarContainer>
       <S.Content>
         <S.Name numberOfLines={1}>{name}</S.Name>

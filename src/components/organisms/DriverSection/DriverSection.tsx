@@ -10,6 +10,7 @@ export const DriverSection: React.FC<DriverSectionProps> = ({
   rating, 
   carInfo, 
   avatarUrl, 
+  isDriverView,
   onChatPress 
 }) => {
   const theme = useTheme();
@@ -25,7 +26,7 @@ export const DriverSection: React.FC<DriverSectionProps> = ({
           </S.VerifiedBadge>
         </S.AvatarWrapper>
         <S.TextContent>
-          <S.Name>{name}</S.Name>
+          <S.Name>{isDriverView ? rideDetails.myRide : name}</S.Name>
           <S.MetaRow>
             <S.RatingBadge>
               <Icon name="star" size={12} color={theme.colors.on_secondary_container} />
@@ -38,7 +39,7 @@ export const DriverSection: React.FC<DriverSectionProps> = ({
       
       <S.ChatButton onPress={onChatPress} activeOpacity={0.8}>
         <Icon name="chat" size={18} color={theme.colors.on_primary} />
-        <S.ChatText>{rideDetails.chat}</S.ChatText>
+        <S.ChatText>{isDriverView ? rideDetails.groupChat : rideDetails.chat}</S.ChatText>
       </S.ChatButton>
     </S.Container>
   );

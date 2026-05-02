@@ -20,6 +20,7 @@ export interface RideListItem {
   pickupLocation?: string;
   dropoffTime?: string;
   dropoffLocation?: string;
+  statusTag?: string;
 }
 
 interface RideItemProps {
@@ -43,13 +44,14 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
         timerLabel={item.timerLabel || ''}
         driverName={item.driverName || ''}
         carModel={item.carModel || ''}
-        rating={item.rating || 5}
+        rating={item.rating}
         price={item.price}
         avatarUri={item.avatarUri || ''}
         pickupTime={item.pickupTime || ''}
         pickupLocation={item.pickupLocation || ''}
         dropoffTime={item.dropoffTime || ''}
         dropoffLocation={item.dropoffLocation || ''}
+        statusTag={item.statusTag}
         onPress={() => onRidePress(item.id)}
         onMorePress={() => onCancelRide(item.id)}
       />

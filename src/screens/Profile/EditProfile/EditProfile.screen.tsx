@@ -12,6 +12,7 @@ import { DatePickerInput } from '@/components/molecules/DatePickerInput';
 import { GenderSelector } from '@/components/molecules/GenderSelector';
 import { Toast } from '@/components/molecules/Toast';
 import * as S from './EditProfile.styles';
+import { Button } from '@/components/atoms/Button';
 
 export const EditProfileScreen: React.FC = () => {
   const theme = useTheme();
@@ -29,17 +30,15 @@ export const EditProfileScreen: React.FC = () => {
     <ScreenShell
       title={t('editProfile.headerTitle')}
       onBack={() => navigation.goBack()}
-      rightElement={
-        <IconButton icon="settings" variant="surface" onPress={() => { }} />
-      }
     >
-      <S.BackgroundFlourishTop />
-      <S.BackgroundFlourishBottom />
-
       <S.MainWrapper
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior="padding"
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
       >
-        <S.ScrollContent showsVerticalScrollIndicator={false}>
+        <S.ScrollContent 
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
           <S.Content>
             {showSuccess && (
               <Toast
@@ -80,7 +79,7 @@ export const EditProfileScreen: React.FC = () => {
                 label={t('editProfile.emailLabel')}
                 placeholder={t('editProfile.emailPlaceholder')}
                 value={formik.values.email}
-                onChangeText={formik.handleChange('email')}
+                editable={false}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 error={formik.touched.email ? formik.errors.email : undefined}
@@ -90,10 +89,9 @@ export const EditProfileScreen: React.FC = () => {
                 label={t('editProfile.phoneLabel')}
                 placeholder={t('editProfile.phonePlaceholder')}
                 value={formik.values.phone}
-                onChangeText={formik.handleChange('phone')}
+                editable={false}
                 keyboardType="phone-pad"
                 error={formik.touched.phone ? formik.errors.phone : undefined}
-                maxLength={10}
               />
 
               <S.Row>
@@ -123,33 +121,18 @@ export const EditProfileScreen: React.FC = () => {
                 error={formik.touched.bio ? formik.errors.bio : undefined}
               />
             </S.FormFields>
-
-            <S.ActionFooter>
-              <S.CancelButton onPress={() => navigation.goBack()}>
-                <Typography variant="body" weight="bold">
-                  {t('editProfile.cancel')}
-                </Typography>
-              </S.CancelButton>
-              <S.SaveButtonGradient
-                colors={[theme.colors.primary, theme.colors.primary_container]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                isLoading={loading}
-              >
-                <S.SaveButton
-                  onPress={() => formik.handleSubmit()}
-                  disabled={loading}
-                >
-                  <Typography variant="body" weight="bold" color="on_primary">
-                    {loading ? 'Saving...' : t('editProfile.saveChanges')}
-                  </Typography>
-                </S.SaveButton>
-              </S.SaveButtonGradient>
-
-            </S.ActionFooter>
           </S.Content>
         </S.ScrollContent>
+       
       </S.MainWrapper>
+      <S.SaveButtonGradient>
+        <Button
+          onPress={() => formik.handleSubmit()}
+          disabled={loading}
+        >
+          {loading ? 'Saving...' : t('editProfile.saveChanges')}
+        </Button>
+      </S.SaveButtonGradient>
     </ScreenShell>
   );
 };

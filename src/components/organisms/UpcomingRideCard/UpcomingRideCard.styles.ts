@@ -41,6 +41,22 @@ export const MoreButton = styled.TouchableOpacity`
   padding: ${moderateScale(4)}px;
 `;
 
+export const StatusTag = styled.View`
+  padding-horizontal: ${scale(8)}px;
+  padding-vertical: ${verticalScale(4)}px;
+  background-color: ${({ theme }) => theme.colors.primary}14; /* 8% opacity */
+  border-radius: ${moderateScale(4)}px;
+`;
+
+export const StatusTagText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-size: ${moderateScale(10)}px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.primary};
+  letter-spacing: 0.5px;
+`;
+
 export const ProfileWrapper = styled.View`
   padding-vertical: ${verticalScale(4)}px;
 `;

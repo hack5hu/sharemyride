@@ -3,4 +3,5 @@ export interface RiderCardProps {
   info: string;
   avatarUrl?: string;
   onPress?: () => void;
+  onCancel?: () => void;
 }

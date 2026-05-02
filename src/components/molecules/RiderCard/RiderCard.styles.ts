@@ -26,6 +26,20 @@ export const AvatarImage = styled.Image`
   height: 100%;
 `;
 
+export const RemoveButton = styled.TouchableOpacity`
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background-color: ${({ theme }) => theme.colors.error};
+  width: ${moderateScale(18)}px;
+  height: ${moderateScale(18)}px;
+  border-radius: ${moderateScale(9)}px;
+  align-items: center;
+  justify-content: center;
+  border-width: 2px;
+  border-color: ${({ theme }) => theme.colors.surface};
+`;
+
 export const Content = styled.View`
   margin-left: ${scale(12)}px;
   flex: 1;

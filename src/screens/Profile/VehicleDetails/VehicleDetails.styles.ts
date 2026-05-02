@@ -177,6 +177,5 @@ export const CapacityError = styled(Typography).attrs({
 
 export const BottomAction = styled.View`
   padding: ${moderateScale(24)}px;
-  margin-bottom: ${moderateScale(24)}px;
 `;
 

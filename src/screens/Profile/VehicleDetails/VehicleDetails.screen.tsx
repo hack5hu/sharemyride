@@ -123,13 +123,13 @@ export const VehicleDetailsScreen: React.FC = () => {
             <S.CapacityRow>
               <VehicleTypeCard
                 icon="person"
-                label="5 Seater"
+                label={t('vehicleDetails.seater5')}
                 selected={formik.values.seater === '5'}
                 onPress={() => setSeater('5')}
               />
               <VehicleTypeCard
                 icon="groups"
-                label="7 Seater"
+                label={t('vehicleDetails.seater7')}
                 selected={formik.values.seater === '7'}
                 onPress={() => setSeater('7')}
               />
@@ -142,17 +142,18 @@ export const VehicleDetailsScreen: React.FC = () => {
           </S.CardSection>
         </S.FormWrapper>
 
-        <S.BottomAction>
-          <Button
-            onPress={formik.handleSubmit as any}
-            variant="primary"
-            icon="save"
-            loading={isLoading}
-          >
-            {t('vehicleDetails.saveVehicle')}
-          </Button>
-        </S.BottomAction>
+       
       </S.ScrollContainer>
+      <S.BottomAction>
+        <Button
+          onPress={formik.handleSubmit as any}
+          variant="primary"
+          icon="save"
+          loading={isLoading}
+        >
+          {t('vehicleDetails.saveVehicle')}
+        </Button>
+      </S.BottomAction>
     </ScreenShell>
   );
 };

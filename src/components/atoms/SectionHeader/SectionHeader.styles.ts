@@ -5,7 +5,7 @@ export const Container = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: ${verticalScale(16)}px;
+  margin-bottom: ${verticalScale(8)}px;
 `;
 
 export const TitleContainer = styled.View`

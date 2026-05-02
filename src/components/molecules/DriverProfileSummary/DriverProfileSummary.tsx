@@ -39,23 +39,30 @@ export const DriverProfileSummary: React.FC<DriverProfileSummaryProps> = ({
 }) => {
   const theme = useTheme();
   const iconColor = variant === 'bento' ? theme.colors.on_primary_fixed_variant : theme.colors.primary;
-
+  console.log("driver profile summary: rating: ", rating)
   return (
     <Container>
       <LeftSection>
-        <AvatarWrapper>
-          <Avatar source={{ uri: avatarUri }} />
-          {isVerified && (
-            <BadgeWrapper>
-               <VerifiedBadge size={16} />
-            </BadgeWrapper>
-          )}
-        </AvatarWrapper>
+        {avatarUri && (
+          <AvatarWrapper>
+            <Avatar source={{ uri: avatarUri }} />
+            {isVerified && (
+              <BadgeWrapper>
+                <VerifiedBadge size={16} />
+              </BadgeWrapper>
+            )}
+          </AvatarWrapper>
+        )}
         
         <InfoSection>
-          <Name variant={variant}>{name}</Name>
+          {name ? (
+            <Name variant={variant}>{name}</Name>
+          ) : (
+            vehicleInfo && <Name variant={variant}>{vehicleInfo}</Name>
+          )}
+          
           <RatingRow>
-            {rating && (
+            {rating ? (
               <>
                 <StyledStarIcon 
                   name="star" 
@@ -64,10 +71,9 @@ export const DriverProfileSummary: React.FC<DriverProfileSummaryProps> = ({
                 />
                 <SubInfo variant={variant}>{rating} {totalRides ? `• ${totalRides}` : ''}</SubInfo>
               </>
+            ) : (
+              !name && vehicleInfo && <SubInfo variant={variant}>Personal Vehicle</SubInfo>
             )}
-            {/* {vehicleInfo && !totalRides && (
-              <SubInfo variant={variant}>{vehicleInfo}</SubInfo>
-            )} */}
           </RatingRow>
         </InfoSection>
       </LeftSection>

@@ -10,7 +10,7 @@ export const Container = styled.View`
 
 export const ScrollContent = styled.ScrollView.attrs({
   contentContainerStyle: {
-    paddingBottom: verticalScale(100),
+    paddingBottom: verticalScale(20),
   },
 })`
   flex: 1;
@@ -92,13 +92,10 @@ export const CancelButton = styled.TouchableOpacity`
   align-items: center;
 `;
 
-export const SaveButtonGradient = styled(LinearGradient)<{ isLoading?: boolean }>`
-  flex: 1;
-  height: ${verticalScale(56)}px;
-  border-radius: ${({ theme }) => theme.roundness.xl}px;
-  justify-content: center;
-  align-items: center;
-  opacity: ${({ isLoading }) => (isLoading ? 0.7 : 1)};
+export const SaveButtonGradient = styled.View`
+  margin-bottom: ${({ theme }) => verticalScale(24)}px;
+  margin-horizontal: ${({ theme }) => scale(24)}px;
+  
 `;
 
 export const MainWrapper = styled.KeyboardAvoidingView`

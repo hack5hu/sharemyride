@@ -10,6 +10,7 @@ export interface UpcomingRideCardProps {
   pickupLocation: string;
   dropoffTime: string;
   dropoffLocation: string;
+  statusTag?: string;
   onMorePress: () => void;
   onPress?: () => void;
 }
