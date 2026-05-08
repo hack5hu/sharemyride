@@ -157,36 +157,26 @@ export const RideTimeline: React.FC<{
           </DashColumn>
 
           <RightContent>
-            <LocationWrapper>
-              <LocationHeaderRow>
-                <LocationPressable 
-                  onPress={() => onMapPress?.(index)} 
-                  disabled={!onMapPress} 
-                  activeOpacity={0.7} 
-                >
-                  <Typography variant="body" size="md" weight="bold" numberOfLines={2} ellipsizeMode='tail'>
-                    {point.location}
-                  </Typography>
-                  {point.description && (
-                    <DescriptionText variant="label" size="xs" color={theme.colors.on_surface_variant} numberOfLines={2} ellipsizeMode='tail'>
-                      {point.description}
-                    </DescriptionText>
-                  )}
-                </LocationPressable>
+            <Typography variant="body" size="md" weight="bold" numberOfLines={2} ellipsizeMode='tail'>
+              {point.location}
+            </Typography>
+            {point.description && (
+              <DescriptionText variant="label" size="xs" color={theme.colors.on_surface_variant} numberOfLines={2} ellipsizeMode='tail'>
+                {point.description}
+              </DescriptionText>
+            )}
 
-                {showActions && (index === 0 || index === points.length - 1) && (
-                  <InlineActionGroup>
-                    <IconButton onPress={() => handleCopy(point.location, index)}>
-                      {copiedIndex === index && <FeedbackText variant="label" size="xs">Copied!</FeedbackText>}
-                      <Icon name={copiedIndex === index ? "check" : "content-copy"} size={moderateScale(16)} />
-                    </IconButton>
-                    <IconButton onPress={() => onMapPress?.(index)}>
-                      <Icon name="map" size={moderateScale(18)} color={theme.colors.primary} />
-                    </IconButton>
-                  </InlineActionGroup>
-                )}
-              </LocationHeaderRow>
-            </LocationWrapper>
+            {showActions && (index === 0 || index === points.length - 1) && (
+              <ActionGroup>
+                <IconButton onPress={() => handleCopy(point.location, index)}>
+                  {copiedIndex === index && <FeedbackText variant="label" size="xs">Copied!</FeedbackText>}
+                  <Icon name={copiedIndex === index ? "check" : "content-copy"} size={moderateScale(16)} />
+                </IconButton>
+                <IconButton onPress={() => onMapPress?.(index)}>
+                  <Icon name="map" size={moderateScale(18)} color={theme.colors.primary} />
+                </IconButton>
+              </ActionGroup>
+            )}
           </RightContent>
         </TimelineRow>
       ))}

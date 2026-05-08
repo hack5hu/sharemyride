@@ -27,7 +27,7 @@ export const useSeatSelection = () => {
   } = useRidePublishStore();
   
   const { vehicles, selectedVehicleId, setSelectedVehicle } = useVehicleStore();
-  const [selectedSeats, setSelectedSeats] = useState<Set<string>>(new Set(selectedSeatIds));
+  const [selectedSeats, setSelectedSeats] = useState<Set<string | number>>(new Set(selectedSeatIds));
 
   const handleVehicleSelect = useCallback((id: string) => {
     const vehicle = vehicles.find(v => v.id === id);
@@ -70,7 +70,7 @@ export const useSeatSelection = () => {
     }
   }, [isFocused, vehicles, selectedVehicleId, publishVehicleType, vehicleId, setVehicleId, setPublishVehicleType, setVehicleDetails]);
 
-  const onSeatPress = useCallback((id: string) => {
+  const onSeatPress = useCallback((id: string | number) => {
     setSelectedSeats((prev) => {
       const next = new Set(prev);
       if (next.has(id)) {
@@ -98,7 +98,7 @@ export const useSeatSelection = () => {
     if (selectedSeats.size > 0 && selectedVehicleId) {
       if (flow === 'publish') {
         setSeatCount(selectedSeats.size);
-        setSelectedSeatIds(Array.from(selectedSeats));
+        setSelectedSeatIds(Array.from(selectedSeats) as number[]);
         setPublishVehicleType(publishVehicleType);
         
         if (returnTo) {

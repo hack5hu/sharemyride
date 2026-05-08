@@ -56,7 +56,7 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
   onSaveSegmentPrices,
   isLoading = false,
   isRecommended = false,
-  showPremium = true,
+  showPremium = false,
 }) => {
   const theme = useTheme();
   const { priceSelection: t } = useLocale();

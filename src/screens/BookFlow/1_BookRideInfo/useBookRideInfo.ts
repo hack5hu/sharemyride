@@ -101,12 +101,12 @@ export const useBookRideInfo = () => {
         addRecentSearch({
           startLocation,
           destinationLocation,
-          travelDate: selectedDate.toISOString(),
+          travelDate: format(selectedDate, "yyyy-MM-dd'T'HH:mm:ss"),
           seatCount,
         });
 
         const results = await rideService.searchRides(payload);
-        setSearchResults(results.data || results);
+        setSearchResults(results.rides || results.data || results);
         navigation.navigate('AvailableRides' as any);
       } catch (error) {
         console.error('Failed to search rides:', error);

@@ -16,6 +16,7 @@ export const AvailableRidesScreen: React.FC = () => {
     handleClearFilters,
     handleApplyFilters,
     handleRideSelect,
+    isLoading,
     t,
     ft,
   } = useAvailableRides();
@@ -33,6 +34,7 @@ export const AvailableRidesScreen: React.FC = () => {
       onRideSelect={handleRideSelect}
       onLoadMore={handleLoadMore}
       isFetchingMore={isFetchingMore}
+      isLoading={isLoading}
       hasMore={hasMore}
       t={t}
       ft={ft}

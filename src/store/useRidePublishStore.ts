@@ -46,7 +46,7 @@ interface RidePublishState {
 
   // Details
   seatCount: number;
-  selectedSeatIds: string[];
+  selectedSeatIds: number[];
   vehicleId: string | null;
   publishVehicleType: '5' | '7';
   vehicleDetails: VehicleDetails | null;
@@ -78,7 +78,7 @@ interface RidePublishState {
   setDepartureDate: (date: string | null) => void;
   setDepartureTime: (time: string | null) => void;
   setSeatCount: (count: number) => void;
-  setSelectedSeatIds: (ids: string[]) => void;
+  setSelectedSeatIds: (ids: number[]) => void;
   setVehicleId: (id: string | null) => void;
   setPublishVehicleType: (type: '5' | '7') => void;
   setVehicleDetails: (details: VehicleDetails | null) => void;

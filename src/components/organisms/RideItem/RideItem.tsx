@@ -3,6 +3,7 @@ import { UpcomingRideCard } from '@/components/organisms/UpcomingRideCard';
 import { CompactRideItem } from '@/components/molecules/CompactRideItem';
 import { MatchedRideBento } from '@/components/organisms/MatchedRideBento';
 import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export interface RideListItem {
   id: string;
@@ -35,37 +36,37 @@ interface RideItemProps {
   onRejectRide?: (id: string) => void;
 }
 
-export const RideItem: React.FC<RideItemProps> = React.memo(({ 
-  item, 
-  activeTab, 
-  onRidePress, 
-  onCancelRide, 
+export const RideItem: React.FC<RideItemProps> = React.memo(({
+  item,
+  activeTab,
+  onRidePress,
+  onCancelRide,
   onRemoveDraft,
   onAcceptRide,
   onRejectRide,
 }) => {
   if (activeTab === 'requests') {
     return (
-      <MatchedRideBento 
-        driverName={item.driverName || 'Passenger'}
-        rating={item.rating || 5}
-        totalRides={`${item.rating || 5} Rating`}
-        avatarUri={item.avatarUri || ''}
-        pickup={item.pickupLocation || ''}
-        dropoff={item.dropoffLocation || ''}
-        price={item.price}
-        seatCount={item.statusTag}
-        date={item.subtitle}
-        onAccept={() => onAcceptRide?.(item.id)}
-        onReject={() => onRejectRide?.(item.id)}
-        onPress={() => onRidePress(item.id)}
-      />
+        <MatchedRideBento
+          driverName={item.driverName || 'Passenger'}
+          rating={item.rating || 5}
+          totalRides={`${item.rating || 5} Rating`}
+          avatarUri={item.avatarUri || ''}
+          pickup={item.pickupLocation || ''}
+          dropoff={item.dropoffLocation || ''}
+          price={item.price}
+          seatCount={item.statusTag}
+          date={item.subtitle}
+          onAccept={() => onAcceptRide?.(item.id)}
+          onReject={() => onRejectRide?.(item.id)}
+          onPress={() => onRidePress(item.id)}
+        />
     );
   }
 
   if (activeTab === 'upcoming') {
     return (
-      <UpcomingRideCard 
+      <UpcomingRideCard
         timerLabel={item.timerLabel || ''}
         driverName={item.driverName || ''}
         carModel={item.carModel || ''}
@@ -84,7 +85,7 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
   }
 
   return (
-    <CompactRideItem 
+    <CompactRideItem
       title={item.title}
       subtitle={item.subtitle}
       price={item.price}

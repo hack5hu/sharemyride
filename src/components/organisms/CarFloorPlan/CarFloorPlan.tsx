@@ -12,10 +12,10 @@ import { SeatConfig } from './seatConfig';
 
 export interface CarFloorPlanProps {
   rows: SeatConfig[][];
-  selectedSeats: Set<string>;
-  occupiedSeats?: Set<string>;
-  prices?: Record<string, number>;
-  onSeatPress: (id: string) => void;
+  selectedSeats: Set<string | number>;
+  occupiedSeats?: Set<string | number>;
+  prices?: Record<string | number, number>;
+  onSeatPress: (id: string | number) => void;
   driverLabel: string;
 }
 

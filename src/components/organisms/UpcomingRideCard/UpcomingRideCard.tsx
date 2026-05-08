@@ -34,6 +34,7 @@ export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = ({
   dropoffLocation,
   onMorePress,
   onPress,
+  statusTag
 }) => {
   const theme = useTheme();
 

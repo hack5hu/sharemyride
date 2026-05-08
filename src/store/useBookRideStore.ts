@@ -11,6 +11,16 @@ export interface RecentSearch {
   seatCount: number;
 }
 
+interface SearchFilters {
+  proximityType?: 'PICKUP' | 'DROP_OFF';
+  departureTimeSlot?: string;
+  noSmoking?: boolean;
+  ladiesOnly?: boolean;
+  verifiedDrivers?: boolean;
+  petFriendly?: boolean;
+  luggageAllowed?: boolean;
+}
+
 interface BookRideState {
   startLocation: Location | null;
   destinationLocation: Location | null;
@@ -18,6 +28,7 @@ interface BookRideState {
   seatCount: number;
   searchResults: any[] | null;
   recentSearches: RecentSearch[];
+  filters: SearchFilters;
 
   setStartLocation: (location: Location | null) => void;
   setDestinationLocation: (location: Location | null) => void;
@@ -29,6 +40,7 @@ interface BookRideState {
   setCurrentPage: (page: number) => void;
   hasMore: boolean;
   setHasMore: (hasMore: boolean) => void;
+  setFilters: (filters: SearchFilters) => void;
   addRecentSearch: (search: Omit<RecentSearch, 'id'>) => void;
   clearRecentSearches: () => void;
   clearBookState: () => void;
@@ -45,6 +57,7 @@ export const useBookRideStore = create<BookRideState>()(
       currentPage: 0,
       hasMore: true,
       recentSearches: [],
+      filters: {},
 
       setStartLocation: (location) => set({ startLocation: location }),
       setDestinationLocation: (location) => set({ destinationLocation: location }),
@@ -53,14 +66,15 @@ export const useBookRideStore = create<BookRideState>()(
       setSearchResults: (results) => set({ 
         searchResults: results,
         currentPage: 0,
-        hasMore: results ? results.length >= 15 : true
+        hasMore: results ? results.length >= 10 : true
       }),
       appendSearchResults: (results) => set((state) => ({ 
         searchResults: [...(state.searchResults || []), ...results],
-        hasMore: results.length >= 15
+        hasMore: results.length >= 10
       })),
       setCurrentPage: (page) => set({ currentPage: page }),
       setHasMore: (hasMore) => set({ hasMore }),
+      setFilters: (filters) => set({ filters }),
 
       addRecentSearch: (search) => set((state) => {
         const newSearch: RecentSearch = {
@@ -85,6 +99,7 @@ export const useBookRideStore = create<BookRideState>()(
         destinationLocation: null,
         travelDate: null,
         seatCount: 1,
+        filters: {},
       }),
     }),
     {

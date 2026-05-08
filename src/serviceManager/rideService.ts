@@ -23,11 +23,11 @@ export interface PublishRidePayload {
   vehicleId: string;
   startTime: string;
   endTime: string;
-  offeredSeats: string[];
+  offeredSeatIds: number[];
   routePath: string;
   routeStops: RouteStop[];
-  fullJourneyPrice: number;
-  frontSeatPrice: number;
+  fullJourneyPrice: number | string;
+  frontSeatPrice: number | string;
 }
 
 export interface TravelPreferenceData {
@@ -51,6 +51,15 @@ export interface SearchRidePayload {
   radiusInMeters: number; // e.g. 10000 for 10km
   page?: number;
   size?: number;
+  
+  // Filters
+  proximityType?: 'PICKUP' | 'DROP_OFF';
+  departureTimeSlot?: string;
+  noSmoking?: boolean;
+  ladiesOnly?: boolean;
+  verifiedDrivers?: boolean;
+  petFriendly?: boolean;
+  luggageAllowed?: boolean;
 }
 
 const rideService = {
@@ -72,9 +81,9 @@ const rideService = {
       throw error;
     }
   },
-  getMyRides: async (filter: 'UPCOMING' | 'COMPLETED' | 'ONGOING', page: number = 0, size: number = 15) => {
+  getMyRides: async (filter: 'UPCOMING' | 'COMPLETED' | 'CANCELLED', page: number = 0, size: number = 15) => {
     try {
-      const response = await apiClient.get(`${API_ENDPOINTS.RIDE.PUBLISHED}?filter=${filter}&page=${page}&size=${size}`);
+      const response = await apiClient.get(`${API_ENDPOINTS.RIDE.GET_MY_RIDES}?filter=${filter}&page=${page}&size=${size}`);
       return response.data;
     } catch (error) {
       console.error(`Fetching ${filter} rides failed:`, error);

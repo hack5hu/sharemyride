@@ -19,7 +19,7 @@ export const API_ENDPOINTS = {
   },
   RIDE: {
     PUBLISH: '/ride',
-    GET_MY_RIDES: '/ride',
+    GET_MY_RIDES: '/ride/my-rides',
     SEARCH: '/ride/search',
     CANCEL_RIDE: (id: string | number) => `/ride/${id}`,
     BOOK_RIDE: (id: string | number) => `/ride/${id}/book`,

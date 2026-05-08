@@ -170,7 +170,7 @@ export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void
         <FeatureBadge>
           <Icon name="event-seat" size={moderateScale(14)} color={theme.colors.on_surface_variant} />
           <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
-            {t.seatsLeftLabel.replace('{count}', ride.seatsLeft.toString())}
+            {t.seatsLeftLabel.replace('{count}', (ride.seatsLeft ?? 0).toString())}
           </Typography>
         </FeatureBadge>
       </Footer>

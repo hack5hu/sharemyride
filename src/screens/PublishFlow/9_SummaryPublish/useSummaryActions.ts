@@ -34,23 +34,6 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
     requestType,
   } = publishStore;
 
-  const mapSeatId = (id: string, vType: '5' | '7'): string => {
-    if (vType === '5') {
-      const mapping: Record<string, string> = { 'A1': '1A', 'B1': '2A', 'B2': '2B', 'B3': '2C' };
-      return mapping[id] || id;
-    } else {
-      const mapping: Record<string, string> = {
-        'front-passenger': '1A',
-        'mid-left': '2A',
-        'mid-mid': '2B',
-        'mid-right': '2C',
-        'back-left': '3A',
-        'back-right': '3B'
-      };
-      return mapping[id] || id;
-    }
-  };
-
   const handlePublish = useCallback(async () => {
     if (!startLocation || !destinationLocation || !departureDate || !departureTime || !vehicleId) return;
     console.log('hello')
@@ -67,7 +50,7 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
       const endDateObj = addSeconds(dateObj, routeDetails?.totalDurationSeconds || 0);
       const endTime = format(endDateObj, "yyyy-MM-dd'T'HH:mm:ss");
 
-      const offeredSeats = selectedSeatIds.map((id: string) => mapSeatId(id, publishVehicleType));
+      const offeredSeatIds = selectedSeatIds;
 
       const allStops = [startLocation, ...middleStops, destinationLocation];
       let cumulativePrice = 0;
@@ -108,13 +91,12 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
         vehicleId,
         startTime,
         endTime,
-        offeredSeats,
+        offeredSeatIds,
         routePath: selectedRoute?.polylineString || '',
         routeStops,
-        fullJourneyPrice,
-        frontSeatPrice,
+        fullJourneyPrice: String(fullJourneyPrice),
+        frontSeatPrice: String(frontSeatPrice),
       };
-
       await rideService.publishRide(payload);
       
       if (editingDraftId) {

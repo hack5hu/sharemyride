@@ -13,10 +13,10 @@ import * as S from './SeatSelectionTemplate.styles';
 
 export interface SeatSelectionTemplateProps {
   flow: 'publish' | 'book';
-  selectedSeats: Set<string>;
+  selectedSeats: Set<string | number>;
   vehicleType: VehicleType;
   seatIdsLabel: string;
-  onSeatPress: (id: string) => void;
+  onSeatPress: (id: string | number) => void;
   vehicles: Vehicle[];
   selectedVehicleId: string | null;
   onVehicleSelect: (id: string) => void;

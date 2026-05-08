@@ -38,10 +38,9 @@ export const usePriceSelection = () => {
   }, [totalDistanceKm, divisor]);
 
   const showPremium = useMemo(() => {
+    console.log("Selected seat IDs", selectedSeatIds);
     return (
-      selectedSeatIds.includes('1A') ||
-      selectedSeatIds.includes('A1') ||
-      selectedSeatIds.includes('front-passenger')
+      selectedSeatIds.includes(2)
     );
   }, [selectedSeatIds]);
 

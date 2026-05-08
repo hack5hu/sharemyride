@@ -22,6 +22,7 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
 
   const parseRideResponse = (response: any): any[] => {
     if (Array.isArray(response)) return response;
+    if (response?.rides && Array.isArray(response.rides)) return response.rides;
     if (response?.data && Array.isArray(response.data)) return response.data;
     if (response?.content && Array.isArray(response.content)) return response.content;
     return [];
@@ -35,11 +36,17 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
       if (category === 'REQUESTS') {
         response = await rideService.getPendingBookings();
       } else {
-        response = await rideService.getMyRides(category as any, page, 15);
+        response = await rideService.getMyRides(category as any, page, 10);
       }
       
       const rideList = parseRideResponse(response);
-      const hasMore = category === 'REQUESTS' ? false : rideList.length >= 15;
+      
+      let hasMore = false;
+      if (category !== 'REQUESTS' && response?.totalPages !== undefined && response?.currentPage !== undefined) {
+        hasMore = response.currentPage < response.totalPages - 1;
+      } else if (category !== 'REQUESTS') {
+        hasMore = rideList.length >= 10;
+      }
 
       if (append) {
         appendRides(category, rideList, hasMore);

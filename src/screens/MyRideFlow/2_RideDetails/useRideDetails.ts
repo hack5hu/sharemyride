@@ -18,11 +18,12 @@ export const useRideDetails = () => {
   // Find the ride in any category
   const ride = useMemo(() => {
     const allRides = [
-      ...rides.UPCOMING.data,
-      ...rides.COMPLETED.data,
-      ...rides.ONGOING.data,
+      ...(rides?.UPCOMING?.data || []),
+      ...(rides?.COMPLETED?.data || []),
+      ...(rides?.CANCELLED?.data || []),
+      ...(rides?.REQUESTS?.data || []),
     ];
-    return allRides.find(r => (r.id || r._id) === rideId);
+    return allRides.find(r => (r.id || r._id || r.bookingId) === rideId);
   }, [rides, rideId]);
 
   const isDriver = useMemo(() => {
@@ -60,7 +61,7 @@ export const useRideDetails = () => {
         avatarUrl: isDriver ? user?.profilePhotoUrl : (ride.driverPhotoUrl || 'https://i.pravatar.cc/150'),
       },
       ridersList: {
-        spotsLeft: ride.availableSeats ? ride.availableSeats.length : 0,
+        spotsLeft: ride.availableSeats,
         riders: (ride.bookings || []).map((b: any) => ({
           id: b.id || b._id,
           name: b.userName || 'Passenger',

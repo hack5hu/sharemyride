@@ -445,12 +445,12 @@ export const en: Translations = {
     topRatedFilterLabel: 'Top Rated',
     frequentCoRiderBadge: 'Frequent Co-rider',
     perSeatLabel: 'per seat',
-    seatsLeftLabel: 'seats left',
+    seatsLeftLabel: '{count} seats left',
     bookButton: 'Book Now',
     detailsButton: 'Details',
     stopLabel: 'stop',
     searchSummaryDate: 'Date',
-    searchSummarySeats: 'Seats',
+    searchSummarySeats: '{count} Seats',
   },
   rideFilters: {
     title: 'Filters',
@@ -487,7 +487,7 @@ export const en: Translations = {
     seatsOpen: 'Seats Open',
     departure: 'Departure',
     journey: 'Journey',
-    seatsLeft: 'seats left',
+    seatsLeft: '{count} seats left',
   },
   selectSeat: {
     title: 'Select Seat',

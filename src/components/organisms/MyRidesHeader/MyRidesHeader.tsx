@@ -1,31 +1,21 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useTheme } from 'styled-components/native';
 import {
   Container,
   TopSection,
   LeftActions,
-  MenuButton,
   TitleText,
-  ProfileWrapper,
-  AvatarImage,
   TabNavigation,
   TabButton,
   TabLabel
 } from './MyRidesHeader.styles';
 import { MyRidesHeaderProps, MyRidesTab } from './types.d';
-import { moderateScale } from '@/styles';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export const MyRidesHeader: React.FC<MyRidesHeaderProps> = ({
   activeTab,
   onTabChange,
-  onMenuPress,
-  onProfilePress,
-  userAvatarUri,
 }) => {
   const { t } = useTranslation();
-  const theme = useTheme();
 
   const TABS: { label: string; value: MyRidesTab }[] = [
     { label: t('myRides.requestsTab'), value: 'requests' },

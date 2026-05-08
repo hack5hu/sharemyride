@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
+import { format } from 'date-fns';
 import { useNavigation } from '@react-navigation/native';
 import { MonthData } from '@/components/templates/DateSelectionTemplate';
 import { useBookRideStore } from '@/store/useBookRideStore';
@@ -38,7 +39,7 @@ export const useBookDateSelection = () => {
 
   const handleSelectDate = useCallback((date: Date) => {
     setSelectedDate(date);
-    setTravelDate(date.toISOString());
+    setTravelDate(format(date, "yyyy-MM-dd'T'HH:mm:ss"));
     
     // Auto navigation back
     setTimeout(() => {
