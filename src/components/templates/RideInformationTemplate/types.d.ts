@@ -9,4 +9,5 @@ export interface RideInformationTemplateProps {
   handleCopyAddress: (address: string) => void;
   handleChat: () => void;
   handleDriverProfile: () => void;
+  isLoading?: boolean;
 }

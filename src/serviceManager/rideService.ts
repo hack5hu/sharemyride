@@ -136,20 +136,37 @@ const rideService = {
     }
   },
   acceptBooking: async (bookingId: string | number) => {
+    return rideService.updateBookingStatus(bookingId, 'CONFIRMED');
+  },
+  rejectBooking: async (bookingId: string | number) => {
+    return rideService.updateBookingStatus(bookingId, 'REJECTED');
+  },
+  getRideDetail: async (rideId: string | number, sourceStopId?: number, destinationStopId?: number) => {
     try {
-      const response = await apiClient.post(API_ENDPOINTS.RIDE.ACCEPT_BOOKING(bookingId));
+      let url = API_ENDPOINTS.RIDE.GET_RIDE_DETAIL(rideId);
+      const params = new URLSearchParams();
+      if (sourceStopId) params.append('sourceStopId', String(sourceStopId));
+      if (destinationStopId) params.append('destinationStopId', String(destinationStopId));
+      
+      const queryString = params.toString();
+      if (queryString) {
+        url += `?${queryString}`;
+      }
+
+      const response = await apiClient.get(url);
       return response.data;
     } catch (error) {
-      console.error('Accepting booking failed:', error);
+      console.error('Fetching ride details failed:', error);
       throw error;
     }
   },
-  rejectBooking: async (bookingId: string | number) => {
+  updateBookingStatus: async (bookingId: string | number, status: 'CONFIRMED' | 'REJECTED') => {
     try {
-      const response = await apiClient.post(API_ENDPOINTS.RIDE.REJECT_BOOKING(bookingId));
+      const url = `${API_ENDPOINTS.RIDE.UPDATE_BOOKING_STATUS(bookingId)}?status=${status}`;
+      const response = await apiClient.put(url);
       return response.data;
     } catch (error) {
-      console.error('Rejecting booking failed:', error);
+      console.error('Updating booking status failed:', error);
       throw error;
     }
   },

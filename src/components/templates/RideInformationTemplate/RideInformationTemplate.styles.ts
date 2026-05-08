@@ -1,6 +1,9 @@
 import styled from 'styled-components/native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+import { ActivityIndicator as RNActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+
+export const ActivityIndicator = styled(RNActivityIndicator)``;
 
 // ── Root Layout ──────────────────────────────────────────────────────────────
 

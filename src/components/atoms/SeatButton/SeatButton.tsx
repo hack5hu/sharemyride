@@ -41,10 +41,10 @@ export const SeatButton: React.FC<SeatButtonProps> = ({ id, state, onPress, driv
             end={{ x: 1, y: 1 }}
           />
         )}
-        <View style={{ position: 'absolute', gap: moderateScale(1), alignItems: 'center' }}>
+        <View style={{ gap: moderateScale(2), alignItems: 'center' }}>
           {state === 'driver' ? (
             <>
-              <MaterialIcons name="directions-car" size={moderateScale(26)} color={iconColor} />
+              <MaterialIcons name="directions-car" size={moderateScale(28)} color={iconColor} />
               {driverLabel && (
                 <S.DriverLabelText>{driverLabel}</S.DriverLabelText>
               )}
@@ -53,7 +53,7 @@ export const SeatButton: React.FC<SeatButtonProps> = ({ id, state, onPress, driv
             <>
               <MaterialIcons 
                 name="airline-seat-recline-normal" 
-                size={moderateScale(22)} 
+                size={moderateScale(24)} 
                 color={iconColor} 
               />
               {price !== undefined && state !== 'occupied' && (
@@ -62,9 +62,9 @@ export const SeatButton: React.FC<SeatButtonProps> = ({ id, state, onPress, driv
               {state === 'occupied' && (
                  <MaterialIcons 
                   name="block" 
-                  size={moderateScale(10)} 
+                  size={moderateScale(12)} 
                   color={iconColor}
-                  style={{ position: 'absolute', bottom: -moderateScale(2), right: -moderateScale(2) }}
+                  style={{ position: 'absolute', top: 0, right: -moderateScale(4) }}
                  />
               )}
             </>

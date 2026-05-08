@@ -75,3 +75,24 @@ export const ConfirmButton = styled.TouchableOpacity<{ disabled: boolean }>`
   elevation: ${({ disabled }) => (disabled ? 0 : 8)};
   opacity: ${({ disabled }) => (disabled ? 0.7 : 1)};
 `;
+
+export const CoRiderList = styled.View`
+  gap: ${verticalScale(12)}px;
+`;
+
+export const CoRiderCard = styled.View`
+  flex-direction: row;
+  align-items: center;
+  padding: ${moderateScale(12)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
+  border-radius: ${moderateScale(12)}px;
+  border-width: 1px;
+  border-color: ${({ theme }) => theme.colors.outline_variant}40;
+`;
+
+export const PassengerAvatar = styled.Image`
+  width: ${moderateScale(40)}px;
+  height: ${moderateScale(40)}px;
+  border-radius: ${moderateScale(20)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_high};
+`;

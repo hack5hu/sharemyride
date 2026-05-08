@@ -12,8 +12,13 @@ export const RideInformationScreen: React.FC<RideInformationProps> = ({ route })
     handleDriverProfile,
     handleViewRoute, 
     handleCopyAddress, 
-    ride 
-  } = useRideInformation(route.params.rideId);
+    ride,
+    isLoading
+  } = useRideInformation(
+    route.params.rideId, 
+    route.params.sourceStopId, 
+    route.params.destinationStopId
+  );
 
   return (
     <RideInformationTemplate
@@ -25,6 +30,7 @@ export const RideInformationScreen: React.FC<RideInformationProps> = ({ route })
       handleDriverProfile={handleDriverProfile}
       handleViewRoute={handleViewRoute}
       handleCopyAddress={handleCopyAddress}
+      isLoading={isLoading}
     />
   );
 };

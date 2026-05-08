@@ -24,6 +24,7 @@ export interface MyRidesHookData {
   activeTab: MyRidesTab;
   isLoading: boolean;
   isRefreshing: boolean;
+  isActionLoading: boolean;
   onTabChange: (tab: MyRidesTab) => void;
   onRidePress: (id: string) => void;
   onRemoveDraft: (id: string) => void;
@@ -36,5 +37,6 @@ export interface MyRidesHookData {
   drafts: any[];
   onMenuPress: () => void;
   onProfilePress: () => void;
-  onAcceptRide: () => void;
+  onAcceptRide: (id: string) => void;
+  onRejectRide: (id: string) => void;
 }

@@ -185,6 +185,8 @@ export const useAvailableRides = () => {
           ? Math.round((new Date(eTime).getTime() - new Date(sTime).getTime()) / (1000 * 60))
           : 0,
         departureHour: sTime ? new Date(sTime).getHours() : undefined,
+        sourceStopId: ride.sourceStopId,
+        destinationStopId: ride.destinationStopId,
       } as any;
     });
   }, [searchResults, startLocation, destinationLocation]);
@@ -234,8 +236,13 @@ export const useAvailableRides = () => {
   }, [navigation]);
 
   const handleRideSelect = useCallback((rideId: string) => {
-    navigation.navigate('RideInformation' as any, { rideId });
-  }, [navigation]);
+    const ride = mappedRides.find(r => r.id === rideId);
+    navigation.navigate('RideInformation' as any, { 
+      rideId,
+      sourceStopId: ride?.sourceStopId,
+      destinationStopId: ride?.destinationStopId
+    });
+  }, [navigation, mappedRides]);
 
   const handleOpenFilters = useCallback(() => {
     setIsFilterModalOpen(true);

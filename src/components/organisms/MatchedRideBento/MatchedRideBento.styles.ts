@@ -13,6 +13,7 @@ export const Container = styled.TouchableOpacity`
   shadow-opacity: 0.05;
   shadow-radius: 8px;
   elevation: 2;
+  margin-bottom: ${verticalScale(16)}px;
 `;
 
 export const GhostIconWrapper = styled.View`

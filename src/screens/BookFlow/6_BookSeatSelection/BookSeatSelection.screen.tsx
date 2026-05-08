@@ -12,7 +12,17 @@ import * as S from './BookSeatSelection.styles';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export const BookSeatSelectionScreen: React.FC<BookSeatSelectionProps> = ({ route }) => {
-  const { rideId } = route.params;
+  const { 
+    rideId,
+    sourceStopId, 
+    destinationStopId, 
+    seats, 
+    passengers: routePassengers,
+    vehicleType: routeVehicleType,
+    departureDate: routeDate,
+    departureTime: routeTime
+  } = route.params;
+
   const {
     rows,
     selectedSeats,
@@ -28,8 +38,18 @@ export const BookSeatSelectionScreen: React.FC<BookSeatSelectionProps> = ({ rout
     vehicleRegistration,
     departureDate,
     departureTime,
+    passengers,
     isBooking,
-  } = useBookSeatSelection(rideId);
+  } = useBookSeatSelection(
+    rideId, 
+    sourceStopId, 
+    destinationStopId, 
+    seats, 
+    routePassengers,
+    routeVehicleType,
+    routeDate,
+    routeTime
+  );
 
   const theme = useTheme();
   const { t, translations } = useTranslation();
@@ -92,6 +112,28 @@ export const BookSeatSelectionScreen: React.FC<BookSeatSelectionProps> = ({ rout
                     driverLabel={st.driverLabel}
                 />
             </View>
+
+            {/* ── Co-riders ── */}
+            {passengers.length > 0 && (
+              <View style={{ marginTop: verticalScale(24) }}>
+                <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant} style={{ marginBottom: verticalScale(12), textTransform: 'uppercase', letterSpacing: 1 }}>
+                  {t('rideDetail.coRiders')}
+                </Typography>
+                <S.CoRiderList>
+                  {passengers.map((passenger: any, idx: number) => (
+                    <S.CoRiderCard key={idx}>
+                      <S.PassengerAvatar source={{ uri: passenger.photoUrl }} />
+                      <View style={{ flex: 1, marginLeft: moderateScale(12) }}>
+                        <Typography variant="body" size="md" weight="bold">{passenger.name}</Typography>
+                        <Typography variant="label" size="xs" color={theme.colors.on_surface_variant} numberOfLines={1}>
+                          {passenger.segment}
+                        </Typography>
+                      </View>
+                    </S.CoRiderCard>
+                  ))}
+                </S.CoRiderList>
+              </View>
+            )}
 
           </S.ContentPadding>
         </S.ScrollContent>

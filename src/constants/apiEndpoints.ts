@@ -23,10 +23,10 @@ export const API_ENDPOINTS = {
     SEARCH: '/ride/search',
     CANCEL_RIDE: (id: string | number) => `/ride/${id}`,
     BOOK_RIDE: (id: string | number) => `/ride/${id}/book`,
+    GET_RIDE_DETAIL: (id: string | number) => `/ride/${id}/detail`,
+    UPDATE_BOOKING_STATUS: (bookingId: string | number) => `/ride/booking/${bookingId}/status`,
     PREFERENCES: '/ride/preferences',
     PUBLISHED: '/ride/published',
     PENDING_BOOKINGS: '/ride/bookings/pending',
-    ACCEPT_BOOKING: (id: string | number) => `/ride/bookings/${id}/accept`,
-    REJECT_BOOKING: (id: string | number) => `/ride/bookings/${id}/reject`,
   },
 } as const;

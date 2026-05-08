@@ -57,7 +57,11 @@ export type RootStackParamList = {
   PublishSuccess: undefined;
   BookRideInfo: undefined;
   AvailableRides: undefined;
-  RideInformation: { rideId: string };
+  RideInformation: { 
+    rideId: string; 
+    sourceStopId?: number; 
+    destinationStopId?: number;
+  };
   RideRouteMap: {
     routePath: string;
     stops: Array<{
@@ -68,7 +72,16 @@ export type RootStackParamList = {
     }>;
     initialStopIndex?: number;
   };
-  BookSeatSelection: { rideId: string };
+  BookSeatSelection: { 
+    rideId: string;
+    sourceStopId?: number; 
+    destinationStopId?: number;
+    seats?: any[];
+    passengers?: any[];
+    vehicleType?: string;
+    departureDate?: string;
+    departureTime?: string;
+  };
   BookingConfirmed: { rideId: string; bookedSeats?: string[] };
   Settings: undefined;
 };

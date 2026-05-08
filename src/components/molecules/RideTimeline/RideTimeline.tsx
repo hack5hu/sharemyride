@@ -21,21 +21,25 @@ const DashColumn = styled.View`
   position: relative;
 `;
 
-const Point = styled.View<{ type: 'pickup' | 'stop' | 'destination' }>`
+const Point = styled.View<{ type: 'pickup' | 'stop' | 'destination', isHighlighted?: boolean }>`
   width: ${moderateScale(12)}px;
   height: ${moderateScale(12)}px;
   border-radius: ${moderateScale(6)}px;
-  background-color: ${({ theme, type }) => 
+  background-color: ${({ theme, type, isHighlighted }) => 
+    isHighlighted ? theme.colors.primary :
     type === 'pickup' ? theme.colors.primary : 
     type === 'destination' ? theme.colors.tertiary : 
     theme.colors.outline_variant};
   z-index: 2;
   margin-top: ${verticalScale(4)}px;
   border-width: ${moderateScale(2)}px;
-  border-color: ${({ theme, type }) => 
+  border-color: ${({ theme, type, isHighlighted }) => 
+    isHighlighted ? theme.colors.on_primary :
     type === 'pickup' ? theme.colors.primary_fixed : 
     type === 'destination' ? theme.colors.tertiary_fixed : 
     'white'};
+  elevation: ${({ isHighlighted }) => isHighlighted ? 4 : 0};
+  transform: scale(${({ isHighlighted }) => isHighlighted ? 1.3 : 1});
 `;
 
 const DashLine = styled.View`
@@ -149,24 +153,36 @@ export const RideTimeline: React.FC<{
             <TimeText color={point.type === 'stop' ? theme.colors.on_surface_variant : undefined}>
               {point.time}
             </TimeText>
+            {point.durationSincePrevious && (
+              <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>
+                {point.durationSincePrevious}
+              </Typography>
+            )}
           </LeftContent>
 
-          <DashColumn>
-            <Point type={point.type} />
-            {index < points.length - 1 && <DashLine />}
-          </DashColumn>
-
-          <RightContent>
-            <Typography variant="body" size="md" weight="bold" numberOfLines={2} ellipsizeMode='tail'>
-              {point.location}
-            </Typography>
+            <DashColumn>
+              <Point type={point.type} isHighlighted={point.isHighlighted} />
+              {index < points.length - 1 && <DashLine />}
+            </DashColumn>
+  
+            <RightContent>
+              <Typography 
+                variant="body" 
+                size="md" 
+                weight={point.isHighlighted ? "bold" : "medium"} 
+                numberOfLines={2} 
+                ellipsizeMode='tail'
+                color={point.isHighlighted ? theme.colors.primary : theme.colors.on_surface_variant}
+              >
+                {point.location}
+              </Typography>
             {point.description && (
               <DescriptionText variant="label" size="xs" color={theme.colors.on_surface_variant} numberOfLines={2} ellipsizeMode='tail'>
                 {point.description}
               </DescriptionText>
             )}
 
-            {showActions && (index === 0 || index === points.length - 1) && (
+            {point.isHighlighted && (
               <ActionGroup>
                 <IconButton onPress={() => handleCopy(point.location, index)}>
                   {copiedIndex === index && <FeedbackText variant="label" size="xs">Copied!</FeedbackText>}

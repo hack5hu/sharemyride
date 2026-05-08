@@ -9,6 +9,7 @@ import { RideInformationTemplateProps } from './types.d';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import * as S from './RideInformationTemplate.styles';
 import { moderateScale } from '@/styles';
+import { Loader } from '@/components/atoms/Loader';
 
 const MOCK_RIDERS = [
   'https://i.pravatar.cc/150?img=11',
@@ -21,6 +22,7 @@ const PREFERENCE_ICONS: Record<string, string> = {
   luggageAllowed: 'luggage',
   ladiesOnly: 'female',
   manualApproval: 'how-to-reg',
+  autoApproval: 'flash-on',
 };
 
 const PREFERENCE_LABELS: Record<string, string> = {
@@ -29,6 +31,7 @@ const PREFERENCE_LABELS: Record<string, string> = {
   luggageAllowed: 'Luggage OK',
   ladiesOnly: 'Ladies Only',
   manualApproval: 'Approval Required',
+  autoApproval: 'Instant Booking',
 };
 
 export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = ({
@@ -40,8 +43,17 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
   handleCopyAddress,
   handleDriverProfile,
   handleChat,
+  isLoading,
 }) => {
   const theme = useTheme();
+
+  if (isLoading) {
+    return (
+      <ScreenShell title={t.title} onBack={handleBack}>
+        <Loader message="Curating ride details for you..." />
+      </ScreenShell>
+    );
+  }
 
   if (!ride) return null;
 

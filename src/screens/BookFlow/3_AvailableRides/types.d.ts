@@ -1,9 +1,12 @@
 export interface TimelinePoint {
+  id?: number | string;
   description: string;
   time: string;
   location: string;
   subLocation?: string;
   type: 'pickup' | 'stop' | 'destination';
+  isHighlighted?: boolean;
+  durationSincePrevious?: string;
 }
 
 export interface DriverData {

@@ -5,10 +5,12 @@ import { useMyRidesActions } from './useMyRidesActions';
 import { mapBackendRideToUI } from './utils/rideMapper';
 import { MyRidesHookData, RideListItem } from './types.d';
 import { useTranslation } from '@/hooks/useTranslation';
+import rideService from '@/serviceManager/rideService';
 
 export const useMyRides = (): MyRidesHookData => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<MyRidesTab>('upcoming');
+  const [isActionLoading, setIsActionLoading] = useState(false);
   
   const {
     isLoading,
@@ -85,20 +87,26 @@ export const useMyRides = (): MyRidesHookData => {
   }, [activeTab, mappedUpcoming, mappedCompleted, mappedRequests, formattedDrafts]);
 
   const onAcceptBooking = useCallback(async (id: string) => {
+    setIsActionLoading(true);
     try {
       await rideService.acceptBooking(id);
       onRefresh();
     } catch (error) {
       console.error('Failed to accept booking:', error);
+    } finally {
+      setIsActionLoading(false);
     }
   }, [onRefresh]);
 
   const onRejectBooking = useCallback(async (id: string) => {
+    setIsActionLoading(true);
     try {
       await rideService.rejectBooking(id);
       onRefresh();
     } catch (error) {
       console.error('Failed to reject booking:', error);
+    } finally {
+      setIsActionLoading(false);
     }
   }, [onRefresh]);
 
@@ -106,6 +114,7 @@ export const useMyRides = (): MyRidesHookData => {
     activeTab,
     isLoading,
     isRefreshing,
+    isActionLoading,
     onTabChange,
     onRidePress,
     onRemoveDraft,

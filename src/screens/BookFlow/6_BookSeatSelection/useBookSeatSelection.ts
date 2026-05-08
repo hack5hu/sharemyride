@@ -2,7 +2,6 @@ import { useState, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import { FIVE_SEATER_ROWS, SEVEN_SEATER_ROWS } from '@/components/organisms/CarFloorPlan/seatConfig';
-import { calculateSegmentPrice } from '@/utils/pricing';
 import rideService from '@/serviceManager/rideService';
 
 const ALL_SEAT_IDS = [
@@ -10,10 +9,19 @@ const ALL_SEAT_IDS = [
   '3A', '3B' // 7-seater extension
 ];
 
-export const useBookSeatSelection = (rideId: string) => {
+export const useBookSeatSelection = (
+  rideId: string, 
+  sourceStopId?: number, 
+  destinationStopId?: number,
+  passedSeats?: any[],
+  passedPassengers?: any[],
+  passedVehicleType?: string,
+  passedDate?: string,
+  passedTime?: string
+) => {
   const navigation = useNavigation();
   const { searchResults } = useBookRideStore();
-  const [selectedSeats, setSelectedSeats] = useState<Set<string>>(new Set());
+  const [selectedSeats, setSelectedSeats] = useState<Set<string | number>>(new Set());
   const [isBooking, setIsBooking] = useState(false);
 
   const rideRaw = useMemo(
@@ -22,42 +30,30 @@ export const useBookSeatSelection = (rideId: string) => {
   );
 
   const vehicleType = useMemo(() => {
-    const t = (rideRaw?.vehicleType ?? '').toUpperCase();
+    const t = (passedVehicleType || rideRaw?.vehicleType || '').toUpperCase();
     return t.includes('7') ? '7' : '5';
-  }, [rideRaw]);
-
-  const basePrice: number = useMemo(() => 
-    calculateSegmentPrice(rideRaw?.stops || [], rideRaw?.fullJourneyPrice), 
-  [rideRaw]);
-
-  const frontPrice: number = useMemo(() => 
-    calculateSegmentPrice(rideRaw?.stops || [], rideRaw?.frontSeatPrice, true), 
-  [rideRaw]);
+  }, [passedVehicleType, rideRaw]);
 
   const seatNameIdMap = useMemo(() => {
     const map: Record<string, number> = {};
-    rideRaw?.availableSeats?.forEach((s: any) => {
-      map[s.name] = s.id;
+    (passedSeats || []).forEach((s: any) => {
+      map[s.seatName] = s.id;
     });
     return map;
-  }, [rideRaw]);
-
-  const availableSeatsList: string[] = useMemo(
-    () => rideRaw?.availableSeats?.map((s: any) => s.name) ?? [],
-    [rideRaw],
-  );
+  }, [passedSeats]);
 
   const occupiedSeats = useMemo(() => {
-    const occupied = new Set<string>();
-    ALL_SEAT_IDS.forEach(id => {
-      if (!availableSeatsList.includes(id)) {
-        occupied.add(id);
+    const occupied = new Set<string | number>();
+    (passedSeats || []).forEach((s: any) => {
+      if (!s.available) {
+        occupied.add(s.id);
       }
     });
     return occupied;
-  }, [availableSeatsList]);
+  }, [passedSeats]);
 
   const departureDate = useMemo(() => {
+    if (passedDate) return passedDate;
     const firstStop = rideRaw?.stops?.[0];
     return firstStop?.arrivalTime
       ? new Date(firstStop.arrivalTime).toLocaleDateString('en-IN', {
@@ -65,9 +61,10 @@ export const useBookSeatSelection = (rideId: string) => {
           month: 'short',
         })
       : '-- ---';
-  }, [rideRaw]);
+  }, [rideRaw, passedDate]);
 
   const departureTime = useMemo(() => {
+    if (passedTime) return passedTime;
     const firstStop = rideRaw?.stops?.[0];
     if (!firstStop?.arrivalTime) return '--:--';
     const date = new Date(firstStop.arrivalTime);
@@ -76,19 +73,15 @@ export const useBookSeatSelection = (rideId: string) => {
       minute: '2-digit',
       hour12: true,
     });
-  }, [rideRaw]);
+  }, [rideRaw, passedTime]);
 
   const prices = useMemo(() => {
-    const priceMap: Record<string, number> = {};
-    ALL_SEAT_IDS.forEach(id => {
-      if (id === '1A') {
-        priceMap[id] = frontPrice;
-      } else {
-        priceMap[id] = basePrice;
-      }
+    const priceMap: Record<string | number, number> = {};
+    (passedSeats || []).forEach((s: any) => {
+      priceMap[s.id] = s.price;
     });
     return priceMap;
-  }, [frontPrice, basePrice]);
+  }, [passedSeats]);
 
   const totalPrice: number = useMemo(() => {
     let total = 0;
@@ -98,7 +91,7 @@ export const useBookSeatSelection = (rideId: string) => {
     return total;
   }, [selectedSeats, prices]);
 
-  const toggleSeat = useCallback((id: string) => {
+  const toggleSeat = useCallback((id: string | number) => {
     if (id === 'driver' || occupiedSeats.has(id)) return;
     setSelectedSeats(prev => {
       const next = new Set(prev);
@@ -114,18 +107,14 @@ export const useBookSeatSelection = (rideId: string) => {
   const handleBack = useCallback(() => navigation.goBack(), [navigation]);
 
   const handleConfirm = useCallback(async () => {
-    if (selectedSeats.size === 0 || !rideRaw || isBooking) return;
+    if (selectedSeats.size === 0 || isBooking) return;
     
     setIsBooking(true);
     try {
-      const firstStop = rideRaw.stops?.[0];
-      const lastStop = rideRaw.stops?.[rideRaw.stops.length - 1];
-
       const payload = {
-        requestedSeatIds: Array.from(selectedSeats).map(name => seatNameIdMap[name]).filter(id => id !== undefined),
-        requestedSeats: Array.from(selectedSeats),
-        sourceStopId: firstStop?.id,
-        destinationStopId: lastStop?.id,
+        requestedSeatIds: Array.from(selectedSeats) as number[],
+        sourceStopId: Number(sourceStopId),
+        destinationStopId: Number(destinationStopId),
       };
 
       await rideService.bookRide(rideId, payload);
@@ -138,7 +127,7 @@ export const useBookSeatSelection = (rideId: string) => {
     } finally {
       setIsBooking(false);
     }
-  }, [navigation, selectedSeats, rideId, rideRaw, seatNameIdMap, isBooking]);
+  }, [navigation, selectedSeats, rideId, seatNameIdMap, isBooking, sourceStopId, destinationStopId]);
 
   return {
     rows: vehicleType === '7' ? SEVEN_SEATER_ROWS : FIVE_SEATER_ROWS,
@@ -155,6 +144,7 @@ export const useBookSeatSelection = (rideId: string) => {
     vehicleType,
     departureDate,
     departureTime,
+    passengers: passedPassengers || [],
     isBooking,
   };
 };
