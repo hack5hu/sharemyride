@@ -39,9 +39,10 @@ export const useMyRidesActions = (fetchInitialRides: () => void) => {
     if (s.requestType) publishStore.setRequestType(s.requestType);
   }, [publishStore]);
 
-  const onRidePress = useCallback((rideId: string) => {
-    if (rideId.startsWith('draft-')) {
-      const draft = drafts.find((d) => d.id === rideId);
+  const onRidePress = useCallback((params: { id: string; rideId?: string; sourceStopId?: number; destinationStopId?: number }) => {
+    const { id, rideId, sourceStopId, destinationStopId } = params;
+    if (id.startsWith('draft-')) {
+      const draft = drafts.find((d) => d.id === id);
       if (draft) {
         publishStore.clearPublishState();
         publishStore.setEditingDraftId(draft.id);
@@ -49,7 +50,11 @@ export const useMyRidesActions = (fetchInitialRides: () => void) => {
         navigation.navigate('SummaryPublish');
       }
     } else {
-      navigation.navigate('RideDetails', { rideId });
+      navigation.navigate('RideDetails', { 
+        rideId: rideId || id,
+        sourceStopId,
+        destinationStopId
+      });
     }
   }, [navigation, drafts, publishStore, restoreDraftToStore]);
 

@@ -29,7 +29,7 @@ export interface RideListItem {
 interface RideItemProps {
   item: RideListItem;
   activeTab: MyRidesTab;
-  onRidePress: (id: string) => void;
+  onRidePress: (params: any) => void;
   onCancelRide: (id: string | number) => void;
   onRemoveDraft: (id: string) => void;
   onAcceptRide?: (id: string) => void;
@@ -59,7 +59,7 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
           date={item.subtitle}
           onAccept={() => onAcceptRide?.(item.id)}
           onReject={() => onRejectRide?.(item.id)}
-          onPress={() => onRidePress(item.id)}
+          onPress={() => onRidePress(item)}
         />
     );
   }
@@ -78,7 +78,7 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
         dropoffTime={item.dropoffTime || ''}
         dropoffLocation={item.dropoffLocation || ''}
         statusTag={item.statusTag}
-        onPress={() => onRidePress(item.id)}
+        onPress={() => onRidePress(item)}
         onMorePress={() => onCancelRide(item.id)}
       />
     );
@@ -93,7 +93,7 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
       type={activeTab === 'drafts' ? 'draft' : 'completed'}
       actionIcon={activeTab === 'drafts' ? 'delete-outline' : undefined}
       onActionPress={() => activeTab === 'drafts' ? onRemoveDraft(item.id) : undefined}
-      onPress={() => onRidePress(item.id)}
+      onPress={() => onRidePress(item)}
     />
   );
 });

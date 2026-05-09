@@ -10,29 +10,11 @@ import { ScreenShell } from '@/components/molecules/ScreenShell';
 import * as S from './RideInformationTemplate.styles';
 import { moderateScale } from '@/styles';
 import { Loader } from '@/components/atoms/Loader';
-
-const MOCK_RIDERS = [
-  'https://i.pravatar.cc/150?img=11',
-  'https://i.pravatar.cc/150?img=22',
-];
-
-const PREFERENCE_ICONS: Record<string, string> = {
-  noSmoking: 'smoke-free',
-  petFriendly: 'pets',
-  luggageAllowed: 'luggage',
-  ladiesOnly: 'female',
-  manualApproval: 'how-to-reg',
-  autoApproval: 'flash-on',
-};
-
-const PREFERENCE_LABELS: Record<string, string> = {
-  noSmoking: 'Smoke-Free Ride',
-  petFriendly: 'Pets Welcome',
-  luggageAllowed: 'Luggage OK',
-  ladiesOnly: 'Ladies Only',
-  manualApproval: 'Approval Required',
-  autoApproval: 'Instant Booking',
-};
+import { RideStatsStrip } from '@/components/organisms/RideStatsStrip/RideStatsStrip';
+import { RideComfortSection } from '@/components/organisms/RideComfortSection/RideComfortSection';
+import { PassengerManagement } from '@/components/organisms/PassengerManagement/PassengerManagement';
+import { RideFareCard } from '@/components/organisms/RideFareCard/RideFareCard';
+import { RideVehicleCard } from '@/components/organisms/RideVehicleCard/RideVehicleCard';
 
 export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = ({
   ride,
@@ -44,6 +26,11 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
   handleDriverProfile,
   handleChat,
   isLoading,
+  showBookButton = true,
+  isDriver = false,
+  onCancelRide,
+  onCancelPassenger,
+  showVehicleDetails = false,
 }) => {
   const theme = useTheme();
 
@@ -58,7 +45,6 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
   if (!ride) return null;
 
   const rideAny = ride as any;
-
   const departureTime = ride.timeline[0]?.time ?? '--:--';
   const departureDateLabel: string = rideAny.departureDate ?? 'Today';
 
@@ -68,101 +54,83 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
     ? `${durationHours}h ${durationMins}m`
     : `${durationMins}m`;
 
-  const preferenceFeatures = ride.features.filter(f => !f.startsWith('music:'));
-  const musicFeature = ride.features.find(f => f.startsWith('music:'));
-  const musicGenre = musicFeature?.replace('music:', '');
-  const bookedCount = MOCK_RIDERS.length;
-
   return (
     <S.Root>
-      <ScreenShell title={t.title} onBack={handleBack}>
+      <ScreenShell title={t.title} onBack={true}>
         <S.ScrollContent showsVerticalScrollIndicator={false}>
           <S.ContentPadding>
-            {/* ── Driver Card (simple flat row) ── */}
-            <S.DriverCard>
-              <S.DriverInfoGroup onPress={handleDriverProfile}>
-                <S.AvatarWrapper>
-                  <Avatar
-                    source={{ uri: ride.driver.driverPhotoUrl || ride.driver.avatar }}
-                    size="md"
-                    border
-                  />
-                  <S.BadgePin>
-                    <VerifiedBadge size={14} />
-                  </S.BadgePin>
-                </S.AvatarWrapper>
+            {/* ── Driver Card (hidden for driver) ── */}
+            {!isDriver && (
+              <S.DriverCard>
+                <S.DriverInfoGroup onPress={handleDriverProfile}>
+                  <S.AvatarWrapper>
+                    <Avatar
+                      source={{ uri: ride.driver.driverPhotoUrl || ride.driver.avatar }}
+                      size="md"
+                      border
+                    />
+                    <S.BadgePin>
+                      <VerifiedBadge size={14} />
+                    </S.BadgePin>
+                  </S.AvatarWrapper>
 
-                <S.DriverTextGroup>
-                  <Typography variant="title" size="sm" weight="bold">
-                    {ride.driver.name}
-                  </Typography>
-                  <S.VerifiedRow>
-                    <Icon name="star" size={moderateScale(13)} color="#EAB308" />
-                    <Typography variant="label" size="xs" weight="bold" color="on_surface_variant">
-                      {ride.driver.rating} · {ride.driver.rideCount} rides
+                  <S.DriverTextGroup>
+                    <Typography variant="title" size="sm" weight="bold">
+                      {ride.driver.name}
                     </Typography>
-                  </S.VerifiedRow>
-                </S.DriverTextGroup>
-              </S.DriverInfoGroup>
+                    <S.VerifiedRow>
+                      <Icon name="star" size={moderateScale(13)} color="#EAB308" />
+                      <Typography variant="label" size="xs" weight="bold" color="on_surface_variant">
+                        {ride.driver.rating} · {ride.driver.rideCount} rides
+                      </Typography>
+                    </S.VerifiedRow>
+                  </S.DriverTextGroup>
+                </S.DriverInfoGroup>
 
-              {/* Chat only */}
-              <S.ChatButton onPress={handleChat} activeOpacity={0.8}>
-                <Icon name="chat-bubble-outline" size={moderateScale(20)} color={theme.colors.primary} />
-              </S.ChatButton>
-            </S.DriverCard>
+                <S.ChatButton onPress={handleChat} activeOpacity={0.8}>
+                  <Icon name="chat-bubble-outline" size={moderateScale(20)} color={theme.colors.primary} />
+                </S.ChatButton>
+              </S.DriverCard>
+            )}
 
-            {/* ── Stats Strip: Date · Time · Duration · Seats ── */}
-            <S.StatsStrip>
-              <S.StatPill>
-                <S.StatPillIcon>
-                  <Icon name="calendar-today" size={moderateScale(15)} color={theme.colors.primary} />
-                </S.StatPillIcon>
-                <Typography variant="label" size="sm" weight="bold" numberOfLines={1}>
-                  {departureDateLabel}
-                </Typography>
-                <Typography variant="label" size="xs" color="on_surface_variant">
-                  Date
-                </Typography>
-              </S.StatPill>
+            {/* ── Stats Strip ── */}
+            <RideStatsStrip
+              departureDate={departureDateLabel}
+              departureTime={departureTime}
+              durationLabel={durationLabel}
+              seatsLeft={ride.seatsLeft}
+            />
 
-              <S.StatPill>
-                <S.StatPillIcon>
-                  <Icon name="schedule" size={moderateScale(15)} color={theme.colors.primary} />
-                </S.StatPillIcon>
-                <Typography variant="label" size="sm" weight="bold">
-                  {departureTime}
-                </Typography>
-                <Typography variant="label" size="xs" color="on_surface_variant">
-                  Time
-                </Typography>
-              </S.StatPill>
-
-              <S.StatPill>
-                <S.StatPillIcon>
-                  <Icon name="timer" size={moderateScale(15)} color={theme.colors.primary} />
-                </S.StatPillIcon>
-                <Typography variant="label" size="sm" weight="bold">
-                  {durationLabel}
-                </Typography>
-                <Typography variant="label" size="xs" color="on_surface_variant">
-                  Duration
-                </Typography>
-              </S.StatPill>
-
-              <S.StatPill>
-                <S.StatPillIcon>
-                  <Icon name="event-seat" size={moderateScale(15)} color={theme.colors.primary} />
-                </S.StatPillIcon>
-                <Typography variant="label" size="sm" weight="bold">
-                  {ride.seatsLeft}
-                </Typography>
-                <Typography variant="label" size="xs" color="on_surface_variant">
-                  Seats Left
-                </Typography>
-              </S.StatPill>
-            </S.StatsStrip>
-
-
+            {/* ── Fare Info ── */}
+            {showVehicleDetails ? (
+              <S.FareSummaryRow>
+                <S.FareSummaryItem>
+                  <Icon name="currency-rupee" size={moderateScale(18)} color={theme.colors.primary} />
+                  <S.FareSummaryText>
+                    <Typography variant="label" size="xs" color="on_surface_variant">Booking Total</Typography>
+                    <Typography variant="title" size="sm" weight="bold">₹{rideAny.bookingPrice?.toFixed(0) ?? ride.price.toFixed(0)}</Typography>
+                  </S.FareSummaryText>
+                </S.FareSummaryItem>
+                <S.FareDivider />
+                <S.FareSummaryItem>
+                  <Icon name="event-seat" size={moderateScale(18)} color={theme.colors.primary} />
+                  <S.FareSummaryText>
+                    <Typography variant="label" size="xs" color="on_surface_variant">Seats</Typography>
+                    <Typography variant="title" size="sm" weight="bold">{rideAny.seatNames?.join(', ') || `${rideAny.seatsBooked} seat(s)`}</Typography>
+                  </S.FareSummaryText>
+                </S.FareSummaryItem>
+                <S.FareDivider />
+                <S.FareSummaryItem>
+                  <Icon name="payments" size={moderateScale(18)} color={theme.colors.primary} />
+                  <S.FareSummaryText>
+                    <Typography variant="label" size="xs" color="on_surface_variant">Payment</Typography>
+                    <Typography variant="title" size="sm" weight="bold">{rideAny.paymentMethod ?? 'Cash'}</Typography>
+                  </S.FareSummaryText>
+                </S.FareSummaryItem>
+              </S.FareSummaryRow>
+            ) : (
+              <RideFareCard price={ride.price} />
+            )}
 
             {/* ── Route Timeline ── */}
             <S.SectionCard>
@@ -180,99 +148,52 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
               />
             </S.SectionCard>
 
-
+            
 
             {/* ── Journey Comfort ── */}
-            {(preferenceFeatures.length > 0 || musicGenre) && (
-              <S.SectionCard>
-                <S.SectionLabelRow>
-                  <S.SectionDot color={theme.colors.secondary} />
-                  <Typography variant="label" size="xs" weight="bold" color="on_surface_variant">
-                    JOURNEY COMFORT
-                  </Typography>
-                </S.SectionLabelRow>
-                <S.ChipsWrap>
-                  {preferenceFeatures.map((feat) => (
-                    <S.PreferenceChip key={feat} accent={feat === 'noSmoking'}>
-                      <Icon
-                        name={PREFERENCE_ICONS[feat] || 'check-circle'}
-                        size={moderateScale(15)}
-                        color={feat === 'noSmoking' ? theme.colors.error : theme.colors.primary}
-                      />
-                      <Typography variant="label" size="sm" weight="medium">
-                        {PREFERENCE_LABELS[feat] || feat}
-                      </Typography>
-                    </S.PreferenceChip>
-                  ))}
-                  {musicGenre && (
-                    <S.PreferenceChip>
-                      <Icon name="music-note" size={moderateScale(15)} color={theme.colors.secondary} />
-                      <Typography variant="label" size="sm" weight="medium">
-                        {musicGenre} Vibes
-                      </Typography>
-                    </S.PreferenceChip>
-                  )}
-                </S.ChipsWrap>
-              </S.SectionCard>
+            <RideComfortSection features={ride.features} />
+
+            {/* ── Vehicle Details ── */}
+            {showVehicleDetails && ride.vehicle && (
+              <RideVehicleCard vehicle={ride.vehicle} />
             )}
 
             {/* ── Fellow Travelers ── */}
-            <S.SectionCard>
-              <S.SectionLabelRow>
-                <S.SectionDot color={theme.colors.tertiary} />
-                <Typography variant="label" size="xs" weight="bold" color="on_surface_variant">
-                  YOUR FELLOW TRAVELERS
-                </Typography>
-              </S.SectionLabelRow>
-              <S.CoRidersRow>
-                <S.AvatarStack>
-                  {MOCK_RIDERS.map((uri, i) => (
-                    <S.CoRiderAvatar key={i} source={{ uri }} offset={i} />
-                  ))}
-                </S.AvatarStack>
-                <Typography variant="body" size="sm" color="on_surface_variant">
-                  {bookedCount} {bookedCount === 1 ? 'person has' : 'people have'} joined
-                </Typography>
-                <S.EmptySeatPill>
-                  <Icon name="add-circle-outline" size={moderateScale(13)} color={theme.colors.primary} />
-                  <Typography variant="label" size="xs" weight="bold" color="primary">
-                    {ride.seatsLeft} open
-                  </Typography>
-                </S.EmptySeatPill>
-              </S.CoRidersRow>
-            </S.SectionCard>
+            <PassengerManagement
+              isDriver={isDriver}
+              passengers={ride.passengers}
+              seatsLeft={ride.seatsLeft}
+              onCancelPassenger={onCancelPassenger}
+              t={t}
+            />
 
+           
 
-            {/* ── Fare Card ── */}
-            <S.FareCard
-              colors={[theme.colors.primary, theme.colors.primary_container]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-            >
-              <S.FareLabel>
-                <Typography variant="label" size="xs" weight="bold" color="on_primary">
-                  YOUR FARE
-                </Typography>
-                <S.FarePriceBig>₹{ride.price.toFixed(0)}</S.FarePriceBig>
-                <S.PerSeatNote>per seat · no hidden fees</S.PerSeatNote>
-              </S.FareLabel>
-              <S.FareIconBox>
-                <Icon name="currency-rupee" size={moderateScale(32)} color="#FFFFFF" />
-              </S.FareIconBox>
-            </S.FareCard>
+           
 
           </S.ContentPadding>
         </S.ScrollContent>
 
         {/* ── Fixed Bottom CTA ── */}
-        <S.FixedFooter>
-          <S.BookButton onPress={handleBook} activeOpacity={0.85}>
-            <Icon name="airline-seat-recline-normal" size={moderateScale(20)} color={theme.colors.on_primary} />
-            <Typography variant="title" size="sm" weight="bold" color="on_primary">
-              Select a Seat
-            </Typography>
-          </S.BookButton>
-        </S.FixedFooter>
+        {(showBookButton || isDriver) && (
+          <S.FixedFooter>
+            {isDriver ? (
+              <S.CancelWholeRideButton onPress={onCancelRide} activeOpacity={0.85}>
+                <Icon name="cancel" size={moderateScale(20)} color={theme.colors.error} />
+                <Typography variant="title" size="sm" weight="bold" color="error">
+                  Cancel Whole Ride
+                </Typography>
+              </S.CancelWholeRideButton>
+            ) : (
+              <S.BookButton onPress={handleBook} activeOpacity={0.85}>
+                <Icon name="airline-seat-recline-normal" size={moderateScale(20)} color={theme.colors.on_primary} />
+                <Typography variant="title" size="sm" weight="bold" color="on_primary">
+                  Select a Seat
+                </Typography>
+              </S.BookButton>
+            )}
+          </S.FixedFooter>
+        )}
       </ScreenShell>
     </S.Root>
   );

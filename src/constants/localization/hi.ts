@@ -211,7 +211,8 @@ export const hi: Translations = {
     activeDrivers: 'सक्रिय चालक',
   },
   rideDetails: {
-    headerTitle: 'सवारी विवरण',
+    headerTitle: 'सवारी का विवरण',
+    timelineTitle: 'यात्रा का विवरण',
     liveTracking: 'लाइव ट्रैकिंग',
     pickupLabel: 'पिकअप',
     stopLabel: 'स्टॉप',
@@ -575,5 +576,10 @@ export const hi: Translations = {
     completedStatus: 'पूरा हुआ',
     requestPending: 'अनुरोध लंबित',
     rideConfirmed: 'सवारी की पुष्टि की गई',
+    confirmedStatus: 'पुष्टि की गई',
+    pendingStatus: 'लंबित',
+    youAreDriver: 'आप चालक हैं',
+    yourVehicle: 'आपका वाहन',
+    vehicleDetails: 'वाहन विवरण',
   },
 };

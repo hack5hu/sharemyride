@@ -14,6 +14,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 export const MyRidesHeader: React.FC<MyRidesHeaderProps> = ({
   activeTab,
   onTabChange,
+  hasRequests = false,
 }) => {
   const { t } = useTranslation();
 
@@ -22,7 +23,7 @@ export const MyRidesHeader: React.FC<MyRidesHeaderProps> = ({
     { label: t('myRides.upcomingTab'), value: 'upcoming' },
     { label: t('myRides.draftsTab'), value: 'drafts' },
     { label: t('myRides.completedTab'), value: 'completed' },
-  ];
+  ].filter(tab => tab.value !== 'requests' || hasRequests);
 
   return (
     <Container>

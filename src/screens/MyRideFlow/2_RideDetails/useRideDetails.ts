@@ -1,90 +1,83 @@
-import { useCallback, useMemo } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 import { Alert } from 'react-native';
-import { useLocale } from '@/constants/localization';
-import { useMyRidesStore } from '@/store/useMyRidesStore';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { RideDetailsScreenProps } from './types';
 import rideService from '@/serviceManager/rideService';
+import { mapBackendRideToUI } from '@/screens/BookFlow/4_RideInformation/useRideDataMapper';
 
 export const useRideDetails = () => {
   const navigation = useNavigation();
   const route = useRoute<RideDetailsScreenProps['route']>();
-  const { rideId } = route.params;
-  const { rideDetails: t } = useLocale();
-  const { rides, fetchInitialRides } = useMyRidesStore();
+  const { rideId, sourceStopId, destinationStopId } = route.params;
+  const { t } = useTranslation();
   const { user } = useAuthStore();
 
-  // Find the ride in any category
-  const ride = useMemo(() => {
-    const allRides = [
-      ...(rides?.UPCOMING?.data || []),
-      ...(rides?.COMPLETED?.data || []),
-      ...(rides?.CANCELLED?.data || []),
-      ...(rides?.REQUESTS?.data || []),
-    ];
-    return allRides.find(r => (r.id || r._id || r.bookingId) === rideId);
-  }, [rides, rideId]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [rideData, setRideData] = useState<any>(null);
 
-  const isDriver = useMemo(() => {
-    if (!ride || !user) return false;
-    return ride.driverId === user.id || ride.userId === user.id;
-  }, [ride, user]);
+  const fetchDetails = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const data = await rideService.getRideDetail(rideId, sourceStopId, destinationStopId);
+      
+      // Use IDs from myBooking if route params are empty
+      const resolvedSourceId = sourceStopId || data?.myBooking?.sourceStopId;
+      const resolvedDestId = destinationStopId || data?.myBooking?.destinationStopId;
+      
+      const mapped = mapBackendRideToUI(data, undefined, undefined, resolvedSourceId, resolvedDestId);
+      setRideData(mapped);
+    } catch (error) {
+      console.error('Fetching ride details failed:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [rideId, sourceStopId, destinationStopId]);
 
-  const mappedData = useMemo(() => {
-    if (!ride) return null;
-
-    const stops = ride.stops || ride.routeStops || [];
-    const firstStop = stops[0];
-    const lastStop = stops[stops.length - 1];
-
-    return {
-      isDriver,
-      routeJourney: {
-        stops: stops.map((s: any, idx: number) => ({
-          type: idx === 0 ? 'pickup' : (idx === stops.length - 1 ? 'destination' : 'stop'),
-          label: idx === 0 ? t.pickupLabel : (idx === stops.length - 1 ? t.destinationLabel : t.stopLabel.replace('{count}', String(idx))),
-          address: s.name || s.address,
-        })),
-      },
-      etaInfo: {
-        arrivalTime: ride.startTime ? new Date(ride.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--',
-        minutesAway: 0, // In a real app, calculate from current location
-      },
-      fareCard: {
-        amount: String(ride.totalPrice || 0),
-      },
-      driverSection: {
-        name: isDriver ? (user?.name || 'You') : (ride.driverName || 'Driver'),
-        rating: isDriver ? 5.0 : (ride.rating || 4.8),
-        carInfo: ride.vehicleRegistration ? `${ride.vehicleType || 'Car'} (${ride.vehicleRegistration})` : 'Shared Ride',
-        avatarUrl: isDriver ? user?.profilePhotoUrl : (ride.driverPhotoUrl || 'https://i.pravatar.cc/150'),
-      },
-      ridersList: {
-        spotsLeft: ride.availableSeats,
-        riders: (ride.bookings || []).map((b: any) => ({
-          id: b.id || b._id,
-          name: b.userName || 'Passenger',
-          info: t.coRider,
-          avatarUrl: b.userPhotoUrl || 'https://i.pravatar.cc/150',
-          canCancel: isDriver,
-        })),
-      },
-    };
-  }, [ride, isDriver, user, t]);
+  useEffect(() => {
+    fetchDetails();
+  }, [fetchDetails]);
 
   const handleBack = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
 
-  const handleCancel = useCallback(() => {
-    navigation.navigate('CancelRide', { rideId });
-  }, [navigation, rideId]);
+  const handleBook = useCallback(() => {
+    // Already booked or viewing history, maybe navigate to booking flow if needed?
+    // For now, let's just keep it consistent with RideInformation if it's a passenger
+  }, []);
 
-  const handleCancelRider = useCallback((riderId: string) => {
+  const isDriver = useMemo(() => {
+    return rideData?.userRole === 'DRIVER';
+  }, [rideData]);
+
+  const handleCancelRide = useCallback(() => {
     Alert.alert(
-      'Cancel Booking',
-      'Are you sure you want to cancel this passenger\'s booking?',
+      t('rideDetails.cancelRideAlertTitle'),
+      t('rideDetails.cancelRideAlertMsg'),
+      [
+        { text: t('common.cancel'), style: 'cancel' },
+        { 
+          text: t('common.confirm'), 
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await rideService.cancelRide(rideId);
+              navigation.goBack();
+            } catch (error) {
+              Alert.alert('Error', 'Failed to cancel ride.');
+            }
+          }
+        }
+      ]
+    );
+  }, [rideId, navigation, t]);
+
+  const handleCancelPassenger = useCallback((passengerId: string) => {
+    Alert.alert(
+      'Cancel Passenger',
+      'Are you sure you want to cancel this booking?',
       [
         { text: 'No', style: 'cancel' },
         { 
@@ -92,9 +85,8 @@ export const useRideDetails = () => {
           style: 'destructive',
           onPress: async () => {
             try {
-              // Call API to cancel specific booking
-              // await rideService.cancelBooking(rideId, riderId);
-              // fetchInitialRides();
+              // await rideService.cancelPassenger(rideId, passengerId);
+              // fetchDetails();
               Alert.alert('Success', 'Booking cancelled.');
             } catch (error) {
               Alert.alert('Error', 'Failed to cancel booking.');
@@ -105,21 +97,45 @@ export const useRideDetails = () => {
     );
   }, [rideId]);
 
+  const handleDriverProfile = useCallback(() => {
+    // Navigate to driver profile
+  }, []);
+
   const handleChat = useCallback(() => {
-    // Navigate to Chat
-    const targetName = isDriver ? 'Passengers' : (ride?.driverName || 'Driver');
+    const targetName = isDriver ? 'Passengers' : (rideData?.driver?.name || 'Driver');
     navigation.navigate('ChatDetails', { 
       chatId: rideId,
       name: targetName 
     });
-  }, [navigation, rideId, isDriver, ride]);
+  }, [navigation, rideId, rideData, isDriver]);
+
+  const handleViewRoute = useCallback((index: number) => {
+    const point = rideData?.timeline?.[index];
+    if (point) {
+      Alert.alert('Opening Map', `Navigating to: ${point.location}`);
+    }
+  }, [rideData]);
+
+  const handleCopyAddress = useCallback((address: string) => {
+    // In a real app, use Clipboard.setString(address)
+    Alert.alert('Address Copied', address);
+  }, []);
 
   return {
-    rideData: mappedData,
+    ride: rideData,
+    isLoading,
     isDriver,
+    t: useMemo(() => ({
+      title: t('rideDetails.headerTitle'),
+      timelineTitle: t('rideDetails.timelineTitle'),
+    }), [t]),
     handleBack,
-    handleCancel,
-    handleCancelRider,
+    handleBook,
+    handleViewRoute,
+    handleCopyAddress,
+    handleDriverProfile,
     handleChat,
+    handleCancelRide,
+    handleCancelPassenger,
   };
 };

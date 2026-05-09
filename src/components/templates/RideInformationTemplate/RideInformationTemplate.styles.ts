@@ -18,7 +18,6 @@ export const ScrollContent = styled.ScrollView`
 
 export const ContentPadding = styled.View`
   padding-horizontal: ${scale(20)}px;
-  padding-top: ${verticalScale(16)}px;
   padding-bottom: ${verticalScale(140)}px;
   gap: ${verticalScale(16)}px;
 `;
@@ -254,4 +253,73 @@ export const AmenityRow = styled.View`
   flex-direction: row;
   align-items: center;
   gap: ${scale(12)}px;
+`;
+
+export const PassengerItem = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(12)}px;
+  padding-vertical: ${verticalScale(12)}px;
+  border-bottom-width: 1px;
+  border-bottom-color: ${({ theme }) => theme.colors.surface_container_high};
+`;
+
+export const PassengerInfo = styled.View`
+  flex: 1;
+  gap: ${verticalScale(2)}px;
+`;
+
+export const SeatBadge = styled.View`
+  background-color: ${({ theme }) => `${theme.colors.primary}12`};
+  padding-horizontal: ${scale(8)}px;
+  padding-vertical: ${verticalScale(4)}px;
+  border-radius: ${moderateScale(8)}px;
+  align-self: flex-start;
+  margin-top: ${verticalScale(4)}px;
+`;
+
+export const CancelPassengerButton = styled.TouchableOpacity`
+  padding: ${moderateScale(8)}px;
+`;
+
+export const CancelWholeRideButton = styled.TouchableOpacity`
+  border-width: 1.5px;
+  border-color: ${({ theme }) => theme.colors.error};
+  border-radius: ${moderateScale(18)}px;
+  padding-vertical: ${verticalScale(18)}px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: ${scale(10)}px;
+  margin-top: ${verticalScale(12)}px;
+`;
+
+export const FareSummaryRow = styled.View`
+  flex-direction: row;
+  background-color: ${({ theme }) => theme.colors.surface};
+  border-radius: ${({ theme }) => theme.roundness.md}px;
+  padding: ${moderateScale(16)}px;
+  align-items: center;
+  elevation: 1;
+  shadow-color: #000;
+  shadow-offset: 0px 1px;
+  shadow-opacity: 0.05;
+  shadow-radius: 4px;
+`;
+
+export const FareSummaryItem = styled.View`
+  flex: 1;
+  align-items: center;
+  gap: ${verticalScale(6)}px;
+`;
+
+export const FareSummaryText = styled.View`
+  align-items: center;
+  gap: ${verticalScale(2)}px;
+`;
+
+export const FareDivider = styled.View`
+  width: 1px;
+  height: ${verticalScale(40)}px;
+  background-color: ${({ theme }) => theme.colors.outline_variant};
 `;

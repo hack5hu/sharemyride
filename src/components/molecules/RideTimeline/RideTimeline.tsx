@@ -144,7 +144,6 @@ export const RideTimeline: React.FC<{
     setCopiedIndex(index);
     setTimeout(() => setCopiedIndex(null), 2000);
   };
-
   return (
     <Container>
       {points.map((point, index) => (

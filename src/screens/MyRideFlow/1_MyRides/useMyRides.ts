@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
 import { useMyRidesData, TAB_TO_FILTER } from './useMyRidesData';
 import { useMyRidesActions } from './useMyRidesActions';
@@ -40,6 +40,19 @@ export const useMyRides = (): MyRidesHookData => {
     setActiveTab(tab);
   }, []);
 
+  const mappedRequests = useMemo(() => 
+    (rides?.REQUESTS?.data || []).map(r => mapBackendRideToUI(r, 'requests' as any, t)), 
+  [rides?.REQUESTS?.data, t]);
+
+  const hasRequests = mappedRequests.length > 0;
+
+  // If on requests tab and requests disappear, switch to upcoming
+  useEffect(() => {
+    if (activeTab === 'requests' && !hasRequests) {
+      setActiveTab('upcoming');
+    }
+  }, [activeTab, hasRequests]);
+
   const formattedDrafts = useMemo((): RideListItem[] => {
     return drafts.map((draft) => {
       const start = draft.state.startLocation?.name || 'Unknown';
@@ -57,7 +70,6 @@ export const useMyRides = (): MyRidesHookData => {
     });
   }, [drafts]);
 
-  // Optimize mapping by memoizing category results
   const mappedUpcoming = useMemo(() => 
     (rides?.UPCOMING?.data || []).map(r => mapBackendRideToUI(r, 'upcoming', t)), 
   [rides?.UPCOMING?.data, t]);
@@ -65,10 +77,6 @@ export const useMyRides = (): MyRidesHookData => {
   const mappedCompleted = useMemo(() => 
     (rides?.COMPLETED?.data || []).map(r => mapBackendRideToUI(r, 'completed', t)), 
   [rides?.COMPLETED?.data, t]);
-
-  const mappedRequests = useMemo(() => 
-    (rides?.REQUESTS?.data || []).map(r => mapBackendRideToUI(r, 'requests' as any, t)), 
-  [rides?.REQUESTS?.data, t]);
 
   const currentRides = useMemo(() => {
     const filter = TAB_TO_FILTER[activeTab];
@@ -126,7 +134,7 @@ export const useMyRides = (): MyRidesHookData => {
     currentRides,
     drafts,
     mappedRequests,
-    hasRequests: mappedRequests.length > 0,
+    hasRequests,
     onMenuPress: () => {},
     onProfilePress: () => {},
     onAcceptRide: onAcceptBooking,

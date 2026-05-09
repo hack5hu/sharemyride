@@ -1,9 +1,10 @@
+import { useCallback } from 'react';
 import { useLocale } from '@/constants/localization';
 
 export const useTranslation = () => {
   const translations = useLocale();
 
-  const t = (path: string, params?: Record<string, string | number>) => {
+  const t = useCallback((path: string, params?: Record<string, string | number>) => {
     const keys = path.split('.');
     let result: any = translations;
     
@@ -23,7 +24,7 @@ export const useTranslation = () => {
     }
     
     return text;
-  };
+  }, [translations]);
 
   return { t, translations };
 };

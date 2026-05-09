@@ -10,4 +10,10 @@ export interface RideInformationTemplateProps {
   handleChat: () => void;
   handleDriverProfile: () => void;
   isLoading?: boolean;
+  showBookButton?: boolean;
+  hideHeader?: boolean;
+  isDriver?: boolean;
+  onCancelRide?: () => void;
+  onCancelPassenger?: (id: string) => void;
+  showVehicleDetails?: boolean;
 }

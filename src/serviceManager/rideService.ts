@@ -144,13 +144,12 @@ const rideService = {
   getRideDetail: async (rideId: string | number, sourceStopId?: number, destinationStopId?: number) => {
     try {
       let url = API_ENDPOINTS.RIDE.GET_RIDE_DETAIL(rideId);
-      const params = new URLSearchParams();
-      if (sourceStopId) params.append('sourceStopId', String(sourceStopId));
-      if (destinationStopId) params.append('destinationStopId', String(destinationStopId));
+      const queryParams: string[] = [];
+      if (sourceStopId) queryParams.push(`sourceStopId=${sourceStopId}`);
+      if (destinationStopId) queryParams.push(`destinationStopId=${destinationStopId}`);
       
-      const queryString = params.toString();
-      if (queryString) {
-        url += `?${queryString}`;
+      if (queryParams.length > 0) {
+        url += `?${queryParams.join('&')}`;
       }
 
       const response = await apiClient.get(url);

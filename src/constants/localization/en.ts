@@ -222,6 +222,7 @@ export const en: Translations = {
   },
   rideDetails: {
     headerTitle: 'Ride Details',
+    timelineTitle: 'Journey Itinerary',
     liveTracking: 'Live Tracking',
     pickupLabel: 'Pickup',
     stopLabel: 'Stop',
@@ -590,5 +591,10 @@ export const en: Translations = {
     completedStatus: 'Completed',
     requestPending: 'Request pending',
     rideConfirmed: 'Ride confirmed',
+    confirmedStatus: 'Confirmed',
+    pendingStatus: 'Pending',
+    youAreDriver: 'You are the Driver',
+    yourVehicle: 'Your Vehicle',
+    vehicleDetails: 'Vehicle Details',
   },
 };
