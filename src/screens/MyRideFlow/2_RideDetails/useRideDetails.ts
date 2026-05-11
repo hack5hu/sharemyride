@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { RideDetailsScreenProps } from './types';
 import rideService from '@/serviceManager/rideService';
 import { mapBackendRideToUI } from '@/screens/BookFlow/4_RideInformation/useRideDataMapper';
+import { useMyRidesStore } from '@/store/useMyRidesStore';
 
 export const useRideDetails = () => {
   const navigation = useNavigation();
@@ -53,7 +54,7 @@ export const useRideDetails = () => {
   }, [rideData]);
 
   const [isCancelModalVisible, setIsCancelModalVisible] = useState(false);
-  const [cancelTarget, setCancelTarget] = useState<{ type: 'RIDE' | 'BOOKING'; id: string | number } | null>(null);
+  const [cancelTarget, setCancelTarget] = useState<{ type: 'RIDE' | 'BOOKING'; id: string | number; isSelf?: boolean } | null>(null);
   const [selectedReasonId, setSelectedReasonId] = useState<string | null>(null);
   const [otherReasonText, setOtherReasonText] = useState('');
   const [isCancelling, setIsCancelling] = useState(false);
@@ -66,8 +67,8 @@ export const useRideDetails = () => {
     { id: 'other', label: 'Other' },
   ], []);
 
-  const handleOpenCancelModal = useCallback((type: 'RIDE' | 'BOOKING', id: string | number) => {
-    setCancelTarget({ type, id });
+  const handleOpenCancelModal = useCallback((type: 'RIDE' | 'BOOKING', id: string | number, isSelf: boolean = false) => {
+    setCancelTarget({ type, id, isSelf });
     setIsCancelModalVisible(true);
   }, []);
 
@@ -84,10 +85,19 @@ export const useRideDetails = () => {
     try {
       if (cancelTarget.type === 'RIDE') {
         await rideService.cancelRide(bookingId, reason);
+        const { removeRide } = useMyRidesStore.getState();
+        removeRide('UPCOMING', rideId);
         navigation.goBack();
       } else {
         await rideService.cancelBooking(bookingId, reason);
-        fetchDetails();
+        if (cancelTarget.isSelf) {
+          // Manually remove from store for instant feedback
+          const { removeRide } = useMyRidesStore.getState();
+          removeRide('UPCOMING', bookingId);
+          navigation.goBack();
+        } else {
+          fetchDetails();
+        }
       }
       setIsCancelModalVisible(false);
       setSelectedReasonId(null);
@@ -101,15 +111,15 @@ export const useRideDetails = () => {
   }, [cancelTarget, selectedReasonId, otherReasonText, cancellationReasons, rideData, fetchDetails, navigation]);
 
   const handleCancelRide = useCallback(() => {
-    handleOpenCancelModal('RIDE', rideId);
+    handleOpenCancelModal('RIDE', rideId, true);
   }, [rideId, handleOpenCancelModal]);
 
   const handleCancelPassenger = useCallback((bookingId: string) => {
-    handleOpenCancelModal('BOOKING', bookingId);
+    handleOpenCancelModal('BOOKING', bookingId, false);
   }, [handleOpenCancelModal]);
 
   const handleCancelOwnBooking = useCallback(() => {
-    handleOpenCancelModal('BOOKING', rideData?.myBookingId || 0);
+    handleOpenCancelModal('BOOKING', rideData?.myBookingId || 0, true);
   }, [rideData, handleOpenCancelModal]);
 
   const handleDriverProfile = useCallback(() => {

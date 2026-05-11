@@ -28,6 +28,7 @@ interface MyRidesState {
   appendRides: (category: RideCategory, rides: any[], hasMore: boolean) => void;
   setPage: (category: RideCategory, page: number) => void;
   resetCategory: (category: RideCategory) => void;
+  removeRide: (category: RideCategory, id: string | number) => void;
 }
 
 export const useMyRidesStore = create<MyRidesState>()(
@@ -105,6 +106,19 @@ export const useMyRidesStore = create<MyRidesState>()(
           [category]: { data: [], page: 0, hasMore: true }
         }
       })),
+
+      removeRide: (category, id) => set((state) => {
+        const categoryData = state.rides[category];
+        const newData = categoryData.data.filter(
+          (ride) => (ride.id || ride.bookingId) !== id
+        );
+        return {
+          rides: {
+            ...state.rides,
+            [category]: { ...categoryData, data: newData }
+          }
+        };
+      }),
     }),
     {
       name: 'my-rides-storage',

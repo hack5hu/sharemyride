@@ -141,7 +141,13 @@ AI must use alias imports to avoid deep relative paths (`../../`).
 
 ---
 
+## 🌍 13. Localization (Zero Hardcoding)
+* **Rule:** **Zero** "String Literals" in UI files.
+* **Storage:** All text must live in `@/constants/baseLocalization`.
+* **Format:** Use hierarchical keys: `auth.login.title` or `errors.server_error`.
+* **Dynamic Text:** Use interpolation (e.g., `{{count}}`) for variables.
 
 
+---
 
 

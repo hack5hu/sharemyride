@@ -22,9 +22,9 @@ export const mapBackendRideToUI = (ride: any, type: 'upcoming' | 'completed' | '
 
   if (type === 'upcoming') {
     if (isDriver) {
-      statusTag = ride.status === 'SCHEDULED' ? t('myRides.confirmedStatus') : '';
+      statusTag = (ride.status === 'SCHEDULED' || ride.status === 'CONFIRMED') ? t('myRides.confirmedStatus') : '';
     } else {
-      statusTag = ride.status === 'PENDING' ? t('myRides.pendingStatus') : (ride.status === 'SCHEDULED' ? t('myRides.confirmedStatus') : '');
+      statusTag = ride.status === 'PENDING' ? t('myRides.pendingStatus') : ((ride.status === 'SCHEDULED' || ride.status === 'CONFIRMED') ? t('myRides.confirmedStatus') : '');
     }
 
     if (diffMins < 0) {

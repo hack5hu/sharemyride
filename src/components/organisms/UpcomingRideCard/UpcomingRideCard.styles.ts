@@ -37,10 +37,6 @@ export const TimerText = styled.Text`
   color: ${({ theme }) => theme.colors.on_secondary_container};
 `;
 
-export const MoreButton = styled.TouchableOpacity`
-  padding: ${moderateScale(4)}px;
-`;
-
 export const StatusTag = styled.View`
   padding-horizontal: ${scale(8)}px;
   padding-vertical: ${verticalScale(4)}px;

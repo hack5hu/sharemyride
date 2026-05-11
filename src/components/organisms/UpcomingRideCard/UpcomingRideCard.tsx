@@ -10,12 +10,10 @@ import {
   TimerText, 
   StatusTag,
   StatusTagText,
-  ProfileWrapper,
-  ReportButton
+  ProfileWrapper
 } from './UpcomingRideCard.styles';
 import { UpcomingRideCardProps } from './types.d';
 import { moderateScale } from '@/styles';
-import { useTranslation } from '@/hooks/useTranslation';
 
 export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = ({
   timerLabel,
@@ -53,10 +51,6 @@ export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = ({
             <StatusTagText>{statusTag}</StatusTagText>
           </StatusTag>
         )}
-
-        <ReportButton onPress={() => {}} activeOpacity={0.7}>
-          <Icon name="flag" size={moderateScale(20)} color={theme.colors.error} />
-        </ReportButton>
       </CardHeader>
 
       {(driverName || carModel || rating || avatarUri || price) && (
