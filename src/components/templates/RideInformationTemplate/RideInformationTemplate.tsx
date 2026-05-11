@@ -15,6 +15,7 @@ import { RideComfortSection } from '@/components/organisms/RideComfortSection/Ri
 import { PassengerManagement } from '@/components/organisms/PassengerManagement/PassengerManagement';
 import { RideFareCard } from '@/components/organisms/RideFareCard/RideFareCard';
 import { RideVehicleCard } from '@/components/organisms/RideVehicleCard/RideVehicleCard';
+import { Button } from '@/components/atoms/Button';
 
 export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = ({
   ride,
@@ -54,9 +55,19 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
     ? `${durationHours}h ${durationMins}m`
     : `${durationMins}m`;
 
+  const isArchived = ride.status === 'COMPLETED' || ride.status === 'CANCELLED';
+
   return (
     <S.Root>
-      <ScreenShell title={t.title} onBack={true}>
+      <ScreenShell 
+        title={t.title} 
+        onBack={true}
+        rightElement={
+          <S.ReportButton onPress={() => {}} activeOpacity={0.7}>
+            <Icon name="flag" size={moderateScale(22)} color={theme.colors.error} />
+          </S.ReportButton>
+        }
+      >
         <S.ScrollContent showsVerticalScrollIndicator={false}>
           <S.ContentPadding>
             {/* ── Driver Card (hidden for driver) ── */}
@@ -165,6 +176,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
               seatsLeft={ride.seatsLeft}
               onCancelPassenger={onCancelPassenger}
               t={t}
+              hideActions={isArchived}
             />
 
            
@@ -175,22 +187,35 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
         </S.ScrollContent>
 
         {/* ── Fixed Bottom CTA ── */}
-        {(showBookButton || isDriver) && (
+        {!isArchived && (showBookButton || isDriver || !showBookButton) && (
           <S.FixedFooter>
             {isDriver ? (
-              <S.CancelWholeRideButton onPress={onCancelRide} activeOpacity={0.85}>
-                <Icon name="cancel" size={moderateScale(20)} color={theme.colors.error} />
-                <Typography variant="title" size="sm" weight="bold" color="error">
-                  Cancel Whole Ride
-                </Typography>
-              </S.CancelWholeRideButton>
+              <Button
+                variant="outline"
+                icon="cancel"
+                iconPosition="left"
+                onPress={onCancelRide}
+              >
+                Cancel Whole Ride
+              </Button>
+            ) : showBookButton ? (
+              <Button
+                variant="primary"
+                icon="airline-seat-recline-normal"
+                iconPosition="left"
+                onPress={handleBook}
+              >
+                Select a Seat
+              </Button>
             ) : (
-              <S.BookButton onPress={handleBook} activeOpacity={0.85}>
-                <Icon name="airline-seat-recline-normal" size={moderateScale(20)} color={theme.colors.on_primary} />
-                <Typography variant="title" size="sm" weight="bold" color="on_primary">
-                  Select a Seat
-                </Typography>
-              </S.BookButton>
+              <Button
+                variant="outline"
+                icon="person-remove"
+                iconPosition="left"
+                onPress={() => onCancelPassenger?.('')}
+              >
+                Cancel My Booking
+              </Button>
             )}
           </S.FixedFooter>
         )}

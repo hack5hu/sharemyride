@@ -5,7 +5,7 @@ import { Typography } from '@/components/atoms/Typography';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { CarFloorPlan } from '@/components/organisms/CarFloorPlan/CarFloorPlan';
 import { SeatLegend } from '@/components/molecules/SeatLegend/SeatLegend';
-import { verticalScale } from '@/styles';
+import { verticalScale, moderateScale } from '@/styles';
 import { useBookSeatSelection } from './useBookSeatSelection';
 import { BookSeatSelectionProps } from './types';
 import * as S from './BookSeatSelection.styles';

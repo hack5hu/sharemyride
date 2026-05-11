@@ -53,9 +53,32 @@ export const SubAddress = styled.Text`
   color: ${({ theme }) => theme.colors.on_surface_variant};
 `;
 
+export const StatusBadge = styled.View<{ isCancelled: boolean }>`
+  padding-horizontal: ${scale(8)}px;
+  padding-vertical: ${verticalScale(4)}px;
+  border-radius: ${moderateScale(8)}px;
+  background-color: ${({ theme, isCancelled }) => 
+    isCancelled ? theme.colors.error + '15' : theme.colors.primary + '15'};
+  align-self: flex-start;
+  margin-top: ${verticalScale(4)}px;
+`;
+
+export const StatusText = styled.Text<{ isCancelled: boolean }>`
+  font-family: 'Plus Jakarta Sans';
+  font-size: ${moderateScale(10)}px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: ${({ theme, isCancelled }) => 
+    isCancelled ? theme.colors.error : theme.colors.primary};
+`;
+
 export const PriceText = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-size: ${moderateScale(14)}px;
   font-weight: 800;
   color: ${({ theme }) => theme.colors.on_surface};
+`;
+
+export const ReportButton = styled.TouchableOpacity`
+  padding: ${moderateScale(4)}px;
 `;

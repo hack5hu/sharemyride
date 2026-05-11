@@ -52,50 +52,65 @@ export const useRideDetails = () => {
     return rideData?.userRole === 'DRIVER';
   }, [rideData]);
 
-  const handleCancelRide = useCallback(() => {
-    Alert.alert(
-      t('rideDetails.cancelRideAlertTitle'),
-      t('rideDetails.cancelRideAlertMsg'),
-      [
-        { text: t('common.cancel'), style: 'cancel' },
-        { 
-          text: t('common.confirm'), 
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              await rideService.cancelRide(rideId);
-              navigation.goBack();
-            } catch (error) {
-              Alert.alert('Error', 'Failed to cancel ride.');
-            }
-          }
-        }
-      ]
-    );
-  }, [rideId, navigation, t]);
+  const [isCancelModalVisible, setIsCancelModalVisible] = useState(false);
+  const [cancelTarget, setCancelTarget] = useState<{ type: 'RIDE' | 'BOOKING'; id: string | number } | null>(null);
+  const [selectedReasonId, setSelectedReasonId] = useState<string | null>(null);
+  const [otherReasonText, setOtherReasonText] = useState('');
+  const [isCancelling, setIsCancelling] = useState(false);
 
-  const handleCancelPassenger = useCallback((passengerId: string) => {
-    Alert.alert(
-      'Cancel Passenger',
-      'Are you sure you want to cancel this booking?',
-      [
-        { text: 'No', style: 'cancel' },
-        { 
-          text: 'Yes, Cancel', 
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              // await rideService.cancelPassenger(rideId, passengerId);
-              // fetchDetails();
-              Alert.alert('Success', 'Booking cancelled.');
-            } catch (error) {
-              Alert.alert('Error', 'Failed to cancel booking.');
-            }
-          }
-        }
-      ]
-    );
-  }, [rideId]);
+  const cancellationReasons = useMemo(() => [
+    { id: 'change_plans', label: 'Plans changed' },
+    { id: 'found_alternative', label: 'Found another ride' },
+    { id: 'uncomfortable_pickup', label: 'Not comfortable with pickup point' },
+    { id: 'not_available', label: 'Vehicle not available' },
+    { id: 'other', label: 'Other' },
+  ], []);
+
+  const handleOpenCancelModal = useCallback((type: 'RIDE' | 'BOOKING', id: string | number) => {
+    setCancelTarget({ type, id });
+    setIsCancelModalVisible(true);
+  }, []);
+
+  const handleConfirmCancel = useCallback(async () => {
+    if (!cancelTarget || !selectedReasonId) return;
+
+    const reason = selectedReasonId === 'other'
+      ? otherReasonText
+      : cancellationReasons.find(r => r.id === selectedReasonId)?.label || '';
+
+    const bookingId = cancelTarget.id || rideData?.myBookingId;
+    console.log(bookingId);
+    setIsCancelling(true);
+    try {
+      if (cancelTarget.type === 'RIDE') {
+        await rideService.cancelRide(bookingId, reason);
+        navigation.goBack();
+      } else {
+        await rideService.cancelBooking(bookingId, reason);
+        fetchDetails();
+      }
+      setIsCancelModalVisible(false);
+      setSelectedReasonId(null);
+      setOtherReasonText('');
+      Alert.alert('Success', 'Cancellation successful.');
+    } catch (error) {
+      Alert.alert('Error', 'Cancellation failed.');
+    } finally {
+      setIsCancelling(false);
+    }
+  }, [cancelTarget, selectedReasonId, otherReasonText, cancellationReasons, rideData, fetchDetails, navigation]);
+
+  const handleCancelRide = useCallback(() => {
+    handleOpenCancelModal('RIDE', rideId);
+  }, [rideId, handleOpenCancelModal]);
+
+  const handleCancelPassenger = useCallback((bookingId: string) => {
+    handleOpenCancelModal('BOOKING', bookingId);
+  }, [handleOpenCancelModal]);
+
+  const handleCancelOwnBooking = useCallback(() => {
+    handleOpenCancelModal('BOOKING', rideData?.myBookingId || 0);
+  }, [rideData, handleOpenCancelModal]);
 
   const handleDriverProfile = useCallback(() => {
     // Navigate to driver profile
@@ -137,5 +152,16 @@ export const useRideDetails = () => {
     handleChat,
     handleCancelRide,
     handleCancelPassenger,
+    handleCancelOwnBooking,
+    // Modal Props
+    isCancelModalVisible,
+    setIsCancelModalVisible,
+    selectedReasonId,
+    setSelectedReasonId,
+    otherReasonText,
+    setOtherReasonText,
+    cancellationReasons,
+    handleConfirmCancel,
+    isCancelling,
   };
 };

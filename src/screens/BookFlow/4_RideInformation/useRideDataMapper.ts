@@ -145,6 +145,7 @@ export const mapBackendRideToUI = (
     seatsBooked: rideRaw.myBooking?.seatsBooked ?? 0,
     seatNames: rideRaw.myBooking?.seatNames ?? [],
     paymentMethod: rideRaw.paymentMethod ?? 'Cash',
+    myBookingId: rideRaw.myBooking?.bookingId ?? null,
   } as any;
 };
 

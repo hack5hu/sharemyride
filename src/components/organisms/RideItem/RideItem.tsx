@@ -90,7 +90,8 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
       subtitle={item.subtitle}
       price={item.price}
       icon={item.icon}
-      type={activeTab === 'drafts' ? 'draft' : 'completed'}
+      type={activeTab === 'drafts' ? 'draft' : (activeTab === 'archive' ? 'archive' : 'completed')}
+      statusTag={item.statusTag}
       actionIcon={activeTab === 'drafts' ? 'delete-outline' : undefined}
       onActionPress={() => activeTab === 'drafts' ? onRemoveDraft(item.id) : undefined}
       onPress={() => onRidePress(item)}

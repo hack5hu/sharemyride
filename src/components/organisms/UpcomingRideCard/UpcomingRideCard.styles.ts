@@ -60,3 +60,7 @@ export const StatusTagText = styled.Text`
 export const ProfileWrapper = styled.View`
   padding-vertical: ${verticalScale(4)}px;
 `;
+
+export const ReportButton = styled.TouchableOpacity`
+  padding: ${moderateScale(4)}px;
+`;

@@ -12,6 +12,10 @@ export const Root = styled.View`
   background-color: ${({ theme }) => theme.colors.surface};
 `;
 
+export const ReportButton = styled.TouchableOpacity`
+  padding: ${moderateScale(8)}px;
+`;
+
 export const ScrollContent = styled.ScrollView`
   flex: 1;
 `;
@@ -232,21 +236,6 @@ export const FixedFooter = styled.View`
   padding-bottom: ${verticalScale(36)}px;
   padding-top: ${verticalScale(16)}px;
   background-color: ${({ theme }) => theme.colors.surface};
-`;
-
-export const BookButton = styled.TouchableOpacity`
-  background-color: ${({ theme }) => theme.colors.primary};
-  border-radius: ${moderateScale(18)}px;
-  padding-vertical: ${verticalScale(18)}px;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  gap: ${scale(10)}px;
-  elevation: 12;
-  shadow-color: ${({ theme }) => theme.colors.primary};
-  shadow-offset: 0px 8px;
-  shadow-opacity: 0.35;
-  shadow-radius: 16px;
 `;
 
 export const AmenityRow = styled.View`

@@ -1,296 +1,147 @@
-# Agent Reference Guide: ShareMyRide
+# 🤖 Agent Reference Guide: ShareMyRide (Tuktuk)
 
-This document serves as the primary technical context and rulebook for AI agents working on the ShareMyRide (Tuktuk) codebase.
+This document is the **source of truth** for all development. AI agents must adhere to these rules strictly to maintain the "Ride Pool Company" brand identity and codebase integrity.
 
-## 🚀 Project Overview
-ShareMyRide is a premium cab and bike-pooling application designed for a GenZ demographic. It balances high-energy movement with unwavering safety through a "Ride Pool Company" design language.
+## 0. Critical "Search-First" Protocol
 
-## 🛠️ Architecture: Atomic Design
-We follow a strict Atomic Design hierarchy for components:
-- `src/components/atoms`: Smallest building blocks (Buttons, Inputs, Typography, Spacing).
-- `src/components/molecules`: Combinations of atoms forming functional units (Form fields, Header bars).
-- `src/components/organisms`: Complex components forming distinct UI sections (Ride details card, User profile section).
-- `src/components/templates`: Page-level layouts that define the content structure.
-- `src/screens`: Fully assembled pages that are registered in the navigation system.
+Before creating **any** new component, hook, or utility, the AI **MUST**:
+1.  Scan `@/components/atoms`, `@/components/molecules`, and `@/components/organisms`.
+2.  Check `@/hooks` and `@/utils`.
+3.  **Rule:** If a component exists that performs 80% of the task, **extend or use it**. Do not create duplicates (e.g., do not create `CustomButton.tsx` if `Button.tsx` exists in atoms).
 
-### Component/Screen Structure
-Every component or screen must follow this file structure:
+---
+
+## 🎯 1. Core Architectural Principles
+* **Atomic Design:** Components must live in `atoms`, `molecules`, `organisms`, or `templates`.
+* **SOLID & Modular:** 
+We follow **Atomic Design** combined with **SOLID** principles:
+**S - Single Responsibility:** One component = one job. Logic lives in `useComponentName.ts`, UI lives in `ComponentName.tsx`.
+**O - Open/Closed:** Components should be open for extension (via props) but closed for modification.
+**L - Liskov Substitution:** Shared UI components must handle standard props (e.g., a custom `Input` should accept standard `TextInputProps`).
+**I - Interface Segregation:** Don't force a component to depend on props it doesn't use. Use specific TypeScript interfaces.
+**D - Dependency Inversion:** High-level modules (Screens) shouldn't depend on low-level modules. Both should depend on abstractions (Services/Context).
+* **The 200-Line Rule:** No file shall exceed **200 lines**. Exceeding this requires immediate refactoring into smaller sub-components or hooks.
+* **Clean Exports:** Every component folder must contain an `index.ts` for clean barrel exports.
+
+---
+
+## 📁 2. Component Structure
+Every component or screen folder must follow this exact pattern:
+Strictly adhere to this folder pattern. **No file exceeds 200 lines.**
+
 ```text
 ComponentName/
-├── ComponentName.screen.tsx (or .tsx for components)
+├── ComponentName.tsx        (UI only - React.memo recommended)
 ├── ComponentName.styles.ts  (Styled-components only)
-├── useComponentName.ts      (Logic/Hook - if needed)
-├── types.d.ts               (Type definitions)
-└── index.ts                 (Clean exports)
+├── useComponentName.ts      (Logic/State/Handlers - Custom Hook)
+├── types.d.ts               (TypeScript interfaces/types)
+└── index.ts                 (Export * from './ComponentName')
 ```
 
-## 📜 Development Rules & Best Practices
-1. **SOLID Principles**: Always apply SOLID principles to ensure the codebase remains maintainable and scalable.
-2. **File Length Limit**: Every file MUST HAVE A MAXIMUM OF **200 LINES**. If a file exceeds this, break it down into smaller, reusable components or hooks.
-3. **Styling**: 
-    - Use **styled-components** for all CSS.
-    - NEVER write styles within the main component file; keep them in `ComponentName.styles.ts`.
-    - Always refer to the global `theme` from `src/theme`.
-4. **Responsiveness**: Screens MUST be dynamic. Use the scaling utilities (`scale`, `verticalScale`, etc.) to ensure the UI adapts to any screen size automatically.
-5. **Keyboard Handling**: Ensure `TextInput` elements are always focused and visible above the keyboard (never hidden behind it).
-6. **Design Fidelity**: DO NOT change the design of screens provided by the user. Keep the visual "Ride Pool Company" aesthetics exactly as specified.
-7. **Validation**: Always implement field validation from the start to ensure data integrity.
+---
+
+## 🎨 3. Styling & "Ride Pool" Design System
+**Creative North Star:** Editorial Fluidity & Organic Sophistication.
+
+* **Styled Components Only:** No inline styles. No `StyleSheet.create`.
+* **The "No-Line" Rule:** Do **not** use `borderWidth: 1`. Use **Tonal Shifts** (different surface colors) or **Negative Space** to separate content.
+* **Typography:** Use **Plus Jakarta Sans** only. Access via `theme` or `Typography` atom.
+* **Tokens:** Never use hardcoded colors or spacing. Use `theme.colors` and `theme.spacing`.
+* **Shadows:** Use tinted ambient shadows. "Higher is Lighter" (higher elevation = lighter background color).
+* **Gradients:** Use linear gradients (Primary to Primary Container at 135°) for main Action buttons.
 
 
-
-# Agent Rule Guide: ShareMyRide
-
-
-# 📜 Development Rules & Best Practices
-
-## 🧱 1. Architecture & SOLID
-- Always follow **SOLID principles** strictly.
-- Maintain clear **separation of concerns**:
-  - UI → Components  
-  - Logic → Hooks  
-  - Data/API → Services  
-- Avoid tightly coupled modules.
-- Prefer reusable, testable, and modular code.
-- Follow **Atomic Design** strictly (atoms → molecules → organisms → templates).
 
 ---
 
-## 📦 2. File & Component Rules
-- Every file MUST have a maximum of **200 lines**.
-- Follow strict component structure:
-
-ComponentName/
-ComponentName.tsx
-ComponentName.styles.ts
-useComponentName.ts (if needed)
-types.d.ts
-index.ts
-
-- No business logic inside UI components.
-- Break large components into smaller reusable units.
-- Keep components focused on a single responsibility.
+## 📱 4. Responsiveness & UI/UX
+* **Scaling Utils:** Wrap every dimension in scaling functions from `src/styles`:
+    * `scale(x)`: Horizontal/Width.
+    * `verticalScale(y)`: Vertical/Height.
+    * `moderateScale(z)`: Icons/Spacing.
+    * `responsiveFont(f)`: Font sizes.
+* **Keyboard Safety:** Elements must never be hidden by the keyboard. Use `KeyboardAvoidingView` or `KeyboardAwareScrollView`.
+* **Pre-built Atoms:** Never use React Native's `View`, `Text`, or `TouchableOpacity` directly. Use components from `src/components/atoms`.
+* **Transitions:** Use smooth fade animations for screen navigation.
 
 ---
 
-## 🎨 3. Styling Rules
-- Use **styled-components** for all styling.
-- NEVER write styles inside `.tsx` files.
-- Always use theme from `src/styles/theme`.
-- Avoid hardcoded:
-- colors
-- spacing
-- font sizes
-- Use only **design tokens from theme**.
-- don't use the React Native Components and use the custom made components from **src/components/atoms**, **src/components/molecules**, **src/components/organisms**.
+## ⚙️ 5. Logic, State & Data
+* **State:** Use **Zustand** for global state. Keep stores modular.
+* **API:** Use **Axios** with a centralized client (`src/serviceManager`). Use interceptors for tokens and error handling.
+* **Localization:** No hardcoded strings. Every piece of text must come from `baseLocalization`.
+* **Storage:** * `MMKV` for fast local storage.
+    * `Keychain` for sensitive tokens.
+* **Memorization:** Use `useCallback`, `useMemo`, and `React.memo` by default to prevent unnecessary re-renders.
 
 ---
 
-## 📱 4. Responsiveness
-- UI must adapt to:
-- small phones
-- large phones
-- tablets
-- Use responsive utilities:
-- `scale`
-- `verticalScale`
-- `moderateScale`
-- Avoid fixed dimensions unless absolutely necessary.
-- Prefer **flex-based layouts**.
+## 🔗 6. Path Aliases
+AI must use alias imports to avoid deep relative paths (`../../`).
 
----
-
-## ⌨️ 5. Keyboard Handling
-- TextInput must NEVER be hidden behind the keyboard.
-- Use:
-- `KeyboardAvoidingView`
-- Scroll containers where needed
-- Ensure smooth UX on both **Android & iOS**.
-
----
-
-## 🎯 6. Design Fidelity
-- DO NOT change provided designs.
-- Maintain exact **"Ride Pool Company" aesthetics**.
-- Follow:
-- spacing
-- typography
-- colors
-- layout hierarchy
-
----
-
-## ✅ 7. Validation
-- Implement validation for all inputs.
-- Validate:
-- required fields
-- formats (email, phone, etc.)
-- Show proper error messages.
-
----
-
-## 🧠 8. State Management
-- Use **Zustand** for global state.
-- Keep stores:
-- minimal
-- modular
-- predictable
-- Avoid unnecessary global state.
-
----
-
-## 🌐 9. API & Networking
-- Use centralized **Axios client**.
-- Implement:
-- request interceptors
-- response interceptors
-- error handling
-- No direct API calls inside components.
-
----
-
-## 🔐 10. Storage & Security
-- Use **Keychain** for sensitive data (tokens).
-- Use **MMKV** for local storage.
-- Never store sensitive data in plain storage.
-- Handle token expiration securely.
-
----
-
-## 🚀 11. Performance
-- Avoid unnecessary re-renders.
-- Use:
-- `useMemo`
-- `useCallback`
-- `React.memo`
-- Split heavy components.
-- Lazy load where needed.
-
----
-
-## 📂 12. Imports & Structure
-- Use alias imports:
-
-@/components/...
-
-	•	Avoid relative imports like:
-
-../../components/...
-
-
-	•	Keep folder structure clean and consistent.
-
-⸻
-
-🧹 13. Code Quality
-	•	Fix all ESLint issues.
-	•	Fix all TypeScript errors.
-	•	Remove:
-	•	unused variables
-	•	dead code
-	•	console logs (unless required)
-	•	Maintain consistent naming conventions.
-
-⸻
-
-🔄 14. Reusability
-	•	Extract reusable logic into hooks.
-	•	Avoid duplication across components.
-	•	Create shared UI components when needed.
-
-⸻
-
-🧪 15. Testing (Recommended)
-	•	Write unit tests for:
-	•	hooks
-	•	utilities
-	•	Use Jest + React Native Testing Library.
-	•	Ensure critical flows are covered.
-
-⸻
-
-⚠️ 16. Critical Rules
-	•	Do NOT break existing functionality.
-	•	Do NOT change business logic unnecessarily.
-	•	Focus on:
-	•	scalability
-	•	readability
-	•	maintainability
-	•	production readiness
-
----
-
-## 🚀 17. Performance
-- Keep all the text in baseLocalization.
-- Use:
-- call all the text from baseLocalization
-
-## 🚀 18. keep in mind
-- do the memorization for every file if needed
-- use the components from **src/components/atoms**, **src/components/molecules**, **src/components/organisms**. and dont use react native components directly.
-- always responsive
-- never write a seprate button or component or hook if already exists in **src/components/atoms**, **src/components/molecules**, **src/components/organisms**.
-- and always remember, we are building a ride pool company application, so keep the design consistent with the brand.
-- do not cross more than 200 lines 
-- do not use hardcoded values anywhere. use theme or baseLocalization.
-- do not use direct ref to any component or hook or utility. use alias imports.
-- we are making a ride pool company app so try to make it more attractive and user-friendly.
-- make the ui more attractive and user-friendly.
-- handle all the edge cases.
-- show smooth transitions for screen navigation.
-- use fade animation for screens where needed.
-- handle errors and show them to the user in a user-friendly way.
-- create one custom loader component from **src/components/atoms**.
-- create a proper logger, for development and production.
-- create a proper notification system for the app.
-- create a proper error boundary for the app.
-- create a proper modal for showing the error or alerts or confirmations.
-- create a custom hook from **src/hooks** for handling the API requests.
-- do not use fetch API, use axios.
-
-## 🎨 Design System: "Ride Pool Company"
-**Creative North Star**: Editorial Fluidity & Organic Sophistication.
-
-### Core Styling Rules:
-1. **The "No-Line" Rule**: DO NOT use 1px solid borders to section off content.
-    - Use **Tonal Shifts** (e.g., `surface_container` vs `surface`).
-    - Use **Negative Space** (spacing tokens).
-    - Use **Soft Transitions** (gradients or subtle surface variants).
-2. **Geometry**: Use `roundness.md` (12px) for most functional containers.
-3. **Typography**: **Plus Jakarta Sans** is the sole typeface. 
-4. **Elevation**: Use subtle, tinted ambient shadows for floating elements ("Higher is Lighter" rule).
-5. **Gradients**: Use linear gradients (Primary to Primary Container at 135°) for main CTAs.
-
-
-## 📏 Responsiveness & Scaling
-ALWAYS use the responsive utilities from `src/styles`:
-- `scale(size)`: For horizontal scaling (width, horizontal padding).
-- `verticalScale(size)`: For vertical scaling (height, vertical padding).
-- `moderateScale(size, factor)`: For icons, spacing, and elements that shouldn't scale aggressively.
-- `responsiveFont(size)`: Specifically optimized for typography across device classes.
-- `selectByWidth({})`: Use for device-specific overrides (Small, Medium, Large, Tablet).
-
-## 🔗 Path Aliases
 | Alias | Target Directory |
 | :--- | :--- |
 | `@/*` | `src/*` |
 | `atoms/*` | `src/components/atoms/*` |
 | `molecule/*` | `src/components/molecules/*` |
 | `organism/*` | `src/components/organisms/*` |
-| `template/*` | `src/components/templates/*` |
-| `assets/*` | `src/assets/*` |
-| `constants/*` | `src/constants/*` |
-| `navigation/*` | `src/navigation/*` |
 | `screens/*` | `src/screens/*` |
-| `services/*` | `src/serviceManager/*` |
-| `store/*` | `src/store/*` |
 | `utils/*` | `src/utils/*` |
+| `services/*` | `src/serviceManager/*` |
 
-## 📁 Directory Map
-- `src/assets`: Images, icons, and static fonts.
-- `src/constants`: Global application constants and configuration.
-- `src/navigation`: Navigation container and stack definitions.
-- `src/serviceManager`: API clients, hooks, and external service integrations.
-- `src/store`: State management (Zustand/Redux).
-- `src/theme`: Theme type definitions and Light/Dark variants.
-- `src/utils`: Helper functions and shared utilities.
-- `scripts`: Configuration scripts for build and aliases.
+---
+
+## 🛡️ 7. Error Handling & Quality
+* **Error Boundaries:** All major screen segments must be wrapped in an Error Boundary.
+* **Modals:** Use the custom `Modal` atom/organism for alerts and confirmations.
+* **Logging:** Use the project's custom Logger that toggles behavior between Development and Production.
+* **Validation:** All forms must have validation (Zod/Yup) with user-friendly error messages shown via the UI.
+* **TypeScript:** `any` is strictly forbidden. Fix all linter and type errors before finalizing code.
+
+---
+
+## ⚠️ 8. Critical "Do Not" List
+1.  **Do NOT** modify existing business logic unless explicitly requested.
+2.  **Do NOT** change provided UI designs; maintain "Ride Pool" fidelity.
+3.  **Do NOT** create duplicate components/hooks if they exist in `src/components/...`.
+4.  **Do NOT** use `fetch` API.
+5.  **Do NOT** use hardcoded hex codes or pixel values.
+
+---
+
+## 📝 9. User-Friendly UI Additions
+* **Haptics:** Add subtle haptic feedback (Success/Error/Impact) for primary button actions.
+* **Transitions:** Use `LayoutAnimation` or `Reanimated` for smooth UI entries.
+* **Empty States:** Always provide a visual "No Data Found" component for lists.
+* **Feedback:** Show a Toast or Snack-bar for every background action (e.g., "Profile Updated").
+
+---
+
+## 🔐 10. Safety & Clean Code
+* **No `any`:** TypeScript must be strict.
+* **Path Aliases:** Use `@/atoms`, `@/molecule`, `@/organism`, `@/services`.
+* **Clean-up:** Remove `console.log`, unused imports, and dead code before submission.
+* **Logging:** Use the internal `Logger` utility for production-safe debugging.
+
+---
+
+## 🌐 11. Data & Networking
+* **API:** Use **Axios**. No `fetch`. Use the `useApi` custom hook for all requests.
+* **State:** Use **Zustand**. Keep stores small (e.g., `useUserStore`, `useRideStore`).
+* **Localization:** **ZERO** hardcoded strings. Use `baseLocalization.t('key')`.
+* **Storage:** Use `MMKV` for persistence and `Keychain` for sensitive tokens.
+
+---
+
+## 🚀 12. Optimization & Performance (User-Friendly Code)
+* **Memoization:** Wrap all functional components in `React.memo`. Wrap handlers in `useCallback` and expensive calculations in `useMemo`.
+* **Asset Optimization:** Use SVGs (via `react-native-svg`) instead of PNGs where possible.
+* **Lazy Loading:** Use dynamic imports for heavy screens to improve startup time.
+* **List Optimization:** Always use `FlashList` (Shopify) instead of `FlatList` for better performance.
+
+---
+
+
+
+
+

@@ -1,8 +1,8 @@
 import React from 'react';
+import { View } from 'react-native';
 import { useLocale } from '@/constants/localization';
 import { ReasonSelectorItem } from '@/components/molecules/ReasonSelectorItem';
 import { Button } from '@/components/atoms/Button';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
 import * as S from './CancelRideTemplate.styles';
 import { CancelRideTemplateProps } from './types.d';
 
@@ -16,9 +16,9 @@ export const CancelRideTemplate: React.FC<CancelRideTemplateProps> = ({
   onDismiss,
 }) => {
   const { cancelRide } = useLocale();
-
+  console.log('dcverve')
   return (
-    <ScreenShell transparent>
+    <View style={{ flex: 1 }}>
       <S.OverlayContext>
         <S.Backdrop onPress={onDismiss} activeOpacity={1} />
         <S.BottomSheetContainer>
@@ -66,6 +66,6 @@ export const CancelRideTemplate: React.FC<CancelRideTemplateProps> = ({
           </S.BottomSheetSurface>
         </S.BottomSheetContainer>
       </S.OverlayContext>
-    </ScreenShell>
+    </View>
   );
 };

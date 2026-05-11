@@ -10,11 +10,8 @@ import {
   TimerText, 
   StatusTag,
   StatusTagText,
-  MoreButton, 
   ProfileWrapper,
-  ActionRow,
-  ActionButton,
-  ActionText
+  ReportButton
 } from './UpcomingRideCard.styles';
 import { UpcomingRideCardProps } from './types.d';
 import { moderateScale } from '@/styles';
@@ -56,6 +53,10 @@ export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = ({
             <StatusTagText>{statusTag}</StatusTagText>
           </StatusTag>
         )}
+
+        <ReportButton onPress={() => {}} activeOpacity={0.7}>
+          <Icon name="flag" size={moderateScale(20)} color={theme.colors.error} />
+        </ReportButton>
       </CardHeader>
 
       {(driverName || carModel || rating || avatarUri || price) && (

@@ -49,12 +49,7 @@ export const SeatBadge = styled.View`
   border-radius: ${moderateScale(4)}px;
 `;
 
-export const CancelPassengerButton = styled.TouchableOpacity`
-  width: ${moderateScale(40)}px;
-  height: ${moderateScale(40)}px;
-  align-items: center;
-  justify-content: center;
-`;
+
 
 export const CoRidersRow = styled.View`
   flex-direction: row;

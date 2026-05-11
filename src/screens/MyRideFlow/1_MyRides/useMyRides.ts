@@ -74,25 +74,24 @@ export const useMyRides = (): MyRidesHookData => {
     (rides?.UPCOMING?.data || []).map(r => mapBackendRideToUI(r, 'upcoming', t)), 
   [rides?.UPCOMING?.data, t]);
 
-  const mappedCompleted = useMemo(() => 
-    (rides?.COMPLETED?.data || []).map(r => mapBackendRideToUI(r, 'completed', t)), 
-  [rides?.COMPLETED?.data, t]);
+  const mappedArchive = useMemo(() => 
+    (rides?.ARCHIVE?.data || []).map(r => mapBackendRideToUI(r, 'archive', t)), 
+  [rides?.ARCHIVE?.data, t]);
 
   const currentRides = useMemo(() => {
     const filter = TAB_TO_FILTER[activeTab];
     if (activeTab === 'drafts') return formattedDrafts;
     if (activeTab === 'requests') return mappedRequests;
     
-    const now = new Date();
-    const allRides = activeTab === 'upcoming' ? mappedUpcoming : mappedCompleted;
+    const allRides = activeTab === 'upcoming' ? mappedUpcoming : mappedArchive;
 
-    // Sort upcoming rides by date ascending, completed by date descending
+    // Sort upcoming rides by date ascending, archive by date descending
     return [...allRides].sort((a, b) => {
       const timeA = a.rawDate?.getTime() || 0;
       const timeB = b.rawDate?.getTime() || 0;
       return activeTab === 'upcoming' ? timeA - timeB : timeB - timeA;
     });
-  }, [activeTab, mappedUpcoming, mappedCompleted, mappedRequests, formattedDrafts]);
+  }, [activeTab, mappedUpcoming, mappedArchive, mappedRequests, formattedDrafts]);
 
   const onAcceptBooking = useCallback(async (id: string) => {
     setIsActionLoading(true);

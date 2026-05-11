@@ -90,12 +90,23 @@ const rideService = {
       throw error;
     }
   },
-  cancelRide: async (rideId: string | number) => {
+  cancelRide: async (rideId: string | number, reason: string) => {
     try {
-      const response = await apiClient.delete(API_ENDPOINTS.RIDE.CANCEL_RIDE(rideId));
+      const url = `${API_ENDPOINTS.RIDE.CANCEL_RIDE(rideId)}?reason=${encodeURIComponent(reason)}`;
+      const response = await apiClient.put(url);
       return response.data;
     } catch (error) {
       console.error('Ride cancellation failed:', error);
+      throw error;
+    }
+  },
+  cancelBooking: async (bookingId: string | number, reason: string) => {
+    try {
+      const url = `${API_ENDPOINTS.RIDE.CANCEL_BOOKING(bookingId)}?reason=${encodeURIComponent(reason)}`;
+      const response = await apiClient.put(url);
+      return response.data;
+    } catch (error) {
+      console.error('Booking cancellation failed:', error);
       throw error;
     }
   },

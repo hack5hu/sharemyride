@@ -1,6 +1,6 @@
 import { RideCategory } from '@/store/useMyRidesStore';
 
-export const mapBackendRideToUI = (ride: any, type: 'upcoming' | 'completed' | 'requests', t: any) => {
+export const mapBackendRideToUI = (ride: any, type: 'upcoming' | 'completed' | 'requests' | 'archive', t: any) => {
   const startName = ride.sourceStopName || 'Unknown';
   const endName = ride.destinationStopName || 'Unknown';
   const startTime = ride.startTime ? new Date(ride.startTime) : (ride.requestedAt ? new Date(ride.requestedAt) : new Date());
@@ -39,6 +39,9 @@ export const mapBackendRideToUI = (ride: any, type: 'upcoming' | 'completed' | '
   } else if (type === 'requests') {
     timerLabel = `Requested ${timeStr}`;
     statusTag = `${ride.seatCount || 1} Seat${(ride.seatCount || 1) > 1 ? 's' : ''}`;
+  } else if (type === 'archive') {
+    statusTag = ride.status === 'CANCELLED' ? t('common.cancelled') : t('myRides.completedStatus');
+    timerLabel = statusTag;
   } else {
     timerLabel = t('myRides.completedStatus');
   }

@@ -8,7 +8,7 @@ export interface DraftRide {
   state: any; // This will hold the entire publish store state
 }
 
-export type RideCategory = 'UPCOMING' | 'COMPLETED' | 'CANCELLED' | 'REQUESTS';
+export type RideCategory = 'UPCOMING' | 'COMPLETED' | 'CANCELLED' | 'REQUESTS' | 'ARCHIVE';
 
 interface CategoryState {
   data: any[];
@@ -39,6 +39,7 @@ export const useMyRidesStore = create<MyRidesState>()(
         COMPLETED: { data: [], page: 0, hasMore: true },
         CANCELLED: { data: [], page: 0, hasMore: true },
         REQUESTS: { data: [], page: 0, hasMore: true },
+        ARCHIVE: { data: [], page: 0, hasMore: true },
       },
 
       addDraft: (state, id) => set((prevState) => {
@@ -74,16 +75,22 @@ export const useMyRidesStore = create<MyRidesState>()(
         }
       })),
 
-      appendRides: (category, data, hasMore) => set((state) => ({
-        rides: {
-          ...state.rides,
-          [category]: { 
-            ...state.rides[category], 
-            data: [...state.rides[category].data, ...data], 
-            hasMore 
+      appendRides: (category, data, hasMore) => set((state) => {
+        const existingData = state.rides[category].data;
+        const newData = data.filter(
+          (newRide) => !existingData.some((oldRide) => (oldRide.id || oldRide.bookingId) === (newRide.id || newRide.bookingId))
+        );
+        return {
+          rides: {
+            ...state.rides,
+            [category]: { 
+              ...state.rides[category], 
+              data: [...existingData, ...newData], 
+              hasMore 
+            }
           }
-        }
-      })),
+        };
+      }),
 
       setPage: (category, page) => set((state) => ({
         rides: {

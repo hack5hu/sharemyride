@@ -1,9 +1,8 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
-import { moderateScale } from '@/styles';
+import { IconButton } from '@/components/atoms/IconButton';
 import * as S from './PassengerManagement.styles';
 
 interface PassengerManagementProps {
@@ -12,6 +11,7 @@ interface PassengerManagementProps {
   seatsLeft: number;
   onCancelPassenger?: (id: string) => void;
   t: any;
+  hideActions?: boolean;
 }
 
 export const PassengerManagement: React.FC<PassengerManagementProps> = ({
@@ -20,6 +20,7 @@ export const PassengerManagement: React.FC<PassengerManagementProps> = ({
   seatsLeft,
   onCancelPassenger,
   t,
+  hideActions = false,
 }) => {
   const theme = useTheme();
   const bookedCount = passengers.length;
@@ -52,9 +53,14 @@ export const PassengerManagement: React.FC<PassengerManagementProps> = ({
                 </Typography>
               </S.SeatBadge>
             </S.PassengerInfo>
-            <S.CancelPassengerButton onPress={() => onCancelPassenger?.(p.id)}>
-              <Icon name="person-remove" size={moderateScale(20)} color={theme.colors.error} />
-            </S.CancelPassengerButton>
+            {!hideActions && (
+              <IconButton 
+                icon="person-remove" 
+                variant="surface"
+                onPress={() => onCancelPassenger?.(p.id)} 
+                style={{ borderColor: theme.colors.error }}
+              />
+            )}
           </S.PassengerItem>
         ))
       ) : (

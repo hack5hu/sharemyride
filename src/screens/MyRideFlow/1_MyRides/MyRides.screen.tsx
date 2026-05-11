@@ -64,9 +64,9 @@ export const MyRidesScreen: React.FC = () => {
 
   const emptyComponent = (
     <EmptyState 
-      icon={activeTab === 'upcoming' ? "event-note" : activeTab === 'requests' ? "person-add" : activeTab === 'drafts' ? "edit-note" : "history"}
-      title={activeTab === 'upcoming' ? t('myRides.noUpcomingTitle') : activeTab === 'requests' ? t('myRides.noRequestsTitle') : activeTab === 'drafts' ? t('myRides.noDraftsTitle') : t('myRides.noCompletedTitle')}
-      description={activeTab === 'upcoming' ? t('myRides.noUpcomingDesc') : activeTab === 'requests' ? t('myRides.noRequestsDesc') : activeTab === 'drafts' ? t('myRides.noDraftsDesc') : t('myRides.noCompletedDesc')}
+      icon={activeTab === 'upcoming' ? "event-note" : activeTab === 'requests' ? "person-add" : activeTab === 'drafts' ? "edit-note" : "inventory"}
+      title={activeTab === 'upcoming' ? t('myRides.noUpcomingTitle') : activeTab === 'requests' ? t('myRides.noRequestsTitle') : activeTab === 'drafts' ? t('myRides.noDraftsTitle') : t('myRides.noArchiveTitle')}
+      description={activeTab === 'upcoming' ? t('myRides.noUpcomingDesc') : activeTab === 'requests' ? t('myRides.noRequestsDesc') : activeTab === 'drafts' ? t('myRides.noDraftsDesc') : t('myRides.noArchiveDesc')}
     />
   );
 

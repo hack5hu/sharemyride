@@ -22,7 +22,7 @@ export const MyRidesHeader: React.FC<MyRidesHeaderProps> = ({
     { label: t('myRides.requestsTab'), value: 'requests' },
     { label: t('myRides.upcomingTab'), value: 'upcoming' },
     { label: t('myRides.draftsTab'), value: 'drafts' },
-    { label: t('myRides.completedTab'), value: 'completed' },
+    { label: t('myRides.archiveTab'), value: 'archive' },
   ].filter(tab => tab.value !== 'requests' || hasRequests);
 
   return (
