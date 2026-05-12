@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "storybook-common-components": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/tmp"
+      ],
+      "type": "stdio"
+    }
+  }
+}

@@ -2,12 +2,16 @@
 
 This document is the **source of truth** for all development. AI agents must adhere to these rules strictly to maintain the "Ride Pool Company" brand identity and codebase integrity.
 
-## 0. Critical "Search-First" Protocol
+## 🔍 0. The "Storybook MCP" Protocol | Critical "Search-First" Protocol (MANDATORY)
+Before creating **any** new component, the AI Agent must perform a "Discovery Phase" using the Storybook MCP server.
 
-Before creating **any** new component, hook, or utility, the AI **MUST**:
-1.  Scan `@/components/atoms`, `@/components/molecules`, and `@/components/organisms`.
-2.  Check `@/hooks` and `@/utils`.
-3.  **Rule:** If a component exists that performs 80% of the task, **extend or use it**. Do not create duplicates (e.g., do not create `CustomButton.tsx` if `Button.tsx` exists in atoms).
+1.  **Check MCP Inventory:** Query the Storybook MCP server to see if the component (or a similar one) already exists.
+2.  **The "No-Duplicate" Rule:** * If the component exists in Storybook: **Use it.**
+    * If the component exists but lacks a specific feature: **Update the existing component** in its original directory.
+    * **NEVER** create a duplicate component (e.g., if `PrimaryButton` exists, do not create `ActionBtn`).
+    * **Rule:** If a component exists that performs 80% of the task, **extend or use it**. Do not create duplicates (e.g., do not create `CustomButton.tsx` if `Button.tsx` exists in atoms).
+3.  **Syncing:** Any updates made to a component must be reflected in its corresponding `.stories.tsx` file immediately to keep the MCP server up to date.
+4.  Check `@/hooks` and `@/utils`.
 
 ---
 
@@ -31,11 +35,12 @@ Strictly adhere to this folder pattern. **No file exceeds 200 lines.**
 
 ```text
 ComponentName/
-├── ComponentName.screen.tsx        (UI only - React.memo recommended)
-├── ComponentName.styles.ts         (Styled-components only)
-├── useComponentName.ts             (Logic/State/Handlers - Custom Hook)
-├── types.d.ts                      (TypeScript interfaces/types)
-└── index.ts                        (Export * from './ComponentName')
+├── ComponentName.tsx        (Logic-free UI, React.memo)
+├── ComponentName.styles.ts  (Styled-components only)
+├── useComponentName.ts      (Handlers, API calls, Logic)
+├── ComponentName.stories.tsx (Required for MCP Visibility)
+├── types.d.ts               (Interfaces)
+└── index.ts                 (Clean Export)
 ```
 
 ---
@@ -150,5 +155,4 @@ AI must use alias imports to avoid deep relative paths (`../../`).
 
 
 ---
-
 

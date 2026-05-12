@@ -1,0 +1,13 @@
+{
+  "servers": {
+    "storybook-common-components": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/tmp"
+      ]
+    }
+  }
+}
