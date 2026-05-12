@@ -4,6 +4,7 @@ import { useMyRidesStore, RideCategory } from '@/store/useMyRidesStore';
 import rideService from '@/serviceManager/rideService';
 import { useAuthStore } from '@/store/useAuthStore';
 import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
+import { Logger } from '@/utils/logger';
 
 export const TAB_TO_FILTER: Record<string, RideCategory | null> = {
   requests: 'REQUESTS',
@@ -33,7 +34,7 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
     const { rides: currentRides } = useMyRidesStore.getState();
     const currentCategoryData = currentRides[category];
     if (!isRefreshing && append && currentCategoryData.data.length >= (page + 1) * 10) {
-      console.log(`[MyRidesData] Using cached data for ${category} page ${page}`);
+      Logger.log(`[MyRidesData] Using cached data for ${category} page ${page}`);
       return;
     }
 
@@ -47,10 +48,10 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
         const response = await rideService.getPendingBookings();
         rideList = parseRideResponse(response);
       } else if (category === 'ARCHIVE') {
-        // Fetch both COMPLETED and CANCELLED for Archive
+        // Fetch 5 COMPLETED and 5 CANCELLED for Archive (Top 10 total)
         const [compRes, cancRes] = await Promise.all([
-          rideService.getMyRides('COMPLETED', page, 10),
-          rideService.getMyRides('CANCELLED', page, 10)
+          rideService.getMyRides('COMPLETED', page, 5),
+          rideService.getMyRides('CANCELLED', page, 5)
         ]);
         
         const compList = parseRideResponse(compRes);
@@ -63,8 +64,14 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
           return dateB - dateA;
         });
 
-        const compHasMore = compRes?.currentPage < compRes?.totalPages - 1;
-        const cancHasMore = cancRes?.currentPage < cancRes?.totalPages - 1;
+        const compHasMore = (compRes?.totalPages !== undefined && compRes?.currentPage !== undefined)
+          ? compRes.currentPage < compRes.totalPages - 1
+          : compList.length >= 5;
+          
+        const cancHasMore = (cancRes?.totalPages !== undefined && cancRes?.currentPage !== undefined)
+          ? cancRes.currentPage < cancRes.totalPages - 1
+          : cancList.length >= 5;
+          
         hasMore = compHasMore || cancHasMore;
       } else {
         const response = await rideService.getMyRides(category as any, page, 10);
@@ -82,7 +89,7 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
         setRides(category, rideList, hasMore);
       }
     } catch (error) {
-      console.error(`[MyRidesData] Failed to fetch ${category} rides:`, error);
+      Logger.error(`[MyRidesData] Failed to fetch ${category} rides:`, error);
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);

@@ -7,9 +7,10 @@ import * as S from './RideFareCard.styles';
 
 interface RideFareCardProps {
   price: number;
+  t: any;
 }
 
-export const RideFareCard: React.FC<RideFareCardProps> = ({ price }) => {
+export const RideFareCard: React.FC<RideFareCardProps> = ({ price, t }) => {
   const theme = useTheme();
 
   return (
@@ -20,10 +21,10 @@ export const RideFareCard: React.FC<RideFareCardProps> = ({ price }) => {
     >
       <S.FareLabel>
         <Typography variant="label" size="xs" weight="bold" color="on_primary">
-          YOUR FARE
+          {t.yourFare || 'YOUR FARE'}
         </Typography>
         <S.FarePriceBig>₹{price.toFixed(0)}</S.FarePriceBig>
-        <S.PerSeatNote>per seat · no hidden fees</S.PerSeatNote>
+        <S.PerSeatNote>{t.perSeatNote || 'per seat · no hidden fees'}</S.PerSeatNote>
       </S.FareLabel>
       <S.FareIconBox>
         <Icon name="currency-rupee" size={moderateScale(32)} color="#FFFFFF" />
@@ -31,3 +32,4 @@ export const RideFareCard: React.FC<RideFareCardProps> = ({ price }) => {
     </S.FareCard>
   );
 };
+

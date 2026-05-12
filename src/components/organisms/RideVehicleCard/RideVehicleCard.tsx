@@ -13,22 +13,24 @@ interface RideVehicleCardProps {
     color: string;
     type: string;
   };
+  t: any;
 }
 
-const VEHICLE_TYPE_LABELS: Record<string, string> = {
-  CAR_4_SEATER: 'Compact Sedan',
-  CAR_7_SEATER: 'Premium SUV',
-  BIKE: 'Swift Bike',
-};
-
-export const RideVehicleCard: React.FC<RideVehicleCardProps> = ({ vehicle }) => {
+export const RideVehicleCard: React.FC<RideVehicleCardProps> = ({ vehicle, t }) => {
   const theme = useTheme();
+
+  const VEHICLE_TYPE_LABELS: Record<string, string> = {
+    CAR_4_SEATER: t.compactSedan,
+    CAR_7_SEATER: t.premiumSuv,
+    BIKE: t.swiftBike,
+  };
+
   return (
     <S.VehicleCard>
       <S.VehicleLabelRow>
         <S.SectionDot color={theme.colors.primary} />
         <Typography variant="label" size="xs" weight="bold" color="on_surface_variant">
-          ASSIGNED VEHICLE
+          {t.assignedVehicle || 'ASSIGNED VEHICLE'}
         </Typography>
       </S.VehicleLabelRow>
 
@@ -54,7 +56,7 @@ export const RideVehicleCard: React.FC<RideVehicleCardProps> = ({ vehicle }) => 
             </S.PlateBadge>
             <S.CategoryPill>
               <Typography variant="label" size="xs" weight="medium" color="on_surface_variant">
-                {VEHICLE_TYPE_LABELS[vehicle.type] || 'Standard'}
+                {VEHICLE_TYPE_LABELS[vehicle.type] || t.standardVehicle || 'Standard'}
               </Typography>
             </S.CategoryPill>
           </S.PlateRow>
@@ -63,3 +65,4 @@ export const RideVehicleCard: React.FC<RideVehicleCardProps> = ({ vehicle }) => 
     </S.VehicleCard>
   );
 };
+

@@ -31,11 +31,11 @@ Strictly adhere to this folder pattern. **No file exceeds 200 lines.**
 
 ```text
 ComponentName/
-├── ComponentName.tsx        (UI only - React.memo recommended)
-├── ComponentName.styles.ts  (Styled-components only)
-├── useComponentName.ts      (Logic/State/Handlers - Custom Hook)
-├── types.d.ts               (TypeScript interfaces/types)
-└── index.ts                 (Export * from './ComponentName')
+├── ComponentName.screen.tsx        (UI only - React.memo recommended)
+├── ComponentName.styles.ts         (Styled-components only)
+├── useComponentName.ts             (Logic/State/Handlers - Custom Hook)
+├── types.d.ts                      (TypeScript interfaces/types)
+└── index.ts                        (Export * from './ComponentName')
 ```
 
 ---
@@ -143,6 +143,7 @@ AI must use alias imports to avoid deep relative paths (`../../`).
 
 ## 🌍 13. Localization (Zero Hardcoding)
 * **Rule:** **Zero** "String Literals" in UI files.
+* **language**: The default language is `english`, 2nd language is `hindi`.
 * **Storage:** All text must live in `@/constants/baseLocalization`.
 * **Format:** Use hierarchical keys: `auth.login.title` or `errors.server_error`.
 * **Dynamic Text:** Use interpolation (e.g., `{{count}}`) for variables.

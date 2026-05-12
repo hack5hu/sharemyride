@@ -7,6 +7,7 @@ import { RideDetailsScreenProps } from './types';
 import rideService from '@/serviceManager/rideService';
 import { mapBackendRideToUI } from '@/screens/BookFlow/4_RideInformation/useRideDataMapper';
 import { useMyRidesStore } from '@/store/useMyRidesStore';
+import { Logger } from '@/utils/logger';
 
 export const useRideDetails = () => {
   const navigation = useNavigation();
@@ -23,14 +24,22 @@ export const useRideDetails = () => {
     try {
       const data = await rideService.getRideDetail(rideId, sourceStopId, destinationStopId);
       
-      // Use IDs from myBooking if route params are empty
       const resolvedSourceId = sourceStopId || data?.myBooking?.sourceStopId;
       const resolvedDestId = destinationStopId || data?.myBooking?.destinationStopId;
       
       const mapped = mapBackendRideToUI(data, undefined, undefined, resolvedSourceId, resolvedDestId);
+      
+      // Merge with navigation params if fields are missing in detail response
+      if (mapped && !mapped.status && route.params.status) {
+        mapped.status = route.params.status;
+      }
+      if (mapped && !mapped.cancellationReason && route.params.cancellationReason) {
+        mapped.cancellationReason = route.params.cancellationReason;
+      }
+      
       setRideData(mapped);
     } catch (error) {
-      console.error('Fetching ride details failed:', error);
+      Logger.error('Fetching ride details failed:', error);
     } finally {
       setIsLoading(false);
     }
@@ -45,8 +54,7 @@ export const useRideDetails = () => {
   }, [navigation]);
 
   const handleBook = useCallback(() => {
-    // Already booked or viewing history, maybe navigate to booking flow if needed?
-    // For now, let's just keep it consistent with RideInformation if it's a passenger
+    // Placeholder for future booking logic if needed
   }, []);
 
   const isDriver = useMemo(() => {
@@ -60,12 +68,12 @@ export const useRideDetails = () => {
   const [isCancelling, setIsCancelling] = useState(false);
 
   const cancellationReasons = useMemo(() => [
-    { id: 'change_plans', label: 'Plans changed' },
-    { id: 'found_alternative', label: 'Found another ride' },
-    { id: 'uncomfortable_pickup', label: 'Not comfortable with pickup point' },
-    { id: 'not_available', label: 'Vehicle not available' },
-    { id: 'other', label: 'Other' },
-  ], []);
+    { id: 'change_plans', label: t('cancelRide.reasonPlansChanged') },
+    { id: 'found_alternative', label: t('cancelRide.reasonAlternative') },
+    { id: 'uncomfortable_pickup', label: t('cancelRide.reasonUncomfortable') },
+    { id: 'not_available', label: t('cancelRide.reasonNotAvailable') },
+    { id: 'other', label: t('cancelRide.reasonOther') },
+  ], [t]);
 
   const handleOpenCancelModal = useCallback((type: 'RIDE' | 'BOOKING', id: string | number, isSelf: boolean = false) => {
     setCancelTarget({ type, id, isSelf });
@@ -80,7 +88,6 @@ export const useRideDetails = () => {
       : cancellationReasons.find(r => r.id === selectedReasonId)?.label || '';
 
     const bookingId = cancelTarget.id || rideData?.myBookingId;
-    console.log(bookingId);
     setIsCancelling(true);
     try {
       if (cancelTarget.type === 'RIDE') {
@@ -91,7 +98,6 @@ export const useRideDetails = () => {
       } else {
         await rideService.cancelBooking(bookingId, reason);
         if (cancelTarget.isSelf) {
-          // Manually remove from store for instant feedback
           const { removeRide } = useMyRidesStore.getState();
           removeRide('UPCOMING', bookingId);
           navigation.goBack();
@@ -102,13 +108,13 @@ export const useRideDetails = () => {
       setIsCancelModalVisible(false);
       setSelectedReasonId(null);
       setOtherReasonText('');
-      Alert.alert('Success', 'Cancellation successful.');
+      Alert.alert(t('common.success'), t('cancelRide.successMessage'));
     } catch (error) {
-      Alert.alert('Error', 'Cancellation failed.');
+      Alert.alert(t('common.error'), t('cancelRide.errorMessage'));
     } finally {
       setIsCancelling(false);
     }
-  }, [cancelTarget, selectedReasonId, otherReasonText, cancellationReasons, rideData, fetchDetails, navigation]);
+  }, [cancelTarget, selectedReasonId, otherReasonText, cancellationReasons, rideData, fetchDetails, navigation, rideId, t]);
 
   const handleCancelRide = useCallback(() => {
     handleOpenCancelModal('RIDE', rideId, true);
@@ -123,28 +129,27 @@ export const useRideDetails = () => {
   }, [rideData, handleOpenCancelModal]);
 
   const handleDriverProfile = useCallback(() => {
-    // Navigate to driver profile
+    // Navigation to driver profile would go here
   }, []);
 
   const handleChat = useCallback(() => {
-    const targetName = isDriver ? 'Passengers' : (rideData?.driver?.name || 'Driver');
-    navigation.navigate('ChatDetails', { 
+    const targetName = isDriver ? t('rideDetails.passengers') : (rideData?.driver?.name || t('rideDetails.driver'));
+    navigation.navigate('ChatDetails' as any, { 
       chatId: rideId,
       name: targetName 
     });
-  }, [navigation, rideId, rideData, isDriver]);
+  }, [navigation, rideId, rideData, isDriver, t]);
 
   const handleViewRoute = useCallback((index: number) => {
     const point = rideData?.timeline?.[index];
     if (point) {
-      Alert.alert('Opening Map', `Navigating to: ${point.location}`);
+      Alert.alert(t('common.openingMap'), `${t('common.navigatingTo')}: ${point.location}`);
     }
-  }, [rideData]);
+  }, [rideData, t]);
 
   const handleCopyAddress = useCallback((address: string) => {
-    // In a real app, use Clipboard.setString(address)
-    Alert.alert('Address Copied', address);
-  }, []);
+    Alert.alert(t('common.addressCopied'), address);
+  }, [t]);
 
   return {
     ride: rideData,
@@ -153,7 +158,49 @@ export const useRideDetails = () => {
     t: useMemo(() => ({
       title: t('rideDetails.headerTitle'),
       timelineTitle: t('rideDetails.timelineTitle'),
+      loaderMessage: t('rideDetails.fetchingDetails'),
+      today: t('common.today'),
+      ridesLabel: t('rideDetails.ridesLabel'),
+      bookingTotal: t('rideDetails.bookingTotal'),
+      seatsLabel: t('rideDetails.seatsLabel'),
+      seatLabel: t('rideDetails.seatLabel'),
+      paymentLabel: t('rideDetails.paymentLabel'),
+      cashLabel: t('rideDetails.cashLabel'),
+      cancelRide: t('rideDetails.cancelRide'),
+      selectSeat: t('rideDetails.selectSeat'),
+      cancelBooking: t('rideDetails.cancelBooking'),
+      passengers: t('rideDetails.passengers'),
+      driver: t('rideDetails.driver'),
+      openingMap: t('common.openingMap'),
+      navigatingTo: t('common.navigatingTo'),
+      addressCopied: t('common.addressCopied'),
+      success: t('common.success'),
+      error: t('common.error'),
+      seatsLeft: t('rideDetails.seatsLeft'),
+      startsIn: t('myRides.startsIn'),
+      mins: t('myRides.mins'),
+      journeyComfort: t('rideDetails.journeyComfort'),
+      journeyItinerary: t('rideDetails.journeyItinerary'),
+      yourFare: t('rideDetails.yourFare'),
+      perSeatNote: t('rideDetails.perSeatNote'),
+      smokeFree: t('rideDetails.smokeFree'),
+      petsWelcome: t('rideDetails.petsWelcome'),
+      luggageOk: t('rideDetails.luggageOk'),
+      ladiesOnly: t('rideDetails.ladiesOnly'),
+      approvalRequired: t('rideDetails.approvalRequired'),
+      instantBooking: t('rideDetails.instantBooking'),
+      vibes: t('rideDetails.vibes'),
+      date: t('rideDetails.date'),
+      time: t('rideDetails.time'),
+      duration: t('rideDetails.duration'),
+      seatsLeftLabel: t('rideDetails.seatsLeftLabel'),
+      assignedVehicle: t('rideDetails.assignedVehicle'),
+      compactSedan: t('rideDetails.compactSedan'),
+      premiumSuv: t('rideDetails.premiumSuv'),
+      swiftBike: t('rideDetails.swiftBike'),
+      standardVehicle: t('rideDetails.standardVehicle'),
     }), [t]),
+
     handleBack,
     handleBook,
     handleViewRoute,
@@ -163,7 +210,6 @@ export const useRideDetails = () => {
     handleCancelRide,
     handleCancelPassenger,
     handleCancelOwnBooking,
-    // Modal Props
     isCancelModalVisible,
     setIsCancelModalVisible,
     selectedReasonId,
@@ -175,3 +221,4 @@ export const useRideDetails = () => {
     isCancelling,
   };
 };
+

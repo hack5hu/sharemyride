@@ -48,6 +48,10 @@ export type RootStackParamList = {
   MyRides: undefined;
   RideDetails: {
     rideId: string;
+    sourceStopId?: number;
+    destinationStopId?: number;
+    status?: string;
+    cancellationReason?: string;
   };
   CancelRide: {
     rideId?: string;

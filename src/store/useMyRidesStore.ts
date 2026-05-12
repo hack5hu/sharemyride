@@ -69,24 +69,36 @@ export const useMyRidesStore = create<MyRidesState>()(
 
       clearDrafts: () => set({ drafts: [] }),
 
-      setRides: (category, data, hasMore) => set((state) => ({
-        rides: {
-          ...state.rides,
-          [category]: { ...state.rides[category], data, hasMore, page: 0 }
+      setRides: (category, data, hasMore) => set((state) => {
+        let finalData = data;
+        if (category === 'ARCHIVE' && finalData.length > 10) {
+          finalData = finalData.slice(0, 10);
         }
-      })),
+        return {
+          rides: {
+            ...state.rides,
+            [category]: { ...state.rides[category], data: finalData, hasMore, page: 0 }
+          }
+        };
+      }),
 
       appendRides: (category, data, hasMore) => set((state) => {
         const existingData = state.rides[category].data;
         const newData = data.filter(
           (newRide) => !existingData.some((oldRide) => (oldRide.id || oldRide.bookingId) === (newRide.id || newRide.bookingId))
         );
+        let finalData = [...existingData, ...newData];
+        
+        if (category === 'ARCHIVE' && finalData.length > 10) {
+          finalData = finalData.slice(0, 10);
+        }
+
         return {
           rides: {
             ...state.rides,
             [category]: { 
               ...state.rides[category], 
-              data: [...existingData, ...newData], 
+              data: finalData, 
               hasMore 
             }
           }

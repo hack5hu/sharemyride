@@ -19,6 +19,9 @@ export interface DriverData {
 }
 
 export interface RideData {
+  userRole: string;
+  cancellationReason?: string;
+  status: string;
   id: string;
   driver: DriverData;
   price: number;

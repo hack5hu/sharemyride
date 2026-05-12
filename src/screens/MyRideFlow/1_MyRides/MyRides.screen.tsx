@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import React, { useCallback, memo, useMemo } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import { MyRidesTemplate } from '@/components/templates/MyRidesTemplate';
 import { MyRidesHeader } from '@/components/organisms/MyRidesHeader';
@@ -7,16 +7,17 @@ import { BottomNav } from '@/components/organisms/BottomNav';
 import { EmptyState } from '@/components/molecules/EmptyState';
 import { useTranslation } from '@/hooks/useTranslation';
 import { verticalScale } from '@/styles';
-
 import { useMyRides } from './useMyRides';
 import { RideItem } from '@/components/organisms/RideItem';
 import { RideListHeader } from '@/components/organisms/RideListHeader';
 import { Loader } from '@/components/atoms/Loader';
+import { Box } from '@/components/atoms/Box';
 
 const USER_AVATAR = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDExpYK8xVP2mpLZ72YLG07-Nvi79pQHHE3Bf4HEGBRuFOCym2D4P_hlE3flaGGaR4XKpWguxkVxRruV_VNmRQoLa2Sg179Af0ZYu5OuAE0XnhnyKnoGtEty2IKdSCPEpm4wlGP2YlXb08qxB2BkWjHpVIUO0XH8BgWiYyR4o6Ku2xPiwHS4dYGdV-aBsCeqKoBrDgJExj0TgYQDrb9mu-4Y4YSLPxze3tWxwjfF5l8SSkYi3zPx0RDth6HTJ54yE4zdBFrhiC14HB5';
 
-export const MyRidesScreen: React.FC = () => {
+export const MyRidesScreen: React.FC = memo(() => {
   const { t } = useTranslation();
+  const theme = useTheme();
   const {
     activeTab,
     onTabChange,
@@ -37,9 +38,7 @@ export const MyRidesScreen: React.FC = () => {
     mappedRequests,
   } = useMyRides();
 
-  const theme = useTheme();
-
-  const renderItem = ({ item }: { item: any }) => (
+  const renderItem = useCallback(({ item }: { item: any }) => (
     <RideItem 
       item={item}
       activeTab={activeTab}
@@ -49,9 +48,9 @@ export const MyRidesScreen: React.FC = () => {
       onAcceptRide={onAcceptRide}
       onRejectRide={onRejectRide}
     />
-  );
+  ), [activeTab, onRidePress, onCancelRide, onRemoveDraft, onAcceptRide, onRejectRide]);
 
-  const listHeader = (
+  const listHeader = useMemo(() => (
     <RideListHeader 
       activeTab={activeTab}
       draftsCount={drafts?.length || 0}
@@ -60,23 +59,32 @@ export const MyRidesScreen: React.FC = () => {
       onRidePress={onRidePress}
       requests={mappedRequests}
     />
-  );
+  ), [activeTab, drafts?.length, onClearDrafts, onAcceptRide, onRidePress, mappedRequests]);
 
-  const emptyComponent = (
-    <EmptyState 
-      icon={activeTab === 'upcoming' ? "event-note" : activeTab === 'requests' ? "person-add" : activeTab === 'drafts' ? "edit-note" : "inventory"}
-      title={activeTab === 'upcoming' ? t('myRides.noUpcomingTitle') : activeTab === 'requests' ? t('myRides.noRequestsTitle') : activeTab === 'drafts' ? t('myRides.noDraftsTitle') : t('myRides.noArchiveTitle')}
-      description={activeTab === 'upcoming' ? t('myRides.noUpcomingDesc') : activeTab === 'requests' ? t('myRides.noRequestsDesc') : activeTab === 'drafts' ? t('myRides.noDraftsDesc') : t('myRides.noArchiveDesc')}
-    />
-  );
+  const emptyComponent = useMemo(() => {
+    const iconMap: Record<string, string> = {
+      upcoming: "event-note",
+      requests: "person-add",
+      drafts: "edit-note",
+      archive: "inventory"
+    };
+    
+    return (
+      <EmptyState 
+        icon={iconMap[activeTab] || "inventory"}
+        title={t(`myRides.no${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}Title`)}
+        description={t(`myRides.no${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}Desc`)}
+      />
+    );
+  }, [activeTab, t]);
 
-  const footerComponent = (
+  const footerComponent = useMemo(() => (
     isLoading && !isRefreshing ? (
-      <View style={{ paddingVertical: verticalScale(20) }}>
+      <Box paddingVertical={verticalScale(20)} alignItems="center">
         <ActivityIndicator color={theme.colors.primary} />
-      </View>
+      </Box>
     ) : null
-  );
+  ), [isLoading, isRefreshing, theme.colors.primary]);
 
   return (
     <>
@@ -106,4 +114,5 @@ export const MyRidesScreen: React.FC = () => {
       <Loader visible={isActionLoading} />
     </>
   );
-};
+});
+

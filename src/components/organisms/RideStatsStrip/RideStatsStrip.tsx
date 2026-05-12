@@ -10,6 +10,7 @@ interface RideStatsStripProps {
   departureTime: string;
   durationLabel: string;
   seatsLeft: number;
+  t: any;
 }
 
 export const RideStatsStrip: React.FC<RideStatsStripProps> = ({
@@ -17,6 +18,7 @@ export const RideStatsStrip: React.FC<RideStatsStripProps> = ({
   departureTime,
   durationLabel,
   seatsLeft,
+  t,
 }) => {
   const theme = useTheme();
 
@@ -30,7 +32,7 @@ export const RideStatsStrip: React.FC<RideStatsStripProps> = ({
           {departureDate}
         </Typography>
         <Typography variant="label" size="xs" color="on_surface_variant">
-          Date
+          {t.date || 'Date'}
         </Typography>
       </S.StatPill>
 
@@ -42,7 +44,7 @@ export const RideStatsStrip: React.FC<RideStatsStripProps> = ({
           {departureTime}
         </Typography>
         <Typography variant="label" size="xs" color="on_surface_variant">
-          Time
+          {t.time || 'Time'}
         </Typography>
       </S.StatPill>
 
@@ -54,7 +56,7 @@ export const RideStatsStrip: React.FC<RideStatsStripProps> = ({
           {durationLabel}
         </Typography>
         <Typography variant="label" size="xs" color="on_surface_variant">
-          Duration
+          {t.duration || 'Duration'}
         </Typography>
       </S.StatPill>
 
@@ -66,9 +68,10 @@ export const RideStatsStrip: React.FC<RideStatsStripProps> = ({
           {seatsLeft}
         </Typography>
         <Typography variant="label" size="xs" color="on_surface_variant">
-          Seats Left
+          {t.seatsLeftLabel || 'Seats Left'}
         </Typography>
       </S.StatPill>
     </S.StatsStrip>
   );
 };
+

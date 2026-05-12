@@ -1,15 +1,14 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import styled, { useTheme } from 'styled-components/native';
+import React, { memo } from 'react';
 import { RideInformationTemplate } from '@/components/templates/RideInformationTemplate/RideInformationTemplate';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Loader } from '@/components/atoms/Loader';
 import { useRideDetails } from './useRideDetails';
 import { RideDetailsScreenProps } from './types';
 import { CancelRideTemplate } from '@/components/templates/CancelRideTemplate';
+import { Container, Overlay } from './RideDetails.styles';
+import { Box } from '@/components/atoms/Box';
 
-export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = () => {
-  const theme = useTheme();
+export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
   const { 
     ride, 
     isLoading, 
@@ -24,7 +23,6 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = () => {
     handleCancelRide,
     handleCancelPassenger,
     handleCancelOwnBooking,
-    // Cancellation Modal Props
     isCancelModalVisible,
     setIsCancelModalVisible,
     selectedReasonId,
@@ -38,7 +36,7 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = () => {
   if (isLoading) {
     return (
       <ScreenShell title={t.title} onBack={handleBack}>
-        <Loader message="Fetching ride details..." />
+        <Loader message={t.loaderMessage} />
       </ScreenShell>
     );
   }
@@ -46,7 +44,7 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = () => {
   if (!ride) return null;
 
   return (
-    <View style={styles.container}>
+    <Container>
       <RideInformationTemplate
         t={t}
         handleBack={handleBack}
@@ -64,7 +62,7 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = () => {
       />
 
       {isCancelModalVisible && (
-        <View style={styles.overlay}>
+        <Overlay>
           <CancelRideTemplate
             reasons={cancellationReasons}
             selectedReasonId={selectedReasonId}
@@ -74,17 +72,9 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = () => {
             onConfirm={handleConfirmCancel}
             onDismiss={() => setIsCancelModalVisible(false)}
           />
-        </View>
+        </Overlay>
       )}
-    </View>
+    </Container>
   );
-};
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    zIndex: 9999,
-    elevation: 9999,
-  },
 });
+

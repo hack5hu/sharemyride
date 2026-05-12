@@ -8,7 +8,7 @@ import { RideTimeline } from '@/components/molecules/RideTimeline/RideTimeline';
 import { RideInformationTemplateProps } from './types.d';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import * as S from './RideInformationTemplate.styles';
-import { moderateScale } from '@/styles';
+import { moderateScale, verticalScale } from '@/styles';
 import { Loader } from '@/components/atoms/Loader';
 import { RideStatsStrip } from '@/components/organisms/RideStatsStrip/RideStatsStrip';
 import { RideComfortSection } from '@/components/organisms/RideComfortSection/RideComfortSection';
@@ -16,8 +16,9 @@ import { PassengerManagement } from '@/components/organisms/PassengerManagement/
 import { RideFareCard } from '@/components/organisms/RideFareCard/RideFareCard';
 import { RideVehicleCard } from '@/components/organisms/RideVehicleCard/RideVehicleCard';
 import { Button } from '@/components/atoms/Button';
+import { Box } from '@/components/atoms/Box';
 
-export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = ({
+export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = React.memo(({
   ride,
   t,
   handleBack,
@@ -38,7 +39,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
   if (isLoading) {
     return (
       <ScreenShell title={t.title} onBack={handleBack}>
-        <Loader message="Curating ride details for you..." />
+        <Loader message={t.loaderMessage} />
       </ScreenShell>
     );
   }
@@ -47,29 +48,50 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
 
   const rideAny = ride as any;
   const departureTime = ride.timeline[0]?.time ?? '--:--';
-  const departureDateLabel: string = rideAny.departureDate ?? 'Today';
+  const departureDateLabel: string = rideAny.departureDate ?? t.today ?? 'Today';
 
   const durationHours = Math.floor(ride.totalDuration / 60);
   const durationMins = ride.totalDuration % 60;
   const durationLabel = durationHours > 0
     ? `${durationHours}h ${durationMins}m`
     : `${durationMins}m`;
-
-  const isArchived = ride.status === 'COMPLETED' || ride.status === 'CANCELLED';
+  const isArchived = (ride.status === 'COMPLETED' || ride.status === 'CANCELLED' || ride.status === 'REJECTED') || ride.userRole === 'VIEWER'
 
   return (
     <S.Root>
       <ScreenShell 
         title={t.title} 
         onBack={true}
-        rightElement={
+        rightElement={!isArchived ? (
           <S.ReportButton onPress={() => {}} activeOpacity={0.7}>
             <Icon name="flag" size={moderateScale(22)} color={theme.colors.error} />
           </S.ReportButton>
-        }
+        ) : undefined}
       >
         <S.ScrollContent showsVerticalScrollIndicator={false}>
           <S.ContentPadding>
+            {/* ── Cancellation Reason (If archived & cancelled) ── */}
+            {isArchived && ride.cancellationReason && (
+              <Box 
+                backgroundColor={theme.colors.error + '10'} 
+                padding={moderateScale(12)} 
+                borderRadius={moderateScale(12)}
+                marginBottom={verticalScale(16)}
+                flexDirection="row"
+                alignItems="center"
+              >
+                <Icon name="error-outline" size={moderateScale(20)} color={theme.colors.error} />
+                <Box marginLeft={moderateScale(8)} flex={1}>
+                  <Typography variant="label" size="xs" weight="bold" color="error">
+                    CANCELLATION REASON
+                  </Typography>
+                  <Typography variant="body" size="sm" color="on_surface">
+                    {ride.cancellationReason}
+                  </Typography>
+                </Box>
+              </Box>
+            )}
+
             {/* ── Driver Card (hidden for driver) ── */}
             {!isDriver && (
               <S.DriverCard>
@@ -92,7 +114,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
                     <S.VerifiedRow>
                       <Icon name="star" size={moderateScale(13)} color="#EAB308" />
                       <Typography variant="label" size="xs" weight="bold" color="on_surface_variant">
-                        {ride.driver.rating} · {ride.driver.rideCount} rides
+                        {ride.driver.rating} · {ride.driver.rideCount} {t.ridesLabel || 'rides'}
                       </Typography>
                     </S.VerifiedRow>
                   </S.DriverTextGroup>
@@ -110,6 +132,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
               departureTime={departureTime}
               durationLabel={durationLabel}
               seatsLeft={ride.seatsLeft}
+              t={t}
             />
 
             {/* ── Fare Info ── */}
@@ -118,7 +141,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
                 <S.FareSummaryItem>
                   <Icon name="currency-rupee" size={moderateScale(18)} color={theme.colors.primary} />
                   <S.FareSummaryText>
-                    <Typography variant="label" size="xs" color="on_surface_variant">Booking Total</Typography>
+                    <Typography variant="label" size="xs" color="on_surface_variant">{t.bookingTotal || 'Booking Total'}</Typography>
                     <Typography variant="title" size="sm" weight="bold">₹{rideAny.bookingPrice?.toFixed(0) ?? ride.price.toFixed(0)}</Typography>
                   </S.FareSummaryText>
                 </S.FareSummaryItem>
@@ -126,21 +149,21 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
                 <S.FareSummaryItem>
                   <Icon name="event-seat" size={moderateScale(18)} color={theme.colors.primary} />
                   <S.FareSummaryText>
-                    <Typography variant="label" size="xs" color="on_surface_variant">Seats</Typography>
-                    <Typography variant="title" size="sm" weight="bold">{rideAny.seatNames?.join(', ') || `${rideAny.seatsBooked} seat(s)`}</Typography>
+                    <Typography variant="label" size="xs" color="on_surface_variant">{t.seatsLabel || 'Seats'}</Typography>
+                    <Typography variant="title" size="sm" weight="bold">{rideAny.seatNames?.join(', ') || `${rideAny.seatsBooked} ${t.seatLabel || 'seat(s)'}`}</Typography>
                   </S.FareSummaryText>
                 </S.FareSummaryItem>
                 <S.FareDivider />
                 <S.FareSummaryItem>
                   <Icon name="payments" size={moderateScale(18)} color={theme.colors.primary} />
                   <S.FareSummaryText>
-                    <Typography variant="label" size="xs" color="on_surface_variant">Payment</Typography>
-                    <Typography variant="title" size="sm" weight="bold">{rideAny.paymentMethod ?? 'Cash'}</Typography>
+                    <Typography variant="label" size="xs" color="on_surface_variant">{t.paymentLabel || 'Payment'}</Typography>
+                    <Typography variant="title" size="sm" weight="bold">{rideAny.paymentMethod ?? t.cashLabel ?? 'Cash'}</Typography>
                   </S.FareSummaryText>
                 </S.FareSummaryItem>
               </S.FareSummaryRow>
             ) : (
-              <RideFareCard price={ride.price} />
+              <RideFareCard price={ride.price} t={t} />
             )}
 
             {/* ── Route Timeline ── */}
@@ -159,14 +182,12 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
               />
             </S.SectionCard>
 
-            
-
             {/* ── Journey Comfort ── */}
-            <RideComfortSection features={ride.features} />
+            <RideComfortSection features={ride.features} t={t} />
 
             {/* ── Vehicle Details ── */}
             {showVehicleDetails && ride.vehicle && (
-              <RideVehicleCard vehicle={ride.vehicle} />
+              <RideVehicleCard vehicle={ride.vehicle} t={t} />
             )}
 
             {/* ── Fellow Travelers ── */}
@@ -178,10 +199,6 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
               t={t}
               hideActions={isArchived}
             />
-
-           
-
-           
 
           </S.ContentPadding>
         </S.ScrollContent>
@@ -196,7 +213,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
                 iconPosition="left"
                 onPress={onCancelRide}
               >
-                Cancel Whole Ride
+                {t.cancelRide || 'Cancel Whole Ride'}
               </Button>
             ) : showBookButton ? (
               <Button
@@ -205,7 +222,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
                 iconPosition="left"
                 onPress={handleBook}
               >
-                Select a Seat
+                {t.selectSeat || 'Select a Seat'}
               </Button>
             ) : (
               <Button
@@ -214,7 +231,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
                 iconPosition="left"
                 onPress={() => onCancelPassenger?.('')}
               >
-                Cancel My Booking
+                {t.cancelBooking || 'Cancel My Booking'}
               </Button>
             )}
           </S.FixedFooter>
@@ -222,4 +239,5 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = (
       </ScreenShell>
     </S.Root>
   );
-};
+});
+

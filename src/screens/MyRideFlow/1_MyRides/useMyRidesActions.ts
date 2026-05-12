@@ -53,7 +53,9 @@ export const useMyRidesActions = (fetchInitialRides: () => void) => {
       navigation.navigate('RideDetails', { 
         rideId: rideId || id,
         sourceStopId,
-        destinationStopId
+        destinationStopId,
+        status: (params as any).status,
+        cancellationReason: (params as any).cancellationReason,
       });
     }
   }, [navigation, drafts, publishStore, restoreDraftToStore]);
@@ -76,7 +78,7 @@ export const useMyRidesActions = (fetchInitialRides: () => void) => {
             await rideService.cancelRide(id);
             fetchInitialRides();
           } catch (error) {
-            Alert.alert('Error', 'Failed to cancel ride.');
+            Alert.alert(t('common.error'), t('myRides.cancelRideError'));
           }
         } 
       }

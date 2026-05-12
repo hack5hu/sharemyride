@@ -14,21 +14,22 @@ const PREFERENCE_ICONS: Record<string, string> = {
   autoApproval: 'flash-on',
 };
 
-const PREFERENCE_LABELS: Record<string, string> = {
-  noSmoking: 'Smoke-Free Ride',
-  petFriendly: 'Pets Welcome',
-  luggageAllowed: 'Luggage OK',
-  ladiesOnly: 'Ladies Only',
-  manualApproval: 'Approval Required',
-  autoApproval: 'Instant Booking',
-};
-
 interface RideComfortSectionProps {
   features: string[];
+  t: any;
 }
 
-export const RideComfortSection: React.FC<RideComfortSectionProps> = ({ features }) => {
+export const RideComfortSection: React.FC<RideComfortSectionProps> = ({ features, t }) => {
   const theme = useTheme();
+
+  const PREFERENCE_LABELS: Record<string, string> = {
+    noSmoking: t.smokeFree || 'Smoke-Free Ride',
+    petFriendly: t.petsWelcome || 'Pets Welcome',
+    luggageAllowed: t.luggageOk || 'Luggage OK',
+    ladiesOnly: t.ladiesOnly || 'Ladies Only',
+    manualApproval: t.approvalRequired || 'Approval Required',
+    autoApproval: t.instantBooking || 'Instant Booking',
+  };
 
   const preferenceFeatures = features.filter(f => !f.startsWith('music:'));
   const musicFeature = features.find(f => f.startsWith('music:'));
@@ -41,7 +42,7 @@ export const RideComfortSection: React.FC<RideComfortSectionProps> = ({ features
       <S.SectionLabelRow>
         <S.SectionDot color={theme.colors.secondary} />
         <Typography variant="label" size="xs" weight="bold" color="on_surface_variant">
-          JOURNEY COMFORT
+          {t.journeyComfort }
         </Typography>
       </S.SectionLabelRow>
       <S.ChipsWrap>
@@ -61,7 +62,7 @@ export const RideComfortSection: React.FC<RideComfortSectionProps> = ({ features
           <S.PreferenceChip>
             <Icon name="music-note" size={moderateScale(15)} color={theme.colors.secondary} />
             <Typography variant="label" size="sm" weight="medium">
-              {musicGenre} Vibes
+              {musicGenre} {t.vibes}
             </Typography>
           </S.PreferenceChip>
         )}
@@ -69,3 +70,4 @@ export const RideComfortSection: React.FC<RideComfortSectionProps> = ({ features
     </S.SectionCard>
   );
 };
+

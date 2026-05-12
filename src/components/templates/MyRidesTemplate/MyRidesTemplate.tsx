@@ -1,14 +1,11 @@
-import React from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import React, { memo } from 'react';
+import { RefreshControl } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { useTheme } from 'styled-components/native';
-import { FlatList, View, RefreshControl } from 'react-native';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { 
-  FABContainer, 
-  FABGradient,
-} from './MyRidesTemplate.styles';
+import { Box } from '@/components/atoms/Box';
 import { MyRidesTemplateProps } from './types.d';
-import { moderateScale, scale, verticalScale } from '@/styles';
+import { scale, verticalScale } from '@/styles';
 
 export const MyRidesTemplate: React.FC<MyRidesTemplateProps & { 
   data: any[], 
@@ -20,9 +17,8 @@ export const MyRidesTemplate: React.FC<MyRidesTemplateProps & {
   refreshing?: boolean,
   onEndReached?: () => void,
   onEndReachedThreshold?: number
-}> = ({
+}> = memo(({
   header,
-  onAddPress,
   bottomNav,
   data,
   renderItem,
@@ -40,36 +36,36 @@ export const MyRidesTemplate: React.FC<MyRidesTemplateProps & {
     <ScreenShell>
       {header}
       
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingHorizontal: scale(24),
-          paddingBottom: verticalScale(120),
-        }}
-        ListHeaderComponent={
-          <View>
-            {ListHeaderComponent}
-          </View>
-        }
-        ListEmptyComponent={ListEmptyComponent}
-        ListFooterComponent={ListFooterComponent}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={onEndReachedThreshold}
-        refreshControl={
-          onRefresh ? (
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              tintColor={theme.colors.primary}
-              colors={[theme.colors.primary]}
-            />
-          ) : undefined
-        }
-      />
+      <Box flex={1}>
+        <FlashList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          estimatedItemSize={100}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingHorizontal: scale(24),
+            paddingBottom: verticalScale(120),
+          }}
+          ListHeaderComponent={ListHeaderComponent}
+          ListEmptyComponent={ListEmptyComponent}
+          ListFooterComponent={ListFooterComponent}
+          onEndReached={onEndReached}
+          onEndReachedThreshold={onEndReachedThreshold}
+          refreshControl={
+            onRefresh ? (
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                tintColor={theme.colors.primary}
+                colors={[theme.colors.primary]}
+              />
+            ) : undefined
+          }
+        />
+      </Box>
       {bottomNav}
     </ScreenShell>
   );
-};
+});
+
