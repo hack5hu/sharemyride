@@ -88,4 +88,7 @@ export type RootStackParamList = {
   };
   BookingConfirmed: { rideId: string; bookedSeats?: string[] };
   Settings: undefined;
+  UserProfileDetail: {
+    userId: string;
+  };
 };

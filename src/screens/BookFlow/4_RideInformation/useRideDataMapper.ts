@@ -90,6 +90,7 @@ export const mapBackendRideToUI = (
   return {
     id: rideRaw.id,
     driver: {
+      id: rideRaw.driver?.id,
       name: rideRaw.driver?.name || 'Unknown Driver',
       rating: rideRaw.driver?.rating || 4.8,
       rideCount: 15,

@@ -630,4 +630,13 @@ export const hi: Translations = {
     yourVehicle: 'आपका वाहन',
     vehicleDetails: 'वाहन विवरण',
   },
+  userProfileDetail: {
+    headerTitle: 'राइडकनेक्ट',
+    verifiedMember: 'सत्यापित सदस्य',
+    preferences: 'वरीयताएँ',
+    vehicleInfo: 'वाहन की जानकारी',
+    viewRatings: '{{count}} रेटिंग का विवरण देखें',
+    recentReviews: 'हाल की समीक्षाएं',
+    reportUser: '{{name}} की रिपोर्ट करें',
+  },
 };

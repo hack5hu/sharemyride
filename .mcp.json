@@ -5,7 +5,8 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-filesystem",
-        "/tmp"
+        "/tmp",
+        "http://localhost:6006/mcp"
       ],
       "type": "stdio"
     }

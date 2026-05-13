@@ -89,7 +89,9 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
   }, []);
 
   const handleDriverProfile = useCallback(() => {
-    (navigation.navigate as any)('ProfileHub', { driverId: ride?.driver?.name });
+    if (ride?.driver?.id) {
+      (navigation.navigate as any)('UserProfileDetail', { userId: ride.driver.id });
+    }
   }, [navigation, ride]);
 
   return {

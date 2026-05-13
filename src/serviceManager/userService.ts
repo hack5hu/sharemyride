@@ -23,6 +23,11 @@ export const userService = {
     return response.data;
   },
 
+  getUserProfile: async (userId: string) => {
+    const response = await apiClient.get(`${API_ENDPOINTS.USER.PROFILE}?userId=${userId}`);
+    return response.data;
+  },
+
   getVehicles: async () => {
     const response = await apiClient.get(API_ENDPOINTS.USER.VEHICLES);
     return response.data;

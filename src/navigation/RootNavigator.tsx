@@ -4,6 +4,7 @@ import { LoginScreen } from '@/screens/Auth/Login';
 import { OTPVerificationScreen } from '@/screens/Auth/OTPVerification/OTPVerification.screen';
 import { ProfileSetupScreen } from '@/screens/Profile/ProfileSetup';
 import { ProfileHubScreen } from '@/screens/Profile/ProfileHub';
+import { UserProfileDetailScreen } from '@/screens/Common/UserProfileDetail';
 import { DummyScreen } from '@/screens/Common/Dummy';
 import { EditProfileScreen } from '@/screens/Profile/EditProfile';
 import { TravelPreferencesScreen } from '@/screens/Profile/TravelPreferences';
@@ -107,6 +108,7 @@ export const RootNavigator = () => {
           <Stack.Screen name="PublishSuccess" component={PublishSuccessScreen} />
           <Stack.Screen name="Settings" component={SettingsScreen} />
           <Stack.Screen name="Dummy" component={DummyScreen as any} />
+          <Stack.Screen name="UserProfileDetail" component={UserProfileDetailScreen as any} />
         </>
       )}
     </Stack.Navigator>

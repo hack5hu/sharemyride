@@ -416,6 +416,17 @@ export interface Translations {
   bookingConfirmed: BookingConfirmedTranslations;
   settings: SettingsTranslations;
   myRides: MyRidesTranslations;
+  userProfileDetail: UserProfileDetailTranslations;
+}
+
+export interface UserProfileDetailTranslations {
+  headerTitle: string;
+  verifiedMember: string;
+  preferences: string;
+  vehicleInfo: string;
+  viewRatings: string;
+  recentReviews: string;
+  reportUser: string;
 }
 
 export interface MyRidesTranslations {

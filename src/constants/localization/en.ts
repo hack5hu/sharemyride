@@ -645,4 +645,13 @@ export const en: Translations = {
     yourVehicle: 'Your Vehicle',
     vehicleDetails: 'Vehicle Details',
   },
+  userProfileDetail: {
+    headerTitle: 'RideConnect',
+    verifiedMember: 'Verified Member',
+    preferences: 'Preferences',
+    vehicleInfo: 'Vehicle Info',
+    viewRatings: 'View breakdown of {{count}} ratings',
+    recentReviews: 'Recent Reviews',
+    reportUser: 'Report {{name}}',
+  },
 };

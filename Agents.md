@@ -35,12 +35,12 @@ Strictly adhere to this folder pattern. **No file exceeds 200 lines.**
 
 ```text
 ComponentName/
-├── ComponentName.tsx        (Logic-free UI, React.memo)
-├── ComponentName.styles.ts  (Styled-components only)
-├── useComponentName.ts      (Handlers, API calls, Logic)
-├── ComponentName.stories.tsx (Required for MCP Visibility)
-├── types.d.ts               (Interfaces)
-└── index.ts                 (Clean Export)
+├── ComponentName.screen.tsx        (Logic-free UI, React.memo)
+├── ComponentName.styles.ts         (Styled-components only)
+├── useComponentName.ts             (Handlers, API calls, Logic)
+├── ComponentName.stories.tsx       (create only for common components. required for MCP Visibility)
+├── types.d.ts                      (Interfaces)
+└── index.ts                        (Clean Export)
 ```
 
 ---
@@ -51,11 +51,9 @@ ComponentName/
 * **Styled Components Only:** No inline styles. No `StyleSheet.create`.
 * **The "No-Line" Rule:** Do **not** use `borderWidth: 1`. Use **Tonal Shifts** (different surface colors) or **Negative Space** to separate content.
 * **Typography:** Use **Plus Jakarta Sans** only. Access via `theme` or `Typography` atom.
-* **Tokens:** Never use hardcoded colors or spacing. Use `theme.colors` and `theme.spacing`.
+*   **Tokens:** Never use hardcoded colors or spacing. Use `theme.colors` and `theme.spacing`. Use **snake_case** for theme color tokens (e.g., `on_surface_variant`, not `onSurfaceVariant`).
 * **Shadows:** Use tinted ambient shadows. "Higher is Lighter" (higher elevation = lighter background color).
 * **Gradients:** Use linear gradients (Primary to Primary Container at 135°) for main Action buttons.
-
-
 
 ---
 
@@ -156,3 +154,18 @@ AI must use alias imports to avoid deep relative paths (`../../`).
 
 ---
 
+## 🌍 14. RULES:
+* do not use React native's component. use only components from @/components folder. **very important** (MANDATORY) *RULES TO FOLLOW*
+* do not create components. first check if the component is already in the Storybook MCP server, if not then create it. **very important** (MANDATORY) *RULES TO FOLLOW*
+* always apply "No-Line" design aesthetics, and ensure 100% localization and strict TypeScript typing. **very important** (MANDATORY) *RULES TO FOLLOW*
+* do not use inline styles. use only styled-component. **very important** (MANDATORY) *RULES TO FOLLOW*
+* do not use hardcoded hex codes or pixel values. **very important** (MANDATORY) *RULES TO FOLLOW*
+* always use localizations. **very important** (MANDATORY) *RULES TO FOLLOW*
+* optimise the code for performance. **very important** (MANDATORY) *RULES TO FOLLOW*
+* do not use any api directly. use the @/services folder. **very important** (MANDATORY) *RULES TO FOLLOW*
+* create small functions for each task. **very important** (MANDATORY) *RULES TO FOLLOW*
+* follow SOLID principles. **very important** (MANDATORY) *RULES TO FOLLOW*
+* create *.stories.tsx file for each component in component folder except templates, only if not exist in storybook MCP server. **very important** (MANDATORY) *RULES TO FOLLOW*
+* first check the storybook MCP server to see if the component already exists, if not then create it. **very important** (MANDATORY) *RULES TO FOLLOW*
+* never create .stories.tsx file for any other folder outside the components folder. this is very important. **very important** (MANDATORY) *RULES TO FOLLOW*
+* create template for new screens, and save them in @/components/templates folder. **very important** (MANDATORY) *RULES TO FOLLOW*
