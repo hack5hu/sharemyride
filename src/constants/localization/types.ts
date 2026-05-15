@@ -658,6 +658,8 @@ export interface SeatSelectionTranslations {
   headerTitle: string;
   title: string;
   subtitle: string;
+  seatSelected: string;
+  seatsSelected: string;
   selectVehicleFirst: string;
   yourVehicles: string;
   fiveSeater: string;

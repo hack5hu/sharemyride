@@ -41,11 +41,13 @@ export const ContentContainer = styled.View`
 export const HeaderRow = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   margin-bottom: ${verticalScale(4)}px;
+  gap: ${scale(8)}px;
 `;
 
 export const RouteTitle = styled.Text`
+  flex: 1;
   font-family: 'Plus Jakarta Sans';
   font-weight: 700;
   font-size: ${responsiveFont(15)}px;
@@ -57,6 +59,7 @@ export const BadgeContainer = styled.View`
   padding-horizontal: ${scale(8)}px;
   padding-vertical: ${verticalScale(2)}px;
   border-radius: 9999px;
+  flex-shrink: 0;
 `;
 
 export const BadgeText = styled.Text`

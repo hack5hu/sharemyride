@@ -373,6 +373,8 @@ export const hi: Translations = {
     headerTitle: 'सीटें चुनें',
     title: 'सीटों की संख्या',
     subtitle: 'कितनी सीटें उपलब्ध हैं?',
+    seatSelected: 'सीट चुनी गई',
+    seatsSelected: 'सीटें चुनी गईं',
     selectVehicleFirst: 'सीटिंग व्यवस्था देखने के लिए कृपया एक वाहन चुनें।',
     yourVehicles: 'आपके वाहन',
     fiveSeater: '5 सीटर',

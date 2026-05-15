@@ -42,30 +42,7 @@ export const IconCircle = styled.View`
   justify-content: center;
 `;
 
-export const ContinueButton = styled.TouchableOpacity<{ disabled: boolean }>`
-  width: 100%;
-  opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
-`;
 
-export const ContinueGradient = styled(LinearGradient)`
-  width: 100%;
-  padding-vertical: ${verticalScale(18)}px;
-  border-radius: ${moderateScale(16)}px;
-  align-items: center;
-  justify-content: center;
-  shadow-color: ${({ theme }) => theme.colors.primary};
-  shadow-offset: 0px 8px;
-  shadow-opacity: 0.2;
-  shadow-radius: 12px;
-  elevation: 8;
-`;
-
-export const ContinueText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(16)}px;
-  color: ${({ theme }) => theme.colors.on_primary};
-`;
 export const BarWrapper = styled.View`
   position: absolute;
   bottom: 0;

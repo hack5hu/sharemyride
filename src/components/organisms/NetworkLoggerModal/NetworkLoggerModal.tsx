@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Modal, TouchableOpacity, View } from 'react-native';
+import { Modal, TouchableOpacity, View, Alert } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { FlashList } from '@shopify/flash-list';
 import { useTheme } from 'styled-components/native';
 import { useNetworkLoggerStore, NetworkLog } from '@/store/useNetworkLoggerStore';
@@ -16,6 +17,24 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
   const { logs, clearLogs, isModalVisible, setModalVisible } = useNetworkLoggerStore();
   const [selectedLog, setSelectedLog] = useState<NetworkLog | null>(null);
 
+  const handleCopy = (text: string, label: string) => {
+    Clipboard.setString(text);
+    Alert.alert('Copied', `${label} copied to clipboard`);
+  };
+
+  const generateCurl = (log: NetworkLog) => {
+    let curl = `curl -X ${log.method} '${log.url}'`;
+    if (log.requestHeaders) {
+      Object.entries(log.requestHeaders).forEach(([key, value]) => {
+        curl += ` \\\n  -H '${key}: ${value}'`;
+      });
+    }
+    if (log.requestBody) {
+      curl += ` \\\n  -d '${JSON.stringify(log.requestBody)}'`;
+    }
+    return curl;
+  };
+
   const renderItem = ({ item }: { item: NetworkLog }) => (
     <S.LogItem isError={item.isError} onPress={() => setSelectedLog(item)}>
       <S.LogHeader>
@@ -29,9 +48,14 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
         </S.StatusBadge>
       </S.LogHeader>
       
-      <S.UrlText variant="body" size="sm" numberOfLines={2}>
-        {item.url}
-      </S.UrlText>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+        <S.UrlText variant="body" size="sm" numberOfLines={2} style={{ flex: 1, marginBottom: 0 }}>
+          {item.url}
+        </S.UrlText>
+        <S.CopyButton onPress={() => handleCopy(item.url, 'URL')} style={{ marginLeft: 8 }}>
+          <Icon name="content-copy" size={16} color={theme.colors.on_surface_variant} />
+        </S.CopyButton>
+      </View>
       
       <S.MetaRow>
         <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>
@@ -102,9 +126,17 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
           <S.ScrollContent>
             {selectedLog && (
               <>
-                <S.SectionTitle variant="label" size="xs" color={theme.colors.on_surface_variant} weight="bold">
-                  {t.overview}
-                </S.SectionTitle>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 16, marginBottom: 8 }}>
+                  <S.SectionTitle variant="label" size="xs" color={theme.colors.on_surface_variant} weight="bold" style={{ marginTop: 0, marginBottom: 0 }}>
+                    {t.overview}
+                  </S.SectionTitle>
+                  <S.CopyButton onPress={() => handleCopy(generateCurl(selectedLog), 'cURL Command')}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Icon name="content-copy" size={14} color={theme.colors.on_surface_variant} style={{ marginRight: 4 }} />
+                      <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>Copy cURL</Typography>
+                    </View>
+                  </S.CopyButton>
+                </View>
                 <S.CodeBlock>
                   <S.CodeText>URL: {selectedLog.url}</S.CodeText>
                   <S.CodeText>Method: {selectedLog.method}</S.CodeText>

@@ -179,3 +179,9 @@ export const CodeText = styled.Text`
   font-size: ${responsiveFont(12)}px;
   color: ${({ theme }) => theme.colors.on_surface};
 `;
+
+export const CopyButton = styled.TouchableOpacity`
+  padding: ${moderateScale(4)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_high};
+  border-radius: ${moderateScale(4)}px;
+`;

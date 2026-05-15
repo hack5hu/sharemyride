@@ -384,6 +384,8 @@ export const en: Translations = {
     headerTitle: 'Select Seats',
     title: 'Number of seats',
     subtitle: 'How many seats are available?',
+    seatSelected: 'seat selected',
+    seatsSelected: 'seats selected',
     selectVehicleFirst: 'Please select a vehicle to view the seating arrangement.',
     yourVehicles: 'Your Vehicles',
     fiveSeater: '5 Seater',

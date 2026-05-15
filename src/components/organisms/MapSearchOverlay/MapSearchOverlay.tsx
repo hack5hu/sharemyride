@@ -57,6 +57,7 @@ export const MapSearchOverlay: React.FC<MapSearchOverlayProps> = ({
         <Ionicons name="search" size={moderateScale(24)} color={theme.colors.on_surface_variant} />
         <SearchInput
           ref={inputRef}
+          autoFocus={true}
           placeholder={mapPicker.searchPlaceholder}
           value={searchQuery}
           onChangeText={onSearchChange}
