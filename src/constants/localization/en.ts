@@ -480,6 +480,10 @@ export const en: Translations = {
     trustTitle: 'Verdant Trust',
     trustDescription: 'Experience safe and reliable travel.',
     brandName: 'Ride Pool Company',
+    local: 'Local',
+    intercity: 'Intercity',
+    localServiceArea: 'Local Service Area',
+    requestLocalPartner: 'Request Local Partner',
   },
   availableRides: {
     heroTitle: 'Available Rides',

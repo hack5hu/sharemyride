@@ -29,6 +29,7 @@ interface BookRideState {
   searchResults: any[] | null;
   recentSearches: RecentSearch[];
   filters: SearchFilters;
+  rideType: 'local' | 'intercity';
 
   setStartLocation: (location: Location | null) => void;
   setDestinationLocation: (location: Location | null) => void;
@@ -41,6 +42,7 @@ interface BookRideState {
   hasMore: boolean;
   setHasMore: (hasMore: boolean) => void;
   setFilters: (filters: SearchFilters) => void;
+  setRideType: (type: 'local' | 'intercity') => void;
   addRecentSearch: (search: Omit<RecentSearch, 'id'>) => void;
   clearRecentSearches: () => void;
   clearBookState: () => void;
@@ -58,6 +60,7 @@ export const useBookRideStore = create<BookRideState>()(
       hasMore: true,
       recentSearches: [],
       filters: {},
+      rideType: 'intercity',
 
       setStartLocation: (location) => set({ startLocation: location }),
       setDestinationLocation: (location) => set({ destinationLocation: location }),
@@ -75,6 +78,7 @@ export const useBookRideStore = create<BookRideState>()(
       setCurrentPage: (page) => set({ currentPage: page }),
       setHasMore: (hasMore) => set({ hasMore }),
       setFilters: (filters) => set({ filters }),
+      setRideType: (type) => set({ rideType: type }),
 
       addRecentSearch: (search) => set((state) => {
         const newSearch: RecentSearch = {
@@ -100,6 +104,7 @@ export const useBookRideStore = create<BookRideState>()(
         travelDate: null,
         seatCount: 1,
         filters: {},
+        rideType: 'intercity',
       }),
     }),
     {

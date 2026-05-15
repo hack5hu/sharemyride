@@ -7,6 +7,7 @@ import { moderateScale, verticalScale } from '@/styles';
 import { BottomNav } from '@/components/organisms/BottomNav';
 import { useBookRideInfo } from './useBookRideInfo';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { RideTypeToggle } from '@/components/molecules/RideTypeToggle';
 import {
   Header,
   HeaderTitle,
@@ -48,6 +49,7 @@ import {
   RecentContent,
   RecentTitle,
   RecentSub,
+  ToggleWrapper,
 } from './BookRideInfo.styles';
 
 export const BookRideInfoScreen: React.FC = () => {
@@ -68,6 +70,8 @@ export const BookRideInfoScreen: React.FC = () => {
     handleSelectRecentSearch,
     clearRecentSearches,
     t,
+    rideType,
+    setRideType,
   } = useBookRideInfo();
 
   return (
@@ -112,6 +116,15 @@ export const BookRideInfoScreen: React.FC = () => {
               <HeroTitle>{t.heroTitle}</HeroTitle>
               <HeroSubtitle>{t.heroSubtitle}</HeroSubtitle>
             </HeroSection>
+
+            <ToggleWrapper>
+              <RideTypeToggle
+                selected={rideType}
+                onSelect={setRideType}
+                localLabel={t.local}
+                intercityLabel={t.intercity}
+              />
+            </ToggleWrapper>
 
             <BookingCard>
               <DecorativeAccent />

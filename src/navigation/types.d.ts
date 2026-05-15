@@ -60,6 +60,7 @@ export type RootStackParamList = {
   SummaryPublish: undefined;
   PublishSuccess: undefined;
   BookRideInfo: undefined;
+  LocalRideResults: undefined;
   AvailableRides: undefined;
   RideInformation: { 
     rideId: string; 

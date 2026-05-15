@@ -412,3 +412,8 @@ export const NavText = styled.Text<{ active?: boolean }>`
     active ? theme.colors.primary : theme.colors.on_surface_variant};
   margin-top: ${verticalScale(2)}px;
 `;
+
+export const ToggleWrapper = styled.View`
+  padding-horizontal: ${scale(24)}px;
+  margin-bottom: ${verticalScale(24)}px;
+`;

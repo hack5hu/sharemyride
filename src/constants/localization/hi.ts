@@ -468,6 +468,10 @@ export const hi: Translations = {
     trustTitle: 'वर्डेंट ट्रस्ट',
     trustDescription: 'सुरक्षित और विश्वसनीय यात्रा का अनुभव।',
     brandName: 'राइड पूल कंपनी',
+    local: 'स्थानीय',
+    intercity: 'इंटरसिटी',
+    localServiceArea: 'स्थानीय सेवा क्षेत्र',
+    requestLocalPartner: 'स्थानीय पार्टनर का अनुरोध करें',
   },
   availableRides: {
     heroTitle: 'उपलब्ध सवारी',

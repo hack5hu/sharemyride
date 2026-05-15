@@ -531,6 +531,10 @@ export interface BookRideInfoTranslations {
   trustTitle: string;
   trustDescription: string;
   brandName: string;
+  local: string;
+  intercity: string;
+  localServiceArea: string;
+  requestLocalPartner: string;
 }
 
 export interface AvailableRidesTranslations {

@@ -29,6 +29,7 @@ import { RequestTypeScreen } from '@/screens/PublishFlow/8_RequestType';
 import { SummaryPublishScreen } from '@/screens/PublishFlow/9_SummaryPublish';
 import { PublishSuccessScreen } from '@/screens/PublishFlow/10_PublishSuccess';
 import { BookRideInfoScreen } from '@/screens/BookFlow/1_BookRideInfo';
+import { LocalRideResultsScreen } from '@/screens/BookFlow/4.1_LocalRideResults';
 import { RideInformationScreen } from '@/screens/BookFlow/4_RideInformation';
 import { BookingConfirmedScreen } from '@/screens/BookFlow/7_BookingConfirmed';
 import { SettingsScreen } from '@/screens/Settings';
@@ -73,6 +74,7 @@ export const RootNavigator = () => {
         // ── Main App Stack ──────────────────────────────────────────────────────
         <>
           <Stack.Screen name="BookRideInfo" component={BookRideInfoScreen} />
+          <Stack.Screen name="LocalRideResults" component={LocalRideResultsScreen} />
           <Stack.Screen name="AvailableRides" component={AvailableRidesScreen} />
           <Stack.Screen name="RideInformation" component={RideInformationScreen} />
           <Stack.Screen name="RideRouteMap" component={RideRouteMapScreen as any} />

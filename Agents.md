@@ -1,5 +1,28 @@
 # 🤖 Agent Reference Guide: ShareMyRide (Tuktuk)
 
+---
+
+## 🚨 ABSOLUTE LAW — READ BEFORE ANYTHING ELSE (NON-NEGOTIABLE)
+
+> **This document is the ONLY law governing every line of code written for this project.**
+> The AI agent MUST follow every rule in this file — for EVERY prompt, without exception, without deviation, without doing it "their own way".
+
+### The Agent's Pre-Flight Checklist (run BEFORE writing a single line of code):
+1. ✅ **Read this file.** Every rule. Every time.
+2. ✅ **Check Storybook MCP** — does the component already exist? 
+3. ✅ **Check if the storybook server is closed or not.** if it is then run the storybook server first and then check. **very important** (MANDATORY) *RULES TO FOLLOW*
+4. ✅ **Use existing atoms** (`Button`, `Typography`, `Box`) — NEVER custom styled text/buttons.
+5. ✅ **Create a Template** in `@/components/templates/` for every new screen.
+6. ✅ **Use `useLocale()`** for every string — zero hardcoded text.
+7. ✅ **Use `scale()`, `verticalScale()`, `moderateScale()`, `responsiveFont()`** for every dimension.
+8. ✅ **No inline styles** — styled-components only.
+8. ✅ **No `any` types** — TypeScript must be strict.
+
+> ⛔ **If any of the above are skipped, the output is INVALID and must be redone from scratch.**
+> The user should NOT have to ask for compliance — compliance is the default.
+
+---
+
 This document is the **source of truth** for all development. AI agents must adhere to these rules strictly to maintain the "Ride Pool Company" brand identity and codebase integrity.
 
 ## 🔍 0. The "Storybook MCP" Protocol | Critical "Search-First" Protocol (MANDATORY)
@@ -169,3 +192,22 @@ AI must use alias imports to avoid deep relative paths (`../../`).
 * first check the storybook MCP server to see if the component already exists, if not then create it. **very important** (MANDATORY) *RULES TO FOLLOW*
 * never create .stories.tsx file for any other folder outside the components folder. this is very important. **very important** (MANDATORY) *RULES TO FOLLOW*
 * create template for new screens, and save them in @/components/templates folder. **very important** (MANDATORY) *RULES TO FOLLOW*
+
+---
+
+## 🚫 15. Zero-Tolerance Enforcement
+
+> These rules are **non-negotiable** and apply to **every single prompt** — no exceptions.
+
+* **NEVER skip the pre-flight checklist.** Every prompt must go through it.
+* **NEVER use raw `Text`, `View`, `TouchableOpacity`** from React Native. Always use atoms from `@/components/atoms`.
+* **NEVER write hardcoded strings** in UI files. Use `useLocale()` always.
+* **NEVER write hardcoded pixel values or hex codes.** Use theme tokens and scaling utils.
+* **NEVER create a screen without a Template** in `@/components/templates/`.
+* **NEVER use inline styles.** Styled-components only.
+* **NEVER do things your own way.** If something is unclear, ask the user — do not improvise.
+* **ALWAYS check Storybook MCP before creating any component.**
+* **ALWAYS follow the 200-line rule.** Refactor immediately if exceeded.
+* **ALWAYS use `React.memo`, `useCallback`, `useMemo`** for performance.
+
+> 💬 If the AI ever violates any rule above, the correct response is to **redo the work from scratch** following the rules — not patch it.

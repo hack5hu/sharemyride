@@ -24,6 +24,8 @@ export const useBookRideInfo = () => {
     recentSearches,
     addRecentSearch,
     clearRecentSearches,
+    rideType,
+    setRideType,
   } = useBookRideStore();
 
   const handlePressPickup = useCallback(() => {
@@ -107,7 +109,12 @@ export const useBookRideInfo = () => {
 
         const results = await rideService.searchRides(payload);
         setSearchResults(results.rides || results.data || results);
-        navigation.navigate('AvailableRides' as any);
+        
+        if (rideType === 'local') {
+          navigation.navigate('LocalRideResults' as any);
+        } else {
+          navigation.navigate('AvailableRides' as any);
+        }
       } catch (error) {
         console.error('Failed to search rides:', error);
       } finally {
@@ -183,5 +190,7 @@ export const useBookRideInfo = () => {
     handleSelectRecentSearch: selectAndSearch,
     clearRecentSearches,
     t,
+    rideType,
+    setRideType,
   };
 };
