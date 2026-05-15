@@ -7,6 +7,7 @@ import { Typography } from '@/components/atoms/Typography';
 import { useLocale } from '@/constants/localization';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as S from './NetworkLoggerModal.styles';
+import { ENABLE_NETWORK_LOGGER } from '@env';
 
 export const NetworkLoggerModal: React.FC = React.memo(() => {
   const theme = useTheme();
@@ -51,6 +52,10 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
       </Typography>
     </S.EmptyState>
   );
+
+  if (ENABLE_NETWORK_LOGGER !== 'true') {
+    return null;
+  }
 
   return (
     <>
