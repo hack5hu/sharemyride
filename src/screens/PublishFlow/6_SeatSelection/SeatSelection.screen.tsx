@@ -2,7 +2,7 @@ import React from 'react';
 import { SeatSelectionTemplate } from '@/components/templates/SeatSelectionTemplate/SeatSelectionTemplate';
 import { useSeatSelection } from './useSeatSelection';
 
-export const SeatSelectionScreen: React.FC = () => {
+export const SeatSelectionScreen: React.FC = React.memo(() => {
   const {
     flow,
     selectedSeats,
@@ -34,4 +34,6 @@ export const SeatSelectionScreen: React.FC = () => {
       t={t}
     />
   );
-};
+});
+
+SeatSelectionScreen.displayName = 'SeatSelectionScreen';

@@ -38,9 +38,9 @@ export const LocationSelectionTemplate: React.FC<LocationSelectionTemplateProps>
       <MainContent>
         <HeaderSection>
           <TitleContainer>
-            {locationSelection.titlePrefix}
+            {locationSelection.titlePrefix}{' '}
             <TitleHighlight>{locationSelection.titleHighlight}</TitleHighlight>
-            {locationSelection.titleSuffix}
+            {' '}{locationSelection.titleSuffix}
           </TitleContainer>
           <Subtitle>{locationSelection.subtitle}</Subtitle>
         </HeaderSection>

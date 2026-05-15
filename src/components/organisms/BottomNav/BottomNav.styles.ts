@@ -7,11 +7,11 @@ export const Container = styled.View`
   align-items: center;
   padding-bottom: ${verticalScale(20)}px;
   padding-top: ${verticalScale(12)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_lowest + 'CC'};
+  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   border-top-left-radius: ${moderateScale(24)}px;
   border-top-right-radius: ${moderateScale(24)}px;
   elevation: 10;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px -10px;
   shadow-opacity: 0.1;
   shadow-radius: 20px;

@@ -23,7 +23,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab }) => {
           variant="label" 
           size="sm" 
           weight="bold" 
-          color={isActive ? 'primary' : 'on_surface_variant'}
+          color={isActive ? theme.colors.primary : theme.colors.on_surface_variant}
         >
           {t(`profileHub.${labelKey}`)}
         </Typography>

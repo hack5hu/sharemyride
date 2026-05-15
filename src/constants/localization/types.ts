@@ -75,7 +75,7 @@ export interface ProfileSetupTranslations {
   nearbyOnly: string;
   globalReach: string;
   newsletter: string;
-  curatedPicks: string;
+  personalizedSuggestions: string;
   contentPreferences: string;
   interestDigitalArt: string;
   interestSustainableLiving: string;
@@ -604,6 +604,9 @@ export interface SelectSeatTranslations {
   legendAvailable: string;
   legendSelected: string;
   legendBooked: string;
+  legendOccupied: string;
+  selectVehicleFirst: string;
+  yourVehicles: string;
   summaryTitle: string;
   seatSelected: string;
   seatsSelected: string;
@@ -652,9 +655,10 @@ export interface PriceSelectionTranslations {
 
 export interface SeatSelectionTranslations {
   headerTitle: string;
-  stepIndicator: string;
   title: string;
   subtitle: string;
+  selectVehicleFirst: string;
+  yourVehicles: string;
   fiveSeater: string;
   sevenSeater: string;
   driverLabel: string;

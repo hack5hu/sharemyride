@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
 import LinearGradient from 'react-native-linear-gradient';
+import { Typography } from '@/components/atoms/Typography';
 
 export const ContentScroll = styled.ScrollView`
   flex: 1;
@@ -76,4 +77,34 @@ export const BarWrapper = styled.View`
   background-color: ${({ theme }) => theme.colors.surface}E6;
   border-top-width: 1px;
   border-color: ${({ theme }) => theme.colors.surface_container_highest};
+`;
+
+export const TitleContainer = styled.View`
+  padding-horizontal: ${scale(24)}px;
+  margin-top: ${verticalScale(12)}px;
+  margin-bottom: ${verticalScale(8)}px;
+  gap: ${verticalScale(4)}px;
+`;
+
+export const VehicleListWrapper = styled.View`
+  margin-top: ${verticalScale(16)}px;
+`;
+
+export const LegendWrapper = styled.View`
+  margin-top: ${verticalScale(16)}px;
+`;
+
+export const FloorPlanWrapper = styled.View`
+  margin-top: ${verticalScale(16)}px;
+`;
+
+export const EmptyStateContainer = styled.View`
+  margin-top: ${verticalScale(32)}px;
+  align-items: center;
+  justify-content: center;
+  padding: ${scale(24)}px;
+`;
+
+export const EmptyStateText = styled(Typography as any)`
+  text-align: center;
 `;
