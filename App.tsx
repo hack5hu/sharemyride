@@ -7,6 +7,7 @@ import { LightTheme, DarkTheme } from '@/theme';
 import { RootNavigator } from '@/navigation';
 import { useAuthStore } from '@/store';
 import { useSettingsStore } from '@/store/settings';
+import { NetworkLoggerModal } from '@/components/organisms/NetworkLoggerModal';
 
 const App = () => {
   const initialize = useAuthStore(state => state.initialize);
@@ -29,6 +30,7 @@ const App = () => {
         <NavigationContainer>
           <RootNavigator />
         </NavigationContainer>
+        <NetworkLoggerModal />
       </ThemeProvider>
     </SafeAreaProvider>
   );

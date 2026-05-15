@@ -417,6 +417,7 @@ export interface Translations {
   settings: SettingsTranslations;
   myRides: MyRidesTranslations;
   userProfileDetail: UserProfileDetailTranslations;
+  developer: DeveloperTranslations;
 }
 
 export interface UserProfileDetailTranslations {
@@ -669,3 +670,21 @@ export interface SeatSelectionTranslations {
   estEarnings: string;
   continue: string;
 }
+
+export interface DeveloperTranslations {
+  networkLogsTitle: string;
+  noLogsTitle: string;
+  noLogsDesc: string;
+  clear: string;
+  close: string;
+  requestDetails: string;
+  overview: string;
+  requestHeaders: string;
+  requestBody: string;
+  responseHeaders: string;
+  responseBody: string;
+  pending: string;
+  noBody: string;
+  noHeaders: string;
+}
+

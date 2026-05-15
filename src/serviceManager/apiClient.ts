@@ -2,6 +2,11 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import * as Keychain from 'react-native-keychain';
 import { API_ENDPOINTS, BASE_URL } from '@/constants/apiEndpoints';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useNetworkLoggerStore } from '@/store/useNetworkLoggerStore';
+
+// Polyfill/Utility for UUID-like ID
+const generateId = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -71,6 +76,26 @@ apiClient.interceptors.request.use(
     }
     console.log('---------------------------------------------------------\n');
 
+    // Network Logger
+    const logId = generateId();
+    (config as any)._logId = logId;
+    (config as any)._startTime = Date.now();
+
+    useNetworkLoggerStore.getState().addLog({
+      id: logId,
+      method: config.method?.toUpperCase() || 'GET',
+      url: config.url || '',
+      requestHeaders: config.headers,
+      requestBody: config.data,
+      responseStatus: null,
+      responseHeaders: null,
+      responseBody: null,
+      startTime: (config as any)._startTime,
+      endTime: null,
+      duration: null,
+      isError: false,
+    });
+
     return config;
   },
   error => Promise.reject(error),
@@ -82,6 +107,21 @@ apiClient.interceptors.response.use(
       `\n✅ [API Response Success] ${response.status} ${response.config.url}`,
     );
     console.log(`[API Response Data]`, JSON.stringify(response.data, null, 2));
+
+    // Network Logger
+    const logId = (response.config as any)._logId;
+    const startTime = (response.config as any)._startTime;
+    if (logId && startTime) {
+      const endTime = Date.now();
+      useNetworkLoggerStore.getState().updateLog(logId, {
+        responseStatus: response.status,
+        responseHeaders: response.headers,
+        responseBody: response.data,
+        endTime,
+        duration: endTime - startTime,
+      });
+    }
+
     return response;
   },
   async error => {
@@ -95,6 +135,21 @@ apiClient.interceptors.response.use(
         `[API Error Response]`,
         JSON.stringify(error.response.data, null, 2),
       );
+    }
+
+    // Network Logger
+    const logId = (originalRequest as any)?._logId;
+    const startTime = (originalRequest as any)?._startTime;
+    if (logId && startTime) {
+      const endTime = Date.now();
+      useNetworkLoggerStore.getState().updateLog(logId, {
+        responseStatus: error.response?.status || 0,
+        responseHeaders: error.response?.headers,
+        responseBody: error.response?.data || error.message,
+        endTime,
+        duration: endTime - startTime,
+        isError: true,
+      });
     }
 
     // Handle 401 Unauthorized errors (Expired Token)
