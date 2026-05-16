@@ -21,6 +21,10 @@ export type RootStackParamList = {
   ChatDetails: {
     chatId: string;
     name: string;
+    selectedLocation?: any;
+    isLive?: boolean;
+    duration?: string | null;
+    timestamp?: number;
   };
   LocationSelection: {
     updatedLocation?: { id: string; name: string; address: string };
@@ -68,14 +72,20 @@ export type RootStackParamList = {
     destinationStopId?: number;
   };
   RideRouteMap: {
-    routePath: string;
-    stops: Array<{
+    routePath?: string;
+    stops?: Array<{
       lat: number;
       lon: number;
       name: string;
       sequence: number;
     }>;
     initialStopIndex?: number;
+    destination?: {
+      latitude: number;
+      longitude: number;
+      name: string;
+      address?: string;
+    };
   };
   BookSeatSelection: { 
     rideId: string;

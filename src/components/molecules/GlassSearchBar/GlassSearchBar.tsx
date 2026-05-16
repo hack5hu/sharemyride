@@ -3,7 +3,6 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { 
   Container, 
-  InputWrapper, 
   StyledInput, 
   LocationButton 
 } from './GlassSearchBar.styles';
@@ -20,20 +19,18 @@ export const GlassSearchBar: React.FC<GlassSearchBarProps> = ({
 
   return (
     <Container>
-      <InputWrapper>
-        <Icon 
-          name="search" 
-          size={moderateScale(20)} 
-          color={theme.colors.outline} 
-        />
-        <StyledInput 
-          value={value}
-          onChangeText={onChangeText}
-          placeholder={placeholder}
-          autoCorrect={false}
-          autoCapitalize="sentences"
-        />
-      </InputWrapper>
+      <Icon 
+        name="search" 
+        size={moderateScale(20)} 
+        color={theme.colors.outline} 
+      />
+      <StyledInput 
+        value={value}
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+        autoCorrect={false}
+        autoCapitalize="sentences"
+      />
       
       <LocationButton onPress={onLocationPress} activeOpacity={0.8}>
         <Icon 

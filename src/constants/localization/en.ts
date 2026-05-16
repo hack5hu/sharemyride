@@ -680,4 +680,19 @@ export const en: Translations = {
     noBody: 'No body',
     noHeaders: 'No headers',
   },
+  chatLocation: {
+    headerTitle: 'Send Location',
+    shareLiveLocation: 'Share Live Location',
+    shareLiveLocationDesc: 'Update your location in real-time',
+    sendCurrentLocation: 'Send Your Current Location',
+    sendCurrentLocationDesc: 'Accurate to 15 meters',
+    nearbyPlaces: 'NEARBY PLACES',
+    searchPlaceholder: 'Search location...',
+  },
+  rideRoute: {
+    title: 'Ride Route',
+    locationDetails: 'Location Details',
+    openInGoogleMaps: 'Open in Google Maps',
+    openInAppleMaps: 'Open in Apple Maps',
+  },
 };

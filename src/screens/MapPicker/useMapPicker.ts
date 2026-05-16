@@ -5,6 +5,8 @@ import { Location, useLocationStore } from '@/store/useLocationStore';
 import { locationService, OlaPrediction } from '@/serviceManager/locationService';
 import debounce from 'lodash/debounce';
 
+import { requestLocationPermission } from '@/utils/permissionUtils';
+
 const DEFAULT_REGION = {
   latitude: 12.9716, // Bengaluru
   longitude: 77.5946,
@@ -32,11 +34,50 @@ export const useMapPicker = () => {
   const [isReverseGeocoding, setIsReverseGeocoding] = useState(false);
   const [isInitiallyCentered, setIsInitiallyCentered] = useState(false);
   const [isMapVisible, setIsMapVisible] = useState(false);
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
+  const [userHeading, setUserHeading] = useState<number>(0);
+  const [isMoving, setIsMoving] = useState(false);
+  const [hasPermission, setHasPermission] = useState(false);
   const zoomRef = useRef(14);
+
+  // Request location permission on mount
+  useEffect(() => {
+    const requestPermission = async () => {
+      try {
+        const granted = await requestLocationPermission();
+        setHasPermission(granted);
+      } catch (error) {
+        console.warn('Permission request error:', error);
+      }
+    };
+    
+    // Small delay to ensure Activity is attached on Android
+    const timer = setTimeout(requestPermission, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Scoped history derived from the current context
   const addSearchHistory = useLocationStore((state) => state.addSearchHistory);
   const history = useLocationStore((state) => state.history[contextKey] || EMPTY_HISTORY);
+
+  const handleUserLocationUpdate = useCallback((location: any) => {
+    if (location?.coords) {
+      setUserLocation([location.coords.longitude, location.coords.latitude]);
+      if (location.coords.heading !== undefined) {
+        setUserHeading(location.coords.heading);
+      }
+    }
+  }, []);
+
+  const handleLocateMe = useCallback(() => {
+    if (userLocation) {
+      cameraRef.current?.setStop({
+        center: userLocation,
+        zoom: 17,
+        duration: 1000,
+      });
+    }
+  }, [userLocation]);
 
   const handleZoom = useCallback((increment: number) => {
     const newZoom = Math.min(Math.max(zoomRef.current + increment, 3), 20);
@@ -106,7 +147,12 @@ export const useMapPicker = () => {
     }, 100);
   }, []);
 
+  const handleRegionWillChange = useCallback(() => {
+    setIsMoving(true);
+  }, []);
+
   const handleRegionChangeComplete = useCallback(async (event: any) => {
+    setIsMoving(false);
     // 1. Guard: Only geocode if map is visible to user
     if (!isMapVisible) return;
 
@@ -174,5 +220,11 @@ export const useMapPicker = () => {
     isMapVisible,
     setIsMapVisible,
     currentZoom: zoomRef.current,
+    handleLocateMe,
+    handleUserLocationUpdate,
+    userHeading,
+    isMoving,
+    handleRegionWillChange,
+    hasPermission,
   };
 };

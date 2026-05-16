@@ -28,13 +28,14 @@ export const Footer = styled.View`
   bottom: ${moderateScale(56)}px;
   left: ${moderateScale(16)}px;
   right: ${moderateScale(16)}px;
+  flex-direction: row;
 `;
 
-export const MapButtonGradient = styled(LinearGradient).attrs(({ theme }) => ({
-  colors: [theme.colors.primary, theme.colors.primary],
+export const MapButtonGradient = styled(LinearGradient).attrs({
   start: { x: 0, y: 0 },
   end: { x: 1, y: 1 },
-}))`
+})`
+  flex: 1;
   border-radius: ${moderateScale(12)}px;
   overflow: hidden;
   elevation: 6;
@@ -45,8 +46,8 @@ export const MapButtonGradient = styled(LinearGradient).attrs(({ theme }) => ({
 `;
 
 export const MapButton = styled.TouchableOpacity`
-  padding-horizontal: ${scale(24)}px;
-  padding-vertical: ${verticalScale(16)}px;
+  padding-horizontal: ${scale(12)}px;
+  padding-vertical: ${verticalScale(14)}px;
   align-items: center;
   justify-content: center;
 `;

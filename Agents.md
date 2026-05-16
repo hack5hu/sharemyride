@@ -4,12 +4,14 @@
 
 ## 🚨 ABSOLUTE LAW — READ BEFORE ANYTHING ELSE (NON-NEGOTIABLE)
 
-> **This document is the ONLY law governing every line of code written for this project.**
+> **WHEN ASKED TO DO CODE, YOU MUST ALWAYS, ALWAYS FOLLOW THE GIVEN RULES IN THIS DOCUMENT.**
+> **ALWAYS CHECK THE STORYBOOK MCP SERVER FIRST to see if any component belongs there or already exists.**
+> This document is the ONLY law governing every line of code written for this project.
 > The AI agent MUST follow every rule in this file — for EVERY prompt, without exception, without deviation, without doing it "their own way".
 
 ### The Agent's Pre-Flight Checklist (run BEFORE writing a single line of code):
-1. ✅ **Read this file.** Every rule. Every time.
-2. ✅ **Check Storybook MCP** — does the component already exist? 
+1. ✅ **Read this file.** Every rule. Every time. When asked to code, follow these rules strictly.
+2. ✅ **Check Storybook MCP FIRST** — does the component already exist? Should it belong there? You must check the MCP server before writing any component code.
 3. ✅ **Check if the storybook server is closed or not.** if it is then run the storybook server first and then check. **very important** (MANDATORY) *RULES TO FOLLOW*
 4. ✅ **Use existing atoms** (`Button`, `Typography`, `Box`) — NEVER custom styled text/buttons.
 5. ✅ **Create a Template** in `@/components/templates/` for every new screen.

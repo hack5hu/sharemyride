@@ -417,7 +417,16 @@ export interface Translations {
   settings: SettingsTranslations;
   myRides: MyRidesTranslations;
   userProfileDetail: UserProfileDetailTranslations;
+  chatLocation: ChatLocationTranslations;
   developer: DeveloperTranslations;
+  rideRoute: RideRouteTranslations;
+}
+
+export interface RideRouteTranslations {
+  title: string;
+  locationDetails: string;
+  openInGoogleMaps: string;
+  openInAppleMaps: string;
 }
 
 export interface UserProfileDetailTranslations {
@@ -688,5 +697,15 @@ export interface DeveloperTranslations {
   pending: string;
   noBody: string;
   noHeaders: string;
+}
+
+export interface ChatLocationTranslations {
+  headerTitle: string;
+  shareLiveLocation: string;
+  shareLiveLocationDesc: string;
+  sendCurrentLocation: string;
+  sendCurrentLocationDesc: string;
+  nearbyPlaces: string;
+  searchPlaceholder: string;
 }
 

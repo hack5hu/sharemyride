@@ -10,11 +10,11 @@ import { EditProfileScreen } from '@/screens/Profile/EditProfile';
 import { TravelPreferencesScreen } from '@/screens/Profile/TravelPreferences';
 import { VehicleListScreen } from '@/screens/Profile/VehicleList';
 import { VehicleDetailsScreen } from '@/screens/Profile/VehicleDetails';
-import { ChatListScreen } from '@/screens/Chat/ChatList';
-import { ChatDetailsScreen } from '@/screens/Chat/ChatDetails';
-import { SelectLocationScreen } from '@/screens/Chat/SelectLocation';
+import { ChatListScreen } from '@/screens/Chat/1_ChatList';
+import { ChatDetailsScreen } from '@/screens/Chat/2_ChatDetails';
+import { SelectLocationScreen } from '@/screens/Chat/3_SelectLocation';
 import { MyRidesScreen } from '@/screens/MyRideFlow/1_MyRides';
-import { RideDetailsScreen } from '@/screens/MyRideFlow/2_RideDetails'; 
+import { RideDetailsScreen } from '@/screens/MyRideFlow/2_RideDetails';
 import { CancelRideScreen } from '@/screens/CancelRide';
 import { LocationSelectionScreen } from '@/screens/PublishFlow/1_LocationSelection';
 import { MapPickerScreen } from '@/screens/MapPicker';
@@ -63,9 +63,9 @@ export const RootNavigator = () => {
         </>
       ) : !isProfileCompleted ? (
         // ── Mandatory Profile Setup ─────────────────────────────────────────────
-        <Stack.Screen 
-          name="ProfileSetup" 
-          component={ProfileSetupScreen} 
+        <Stack.Screen
+          name="ProfileSetup"
+          component={ProfileSetupScreen}
           options={{
             gestureEnabled: false, // Prevent back swipe on iOS
           }}
@@ -100,8 +100,8 @@ export const RootNavigator = () => {
           <Stack.Screen name="PriceSelection" component={PriceSelectionScreen as any} />
           <Stack.Screen name="MyRides" component={MyRidesScreen} />
           <Stack.Screen name="RideDetails" component={RideDetailsScreen as any} />
-          <Stack.Screen 
-            name="CancelRide" 
+          <Stack.Screen
+            name="CancelRide"
             component={CancelRideScreen as any}
             options={{ presentation: 'transparentModal' }}
           />

@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale } from '@/styles';
 
 export const Container = styled.TouchableOpacity`
-  background-color: ${({ theme }) => theme.colors.primary_container};
+  background-color: ${({ theme }) => theme.colors.primary};
   padding-horizontal: ${scale(24)}px;
   padding-vertical: ${verticalScale(14)}px;
   border-radius: ${moderateScale(100)}px;

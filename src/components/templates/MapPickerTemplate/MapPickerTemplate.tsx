@@ -24,7 +24,9 @@ import { MapSearchOverlayProps, MapSearchOverlay } from '@/components/organisms/
 import { LocationDetailsCardProps } from '@/components/molecules/LocationDetailsCard';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
-import { moderateScale, scale } from '@/styles';
+import { moderateScale, scale, verticalScale } from '@/styles';
+
+import { UserLocationMarker } from '@/components/atoms/UserLocationMarker';
 
 export interface MapPickerTemplateProps {
   pickerType: 'start' | 'destination' | 'middleStop';
@@ -33,6 +35,12 @@ export interface MapPickerTemplateProps {
     longitude: number;
   };
   onRegionChangeComplete: (feature: any) => void;
+  onRegionWillChange?: () => void;
+  isMoving?: boolean;
+  onUserLocationUpdate?: (location: any) => void;
+  onLocateMe?: () => void;
+  heading?: number;
+  hasPermission?: boolean;
   searchOverlayProps: MapSearchOverlayProps;
   locationDetailsProps: LocationDetailsCardProps;
   mapRef?: React.RefObject<any>;
@@ -52,6 +60,12 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
   mapRef,
   cameraRef,
   onRegionChangeComplete,
+  onRegionWillChange,
+  isMoving,
+  onUserLocationUpdate,
+  onLocateMe,
+  heading,
+  hasPermission,
   searchOverlayProps,
   locationDetailsProps,
   isInitiallyCentered,
@@ -64,13 +78,43 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
 }) => {
   const theme = useTheme();
   const { mapPicker } = useLocale();
+  const pinAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (!isInitiallyCentered) {
       setIsInitiallyCentered(true);
     }
   }, [isInitiallyCentered, setIsInitiallyCentered]);
-  console.log(locationDetailsProps)
+
+  useEffect(() => {
+    Animated.spring(pinAnim, {
+      toValue: isMoving ? 1 : 0,
+      useNativeDriver: true,
+      friction: 8,
+      tension: 40,
+    }).start();
+  }, [isMoving, pinAnim]);
+
+  const pinTranslateY = pinAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -verticalScale(20)],
+  });
+
+  const pinScale = pinAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 1.1],
+  });
+
+  const shadowOpacity = pinAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 0.3],
+  });
+
+  const shadowScale = pinAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 0.6],
+  });
+
   return (
     <ScreenShell title='Select Location' onBack={true}>
       <MapSearchOverlay 
@@ -82,6 +126,7 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
       {/* Map Layer - Warm Mounted */}
       <OlaMap
         ref={mapRef}
+        onRegionWillChange={onRegionWillChange}
         onRegionDidChange={onRegionChangeComplete}
         style={{ 
           flex: 1,
@@ -102,15 +147,40 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
           center={[region.longitude, region.latitude]}
           zoom={zoom ?? 14}
         />
-        <UserLocation />
+        {hasPermission && (
+          <UserLocation 
+            onUpdate={onUserLocationUpdate} 
+            showsUserHeadingIndicator={true}
+          >
+            <UserLocationMarker heading={heading} />
+          </UserLocation>
+        )}
       </OlaMap>
 
       {isMapVisible && (
         <>
           <GradientOverlay colors={['transparent', 'rgba(0,0,0,0.05)']} />
 
-          <PinContainer pointerEvents="none">
-            <TooltipBubble>
+          <PinContainer 
+            pointerEvents="none" 
+            as={Animated.View}
+            style={{
+              transform: [
+                { translateX: -moderateScale(24) },
+                { translateY: Animated.add(-moderateScale(48), pinTranslateY) },
+                { scale: pinScale }
+              ]
+            }}
+          >
+            <TooltipBubble 
+              as={Animated.View} 
+              style={{ 
+                opacity: pinAnim.interpolate({
+                  inputRange: [0, 0.2, 1],
+                  outputRange: [1, 0, 0]
+                }) 
+              }}
+            >
               <TooltipText>
                 {pickerType === 'start' 
                   ? mapPicker.setPickup 
@@ -124,6 +194,13 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
               name="pin-sharp" 
               size={moderateScale(28)} 
               color={theme.colors.primary_container} 
+            />
+            <PinShadow 
+              as={Animated.View} 
+              style={{ 
+                opacity: shadowOpacity,
+                transform: [{ scale: shadowScale }]
+              }} 
             />
           </PinContainer>
 
@@ -161,7 +238,11 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
             </SelectButton>
           </SelectButtonContainer>
 
-          <MapControlsFABs onZoomIn={onZoomIn} onZoomOut={onZoomOut} />
+          <MapControlsFABs 
+            onZoomIn={onZoomIn} 
+            onZoomOut={onZoomOut} 
+            onLocateMe={onLocateMe}
+          />
         </>
       )}
     </ScreenShell>

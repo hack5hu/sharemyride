@@ -24,7 +24,13 @@ export const MapPickerScreen: React.FC = () => {
     setIsInitiallyCentered,
     isMapVisible,
     currentZoom,
-    setIsMapVisible
+    setIsMapVisible,
+    handleLocateMe,
+    handleUserLocationUpdate,
+    userHeading,
+    isMoving,
+    handleRegionWillChange,
+    hasPermission,
   } = useMapPicker();
 
   return (
@@ -32,6 +38,12 @@ export const MapPickerScreen: React.FC = () => {
       pickerType={pickerType}
       region={region}
       onRegionChangeComplete={handleRegionChangeComplete}
+      onRegionWillChange={handleRegionWillChange}
+      isMoving={isMoving}
+      onUserLocationUpdate={handleUserLocationUpdate}
+      onLocateMe={handleLocateMe}
+      heading={userHeading}
+      hasPermission={hasPermission}
       mapRef={mapRef}
       cameraRef={cameraRef}
       isMapVisible={isMapVisible}

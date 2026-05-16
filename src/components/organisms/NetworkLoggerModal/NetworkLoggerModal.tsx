@@ -9,24 +9,32 @@ import { useLocale } from '@/constants/localization';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as S from './NetworkLoggerModal.styles';
 import { ENABLE_NETWORK_LOGGER } from '@env';
+import { BASE_URL } from '@/constants/apiEndpoints';
 
 export const NetworkLoggerModal: React.FC = React.memo(() => {
   const theme = useTheme();
   const { developer: t } = useLocale();
-  
+
   const { logs, clearLogs, isModalVisible, setModalVisible } = useNetworkLoggerStore();
   const [selectedLog, setSelectedLog] = useState<NetworkLog | null>(null);
 
   const handleCopy = (text: string, label: string) => {
     Clipboard.setString(text);
-    Alert.alert('Copied', `${label} copied to clipboard`);
   };
 
   const generateCurl = (log: NetworkLog) => {
-    let curl = `curl -X ${log.method} '${log.url}'`;
+    let curl = `curl -X ${log.method} '${BASE_URL}${log.url}'`;
     if (log.requestHeaders) {
       Object.entries(log.requestHeaders).forEach(([key, value]) => {
-        curl += ` \\\n  -H '${key}: ${value}'`;
+        const cleanValue = String(value)
+          .split(',')
+          .map(v => v.trim())
+          .filter(v => v.toLowerCase() !== 'text/plain')
+          .join(', ');
+
+        if (cleanValue) {
+          curl += ` \\\n  -H '${key}: ${cleanValue}'`;
+        }
       });
     }
     if (log.requestBody) {
@@ -47,16 +55,16 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
           </S.StatusText>
         </S.StatusBadge>
       </S.LogHeader>
-      
+
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
         <S.UrlText variant="body" size="sm" numberOfLines={2} style={{ flex: 1, marginBottom: 0 }}>
           {item.url}
         </S.UrlText>
-        <S.CopyButton onPress={() => handleCopy(item.url, 'URL')} style={{ marginLeft: 8 }}>
+        <S.CopyButton onPress={() => handleCopy(generateCurl(item), 'cURL Command')} style={{ marginLeft: 8 }}>
           <Icon name="content-copy" size={16} color={theme.colors.on_surface_variant} />
         </S.CopyButton>
       </View>
-      
+
       <S.MetaRow>
         <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>
           {new Date(item.startTime).toLocaleTimeString()}
@@ -102,7 +110,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
               </S.CloseButton>
             </View>
           </S.ModalHeader>
-          
+
           <S.Container>
             <FlashList
               data={logs}
@@ -171,7 +179,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                 <S.CodeBlock>
                   <S.CodeText>{selectedLog.responseBody ? JSON.stringify(selectedLog.responseBody, null, 2) : t.noBody}</S.CodeText>
                 </S.CodeBlock>
-                
+
                 <S.SectionTitle variant="label" size="xs" color={theme.colors.on_surface_variant} weight="bold" />
               </>
             )}

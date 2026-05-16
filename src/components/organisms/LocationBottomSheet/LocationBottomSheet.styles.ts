@@ -16,17 +16,12 @@ export const Container = styled.View`
 export const ScrollArea = styled.ScrollView.attrs({
   contentContainerStyle: {
     paddingHorizontal: scale(24),
-    paddingBottom: verticalScale(100),
+    paddingBottom: verticalScale(24),
   },
 })`
   flex-grow: 0;
 `;
 
-export const Divider = styled.View`
-  height: 1px;
-  background-color: ${({ theme }) => theme.colors.surface_container_highest};
-  margin-vertical: ${verticalScale(4)}px;
-`;
 
 export const Section = styled.View`
   padding-vertical: ${verticalScale(16)}px;
@@ -49,7 +44,7 @@ export const SectionHeader = styled.Text`
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: ${({ theme }) => theme.colors.outline};
+  color: ${({ theme }) => theme.colors.on_surface_variant};
   margin-bottom: ${verticalScale(12)}px;
 `;
 

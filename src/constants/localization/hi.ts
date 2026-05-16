@@ -668,4 +668,13 @@ export const hi: Translations = {
     noBody: 'कोई बॉडी नहीं',
     noHeaders: 'कोई हेडर्स नहीं',
   },
+  chatLocation: {
+    headerTitle: 'स्थान भेजें',
+    shareLiveLocation: 'लाइव लोकेशन साझा करें',
+    shareLiveLocationDesc: 'रीयल-टाइम में अपनी लोकेशन अपडेट करें',
+    sendCurrentLocation: 'अपनी वर्तमान लोकेशन भेजें',
+    sendCurrentLocationDesc: '15 मीटर तक सटीक',
+    nearbyPlaces: 'आस-पास के स्थान',
+    searchPlaceholder: 'स्थान खोजें...',
+  },
 };
