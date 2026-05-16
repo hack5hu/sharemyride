@@ -5,10 +5,10 @@ export type RootStackParamList = {
   };
   ProfileSetup: undefined;
   ProfileHub: undefined;
-  Dummy: { 
-    title: string; 
-    activeTab?: string; 
-    showBottomNav?: boolean; 
+  Dummy: {
+    title: string;
+    activeTab?: string;
+    showBottomNav?: boolean;
     showBack?: boolean;
     contentKey?: 'about' | 'help' | 'terms';
   };
@@ -19,18 +19,26 @@ export type RootStackParamList = {
   VehicleDetails: { vehicleId?: string } | undefined;
   ChatList: undefined;
   ChatDetails: {
-    chatId: string;
+    userId: string;
+    rideId?: string;
     name: string;
+    avatarUri?: string;
+    rating?: number;
+    rideInfo?: {
+      pickup: string;
+      dropoff: string;
+      date: string;
+      time: string;
+    };
     selectedLocation?: any;
-    isLive?: boolean;
-    duration?: string | null;
-    timestamp?: number;
   };
-  LocationSelection: {
-    updatedLocation?: { id: string; name: string; address: string };
-    type?: 'start' | 'destination';
-    flow?: 'publish' | 'book';
-  } | undefined;
+  LocationSelection:
+    | {
+        updatedLocation?: { id: string; name: string; address: string };
+        type?: 'start' | 'destination';
+        flow?: 'publish' | 'book';
+      }
+    | undefined;
   SelectLocation: undefined;
   MapPicker: {
     type: 'start' | 'destination' | 'middleStop';
@@ -38,10 +46,12 @@ export type RootStackParamList = {
     module?: 'publish' | 'search';
   };
   RouteSelection: undefined;
-  MiddleStops: {
-    updatedLocation?: { id: string; name: string; address: string };
-    type?: string;
-  } | undefined;
+  MiddleStops:
+    | {
+        updatedLocation?: { id: string; name: string; address: string };
+        type?: string;
+      }
+    | undefined;
   MiddleStopMap: undefined;
   DateSelection: undefined;
   TimeSelection: undefined;
@@ -66,9 +76,9 @@ export type RootStackParamList = {
   BookRideInfo: undefined;
   LocalRideResults: undefined;
   AvailableRides: undefined;
-  RideInformation: { 
-    rideId: string; 
-    sourceStopId?: number; 
+  RideInformation: {
+    rideId: string;
+    sourceStopId?: number;
     destinationStopId?: number;
   };
   RideRouteMap: {
@@ -87,9 +97,9 @@ export type RootStackParamList = {
       address?: string;
     };
   };
-  BookSeatSelection: { 
+  BookSeatSelection: {
     rideId: string;
-    sourceStopId?: number; 
+    sourceStopId?: number;
     destinationStopId?: number;
     seats?: any[];
     passengers?: any[];

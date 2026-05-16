@@ -11,6 +11,8 @@ export interface MessageItemProps {
   destination: string;
   isOnline?: boolean;
   isVerified?: boolean;
+  isLastMessageFromMe?: boolean;
+  lastMessageStatus?: string;
   onPress?: () => void;
   style?: ViewStyle;
 }

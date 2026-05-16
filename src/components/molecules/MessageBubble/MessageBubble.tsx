@@ -9,7 +9,7 @@ import {
 import { MessageBubbleProps } from './types.d';
 import { MessageStatus } from '@/components/atoms/MessageStatus';
 
-export const MessageBubble: React.FC<MessageBubbleProps> = ({
+export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(({
   content,
   timestamp,
   isSender,
@@ -30,4 +30,4 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
       </BubbleWrapper>
     </Container>
   );
-};
+});

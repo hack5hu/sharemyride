@@ -24,13 +24,15 @@ export const Avatar: React.FC<AvatarProps> = ({
   const theme = useTheme();
 
   const renderContent = () => {
-    if (source) {
+    const hasSource = source && (typeof source === 'number' || (source as any).uri);
+    
+    if (hasSource) {
       return <AvatarImage source={source} size={size} />;
     }
     
     return (
       <PlaceholderContainer size={size}>
-        <Typography variant="title" size="lg" weight="bold">
+        <Typography variant="title" size="lg" weight="bold" color={theme.colors.on_primary_container}>
           {placeholder?.charAt(0).toUpperCase() || 'U'}
         </Typography>
       </PlaceholderContainer>

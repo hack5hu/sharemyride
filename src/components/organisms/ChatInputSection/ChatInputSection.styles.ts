@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { verticalScale, moderateScale, scale } from '@/styles';
 
 export const Container = styled.View`
@@ -14,8 +15,8 @@ export const InputWrapper = styled.View`
   flex-direction: row;
   align-items: center;
   padding-horizontal: ${scale(16)}px;
-  padding-top: ${verticalScale(16)}px;
-  padding-bottom: ${verticalScale(32)}px;
+  padding-top: ${verticalScale(8)}px;
+  padding-bottom: ${verticalScale(4)}px;
   gap: ${scale(12)}px;
 `;
 
@@ -31,32 +32,34 @@ export const LocationButton = styled.TouchableOpacity`
 export const InputFieldContainer = styled.View`
   flex: 1;
   position: relative;
+  justify-content: center;
 `;
 
 export const StyledInput = styled.TextInput`
   background-color: ${({ theme }) => theme.colors.surface_container_high};
   border-radius: ${moderateScale(12)}px;
   padding-horizontal: ${scale(20)}px;
-  padding-vertical: ${verticalScale(12)}px;
+  padding-vertical: ${verticalScale(10)}px;
   padding-right: ${scale(52)}px;
   font-family: 'Plus Jakarta Sans';
   font-size: ${moderateScale(14)}px;
   color: ${({ theme }) => theme.colors.on_surface};
 `;
 
-export const SendButton = styled.TouchableOpacity`
+export const SendButton = styled.TouchableOpacity<{ disabled?: boolean }>`
   position: absolute;
-  right: ${scale(8)}px;
-  top: ${verticalScale(6)}px;
+  right: ${scale(0)}px;
+  top: 45%;
+  margin-top: -${moderateScale(20)}px;
   width: ${moderateScale(36)}px;
   height: ${moderateScale(36)}px;
   border-radius: ${moderateScale(8)}px;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme, disabled }) => disabled ? theme.colors.outline_variant : theme.colors.primary};
   justify-content: center;
   align-items: center;
-  shadow-color: ${({ theme }) => theme.colors.primary};
+  shadow-color: ${({ theme, disabled }) => disabled ? 'transparent' : theme.colors.primary};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.2;
   shadow-radius: 8px;
-  elevation: 4;
+  elevation: ${({ disabled }) => disabled ? 0 : 4};
 `;

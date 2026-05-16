@@ -225,6 +225,10 @@ export const en: Translations = {
     rideLabel: 'Ride',
     yesterday: 'Yesterday',
     activeDrivers: 'Active Drivers',
+    safetmsg: 'NEVER SHARE YOUR PHONE NUMBER OR PERSONAL DETAILS IN CHAT. KEEP CONVERSATIONS WITHIN THE APP FOR YOUR SAFETY.',
+    emptyTitle: 'No conversations yet',
+    emptyDescription: 'Start a conversation with your co-riders to coordinate your journey.',
+    locationShared: '📍 Location shared',
   },
   rideDetails: {
     headerTitle: 'Ride Details',

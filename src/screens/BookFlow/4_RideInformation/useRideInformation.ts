@@ -57,8 +57,16 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
 
   const handleChat = useCallback(() => {
     (navigation.navigate as any)('ChatDetails', {
-      chatId: ride?.id ?? 'driver',
-      name: ride?.driver.name ?? 'Driver',
+      userId: ride?.driver?.id,
+      rideId: rideId,
+      name: ride?.driver?.name,
+      avatarUri: ride?.driver?.avatar,
+      rideInfo: {
+        pickup: ride?.timeline?.[0]?.location || '',
+        dropoff: ride?.timeline?.[ride?.timeline.length - 1]?.location || '',
+        date: ride?.departureDate || '',
+        time: ride?.departureTime || '',
+      },
     });
   }, [navigation, ride]);
 

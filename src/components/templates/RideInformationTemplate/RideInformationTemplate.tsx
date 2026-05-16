@@ -55,7 +55,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = R
   const durationLabel = durationHours > 0
     ? `${durationHours}h ${durationMins}m`
     : `${durationMins}m`;
-  const isArchived = (ride.status === 'COMPLETED' || ride.status === 'CANCELLED' || ride.status === 'REJECTED') || ride.userRole === 'VIEWER'
+  const isArchived = (ride.status === 'COMPLETED' || ride.status === 'CANCELLED' || ride.status === 'REJECTED')
 
   return (
     <S.Root>

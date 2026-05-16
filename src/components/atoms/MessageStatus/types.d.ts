@@ -1,4 +1,4 @@
-export type MessageStatusVariant = 'sent' | 'delivered' | 'read' | 'pending';
+export type MessageStatusVariant = 'sent' | 'delivered' | 'read' | 'pending' | 'failed';
 
 export interface MessageStatusProps {
   status: MessageStatusVariant;

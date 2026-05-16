@@ -8,6 +8,7 @@ import { RootNavigator } from '@/navigation';
 import { useAuthStore } from '@/store';
 import { useSettingsStore } from '@/store/settings';
 import { NetworkLoggerModal } from '@/components/organisms/NetworkLoggerModal';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 const App = () => {
   const initialize = useAuthStore(state => state.initialize);
@@ -21,7 +22,8 @@ const App = () => {
 
   return (
     <SafeAreaProvider>
-      <ThemeProvider theme={activeTheme}>
+      <KeyboardProvider>
+        <ThemeProvider theme={activeTheme}>
         <StatusBar 
           barStyle={themeMode === 'dark' ? 'light-content' : 'dark-content'} 
           backgroundColor="transparent" 
@@ -31,7 +33,8 @@ const App = () => {
           <RootNavigator />
         </NavigationContainer>
         <NetworkLoggerModal />
-      </ThemeProvider>
+        </ThemeProvider>
+      </KeyboardProvider>
     </SafeAreaProvider>
   );
 };

@@ -27,7 +27,6 @@ export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = ({
   pickupLocation,
   dropoffTime,
   dropoffLocation,
-  onMorePress,
   onPress,
   statusTag
 }) => {

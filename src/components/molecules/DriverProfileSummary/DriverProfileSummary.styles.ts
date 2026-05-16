@@ -17,12 +17,6 @@ export const AvatarWrapper = styled.View`
   position: relative;
 `;
 
-export const Avatar = styled.Image`
-  width: ${moderateScale(48)}px;
-  height: ${moderateScale(48)}px;
-  border-radius: ${moderateScale(24)}px;
-`;
-
 export const InfoSection = styled.View`
   gap: ${verticalScale(2)}px;
 `;

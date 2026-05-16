@@ -17,6 +17,8 @@ export const MessageStatus: React.FC<MessageStatusProps> = ({ status, color }) =
         return 'done-all';
       case 'pending':
         return 'schedule';
+      case 'failed':
+        return 'error-outline';
       default:
         return 'done';
     }
@@ -24,7 +26,8 @@ export const MessageStatus: React.FC<MessageStatusProps> = ({ status, color }) =
 
   const getIconColor = () => {
     if (color) return color;
-    if (status === 'read') return theme.colors.primary;
+    if (status === 'read') return '#34B7F1'; // Classic blue for read receipts
+    if (status === 'failed') return theme.colors.error;
     return theme.colors.on_surface_variant;
   };
 

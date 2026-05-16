@@ -4,5 +4,7 @@ export interface ChatInputSectionProps {
   onSendPress: () => void;
   onLocationPress: () => void;
   placeholder?: string;
-  safetyMessage: string;
+  safetyMessage?: string;
+  onSafetyClose?: () => void;
+  isSendDisabled?: boolean;
 }

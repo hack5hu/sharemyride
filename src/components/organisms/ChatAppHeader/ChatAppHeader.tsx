@@ -34,7 +34,8 @@ export const ChatAppHeader: React.FC<ChatAppHeaderProps> = ({
           <IconButton icon="arrow-back" onPress={onBackPress} variant="surface" />
         )}
         <Avatar 
-          source={{ uri: avatarUri }} 
+          source={avatarUri ? { uri: avatarUri } : undefined} 
+          placeholder={name}
           size="sm"
           isVerified={isVerified}
           border={false}

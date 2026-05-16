@@ -92,5 +92,21 @@ export const useMyRidesActions = (fetchInitialRides: () => void) => {
     ]);
   }, [clearDrafts, t]);
 
-  return { onRidePress, onRemoveDraft, onCancelRide, onClearDrafts, drafts };
+  const onChatPress = useCallback((item: any) => {
+    navigation.navigate('ChatDetails', {
+      userId: item.driverId || item.id,
+      rideId: item.rideId || item.id,
+      name: item.driverName || item.title,
+      avatarUri: item.avatarUri,
+      rating: item.rating,
+      rideInfo: {
+        pickup: item.pickupLocation,
+        dropoff: item.dropoffLocation,
+        date: item.subtitle,
+        time: item.pickupTime,
+      }
+    });
+  }, [navigation]);
+
+  return { onRidePress, onRemoveDraft, onCancelRide, onClearDrafts, onChatPress, drafts };
 };

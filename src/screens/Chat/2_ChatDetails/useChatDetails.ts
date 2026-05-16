@@ -1,16 +1,21 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/navigation/types.d';
 import { useTranslation } from '@/hooks/useTranslation';
-import { MessageStatusVariant } from '@/components/atoms/MessageStatus';
+import { useChatStore } from '@/store/useChatStore';
+import { useAuthStore } from '@/store/useAuthStore';
+import { chatService } from '@/serviceManager/chatService';
+import rideService from '@/serviceManager/rideService';
+import { useChatSocket } from '@/hooks/useChatSocket';
+import { ChatMessage, MessageStatus } from '@/types/chat';
 
 export interface Message {
   id: string;
   text?: string;
   timestamp: string;
   isSender: boolean;
-  status?: MessageStatusVariant;
+  status?: 'sent' | 'delivered' | 'read' | 'pending' | 'failed';
   type?: 'text' | 'map';
   locationData?: {
     latitude: number;
@@ -26,87 +31,180 @@ export const useChatDetails = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const route = useRoute<any>();
   const { t } = useTranslation();
+  const { user } = useAuthStore();
+  
+  const receiverId = route.params?.userId;
+  const myUserId = user?.userId;
+  const conversationId = (myUserId && receiverId) 
+    ? (myUserId < receiverId ? `${myUserId}_${receiverId}` : `${receiverId}_${myUserId}`)
+    : '';
+
+  const { messages: storeMessages, updateMessageStatus, setActiveConversation } = useChatStore();
   const [message, setMessage] = useState('');
   const [isReportModalVisible, setIsReportModalVisible] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      text: "Hi Alex! I'm already at the Downtown pickup point. Where exactly are you parked?",
-      timestamp: '10:12 AM',
-      isSender: false,
-    },
-    {
-      id: '2',
-      text: "Hey! I'm just turning into the main entrance now. Look for the white sedan with plate ABC-123.",
-      timestamp: '10:14 AM',
-      isSender: true,
-      status: 'read',
-    },
-    {
-      id: '3',
-      text: "Got it! I see you now. Let me know when you reach the gate.",
-      timestamp: '10:15 AM',
-      isSender: false,
-    },
-    {
-      id: '4',
-      timestamp: '10:16 AM',
-      isSender: true,
-      status: 'read',
-      type: 'map',
-      locationData: {
-        latitude: 12.9716,
-        longitude: 77.5946,
-        locationName: 'LAL DARWAZA',
-        address: 'Bangalore, Karnataka',
-        arrivingIn: 'Arriving in 2 mins',
-      }
-    }
-  ]);
+  const [isSafetyVisible, setIsSafetyVisible] = useState(true);
+  const [dynamicRideInfo, setDynamicRideInfo] = useState<any>(route.params?.rideInfo);
 
+  // Connect socket and handle lifecycle
+  useChatSocket(true);
+
+  // Initial load: Fetch history, mark as read, and set active conversation
   useEffect(() => {
-    if (route.params?.selectedLocation) {
-      const loc = route.params.selectedLocation;
-      const newMessage: Message = {
-        id: Date.now().toString(),
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        isSender: true,
-        status: 'sent',
-        type: 'map',
-        locationData: {
-          latitude: loc.latitude,
-          longitude: loc.longitude,
-          locationName: loc.name,
-          address: loc.address,
+    if (myUserId && receiverId && conversationId) {
+      setActiveConversation(conversationId);
+      chatService.fetchHistory(myUserId, receiverId);
+      chatService.markAsRead(myUserId, receiverId);
+    }
+
+    return () => setActiveConversation(null);
+  }, [myUserId, receiverId, conversationId, setActiveConversation]);
+
+  // Fetch ride details if rideId exists
+  useEffect(() => {
+    const fetchRideDetails = async () => {
+      const rideId = route.params?.rideId;
+      if (rideId && !route.params?.rideInfo) {
+        try {
+          const ride = await rideService.getRideDetail(rideId);
+          if (ride) {
+            setDynamicRideInfo({
+              pickup: ride.sourceStopName || ride.timeline?.[0]?.name || ride.startLocation?.name || 'Unknown Location',
+              dropoff: ride.destinationStopName || ride.timeline?.[ride.timeline.length - 1]?.name || ride.destinationLocation?.name || 'Unknown Location',
+              date: ride.departureDate || (ride.startTime ? new Date(ride.startTime).toLocaleDateString() : 'Today'),
+              time: ride.departureTime || (ride.startTime ? new Date(ride.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--'),
+            });
+          }
+        } catch (error) {
+          console.error('⚠️ [Chat Details] Failed to fetch ride details:', error);
         }
+      }
+    };
+    
+    fetchRideDetails();
+  }, [myUserId, receiverId, route.params?.rideId, route.params?.rideInfo]);
+
+  // Map store messages to UI interface (Reversed for Inverted FlashList)
+  const messages = useMemo(() => {
+    const rawMessages = storeMessages[conversationId] || [];
+    return [...rawMessages].reverse().map((m: ChatMessage): Message => {
+      const isLocation = m.type === 'location' || m.content.startsWith('[LOCATION_DATA]:');
+      let locationData = m.metadata?.location;
+
+      // If it's a location message but metadata is missing, parse it from content
+      if (!locationData && m.content.startsWith('[LOCATION_DATA]:')) {
+        try {
+          const raw = m.content.replace('[LOCATION_DATA]:', '');
+          const [coords, name, address] = raw.split('|');
+          const [lat, long] = coords.split(',');
+          locationData = {
+            latitude: parseFloat(lat),
+            longitude: parseFloat(long),
+            locationName: name,
+            address: address,
+          };
+        } catch (e) {
+          console.error('Failed to parse location from string:', e);
+        }
+      }
+
+      return {
+        id: m.messageId,
+        text: m.content.startsWith('[LOCATION_DATA]:') ? `Shared Location: ${locationData?.locationName || ''}` : m.content,
+        timestamp: new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        isSender: m.senderId === myUserId,
+        status: (m.status || 'SENT').toLowerCase() as any,
+        type: isLocation ? 'map' : 'text',
+        locationData,
       };
+    });
+  }, [storeMessages, conversationId, myUserId]);
+
+  // Handle incoming location from MapPicker
+  useEffect(() => {
+    if (route.params?.selectedLocation && myUserId && receiverId && receiverId !== 'Unknown') {
+      const loc = route.params.selectedLocation;
       
-      setMessages(prev => [...prev, newMessage]);
+      const locationString = `[LOCATION_DATA]:${loc.latitude},${loc.longitude}|${loc.name}|${loc.address || ''}`;
       
-      // Clear params to avoid re-triggering
+      chatService.sendMessage({
+        senderId: myUserId,
+        receiverId,
+        content: locationString,
+        type: 'location',
+        metadata: {
+          userName: route.params?.name,
+          userAvatar: route.params?.avatarUri,
+          userRating: route.params?.rating,
+          rideId: route.params?.rideId,
+          rideInfo: dynamicRideInfo,
+          location: {
+            latitude: loc.latitude,
+            longitude: loc.longitude,
+            locationName: loc.name,
+            address: loc.address,
+          }
+        }
+      });
+      
       navigation.setParams({ selectedLocation: undefined } as any);
     }
-  }, [route.params?.selectedLocation, navigation]);
+  }, [route.params?.selectedLocation, navigation, myUserId, receiverId, dynamicRideInfo]);
+
+  const handleSafetyClose = useCallback(() => {
+    setIsSafetyVisible(false);
+  }, []);
 
   const handleSend = useCallback(() => {
-    if (!message.trim()) return;
+    if (!message.trim() || !myUserId || !receiverId || receiverId === 'Unknown') return;
     
-    const newMessage: Message = {
-      id: Date.now().toString(),
-      text: message,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      isSender: true,
-      status: 'sent',
-      type: 'text'
-    };
+    chatService.sendMessage({
+      senderId: myUserId,
+      receiverId,
+      content: message,
+      type: 'text',
+      metadata: {
+        userName: route.params?.name,
+        userAvatar: route.params?.avatarUri,
+        userRating: route.params?.rating,
+        rideId: route.params?.rideId,
+        rideInfo: dynamicRideInfo,
+      }
+    });
 
-    setMessages(prev => [...prev, newMessage]);
     setMessage('');
-  }, [message]);
+  }, [message, myUserId, receiverId, route.params, dynamicRideInfo]);
+
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  // ... previous effects ...
+
+  const handleLoadMore = useCallback(async () => {
+    if (isLoadingMore || !myUserId || !receiverId) return;
+
+    const rawMessages = storeMessages[conversationId] || [];
+    if (rawMessages.length < 20) return; // Don't try to load more if we have very few messages
+
+    setIsLoadingMore(true);
+    try {
+      const oldestTimestamp = rawMessages[0]?.timestamp;
+      // In a real app, you'd pass this timestamp to fetch older messages
+      // For now, we'll call fetchHistory which should ideally handle pagination
+      await chatService.fetchHistory(myUserId, receiverId);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  }, [isLoadingMore, myUserId, receiverId, conversationId, storeMessages]);
 
   const handleLocationShare = useCallback(() => {
-    navigation.navigate('SelectLocation');
-  }, [navigation]);
+    navigation.navigate('SelectLocation' as any, {
+      userId: receiverId,
+      name: route.params?.name,
+      avatarUri: route.params?.avatarUri,
+      rideId: route.params?.rideId,
+      rideInfo: dynamicRideInfo,
+      rating: route.params?.rating,
+    });
+  }, [navigation, receiverId, route.params, dynamicRideInfo]);
 
   const handleMapPress = useCallback((location: any) => {
     navigation.navigate('RideRouteMap', {
@@ -135,5 +233,9 @@ export const useChatDetails = () => {
     isReportModalVisible,
     setIsReportModalVisible,
     handleReportSubmit,
+    dynamicRideInfo,
+    isSafetyVisible,
+    handleSafetyClose,
+    handleLoadMore,
   };
 };

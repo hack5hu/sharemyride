@@ -215,6 +215,7 @@ export const hi: Translations = {
     rideLabel: 'सवारी',
     yesterday: 'कल',
     activeDrivers: 'सक्रिय चालक',
+    locationShared: '📍 स्थान साझा किया गया',
   },
   rideDetails: {
     headerTitle: 'सवारी का विवरण',

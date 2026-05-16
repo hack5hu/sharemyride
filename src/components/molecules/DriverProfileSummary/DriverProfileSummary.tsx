@@ -6,13 +6,13 @@ import {
   Container, 
   LeftSection, 
   AvatarWrapper, 
-  Avatar, 
   InfoSection, 
   Name, 
   RatingRow, 
   SubInfo, 
   PriceText 
 } from './DriverProfileSummary.styles';
+import { Avatar } from '@/components/atoms/Avatar';
 import { DriverProfileSummaryProps } from './types.d';
 import { moderateScale } from '@/styles';
 import styled from 'styled-components/native';
@@ -43,16 +43,15 @@ export const DriverProfileSummary: React.FC<DriverProfileSummaryProps> = ({
   return (
     <Container>
       <LeftSection>
-        {avatarUri && (
-          <AvatarWrapper>
-            <Avatar source={{ uri: avatarUri }} />
-            {isVerified && (
-              <BadgeWrapper>
-                <VerifiedBadge size={16} />
-              </BadgeWrapper>
-            )}
-          </AvatarWrapper>
-        )}
+        <AvatarWrapper>
+          <Avatar 
+            source={avatarUri ? { uri: avatarUri } : undefined} 
+            placeholder={name || vehicleInfo}
+            size="md"
+            isVerified={isVerified}
+            border={false}
+          />
+        </AvatarWrapper>
         
         <InfoSection>
           {name ? (

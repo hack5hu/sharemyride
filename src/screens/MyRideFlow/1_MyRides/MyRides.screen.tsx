@@ -24,6 +24,7 @@ export const MyRidesScreen: React.FC = memo(() => {
     onAcceptRide,
     onRejectRide,
     onRidePress,
+    onChatPress,
     onRemoveDraft,
     onCancelRide,
     onClearDrafts,
@@ -43,12 +44,13 @@ export const MyRidesScreen: React.FC = memo(() => {
       item={item}
       activeTab={activeTab}
       onRidePress={onRidePress}
+      onChatPress={onChatPress}
       onCancelRide={onCancelRide}
       onRemoveDraft={onRemoveDraft}
       onAcceptRide={onAcceptRide}
       onRejectRide={onRejectRide}
     />
-  ), [activeTab, onRidePress, onCancelRide, onRemoveDraft, onAcceptRide, onRejectRide]);
+  ), [activeTab, onRidePress, onChatPress, onCancelRide, onRemoveDraft, onAcceptRide, onRejectRide]);
 
   const listHeader = useMemo(() => (
     <RideListHeader 

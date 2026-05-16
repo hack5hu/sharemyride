@@ -12,6 +12,7 @@ export interface UpcomingRideCardProps {
   dropoffLocation: string;
   statusTag?: string;
   onMorePress: () => void;
+  onChatPress?: () => void;
   onPress?: () => void;
 }
 

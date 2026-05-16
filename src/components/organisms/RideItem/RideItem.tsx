@@ -32,6 +32,7 @@ interface RideItemProps {
   onRidePress: (params: any) => void;
   onCancelRide: (id: string | number) => void;
   onRemoveDraft: (id: string) => void;
+  onChatPress?: (item: any) => void;
   onAcceptRide?: (id: string) => void;
   onRejectRide?: (id: string) => void;
 }
@@ -42,6 +43,7 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
   onRidePress,
   onCancelRide,
   onRemoveDraft,
+  onChatPress,
   onAcceptRide,
   onRejectRide,
 }) => {
@@ -80,6 +82,7 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
         statusTag={item.statusTag}
         onPress={() => onRidePress(item)}
         onMorePress={() => onCancelRide(item.id)}
+        onChatPress={() => onChatPress?.(item)}
       />
     );
   }

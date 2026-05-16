@@ -27,8 +27,12 @@ export const ChatListScreen: React.FC<ChatListScreenProps> = ({ navigation }) =>
           onMessagePress={(id) => {
             const chat = (filteredMessages as any[]).find(m => m.id === id);
             navigation.navigate('ChatDetails', {
-              chatId: id,
-              name: chat?.name || 'Marcus'
+              userId: id,
+              rideId: chat?.rideId,
+              name: chat?.name || 'User',
+              avatarUri: chat?.avatarSource?.uri,
+              rating: chat?.rating,
+              rideInfo: chat?.rideInfo,
             });
           }}
         />

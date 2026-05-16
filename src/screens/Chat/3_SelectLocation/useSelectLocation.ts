@@ -125,16 +125,15 @@ export const useSelectLocation = () => {
       address: selectedLocation?.address || '',
       id: 'current-loc'
     }) : selectedLocation;
+    
+    const route = navigation.getState().routes.find(r => r.name === 'SelectLocation');
+    const params = route?.params as any;
 
     if (locationToConfirm && locationToConfirm.latitude != null && locationToConfirm.longitude != null) {
-      console.log('Sending location message:', {
-        location: locationToConfirm,
-      });
       navigation.navigate('ChatDetails', { 
+        ...params,
         selectedLocation: locationToConfirm,
         timestamp: Date.now(),
-        chatId: '', 
-        name: '' 
       });
     }
   }, [navigation, selectedLocation, currentUserLocation, region.latitude, region.longitude]);

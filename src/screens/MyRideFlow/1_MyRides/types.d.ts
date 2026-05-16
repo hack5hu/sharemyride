@@ -30,6 +30,7 @@ export interface MyRidesHookData {
   onRemoveDraft: (id: string) => void;
   onCancelRide: (id: string | number) => void;
   onClearDrafts: () => void;
+  onChatPress: (item: any) => void;
   onRefresh: () => void;
   onLoadMore: () => void;
   hasMore: boolean;

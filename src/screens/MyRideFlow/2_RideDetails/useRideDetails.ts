@@ -134,9 +134,17 @@ export const useRideDetails = () => {
 
   const handleChat = useCallback(() => {
     const targetName = isDriver ? t('rideDetails.passengers') : (rideData?.driver?.name || t('rideDetails.driver'));
-    navigation.navigate('ChatDetails' as any, { 
-      chatId: rideId,
-      name: targetName 
+    (navigation.navigate as any)('ChatDetails', { 
+      userId:  rideData?.driver?.id,
+      rideId: rideId,
+      name: targetName,
+      avatarUri: isDriver ? undefined : rideData?.driver?.avatar,
+      rideInfo: {
+        pickup: rideData?.timeline?.[0]?.location || '',
+        dropoff: rideData?.timeline?.[rideData?.timeline.length - 1]?.location || '',
+        date: rideData?.departureDate || '',
+        time: rideData?.departureTime || '',
+      }
     });
   }, [navigation, rideId, rideData, isDriver, t]);
 

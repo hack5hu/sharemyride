@@ -33,6 +33,7 @@ export const useMyRides = (): MyRidesHookData => {
     onRemoveDraft,
     onCancelRide,
     onClearDrafts,
+    onChatPress,
     drafts
   } = useMyRidesActions(fetchInitialRides);
 
@@ -127,6 +128,7 @@ export const useMyRides = (): MyRidesHookData => {
     onRemoveDraft,
     onCancelRide,
     onClearDrafts,
+    onChatPress,
     onRefresh,
     onLoadMore,
     hasMore: TAB_TO_FILTER[activeTab] ? rides?.[TAB_TO_FILTER[activeTab]!]?.hasMore : false,
