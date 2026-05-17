@@ -64,8 +64,14 @@ export const useBookRideInfo = () => {
     navigation.navigate('BookDateSelection' as any);
   }, [navigation]);
 
+  useEffect(() => {
+    if (seatCount > 6) {
+      setSeatCount(6);
+    }
+  }, [seatCount, setSeatCount]);
+
   const incrementPeople = useCallback(
-    () => setSeatCount(Math.min(seatCount + 1, 8)),
+    () => setSeatCount(Math.min(seatCount + 1, 6)),
     [seatCount, setSeatCount]
   );
   

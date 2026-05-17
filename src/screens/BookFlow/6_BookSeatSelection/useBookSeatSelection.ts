@@ -4,10 +4,7 @@ import { useBookRideStore } from '@/store/useBookRideStore';
 import { FIVE_SEATER_ROWS, SEVEN_SEATER_ROWS } from '@/components/organisms/CarFloorPlan/seatConfig';
 import rideService from '@/serviceManager/rideService';
 
-const ALL_SEAT_IDS = [
-  '1A', '2A', '2B', '2C', // 5-seater
-  '3A', '3B' // 7-seater extension
-];
+
 
 export const useBookSeatSelection = (
   rideId: string, 
@@ -44,13 +41,25 @@ export const useBookSeatSelection = (
 
   const occupiedSeats = useMemo(() => {
     const occupied = new Set<string | number>();
+    const availableIds = new Set((passedSeats || []).map((s: any) => s.id));
+
+    // 1. Any standard seat ID that is not in the backend's returned seats list is unavailable/occupied
+    const allIds = vehicleType === '7' ? [2, 3, 4, 5, 6, 7] : [2, 3, 4, 5];
+    allIds.forEach(id => {
+      if (!availableIds.has(id)) {
+        occupied.add(id);
+      }
+    });
+
+    // 2. Any seat in the backend returned seats list that is explicitly marked as not available is occupied
     (passedSeats || []).forEach((s: any) => {
       if (!s.available) {
         occupied.add(s.id);
       }
     });
+
     return occupied;
-  }, [passedSeats]);
+  }, [passedSeats, vehicleType]);
 
   const departureDate = useMemo(() => {
     if (passedDate) return passedDate;

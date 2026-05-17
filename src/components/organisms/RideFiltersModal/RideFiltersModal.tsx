@@ -28,7 +28,6 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
   const [proximity, setProximity] = useState<'pickup' | 'dropoff'>(
     selectedFilters.includes('nearDropoff') ? 'dropoff' : 'pickup'
   );
-  const [seats, setSeats] = useState(2);
   const [preferences, setPreferences] = useState({
     noSmoking: selectedFilters.includes('noSmoking'),
     ladiesOnly: selectedFilters.includes('ladiesOnly'),
@@ -174,36 +173,7 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
                 </S.PreferenceLeft>
                 <Checkbox checked={preferences.luggageAllowed} onToggle={() => togglePreference('luggageAllowed')} />
               </S.PreferenceItem>
-              {/* <S.PreferenceItem onPress={() => togglePreference('manualApproval')}>
-                <S.PreferenceLeft>
-                  <Icon name="verified-user" size={moderateScale(20)} color={theme.colors.tertiary} />
-                  <Typography variant="label" size="md" weight="bold">Manual Approval</Typography>
-                </S.PreferenceLeft>
-                <Checkbox checked={preferences.manualApproval} onToggle={() => togglePreference('manualApproval')} />
-              </S.PreferenceItem> */}
             </S.Section>
-
-            {/* Seat Availability */}
-            <S.Section>
-              <S.SectionTitle>
-                <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
-                  {t.seatAvailabilityTitle.toUpperCase()}
-                </Typography>
-              </S.SectionTitle>
-              <S.CounterRow>
-                <Typography variant="label" size="md" weight="bold">{t.seatsRequiredLabel}</Typography>
-                <S.CounterControls>
-                  <TouchableOpacity onPress={() => setSeats(Math.max(1, seats - 1))}>
-                    <Icon name="remove-circle-outline" size={moderateScale(32)} color={theme.colors.on_surface_variant} />
-                  </TouchableOpacity>
-                  <Typography variant="title" size="md" weight="bold" color={theme.colors.primary}>{seats}</Typography>
-                  <TouchableOpacity onPress={() => setSeats(Math.min(8, seats + 1))}>
-                    <Icon name="add-circle" size={moderateScale(32)} color={theme.colors.primary} />
-                  </TouchableOpacity>
-                </S.CounterControls>
-              </S.CounterRow>
-            </S.Section>
-            <View style={{ height: verticalScale(120) }} />
           </S.ScrollBody>
 
           <S.Footer>

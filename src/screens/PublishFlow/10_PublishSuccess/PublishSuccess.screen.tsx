@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
@@ -24,11 +24,11 @@ import {
 
 export const PublishSuccessScreen: React.FC = () => {
   const theme = useTheme();
-  const navigation = useNavigation();
+  const { navigate } = useAppNavigation();
   const { publishSuccess: t } = useLocale();
 
   const handleGoToMyRides = () => {
-    navigation.navigate('ChatList' as any);
+    navigate('MyRides');
   };
 
   const handleShareResult = () => {
@@ -38,7 +38,6 @@ export const PublishSuccessScreen: React.FC = () => {
   return (
     <ScreenShell
       title={t.headerTitle}
-      onBack={() => navigation.navigate('Home' as any)}
     >
       <MainContent>
         <SuccessIconWrapper>

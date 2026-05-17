@@ -465,7 +465,7 @@ export const hi: Translations = {
     travelDateLabel: 'यात्रा की तारीख',
     datePlaceholder: 'आज',
     peopleCountLabel: 'यात्रियों की संख्या',
-    peopleCountSub: 'आपके साथ कितने लोग हैं?',
+    peopleCountSub: 'आपको मिलाकर',
     searchButton: 'सवारी खोजें',
     recentSearchesTitle: 'हाल की खोजें',
     clearAll: 'सभी साफ करें',

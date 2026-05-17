@@ -1,8 +1,9 @@
 import React from 'react';
 import { format } from 'date-fns';
 import { useTheme } from 'styled-components/native';
-import { View, FlatList, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { FlashList } from '@shopify/flash-list';
 import { Typography } from '@/components/atoms/Typography';
 import { moderateScale, verticalScale, scale } from '@/styles';
 import { useBookRideStore } from '@/store/useBookRideStore';
@@ -12,6 +13,8 @@ import { RideFiltersModal } from '@/components/organisms/RideFiltersModal';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { EmptyState } from '@/components/molecules/EmptyState';
 import * as S from './AvailableRidesTemplate.styles';
+
+const SafeFlashList = FlashList as any;
 
 export interface AvailableRidesTemplateProps {
   rides: RideData[];
@@ -63,9 +66,10 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
   const { startLocation, destinationLocation, seatCount, travelDate } = useBookRideStore();
   return (
     <ScreenShell title={t.heroTitle} onBack>
-      <FlatList
+      <SafeFlashList
         data={rides}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item: any) => item.id}
+        estimatedItemSize={200}
         showsVerticalScrollIndicator={false}
         onEndReached={onLoadMore}
         onEndReachedThreshold={0.5}
@@ -73,7 +77,7 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
           paddingHorizontal: scale(24),
           paddingBottom: verticalScale(100),
         }}
-        renderItem={({ item }) => (
+        renderItem={({ item }: any) => (
           <RideCard ride={item} onPress={onRideSelect} />
         )}
         ListHeaderComponent={

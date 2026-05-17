@@ -480,7 +480,7 @@ export const en: Translations = {
     travelDateLabel: 'Travel Date',
     datePlaceholder: 'Today',
     peopleCountLabel: 'Number of people',
-    peopleCountSub: 'How many people are with you?',
+    peopleCountSub: 'Including you',
     searchButton: 'Search Rides',
     recentSearchesTitle: 'Recent Searches',
     clearAll: 'Clear All',

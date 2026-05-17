@@ -18,7 +18,9 @@
 6. ✅ **Use `useLocale()`** for every string — zero hardcoded text.
 7. ✅ **Use `scale()`, `verticalScale()`, `moderateScale()`, `responsiveFont()`** for every dimension.
 8. ✅ **No inline styles** — styled-components only.
-8. ✅ **No `any` types** — TypeScript must be strict.
+9. ✅ **No `any` types** — TypeScript must be strict.
+10. ✅ **Define and use enums** for status/type constants across the codebase to ensure robust comparisons.
+11. ✅ **Use useAppNavigation** custom hook for screen transitions to keep typing clean.
 
 > ⛔ **If any of the above are skipped, the output is INVALID and must be redone from scratch.**
 > The user should NOT have to ask for compliance — compliance is the default.
@@ -194,6 +196,8 @@ AI must use alias imports to avoid deep relative paths (`../../`).
 * first check the storybook MCP server to see if the component already exists, if not then create it. **very important** (MANDATORY) *RULES TO FOLLOW*
 * never create .stories.tsx file for any other folder outside the components folder. this is very important. **very important** (MANDATORY) *RULES TO FOLLOW*
 * create template for new screens, and save them in @/components/templates folder. **very important** (MANDATORY) *RULES TO FOLLOW*
+* always make and use enums for status/type constants across the codebase to ensure robust comparisons. **very important** (MANDATORY) *RULES TO FOLLOW*
+* always use the custom navigation hook (useAppNavigation) for screen transitions instead of raw hook to ensure clean types without 'as any' casts. **very important** (MANDATORY) *RULES TO FOLLOW*
 
 ---
 
@@ -211,5 +215,7 @@ AI must use alias imports to avoid deep relative paths (`../../`).
 * **ALWAYS check Storybook MCP before creating any component.**
 * **ALWAYS follow the 200-line rule.** Refactor immediately if exceeded.
 * **ALWAYS use `React.memo`, `useCallback`, `useMemo`** for performance.
+* **ALWAYS define and use enums** for status/type constants across the codebase to ensure robust comparisons.
+* **ALWAYS use the custom navigation hook (useAppNavigation)** for screen transitions instead of raw hooks or raw navigation calls to avoid 'as any' casts.
 
 > 💬 If the AI ever violates any rule above, the correct response is to **redo the work from scratch** following the rules — not patch it.

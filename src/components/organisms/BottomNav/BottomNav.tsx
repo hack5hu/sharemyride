@@ -35,6 +35,8 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab }) => {
           size="sm" 
           weight="bold" 
           color={isActive ? theme.colors.primary : theme.colors.on_surface_variant}
+          numberOfLines={1}
+          align="center"
         >
           {t(`profileHub.${labelKey}`)}
         </Typography>

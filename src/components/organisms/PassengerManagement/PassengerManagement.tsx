@@ -57,7 +57,7 @@ export const PassengerManagement: React.FC<PassengerManagementProps> = ({
               <IconButton 
                 icon="person-remove" 
                 variant="surface"
-                onPress={() => onCancelPassenger?.(p.id)} 
+                onPress={() => onCancelPassenger?.(p.bookingId || p.id)} 
                 style={{ borderColor: theme.colors.error }}
               />
             )}

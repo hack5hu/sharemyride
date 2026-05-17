@@ -122,17 +122,17 @@ export const ContinueButton = styled.TouchableOpacity`
   width: 100%;
 `;
 
-export const ContinueGradient = styled(LinearGradient)`
+export const ContinueGradient = styled(LinearGradient)<{ disabled?: boolean }>`
   width: 100%;
   padding-vertical: ${verticalScale(16)}px;
   border-radius: ${moderateScale(12)}px;
   align-items: center;
   justify-content: center;
-  shadow-color: ${({ theme }) => theme.colors.primary};
+  shadow-color: ${({ theme, disabled }) => disabled ? 'transparent' : theme.colors.primary};
   shadow-offset: 0px 12px;
-  shadow-opacity: 0.3;
+  shadow-opacity: ${({ disabled }) => disabled ? 0 : 0.3};
   shadow-radius: 24px;
-  elevation: 8;
+  elevation: ${({ disabled }) => disabled ? 0 : 8};
   margin-bottom: ${verticalScale(12)}px;
 `;
 

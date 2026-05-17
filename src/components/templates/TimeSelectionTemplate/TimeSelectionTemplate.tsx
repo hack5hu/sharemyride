@@ -16,6 +16,7 @@ export interface TimeSelectionTemplateProps {
   onContinuePress: () => void;
   minHour?: number;
   minMinute?: number;
+  isContinueDisabled?: boolean;
 }
 
 export const TimeSelectionTemplate: React.FC<TimeSelectionTemplateProps> = ({
@@ -27,6 +28,7 @@ export const TimeSelectionTemplate: React.FC<TimeSelectionTemplateProps> = ({
   onContinuePress,
   minHour,
   minMinute,
+  isContinueDisabled = false,
 }) => {
   const theme = useTheme();
   const { timeSelection: t } = useLocale();
@@ -72,11 +74,18 @@ export const TimeSelectionTemplate: React.FC<TimeSelectionTemplateProps> = ({
           end={{ x: 0, y: 1 }}
           pointerEvents="none"
         />
-        <S.ContinueButton onPress={onContinuePress} activeOpacity={0.9}>
+        <S.ContinueButton 
+          onPress={onContinuePress} 
+          activeOpacity={isContinueDisabled ? 1 : 0.9}
+          disabled={isContinueDisabled}
+        >
           <S.ContinueGradient
-            colors={[theme.colors.primary, theme.colors.primary_container]}
+            colors={isContinueDisabled 
+              ? [theme.colors.outline_variant, theme.colors.outline_variant] 
+              : [theme.colors.primary, theme.colors.primary_container]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
+            disabled={isContinueDisabled}
           >
             <S.ContinueText>{t.continue}</S.ContinueText>
           </S.ContinueGradient>

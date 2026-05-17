@@ -28,7 +28,7 @@ export const NavItem = styled.TouchableOpacity<{ active?: boolean }>`
   justify-content: center;
   gap: ${verticalScale(4)}px;
   position: relative;
-  padding-horizontal: ${moderateScale(16)}px;
+  padding-horizontal: ${moderateScale(2)}px;
   padding-vertical: ${moderateScale(8)}px;
   border-radius: ${moderateScale(12)}px;
   background-color: ${({ active, theme }) => active ? theme.colors.primary_container + '33' : 'transparent'};

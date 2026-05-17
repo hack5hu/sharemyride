@@ -104,11 +104,21 @@ export const TimeDial: React.FC<TimeDialProps> = ({
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
       const offsetY = e.nativeEvent.contentOffset.y;
       const index = Math.round(offsetY / ITEM_HEIGHT);
-      const clamped = Math.max(0, Math.min(index, values.length - 1));
+      let clamped = Math.max(0, Math.min(index, values.length - 1));
+
+      // Enforce the disabledBefore boundary: if the user scrolls onto a disabled value,
+      // snap them back to the first available valid value.
+      if (disabledBefore !== undefined && values[clamped] < disabledBefore) {
+        const firstValidIndex = values.findIndex(v => v >= disabledBefore);
+        if (firstValidIndex !== -1) {
+          clamped = firstValidIndex;
+        }
+      }
+
       onValueChange(values[clamped]);
       scrollRef.current?.scrollTo({ y: clamped * ITEM_HEIGHT, animated: true });
     },
-    [values, onValueChange]
+    [values, onValueChange, disabledBefore]
   );
 
   const getColor = (dist: number, isDisabledItem: boolean) => {

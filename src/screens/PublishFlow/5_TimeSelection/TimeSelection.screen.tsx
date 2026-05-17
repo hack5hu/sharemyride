@@ -8,6 +8,7 @@ export const TimeSelectionScreen: React.FC = () => {
     selectedMinute,
     minHour,
     minMinute,
+    isContinueDisabled,
     handleHourChange,
     handleMinuteChange,
     handleBackPress,
@@ -24,6 +25,7 @@ export const TimeSelectionScreen: React.FC = () => {
       onContinuePress={handleContinuePress}
       minHour={minHour}
       minMinute={minMinute}
+      isContinueDisabled={isContinueDisabled}
     />
   );
 };

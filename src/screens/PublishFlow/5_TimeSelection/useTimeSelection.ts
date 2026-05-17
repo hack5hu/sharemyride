@@ -3,12 +3,14 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 
 const getNextRounded5 = (date: Date) => {
-  const minutes = date.getMinutes();
+  // Add 30-minute buffer to the current time
+  const bufferDate = new Date(date.getTime() + 30 * 60 * 1000);
+  const minutes = bufferDate.getMinutes();
   const rounded = Math.ceil(minutes / 5) * 5;
   if (rounded >= 60) {
-    return { h: date.getHours() + 1, m: 0 };
+    return { h: (bufferDate.getHours() + 1) % 24, m: 0 };
   }
-  return { h: date.getHours(), m: rounded };
+  return { h: bufferDate.getHours(), m: rounded };
 };
 
 export const useTimeSelection = () => {
@@ -101,11 +103,19 @@ export const useTimeSelection = () => {
     }
   }, [selectedHour, selectedMinute, navigation, setDepartureTime, params]);
 
+  const isContinueDisabled = useMemo(() => {
+    if (minHour === undefined || minMinute === undefined) return false;
+    if (selectedHour < minHour) return true;
+    if (selectedHour === minHour && selectedMinute < minMinute) return true;
+    return false;
+  }, [minHour, minMinute, selectedHour, selectedMinute]);
+
   return {
     selectedHour,
     selectedMinute,
     minHour,
     minMinute,
+    isContinueDisabled,
     handleHourChange,
     handleMinuteChange,
     handleBackPress,

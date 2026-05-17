@@ -81,7 +81,7 @@ export const useAvailableRides = () => {
         destLat: destinationLocation.latitude,
         destLon: destinationLocation.longitude,
         travelDate: travelDate,
-        requestedSeats: seatCount,
+        requestedSeats: useBookRideStore.getState().seatCount,
         radiusInMeters: 10000,
         page: nextPage,
         size: 10,
@@ -286,7 +286,7 @@ export const useAvailableRides = () => {
         destLat: destinationLocation.latitude,
         destLon: destinationLocation.longitude,
         travelDate: travelDate,
-        requestedSeats: seatCount,
+        requestedSeats: useBookRideStore.getState().seatCount,
         radiusInMeters: 10000,
         page: 0,
         size: 10,
@@ -298,9 +298,18 @@ export const useAvailableRides = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [startLocation, destinationLocation, travelDate, seatCount, setSearchResults]);
+  }, [startLocation, destinationLocation, travelDate, setSearchResults]);
   
   const handleApplyFilters = useCallback(async (filters: string[]) => {
+    // Check if the newly applied filters are identical to the current selection
+    const isSame = 
+      filters.length === selectedFilters.length && 
+      filters.every(f => selectedFilters.includes(f));
+    
+    if (isSame) {
+      return;
+    }
+
     setSelectedFilters(filters);
     if (!startLocation || !destinationLocation || !travelDate) return;
 
@@ -314,7 +323,7 @@ export const useAvailableRides = () => {
         destLat: destinationLocation.latitude,
         destLon: destinationLocation.longitude,
         travelDate: travelDate,
-        requestedSeats: seatCount,
+        requestedSeats: useBookRideStore.getState().seatCount,
         radiusInMeters: 10000,
         page: 0,
         size: 10,
@@ -328,7 +337,7 @@ export const useAvailableRides = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [startLocation, destinationLocation, travelDate, seatCount, setSearchResults, mapFiltersToPayload]);
+  }, [startLocation, destinationLocation, travelDate, setSearchResults, mapFiltersToPayload, selectedFilters]);
 
   const handleViewDetails = useCallback((rideId: string) => {
     console.log('Viewing details:', rideId);
