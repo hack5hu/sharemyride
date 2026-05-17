@@ -26,8 +26,8 @@ export const MessageStatus: React.FC<MessageStatusProps> = ({ status, color }) =
 
   const getIconColor = () => {
     if (color) return color;
-    if (status === 'read') return '#34B7F1'; // Classic blue for read receipts
-    if (status === 'failed') return theme.colors.error;
+    if (status?.toLowerCase() === 'read') return theme.colors.read_receipt; // Classic blue for read receipts
+    if (status?.toLowerCase() === 'failed') return theme.colors.error;
     return theme.colors.on_surface_variant;
   };
 

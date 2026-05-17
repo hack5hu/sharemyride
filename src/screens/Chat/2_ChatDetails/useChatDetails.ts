@@ -39,7 +39,12 @@ export const useChatDetails = () => {
     ? (myUserId < receiverId ? `${myUserId}_${receiverId}` : `${receiverId}_${myUserId}`)
     : '';
 
-  const { messages: storeMessages, updateMessageStatus, setActiveConversation } = useChatStore();
+  const { 
+    messages: storeMessages, 
+    updateMessageStatus, 
+    setActiveConversation,
+    users
+  } = useChatStore();
   const [message, setMessage] = useState('');
   const [isReportModalVisible, setIsReportModalVisible] = useState(false);
   const [isSafetyVisible, setIsSafetyVisible] = useState(true);
@@ -54,10 +59,17 @@ export const useChatDetails = () => {
       setActiveConversation(conversationId);
       chatService.fetchHistory(myUserId, receiverId);
       chatService.markAsRead(myUserId, receiverId);
+      
+      // Fetch profile if not in cache
+      if (receiverId !== 'Unknown' && !users[receiverId]) {
+        chatService.fetchUserProfile(receiverId);
+      }
     }
 
     return () => setActiveConversation(null);
-  }, [myUserId, receiverId, conversationId, setActiveConversation]);
+  }, [myUserId, receiverId, conversationId, setActiveConversation, users]);
+
+  const cachedUser = users[receiverId];
 
   // Fetch ride details if rideId exists
   useEffect(() => {
@@ -237,5 +249,6 @@ export const useChatDetails = () => {
     isSafetyVisible,
     handleSafetyClose,
     handleLoadMore,
+    cachedUser,
   };
 };

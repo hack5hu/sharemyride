@@ -3,6 +3,8 @@ import { useTheme } from 'styled-components/native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { Avatar } from '@/components/atoms/Avatar';
 import { Typography } from '@/components/atoms/Typography';
+import { getMessageStatusIcon } from '@/utils/messageStatusUtil';
+import { MessageStatus } from '@/constants/enums';
 import { MessageItemProps } from './types';
 import { 
   Container, 
@@ -10,11 +12,10 @@ import {
   HeaderRow, 
   RouteContainer, 
   BadgeContainer, 
-  InfoColumn 
 } from './MessageItem.styles';
 import { moderateScale } from '@/styles';
 
-export const MessageItem: React.FC<MessageItemProps> = ({
+export const MessageItem: React.FC<MessageItemProps> = React.memo(({
   name,
   lastMessage,
   time,
@@ -48,27 +49,16 @@ export const MessageItem: React.FC<MessageItemProps> = ({
       );
     }
 
-    if (isLastMessageFromMe) {
-      let iconName = 'check';
-      let iconColor = theme.colors.on_surface_variant;
-      
-      if (lastMessageStatus === 'READ') {
-        iconName = 'done-all';
-        iconColor = '#34B7F1';
-      } else if (lastMessageStatus === 'DELIVERED') {
-        iconName = 'done-all';
-      }
+    const iconInfo = getMessageStatusIcon(lastMessageStatus || MessageStatus.SENT, isLastMessageFromMe);
+    if (!iconInfo) return null;
 
-      return (
-        <MaterialIcon 
-          name={iconName} 
-          size={moderateScale(16)} 
-          color={iconColor} 
-        />
-      );
-    }
-
-    return null;
+    return (
+      <MaterialIcon 
+        name={iconInfo.name} 
+        size={moderateScale(16)} 
+        color={iconInfo.color} 
+      />
+    );
   };
 
   return (
@@ -102,17 +92,19 @@ export const MessageItem: React.FC<MessageItemProps> = ({
           </Typography>
         </HeaderRow>
 
-        <RouteContainer>
-          <Typography 
-            variant="label" 
-            size="xs" 
-            weight={isUnread ? 'bold' : 'medium'}
-            color="secondary"
-            numberOfLines={1}
-          >
-            {source} → {destination}
-          </Typography>
-        </RouteContainer>
+        {source && destination ? (
+          <RouteContainer>
+            <Typography 
+              variant="label" 
+              size="xs" 
+              weight={isUnread ? 'bold' : 'medium'}
+              color="secondary"
+              numberOfLines={1}
+            >
+              {source} → {destination}
+            </Typography>
+          </RouteContainer>
+        ) : null}
 
         <Typography 
           variant="body" 
@@ -129,4 +121,6 @@ export const MessageItem: React.FC<MessageItemProps> = ({
       {renderStatus()}
     </Container>
   );
-};
+});
+
+MessageItem.displayName = 'MessageItem';

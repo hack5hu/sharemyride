@@ -34,6 +34,7 @@ export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({ navigation
     isSafetyVisible,
     handleSafetyClose,
     handleLoadMore,
+    cachedUser,
   } = useChatDetails();
 
   const theme = useTheme();
@@ -54,14 +55,14 @@ export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({ navigation
 
   const header = useMemo(() => (
     <ChatAppHeader
-      name={name}
-      rating={rating}
+      name={cachedUser?.name || name || `User ${userId?.slice(0, 8)}`}
+      rating={cachedUser?.rating || rating}
       isTyping={false}
-      avatarUri={avatarUri}
+      avatarUri={cachedUser?.avatarUri || avatarUri || undefined}
       onBackPress={() => navigation.goBack()}
       onReportPress={() => setIsReportModalVisible(true)}
     />
-  ), [name, rating, avatarUri, navigation, setIsReportModalVisible]);
+  ), [cachedUser, name, userId, rating, avatarUri, navigation, setIsReportModalVisible]);
 
   const input = useMemo(() => (
     <ChatInputSection

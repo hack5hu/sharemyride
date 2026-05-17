@@ -24,7 +24,7 @@ export const ChatDetailsTemplate: React.FC<ChatDetailsTemplateProps> = ({
   input,
   onLoadMore,
 }) => {
-  const listRef = useRef<FlashList<any>>(null);
+  const listRef = useRef<any>(null);
   const { height } = useReanimatedKeyboardAnimation();
 
   // Animate the bottom padding of the entire container based on keyboard height

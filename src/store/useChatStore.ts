@@ -1,24 +1,27 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { mmkvStorage } from '@/utils/storage';
-import { ChatMessage, MessageStatus, ChatConversation } from '@/types/chat';
+import { ChatMessage, ChatConversation, UserProfile } from '@/types/chat';
+import { ConnectionStatus, MessageStatus } from '@/constants/enums';
 
 interface ChatState {
   messages: Record<string, ChatMessage[]>; // Keyed by conversationId
   conversations: ChatConversation[];
-  connectionStatus: 'CONNECTED' | 'DISCONNECTED' | 'CONNECTING';
+  connectionStatus: ConnectionStatus;
   myUserId: string | null;
   setMyUserId: (userId: string | null) => void;
   addMessage: (conversationId: string, message: ChatMessage) => void;
   updateMessageStatus: (conversationId: string, messageId: string, status: MessageStatus) => void;
   linkPendingMessage: (conversationId: string, tempId: string, realId: string, status: MessageStatus) => void;
   setConversations: (conversations: ChatConversation[]) => void;
-  setConnectionStatus: (status: 'CONNECTED' | 'DISCONNECTED' | 'CONNECTING') => void;
+  setConnectionStatus: (status: ConnectionStatus) => void;
   setHistory: (conversationId: string, messages: ChatMessage[]) => void;
   markConversationAsRead: (conversationId: string) => void;
   flushOldMessages: () => void;
   activeConversationId: string | null;
   setActiveConversation: (id: string | null) => void;
+  users: Record<string, UserProfile>;
+  upsertUser: (user: UserProfile) => void;
 }
 
 const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
@@ -28,12 +31,16 @@ export const useChatStore = create<ChatState>()(
     (set, get) => ({
       messages: {},
       conversations: [],
-      connectionStatus: 'DISCONNECTED',
+      connectionStatus: ConnectionStatus.DISCONNECTED,
       myUserId: null,
       activeConversationId: null,
+      users: {},
 
       setMyUserId: (userId) => set({ myUserId: userId }),
       setActiveConversation: (id) => set({ activeConversationId: id }),
+      upsertUser: (user) => set((state) => ({
+        users: { ...state.users, [user.userId]: user }
+      })),
 
       addMessage: (conversationId, message) => {
         set((state) => {
@@ -50,7 +57,7 @@ export const useChatStore = create<ChatState>()(
           if (isRealMessage) {
             pendingIndex = chatMessages.findIndex(m => 
               m.messageId.startsWith('temp-') && 
-              m.status === 'PENDING' && 
+              m.status === MessageStatus.PENDING && 
               m.content === message.content &&
               m.senderId === message.senderId
             );
@@ -84,7 +91,7 @@ export const useChatStore = create<ChatState>()(
           };
 
           const isActive = state.activeConversationId === conversationId;
-          const isRead = message.status === 'READ';
+          const isRead = message.status === MessageStatus.READ;
 
           const convData: ChatConversation = {
             conversationId,
@@ -114,11 +121,24 @@ export const useChatStore = create<ChatState>()(
           const updatedMessages = chatMessages.map((m) =>
             m.messageId === messageId ? { ...m, status } : m
           );
+
+          // Also update the status in the conversation summary if it's the last message
+          const updatedConversations = state.conversations.map((c) => {
+            if (c.conversationId === conversationId && c.lastMessage?.messageId === messageId) {
+              return {
+                ...c,
+                lastMessage: { ...c.lastMessage, status },
+              };
+            }
+            return c;
+          });
+
           return {
             messages: {
               ...state.messages,
               [conversationId]: updatedMessages,
             },
+            conversations: updatedConversations,
           };
         });
       },
@@ -129,11 +149,24 @@ export const useChatStore = create<ChatState>()(
           const updatedMessages = chatMessages.map((m) =>
             m.messageId === tempId ? { ...m, messageId: realId, status } : m
           );
+
+          // Also update the conversation summary
+          const updatedConversations = state.conversations.map((c) => {
+            if (c.conversationId === conversationId && c.lastMessage?.messageId === tempId) {
+              return {
+                ...c,
+                lastMessage: { ...c.lastMessage, messageId: realId, status },
+              };
+            }
+            return c;
+          });
+
           return {
             messages: {
               ...state.messages,
               [conversationId]: updatedMessages,
             },
+            conversations: updatedConversations,
           };
         });
       },
@@ -190,42 +223,44 @@ export const useChatStore = create<ChatState>()(
             }
           }
 
-          const statusPriority: Record<string, number> = { 
-            READ: 3, 
-            DELIVERED: 2, 
-            SENT: 1, 
-            PENDING: 0, 
-            FAILED: 0 
+          const statusPriority: Record<MessageStatus, number> = { 
+            [MessageStatus.READ]: 3, 
+            [MessageStatus.DELIVERED]: 2, 
+            [MessageStatus.SENT]: 1, 
+            [MessageStatus.PENDING]: 0, 
+            [MessageStatus.FAILED]: 0 
           };
           
           const currentMessages = state.messages[conversationId] || [];
 
           // Merge server history, preserving higher local statuses
+          const serverIds = new Set(history.map(m => m.messageId));
           const mergedHistory = history.map((newMsg) => {
             const existing = currentMessages.find((m) => m.messageId === newMsg.messageId);
             if (!existing) return newMsg;
 
-            const newStatus = (newMsg.status || 'SENT').toUpperCase();
-            const existingStatus = (existing.status || 'SENT').toUpperCase();
+            const newStatus = (newMsg.status || MessageStatus.SENT).toUpperCase() as MessageStatus;
+            const existingStatus = (existing.status || MessageStatus.SENT).toUpperCase() as MessageStatus;
             
             const newPriority = statusPriority[newStatus] || 0;
             const existingPriority = statusPriority[existingStatus] || 0;
 
-            return newPriority >= existingPriority ? { ...newMsg, status: newStatus as MessageStatus } : existing;
+            return newPriority >= existingPriority ? { ...newMsg, status: newStatus } : existing;
           });
 
-          // KEY FIX: Re-append any local PENDING messages that aren't in server history yet.
-          // Without this, optimistic messages disappear whenever fetchHistory is called
-          // before the server has confirmed them — causing the "flicker" glitch.
-          const serverIds = new Set(history.map(m => m.messageId));
-          const orphanedPending = currentMessages.filter(
-            m => m.status === 'PENDING' && !serverIds.has(m.messageId)
+          // Keep all previous local messages that are NOT in the server fetched history
+          // (this includes older local history and pending optimistic messages)
+          const localOnlyMessages = currentMessages.filter(
+            m => !serverIds.has(m.messageId)
           );
+
+          // Combine them and sort chronologically so layout renders in correct sequence
+          const allMerged = [...localOnlyMessages, ...mergedHistory].sort((a, b) => a.timestamp - b.timestamp);
 
           return {
             messages: {
               ...state.messages,
-              [conversationId]: [...mergedHistory, ...orphanedPending],
+              [conversationId]: allMerged,
             },
             conversations: updatedConversations,
           };
@@ -239,7 +274,7 @@ export const useChatStore = create<ChatState>()(
               return { 
                 ...c, 
                 unreadCount: 0,
-                lastMessage: c.lastMessage ? { ...c.lastMessage, status: 'READ' } : c.lastMessage
+                lastMessage: c.lastMessage ? { ...c.lastMessage, status: MessageStatus.READ } : c.lastMessage
               };
             }
             return c;
@@ -253,12 +288,26 @@ export const useChatStore = create<ChatState>()(
         const now = Date.now();
         set((state) => {
           const newMessages: Record<string, ChatMessage[]> = {};
+          
+          // 1. Keep only messages within the last 14 days
           Object.keys(state.messages).forEach((convId) => {
-            newMessages[convId] = state.messages[convId].filter(
+            const filtered = state.messages[convId].filter(
               (m) => now - m.timestamp < FOURTEEN_DAYS_MS
             );
+            if (filtered.length > 0) {
+              newMessages[convId] = filtered;
+            }
           });
-          return { messages: newMessages };
+
+          // 2. Clear dead chats (conversations with no activity in 14 days)
+          const activeConversations = state.conversations.filter(
+            (c) => now - c.updatedAt < FOURTEEN_DAYS_MS
+          );
+
+          return { 
+            messages: newMessages,
+            conversations: activeConversations 
+          };
         });
       },
     }),

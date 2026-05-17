@@ -1,7 +1,8 @@
 import { Client, IMessage } from '@stomp/stompjs';
 import { BASE_URL } from '@/constants/apiEndpoints';
 import { useChatStore } from '@/store/useChatStore';
-import { ChatMessage, MessageStatus, SendMessagePayload, UpdateStatusPayload } from '@/types/chat';
+import { ChatMessage, SendMessagePayload, UpdateStatusPayload } from '@/types/chat';
+import { MessageStatus, MessageType, ConnectionStatus } from '@/constants/enums';
 import apiClient from './apiClient';
 
 // STOMP requires TextEncoder/TextDecoder in some environments
@@ -13,7 +14,35 @@ if (typeof TextDecoder === 'undefined') {
   global.TextDecoder = require('fast-text-encoding').TextDecoder;
 }
 
+import { userService } from './userService';
+
 class ChatService {
+  async fetchUserProfile(userId: string) {
+    if (!userId || userId === 'Unknown') return;
+    
+    const { users, upsertUser } = useChatStore.getState();
+    
+    // Return early if already in cache
+    if (users[userId]) return users[userId];
+    
+    try {
+      const profile = await userService.getUserProfile(userId);
+      if (profile) {
+        const userData = {
+          userId: userId,
+          name: profile.name || profile.fullName || `User ${userId.slice(0, 8)}`,
+          avatarUri: profile.profileImage?.uri || profile.avatarUri,
+          rating: profile.rating,
+          isVerified: profile.isVerified,
+        };
+        upsertUser(userData);
+        return userData;
+      }
+    } catch (error) {
+      console.error(`Failed to fetch profile for user ${userId}:`, error);
+    }
+  }
+
   private client: Client | null = null;
   private currentUserId: string | null = null;
 
@@ -26,7 +55,7 @@ class ChatService {
     this.currentUserId = userId;
     const { setConnectionStatus, addMessage, updateMessageStatus } = useChatStore.getState();
     
-    setConnectionStatus('CONNECTING');
+    setConnectionStatus(ConnectionStatus.CONNECTING);
     
     const brokerUrl = BASE_URL.replace('http', 'ws') + '/ws/websocket';
     if (__DEV__) console.log('🔌 [Socket] Initializing connection to:', brokerUrl);
@@ -57,7 +86,7 @@ class ChatService {
 
       this.client.onConnect = () => {
         if (__DEV__) console.log('✅ [Socket] Connected!');
-        setConnectionStatus('CONNECTED');
+        setConnectionStatus(ConnectionStatus.CONNECTED);
       
       // Subscribe to private messages
       this.client?.subscribe('/user/queue/messages', (msg: IMessage) => {
@@ -76,8 +105,8 @@ class ChatService {
           receiverId: data.receiverId,
           content: data.content,
           timestamp: data.timestamp || Date.now(),
-          status: isRead ? 'READ' : 'DELIVERED',
-          type: data.type || 'text',
+          status: isRead ? MessageStatus.READ : MessageStatus.DELIVERED,
+          type: data.type || MessageType.TEXT,
           metadata: data.metadata,
         };
         
@@ -85,7 +114,7 @@ class ChatService {
         
         // Auto-ack status (only for messages received from others)
         if (isFromOther) {
-          const finalStatus = isRead ? 'READ' : 'DELIVERED';
+          const finalStatus = isRead ? MessageStatus.READ : MessageStatus.DELIVERED;
           this.updateStatus(data.messageId, finalStatus, userId);
 
           // If user is actively in the chat, also notify backend to clear unread counts
@@ -123,7 +152,7 @@ class ChatService {
             
             const pendingMessage = [...messages[convId]]
               .reverse()
-              .find(m => m.messageId.startsWith('temp-') && m.status === 'PENDING');
+              .find(m => m.messageId.startsWith('temp-') && m.status === MessageStatus.PENDING);
             
             if (pendingMessage) {
               if (__DEV__) console.log(`🔗 [Status Update] Linking ${pendingMessage.messageId} -> ${data.messageId} (${data.status})`);
@@ -148,18 +177,18 @@ class ChatService {
     };
 
     this.client.onDisconnect = () => {
-      setConnectionStatus('DISCONNECTED');
+      setConnectionStatus(ConnectionStatus.DISCONNECTED);
     };
 
     this.client.onStompError = (frame) => {
       console.error('STOMP Error:', frame.headers['message']);
-      setConnectionStatus('DISCONNECTED');
+      setConnectionStatus(ConnectionStatus.DISCONNECTED);
     };
 
       this.client.activate();
     } catch (error) {
       console.error('❌ [Socket] Initialization failed:', error);
-      setConnectionStatus('DISCONNECTED');
+      setConnectionStatus(ConnectionStatus.DISCONNECTED);
     }
   }
 
@@ -167,7 +196,7 @@ class ChatService {
     if (this.client) {
       this.client.deactivate();
       this.client = null;
-      useChatStore.getState().setConnectionStatus('DISCONNECTED');
+      useChatStore.getState().setConnectionStatus(ConnectionStatus.DISCONNECTED);
     }
   }
 
@@ -187,8 +216,8 @@ class ChatService {
       receiverId: payload.receiverId,
       content: payload.content,
       timestamp: Date.now(),
-      status: 'PENDING',
-      type: (payload.type as any) || 'text',
+      status: MessageStatus.PENDING,
+      type: (payload.type as any) || MessageType.TEXT,
       metadata: payload.metadata,
     };
     
@@ -219,7 +248,7 @@ class ChatService {
       const response = await apiClient.get(`/api/v1/chat/history/${myUserId}/${otherUserId}`);
       const history = response.data.map((m: any) => ({
         ...m,
-        status: (m.status || m.messageStatus || 'SENT').toUpperCase(),
+        status: (m.status || m.messageStatus || MessageStatus.SENT).toUpperCase() as MessageStatus,
         timestamp: m.timestamp || Date.now(),
       }));
       useChatStore.getState().setHistory(conversationId, history);
@@ -240,8 +269,8 @@ class ChatService {
       // Refresh local status of all messages immediately (Optimistic Update)
       const chatMessages = messages[conversationId] || [];
       chatMessages.forEach(m => {
-        if (m.receiverId === myUserId && m.status !== 'READ') {
-          updateMessageStatus(conversationId, m.messageId, 'READ');
+        if (m.receiverId === myUserId && m.status !== MessageStatus.READ) {
+          updateMessageStatus(conversationId, m.messageId, MessageStatus.READ);
         }
       });
 

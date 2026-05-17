@@ -57,6 +57,7 @@ export interface ThemeColors {
   tertiary_fixed_dim: string;
   on_tertiary_fixed: string;
   on_tertiary_fixed_variant: string;
+  read_receipt: string;
 }
 
 

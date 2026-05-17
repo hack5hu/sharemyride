@@ -1,5 +1,7 @@
 import { ViewStyle, ImageSourcePropType } from 'react-native';
 
+import { MessageStatus } from '@/constants/enums';
+
 export interface MessageItemProps {
   id: string;
   name: string;
@@ -12,7 +14,7 @@ export interface MessageItemProps {
   isOnline?: boolean;
   isVerified?: boolean;
   isLastMessageFromMe?: boolean;
-  lastMessageStatus?: string;
+  lastMessageStatus?: MessageStatus;
   onPress?: () => void;
   style?: ViewStyle;
 }

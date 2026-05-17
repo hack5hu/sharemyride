@@ -11,7 +11,8 @@ export const useChatList = () => {
   const { 
     conversations: storeConversations, 
     messages: storeMessages,
-    setMyUserId
+    setMyUserId,
+    users
   } = useChatStore();
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -21,7 +22,6 @@ export const useChatList = () => {
   useEffect(() => {
     if (user?.userId) {
       setMyUserId(user.userId);
-      // chatService.fetchConversations(user.userId);
     }
   }, [user?.userId, setMyUserId]);
 
@@ -38,12 +38,17 @@ export const useChatList = () => {
         const otherParticipantId = conv.participants.find(p => p !== myUserId);
         if (!otherParticipantId || otherParticipantId === 'Unknown') return null;
         
-        // Prioritize conversation-level metadata (other user name, ride info)
+        // Trigger profile fetch if not in cache
+        if (!users[otherParticipantId]) {
+          chatService.fetchUserProfile(otherParticipantId);
+        }
+
+        const cachedUser = users[otherParticipantId];
         const metadata = conv.metadata || lastMsg.metadata || {};
 
         return {
           id: otherParticipantId,
-          name: metadata.userName || metadata.name || `User ${otherParticipantId}`,
+          name: cachedUser?.name || metadata.userName || metadata.name || `User ${otherParticipantId.slice(0, 8)}`,
           lastMessage: (lastMsg.type === 'location' || lastMsg.content.startsWith('[LOCATION_DATA]:')) 
             ? t('chat.locationShared') 
             : lastMsg.content,
@@ -51,18 +56,20 @@ export const useChatList = () => {
           unreadCount: conv.unreadCount,
           isLastMessageFromMe: lastMsg.senderId === myUserId,
           lastMessageStatus: lastMsg.status,
-          source: metadata.pickup || metadata.source || 'Ride',
-          destination: metadata.dropoff || metadata.destination || 'Silicon Valley',
+          source: metadata.pickup || metadata.source,
+          destination: metadata.dropoff || metadata.destination,
           isOnline: true,
-          isVerified: metadata.isVerified ?? true,
-          avatarSource: { uri: metadata.userAvatar || metadata.avatarUri || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBD5atLF8UxYeBT-3ppSb2ss8EDLRaRZ12W6T_IQWI1PwSQEP37xBNj1JgYWFPflCaebiUxcC5GdByIedY9JqeLkPPTvFvvB9v3Bs1T7tbIPZhI6lq2_V9uuNkwBHq_HHYsNFgVIGw_4vJHLSfTLgZGAwmuwgl6A-wvy1eiJrBGJnHz_aIPJgQvNUcG4lRR33qNYDS0IhM7o_LJPfZJ4MsvTp--1_EijtMSEwjspFW5wrqsfLImUDN6EOnxwPqlNYln1-KxOtjkfaS_' },
+          isVerified: cachedUser?.isVerified ?? metadata.isVerified ?? true,
+          avatarSource: (cachedUser?.avatarUri || metadata.userAvatar || metadata.avatarUri) 
+            ? { uri: cachedUser?.avatarUri || metadata.userAvatar || metadata.avatarUri } 
+            : undefined,
           // Pass extra data for navigation
-          rating: metadata.userRating || metadata.rating || 5.0,
+          rating: cachedUser?.rating || metadata.userRating || metadata.rating || 5.0,
           rideId: metadata.rideId,
           rideInfo: metadata.rideInfo,
         };
       }).filter(Boolean);
-  }, [storeConversations, user?.userId]);
+  }, [storeConversations, user?.userId, users, t]);
 
   const filteredMessages = useMemo(() => {
     return messages.filter(m => 

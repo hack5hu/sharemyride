@@ -1,4 +1,9 @@
-export type MessageStatus = 'SENT' | 'DELIVERED' | 'READ' | 'PENDING' | 'FAILED';
+export type MessageStatus =
+  | 'SENT'
+  | 'DELIVERED'
+  | 'READ'
+  | 'PENDING'
+  | 'FAILED';
 
 export interface ChatMessage {
   messageId: string;
@@ -32,4 +37,12 @@ export interface ChatConversation {
   unreadCount: number;
   updatedAt: number;
   metadata?: any;
+}
+
+export interface UserProfile {
+  userId: string;
+  name: string;
+  avatarUri?: string;
+  rating?: number;
+  isVerified?: boolean;
 }

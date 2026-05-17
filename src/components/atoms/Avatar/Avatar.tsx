@@ -29,11 +29,18 @@ export const Avatar: React.FC<AvatarProps> = ({
     if (hasSource) {
       return <AvatarImage source={source} size={size} />;
     }
+
+    const getInitials = (name?: string) => {
+      if (!name) return 'U';
+      const parts = name.trim().split(' ');
+      if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+      return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+    };
     
     return (
       <PlaceholderContainer size={size}>
         <Typography variant="title" size="lg" weight="bold" color={theme.colors.on_primary_container}>
-          {placeholder?.charAt(0).toUpperCase() || 'U'}
+          {getInitials(placeholder)}
         </Typography>
       </PlaceholderContainer>
     );
