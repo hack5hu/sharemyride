@@ -1,10 +1,11 @@
 import { useState, useCallback, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { useLocale } from '@/constants/localization';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 
 export const useCancelRide = () => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const { cancelRide } = useLocale();
+
 
   const [selectedReasonId, setSelectedReasonId] = useState<string | null>(null);
   const [otherReasonText, setOtherReasonText] = useState<string>('');

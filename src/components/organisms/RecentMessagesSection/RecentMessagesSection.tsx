@@ -1,51 +1,49 @@
-import React from 'react';
-import { FlatList } from 'react-native';
+import React, { useCallback } from 'react';
+import { FlashList } from '@shopify/flash-list';
 import { useTranslation } from '@/hooks/useTranslation';
-import { MessageItem } from '@/components/molecules/MessageItem';
+import { MessageItem, MessageItemProps } from '@/components/molecules/MessageItem';
 import { Typography } from '@/components/atoms/Typography';
-import { Container, TitleContainer } from './RecentMessagesSection.styles';
+import { Container, TitleContainer, SectionTitle } from './RecentMessagesSection.styles';
 import { RecentMessagesSectionProps } from './types';
 import { verticalScale } from '@/styles';
 import { EmptyState } from '@/components/molecules/EmptyState';
 
-export const RecentMessagesSection: React.FC<RecentMessagesSectionProps> = ({
+export const RecentMessagesSection: React.FC<RecentMessagesSectionProps> = React.memo(({
   messages,
   onMessagePress,
 }) => {
   const { t } = useTranslation();
 
-  const renderItem = ({ item }: { item: any }) => (
+  const renderItem = useCallback(({ item }: { item: MessageItemProps }) => (
     <MessageItem 
       {...item} 
       onPress={() => onMessagePress(item.id)} 
     />
-  );
+  ), [onMessagePress]);
 
   return (
     <Container>
       {messages.length > 0 && (
         <TitleContainer>
-          <Typography 
+          <SectionTitle 
             variant="label" 
             size="sm" 
             weight="bold" 
             color="on_surface_variant"
-            style={{ letterSpacing: 1.5, textTransform: 'uppercase' }}
           >
             {t('chat.recentMessages')}
-          </Typography>
+          </SectionTitle>
         </TitleContainer>
       )}
-      <FlatList
+      <FlashList
         data={messages}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ 
           paddingBottom: verticalScale(32),
-          flexGrow: 1,
         }}
-        scrollEnabled={false}
+        estimatedItemSize={70}
         ListEmptyComponent={
           <EmptyState 
             icon="forum"
@@ -56,4 +54,4 @@ export const RecentMessagesSection: React.FC<RecentMessagesSectionProps> = ({
       />
     </Container>
   );
-};
+});

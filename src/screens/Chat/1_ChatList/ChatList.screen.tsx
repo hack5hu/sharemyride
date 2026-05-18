@@ -6,8 +6,7 @@ import { RecentMessagesSection } from '@/components/organisms/RecentMessagesSect
 import { BottomNav } from '@/components/organisms/BottomNav';
 import { useChatList } from './useChatList';
 import { ChatListScreenProps } from './types';
-import { moderateScale } from '@/styles';
-import * as S from './ChatList.styles';
+
 
 export const ChatListScreen: React.FC<ChatListScreenProps> = ({ navigation }) => {
   const { searchQuery, setSearchQuery, filteredMessages, t } = useChatList();

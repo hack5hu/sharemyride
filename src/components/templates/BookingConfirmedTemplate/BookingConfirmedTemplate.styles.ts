@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+import { Typography } from '@/components/atoms/Typography';
 
 export const Container = styled.View`
   flex: 1;
@@ -117,6 +118,11 @@ export const DetailCard = styled.View`
   justify-content: space-between;
 `;
 
+export const DetailCardHeader = styled.View`
+  /* simple layout wrapper */
+`;
+
+
 export const IconBox = styled.View`
   width: ${moderateScale(40)}px;
   height: ${moderateScale(40)}px;
@@ -171,3 +177,57 @@ export const PlateBadge = styled.View`
   align-items: center;
   justify-content: center;
 `;
+
+
+
+export const DriverNameText = styled(Typography)`
+  margin-bottom: ${verticalScale(2)}px;
+`;
+
+export const RatingRow = styled(Row)`
+  align-items: center;
+  gap: ${scale(4)}px;
+`;
+
+export const ValueWrapper = styled.View`
+  margin-top: ${verticalScale(12)}px;
+`;
+
+export const SafetyIconBox = styled.View`
+  width: ${moderateScale(48)}px;
+  height: ${moderateScale(48)}px;
+  border-radius: ${moderateScale(24)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
+  align-items: center;
+  justify-content: center;
+  elevation: 1;
+`;
+
+export const SafetyMeta = styled.View`
+  flex: 1;
+`;
+
+export const SafetySubtitleText = styled(Typography)`
+  opacity: 0.8;
+`;
+
+export const PrimaryButtonWrapper = styled.TouchableOpacity`
+  width: 100%;
+`;
+
+export const TrustSection = styled.View`
+  align-items: center;
+  opacity: 0.5;
+  padding-bottom: ${verticalScale(40)}px;
+`;
+
+export const TrustIconsRow = styled(Row)`
+  margin-bottom: ${verticalScale(8)}px;
+  gap: ${scale(16)}px;
+`;
+
+export const TrustText = styled(Typography)`
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+`;
+

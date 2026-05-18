@@ -1,15 +1,17 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import { FIVE_SEATER_ROWS, SEVEN_SEATER_ROWS } from '@/components/organisms/CarFloorPlan/seatConfig';
-import rideService from '@/serviceManager/rideService';
+import rideService, { RouteStop } from '@/serviceManager/rideService';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
+
+import { BookSeat, Passenger } from './types';
 
 export const useBookSeatSelection = (
   rideId: string, 
   sourceStopId?: number, 
   destinationStopId?: number,
-  passedSeats?: any[],
-  passedPassengers?: any[],
+  passedSeats?: BookSeat[],
+  passedPassengers?: Passenger[],
   passedVehicleType?: string,
   passedDate?: string,
   passedTime?: string
@@ -20,7 +22,7 @@ export const useBookSeatSelection = (
   const [isBooking, setIsBooking] = useState(false);
 
   const rideRaw = useMemo(
-    () => searchResults?.find((r: any) => r.id === rideId),
+    () => searchResults?.find((r: { id: string; vehicleType?: string; stops?: RouteStop[]; driverName?: string; vehicleRegistration?: string }) => r.id === rideId),
     [searchResults, rideId],
   );
 
@@ -31,7 +33,7 @@ export const useBookSeatSelection = (
 
   const seatNameIdMap = useMemo(() => {
     const map: Record<string, number> = {};
-    (passedSeats || []).forEach((s: any) => {
+    (passedSeats || []).forEach((s: BookSeat) => {
       map[s.seatName] = s.id;
     });
     return map;
@@ -39,7 +41,7 @@ export const useBookSeatSelection = (
 
   const occupiedSeats = useMemo(() => {
     const occupied = new Set<string | number>();
-    const availableIds = new Set((passedSeats || []).map((s: any) => s.id));
+    const availableIds = new Set((passedSeats || []).map((s: BookSeat) => s.id));
 
     // 1. Any standard seat ID that is not in the backend's returned seats list is unavailable/occupied
     const allIds = vehicleType === '7' ? [2, 3, 4, 5, 6, 7] : [2, 3, 4, 5];
@@ -50,7 +52,7 @@ export const useBookSeatSelection = (
     });
 
     // 2. Any seat in the backend returned seats list that is explicitly marked as not available is occupied
-    (passedSeats || []).forEach((s: any) => {
+    (passedSeats || []).forEach((s: BookSeat) => {
       if (!s.available) {
         occupied.add(s.id);
       }
@@ -84,7 +86,7 @@ export const useBookSeatSelection = (
 
   const prices = useMemo(() => {
     const priceMap: Record<string | number, number> = {};
-    (passedSeats || []).forEach((s: any) => {
+    (passedSeats || []).forEach((s: BookSeat) => {
       priceMap[s.id] = s.price;
     });
     return priceMap;

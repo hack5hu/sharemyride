@@ -5,6 +5,7 @@ import { useLocale } from '@/constants/localization';
 import { RootStackParamList } from '@/navigation/types';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { RouteStop } from '@/serviceManager/rideService';
 
 export const useBookingConfirmed = () => {
   const { navigate } = useAppNavigation();
@@ -30,7 +31,7 @@ export const useBookingConfirmed = () => {
   const bookedSeats = route.params?.bookedSeats || [];
 
   const rideRaw = useMemo(
-    () => searchResults?.find((r: any) => r.id === rideId),
+    () => searchResults?.find((r: { id: string; stops?: RouteStop[]; driverName?: string; driverPhotoUrl?: string; vehicleType?: string; vehicleRegistration?: string }) => r.id === rideId),
     [searchResults, rideId],
   );
 

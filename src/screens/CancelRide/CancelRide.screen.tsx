@@ -2,7 +2,7 @@ import React from 'react';
 import { CancelRideTemplate } from '@/components/templates/CancelRideTemplate';
 import { useCancelRide } from './useCancelRide';
 
-export const CancelRideScreen: React.FC = () => {
+export const CancelRideScreen: React.FC = React.memo(() => {
   const {
     reasons,
     selectedReasonId,
@@ -24,4 +24,4 @@ export const CancelRideScreen: React.FC = () => {
       onDismiss={onDismiss}
     />
   );
-};
+});

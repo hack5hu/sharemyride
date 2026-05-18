@@ -417,3 +417,12 @@ export const ToggleWrapper = styled.View`
   padding-horizontal: ${scale(24)}px;
   margin-bottom: ${verticalScale(24)}px;
 `;
+
+export const RecentItemContainer = styled.View`
+  padding-horizontal: ${moderateScale(24)}px;
+`;
+
+export const RecentSearchesHeader = styled(SectionHeader)`
+  margin-bottom: ${verticalScale(12)}px;
+`;
+

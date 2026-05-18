@@ -96,3 +96,36 @@ export const PassengerAvatar = styled.Image`
   border-radius: ${moderateScale(20)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_high};
 `;
+
+export const HeaderIntro = styled.View`
+  width: 100%;
+  gap: ${verticalScale(4)}px;
+  margin-bottom: ${verticalScale(8)}px;
+`;
+
+export const LegendWrapper = styled.View`
+  width: 100%;
+  margin-top: ${verticalScale(8)}px;
+`;
+
+export const CarPlanWrapper = styled.View`
+  margin-top: ${verticalScale(16)}px;
+`;
+
+export const CoRidersSection = styled.View`
+  width: 100%;
+  margin-top: ${verticalScale(24)}px;
+`;
+
+import { Typography } from '@/components/atoms/Typography';
+export const CoRidersTitle = styled(Typography)`
+  margin-bottom: ${verticalScale(12)}px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+`;
+
+export const PassengerInfo = styled.View`
+  flex: 1;
+  margin-left: ${moderateScale(12)}px;
+`;
+
