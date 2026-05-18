@@ -1,12 +1,12 @@
 import { useState, useCallback, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import { useLocale } from '@/constants/localization';
 import { Logger } from '@/utils/logger';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 
 export const useLocalRideResults = () => {
   const { bookRideInfo: t } = useLocale();
-  const navigation = useNavigation();
+  const { goBack } = useAppNavigation();
   const { startLocation, destinationLocation } = useBookRideStore();
   
   // Center of the map, initialized to startLocation or a default
@@ -24,8 +24,8 @@ export const useLocalRideResults = () => {
   }, []);
 
   const handleBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    goBack();
+  }, [goBack]);
 
   const handleRequestLocalPartner = useCallback(() => {
     Logger.log('Requesting local partner at:', center);

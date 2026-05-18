@@ -1,15 +1,16 @@
-import { useCallback, useMemo, useEffect } from 'react';
-import { useNavigation, useRoute, RouteProp, useFocusEffect } from '@react-navigation/native';
+import { useCallback, useMemo } from 'react';
+import { useRoute, RouteProp, useFocusEffect } from '@react-navigation/native';
 import { Share, BackHandler } from 'react-native';
 import { useLocale } from '@/constants/localization';
-import { RootStackParamList } from '@/navigation/types.d';
+import { RootStackParamList } from '@/navigation/types';
 import { useBookRideStore } from '@/store/useBookRideStore';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 
 export const useBookingConfirmed = () => {
-  const navigation = useNavigation();
+  const { navigate } = useAppNavigation();
   const route = useRoute<RouteProp<RootStackParamList, 'BookingConfirmed'>>();
   const { bookingConfirmed: t } = useLocale();
-  const { searchResults } = useBookRideStore();
+  const searchResults = useBookRideStore(state => state.searchResults);
 
   // Prevent hardware back button on Android
   useFocusEffect(
@@ -46,11 +47,11 @@ export const useBookingConfirmed = () => {
 
     return {
       driver: {
-        name: rideRaw?.driverName || 'Driver',
+        name: rideRaw?.driverName || 'Host',
         rating: 4.9,
-        avatar: rideRaw?.driverPhotoUrl || 'https://ui-avatars.com/api/?name=' + (rideRaw?.driverName || 'D'),
+        avatar: rideRaw?.driverPhotoUrl || 'https://ui-avatars.com/api/?name=' + (rideRaw?.driverName || 'H'),
         isVerified: true,
-        car: rideRaw?.vehicleType?.replace('CAR_', '').replace('_', '-').toLowerCase().replace(/\b\w/g, c => c.toUpperCase()) || 'Vehicle',
+        car: rideRaw?.vehicleType?.replace('CAR_', '').replace('_', '-').toLowerCase().replace(/\b\w/g, (c: string) => c.toUpperCase()) || 'Vehicle',
         plate: rideRaw?.vehicleRegistration || '...',
       },
       pickupTime,
@@ -61,8 +62,8 @@ export const useBookingConfirmed = () => {
   }, [rideRaw, bookedSeats, t.windowPreference]);
 
   const handleGoToMyRides = useCallback(() => {
-    (navigation.navigate as any)('MyRides');
-  }, [navigation]);
+    navigate('MyRides');
+  }, [navigate]);
 
   const handleShareDetails = useCallback(async () => {
     try {

@@ -1,56 +1,50 @@
 import { useState, useCallback, useEffect } from 'react';
 import { format, isBefore, startOfDay } from 'date-fns';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { useLocale } from '@/constants/localization';
 import { useBookRideStore, RecentSearch } from '@/store/useBookRideStore';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import rideService, { SearchRidePayload } from '@/serviceManager/rideService';
 
 export const useBookRideInfo = () => {
-  const navigation = useNavigation();
+  const { navigation, navigate } = useAppNavigation();
   const route = useRoute();
   const { bookRideInfo: t } = useLocale();
   const [isSearching, setIsSearching] = useState(false);
 
   const {
     startLocation,
-    setStartLocation,
     destinationLocation,
-    setDestinationLocation,
     travelDate,
-    setTravelDate,
     seatCount,
-    setSeatCount,
-    setSearchResults,
     recentSearches,
-    addRecentSearch,
-    clearRecentSearches,
     rideType,
-    setRideType,
   } = useBookRideStore();
 
   const handlePressPickup = useCallback(() => {
-    navigation.navigate('MapPicker' as any, {
+    navigate('MapPicker', {
       type: 'start',
-      module: 'book',
+      module: 'search',
       returnTo: 'BookRideInfo',
     });
-  }, [navigation]);
+  }, [navigate]);
 
   const handlePressDestination = useCallback(() => {
-    navigation.navigate('MapPicker' as any, {
+    navigate('MapPicker', {
       type: 'destination',
-      module: 'book',
+      module: 'search',
       returnTo: 'BookRideInfo',
     });
-  }, [navigation]);
+  }, [navigate]);
 
   useEffect(() => {
     const params = route.params as any;
     if (params?.updatedLocation && params?.type) {
+      const store = useBookRideStore.getState();
       if (params.type === 'start') {
-        setStartLocation(params.updatedLocation);
+        store.setStartLocation(params.updatedLocation);
       } else if (params.type === 'destination') {
-        setDestinationLocation(params.updatedLocation);
+        store.setDestinationLocation(params.updatedLocation);
       }
       // Reset params so they aren't processed again on re-focus
       navigation.setParams({
@@ -58,68 +52,62 @@ export const useBookRideInfo = () => {
         type: undefined,
       } as any);
     }
-  }, [route.params, navigation, setStartLocation, setDestinationLocation]);
+  }, [route.params, navigation]);
 
   const handleOpenDatePicker = useCallback(() => {
-    navigation.navigate('BookDateSelection' as any);
-  }, [navigation]);
+    navigate('BookDateSelection');
+  }, [navigate]);
 
-  useEffect(() => {
-    if (seatCount > 6) {
-      setSeatCount(6);
-    }
-  }, [seatCount, setSeatCount]);
-
-  const incrementPeople = useCallback(
-    () => setSeatCount(Math.min(seatCount + 1, 6)),
-    [seatCount, setSeatCount]
-  );
+  const incrementPeople = useCallback(() => {
+    const store = useBookRideStore.getState();
+    store.setSeatCount(Math.min(store.seatCount + 1, 6));
+  }, []);
   
-  const decrementPeople = useCallback(
-    () => setSeatCount(Math.max(seatCount - 1, 1)),
-    [seatCount, setSeatCount]
-  );
+  const decrementPeople = useCallback(() => {
+    const store = useBookRideStore.getState();
+    store.setSeatCount(Math.max(store.seatCount - 1, 1));
+  }, []);
 
   const handleSearchRides = useCallback(async () => {
-    if (startLocation && destinationLocation) {
-      // Date Check: if date is past current date
-      const selectedDate = travelDate ? new Date(travelDate) : new Date();
+    const store = useBookRideStore.getState();
+    const { startLocation: curStart, destinationLocation: curDest, travelDate: curDate, seatCount: curSeats, addRecentSearch, setSearchResults, rideType: curType } = store;
+
+    if (curStart && curDest) {
+      const selectedDate = curDate ? new Date(curDate) : new Date();
       if (isBefore(selectedDate, startOfDay(new Date()))) {
-        // Date is past, clear it and go to date selection
-        setTravelDate(null);
-        navigation.navigate('BookDateSelection' as any);
+        store.setTravelDate(null);
+        navigate('BookDateSelection');
         return;
       }
 
       try {
         setIsSearching(true);
         const payload: SearchRidePayload = {
-          sourceLat: startLocation.latitude,
-          sourceLon: startLocation.longitude,
-          destLat: destinationLocation.latitude,
-          destLon: destinationLocation.longitude,
+          sourceLat: curStart.latitude,
+          sourceLon: curStart.longitude,
+          destLat: curDest.latitude,
+          destLon: curDest.longitude,
           travelDate: format(selectedDate, "yyyy-MM-dd'T'HH:mm:ss"),
-          requestedSeats: seatCount,
+          requestedSeats: curSeats,
           radiusInMeters: 10000,
           page: 0,
           size: 15,
         };
 
-        // Add to recent searches
         addRecentSearch({
-          startLocation,
-          destinationLocation,
+          startLocation: curStart,
+          destinationLocation: curDest,
           travelDate: format(selectedDate, "yyyy-MM-dd'T'HH:mm:ss"),
-          seatCount,
+          seatCount: curSeats,
         });
 
         const results = await rideService.searchRides(payload);
         setSearchResults(results.rides || results.data || results);
         
-        if (rideType === 'local') {
-          navigation.navigate('LocalRideResults' as any);
+        if (curType === 'local') {
+          navigate('LocalRideResults');
         } else {
-          navigation.navigate('AvailableRides' as any);
+          navigate('AvailableRides');
         }
       } catch (error) {
         console.error('Failed to search rides:', error);
@@ -127,58 +115,57 @@ export const useBookRideInfo = () => {
         setIsSearching(false);
       }
     }
-  }, [
-    navigation, 
-    startLocation, 
-    destinationLocation, 
-    travelDate, 
-    seatCount, 
-    setSearchResults, 
-    setTravelDate,
-    addRecentSearch
-  ]);
+  }, [navigate]);
 
-  const handleSelectRecentSearch = useCallback((search: RecentSearch) => {
-    setStartLocation(search.startLocation);
-    setDestinationLocation(search.destinationLocation);
-    setTravelDate(search.travelDate);
-    setSeatCount(search.seatCount);
-    // After selecting, trigger search logic
-    // We can't call handleSearchRides directly here easily because of stale closures or complex dependencies,
-    // but we can just let the user click search OR trigger it if date is valid.
-    // The user said: "also if date is havnt past then just search it directly"
+  const handleSelectRecentSearch = useCallback(async (search: RecentSearch) => {
+    const store = useBookRideStore.getState();
+    store.setStartLocation(search.startLocation);
+    store.setDestinationLocation(search.destinationLocation);
+    store.setTravelDate(search.travelDate);
+    store.setSeatCount(search.seatCount);
     
     const selectedDate = new Date(search.travelDate);
-    if (!isBefore(selectedDate, startOfDay(new Date()))) {
-      // Auto search if not past
-      // We'll reuse the logic or just let the handleSearchRides be called in next tick?
-      // Better to have a shared function or just call it after state updates.
-      // Since Zustand updates are synchronous, we might be able to call it if we pass values.
-    }
-  }, [setStartLocation, setDestinationLocation, setTravelDate, setSeatCount]);
-
-  // Refactor handleSearchRides to be more reusable if needed, 
-  // but for now I'll just trigger it manually in the component if I want auto-search.
-  // Actually, I'll update handleSelectRecentSearch to handle the navigation logic too.
-
-  const selectAndSearch = useCallback(async (search: RecentSearch) => {
-    setStartLocation(search.startLocation);
-    setDestinationLocation(search.destinationLocation);
-    setTravelDate(search.travelDate);
-    setSeatCount(search.seatCount);
-
-    const selectedDate = new Date(search.travelDate);
     if (isBefore(selectedDate, startOfDay(new Date()))) {
-      setTravelDate(null);
-      navigation.navigate('BookDateSelection' as any);
+      store.setTravelDate(null);
+      navigate('BookDateSelection');
     } else {
-      // We can't easily await the state update and then call handleSearchRides
-      // because handleSearchRides uses the values from the hook's scope.
-      // So we'll navigate to results if possible, or just let the user click.
-      // Actually, let's just implement the search here directly or call handleSearchRides.
-      // To call handleSearchRides correctly, we'd need to ensure it uses the NEW values.
+      try {
+        setIsSearching(true);
+        const payload: SearchRidePayload = {
+          sourceLat: search.startLocation.latitude,
+          sourceLon: search.startLocation.longitude,
+          destLat: search.destinationLocation.latitude,
+          destLon: search.destinationLocation.longitude,
+          travelDate: format(selectedDate, "yyyy-MM-dd'T'HH:mm:ss"),
+          requestedSeats: search.seatCount,
+          radiusInMeters: 10000,
+          page: 0,
+          size: 15,
+        };
+
+        const results = await rideService.searchRides(payload);
+        store.setSearchResults(results.rides || results.data || results);
+        
+        if (store.rideType === 'local') {
+          navigate('LocalRideResults');
+        } else {
+          navigate('AvailableRides');
+        }
+      } catch (error) {
+        console.error('Failed to search rides from recent search:', error);
+      } finally {
+        setIsSearching(false);
+      }
     }
-  }, [setStartLocation, setDestinationLocation, setTravelDate, setSeatCount, navigation]);
+  }, [navigate]);
+
+  const handleSetRideType = useCallback((type: 'local' | 'intercity') => {
+    useBookRideStore.getState().setRideType(type);
+  }, []);
+
+  const handleClearRecentSearches = useCallback(() => {
+    useBookRideStore.getState().clearRecentSearches();
+  }, []);
 
   return {
     pickup: startLocation?.address || '',
@@ -193,10 +180,10 @@ export const useBookRideInfo = () => {
     incrementPeople,
     decrementPeople,
     handleSearchRides,
-    handleSelectRecentSearch: selectAndSearch,
-    clearRecentSearches,
+    handleSelectRecentSearch,
+    clearRecentSearches: handleClearRecentSearches,
     t,
     rideType,
-    setRideType,
+    setRideType: handleSetRideType,
   };
 };

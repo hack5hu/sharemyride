@@ -1,8 +1,8 @@
 import { useState, useCallback, useMemo } from 'react';
 import { format } from 'date-fns';
-import { useNavigation } from '@react-navigation/native';
 import { MonthData } from '@/components/templates/DateSelectionTemplate';
 import { useBookRideStore } from '@/store/useBookRideStore';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 
 const getMonthsData = (): MonthData[] => {
   const today = new Date();
@@ -24,8 +24,8 @@ const getMonthsData = (): MonthData[] => {
 };
 
 export const useBookDateSelection = () => {
-  const navigation = useNavigation();
-  const { travelDate, setTravelDate } = useBookRideStore();
+  const { goBack } = useAppNavigation();
+  const travelDate = useBookRideStore(state => state.travelDate);
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(
     travelDate ? new Date(travelDate) : new Date()
@@ -34,18 +34,18 @@ export const useBookDateSelection = () => {
   const months = useMemo(() => getMonthsData(), []);
 
   const handleBackPress = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    goBack();
+  }, [goBack]);
 
   const handleSelectDate = useCallback((date: Date) => {
     setSelectedDate(date);
-    setTravelDate(format(date, "yyyy-MM-dd'T'HH:mm:ss"));
+    useBookRideStore.getState().setTravelDate(format(date, "yyyy-MM-dd'T'HH:mm:ss"));
     
     // Auto navigation back
     setTimeout(() => {
-      navigation.goBack();
+      goBack();
     }, 200);
-  }, [setTravelDate, navigation]);
+  }, [goBack]);
 
   return {
     months,

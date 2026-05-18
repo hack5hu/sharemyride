@@ -1,11 +1,11 @@
 import { useCallback, useMemo, useState, useRef, useEffect } from 'react';
 import { Linking } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { CameraRef } from '@maplibre/maplibre-react-native';
 import { decodePolyline, getBoundingBox } from '@/utils/polyline';
 
 export const useRideRouteMap = (routePath?: string, stops?: any[], destination?: any, initialStopIndex?: number) => {
-  const navigation = useNavigation();
+  const { goBack } = useAppNavigation();
   const cameraRef = useRef<CameraRef>(null);
   const mapRef = useRef<any>(null);
   const zoomRef = useRef(14);
@@ -25,8 +25,8 @@ export const useRideRouteMap = (routePath?: string, stops?: any[], destination?:
   });
 
   const handleBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    goBack();
+  }, [goBack]);
 
   const handleUserLocationUpdate = useCallback((location: any) => {
     if (location?.coords) {
@@ -95,7 +95,7 @@ export const useRideRouteMap = (routePath?: string, stops?: any[], destination?:
         type: 'Feature',
         properties: { 
           type: 'marker', 
-          role: idx === 0 ? 'start' : (idx === stops.length - 1 ? 'end' : 'stop'),
+          role: idx === 0 ? 'start' : (idx === (stops || []).length - 1 ? 'end' : 'stop'),
           name: stop.name,
         },
         geometry: { type: 'Point', coordinates: [stop.lon, stop.lat] },

@@ -1,18 +1,19 @@
 import { useCallback, useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { Alert, Clipboard, Linking, Platform } from 'react-native';
 import { useLocale } from '@/constants/localization';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import rideService from '@/serviceManager/rideService';
 import { useRideDataMapper } from './useRideDataMapper';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 
 export const useRideInformation = (rideId: string, sourceStopId?: number, destinationStopId?: number) => {
-  const navigation = useNavigation();
+  const { navigate, goBack } = useAppNavigation();
   const { rideInformation: t } = useLocale();
   const [rideRaw, setRideRaw] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { startLocation, destinationLocation } = useBookRideStore();
+  const startLocation = useBookRideStore(state => state.startLocation);
+  const destinationLocation = useBookRideStore(state => state.destinationLocation);
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -23,12 +24,11 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
       } catch (error) {
         console.error('Failed to fetch ride detail:', error);
       } finally {
-        // Subtle delay to ensure UI feels stable
         setTimeout(() => setIsLoading(false), 300);
       }
     };
     fetchDetail();
-  }, [rideId]);
+  }, [rideId, sourceStopId, destinationStopId]);
   
   const ride = useRideDataMapper(
     rideRaw, 
@@ -39,11 +39,11 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
   );
 
   const handleBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    goBack();
+  }, [goBack]);
 
   const handleBook = useCallback(() => {
-    (navigation.navigate as any)('BookSeatSelection', { 
+    navigate('BookSeatSelection', { 
       rideId,
       sourceStopId,
       destinationStopId,
@@ -53,10 +53,10 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
       departureDate: (ride as any)?.departureDate,
       departureTime: (ride as any)?.departureTime,
     });
-  }, [navigation, rideId, sourceStopId, destinationStopId, ride]);
+  }, [navigate, rideId, sourceStopId, destinationStopId, ride]);
 
   const handleChat = useCallback(() => {
-    (navigation.navigate as any)('ChatDetails', {
+    navigate('ChatDetails', {
       userId: ride?.driver?.id,
       rideId: rideId,
       name: ride?.driver?.name,
@@ -68,17 +68,17 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
         time: ride?.departureTime || '',
       },
     });
-  }, [navigation, ride]);
+  }, [navigate, ride, rideId]);
 
   const handleViewRoute = useCallback((index?: number) => {
     const stops = ride?.rawStops;
     if (!stops || stops.length === 0) return;
-    (navigation.navigate as any)('RideRouteMap', {
+    navigate('RideRouteMap', {
       routePath: ride?.routePath ?? '',
       stops,
       initialStopIndex: index,
     });
-  }, [navigation, ride]);
+  }, [navigate, ride]);
 
   const handleCopyAddress = useCallback((address: string) => {
     Clipboard.setString(address);
@@ -98,9 +98,9 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
 
   const handleDriverProfile = useCallback(() => {
     if (ride?.driver?.id) {
-      (navigation.navigate as any)('UserProfileDetail', { userId: ride.driver.id });
+      navigate('UserProfileDetail', { userId: ride?.driver?.id });
     }
-  }, [navigation, ride]);
+  }, [navigate, ride]);
 
   return {
     t,

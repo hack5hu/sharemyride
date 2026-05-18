@@ -1,14 +1,14 @@
 import { useState, useCallback, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { useLocale } from '@/constants/localization';
 import { RideData } from './types';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import { calculateDistance } from '@/utils/location';
 import { calculateSegmentPrice } from '@/utils/pricing';
 import rideService from '@/serviceManager/rideService';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 
 export const useAvailableRides = () => {
-  const navigation = useNavigation();
+  const { navigate, goBack } = useAppNavigation();
   const { availableRides: t, rideFilters: ft } = useLocale();
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
@@ -19,15 +19,7 @@ export const useAvailableRides = () => {
     searchResults, 
     startLocation, 
     destinationLocation, 
-    travelDate,
-    seatCount,
-    currentPage, 
-    setCurrentPage, 
-    hasMore, 
-    appendSearchResults,
-    setSearchResults,
-    setFilters,
-    filters
+    hasMore,
   } = useBookRideStore();
 
   const mapFiltersToPayload = useCallback((activeFilters: string[]) => {
@@ -44,7 +36,6 @@ export const useAvailableRides = () => {
 
     const timeFilters = activeFilters.filter(f => f.startsWith('time_'));
     if (timeFilters.length > 0) {
-      // Logic to merge slots like 12-4 and 4-8 to 12-8
       const slots = timeFilters.map(f => {
         const [_, s, e] = f.split('_').map(Number);
         return { s, e };
@@ -69,19 +60,22 @@ export const useAvailableRides = () => {
   }, []);
 
   const handleLoadMore = useCallback(async () => {
-    if (isFetchingMore || !hasMore || !startLocation || !destinationLocation || !travelDate) return;
+    const store = useBookRideStore.getState();
+    const { startLocation: curStart, destinationLocation: curDest, travelDate: curDate, currentPage, hasMore: curHasMore, seatCount } = store;
+
+    if (isFetchingMore || !curHasMore || !curStart || !curDest || !curDate) return;
 
     try {
       setIsFetchingMore(true);
       const nextPage = currentPage + 1;
       
       const payload = {
-        sourceLat: startLocation.latitude,
-        sourceLon: startLocation.longitude,
-        destLat: destinationLocation.latitude,
-        destLon: destinationLocation.longitude,
-        travelDate: travelDate,
-        requestedSeats: useBookRideStore.getState().seatCount,
+        sourceLat: curStart.latitude,
+        sourceLon: curStart.longitude,
+        destLat: curDest.latitude,
+        destLon: curDest.longitude,
+        travelDate: curDate,
+        requestedSeats: seatCount,
         radiusInMeters: 10000,
         page: nextPage,
         size: 10,
@@ -92,20 +86,16 @@ export const useAvailableRides = () => {
       const newRides = response.rides || response.data || response;
       
       if (newRides && newRides.length > 0) {
-        appendSearchResults(newRides);
-        setCurrentPage(nextPage);
+        store.appendSearchResults(newRides);
+        store.setCurrentPage(nextPage);
       }
     } catch (error) {
       console.error('Failed to load more rides:', error);
     } finally {
       setIsFetchingMore(false);
     }
-  }, [
-    isFetchingMore, hasMore, currentPage, startLocation, destinationLocation, travelDate, 
-    seatCount, appendSearchResults, setCurrentPage, selectedFilters, mapFiltersToPayload
-  ]);
+  }, [isFetchingMore, selectedFilters, mapFiltersToPayload]);
 
-  // Safely map backend data to RideData if present, otherwise an empty array.
   const mappedRides: RideData[] = useMemo(() => {
     if (!searchResults || searchResults.length === 0) return [];
     
@@ -118,7 +108,6 @@ export const useAvailableRides = () => {
         ? calculateSegmentPrice(ride.stops || [], ride.fullJourneyPrice)
         : (ride.price || 0);
 
-      // Extract features from preferences
       const features: string[] = [];
       if (ride.preferences?.nonSmoking) features.push('noSmoking');
       if (ride.preferences?.womenOnly) features.push('ladiesOnly');
@@ -167,7 +156,7 @@ export const useAvailableRides = () => {
       return {
         id: ride.id || String(index),
         driver: {
-          name: ride.driverName || 'Unknown Driver',
+          name: ride.driverName || 'Unknown Host',
           rating: ride.driverRating || 4.8,
           rideCount: ride.driverRideCount || 15,
           avatar: ride.driverPhotoUrl || 'https://ui-avatars.com/api/?name=' + (ride.driverName || 'U'),
@@ -195,10 +184,6 @@ export const useAvailableRides = () => {
     let result = [...mappedRides];
 
     if (selectedFilters.length > 0) {
-      // We only keep client-side filtering for things NOT handled by the server
-      // or as a safety measure. However, to avoid the "not reflecting" issue,
-      // we'll rely on the server response for preferences.
-      
       const timeFilters = selectedFilters.filter(f => f.startsWith('time_'));
 
       if (timeFilters.length > 0) {
@@ -232,17 +217,18 @@ export const useAvailableRides = () => {
   }, [mappedRides, selectedFilters]);
 
   const handleBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    goBack();
+  }, [goBack]);
 
   const handleRideSelect = useCallback((rideId: string) => {
-    const ride = mappedRides.find(r => r.id === rideId);
-    navigation.navigate('RideInformation' as any, { 
+    const rawRides = useBookRideStore.getState().searchResults;
+    const ride = rawRides?.find(r => String(r.id) === String(rideId));
+    navigate('RideInformation', { 
       rideId,
       sourceStopId: ride?.sourceStopId,
       destinationStopId: ride?.destinationStopId
     });
-  }, [navigation, mappedRides]);
+  }, [navigate]);
 
   const handleOpenFilters = useCallback(() => {
     setIsFilterModalOpen(true);
@@ -259,7 +245,6 @@ export const useAvailableRides = () => {
       if (isAlreadySelected) {
         return prev.filter(f => f !== filter);
       } else {
-        // Enforce mutual exclusivity for Near Pickup and Near Dropoff
         if (filter === 'nearPickup') {
           return [...prev.filter(f => f !== 'nearDropoff'), 'nearPickup'];
         }
@@ -273,20 +258,23 @@ export const useAvailableRides = () => {
 
   const handleClearFilters = useCallback(async () => {
     setSelectedFilters([]);
-    setFilters({});
+    const store = useBookRideStore.getState();
+    store.setFilters({});
     setIsFilterModalOpen(false);
-    if (!startLocation || !destinationLocation || !travelDate) return;
     
-    setSearchResults([]); // Clear old results to show fetching message
-    setIsLoading(true); // Show main loader for filter change
+    const { startLocation: curStart, destinationLocation: curDest, travelDate: curDate, seatCount, setSearchResults } = store;
+    if (!curStart || !curDest || !curDate) return;
+    
+    setSearchResults([]);
+    setIsLoading(true);
     try {
       const payload = {
-        sourceLat: startLocation.latitude,
-        sourceLon: startLocation.longitude,
-        destLat: destinationLocation.latitude,
-        destLon: destinationLocation.longitude,
-        travelDate: travelDate,
-        requestedSeats: useBookRideStore.getState().seatCount,
+        sourceLat: curStart.latitude,
+        sourceLon: curStart.longitude,
+        destLat: curDest.latitude,
+        destLon: curDest.longitude,
+        travelDate: curDate,
+        requestedSeats: seatCount,
         radiusInMeters: 10000,
         page: 0,
         size: 10,
@@ -298,10 +286,9 @@ export const useAvailableRides = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [startLocation, destinationLocation, travelDate, setSearchResults]);
+  }, []);
   
   const handleApplyFilters = useCallback(async (filters: string[]) => {
-    // Check if the newly applied filters are identical to the current selection
     const isSame = 
       filters.length === selectedFilters.length && 
       filters.every(f => selectedFilters.includes(f));
@@ -311,19 +298,21 @@ export const useAvailableRides = () => {
     }
 
     setSelectedFilters(filters);
-    if (!startLocation || !destinationLocation || !travelDate) return;
+    const store = useBookRideStore.getState();
+    const { startLocation: curStart, destinationLocation: curDest, travelDate: curDate, seatCount, setSearchResults } = store;
+    if (!curStart || !curDest || !curDate) return;
 
-    setSearchResults([]); // Clear old results to show fetching message
+    setSearchResults([]);
     setIsLoading(true);
     try {
       const filterPayload = mapFiltersToPayload(filters);
       const payload = {
-        sourceLat: startLocation.latitude,
-        sourceLon: startLocation.longitude,
-        destLat: destinationLocation.latitude,
-        destLon: destinationLocation.longitude,
-        travelDate: travelDate,
-        requestedSeats: useBookRideStore.getState().seatCount,
+        sourceLat: curStart.latitude,
+        sourceLon: curStart.longitude,
+        destLat: curDest.latitude,
+        destLon: curDest.longitude,
+        travelDate: curDate,
+        requestedSeats: seatCount,
         radiusInMeters: 10000,
         page: 0,
         size: 10,
@@ -337,7 +326,7 @@ export const useAvailableRides = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [startLocation, destinationLocation, travelDate, setSearchResults, mapFiltersToPayload, selectedFilters]);
+  }, [mapFiltersToPayload, selectedFilters]);
 
   const handleViewDetails = useCallback((rideId: string) => {
     console.log('Viewing details:', rideId);

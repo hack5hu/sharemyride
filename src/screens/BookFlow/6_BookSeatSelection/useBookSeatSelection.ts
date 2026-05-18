@@ -1,10 +1,8 @@
 import { useState, useCallback, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import { FIVE_SEATER_ROWS, SEVEN_SEATER_ROWS } from '@/components/organisms/CarFloorPlan/seatConfig';
 import rideService from '@/serviceManager/rideService';
-
-
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 
 export const useBookSeatSelection = (
   rideId: string, 
@@ -16,8 +14,8 @@ export const useBookSeatSelection = (
   passedDate?: string,
   passedTime?: string
 ) => {
-  const navigation = useNavigation();
-  const { searchResults } = useBookRideStore();
+  const { navigate, goBack } = useAppNavigation();
+  const searchResults = useBookRideStore(state => state.searchResults);
   const [selectedSeats, setSelectedSeats] = useState<Set<string | number>>(new Set());
   const [isBooking, setIsBooking] = useState(false);
 
@@ -113,7 +111,7 @@ export const useBookSeatSelection = (
     });
   }, [occupiedSeats]);
 
-  const handleBack = useCallback(() => navigation.goBack(), [navigation]);
+  const handleBack = useCallback(() => goBack(), [goBack]);
 
   const handleConfirm = useCallback(async () => {
     if (selectedSeats.size === 0 || isBooking) return;
@@ -127,16 +125,16 @@ export const useBookSeatSelection = (
       };
 
       await rideService.bookRide(rideId, payload);
-      navigation.navigate('BookingConfirmed', { 
+      navigate('BookingConfirmed', { 
         rideId,
-        bookedSeats: Array.from(selectedSeats)
+        bookedSeats: Array.from(selectedSeats).map(String)
       });
     } catch (error) {
       console.error('Booking confirmation failed:', error);
     } finally {
       setIsBooking(false);
     }
-  }, [navigation, selectedSeats, rideId, seatNameIdMap, isBooking, sourceStopId, destinationStopId]);
+  }, [navigate, selectedSeats, rideId, seatNameIdMap, isBooking, sourceStopId, destinationStopId]);
 
   return {
     rows: vehicleType === '7' ? SEVEN_SEATER_ROWS : FIVE_SEATER_ROWS,
@@ -148,7 +146,7 @@ export const useBookSeatSelection = (
     toggleSeat,
     handleBack,
     handleConfirm,
-    driverName: rideRaw?.driverName ?? 'Driver',
+    driverName: rideRaw?.driverName ?? 'Host',
     vehicleRegistration: rideRaw?.vehicleRegistration ?? '',
     vehicleType,
     departureDate,

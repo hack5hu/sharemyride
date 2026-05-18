@@ -4,7 +4,7 @@ export interface RideRouteMapTemplateProps {
   title: string;
   onBack: () => void;
   mapRef: React.RefObject<any>;
-  cameraRef: React.RefObject<CameraRef>;
+  cameraRef: React.RefObject<any>;
   region: { latitude: number; longitude: number };
   zoom: number;
   onRegionDidChange: (event: any) => void;

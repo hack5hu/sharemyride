@@ -23,7 +23,13 @@ export interface CommonTranslations {
   seat: string;
   seats: string;
   shareLiveLocation: string;
-  letOthersTrack: string;
+  today: string;
+  openingMap: string;
+  navigatingTo: string;
+  addressCopied: string;
+  success: string;
+  error: string;
+  cancelled: string;
 }
 
 export interface LoginTranslations {
@@ -223,6 +229,10 @@ export interface ChatTranslations {
   rideLabel: string;
   yesterday: string;
   activeDrivers: string;
+  locationShared: string;
+  safetmsg: string;
+  emptyTitle: string;
+  emptyDescription: string;
 }
 
 export interface RideDetailsTranslations {
@@ -245,6 +255,39 @@ export interface RideDetailsTranslations {
   chat: string;
   myRide: string;
   groupChat: string;
+  timelineTitle: string;
+  fetchingDetails: string;
+  cancelBooking: string;
+  selectSeat: string;
+  ridesLabel: string;
+  bookingTotal: string;
+  seatsLabel: string;
+  seatLabel: string;
+  paymentLabel: string;
+  cashLabel: string;
+  passengers: string;
+  driver: string;
+  seatsLeft: string;
+  journeyComfort: string;
+  journeyItinerary: string;
+  yourFare: string;
+  perSeatNote: string;
+  smokeFree: string;
+  petsWelcome: string;
+  luggageOk: string;
+  ladiesOnly: string;
+  approvalRequired: string;
+  instantBooking: string;
+  vibes: string;
+  date: string;
+  time: string;
+  duration: string;
+  seatsLeftLabel: string;
+  assignedVehicle: string;
+  compactSedan: string;
+  premiumSuv: string;
+  swiftBike: string;
+  standardVehicle: string;
 }
 
 export interface CancelRideTranslations {
@@ -258,6 +301,12 @@ export interface CancelRideTranslations {
   confirmCancel: string;
   keepRide: string;
   otherReasonPlaceholder: string;
+  reasonPlansChanged: string;
+  reasonAlternative: string;
+  reasonUncomfortable: string;
+  reasonNotAvailable: string;
+  successMessage: string;
+  errorMessage: string;
 }
 
 export interface LocationSelectionTranslations {
@@ -478,6 +527,15 @@ export interface MyRidesTranslations {
   completedStatus: string;
   requestPending: string;
   rideConfirmed: string;
+  archiveTab: string;
+  noArchiveTitle: string;
+  cancelRideError: string;
+  noArchiveDesc: string;
+  confirmedStatus: string;
+  pendingStatus: string;
+  youAreDriver: string;
+  yourVehicle: string;
+  vehicleDetails: string;
 }
 
 export interface SettingsTranslations {

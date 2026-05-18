@@ -73,6 +73,7 @@ export type RootStackParamList = {
   RequestType: undefined;
   SummaryPublish: undefined;
   PublishSuccess: undefined;
+  BookDateSelection: undefined;
   BookRideInfo: undefined;
   LocalRideResults: undefined;
   AvailableRides: undefined;
