@@ -2,13 +2,27 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import * as Keychain from 'react-native-keychain';
 import { mmkvStorage } from '../utils/storage';
+import { Logger } from '@/utils/logger';
+
+interface AuthUser {
+  id?: string;
+  userId?: string;
+  phone?: string;
+  name?: string;
+  dateOfBirth?: string;
+  phoneNumber?: string;
+  profilePhotoUrl?: string;
+  gender?: string;
+  bio?: string;
+  [key: string]: unknown;
+}
 
 interface AuthState {
   token: string | null;
-  user: any | null;
+  user: AuthUser | null;
   isAuthenticated: boolean;
   isProfileCompleted: boolean;
-  setAuth: (user: any, token: string, isProfileCompleted?: boolean) => void;
+  setAuth: (user: AuthUser, token: string, isProfileCompleted?: boolean) => void;
   setProfileCompleted: (value: boolean) => void;
   logout: () => void;
   initialize: () => Promise<void>;
@@ -49,7 +63,7 @@ export const useAuthStore = create<AuthState>()(
             // No valid token in keychain — clear any stale persisted state
             set({ user: null, token: null, isAuthenticated: false, isProfileCompleted: false });
           }
-        } catch (e) {
+        } catch {
           // Keychain error: treat as logged out
           set({ user: null, token: null, isAuthenticated: false, isProfileCompleted: false });
         }
@@ -73,15 +87,23 @@ export const useAuthStore = create<AuthState>()(
             }));
           }
         } catch (error) {
-          console.error('Failed to fetch profile:', error);
+          Logger.error('Failed to fetch profile:', error);
         }
       },
     }),
     {
       name: 'auth-storage',
       storage: createJSONStorage(() => mmkvStorage),
-      // We explicitly don't persist tokens in MMKV here; Keychain is the source of truth.
-      // But we persist 'token' in state for easy access in UI if needed.
+      partialize: state => ({
+        user: state.user,
+        isAuthenticated: state.isAuthenticated,
+        isProfileCompleted: state.isProfileCompleted,
+      }),
+      merge: (persistedState, currentState) => ({
+        ...currentState,
+        ...(persistedState as Partial<AuthState>),
+        token: null,
+      }),
     }
   )
 );

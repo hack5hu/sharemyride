@@ -81,15 +81,9 @@ export const useUserProfileDetail = (userId: string) => {
     navigation.goBack();
   }, [navigation]);
 
-  const handleReport = useCallback(() => {
-    // Implement report logic or navigate to report screen
-    console.log('Reporting user:', userId);
-  }, [userId]);
+  const handleReport = useCallback(() => {}, []);
 
-  const handleViewRatings = useCallback(() => {
-    // Navigate to detailed ratings screen
-    console.log('Viewing ratings for:', userId);
-  }, [userId]);
+  const handleViewRatings = useCallback(() => {}, []);
 
   return {
     profile,

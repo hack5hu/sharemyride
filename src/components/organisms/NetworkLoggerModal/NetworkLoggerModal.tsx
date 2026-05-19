@@ -97,43 +97,15 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
 
       <Modal visible={isModalVisible} animationType="slide" transparent>
         <S.ModalWrapper>
-          <S.ModalHeader>
-            <Typography variant="title" size="md">{t.networkLogsTitle}</Typography>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <S.ClearButton onPress={clearLogs}>
-                <Typography variant="label" size="sm" color={theme.colors.primary} weight="bold">
-                  {t.clear}
-                </Typography>
-              </S.ClearButton>
-              <S.CloseButton onPress={() => setModalVisible(false)}>
-                <Icon name="close" size={24} color={theme.colors.on_surface} />
-              </S.CloseButton>
-            </View>
-          </S.ModalHeader>
-
-          <S.Container>
-            <FlashList
-              data={logs}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id}
-              estimatedItemSize={100}
-              ListEmptyComponent={renderEmpty}
-            />
-          </S.Container>
-        </S.ModalWrapper>
-      </Modal>
-
-      <Modal visible={!!selectedLog} animationType="fade" transparent>
-        <S.DetailModalContainer>
-          <S.DetailModalHeader>
-            <Typography variant="title" size="sm">{t.requestDetails}</Typography>
-            <TouchableOpacity onPress={() => setSelectedLog(null)} style={{ padding: 8 }}>
-              <Typography variant="label" size="sm" color={theme.colors.primary} weight="bold">{t.close}</Typography>
-            </TouchableOpacity>
-          </S.DetailModalHeader>
-          <S.ScrollContent>
-            {selectedLog && (
-              <>
+          {selectedLog ? (
+            <>
+              <S.DetailModalHeader>
+                <Typography variant="title" size="sm">{t.requestDetails}</Typography>
+                <TouchableOpacity onPress={() => setSelectedLog(null)} style={{ padding: 8 }}>
+                  <Typography variant="label" size="sm" color={theme.colors.primary} weight="bold">{t.close}</Typography>
+                </TouchableOpacity>
+              </S.DetailModalHeader>
+              <S.ScrollContent>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 16, marginBottom: 8 }}>
                   <S.SectionTitle variant="label" size="xs" color={theme.colors.on_surface_variant} weight="bold" style={{ marginTop: 0, marginBottom: 0 }}>
                     {t.overview}
@@ -181,10 +153,36 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                 </S.CodeBlock>
 
                 <S.SectionTitle variant="label" size="xs" color={theme.colors.on_surface_variant} weight="bold" />
-              </>
-            )}
-          </S.ScrollContent>
-        </S.DetailModalContainer>
+              </S.ScrollContent>
+            </>
+          ) : (
+            <>
+              <S.ModalHeader>
+                <Typography variant="title" size="md">{t.networkLogsTitle}</Typography>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <S.ClearButton onPress={clearLogs}>
+                    <Typography variant="label" size="sm" color={theme.colors.primary} weight="bold">
+                      {t.clear}
+                    </Typography>
+                  </S.ClearButton>
+                  <S.CloseButton onPress={() => setModalVisible(false)}>
+                    <Icon name="close" size={24} color={theme.colors.on_surface} />
+                  </S.CloseButton>
+                </View>
+              </S.ModalHeader>
+
+              <S.Container>
+                <FlashList
+                  data={logs}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => item.id}
+                  estimatedItemSize={100}
+                  ListEmptyComponent={renderEmpty}
+                />
+              </S.Container>
+            </>
+          )}
+        </S.ModalWrapper>
       </Modal>
     </>
   );

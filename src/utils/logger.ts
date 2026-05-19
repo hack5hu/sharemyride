@@ -2,12 +2,12 @@
  * Custom Logger utility that toggles behavior between Development and Production.
  */
 const Logger = {
-  log: (...args: any[]) => {
+  log: (...args: unknown[]) => {
     if (__DEV__) {
       console.log('[LOG]:', ...args);
     }
   },
-  error: (...args: any[]) => {
+  error: (...args: unknown[]) => {
     if (__DEV__) {
       console.error('[ERROR]:', ...args);
     } else {
@@ -15,12 +15,12 @@ const Logger = {
       // For now, we'll just ignore or use a silent log
     }
   },
-  warn: (...args: any[]) => {
+  warn: (...args: unknown[]) => {
     if (__DEV__) {
       console.warn('[WARN]:', ...args);
     }
   },
-  info: (...args: any[]) => {
+  info: (...args: unknown[]) => {
     if (__DEV__) {
       console.info('[INFO]:', ...args);
     }

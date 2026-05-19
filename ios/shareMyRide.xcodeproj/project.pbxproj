@@ -7,30 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		03F396C288884070A538422C /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E3A4ADC50624CE6808382DC /* FontAwesome5_Regular.ttf */; };
-		07479F1A5E9B4FFD89B16D68 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 43886D0EB5BB4FE9AEEE1DFE /* Entypo.ttf */; };
-		0774DF82BF584F16BA1B5BE4 /* FontAwesome6_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41BA60ADBF9842DCBAF4778C /* FontAwesome6_Brands.ttf */; };
-		079A19E2BC4248D1829C6F97 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E6064403F196481984AAFA4F /* Foundation.ttf */; };
 		0C80B921A6F3F58F76C31292 /* libPods-shareMyRide.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-shareMyRide.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		176643321E45410A815F6E14 /* FontAwesome6_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0AA0A4EB98DF466D947C10C5 /* FontAwesome6_Solid.ttf */; };
-		32642AD8A7E14C33875A2314 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB18DB0B8E36489CB2A09A8B /* FontAwesome5_Solid.ttf */; };
-		32A1D3EC86424F78A28A3902 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DE88A4ECF2ED4AD7B21E20B8 /* FontAwesome5_Brands.ttf */; };
-		351732637F19488091231CC0 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B39E06A4977B481C98AD7A8F /* Zocial.ttf */; };
-		4DFEE433925F4BEC90BF1A1B /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 60CE331F8E674A2C9F1B86F9 /* FontAwesome.ttf */; };
-		545B291F20B74D32965F80EE /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41839DBDDF5647AE9570D528 /* Feather.ttf */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
-		7A4E829959034D93B3A0ABF2 /* FontAwesome6_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA23D507D046431DAEBFF71E /* FontAwesome6_Regular.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		857B4242B63E48679502FB36 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D721A0E3BD55413F9CFB57B6 /* Octicons.ttf */; };
-		8B73700143894BE094AC4B0F /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DDAD59E88A664FF39CDE793C /* Ionicons.ttf */; };
-		9E57FFF781694BE1BC5D15ED /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 12193B406B2E468291238696 /* Fontisto.ttf */; };
-		A46B89AF4EA040F8967A09A9 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 36AA414C384B420C98427A26 /* MaterialIcons.ttf */; };
-		B832DDC52AC94043A71A1803 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F73320D32908497D90C9183B /* AntDesign.ttf */; };
 		BB51A4C2D198D1BBD0A9FAAF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
-		C733188AEAAA49D48997C4C8 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F09962C0709A4918854C090F /* SimpleLineIcons.ttf */; };
-		CAA3A9D075704C11A0BADD00 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DEFC5A6A23724B43B3E5F33F /* EvilIcons.ttf */; };
-		EF38273BCC204F539DB8FA3B /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86337A76F5BD4DC7A95DE38D /* MaterialCommunityIcons.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -178,12 +159,16 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				AA8829AEF140E4309044F452 /* [MapLibre React Native] Remove MapLibre.xcframework-ios.signature */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = shareMyRide;
+			packageProductDependencies = (
+				E630FD9EAA88FBECF7D233A2 /* MapLibre */,
+			);
 			productName = shareMyRide;
 			productReference = 13B07F961A680F5B00A75B9A /* shareMyRide.app */;
 			productType = "com.apple.product-type.application";
@@ -210,6 +195,9 @@
 				Base,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
+			packageReferences = (
+				CAC30AD22965B31F05394E53 /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */,
+			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -227,25 +215,6 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				BB51A4C2D198D1BBD0A9FAAF /* PrivacyInfo.xcprivacy in Resources */,
-				9E57FFF781694BE1BC5D15ED /* Fontisto.ttf in Resources */,
-				857B4242B63E48679502FB36 /* Octicons.ttf in Resources */,
-				545B291F20B74D32965F80EE /* Feather.ttf in Resources */,
-				7A4E829959034D93B3A0ABF2 /* FontAwesome6_Regular.ttf in Resources */,
-				07479F1A5E9B4FFD89B16D68 /* Entypo.ttf in Resources */,
-				32A1D3EC86424F78A28A3902 /* FontAwesome5_Brands.ttf in Resources */,
-				EF38273BCC204F539DB8FA3B /* MaterialCommunityIcons.ttf in Resources */,
-				B832DDC52AC94043A71A1803 /* AntDesign.ttf in Resources */,
-				079A19E2BC4248D1829C6F97 /* Foundation.ttf in Resources */,
-				8B73700143894BE094AC4B0F /* Ionicons.ttf in Resources */,
-				32642AD8A7E14C33875A2314 /* FontAwesome5_Solid.ttf in Resources */,
-				03F396C288884070A538422C /* FontAwesome5_Regular.ttf in Resources */,
-				4DFEE433925F4BEC90BF1A1B /* FontAwesome.ttf in Resources */,
-				351732637F19488091231CC0 /* Zocial.ttf in Resources */,
-				CAA3A9D075704C11A0BADD00 /* EvilIcons.ttf in Resources */,
-				176643321E45410A815F6E14 /* FontAwesome6_Solid.ttf in Resources */,
-				C733188AEAAA49D48997C4C8 /* SimpleLineIcons.ttf in Resources */,
-				0774DF82BF584F16BA1B5BE4 /* FontAwesome6_Brands.ttf in Resources */,
-				A46B89AF4EA040F8967A09A9 /* MaterialIcons.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +253,25 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-shareMyRide/Pods-shareMyRide-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		AA8829AEF140E4309044F452 /* [MapLibre React Native] Remove MapLibre.xcframework-ios.signature */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[MapLibre React Native] Remove MapLibre.xcframework-ios.signature";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "rm -rf \"$CONFIGURATION_BUILD_DIR/MapLibre.xcframework-ios.signature\"";
 		};
 		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -574,6 +562,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CAC30AD22965B31F05394E53 /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/maplibre/maplibre-gl-native-distribution";
+			requirement = {
+				kind = exactVersion;
+				version = 6.25.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E630FD9EAA88FBECF7D233A2 /* MapLibre */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CAC30AD22965B31F05394E53 /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */;
+			productName = MapLibre;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
 }

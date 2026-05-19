@@ -38,7 +38,6 @@ export const usePriceSelection = () => {
   }, [totalDistanceKm, divisor]);
 
   const showPremium = useMemo(() => {
-    console.log("Selected seat IDs", selectedSeatIds);
     return (
       selectedSeatIds.includes(2)
     );

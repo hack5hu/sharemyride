@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { userService } from '@/serviceManager/userService';
@@ -32,8 +32,6 @@ export const useProfileSetup = () => {
     validationSchema,
     onSubmit: async values => {
       try {
-        console.log('Syncing profile to backend...', values);
-        
         await userService.updateProfile({
           fullName: values.fullName,
           dob: values.dob,
@@ -44,7 +42,6 @@ export const useProfileSetup = () => {
         setProfileCompleted(true);
         Alert.alert('Success', 'Profile setup complete!');
       } catch (error: any) {
-        console.log('Profile setup error:', error);
         Alert.alert(
           'Error',
           error.message || 'Failed to save profile. Please try again.',
@@ -55,7 +52,7 @@ export const useProfileSetup = () => {
 
   const handleFieldChange = useCallback((field: string, value: any) => {
     formik.setFieldValue(field, value);
-  }, [formik.setFieldValue]);
+  }, [formik]);
 
   const isFormComplete = useMemo(() => 
     formik.values.fullName.trim().length > 0 && formik.values.dob.length === 10,

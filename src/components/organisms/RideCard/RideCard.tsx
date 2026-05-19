@@ -1,10 +1,9 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import { View, Image, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
-import { VerifiedBadge } from '@/components/atoms/VerifiedBadge';
 import { moderateScale, scale, verticalScale } from '@/styles';
 import { RideData } from '@/screens/BookFlow/3_AvailableRides/types';
 import { RideTimeline } from '@/components/molecules/RideTimeline/RideTimeline';
@@ -81,7 +80,6 @@ const FeatureBadge = styled.View`
 export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void }> = ({ ride, onPress }) => {
   const theme = useTheme();
   const { availableRides: t } = useLocale();
-  console.log(ride.price)
   return (
     <CardContainer isSpecial={ride.isFrequentCoRider} onPress={() => onPress?.(ride.id)}>
       {ride.isFrequentCoRider && (

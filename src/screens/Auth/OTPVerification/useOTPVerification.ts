@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { authService } from '@/serviceManager/authService';
 import { useAuthStore } from '@/store/useAuthStore';
 
@@ -8,7 +8,6 @@ export const useOTPVerification = () => {
   const [timer, setTimer] = useState(45);
   const [loading, setLoading] = useState(false);
   const [otpValue, setOtpValue] = useState('');
-  const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const { phoneNumber } = route.params || {};
   
@@ -36,7 +35,6 @@ export const useOTPVerification = () => {
       const response = await authService.verifyOtp(phoneNumber, code);
       
       if (response.data.status === 'success' || response.status === 200) {
-        console.log('we are here')
         const { token, userId, userProfileCompleted } = response.data;
         
         // Store auth state in Zustand

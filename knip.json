@@ -1,0 +1,63 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "index.js",
+    "App.tsx",
+    ".storybook/main.ts",
+    ".storybook/preview.tsx",
+    "src/components/**/*.stories.tsx"
+  ],
+  "project": [
+    "src/**/*.{ts,tsx,js,jsx}"
+  ],
+  "ignore": [
+    "**/__tests__/**",
+    "**/__mocks__/**",
+    "android/**",
+    "ios/**",
+    "node_modules/**",
+    "src/styles/**/**"
+  ],
+  "ignoreDependencies": [
+    "@chromatic-com/storybook",
+    "@react-native-clipboard/clipboard",
+    "@react-native-community/cli",
+    "@react-native-community/cli-platform-android",
+    "@react-native-community/cli-platform-ios",
+    "@react-native/babel-preset",
+    "@react-native/eslint-config",
+    "@react-native/metro-config",
+    "@react-native/typescript-config",
+    "@storybook/addon-a11y",
+    "@storybook/addon-docs",
+    "@storybook/addon-mcp",
+    "@storybook/addon-ondevice-actions",
+    "@storybook/addon-ondevice-controls",
+    "@storybook/addon-vitest",
+    "@storybook/react-native",
+    "@storybook/react-native-web-vite",
+    "@types/jest",
+    "@types/lodash",
+    "@types/react",
+    "@types/react-test-renderer",
+    "@types/styled-components",
+    "@types/styled-components-react-native",
+    "@vitest/browser-playwright",
+    "@vitest/coverage-v8",
+    "babel-loader",
+    "babel-plugin-module-resolver",
+    "eslint",
+    "eslint-plugin-storybook",
+    "jest",
+    "playwright",
+    "prettier",
+    "react-native-dotenv",
+    "react-native-web",
+    "react-native-web-linear-gradient",
+    "react-test-renderer",
+    "storybook",
+    "vite",
+    "vitest"
+  ],
+  "ignoreExportsUsedInFile": true
+}

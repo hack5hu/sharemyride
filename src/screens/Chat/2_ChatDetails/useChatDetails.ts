@@ -8,7 +8,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { chatService } from '@/serviceManager/chatService';
 import rideService from '@/serviceManager/rideService';
 import { useChatSocket } from '@/hooks/useChatSocket';
-import { ChatMessage, MessageStatus } from '@/types/chat';
+import { ChatMessage } from '@/types/chat';
 
 export interface Message {
   id: string;
@@ -41,7 +41,6 @@ export const useChatDetails = () => {
 
   const { 
     messages: storeMessages, 
-    updateMessageStatus, 
     setActiveConversation,
     users
   } = useChatStore();
@@ -160,7 +159,17 @@ export const useChatDetails = () => {
       
       navigation.setParams({ selectedLocation: undefined } as any);
     }
-  }, [route.params?.selectedLocation, navigation, myUserId, receiverId, dynamicRideInfo]);
+  }, [
+    route.params?.avatarUri,
+    route.params?.name,
+    route.params?.rating,
+    route.params?.rideId,
+    route.params?.selectedLocation,
+    navigation,
+    myUserId,
+    receiverId,
+    dynamicRideInfo,
+  ]);
 
   const handleSafetyClose = useCallback(() => {
     setIsSafetyVisible(false);
@@ -198,7 +207,6 @@ export const useChatDetails = () => {
 
     setIsLoadingMore(true);
     try {
-      const oldestTimestamp = rawMessages[0]?.timestamp;
       // In a real app, you'd pass this timestamp to fetch older messages
       // For now, we'll call fetchHistory which should ideally handle pagination
       await chatService.fetchHistory(myUserId, receiverId);
@@ -229,8 +237,7 @@ export const useChatDetails = () => {
     });
   }, [navigation]);
 
-  const handleReportSubmit = useCallback((data: { categoryId: string; description: string }) => {
-    console.log('Report submitted:', data);
+  const handleReportSubmit = useCallback((_data: { categoryId: string; description: string }) => {
     setIsReportModalVisible(false);
   }, []);
 

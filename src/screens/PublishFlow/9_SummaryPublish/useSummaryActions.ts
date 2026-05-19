@@ -36,7 +36,6 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
 
   const handlePublish = useCallback(async () => {
     if (!startLocation || !destinationLocation || !departureDate || !departureTime || !vehicleId) return;
-    console.log('hello')
     setIsPublishing(true);
     try {
       const dateObj = new Date(departureDate);
@@ -112,7 +111,7 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
     }
   }, [
     navigation, startLocation, destinationLocation, middleStops, departureDate, departureTime, 
-    publishVehicleType, selectedSeatIds, routeDetails, segmentPrices, price, clearPublishState,
+    selectedSeatIds, routeDetails, segmentPrices, price, clearPublishState,
     selectedRoute, removeDraft, editingDraftId, premiumEnabled, premiumPercentage, fullJourneyPrice, 
     frontSeatPrice, vehicleId, setIsPublishing
   ]);

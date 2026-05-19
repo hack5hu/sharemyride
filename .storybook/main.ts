@@ -39,6 +39,7 @@ const config: StorybookConfig = {
           'react-native-reanimated': path.resolve(process.cwd(), '.storybook', 'mocks.js'),
           'react-native-vector-icons/MaterialIcons': 'react-native-vector-icons/dist/MaterialIcons',
           'react-native-vector-icons/Ionicons': 'react-native-vector-icons/dist/Ionicons',
+          '@env': path.resolve(process.cwd(), '.storybook', 'env-mock.js'),
           '@': path.resolve(process.cwd(), 'src'),
         },
       },

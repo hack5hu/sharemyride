@@ -1,9 +1,14 @@
 import { Platform } from 'react-native';
+import { API_BASE_URL } from '@env';
 
-export const BASE_URL =
-  Platform.OS === 'android'
-    ? 'http://10.0.2.2:8080'
-    : 'https://user-service-i6mi.onrender.com';
+const PRODUCTION_BASE_URL = 'https://user-service-i6mi.onrender.com';
+const DEV_BASE_URL = Platform.OS === 'android' ? 'http://10.0.2.2:8080' : 'http://localhost:8080';
+
+export const BASE_URL = API_BASE_URL || (
+  __DEV__
+    ? DEV_BASE_URL
+    : PRODUCTION_BASE_URL
+);
 
 export const API_ENDPOINTS = {
   AUTH: {

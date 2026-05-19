@@ -31,7 +31,6 @@ export const LocationInputsBento: React.FC<LocationInputsBentoProps> = ({
 }) => {
   const theme = useTheme();
   const { locationSelection } = useLocale();
-  console.log(startLocationName)
   return (
     <Container>
       <VisualPathLine />

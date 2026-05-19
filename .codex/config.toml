@@ -1,0 +1,8 @@
+[mcp_servers.storybook-common-components]
+args = [
+    "-y",
+    "@modelcontextprotocol/server-filesystem",
+    "/tmp",
+    "http://localhost:6006/mcp",
+]
+command = "npx"

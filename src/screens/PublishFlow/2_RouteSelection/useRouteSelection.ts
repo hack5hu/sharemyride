@@ -15,7 +15,6 @@ export interface RouteData {
 export const useRouteSelection = () => {
   const navigation = useNavigation();
   const { startLocation, destinationLocation, setSelectedRoute } = useRidePublishStore();
-  console.log(startLocation, destinationLocation);
   const [routesData, setRoutesData] = useState<RouteData[]>([]);
   const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -31,8 +30,6 @@ export const useRouteSelection = () => {
         destinationLocation.latitude,
         destinationLocation.longitude
       );
-      console.log('routesResponse', routesResponse);
-
       if (routesResponse && routesResponse.length > 0) {
         // Sort by distance (meters) ascending
         const sortedRoutes = [...routesResponse].sort((a, b) => {
@@ -64,7 +61,6 @@ export const useRouteSelection = () => {
           const polyline = route.overview_polyline || route.geometry || '';
           const coordinates = decodePolyline(polyline, 1e5); // Ola and OSRM usually use 1e5
           const bounds = getBoundingBox(coordinates);
-          console.log(coordinates)
           // Determine title
           let title = '';
           if (route.summary) {
@@ -115,7 +111,6 @@ export const useRouteSelection = () => {
     if (selectedRoute) {
       setSelectedRoute(selectedRoute);
     }
-    console.log(selectedRoute)
     navigation.navigate('MiddleStops' as never);
   }, [navigation, routesData, selectedRouteId, setSelectedRoute]);
 

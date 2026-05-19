@@ -68,7 +68,6 @@ export const useVehicleDetails = () => {
         setVehicleDetails(values);
         setPublishVehicleType(values.seater);
 
-        console.log('Vehicle details saved successfully');
         navigation.goBack();
       } catch (error: any) {
         const { Alert } = require('react-native');
@@ -100,5 +99,4 @@ export const useVehicleDetails = () => {
     goBack: () => navigation.goBack(),
   };
 };
-
 

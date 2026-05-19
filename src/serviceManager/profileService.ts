@@ -1,5 +1,6 @@
 import apiClient from './apiClient';
 import { API_ENDPOINTS } from '@/constants/apiEndpoints';
+import { Logger } from '@/utils/logger';
 
 export interface ProfileUpdateData {
   fullName: string;
@@ -9,6 +10,12 @@ export interface ProfileUpdateData {
   gender: string;
   bio?: string;
   avatarUri?: string;
+}
+
+interface ReactNativeFile {
+  uri: string;
+  type: string;
+  name: string;
 }
 
 export const profileService = {
@@ -35,18 +42,18 @@ export const profileService = {
       const uri = data.avatarUri;
       if (uri && (uri.startsWith('file://') || uri.startsWith('content://'))) {
         const filename = uri.split('/').pop() || 'avatar.jpg';
-        formData.append('profilePhoto', {
+        const profilePhoto: ReactNativeFile = {
           uri: uri,
           name: filename,
           type: 'image/jpeg',
-        } as any);
+        };
+        formData.append('profilePhoto', profilePhoto as unknown as Blob);
       }
 
-      console.log('[ProfileService] Submitting FormData:', JSON.stringify(data));
       const response = await apiClient.post(API_ENDPOINTS.USER.PROFILE, formData);
       return response.data;
     } catch (error) {
-      console.error('[ProfileService] Update failed:', error);
+      Logger.error('[ProfileService] Update failed:', error);
       throw error;
     }
   },

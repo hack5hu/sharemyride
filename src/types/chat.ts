@@ -1,3 +1,33 @@
+import { MessageType } from '@/constants/enums';
+
+export type ChatMessageType = MessageType | 'text' | 'location' | 'image';
+
+export interface LocationMetadata {
+  latitude: number;
+  longitude: number;
+  locationName?: string;
+  address?: string;
+  arrivingIn?: string;
+  imageUri?: string;
+}
+
+export interface ChatMetadata {
+  userName?: string;
+  userAvatar?: string;
+  avatarUri?: string;
+  userRating?: number;
+  rating?: number;
+  isVerified?: boolean;
+  pickup?: string;
+  start?: string;
+  dropoff?: string;
+  destination?: string;
+  rideId?: string;
+  rideInfo?: unknown;
+  location?: LocationMetadata;
+  [key: string]: unknown;
+}
+
 export type MessageStatus =
   | 'SENT'
   | 'DELIVERED'
@@ -12,16 +42,16 @@ export interface ChatMessage {
   content: string;
   timestamp: number;
   status: MessageStatus;
-  type: 'text' | 'location' | 'image';
-  metadata?: any;
+  type: ChatMessageType;
+  metadata?: ChatMetadata;
 }
 
 export interface SendMessagePayload {
   senderId: string;
   receiverId: string;
   content: string;
-  type?: string;
-  metadata?: any;
+  type?: ChatMessageType;
+  metadata?: ChatMetadata;
 }
 
 export interface UpdateStatusPayload {
@@ -36,7 +66,7 @@ export interface ChatConversation {
   lastMessage?: ChatMessage;
   unreadCount: number;
   updatedAt: number;
-  metadata?: any;
+  metadata?: ChatMetadata;
 }
 
 export interface UserProfile {

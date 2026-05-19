@@ -1,12 +1,18 @@
-import * as Keychain from 'react-native-keychain';
-import { BASE_URL, API_ENDPOINTS } from '@/constants/apiEndpoints';
+import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 import apiClient from './apiClient';
+import { Logger } from '@/utils/logger';
 
 export interface ProfileUpdateData {
   fullName: string;
   dob: string;
   gender: string;
   profileImage?: { uri: string } | null;
+}
+
+interface ReactNativeFile {
+  uri: string;
+  type: string;
+  name: string;
 }
 
 export interface VehiclePayload {
@@ -68,37 +74,21 @@ export const userService = {
 
       // Append the profile image if selected
       if (data.profileImage?.uri) {
-        formData.append('file', {
+        const profileImage: ReactNativeFile = {
           uri: data.profileImage.uri,
           type: 'image/jpeg',
           name: 'profile_image.jpg',
-        } as any);
+        };
+
+        formData.append('file', {
+          ...profileImage,
+        } as unknown as Blob);
       }
 
-      const credentials = await Keychain.getGenericPassword({ service: 'auth_token' });
-      if (!credentials) {
-        throw new Error('No authentication token found');
-      }
-
-      // Using native fetch for reliable multipart/form-data boundary generation in RN
-      const response = await fetch(`${BASE_URL}${API_ENDPOINTS.USER.PROFILE}`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${credentials.password}`,
-          // Note: Content-Type is omitted so fetch automatically adds boundary
-        },
-        body: formData,
-      });
-
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(responseData.message || `Server Error ${response.status}`);
-      }
-
-      return responseData;
+      const response = await apiClient.post(API_ENDPOINTS.USER.PROFILE, formData);
+      return response.data;
     } catch (error) {
-      console.error('Error updating profile:', error);
+      Logger.error('Error updating profile:', error);
       throw error;
     }
   },

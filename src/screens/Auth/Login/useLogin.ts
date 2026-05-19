@@ -50,9 +50,6 @@ export const useLogin = () => {
     },
   });
 
-  const handleSocialLogin = (provider: string) => {
-    console.log('Login with:', provider);
-  };
 
   return {
     loading,
@@ -62,7 +59,6 @@ export const useLogin = () => {
     handleBlur: formik.handleBlur('phone'),
     handleSubmit: formik.handleSubmit,
     isValid: formik.isValid && formik.dirty,
-    handleSocialLogin,
     isTermsAccepted,
     toggleTerms,
   };

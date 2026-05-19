@@ -14,7 +14,7 @@ export const useChatSocket = (isActive: boolean = true) => {
 
   useEffect(() => {
     if (isActive && user?.userId) {
-      chatService.connect(user.userId);
+      chatService.connect(user.userId).catch(() => undefined);
       // Periodic cleanup of old messages (14-day rule)
       flushOldMessages();
     }

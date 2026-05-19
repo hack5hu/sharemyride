@@ -16,7 +16,6 @@ export const CancelRideTemplate: React.FC<CancelRideTemplateProps> = ({
   onDismiss,
 }) => {
   const { cancelRide } = useLocale();
-  console.log('dcverve')
   return (
     <View style={{ flex: 1 }}>
       <S.OverlayContext>
