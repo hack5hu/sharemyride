@@ -34,7 +34,11 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>RidePoolCompany needs access to your location to share it with your riders.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>RidePoolCompany needs access to your location in the background to share real-time progress of the ride with your riders.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>RidePoolCompany needs access to your location in the background to share real-time progress of the ride with your riders.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UIAppFonts</key>

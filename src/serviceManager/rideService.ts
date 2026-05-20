@@ -180,6 +180,27 @@ const rideService = {
       throw error;
     }
   },
+  updateLocation: async (rideId: string | number, lat: number, lon: number) => {
+    try {
+      const response = await apiClient.post(API_ENDPOINTS.RIDE.UPDATE_LOCATION(rideId), { lat, lon });
+      return response.data;
+    } catch (error) {
+      console.error('Updating location failed:', error);
+      throw error;
+    }
+  },
+  syncLocationBacklog: async (
+    rideId: string | number,
+    backlog: Array<{ latitude: number; longitude: number; timestamp: number }>
+  ) => {
+    try {
+      const response = await apiClient.post(API_ENDPOINTS.RIDE.SYNC_BACKLOG(rideId), { backlog });
+      return response.data;
+    } catch (error) {
+      console.error('Syncing location backlog failed:', error);
+      throw error;
+    }
+  },
 };
 
 export default rideService;
