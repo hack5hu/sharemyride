@@ -3,6 +3,8 @@ import { Alert } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { authService } from '@/serviceManager/authService';
 import { useAuthStore } from '@/store/useAuthStore';
+import { getDeviceId } from '@/utils/deviceId';
+import { getFcmToken } from '@/utils/fcm';
 
 export const useOTPVerification = () => {
   const [timer, setTimer] = useState(45);
@@ -10,7 +12,7 @@ export const useOTPVerification = () => {
   const [otpValue, setOtpValue] = useState('');
   const route = useRoute<any>();
   const { phoneNumber } = route.params || {};
-  
+
   const { setAuth } = useAuthStore();
 
   useEffect(() => {
@@ -29,19 +31,29 @@ export const useOTPVerification = () => {
       Alert.alert('Error', 'Phone number missing');
       return;
     }
-    
+
     setLoading(true);
     try {
-      const response = await authService.verifyOtp(phoneNumber, code);
-      
+      const [deviceId, fcmToken] = await Promise.all([
+        getDeviceId(),
+        getFcmToken(),
+      ]);
+
+      const response = await authService.verifyOtp(
+        phoneNumber,
+        code,
+        deviceId,
+        fcmToken,
+      );
+
       if (response.data.status === 'success' || response.status === 200) {
         const { token, userId, userProfileCompleted } = response.data;
-        
+
         // Store auth state in Zustand
         await setAuth(
           { id: userId, phone: phoneNumber },
           token,
-          userProfileCompleted
+          userProfileCompleted,
         );
 
         // Background sync Profile, Vehicles, and Preferences immediately
@@ -50,18 +62,21 @@ export const useOTPVerification = () => {
         const { useTravelPrefStore } = require('@/store/useTravelPrefStore');
         const { syncVehicles } = useVehicleStore.getState();
         const { syncPreferences } = useTravelPrefStore.getState();
-        
+
         fetchProfile();
         syncVehicles();
         syncPreferences();
 
         setLoading(false);
-        
+
         // Navigation is handled by RootNavigator reacting to store changes
-        // but we can also trigger it here if needed. 
+        // but we can also trigger it here if needed.
         // For now, let's let the RootNavigator handle the switch.
       } else {
-        Alert.alert('Verification Failed', response.data.message || 'Invalid OTP');
+        Alert.alert(
+          'Verification Failed',
+          response.data.message || 'Invalid OTP',
+        );
         setLoading(false);
       }
     } catch (error: any) {

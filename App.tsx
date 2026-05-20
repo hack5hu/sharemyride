@@ -6,19 +6,22 @@ import { StatusBar } from 'react-native';
 import { LightTheme, DarkTheme } from '@/theme';
 import { RootNavigator } from '@/navigation';
 import { useAuthStore } from '@/store';
+import { useDeviceIdStore } from '@/store/useDeviceIdStore';
 import { useSettingsStore } from '@/store/settings';
 import { NetworkLoggerModal } from '@/components/organisms/NetworkLoggerModal';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 const App = () => {
   const initialize = useAuthStore(state => state.initialize);
+  const initialiseDeviceId = useDeviceIdStore(state => state.initialise);
   const themeMode = useSettingsStore(state => state.themeMode);
   
   const activeTheme = themeMode === 'dark' ? DarkTheme : LightTheme;
 
   useEffect(() => {
     initialize();
-  }, [initialize]);
+    initialiseDeviceId();
+  }, [initialize, initialiseDeviceId]);
 
   return (
     <SafeAreaProvider>

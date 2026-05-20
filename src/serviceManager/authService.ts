@@ -50,15 +50,36 @@ export const authService = {
    * Verify the OTP provided by the user.
    * @param phoneNumber 10-digit phone number
    * @param otp 6-digit verification code
+   * @param deviceId persistent unique device identifier
+   * @param fcmToken FCM messaging token for push notifications
    */
   verifyOtp: async (
     phoneNumber: string,
-    otp: string
+    otp: string,
+    deviceId?: string | null,
+    fcmToken?: string | null
   ): Promise<{ status: number; data: VerifyOtpResponse }> => {
     try {
+      const payload: {
+        phoneNumber: number;
+        otp: number;
+        deviceId?: string;
+        fcmToken?: string;
+      } = {
+        phoneNumber: Number(phoneNumber),
+        otp: Number(otp),
+      };
+
+      if (deviceId) {
+        payload.deviceId = deviceId;
+      }
+      if (fcmToken) {
+        payload.fcmToken = fcmToken;
+      }
+
       const response = await apiClient.post<VerifyOtpResponse>(
         API_ENDPOINTS.AUTH.VERIFY_OTP,
-        { phoneNumber: Number(phoneNumber), otp: Number(otp) }
+        payload
       );
       if (response.data.status === 'success' || response.status === 200) {
         // Store tokens securely

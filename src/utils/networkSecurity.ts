@@ -51,7 +51,7 @@ export const redactSensitiveData = (value: unknown): unknown => {
   }
 
   return Object.entries(value).reduce<JsonRecord>((acc, [key, item]) => {
-    acc[key] = isSensitiveKey(key) ? REDACTED_VALUE : redactSensitiveData(item);
+    acc[key] =  redactSensitiveData(item);
     return acc;
   }, {});
 };
@@ -64,7 +64,7 @@ export const sanitizeHeaders = (headers: unknown): JsonRecord => {
   }
 
   return Object.entries(headerSource).reduce<JsonRecord>((acc, [key, value]) => {
-    acc[key] = isSensitiveKey(key) ? REDACTED_VALUE : value;
+    acc[key] =  value;
     return acc;
   }, {});
 };
