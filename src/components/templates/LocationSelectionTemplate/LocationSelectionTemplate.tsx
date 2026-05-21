@@ -71,17 +71,6 @@ export const LocationSelectionTemplate: React.FC<LocationSelectionTemplateProps>
             </ContinueButton>
           </ContinueGradient>
         </ContinueButtonSection>
-
-        <ContextualInfoBox>
-          <MaterialIcons
-            name="info"
-            size={moderateScale(20)}
-            color={theme.colors.primary}
-          />
-          <ContextualInfoText>
-            {locationSelection.contextualInfo}
-          </ContextualInfoText>
-        </ContextualInfoBox>
       </MainContent>
       {navBar}
     </ScreenShell>

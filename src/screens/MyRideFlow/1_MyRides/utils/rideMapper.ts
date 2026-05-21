@@ -56,8 +56,8 @@ export const mapBackendRideToUI = (ride: any, type: 'upcoming' | 'completed' | '
     icon: type === 'completed' ? 'check-circle' : (type === 'requests' ? 'person-add' : (isDriver ? 'navigation' : 'directions-car')),
     type,
     driverName: isRequest 
-      ? (ride.passengerName || 'Passenger') 
-      : (isDriver ? undefined : (ride.driverName || 'Driver')),
+      ? (ride.passengerName) 
+      : (isDriver ? undefined : (ride.driverName)),
     carModel: isRequest 
       ? `Requested by ${ride.passengerName}` 
       : (ride.vehicleRegistration 

@@ -57,8 +57,10 @@ export const useAuthStore = create<AuthState>()(
               token: credentials.password, 
               isAuthenticated: true 
             });
-            // Background fetch profile after token is loaded
-            useAuthStore.getState().fetchProfile();
+            // Background fetch profile after token is loaded only if profile is completed
+            if (useAuthStore.getState().isProfileCompleted) {
+              useAuthStore.getState().fetchProfile();
+            }
           } else {
             // No valid token in keychain — clear any stale persisted state
             set({ user: null, token: null, isAuthenticated: false, isProfileCompleted: false });

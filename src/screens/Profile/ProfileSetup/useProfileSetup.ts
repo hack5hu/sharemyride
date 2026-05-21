@@ -8,7 +8,7 @@ import { Alert } from 'react-native';
 
 export const useProfileSetup = () => {
   const { t } = useTranslation();
-  const { setProfileCompleted } = useAuthStore();
+  const { setProfileCompleted, fetchProfile } = useAuthStore();
 
   const validationSchema = useMemo(() => Yup.object().shape({
     fullName: Yup.string().required('Required'),
@@ -40,6 +40,7 @@ export const useProfileSetup = () => {
         });
 
         setProfileCompleted(true);
+        await fetchProfile();
         Alert.alert('Success', 'Profile setup complete!');
       } catch (error: any) {
         Alert.alert(

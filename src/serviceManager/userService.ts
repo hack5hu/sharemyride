@@ -1,7 +1,7 @@
-import { API_ENDPOINTS } from '@/constants/apiEndpoints';
+import { API_ENDPOINTS, BASE_URL } from '@/constants/apiEndpoints';
 import apiClient from './apiClient';
 import { Logger } from '@/utils/logger';
-
+import * as Keychain from 'react-native-keychain';
 export interface ProfileUpdateData {
   fullName: string;
   dob: string;
@@ -74,22 +74,48 @@ export const userService = {
 
       // Append the profile image if selected
       if (data.profileImage?.uri) {
-        const profileImage: ReactNativeFile = {
+         formData.append('file', {
           uri: data.profileImage.uri,
           type: 'image/jpeg',
           name: 'profile_image.jpg',
-        };
-
-        formData.append('file', {
-          ...profileImage,
-        } as unknown as Blob);
+        } as any);
+      }
+      const credentials = await Keychain.getGenericPassword({ service: 'auth_token' });
+      if (!credentials) {
+        throw new Error('No authentication token found');
       }
 
-      const response = await apiClient.post(API_ENDPOINTS.USER.PROFILE, formData);
-      return response.data;
+      // Using native fetch for reliable multipart/form-data boundary generation in RN
+      console.log(`${BASE_URL}${API_ENDPOINTS.USER.PROFILE}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${credentials.password}`,
+          // Note: Content-Type is omitted so fetch automatically adds boundary
+        },
+        body: formData,
+      })
+      const response = await fetch(`${BASE_URL}${API_ENDPOINTS.USER.PROFILE}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${credentials.password}`,
+          // Note: Content-Type is omitted so fetch automatically adds boundary
+        },
+        body: formData,
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(responseData.message || `Server Error ${response.status}`);
+      }
+      return responseData;
+
+      // Logger.log('[UserService] Profile updated successfully:', response.data);
+      // return response.data;
     } catch (error) {
       Logger.error('Error updating profile:', error);
       throw error;
     }
   },
 };
+

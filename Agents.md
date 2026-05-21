@@ -19,8 +19,9 @@
 7. ✅ **Use `scale()`, `verticalScale()`, `moderateScale()`, `responsiveFont()`** for every dimension.
 8. ✅ **No inline styles** — styled-components only.
 9. ✅ **No `any` types** — TypeScript must be strict.
-10. ✅ **Define and use enums** for status/type constants across the codebase to ensure robust comparisons.
+10. ✅ **Define and use enums** for status/type constants across the codebase (e.g., `NotificationType`, `MessageStatus`) to ensure robust comparisons.
 11. ✅ **Use useAppNavigation** custom hook for screen transitions to keep typing clean.
+12. ✅ **Maintain Notification Standards**: Use `NotificationType` enum for all alerts and toasts.
 
 > ⛔ **If any of the above are skipped, the output is INVALID and must be redone from scratch.**
 > The user should NOT have to ask for compliance — compliance is the default.

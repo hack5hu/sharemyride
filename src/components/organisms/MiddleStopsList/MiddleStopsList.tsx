@@ -30,6 +30,8 @@ export interface MiddleStopsListProps {
   middleStops: RouteStop[];
   onAddStop: () => void;
   onRemoveStop: (id: string) => void;
+  startDistanceText?: string;
+  destinationDistanceText?: string;
 }
 
 export const MiddleStopsList: React.FC<MiddleStopsListProps> = ({
@@ -38,6 +40,8 @@ export const MiddleStopsList: React.FC<MiddleStopsListProps> = ({
   middleStops,
   onAddStop,
   onRemoveStop,
+  startDistanceText,
+  destinationDistanceText
 }) => {
   const theme = useTheme();
   const { middleStops: t } = useLocale();
@@ -54,6 +58,7 @@ export const MiddleStopsList: React.FC<MiddleStopsListProps> = ({
         <TextContainer>
           <LabelText variant="start">{t.startPointLabel}</LabelText>
           <TitleText>{startLocation}</TitleText>
+          {startDistanceText && <AddSubtitleText style={{ marginTop: 2 }}>{startDistanceText}</AddSubtitleText>}
         </TextContainer>
       </LocationItemArea>
 
@@ -93,6 +98,7 @@ export const MiddleStopsList: React.FC<MiddleStopsListProps> = ({
         <TextContainer>
           <LabelText variant="end">{t.destinationLabel}</LabelText>
           <TitleText>{destination}</TitleText>
+          {destinationDistanceText && <AddSubtitleText style={{ marginTop: 2 }}>{destinationDistanceText}</AddSubtitleText>}
         </TextContainer>
       </LocationItemArea>
 

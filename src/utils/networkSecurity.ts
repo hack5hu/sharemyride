@@ -31,16 +31,16 @@ const isSensitiveKey = (key: string): boolean => {
 };
 
 export const isNetworkLoggerEnabled = (): boolean =>
-  __DEV__ && ENABLE_NETWORK_LOGGER === 'true';
+  true;
 
 export const redactSensitiveData = (value: unknown): unknown => {
   if (value === null || value === undefined) {
     return value;
   }
 
-  if (isFormDataValue(value)) {
-    return FORM_DATA_VALUE;
-  }
+  // if (isFormDataValue(value)) {
+  //   return value;
+  // }
 
   if (Array.isArray(value)) {
     return value.map(item => redactSensitiveData(item));
@@ -51,7 +51,7 @@ export const redactSensitiveData = (value: unknown): unknown => {
   }
 
   return Object.entries(value).reduce<JsonRecord>((acc, [key, item]) => {
-    acc[key] =  redactSensitiveData(item);
+    acc[key] = redactSensitiveData(item);
     return acc;
   }, {});
 };
@@ -64,7 +64,7 @@ export const sanitizeHeaders = (headers: unknown): JsonRecord => {
   }
 
   return Object.entries(headerSource).reduce<JsonRecord>((acc, [key, value]) => {
-    acc[key] =  value;
+    acc[key] = value;
     return acc;
   }, {});
 };

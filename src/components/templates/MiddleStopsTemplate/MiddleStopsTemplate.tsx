@@ -20,6 +20,9 @@ export interface MiddleStopsTemplateProps {
   middleStopsRaw: Location[];
   onAddStop: () => void;
   onRemoveStop: (id: string) => void;
+  // New props for distance texts
+  startDistanceText: string;
+  destinationDistanceText?: string;
 }
 
 export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
@@ -33,10 +36,13 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
   middleStopsRaw,
   onAddStop,
   onRemoveStop,
+  startDistanceText,
+  destinationDistanceText,
 }) => {
   const theme = useTheme();
   const { middleStops: t } = useLocale();
-
+  console.log("startDistanceText", startDistanceText);
+  console.log("destinationDistanceText", destinationDistanceText);
   return (
     <ScreenShell
       title={"Add stops"}
@@ -52,7 +58,9 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
         {/* Dynamic Stops List */}
         <MiddleStopsList
           startLocation={startLocation}
+          startDistanceText={startDistanceText}
           destination={destination}
+          destinationDistanceText={destinationDistanceText}
           middleStops={middleStops}
           onAddStop={onAddStop}
           onRemoveStop={onRemoveStop}

@@ -3,7 +3,6 @@ import * as Keychain from 'react-native-keychain';
 import { API_ENDPOINTS, BASE_URL } from '@/constants/apiEndpoints';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useNetworkLoggerStore } from '@/store/useNetworkLoggerStore';
-import { useDeviceIdStore } from '@/store/useDeviceIdStore';
 import {
   isNetworkLoggerEnabled,
   redactSensitiveData,
@@ -28,6 +27,7 @@ const apiClient = axios.create({
   timeout: 100000,
   headers: {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
   },
 });
 let isRefreshing = false;
@@ -55,15 +55,14 @@ apiClient.interceptors.request.use(
     } catch (error) {
       Logger.error('[Keychain] Failed to read auth token:', error);
     }
-
-    // Attach persistent device ID to every request
-    const deviceId = useDeviceIdStore.getState().deviceId;
-    if (deviceId) {
-      config.headers['X-Device-Id'] = deviceId;
-    }
     if (config.data instanceof FormData && config.headers) {
-      delete config.headers['Content-Type'];
-      delete config.headers['content-type'];
+      if (typeof config.headers.delete === 'function') {
+        config.headers.delete('Content-Type');
+        config.headers.delete('content-type');
+      } else {
+        delete config.headers['Content-Type'];
+        delete config.headers['content-type'];
+      }
     }
     const logId = generateId();
     trackedConfig._logId = logId;

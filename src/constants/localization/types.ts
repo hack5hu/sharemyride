@@ -469,6 +469,16 @@ export interface Translations {
   chatLocation: ChatLocationTranslations;
   developer: DeveloperTranslations;
   rideRoute: RideRouteTranslations;
+  notification: NotificationTranslations;
+}
+
+export interface NotificationTranslations {
+  defaultSuccessTitle: string;
+  defaultSuccessMessage: string;
+  defaultErrorTitle: string;
+  defaultErrorMessage: string;
+  defaultInfoTitle: string;
+  defaultWarningTitle: string;
 }
 
 export interface RideRouteTranslations {

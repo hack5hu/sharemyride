@@ -57,11 +57,6 @@ export const PublishFooter: React.FC<PublishFooterProps> = ({
           )}
         </PublishGradient>
       </PublishButton>
-      <TermsText>
-        {t.termsText1}
-        <TermsLink>{t.termsLink}</TermsLink>
-        {t.termsText2}
-      </TermsText>
     </FloatingFooter>
   );
 };

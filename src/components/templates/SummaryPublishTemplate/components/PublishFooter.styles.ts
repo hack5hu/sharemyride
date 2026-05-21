@@ -8,7 +8,7 @@ export const FloatingFooter = styled.View`
   right: 0;
   bottom: 0;
   padding-horizontal: ${scale(24)}px;
-  padding-bottom: ${verticalScale(32)}px;
+  padding-bottom: ${verticalScale(16)}px;
 `;
 
 export const FooterGradient = styled(LinearGradient)`

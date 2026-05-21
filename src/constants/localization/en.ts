@@ -699,4 +699,12 @@ export const en: Translations = {
     openInGoogleMaps: 'Open in Google Maps',
     openInAppleMaps: 'Open in Apple Maps',
   },
+  notification: {
+    defaultSuccessTitle: 'Success',
+    defaultSuccessMessage: 'Action completed successfully.',
+    defaultErrorTitle: 'Error',
+    defaultErrorMessage: 'Something went wrong. Please try again.',
+    defaultInfoTitle: 'Information',
+    defaultWarningTitle: 'Warning',
+  },
 };

@@ -57,12 +57,12 @@ const shouldRedactConsoleKey = (key: string): boolean => {
 
 const redactConsoleData = (value: unknown): unknown => {
   if (value === null || value === undefined) return value;
-  if (isFormDataValue(value)) return FORM_DATA_VALUE;
+  // if (isFormDataValue(value)) return FORM_DATA_VALUE;
   if (Array.isArray(value)) return value.map(item => redactConsoleData(item));
   if (!isRecord(value)) return value;
 
   return Object.entries(value).reduce<JsonRecord>((acc, [key, item]) => {
-    acc[key] = shouldRedactConsoleKey(key) ? REDACTED_VALUE : redactConsoleData(item);
+    acc[key] =  redactConsoleData(item);
     return acc;
   }, {});
 };

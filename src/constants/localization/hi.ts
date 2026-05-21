@@ -705,4 +705,12 @@ export const hi: Translations = {
     openInGoogleMaps: 'गूगल मैप्स में खोलें',
     openInAppleMaps: 'ऐप्पल मैप्स में खोलें',
   },
+  notification: {
+    defaultSuccessTitle: 'सफलता',
+    defaultSuccessMessage: 'कार्य सफलतापूर्वक पूरा हुआ।',
+    defaultErrorTitle: 'त्रुटि',
+    defaultErrorMessage: 'कुछ गलत हो गया। कृपया पुन: प्रयास करें।',
+    defaultInfoTitle: 'जानकारी',
+    defaultWarningTitle: 'चेतावनी',
+  },
 };

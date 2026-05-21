@@ -9,7 +9,11 @@ import { useAuthStore } from '@/store';
 import { useDeviceIdStore } from '@/store/useDeviceIdStore';
 import { useSettingsStore } from '@/store/settings';
 import { NetworkLoggerModal } from '@/components/organisms/NetworkLoggerModal';
+import { GlobalNotification } from '@/components/organisms/GlobalNotification';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import NotificationService from '@/serviceManager/notificationService';
+
+import { navigationRef } from '@/navigation/navigationService';
 
 const App = () => {
   const initialize = useAuthStore(state => state.initialize);
@@ -21,6 +25,7 @@ const App = () => {
   useEffect(() => {
     initialize();
     initialiseDeviceId();
+    NotificationService.initialize();
   }, [initialize, initialiseDeviceId]);
 
   return (
@@ -32,10 +37,11 @@ const App = () => {
           backgroundColor="transparent" 
           translucent 
         />
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
           <RootNavigator />
         </NavigationContainer>
         <NetworkLoggerModal />
+        <GlobalNotification />
         </ThemeProvider>
       </KeyboardProvider>
     </SafeAreaProvider>

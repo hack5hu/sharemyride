@@ -1,5 +1,5 @@
-import { useCallback, useMemo } from 'react';
-import { useRoute, RouteProp, useFocusEffect } from '@react-navigation/native';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useRoute, RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Share, BackHandler } from 'react-native';
 import { useLocale } from '@/constants/localization';
 import { RootStackParamList } from '@/navigation/types';
@@ -9,6 +9,11 @@ import { RouteStop } from '@/serviceManager/rideService';
 
 export const useBookingConfirmed = () => {
   const { navigate } = useAppNavigation();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({ headerLeft: () => null });
+  }, [navigation]);
   const route = useRoute<RouteProp<RootStackParamList, 'BookingConfirmed'>>();
   const { bookingConfirmed: t } = useLocale();
   const searchResults = useBookRideStore(state => state.searchResults);

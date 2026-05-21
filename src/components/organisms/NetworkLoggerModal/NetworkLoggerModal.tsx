@@ -85,9 +85,9 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
     </S.EmptyState>
   );
 
-  if (ENABLE_NETWORK_LOGGER !== 'true') {
-    return null;
-  }
+  // if (ENABLE_NETWORK_LOGGER !== 'true') {
+  //   return null;
+  // }
 
   return (
     <>
