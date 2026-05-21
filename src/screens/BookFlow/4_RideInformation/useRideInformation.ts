@@ -5,12 +5,30 @@ import { useBookRideStore } from '@/store/useBookRideStore';
 import rideService from '@/serviceManager/rideService';
 import { useRideDataMapper } from './useRideDataMapper';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
 
 export const useRideInformation = (rideId: string, sourceStopId?: number, destinationStopId?: number) => {
   const { navigate, goBack } = useAppNavigation();
   const { rideInformation: t } = useLocale();
+  const locale = useLocale();
   const [rideRaw, setRideRaw] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [isReportModalVisible, setIsReportModalVisible] = useState(false);
+
+  const handleReportRide = useCallback(() => {
+    setIsReportModalVisible(true);
+  }, []);
+
+  const handleReportSubmit = useCallback((_data: { categoryId: string; description: string }) => {
+    setIsReportModalVisible(false);
+    showNotification(
+      NotificationType.SUCCESS,
+      locale.rideDetails.reportSuccessTitle,
+      locale.rideDetails.reportSuccessMessage
+    );
+  }, [locale]);
 
   const startLocation = useBookRideStore(state => state.startLocation);
   const destinationLocation = useBookRideStore(state => state.destinationLocation);
@@ -113,5 +131,9 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
     handleExternalMapOpen,
     ride,
     isLoading,
+    isReportModalVisible,
+    setIsReportModalVisible,
+    handleReportRide,
+    handleReportSubmit,
   };
 };

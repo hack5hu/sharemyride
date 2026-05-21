@@ -237,6 +237,7 @@ export interface ChatTranslations {
 
 export interface RideDetailsTranslations {
   headerTitle: string;
+  cancellationReasonTitle: string;
   liveTracking: string;
   pickupLabel: string;
   stopLabel: string;
@@ -288,6 +289,14 @@ export interface RideDetailsTranslations {
   premiumSuv: string;
   swiftBike: string;
   standardVehicle: string;
+  passengerDetailsTitle: string;
+  fellowTravelersTitle: string;
+  noPassengersBooked: string;
+  noCoRidersYet: string;
+  seatLabelSingular: string;
+  seatsLabelPlural: string;
+  reportSuccessTitle: string;
+  reportSuccessMessage: string;
 }
 
 export interface CancelRideTranslations {

@@ -2,7 +2,8 @@ import React from 'react';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
-import { IconButton } from '@/components/atoms/IconButton';
+import { Box } from '@/components/atoms/Box';
+import { useLocale } from '@/constants/localization';
 import * as S from './PassengerManagement.styles';
 
 interface PassengerManagementProps {
@@ -10,33 +11,48 @@ interface PassengerManagementProps {
   passengers: any[];
   seatsLeft: number;
   onCancelPassenger?: (id: string) => void;
-  t: any;
+  t?: any;
   hideActions?: boolean;
 }
 
-export const PassengerManagement: React.FC<PassengerManagementProps> = ({
+export const PassengerManagement: React.FC<PassengerManagementProps> = React.memo(({
   isDriver,
   passengers,
   seatsLeft,
   onCancelPassenger,
-  t,
+  t: propT,
   hideActions = false,
 }) => {
   const theme = useTheme();
+  const locale = useLocale();
+  const t = locale.rideDetails;
   const bookedCount = passengers.length;
-
-  if (bookedCount === 0) return null;
 
   return (
     <S.SectionCard>
       <S.SectionLabelRow>
         <S.SectionDot color={theme.colors.tertiary} />
         <Typography variant="label" size="xs" weight="bold" color="on_surface_variant">
-          {isDriver ? 'PASSENGER DETAILS' : 'YOUR FELLOW TRAVELERS'}
+          {isDriver 
+            ? t.passengerDetailsTitle.toUpperCase() 
+            : t.fellowTravelersTitle.toUpperCase()}
         </Typography>
       </S.SectionLabelRow>
       
-      {isDriver ? (
+      {bookedCount === 0 ? (
+        <Box padding={16} alignItems="center">
+          <Typography 
+            variant="body" 
+            size="sm" 
+            color="on_surface_variant" 
+            align="center"
+          >
+            {isDriver 
+              ? t.noPassengersBooked 
+              : t.noCoRidersYet}
+          </Typography>
+        </Box>
+      ) : isDriver ? (
         passengers.map((p: any, i: number) => (
           <S.PassengerItem key={i}>
             <Avatar source={{ uri: p.photoUrl }} size="sm" />
@@ -49,16 +65,15 @@ export const PassengerManagement: React.FC<PassengerManagementProps> = ({
               </Typography>
               <S.SeatBadge>
                 <Typography variant="label" size="xs" weight="bold" color="primary">
-                  {p.seatsBooked} {p.seatsBooked === 1 ? 'Seat' : 'Seats'}: {p.seatNames?.join(', ')}
+                  {p.seatsBooked} {p.seatsBooked === 1 ? t.seatLabelSingular : t.seatsLabelPlural}: {p.seatNames?.join(', ')}
                 </Typography>
               </S.SeatBadge>
             </S.PassengerInfo>
             {!hideActions && (
-              <IconButton 
+              <S.RemoveButton 
                 icon="person-remove" 
                 variant="surface"
                 onPress={() => onCancelPassenger?.(p.bookingId || p.id)} 
-                style={{ borderColor: theme.colors.error }}
               />
             )}
           </S.PassengerItem>
@@ -75,4 +90,5 @@ export const PassengerManagement: React.FC<PassengerManagementProps> = ({
       )}
     </S.SectionCard>
   );
-};
+});
+

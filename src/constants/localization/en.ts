@@ -232,6 +232,7 @@ export const en: Translations = {
   },
   rideDetails: {
     headerTitle: 'Ride Details',
+    cancellationReasonTitle: 'Cancellation Reason',
     timelineTitle: 'Journey Itinerary',
     fetchingDetails: 'Curating ride details for you...',
     liveTracking: 'Live Tracking',
@@ -283,6 +284,14 @@ export const en: Translations = {
     premiumSuv: 'Premium SUV',
     swiftBike: 'Swift Bike',
     standardVehicle: 'Standard',
+    passengerDetailsTitle: 'Passenger Details',
+    fellowTravelersTitle: 'Your Fellow Travelers',
+    noPassengersBooked: 'No passengers have booked yet.',
+    noCoRidersYet: 'No co-riders yet. Be the first one to give company!',
+    seatLabelSingular: 'Seat',
+    seatsLabelPlural: 'Seats',
+    reportSuccessTitle: 'Report Submitted',
+    reportSuccessMessage: 'Thank you. Our Safety Excellence Team is investigating the incident.',
   },
   cancelRide: {
     title: 'Cancel Ride',

@@ -11,6 +11,7 @@ export const useBookRideInfo = () => {
   const route = useRoute();
   const { bookRideInfo: t } = useLocale();
   const [isSearching, setIsSearching] = useState(false);
+  const [isSwapped, setIsSwapped] = useState(false);
 
   const {
     startLocation,
@@ -36,6 +37,16 @@ export const useBookRideInfo = () => {
       returnTo: 'BookRideInfo',
     });
   }, [navigate]);
+
+  const handleSwapLocations = useCallback(() => {
+    setIsSwapped(prev => !prev);
+    const store = useBookRideStore.getState();
+    const currentStart = store.startLocation;
+    const currentDest = store.destinationLocation;
+    
+    store.setStartLocation(currentDest);
+    store.setDestinationLocation(currentStart);
+  }, []);
 
   useEffect(() => {
     const params = route.params as any;
@@ -173,9 +184,11 @@ export const useBookRideInfo = () => {
     travelDate: travelDate ? new Date(travelDate) : null,
     peopleCount: seatCount,
     isSearching,
+    isSwapped,
     recentSearches,
     handlePressPickup,
     handlePressDestination,
+    handleSwapLocations,
     handleOpenDatePicker,
     incrementPeople,
     decrementPeople,

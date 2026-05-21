@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale } from '@/styles';
+import { IconButton } from '@/components/atoms/IconButton';
 
 export const SectionCard = styled.View`
   background-color: ${({ theme }) => theme.colors.surface};
@@ -86,4 +87,8 @@ export const CoRiderRow = styled.View`
   align-items: center;
   gap: ${scale(12)}px;
   padding-vertical: ${verticalScale(8)}px;
+`;
+
+export const RemoveButton = styled(IconButton)`
+  border-color: ${({ theme }) => theme.colors.error};
 `;

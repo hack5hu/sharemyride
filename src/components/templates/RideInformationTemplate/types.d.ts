@@ -2,7 +2,7 @@ import { RideData } from '@/screens/BookFlow/3_AvailableRides/types';
 
 export interface RideInformationTemplateProps {
   ride: RideData | null;
-  t: any;
+  t?: any;
   handleBack: () => void;
   handleBook: () => void;
   handleViewRoute: (index?: number) => void;
@@ -16,4 +16,5 @@ export interface RideInformationTemplateProps {
   onCancelRide?: () => void;
   onCancelPassenger?: (id: string) => void;
   showVehicleDetails?: boolean;
+  onReportRide?: () => void;
 }

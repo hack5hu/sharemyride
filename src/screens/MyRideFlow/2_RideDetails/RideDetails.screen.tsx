@@ -7,6 +7,7 @@ import { RideDetailsScreenProps } from './types';
 import { CancelRideTemplate } from '@/components/templates/CancelRideTemplate';
 import { Container, Overlay } from './RideDetails.styles';
 import { Box } from '@/components/atoms/Box';
+import { ReportIssueModal } from '@/components/organisms/ReportIssueModal';
 
 export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
   const { 
@@ -31,6 +32,10 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
     setOtherReasonText,
     cancellationReasons,
     handleConfirmCancel,
+    handleReportRide,
+    isReportModalVisible,
+    setIsReportModalVisible,
+    handleReportSubmit,
   } = useRideDetails();
 
   if (isLoading) {
@@ -59,6 +64,7 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
         onCancelRide={handleCancelRide}
         onCancelPassenger={(id) => (isDriver ? handleCancelPassenger(id) : handleCancelOwnBooking())}
         showVehicleDetails={true}
+        onReportRide={handleReportRide}
       />
 
       {isCancelModalVisible && (
@@ -73,6 +79,15 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
             onDismiss={() => setIsCancelModalVisible(false)}
           />
         </Overlay>
+      )}
+
+      {isReportModalVisible && (
+        <ReportIssueModal
+          isVisible={isReportModalVisible}
+          onClose={() => setIsReportModalVisible(false)}
+          onSubmit={handleReportSubmit}
+          bookingId={ride.myBookingId || ride.id || 'Ride'}
+        />
       )}
     </Container>
   );

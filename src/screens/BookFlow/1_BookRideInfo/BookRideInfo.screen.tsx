@@ -9,9 +9,11 @@ export const BookRideInfoScreen: React.FC = () => {
     travelDate,
     peopleCount,
     isSearching,
+    isSwapped,
     recentSearches,
     handlePressPickup,
     handlePressDestination,
+    handleSwapLocations,
     handleOpenDatePicker,
     incrementPeople,
     decrementPeople,
@@ -30,9 +32,11 @@ export const BookRideInfoScreen: React.FC = () => {
       travelDate={travelDate}
       peopleCount={peopleCount}
       isSearching={isSearching}
+      isSwapped={isSwapped}
       recentSearches={recentSearches}
       onPressPickup={handlePressPickup}
       onPressDestination={handlePressDestination}
+      onSwapLocations={handleSwapLocations}
       onOpenDatePicker={handleOpenDatePicker}
       onIncrementPeople={incrementPeople}
       onDecrementPeople={decrementPeople}

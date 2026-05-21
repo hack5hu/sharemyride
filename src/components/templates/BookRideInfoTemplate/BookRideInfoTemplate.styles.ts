@@ -98,6 +98,21 @@ export const IndicatorLine = styled.View`
   margin-vertical: ${verticalScale(4)}px;
 `;
 
+export const SwapButton = styled.TouchableOpacity`
+  width: ${moderateScale(32)}px;
+  height: ${moderateScale(32)}px;
+  border-radius: ${moderateScale(16)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_high};
+  align-items: center;
+  justify-content: center;
+  margin-vertical: ${verticalScale(4)}px;
+  shadow-color: ${({ theme }) => theme.colors.primary};
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.1;
+  shadow-radius: 8px;
+  elevation: 2;
+`;
+
 export const InputColumn = styled.View`
   flex: 1;
   gap: ${verticalScale(16)}px;
@@ -213,14 +228,17 @@ export const StepperControls = styled.View`
   gap: ${scale(12)}px;
 `;
 
-export const StepperButton = styled.TouchableOpacity<{ primary?: boolean }>`
+export const StepperButton = styled.TouchableOpacity<{ primary?: boolean; disabled?: boolean }>`
   width: ${moderateScale(32)}px;
   height: ${moderateScale(32)}px;
   border-radius: ${moderateScale(16)}px;
-  background-color: ${({ theme, primary }) =>
-    primary ? theme.colors.primary : theme.colors.surface_container_high};
+  background-color: ${({ theme, primary, disabled }) => {
+    if (disabled) return `${theme.colors.surface_container_highest}80`;
+    return primary ? theme.colors.primary : theme.colors.surface_container_high;
+  }};
   align-items: center;
   justify-content: center;
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 `;
 
 export const StepperValue = styled.Text`
@@ -239,8 +257,8 @@ export const SearchButton = styled.TouchableOpacity`
 
 export const SearchGradient = styled(LinearGradient)`
   width: 100%;
-  height: ${verticalScale(64)}px;
-  border-radius: ${moderateScale(20)}px;
+  height: ${verticalScale(52)}px;
+  border-radius: ${moderateScale(16)}px;
   flex-direction: row;
   align-items: center;
   justify-content: center;

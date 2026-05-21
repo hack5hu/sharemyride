@@ -235,6 +235,7 @@ export const hi: Translations = {
   },
   rideDetails: {
     headerTitle: 'सवारी का विवरण',
+    cancellationReasonTitle: 'रद्द करने का कारण',
     timelineTitle: 'यात्रा का विवरण',
     fetchingDetails: 'आपके लिए सवारी विवरण तैयार किया जा रहा है...',
     liveTracking: 'लाइव ट्रैकिंग',
@@ -286,6 +287,14 @@ export const hi: Translations = {
     premiumSuv: 'प्रीमियम एसयूवी',
     swiftBike: 'स्विफ्ट बाइक',
     standardVehicle: 'मानक',
+    passengerDetailsTitle: 'यात्री विवरण',
+    fellowTravelersTitle: 'आपके सह-यात्री',
+    noPassengersBooked: 'अभी तक कोई यात्री शामिल नहीं हुआ है।',
+    noCoRidersYet: 'अभी तक कोई सह-यात्री नहीं हैं। साथ देने वाले पहले व्यक्ति बनें!',
+    seatLabelSingular: 'सीट',
+    seatsLabelPlural: 'सीटें',
+    reportSuccessTitle: 'रिपोर्ट सबमिट हो गई',
+    reportSuccessMessage: 'धन्यवाद। हमारी सुरक्षा टीम इस घटना की जांच कर रही है।',
   },
   cancelRide: {
     title: 'सवारी रद्द करें',

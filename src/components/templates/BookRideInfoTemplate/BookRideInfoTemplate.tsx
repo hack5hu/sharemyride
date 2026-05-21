@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Animated } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
@@ -18,9 +18,11 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> = React.m
   travelDate,
   peopleCount,
   isSearching,
+  isSwapped,
   recentSearches,
   onPressPickup,
   onPressDestination,
+  onSwapLocations,
   onOpenDatePicker,
   onIncrementPeople,
   onDecrementPeople,
@@ -32,6 +34,21 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> = React.m
   onSetRideType,
 }) => {
   const theme = useTheme();
+
+  const spinValue = React.useRef(new Animated.Value(0)).current;
+
+  React.useEffect(() => {
+    Animated.timing(spinValue, {
+      toValue: isSwapped ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [isSwapped, spinValue]);
+
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '180deg'],
+  });
 
   return (
     <ScreenShell>
@@ -77,14 +94,14 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> = React.m
               <S.HeroSubtitle>{t.heroSubtitle}</S.HeroSubtitle>
             </S.HeroSection>
 
-            <S.ToggleWrapper>
+            {/* <S.ToggleWrapper>
               <RideTypeToggle
                 selected={rideType}
                 onSelect={onSetRideType}
                 localLabel={t.local}
                 intercityLabel={t.intercity}
               />
-            </S.ToggleWrapper>
+            </S.ToggleWrapper> */}
 
             <S.BookingCard>
               <S.DecorativeAccent />
@@ -92,6 +109,12 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> = React.m
               <S.RouteContainer>
                 <S.RouteIndicator>
                   <MaterialIcons name="my-location" size={moderateScale(20)} color={theme.colors.primary} />
+                  <S.IndicatorLine />
+                  <S.SwapButton activeOpacity={0.7} onPress={onSwapLocations}>
+                    <Animated.View style={{ transform: [{ rotate: spin }] }}>
+                      <MaterialIcons name="swap-vert" size={moderateScale(20)} color={theme.colors.primary} />
+                    </Animated.View>
+                  </S.SwapButton>
                   <S.IndicatorLine />
                   <MaterialIcons name="location-on" size={moderateScale(20)} color={theme.colors.tertiary} />
                 </S.RouteIndicator>
@@ -136,12 +159,12 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> = React.m
                 </S.StepperLabelGroup>
 
                 <S.StepperControls>
-                  <S.StepperButton activeOpacity={0.7} onPress={onDecrementPeople}>
-                    <MaterialIcons name="remove" size={moderateScale(18)} color={theme.colors.primary} />
+                  <S.StepperButton activeOpacity={0.7} onPress={onDecrementPeople} disabled={peopleCount <= 1}>
+                    <MaterialIcons name="remove" size={moderateScale(18)} color={peopleCount <= 1 ? theme.colors.outline : theme.colors.primary} />
                   </S.StepperButton>
                   <S.StepperValue>{peopleCount}</S.StepperValue>
-                  <S.StepperButton primary activeOpacity={0.7} onPress={onIncrementPeople}>
-                    <MaterialIcons name="add" size={moderateScale(18)} color={theme.colors.on_primary} />
+                  <S.StepperButton primary activeOpacity={0.7} onPress={onIncrementPeople} disabled={peopleCount >= 6}>
+                    <MaterialIcons name="add" size={moderateScale(18)} color={peopleCount >= 6 ? theme.colors.outline : theme.colors.on_primary} />
                   </S.StepperButton>
                 </S.StepperControls>
               </S.StepperContainer>

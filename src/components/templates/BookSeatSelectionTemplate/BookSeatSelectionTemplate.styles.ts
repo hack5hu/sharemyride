@@ -42,7 +42,6 @@ export const FixedBottom = styled.View`
   right: 0;
   background-color: ${({ theme }) => theme.colors.surface};
   padding: ${moderateScale(20)}px ${scale(24)}px;
-  padding-bottom: ${verticalScale(32)}px;
   gap: ${verticalScale(16)}px;
   elevation: 10;
   border-top-left-radius: ${moderateScale(24)}px;

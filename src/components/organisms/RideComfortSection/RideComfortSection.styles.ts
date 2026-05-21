@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale } from '@/styles';
 
 export const SectionCard = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface};
+  background-color: ${({ theme }) => theme.colors.on_primary};
   border-radius: ${({ theme }) => theme.roundness.md}px;
   padding: ${moderateScale(16)}px;
   margin-bottom: ${verticalScale(16)}px;

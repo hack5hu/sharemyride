@@ -8,6 +8,8 @@ import rideService from '@/serviceManager/rideService';
 import { mapBackendRideToUI } from '@/screens/BookFlow/4_RideInformation/useRideDataMapper';
 import { useMyRidesStore } from '@/store/useMyRidesStore';
 import { Logger } from '@/utils/logger';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
 
 export const useRideDetails = () => {
   const navigation = useNavigation();
@@ -66,6 +68,21 @@ export const useRideDetails = () => {
   const [selectedReasonId, setSelectedReasonId] = useState<string | null>(null);
   const [otherReasonText, setOtherReasonText] = useState('');
   const [isCancelling, setIsCancelling] = useState(false);
+
+  const [isReportModalVisible, setIsReportModalVisible] = useState(false);
+
+  const handleReportRide = useCallback(() => {
+    setIsReportModalVisible(true);
+  }, []);
+
+  const handleReportSubmit = useCallback((_data: { categoryId: string; description: string }) => {
+    setIsReportModalVisible(false);
+    showNotification(
+      NotificationType.SUCCESS,
+      t('rideDetails.reportSuccessTitle'),
+      t('rideDetails.reportSuccessMessage')
+    );
+  }, [t]);
 
   const cancellationReasons = useMemo(() => [
     { id: 'change_plans', label: t('cancelRide.reasonPlansChanged') },
@@ -148,7 +165,8 @@ export const useRideDetails = () => {
     });
   }, [navigation, rideId, rideData, isDriver, t]);
 
-  const handleViewRoute = useCallback((index: number) => {
+  const handleViewRoute = useCallback((index?: number) => {
+    if (index === undefined) return;
     const point = rideData?.timeline?.[index];
     if (point) {
       Alert.alert(t('common.openingMap'), `${t('common.navigatingTo')}: ${point.location}`);
@@ -227,6 +245,10 @@ export const useRideDetails = () => {
     cancellationReasons,
     handleConfirmCancel,
     isCancelling,
+    isReportModalVisible,
+    setIsReportModalVisible,
+    handleReportRide,
+    handleReportSubmit,
   };
 };
 

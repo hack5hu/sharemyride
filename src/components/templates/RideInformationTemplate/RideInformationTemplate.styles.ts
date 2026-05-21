@@ -29,7 +29,7 @@ export const ContentPadding = styled.View`
 // ── Driver Card (flat, simple) ──────────────────────────────────────────────
 
 export const DriverCard = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
+  background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${moderateScale(20)}px;
   padding: ${moderateScale(14)}px;
   flex-direction: row;
@@ -233,7 +233,7 @@ export const FixedFooter = styled.View`
   left: 0;
   right: 0;
   padding-horizontal: ${scale(20)}px;
-  padding-bottom: ${verticalScale(36)}px;
+  padding-bottom: ${verticalScale(16)}px;
   padding-top: ${verticalScale(16)}px;
   background-color: ${({ theme }) => theme.colors.surface};
 `;
