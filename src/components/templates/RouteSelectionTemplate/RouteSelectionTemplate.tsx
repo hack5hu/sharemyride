@@ -9,6 +9,7 @@ import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Camera, GeoJSONSource, Layer, CameraRef } from '@maplibre/maplibre-react-native';
 import { OlaMap } from '@/components/organisms/OlaMap';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
+import { Button } from '@/components/atoms/Button';
 import LinearGradient from 'react-native-linear-gradient';
 import * as S from './RouteSelectionTemplate.styles';
 import { RouteData } from '@/screens/PublishFlow/2_RouteSelection/useRouteSelection';
@@ -252,22 +253,17 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
         </S.ContentLayer>
       </View>
 
-      <S.FooterGradient
-        colors={['transparent', `${theme.colors.surface}F2`, theme.colors.surface]}
-        pointerEvents="box-none"
-      >
-        <S.ContinueButton onPress={onContinuePress} activeOpacity={0.8} disabled={!selectedRouteId}>
-          <S.ContinueGradient
-            colors={[theme.colors.primary, theme.colors.primary_container]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={{ opacity: selectedRouteId ? 1 : 0.6 }}
-          >
-            <S.ContinueButtonText>{routeSelection.continue}</S.ContinueButtonText>
-            <MaterialIcons name="arrow-forward" size={moderateScale(20)} color={theme.colors.on_primary} />
-          </S.ContinueGradient>
-        </S.ContinueButton>
-      </S.FooterGradient>
+      <S.FixedFooter>
+        <Button
+          variant="primary"
+          icon="arrow-forward"
+          iconPosition="right"
+          disabled={!selectedRouteId}
+          onPress={onContinuePress}
+        >
+          {routeSelection.continue}
+        </Button>
+      </S.FixedFooter>
     </ScreenShell>
   );
 };

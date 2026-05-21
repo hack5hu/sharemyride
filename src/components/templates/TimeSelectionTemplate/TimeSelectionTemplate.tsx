@@ -5,6 +5,7 @@ import { useLocale } from '@/constants/localization';
 import { scale, verticalScale } from '@/styles';
 import { TimePickerCard } from '@/components/organisms/TimePickerCard';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { Button } from '@/components/atoms/Button';
 import * as S from './TimeSelectionTemplate.styles';
 
 export interface TimeSelectionTemplateProps {
@@ -67,30 +68,15 @@ export const TimeSelectionTemplate: React.FC<TimeSelectionTemplateProps> = ({
       </ScrollView>
 
       {/* Floating footer */}
-      <S.FloatingFooter pointerEvents="box-none">
-        <S.FooterGradient
-          colors={['transparent', theme.colors.surface, theme.colors.surface]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          pointerEvents="none"
-        />
-        <S.ContinueButton 
-          onPress={onContinuePress} 
-          activeOpacity={isContinueDisabled ? 1 : 0.9}
+      <S.FixedFooter>
+        <Button
+          variant="primary"
           disabled={isContinueDisabled}
+          onPress={onContinuePress}
         >
-          <S.ContinueGradient
-            colors={isContinueDisabled 
-              ? [theme.colors.outline_variant, theme.colors.outline_variant] 
-              : [theme.colors.primary, theme.colors.primary_container]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            disabled={isContinueDisabled}
-          >
-            <S.ContinueText>{t.continue}</S.ContinueText>
-          </S.ContinueGradient>
-        </S.ContinueButton>
-      </S.FloatingFooter>
+          {t.continue}
+        </Button>
+      </S.FixedFooter>
     </ScreenShell>
   );
 };

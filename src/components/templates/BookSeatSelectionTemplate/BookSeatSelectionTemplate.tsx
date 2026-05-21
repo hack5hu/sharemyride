@@ -3,6 +3,7 @@ import { ActivityIndicator } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { Button } from '@/components/atoms/Button';
 import { CarFloorPlan } from '@/components/organisms/CarFloorPlan/CarFloorPlan';
 import { SeatLegend } from '@/components/molecules/SeatLegend/SeatLegend';
 import { verticalScale, moderateScale } from '@/styles';
@@ -115,7 +116,7 @@ export const BookSeatSelectionTemplate: React.FC<BookSeatSelectionTemplateProps>
         </S.ScrollContent>
 
         {/* ── Fixed Bottom ── */}
-        <S.FixedBottom>
+        <S.FixedFooter>
           <S.SummaryRow>
             <S.PillBadge>
               <Typography variant="label" size="sm" weight="bold" color="primary">
@@ -127,25 +128,15 @@ export const BookSeatSelectionTemplate: React.FC<BookSeatSelectionTemplateProps>
             </Typography>
           </S.SummaryRow>
 
-          <S.ConfirmButton
+          <Button
             disabled={isDisabled || isBooking}
             onPress={handleConfirm}
-            activeOpacity={0.85}
+            loading={isBooking}
+            variant="primary"
           >
-            {isBooking ? (
-              <ActivityIndicator color={theme.colors.on_primary} />
-            ) : (
-              <Typography
-                variant="title"
-                size="sm"
-                weight="bold"
-                color={isDisabled ? 'on_surface_variant' : 'on_primary'}
-              >
-                {isDisabled ? st.pickSeatToContinue : st.bookMySeat}
-              </Typography>
-            )}
-          </S.ConfirmButton>
-        </S.FixedBottom>
+            {isDisabled ? st.pickSeatToContinue : st.bookMySeat}
+          </Button>
+        </S.FixedFooter>
       </ScreenShell>
     </S.Root>
   );

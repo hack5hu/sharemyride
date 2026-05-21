@@ -5,16 +5,14 @@ import { useLocale } from '@/constants/localization';
 import { LocationInputsBento } from '@/components/organisms/LocationInputsBento';
 // import { HeaderBar } from '@/components/molecules/HeaderBar';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { Button } from '@/components/atoms/Button';
 import {
   MainContent,
   HeaderSection,
   TitleContainer,
   TitleHighlight,
   Subtitle,
-  ContinueButtonSection,
-  ContinueGradient,
-  ContinueButton,
-  ContinueText,
+  FixedFooter,
   ContextualInfoBox,
   ContextualInfoText,
 } from './LocationSelectionTemplate.styles';
@@ -51,27 +49,19 @@ export const LocationSelectionTemplate: React.FC<LocationSelectionTemplateProps>
           onPressStart={onPressStart}
           onPressDestination={onPressDestination}
         />
-
-        <ContinueButtonSection>
-          <ContinueGradient 
-            colors={['#45617f', '#bfddff']}
-            style={{ opacity: canContinue ? 1 : 0.6 }}
-          >
-            <ContinueButton
-              onPress={onPressContinue}
-              disabled={!canContinue}
-              activeOpacity={0.8}
-            >
-              <ContinueText>{locationSelection.continueJourney}</ContinueText>
-              <MaterialIcons
-                name="arrow-forward"
-                size={moderateScale(20)}
-                color={theme.colors.on_primary}
-              />
-            </ContinueButton>
-          </ContinueGradient>
-        </ContinueButtonSection>
       </MainContent>
+
+      <FixedFooter>
+        <Button
+          variant="primary"
+          icon="arrow-forward"
+          iconPosition="right"
+          disabled={!canContinue}
+          onPress={onPressContinue}
+        >
+          {locationSelection.continueJourney}
+        </Button>
+      </FixedFooter>
       {navBar}
     </ScreenShell>
   );

@@ -232,10 +232,15 @@ export const FixedFooter = styled.View`
   bottom: 0;
   left: 0;
   right: 0;
-  padding-horizontal: ${scale(20)}px;
-  padding-bottom: ${verticalScale(16)}px;
+  padding-horizontal: ${scale(24)}px;
   padding-top: ${verticalScale(16)}px;
+  padding-bottom: ${verticalScale(34)}px;
   background-color: ${({ theme }) => theme.colors.surface};
+  elevation: 8;
+  shadow-color: #000;
+  shadow-offset: 0px -4px;
+  shadow-opacity: 0.08;
+  shadow-radius: 12px;
 `;
 
 export const AmenityRow = styled.View`

@@ -8,6 +8,7 @@ import { PriceCounter } from '@/components/molecules/PriceCounter';
 import { FrontSeatPremium } from '@/components/molecules/FrontSeatPremium';
 import { SegmentPricingSheet } from '@/components/organisms/SegmentPricingSheet';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { Button } from '@/components/atoms/Button';
 import { PricingTier } from '@/constants/pricing';
 import { SegmentPrice } from '@/components/molecules/SegmentPricingCard';
 import * as S from './PriceSelectionTemplate.styles';
@@ -131,25 +132,17 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
         </ScrollView>
 
         {/* Floating CTA */}
-        <S.FloatingFooter pointerEvents="box-none">
-          <S.FooterGradient
-            colors={['transparent', theme.colors.surface, theme.colors.surface]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 1 }}
-            pointerEvents="none"
-          />
-          <S.ContinueButton onPress={onContinue} activeOpacity={0.9} disabled={isLoading}>
-            <S.ContinueGradient
-              colors={[theme.colors.primary, theme.colors.primary_container]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={{ opacity: isLoading ? 0.6 : 1 }}
-            >
-              <S.ContinueText>{t.continueButton}</S.ContinueText>
-              <MaterialIcons name="chevron-right" size={moderateScale(20)} color={theme.colors.on_primary} />
-            </S.ContinueGradient>
-          </S.ContinueButton>
-        </S.FloatingFooter>
+        <S.FixedFooter>
+          <Button
+            variant="primary"
+            icon="chevron-right"
+            iconPosition="right"
+            disabled={isLoading}
+            onPress={onContinue}
+          >
+            {t.continueButton}
+          </Button>
+        </S.FixedFooter>
      
 
       {/* ──── Modals (Rendered at root for Modal reliability) ──── */}

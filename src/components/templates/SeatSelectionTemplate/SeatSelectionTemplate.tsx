@@ -97,7 +97,7 @@ export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> = React
         {renderSeatSelection()}
       </S.ContentScroll>
 
-      <S.BarWrapper>
+      <S.FixedFooter>
         <Button
           onPress={onContinue}
           disabled={selectedSeats.size === 0 || !selectedVehicleId}
@@ -105,7 +105,7 @@ export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> = React
         >
           {`${selectedSeats.size} ${selectedSeats.size === 1 ? t.seatSelected : t.seatsSelected}`}
         </Button>
-      </S.BarWrapper>
+      </S.FixedFooter>
     </ScreenShell>
   );
 });

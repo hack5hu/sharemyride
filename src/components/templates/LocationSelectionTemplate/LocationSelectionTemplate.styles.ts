@@ -45,42 +45,20 @@ export const Subtitle = styled.Text`
   line-height: ${verticalScale(22)}px;
 `;
 
-export const ContinueButtonSection = styled.View`
-  margin-top: ${verticalScale(32)}px;
-`;
-
-export const ContinueGradient = styled(LinearGradient).attrs(({ theme }) => ({
-  colors: ['#45617f', '#bfddff'],
-  start: { x: 0, y: 0 },
-  end: { x: 1, y: 1 },
-}))`
-  width: 100%;
-  height: ${verticalScale(64)}px;
-  border-radius: ${moderateScale(12)}px;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  shadow-color: ${({ theme }) => theme.colors.primary};
-  shadow-offset: 0px 8px;
-  shadow-opacity: 0.2;
-  shadow-radius: 20px;
+export const FixedFooter = styled.View`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-horizontal: ${scale(24)}px;
+  padding-top: ${verticalScale(16)}px;
+  padding-bottom: ${verticalScale(34)}px;
+  background-color: ${({ theme }) => theme.colors.surface};
   elevation: 8;
-`;
-
-export const ContinueButton = styled.TouchableOpacity`
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  gap: ${scale(12)}px;
-`;
-
-export const ContinueText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(16)}px;
-  color: ${({ theme }) => theme.colors.on_primary};
+  shadow-color: #000;
+  shadow-offset: 0px -4px;
+  shadow-opacity: 0.08;
+  shadow-radius: 12px;
 `;
 
 export const ContextualInfoBox = styled.View`

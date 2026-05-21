@@ -1,12 +1,11 @@
 import React from 'react';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
-import { moderateScale } from '@/styles';
 import { Location } from '@/store/useLocationStore';
 import { MiddleStopsList, RouteStop } from '@/components/organisms/MiddleStopsList';
 import { BentoMapPreview } from '@/components/molecules/BentoMapPreview';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { Button } from '@/components/atoms/Button';
 import * as S from './MiddleStopsTemplate.styles';
 
 export interface MiddleStopsTemplateProps {
@@ -75,18 +74,16 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
       </S.ContentLayer>
 
       {/* Floating Footer */}
-      <S.FooterContainer pointerEvents="box-none">
-        <S.ContinueButton onPress={onContinuePress} activeOpacity={0.95}>
-          <S.ContinueGradient 
-            colors={[theme.colors.primary, '#00875a']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-          >
-            <S.ContinueButtonText>{t.continue}</S.ContinueButtonText>
-            <MaterialIcons name="arrow-forward" size={moderateScale(20)} color={theme.colors.on_primary} />
-          </S.ContinueGradient>
-        </S.ContinueButton>
-      </S.FooterContainer>
+      <S.FixedFooter>
+        <Button
+          variant="primary"
+          icon="arrow-forward"
+          iconPosition="right"
+          onPress={onContinuePress}
+        >
+          {t.continue}
+        </Button>
+      </S.FixedFooter>
     </ScreenShell>
   );
 };

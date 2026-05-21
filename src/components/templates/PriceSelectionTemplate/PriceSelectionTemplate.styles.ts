@@ -149,46 +149,19 @@ export const SegmentTextStack = styled.View`
   align-items: flex-start;
 `;
 
-export const FloatingFooter = styled.View`
+/* Footer */
+export const FixedFooter = styled.View`
   position: absolute;
+  bottom: 0;
   left: 0;
   right: 0;
-  bottom: 0;
   padding-horizontal: ${scale(24)}px;
-  padding-bottom: ${verticalScale(32)}px;
-`;
-
-export const FooterGradient = styled(LinearGradient)`
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: -${verticalScale(48)}px;
-`;
-
-export const ContinueButton = styled.TouchableOpacity`
-  width: 100%;
-`;
-
-export const ContinueGradient = styled(LinearGradient)`
-  width: 100%;
-  height: ${moderateScale(56)}px;
-  border-radius: ${moderateScale(12)}px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: ${scale(8)}px;
-  shadow-color: ${({ theme }) => theme.colors.primary};
-  shadow-offset: 0px 8px;
-  shadow-opacity: 0.25;
-  shadow-radius: 24px;
+  padding-top: ${verticalScale(16)}px;
+  padding-bottom: ${verticalScale(34)}px;
+  background-color: ${({ theme }) => theme.colors.surface};
   elevation: 8;
-`;
-
-export const ContinueText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(16)}px;
-  color: ${({ theme }) => theme.colors.on_primary};
-  letter-spacing: 0.3px;
+  shadow-color: #000;
+  shadow-offset: 0px -4px;
+  shadow-opacity: 0.08;
+  shadow-radius: 12px;
 `;
