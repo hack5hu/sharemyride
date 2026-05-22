@@ -3,10 +3,10 @@ import { Animated, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
-import { TransformRequestManager, Camera, UserLocation } from '@maplibre/maplibre-react-native';
-import { getOlaStyleUrl, OLA_API_KEY } from '@/constants/OlaStyle';
+import { OlaMap, Camera, UserLocation } from '@/components/organisms/OlaMap';
 import {
   PinContainer,
+  PinWrapper,
   TooltipBubble,
   TooltipText,
   PinShadow,
@@ -19,7 +19,6 @@ import {
   LocationPreviewTitle,
   LocationPreviewText
 } from './MapPickerTemplate.styles';
-import { OlaMap } from '@/components/organisms/OlaMap';
 import { MapSearchOverlayProps, MapSearchOverlay } from '@/components/organisms/MapSearchOverlay';
 import { LocationDetailsCardProps } from '@/components/molecules/LocationDetailsCard';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
@@ -27,6 +26,13 @@ import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import { moderateScale, scale, verticalScale } from '@/styles';
 
 import { UserLocationMarker } from '@/components/atoms/UserLocationMarker';
+
+interface ExtendedUserLocationProps extends React.ComponentProps<typeof UserLocation> {
+  onUpdate?: (location: any) => void;
+  showsUserHeadingIndicator?: boolean;
+}
+
+const MapLibreUserLocation = UserLocation as React.ComponentType<ExtendedUserLocationProps>;
 
 export interface MapPickerTemplateProps {
   pickerType: 'start' | 'destination' | 'middleStop';
@@ -41,7 +47,7 @@ export interface MapPickerTemplateProps {
   onLocateMe?: () => void;
   heading?: number;
   hasPermission?: boolean;
-  searchOverlayProps: MapSearchOverlayProps;
+  searchOverlayProps: Omit<MapSearchOverlayProps, 'isCondensed' | 'setIsCondensed'>;
   locationDetailsProps: LocationDetailsCardProps;
   mapRef?: React.RefObject<any>;
   cameraRef?: React.RefObject<any>;
@@ -116,7 +122,7 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
   });
 
   return (
-    <ScreenShell title='Select Location' onBack={true}>
+    <ScreenShell title={mapPicker.title} onBack={true}>
       <MapSearchOverlay 
         {...searchOverlayProps} 
         isCondensed={isMapVisible} 
@@ -148,12 +154,12 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
           zoom={zoom ?? 14}
         />
         {hasPermission && (
-          <UserLocation 
+          <MapLibreUserLocation 
             onUpdate={onUserLocationUpdate} 
             showsUserHeadingIndicator={true}
           >
             <UserLocationMarker heading={heading} />
-          </UserLocation>
+          </MapLibreUserLocation>
         )}
       </OlaMap>
 
@@ -161,47 +167,47 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
         <>
           <GradientOverlay colors={['transparent', 'rgba(0,0,0,0.05)']} />
 
-          <PinContainer 
-            pointerEvents="none" 
-            as={Animated.View}
-            style={{
-              transform: [
-                { translateX: -moderateScale(24) },
-                { translateY: Animated.add(-moderateScale(48), pinTranslateY) },
-                { scale: pinScale }
-              ]
-            }}
-          >
-            <TooltipBubble 
-              as={Animated.View} 
-              style={{ 
-                opacity: pinAnim.interpolate({
-                  inputRange: [0, 0.2, 1],
-                  outputRange: [1, 0, 0]
-                }) 
+          <PinContainer pointerEvents="none">
+            <PinWrapper
+              as={Animated.View}
+              style={{
+                transform: [
+                  { translateY: pinTranslateY },
+                  { scale: pinScale }
+                ]
               }}
             >
-              <TooltipText>
-                {pickerType === 'start' 
-                  ? mapPicker.setPickup 
-                  : pickerType === 'destination' 
-                    ? mapPicker.setDestination 
-                    : mapPicker.setStop}
-              </TooltipText>
-            </TooltipBubble>
+              <TooltipBubble 
+                as={Animated.View} 
+                style={{ 
+                  opacity: pinAnim.interpolate({
+                    inputRange: [0, 0.2, 1],
+                    outputRange: [1, 0, 0]
+                  }) 
+                }}
+              >
+                <TooltipText>
+                  {pickerType === 'start' 
+                    ? mapPicker.setPickup 
+                    : pickerType === 'destination' 
+                      ? mapPicker.setDestination 
+                      : mapPicker.setStop}
+                </TooltipText>
+              </TooltipBubble>
 
-            <Ionicons
-              name="pin-sharp" 
-              size={moderateScale(28)} 
-              color={theme.colors.primary_container} 
-            />
-            <PinShadow 
-              as={Animated.View} 
-              style={{ 
-                opacity: shadowOpacity,
-                transform: [{ scale: shadowScale }]
-              }} 
-            />
+              <Ionicons
+                name="pin-sharp" 
+                size={moderateScale(28)} 
+                color={theme.colors.primary_container} 
+              />
+              <PinShadow 
+                as={Animated.View} 
+                style={{ 
+                  opacity: shadowOpacity,
+                  transform: [{ scale: shadowScale }]
+                }} 
+              />
+            </PinWrapper>
           </PinContainer>
 
           <SelectButtonContainer>

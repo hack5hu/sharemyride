@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { verticalScale, moderateScale } from '@/styles';
 import { Input } from '@/components/atoms/Input';
 import { Typography } from '@/components/atoms/Typography';
@@ -20,7 +21,7 @@ export const HeaderContainer = styled.View`
   padding-horizontal: ${moderateScale(16)}px;
 `;
 
-export const ScrollContainer = styled.ScrollView.attrs(() => ({
+export const ScrollContainer = styled(KeyboardAwareScrollView).attrs(() => ({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: { paddingBottom: verticalScale(40) }
 }))`

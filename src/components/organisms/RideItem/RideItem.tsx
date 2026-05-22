@@ -11,7 +11,7 @@ export interface RideListItem {
   subtitle: string;
   price: string;
   icon?: string;
-  type: 'upcoming' | 'draft' | 'completed';
+  type: 'upcoming' | 'draft' | 'completed' | 'archive' | 'requests';
   rawDate?: Date;
   timerLabel?: string;
   driverName?: string;
@@ -72,7 +72,7 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
         timerLabel={item.timerLabel || ''}
         driverName={item.driverName || ''}
         carModel={item.carModel || ''}
-        rating={item.rating}
+        rating={item.rating ?? 0}
         price={item.price}
         avatarUri={item.avatarUri || ''}
         pickupTime={item.pickupTime || ''}

@@ -6,10 +6,14 @@ import { calculateDistance } from '@/utils/location';
 import { calculateSegmentPrice } from '@/utils/pricing';
 import rideService from '@/serviceManager/rideService';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useTranslation } from '@/hooks/useTranslation';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
 
 export const useAvailableRides = () => {
   const { navigate, goBack } = useAppNavigation();
   const { availableRides: t, rideFilters: ft } = useLocale();
+  const { t: translate } = useTranslation();
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
@@ -89,8 +93,13 @@ export const useAvailableRides = () => {
         store.appendSearchResults(newRides);
         store.setCurrentPage(nextPage);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to load more rides:', error);
+      showNotification(
+        NotificationType.ERROR,
+        translate('notification.defaultErrorTitle'),
+        error.message || translate('notification.defaultErrorMessage')
+      );
     } finally {
       setIsFetchingMore(false);
     }
@@ -281,8 +290,13 @@ export const useAvailableRides = () => {
       };
       const response = await rideService.searchRides(payload);
       setSearchResults(response.rides || response.data || response);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to clear filters and fetch:', error);
+      showNotification(
+        NotificationType.ERROR,
+        translate('notification.defaultErrorTitle'),
+        error.message || translate('notification.defaultErrorMessage')
+      );
     } finally {
       setIsLoading(false);
     }
@@ -321,8 +335,13 @@ export const useAvailableRides = () => {
 
       const response = await rideService.searchRides(payload);
       setSearchResults(response.rides || response.data || response);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to apply filters:', error);
+      showNotification(
+        NotificationType.ERROR,
+        translate('notification.defaultErrorTitle'),
+        error.message || translate('notification.defaultErrorMessage')
+      );
     } finally {
       setIsLoading(false);
     }

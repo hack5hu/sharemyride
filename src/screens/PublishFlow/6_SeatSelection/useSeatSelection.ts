@@ -40,7 +40,6 @@ export const useSeatSelection = () => {
         model: vehicle.model,
         numberPlate: vehicle.numberPlate,
         type: vehicle.type,
-        year: (vehicle as any).year,
         color: vehicle.color,
         seater: vehicle.seater,
       });
@@ -61,7 +60,6 @@ export const useSeatSelection = () => {
             model: vehicle.model,
             numberPlate: vehicle.numberPlate,
             type: vehicle.type,
-            year: (vehicle as any).year,
             color: vehicle.color,
             seater: vehicle.seater,
           });

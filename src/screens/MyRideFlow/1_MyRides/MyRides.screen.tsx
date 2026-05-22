@@ -57,11 +57,9 @@ export const MyRidesScreen: React.FC = memo(() => {
       activeTab={activeTab}
       draftsCount={drafts?.length || 0}
       onClearDrafts={onClearDrafts}
-      onAcceptRide={onAcceptRide}
-      onRidePress={onRidePress}
       requests={mappedRequests}
     />
-  ), [activeTab, drafts?.length, onClearDrafts, onAcceptRide, onRidePress, mappedRequests]);
+  ), [activeTab, drafts?.length, onClearDrafts, mappedRequests]);
 
   const emptyComponent = useMemo(() => {
     const iconMap: Record<string, string> = {

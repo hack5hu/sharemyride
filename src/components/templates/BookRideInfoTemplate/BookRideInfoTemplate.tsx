@@ -59,7 +59,6 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> = React.m
         contentContainerStyle={{
           paddingBottom: verticalScale(120),
         }}
-        estimatedItemSize={80}
         renderItem={({ item }: { item: RecentSearch }) => (
           <S.RecentItemContainer>
             <S.RecentItem 

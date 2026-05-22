@@ -41,7 +41,6 @@ export const MyRidesTemplate: React.FC<MyRidesTemplateProps & {
           data={data}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
-          estimatedItemSize={100}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             paddingHorizontal: scale(24),

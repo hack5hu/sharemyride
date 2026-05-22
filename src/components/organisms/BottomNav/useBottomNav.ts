@@ -1,13 +1,11 @@
 import { useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '@/navigation/types';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useTranslation } from '@/hooks/useTranslation';
 import { BottomTabType } from './types';
 
 export const useBottomNav = (activeTab: BottomTabType) => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation = useAppNavigation();
 
   const handlePress = useCallback((tab: BottomTabType) => {
     if (tab === activeTab) return;
@@ -28,17 +26,19 @@ export const useBottomNav = (activeTab: BottomTabType) => {
       case 'PUBLISH':
         navigation.navigate('LocationSelection');
         break;
-      default:
+      default: {
+        const tabStr = tab as string;
         navigation.navigate('Dummy', {
           title: t(
             `profileHub.nav${
-              tab.replace('_', '').toLowerCase().charAt(0).toUpperCase() +
-              tab.replace('_', '').toLowerCase().slice(1)
+              tabStr.replace('_', '').toLowerCase().charAt(0).toUpperCase() +
+              tabStr.replace('_', '').toLowerCase().slice(1)
             }`,
           ),
-          activeTab: tab,
+          activeTab: tab as BottomTabType,
         });
         break;
+      }
     }
   }, [activeTab, navigation, t]);
 

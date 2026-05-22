@@ -62,6 +62,7 @@ export const DarkTheme: Theme = {
     on_tertiary_fixed: '#080764',
     on_tertiary_fixed_variant: '#3a3d8f',
     read_receipt: '#34B7F1',
+    warning: '#EAB308',
   },
 
   roundness: {

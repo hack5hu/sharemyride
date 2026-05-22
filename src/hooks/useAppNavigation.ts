@@ -26,7 +26,7 @@ export const useAppNavigation = () => {
       if ('push' in navigation) {
         (navigation.push as any)(name, params);
       } else {
-        (navigation.navigate as any)(name, params);
+        (navigation as any).navigate(name, params);
       }
     },
     [navigation]
@@ -40,7 +40,7 @@ export const useAppNavigation = () => {
       if ('replace' in navigation) {
         (navigation.replace as any)(name, params);
       } else {
-        (navigation.navigate as any)(name, params);
+        (navigation as any).navigate(name, params);
       }
     },
     [navigation]
@@ -87,6 +87,13 @@ export const useAppNavigation = () => {
     [navigation]
   );
 
+  const setParams = useCallback(
+    (params: Partial<RootStackParamList[keyof RootStackParamList]>) => {
+      navigation.setParams(params as any);
+    },
+    [navigation]
+  );
+
   return {
     navigation,
     navigate,
@@ -96,5 +103,6 @@ export const useAppNavigation = () => {
     popToTop,
     resetTo,
     resetWithStack,
+    setParams,
   };
 };

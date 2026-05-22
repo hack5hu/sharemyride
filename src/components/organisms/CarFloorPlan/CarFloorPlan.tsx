@@ -45,8 +45,8 @@ export const CarFloorPlan: React.FC<CarFloorPlanProps> = ({
             {row.map((seat) => (
               <SeatButton
                 key={seat.id}
-                id={seat.id}
-                state={getSeatState(seat.id, seat.isDriver)}
+                id={String(seat.id)}
+                state={getSeatState(String(seat.id), seat.isDriver)}
                 onPress={onSeatPress}
                 driverLabel={seat.isDriver ? driverLabel : undefined}
                 price={prices[seat.id]}

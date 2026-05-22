@@ -28,11 +28,18 @@ export const GradientOverlay = styled(LinearGradient).attrs(({ theme }) => ({
 export const PinContainer = styled.View`
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 0;
+  right: 0;
+  height: 0;
   align-items: center;
-  /* Shift slightly to center the bottom point of the pin */
-  transform: translateX(-${moderateScale(24)}px) translateY(-${moderateScale(48)}px);
   z-index: 10;
+`;
+
+export const PinWrapper = styled.View`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  align-items: center;
 `;
 
 export const TooltipBubble = styled.View`

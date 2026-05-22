@@ -13,18 +13,23 @@ export const InputWrapper = styled.View<{
 }>`
   width: 100%;
   min-height: ${({ multiline }) => (multiline ? verticalScale(120) : verticalScale(52))}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
+  background-color: ${({ theme, isFocused, hasError }) => {
+    if (hasError) return theme.colors.error_container;
+    if (isFocused) return theme.colors.surface_container_lowest;
+    return theme.colors.surface_container;
+  }};
   border-radius: ${({ theme }) => theme.roundness.md}px;
   flex-direction: row;
   align-items: ${({ multiline }) => (multiline ? 'flex-start' : 'center')};
-  border-width: 1px;
-  border-color: ${({ theme, isFocused, hasError }) => {
-    if (hasError) return theme.colors.error;
-    if (isFocused) return theme.colors.primary;
-    return theme.colors.outline;
-  }};
-  padding-horizontal: ${scale(8)}px;
-  padding-vertical: ${({ multiline }) => (multiline ? verticalScale(8) : 0)}px;
+  padding-horizontal: ${scale(12)}px;
+  padding-vertical: ${({ multiline }) => (multiline ? verticalScale(10) : 0)}px;
+  
+  /* Ambient shadow shift for active/focus states matching 'No-Line' rule */
+  elevation: ${({ isFocused }) => (isFocused ? 2 : 0)};
+  shadow-color: ${({ theme }) => theme.colors.shadow};
+  shadow-offset: ${({ isFocused }) => (isFocused ? '0px 2px' : '0px 0px')};
+  shadow-opacity: ${({ isFocused }) => (isFocused ? 0.05 : 0)};
+  shadow-radius: ${({ isFocused }) => (isFocused ? '8px' : '0px')};
 `;
 
 export const InnerInput = styled.TextInput<{ multiline?: boolean }>`
@@ -53,7 +58,19 @@ export const LabelText = styled.Text`
   text-transform: uppercase;
   letter-spacing: 1px;
   color: ${({ theme }) => theme.colors.on_surface_variant};
+`;
 
+export const RequiredAsterisk = styled.Text`
+  color: ${({ theme }) => theme.colors.error};
+`;
+
+export const PrefixContainer = styled(IconContainer)`
+  padding-right: 0px;
+`;
+
+export const PrefixText = styled(LabelText)`
+  margin-bottom: 0px;
+  color: ${({ theme }) => theme.colors.on_surface};
 `;
 
 export const ErrorText = styled.Text`

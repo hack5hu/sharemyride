@@ -8,6 +8,8 @@ import { RootStackParamList } from '@/navigation/types';
 import { ProfileUpdateData, profileService } from '@/serviceManager/profileService';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
 
 export const useEditProfile = () => {
   const { t } = useTranslation();
@@ -69,6 +71,11 @@ export const useEditProfile = () => {
         }, 1500);
       } catch (err: any) {
         console.error('Profile update error:', err);
+        showNotification(
+          NotificationType.ERROR,
+          t('notification.defaultErrorTitle'),
+          err.message || t('notification.defaultErrorMessage')
+        );
       } finally {
         setLoading(false);
       }

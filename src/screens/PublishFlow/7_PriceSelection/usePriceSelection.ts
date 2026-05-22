@@ -18,7 +18,6 @@ export const usePriceSelection = () => {
     setRouteDetails,
     publishVehicleType,
     setPricing,
-    selectedSeatIds,
     price: storePrice,
     premiumEnabled: storePremiumEnabled,
     premiumPercentage: storePremiumPercentage,
@@ -37,14 +36,11 @@ export const usePriceSelection = () => {
     return 0;
   }, [totalDistanceKm, divisor]);
 
-  const showPremium = useMemo(() => {
-    return (
-      selectedSeatIds.includes(2)
-    );
-  }, [selectedSeatIds]);
+  const showPremium = true;
 
   const [price, setPrice] = useState<number>(storePrice || initialPrice);
   const [premiumEnabled, setPremiumEnabled] = useState(storePremiumEnabled ?? false);
+
   const [premiumPercentage, setPremiumPercentage] = useState(storePremiumPercentage || 10);
   const [sheetVisible, setSheetVisible] = useState(false);
   

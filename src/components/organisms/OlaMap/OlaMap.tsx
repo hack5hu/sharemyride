@@ -37,9 +37,6 @@ export const OlaMap = React.memo(forwardRef<any, OlaMapProps>(({
     <MapView
       ref={ref}
       mapStyle={mapStyle}
-      logoEnabled={false}
-      attributionEnabled={false}
-      styleURL={mapStyle} // redundant but safe
       {...rest}
     >
       {children}

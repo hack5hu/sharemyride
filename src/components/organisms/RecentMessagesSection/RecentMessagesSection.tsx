@@ -43,7 +43,6 @@ export const RecentMessagesSection: React.FC<RecentMessagesSectionProps> = React
         contentContainerStyle={{ 
           paddingBottom: verticalScale(32),
         }}
-        estimatedItemSize={70}
         ListEmptyComponent={
           <EmptyState 
             icon="forum"

@@ -3,15 +3,15 @@ import { scale, verticalScale, moderateScale } from '@/styles';
 import { IconButton } from '@/components/atoms/IconButton';
 
 export const SectionCard = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface};
-  border-radius: ${({ theme }) => theme.roundness.md}px;
-  padding: ${moderateScale(16)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
+  border-radius: ${moderateScale(24)}px;
+  padding: ${moderateScale(20)}px;
   margin-bottom: ${verticalScale(16)}px;
   elevation: 2;
-  shadow-color: #000;
-  shadow-offset: 0px 2px;
-  shadow-opacity: 0.05;
-  shadow-radius: 8px;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.04;
+  shadow-radius: 12px;
 `;
 
 export const SectionLabelRow = styled.View`
@@ -21,74 +21,74 @@ export const SectionLabelRow = styled.View`
 `;
 
 export const SectionDot = styled.View<{ color?: string }>`
-  width: ${moderateScale(6)}px;
-  height: ${moderateScale(6)}px;
-  border-radius: ${moderateScale(3)}px;
+  width: ${moderateScale(8)}px;
+  height: ${moderateScale(8)}px;
+  border-radius: ${moderateScale(4)}px;
   background-color: ${({ theme, color }) => color || theme.colors.primary};
   margin-right: ${scale(8)}px;
 `;
 
-export const PassengerItem = styled.View`
+export const PassengerList = styled.View`
+  gap: ${verticalScale(10)}px;
+`;
+
+export const PassengerCard = styled.View`
   flex-direction: row;
   align-items: center;
-  padding-vertical: ${verticalScale(12)}px;
-  border-bottom-width: 0.5px;
-  border-bottom-color: ${({ theme }) => theme.colors.outline_variant};
+  padding: ${moderateScale(14)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_low};
+  border-radius: ${moderateScale(16)}px;
 `;
 
 export const PassengerInfo = styled.View`
   flex: 1;
   margin-left: ${scale(12)}px;
+  gap: ${verticalScale(4)}px;
 `;
 
 export const SeatBadge = styled.View`
-  margin-top: ${verticalScale(4)}px;
   align-self: flex-start;
-  background-color: ${({ theme }) => theme.colors.primary_container};
-  padding-horizontal: ${scale(8)}px;
-  padding-vertical: ${verticalScale(2)}px;
-  border-radius: ${moderateScale(4)}px;
-`;
-
-
-
-export const CoRidersRow = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
-
-export const AvatarStack = styled.View`
-  flex-direction: row;
-  margin-right: ${scale(12)}px;
-`;
-
-export const CoRiderAvatar = styled.Image<{ offset: number }>`
-  width: ${moderateScale(28)}px;
-  height: ${moderateScale(28)}px;
-  border-radius: ${moderateScale(14)}px;
-  border-width: 2px;
-  border-color: ${({ theme }) => theme.colors.surface};
-  margin-left: ${({ offset }) => (offset > 0 ? -moderateScale(10) : 0)}px;
-`;
-
-export const EmptySeatPill = styled.View`
-  margin-left: auto;
-  flex-direction: row;
-  align-items: center;
-  background-color: ${({ theme }) => theme.colors.primary_container};
-  padding-horizontal: ${scale(8)}px;
+  background-color: ${({ theme }) => `${theme.colors.primary}12`};
+  padding-horizontal: ${scale(10)}px;
   padding-vertical: ${verticalScale(4)}px;
-  border-radius: ${moderateScale(12)}px;
-  gap: ${scale(4)}px;
+  border-radius: ${moderateScale(8)}px;
 `;
 
-export const CoRiderRow = styled.View`
+export const CoRidersGrid = styled.View`
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: ${scale(10)}px;
+`;
+
+export const CoRiderCapsule = styled.View`
   flex-direction: row;
   align-items: center;
-  gap: ${scale(12)}px;
+  gap: ${scale(8)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_low};
+  padding-horizontal: ${scale(14)}px;
   padding-vertical: ${verticalScale(8)}px;
+  border-radius: ${moderateScale(16)}px;
 `;
 
 export const RemoveButton = styled(IconButton)`
   border-color: ${({ theme }) => theme.colors.error};
+  background-color: ${({ theme }) => `${theme.colors.error}08`};
 `;
+
+// Empty State Styles
+export const EmptyStateContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  padding-vertical: ${verticalScale(20)}px;
+  gap: ${verticalScale(12)}px;
+`;
+
+export const EmptyIconCircle = styled.View`
+  width: ${moderateScale(64)}px;
+  height: ${moderateScale(64)}px;
+  border-radius: ${moderateScale(32)}px;
+  background-color: ${({ theme }) => `${theme.colors.tertiary}12`};
+  align-items: center;
+  justify-content: center;
+`;
+

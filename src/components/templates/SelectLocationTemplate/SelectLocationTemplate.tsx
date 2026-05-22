@@ -36,7 +36,6 @@ export const SelectLocationTemplate: React.FC<SelectLocationTemplateExtendedProp
   mapBackground,
   title,
   onBack,
-  actionFAB,
   centerPin,
   onZoomIn,
   onZoomOut,

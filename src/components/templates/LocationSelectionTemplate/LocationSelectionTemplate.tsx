@@ -12,9 +12,10 @@ import {
   TitleContainer,
   TitleHighlight,
   Subtitle,
-  FixedFooter,
-  ContextualInfoBox,
-  ContextualInfoText,
+  ContinueButtonSection,
+  ContinueGradient,
+  ContinueButton,
+  ContinueText,
 } from './LocationSelectionTemplate.styles';
 import { LocationSelectionTemplateProps } from './types.d';
 import { moderateScale } from '@/styles';
@@ -49,19 +50,27 @@ export const LocationSelectionTemplate: React.FC<LocationSelectionTemplateProps>
           onPressStart={onPressStart}
           onPressDestination={onPressDestination}
         />
+                <ContinueButtonSection>
+          <ContinueGradient 
+            style={{ opacity: canContinue ? 1 : 0.6 }}
+          >
+            <ContinueButton
+              onPress={onPressContinue}
+              disabled={!canContinue}
+              activeOpacity={0.8}
+            >
+              <ContinueText>{locationSelection.continueJourney}</ContinueText>
+              <MaterialIcons
+                name="arrow-forward"
+                size={moderateScale(20)}
+                color={theme.colors.on_primary}
+              />
+            </ContinueButton>
+          </ContinueGradient>
+        </ContinueButtonSection>
       </MainContent>
 
-      <FixedFooter>
-        <Button
-          variant="primary"
-          icon="arrow-forward"
-          iconPosition="right"
-          disabled={!canContinue}
-          onPress={onPressContinue}
-        >
-          {locationSelection.continueJourney}
-        </Button>
-      </FixedFooter>
+    
       {navBar}
     </ScreenShell>
   );

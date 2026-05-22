@@ -6,6 +6,8 @@ import { mapBackendRideToUI } from './utils/rideMapper';
 import { MyRidesHookData, RideListItem } from './types.d';
 import { useTranslation } from '@/hooks/useTranslation';
 import rideService from '@/serviceManager/rideService';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
 
 export const useMyRides = (): MyRidesHookData => {
   const { t } = useTranslation();
@@ -99,8 +101,13 @@ export const useMyRides = (): MyRidesHookData => {
     try {
       await rideService.acceptBooking(id);
       onRefresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to accept booking:', error);
+      showNotification(
+        NotificationType.ERROR,
+        t('notification.defaultErrorTitle'),
+        error.message || t('notification.defaultErrorMessage')
+      );
     } finally {
       setIsActionLoading(false);
     }
@@ -111,8 +118,13 @@ export const useMyRides = (): MyRidesHookData => {
     try {
       await rideService.rejectBooking(id);
       onRefresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to reject booking:', error);
+      showNotification(
+        NotificationType.ERROR,
+        t('notification.defaultErrorTitle'),
+        error.message || t('notification.defaultErrorMessage')
+      );
     } finally {
       setIsActionLoading(false);
     }

@@ -49,13 +49,16 @@ export const FixedFooter = styled.View`
   shadow-offset: 0px -4px;
   shadow-opacity: 0.08;
   shadow-radius: 12px;
+  z-index: 50;
+  gap: ${verticalScale(12)}px;
+  align-items: stretch;
 `;
 
 export const SummaryRow = styled.View`
+  width: 100%;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${verticalScale(4)}px;
 `;
 
 export const PillBadge = styled.View`
@@ -74,8 +77,11 @@ export const CoRiderCard = styled.View`
   padding: ${moderateScale(12)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   border-radius: ${moderateScale(12)}px;
-  border-width: 1px;
-  border-color: ${({ theme }) => theme.colors.outline_variant}40;
+  elevation: 1;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
+  shadow-offset: 0px 1px;
+  shadow-opacity: 0.02;
+  shadow-radius: 4px;
 `;
 
 export const PassengerAvatar = styled.Image`

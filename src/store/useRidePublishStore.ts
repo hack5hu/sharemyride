@@ -19,7 +19,6 @@ export interface VehicleDetails {
   model: string;
   numberPlate: string;
   type: string;
-  year: string;
   color: string;
   seater: '5' | '7';
 }

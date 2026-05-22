@@ -5,6 +5,8 @@ import { useAuthStore } from '@/store';
 import { useLocale } from '@/constants/localization';
 import { storage } from '@/utils/storage';
 import { authService } from '@/serviceManager/authService';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
 
 export const useSettings = () => {
   const navigation = useNavigation();
@@ -53,8 +55,13 @@ export const useSettings = () => {
         index: 0,
         routes: [{ name: 'Login' as never }],
       });
-    } catch (e) {
+    } catch (e: any) {
       console.error('Logout failed in settings:', e);
+      showNotification(
+        NotificationType.ERROR,
+        t.notification.defaultErrorTitle,
+        e.message || t.notification.defaultErrorMessage
+      );
     } finally {
       setIsLoggingOut(false);
       setIsLogoutModalVisible(false);

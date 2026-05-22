@@ -45,8 +45,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = R
   }, [ride]);
 
   const departureDateLabel = useMemo(() => {
-    const rideAny = ride as any;
-    return rideAny?.departureDate ?? translations.common.today;
+    return ride?.departureDate ?? translations.common.today;
   }, [ride, translations.common.today]);
 
   const durationLabel = useMemo(() => {
@@ -122,7 +121,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = R
             {/* ── Driver Card (hidden for driver) ── */}
             {!isDriver && (
               <DriverCard 
-                driver={ride.driver as any}
+                driver={ride.driver}
                 handleDriverProfile={handleDriverProfile}
                 handleChat={handleChat}
               />
@@ -136,15 +135,13 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = R
 
 
              {/* ── Fare Info ── */}
-            {showVehicleDetails && (
+            {/* {showVehicleDetails && (
               <FareSummaryRow ride={ride} />
-            ) }
+            ) } */}
 
 
             {/* ── Vehicle Details ── */}
-            {showVehicleDetails && ride.vehicle && (
-              <RideVehicleCard vehicle={ride.vehicle} t={translations.rideDetails} />
-            )}
+              <RideVehicleCard vehicle={ride.vehicle} t={translations.rideDetails as unknown as Record<string, string>} />
 
             {/* ── Fellow Travelers ── */}
             <PassengerManagement
@@ -152,7 +149,6 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = R
               passengers={ride.passengers}
               seatsLeft={ride.seatsLeft}
               onCancelPassenger={onCancelPassenger}
-              t={translations.rideDetails}
               hideActions={isArchived}
             />
 

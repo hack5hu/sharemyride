@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useTheme } from 'styled-components/native';
+import { NativeSyntheticEvent, FocusEvent } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Container, InputWrapper, InnerInput, IconContainer, LabelText, ErrorText } from './Input.styles';
+import { Container, InputWrapper, InnerInput, IconContainer, LabelText, ErrorText, RequiredAsterisk, PrefixContainer, PrefixText } from './Input.styles';
 import { InputProps } from './types';
 
 export const Input: React.FC<InputProps> = ({
@@ -19,12 +20,12 @@ export const Input: React.FC<InputProps> = ({
   const [isFocused, setIsFocused] = useState(false);
   const theme = useTheme();
 
-  const handleFocus = (e: any) => {
+  const handleFocus = (e: FocusEvent) => {
     setIsFocused(true);
     onFocus?.(e);
   };
 
-  const handleBlur = (e: any) => {
+  const handleBlur = (e: FocusEvent) => {
     setIsFocused(false);
     onBlur?.(e);
   };
@@ -34,7 +35,7 @@ export const Input: React.FC<InputProps> = ({
       {label && (
         <LabelText>
           {label}
-          {required && <LabelText style={{ color: theme.colors.error }}> *</LabelText>}
+          {required && <RequiredAsterisk> *</RequiredAsterisk>}
         </LabelText>
       )}
       <InputWrapper isFocused={isFocused} hasError={!!error} multiline={props.multiline}>
@@ -44,10 +45,11 @@ export const Input: React.FC<InputProps> = ({
           </IconContainer>
         )}
         {prefix && (
-          <IconContainer style={{ paddingRight: 0 }}>
-            <LabelText style={{ marginBottom: 0, color: theme.colors.on_surface }}>{prefix}</LabelText>
-          </IconContainer>
+          <PrefixContainer>
+            <PrefixText>{prefix}</PrefixText>
+          </PrefixContainer>
         )}
+
         <InnerInput
           onFocus={handleFocus}
           onBlur={handleBlur}

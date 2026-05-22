@@ -39,8 +39,13 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
         setIsLoading(true);
         const data = await rideService.getRideDetail(rideId, sourceStopId, destinationStopId);
         setRideRaw(data);
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to fetch ride detail:', error);
+        showNotification(
+          NotificationType.ERROR,
+          locale.notification.defaultErrorTitle,
+          error.message || locale.notification.defaultErrorMessage
+        );
       } finally {
         setTimeout(() => setIsLoading(false), 300);
       }

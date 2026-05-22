@@ -48,7 +48,7 @@ export const DriverCard: React.FC<DriverCardProps> = React.memo(({
             {driver.name}
           </Typography>
           <S.VerifiedRow>
-            <Icon name="star" size={moderateScale(13)} color="#EAB308" />
+            <Icon name="star" size={moderateScale(13)} color={theme.colors.warning} />
             <Typography variant="label" size="xs" weight="bold" color="on_surface_variant">
               {driver.rating} · {driver.rideCount} {translations.rideDetails.ridesLabel}
             </Typography>

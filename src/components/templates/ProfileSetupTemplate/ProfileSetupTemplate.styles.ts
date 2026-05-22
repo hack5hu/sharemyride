@@ -1,5 +1,20 @@
 import styled from 'styled-components/native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { scale, verticalScale, moderateScale } from '@/styles';
+
+export const Wrapper = styled.View`
+  flex: 1;
+`;
+
+export const StyledKeyboardScrollView = styled(KeyboardAwareScrollView).attrs({
+  showsVerticalScrollIndicator: false,
+  keyboardShouldPersistTaps: 'handled',
+  keyboardDismissMode: 'on-drag',
+  scrollEventThrottle: 16,
+  contentContainerStyle: { flexGrow: 1 },
+})`
+  flex: 1;
+`;
 
 export const ScrollContainer = styled.View`
   flex: 1;

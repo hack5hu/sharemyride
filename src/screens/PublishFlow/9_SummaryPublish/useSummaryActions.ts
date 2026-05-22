@@ -4,9 +4,13 @@ import { addSeconds, format } from 'date-fns';
 import rideService, { PublishRidePayload, RouteStop } from '@/serviceManager/rideService';
 import { roundToNearest } from '@/utils/pricing';
 import { useMyRidesStore } from '@/store/useMyRidesStore';
+import { useTranslation } from '@/hooks/useTranslation';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
 
 export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolean) => void) => {
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const { addDraft, removeDraft } = useMyRidesStore();
 
   const {
@@ -104,8 +108,13 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
 
       (navigation.navigate as any)('PublishSuccess');
       clearPublishState();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Publish failed:', error);
+      showNotification(
+        NotificationType.ERROR,
+        t('notification.defaultErrorTitle'),
+        error.message || t('notification.defaultErrorMessage')
+      );
     } finally {
       setIsPublishing(false);
     }

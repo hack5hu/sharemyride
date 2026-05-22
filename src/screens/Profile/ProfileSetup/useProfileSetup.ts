@@ -4,7 +4,8 @@ import { useCallback, useMemo } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { userService } from '@/serviceManager/userService';
-import { Alert } from 'react-native';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
 
 export const useProfileSetup = () => {
   const { t } = useTranslation();
@@ -41,11 +42,16 @@ export const useProfileSetup = () => {
 
         setProfileCompleted(true);
         await fetchProfile();
-        Alert.alert('Success', 'Profile setup complete!');
+        showNotification(
+          NotificationType.SUCCESS,
+          t('notification.defaultSuccessTitle'),
+          t('notification.defaultSuccessMessage')
+        );
       } catch (error: any) {
-        Alert.alert(
-          'Error',
-          error.message || 'Failed to save profile. Please try again.',
+        showNotification(
+          NotificationType.ERROR,
+          t('notification.defaultErrorTitle'),
+          error.message || t('notification.defaultErrorMessage')
         );
       }
     },

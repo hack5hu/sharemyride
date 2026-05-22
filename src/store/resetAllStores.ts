@@ -40,7 +40,9 @@ export const resetAllStores = () => {
     rides: {
       UPCOMING: { data: [], page: 0, hasMore: true },
       COMPLETED: { data: [], page: 0, hasMore: true },
-      ONGOING: { data: [], page: 0, hasMore: true },
+      CANCELLED: { data: [], page: 0, hasMore: true },
+      REQUESTS: { data: [], page: 0, hasMore: true },
+      ARCHIVE: { data: [], page: 0, hasMore: true },
     },
   });
 

@@ -133,24 +133,31 @@ export const useVehicleStore = create<VehicleState>()(
 
       setSelectedVehicle: (id) => set({ selectedVehicleId: id }),
 
-      updateVehicle: async (id, vehicle) => {
+      updateVehicle: async (id, updates) => {
         set({ isLoading: true });
         try {
           const { userService } = require('@/serviceManager/userService');
           
+          const existing = get().vehicles.find((v) => v.id === id);
+          if (!existing) {
+            throw new Error('Vehicle not found');
+          }
+
+          const merged = { ...existing, ...updates };
+          
           // Map to backend schema
           const payload = {
-            vehicleNumber: vehicle.numberPlate.toUpperCase(),
-            vehicleTypeId: SEATER_TO_TYPE_ID[vehicle.seater] || 1,
-            company: vehicle.company,
-            model: vehicle.model,
-            color: vehicle.color,
+            vehicleNumber: merged.numberPlate.toUpperCase(),
+            vehicleTypeId: SEATER_TO_TYPE_ID[merged.seater] || 1,
+            company: merged.company,
+            model: merged.model,
+            color: merged.color,
           };
 
           await userService.updateVehicle(id, payload);
           
           set((state) => ({
-            vehicles: state.vehicles.map((v) => (v.id === id ? { ...v, ...vehicle, numberPlate: vehicle.numberPlate.toUpperCase() } : v)),
+            vehicles: state.vehicles.map((v) => (v.id === id ? { ...v, ...updates, numberPlate: (updates.numberPlate || v.numberPlate).toUpperCase() } : v)),
             isLoading: false
           }));
           

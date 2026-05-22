@@ -3,6 +3,9 @@ import { useBookRideStore } from '@/store/useBookRideStore';
 import { FIVE_SEATER_ROWS, SEVEN_SEATER_ROWS } from '@/components/organisms/CarFloorPlan/seatConfig';
 import rideService, { RouteStop } from '@/serviceManager/rideService';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useTranslation } from '@/hooks/useTranslation';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
 
 import { BookSeat, Passenger } from './types';
 
@@ -17,6 +20,7 @@ export const useBookSeatSelection = (
   passedTime?: string
 ) => {
   const { navigate, goBack } = useAppNavigation();
+  const { t: translate } = useTranslation();
   const searchResults = useBookRideStore(state => state.searchResults);
   const [selectedSeats, setSelectedSeats] = useState<Set<string | number>>(new Set());
   const [isBooking, setIsBooking] = useState(false);
@@ -131,8 +135,13 @@ export const useBookSeatSelection = (
         rideId,
         bookedSeats: Array.from(selectedSeats).map(String)
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Booking confirmation failed:', error);
+      showNotification(
+        NotificationType.ERROR,
+        translate('notification.defaultErrorTitle'),
+        error.message || translate('notification.defaultErrorMessage')
+      );
     } finally {
       setIsBooking(false);
     }

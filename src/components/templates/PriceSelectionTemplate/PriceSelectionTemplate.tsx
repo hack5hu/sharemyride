@@ -64,7 +64,7 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
 
   return (
       <ScreenShell
-        title={'Select the Price'}
+        title={t.headerTitle}
         onBack={true}
       >
         <ScrollView

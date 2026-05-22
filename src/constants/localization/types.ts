@@ -479,7 +479,9 @@ export interface Translations {
   developer: DeveloperTranslations;
   rideRoute: RideRouteTranslations;
   notification: NotificationTranslations;
+  reportIssue: ReportIssueTranslations;
 }
+
 
 export interface NotificationTranslations {
   defaultSuccessTitle: string;
@@ -599,6 +601,8 @@ export interface BookingConfirmedTranslations {
   primaryCTA: string;
   secondaryCTA: string;
   plateLabel: string;
+  carbonNeutralTransit: string;
+  brandTitle: string;
 }
 
 export interface BookRideInfoTranslations {
@@ -639,6 +643,12 @@ export interface AvailableRidesTranslations {
   stopLabel: string;
   searchSummaryDate: string;
   searchSummarySeats: string;
+  driverRides: string;
+  kmFromPickup: string;
+  durationValue: string;
+  fetchingRides: string;
+  noRidesFoundTitle: string;
+  noRidesFoundDesc: string;
 }
 
 export interface RideFiltersTranslations {
@@ -652,6 +662,17 @@ export interface RideFiltersTranslations {
   seatsRequiredLabel: string;
   applyFilters: string;
   clearAll: string;
+  noSmoking: string;
+  ladiesOnly: string;
+  verifiedDrivers: string;
+  petFriendly: string;
+  luggageAllowed: string;
+  timeSlot04: string;
+  timeSlot48: string;
+  timeSlot812: string;
+  timeSlot1216: string;
+  timeSlot1620: string;
+  timeSlot2024: string;
 }
 
 export interface RideInformationTranslations {
@@ -774,7 +795,26 @@ export interface DeveloperTranslations {
   pending: string;
   noBody: string;
   noHeaders: string;
+  copyCurl: string;
 }
+
+export interface ReportIssueTranslations {
+  title: string;
+  whatHappenedTitle: string;
+  whatHappenedSubtitle: string;
+  categorySafety: string;
+  categoryBehavior: string;
+  categoryVehicle: string;
+  categoryPayment: string;
+  categoryOther: string;
+  tellUsMoreTitle: string;
+  tellUsMoreSubtitle: string;
+  placeholder: string;
+  safetyExcellentTeam: string;
+  submitReport: string;
+  cancel: string;
+}
+
 
 export interface ChatLocationTranslations {
   headerTitle: string;

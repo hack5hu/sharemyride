@@ -54,7 +54,6 @@ export const ChatDetailsTemplate: React.FC<ChatDetailsTemplateProps> = ({
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
               inverted
-              estimatedItemSize={moderateScale(80)}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
               keyboardDismissMode="on-drag"

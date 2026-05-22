@@ -6,7 +6,7 @@ import {
   GeoJSONSource, 
   Layer, 
   UserLocation 
-} from '@maplibre/maplibre-react-native';
+} from '@/components/organisms/OlaMap';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import { UserLocationMarker } from '@/components/atoms/UserLocationMarker';
@@ -14,6 +14,13 @@ import { useLocale } from '@/constants/localization';
 import * as S from './RideRouteMapTemplate.styles';
 import { RideRouteMapTemplateProps } from './types.d';
 import { Button } from '@/components/atoms/Button';
+
+interface ExtendedUserLocationProps extends React.ComponentProps<typeof UserLocation> {
+  onUpdate?: (location: any) => void;
+  showsUserHeadingIndicator?: boolean;
+}
+
+const MapLibreUserLocation = UserLocation as React.ComponentType<ExtendedUserLocationProps>;
 
 export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> = React.memo(({
   title,
@@ -46,12 +53,12 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> = React.m
               zoom={zoom}
             />
             
-            <UserLocation 
+            <MapLibreUserLocation 
               onUpdate={handleUserLocationUpdate}
               showsUserHeadingIndicator={true}
             >
               <UserLocationMarker />
-            </UserLocation>
+            </MapLibreUserLocation>
 
             <GeoJSONSource id="ride-route-source" data={mapData.geoJSON as any}>
               <Layer
@@ -61,6 +68,8 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> = React.m
                 paint={{
                   'line-color': theme.colors.primary,
                   'line-width': 5,
+                }}
+                layout={{
                   'line-cap': 'round',
                   'line-join': 'round',
                 }}

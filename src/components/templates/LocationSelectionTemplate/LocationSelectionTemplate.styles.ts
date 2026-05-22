@@ -61,6 +61,21 @@ export const FixedFooter = styled.View`
   shadow-radius: 12px;
 `;
 
+export const FooterAboveNav = styled.View`
+  position: absolute;
+  bottom: ${verticalScale(72)}px;
+  left: 0;
+  right: 0;
+  padding-horizontal: ${scale(24)}px;
+  padding-vertical: ${verticalScale(16)}px;
+  background-color: ${({ theme }) => theme.colors.surface};
+  elevation: 8;
+  shadow-color: #000;
+  shadow-offset: 0px -4px;
+  shadow-opacity: 0.08;
+  shadow-radius: 12px;
+`;
+
 export const ContextualInfoBox = styled.View`
   margin-top: ${verticalScale(48)}px;
   padding: ${moderateScale(24)}px;
@@ -80,4 +95,42 @@ export const ContextualInfoText = styled.Text`
   font-size: ${responsiveFont(12)}px;
   color: ${({ theme }) => theme.colors.primary};
   line-height: ${verticalScale(20)}px;
+`;
+
+export const ContinueButtonSection = styled.View`
+  margin-top: ${verticalScale(32)}px;
+`;
+
+export const ContinueGradient = styled(LinearGradient).attrs(({ theme }) => ({
+  colors: [theme.colors.primary, theme.colors.primary_container],
+  start: { x: 0, y: 0 },
+  end: { x: 1, y: 1 },
+}))`
+  width: 100%;
+  height: ${verticalScale(64)}px;
+  border-radius: ${moderateScale(12)}px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  shadow-color: ${({ theme }) => theme.colors.primary};
+  shadow-offset: 0px 8px;
+  shadow-opacity: 0.2;
+  shadow-radius: 20px;
+  elevation: 8;
+`;
+
+export const ContinueButton = styled.TouchableOpacity`
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: ${scale(12)}px;
+`;
+
+export const ContinueText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 700;
+  font-size: ${responsiveFont(16)}px;
+  color: ${({ theme }) => theme.colors.on_primary};
 `;

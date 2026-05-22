@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
-import { KeyboardAvoidingView, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { scale, verticalScale, responsiveFont, moderateScale } from '@/styles';
 import { Typography } from '@/components/atoms/Typography';
 

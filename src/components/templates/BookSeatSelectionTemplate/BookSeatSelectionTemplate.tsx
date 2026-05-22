@@ -120,7 +120,9 @@ export const BookSeatSelectionTemplate: React.FC<BookSeatSelectionTemplateProps>
           <S.SummaryRow>
             <S.PillBadge>
               <Typography variant="label" size="sm" weight="bold" color="primary">
-                {seatCount === 1 ? st.seatSelected : t('selectSeat.seatsSelected', { count: seatCount, seatWord: t('common.seats') })}
+                {seatCount === 1 
+                  ? t('selectSeat.seatsSelected', { count: seatCount, seatWord: t('common.seat') }) 
+                  : t('selectSeat.seatsSelected', { count: seatCount, seatWord: t('common.seats') })}
               </Typography>
             </S.PillBadge>
             <Typography variant="title" size="md" weight="bold">

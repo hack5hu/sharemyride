@@ -42,6 +42,11 @@ export const useRideDetails = () => {
       setRideData(mapped);
     } catch (error) {
       Logger.error('Fetching ride details failed:', error);
+      showNotification(
+        NotificationType.ERROR,
+        t('notification.defaultErrorTitle'),
+        t('notification.defaultErrorMessage')
+      );
     } finally {
       setIsLoading(false);
     }

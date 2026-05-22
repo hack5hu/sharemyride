@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { scale, verticalScale } from '@/styles';
 import LinearGradient from 'react-native-linear-gradient';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { Typography } from '@/components/atoms/Typography';
 
 export const Container = styled.View`
@@ -98,7 +99,7 @@ export const SaveButtonGradient = styled.View`
   
 `;
 
-export const MainWrapper = styled.KeyboardAvoidingView`
+export const MainWrapper = styled(KeyboardAvoidingView)`
   flex: 1;
 `;
 

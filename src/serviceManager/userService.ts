@@ -100,10 +100,10 @@ export const userService = {
           Authorization: `Bearer ${credentials.password}`,
           // Note: Content-Type is omitted so fetch automatically adds boundary
         },
-        body: formData,
+        body: formData as any,
       });
 
-      const responseData = await response.json();
+      const responseData = (await response.json()) as { message?: string } & Record<string, any>;
 
       if (!response.ok) {
         throw new Error(responseData.message || `Server Error ${response.status}`);

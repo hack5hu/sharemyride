@@ -18,7 +18,7 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
   const theme = useTheme();
 
   return (
-    <ScreenShell title="Ride Pool Company">
+    <ScreenShell title={t.brandTitle}>
       <S.MainContent showsVerticalScrollIndicator={false}>
         {/* Success Header */}
         <S.SuccessArea>
@@ -131,7 +131,7 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
             <MaterialIcons name="electric-car" size={16} />
           </S.TrustIconsRow>
           <S.TrustText variant="label" size="xxs" weight="bold">
-            Ride Pool Company Carbon Neutral Transit
+            {t.carbonNeutralTransit}
           </S.TrustText>
         </S.TrustSection>
       </S.MainContent>

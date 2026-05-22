@@ -6,7 +6,7 @@ export interface RideListItem {
   subtitle: string;
   price: string;
   icon?: string;
-  type: 'upcoming' | 'draft' | 'completed';
+  type: 'upcoming' | 'draft' | 'completed' | 'archive' | 'requests';
   rawDate?: Date;
   // For UpcomingRideCard
   timerLabel?: string;
@@ -26,7 +26,7 @@ export interface MyRidesHookData {
   isRefreshing: boolean;
   isActionLoading: boolean;
   onTabChange: (tab: MyRidesTab) => void;
-  onRidePress: (id: string) => void;
+  onRidePress: (params: { id: string; rideId?: string; sourceStopId?: number; destinationStopId?: number }) => void;
   onRemoveDraft: (id: string) => void;
   onCancelRide: (id: string | number) => void;
   onClearDrafts: () => void;
@@ -36,6 +36,8 @@ export interface MyRidesHookData {
   hasMore: boolean;
   currentRides: RideListItem[];
   drafts: any[];
+  mappedRequests: any[];
+  hasRequests: boolean;
   onMenuPress: () => void;
   onProfilePress: () => void;
   onAcceptRide: (id: string) => void;

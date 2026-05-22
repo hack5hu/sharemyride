@@ -5,6 +5,9 @@ import rideService from '@/serviceManager/rideService';
 import { useAuthStore } from '@/store/useAuthStore';
 import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
 import { Logger } from '@/utils/logger';
+import { useTranslation } from '@/hooks/useTranslation';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
 
 export const TAB_TO_FILTER: Record<string, RideCategory | null> = {
   requests: 'REQUESTS',
@@ -17,6 +20,7 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
   const isFocused = useIsFocused();
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const { t } = useTranslation();
   
   const { rides, setRides, appendRides, setPage } = useMyRidesStore();
   const { user } = useAuthStore();
@@ -90,6 +94,11 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
       }
     } catch (error) {
       Logger.error(`[MyRidesData] Failed to fetch ${category} rides:`, error);
+      showNotification(
+        NotificationType.ERROR,
+        t('notification.defaultErrorTitle'),
+        t('notification.defaultErrorMessage')
+      );
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);

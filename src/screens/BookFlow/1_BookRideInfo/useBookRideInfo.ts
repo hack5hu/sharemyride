@@ -5,11 +5,15 @@ import { useLocale } from '@/constants/localization';
 import { useBookRideStore, RecentSearch } from '@/store/useBookRideStore';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import rideService, { SearchRidePayload } from '@/serviceManager/rideService';
+import { useTranslation } from '@/hooks/useTranslation';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
 
 export const useBookRideInfo = () => {
   const { navigation, navigate } = useAppNavigation();
   const route = useRoute();
   const { bookRideInfo: t } = useLocale();
+  const { t: translate } = useTranslation();
   const [isSearching, setIsSearching] = useState(false);
   const [isSwapped, setIsSwapped] = useState(false);
 
@@ -120,8 +124,13 @@ export const useBookRideInfo = () => {
         } else {
           navigate('AvailableRides');
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to search rides:', error);
+        showNotification(
+          NotificationType.ERROR,
+          translate('notification.defaultErrorTitle'),
+          error.message || translate('notification.defaultErrorMessage')
+        );
       } finally {
         setIsSearching(false);
       }
@@ -162,8 +171,13 @@ export const useBookRideInfo = () => {
         } else {
           navigate('AvailableRides');
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to search rides from recent search:', error);
+        showNotification(
+          NotificationType.ERROR,
+          translate('notification.defaultErrorTitle'),
+          error.message || translate('notification.defaultErrorMessage')
+        );
       } finally {
         setIsSearching(false);
       }

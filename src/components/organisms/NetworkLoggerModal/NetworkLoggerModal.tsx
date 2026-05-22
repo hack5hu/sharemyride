@@ -113,7 +113,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                   <S.CopyButton onPress={() => handleCopy(generateCurl(selectedLog), 'cURL Command')}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Icon name="content-copy" size={14} color={theme.colors.on_surface_variant} style={{ marginRight: 4 }} />
-                      <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>Copy cURL</Typography>
+                      <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>{t.copyCurl}</Typography>
                     </View>
                   </S.CopyButton>
                 </View>
@@ -176,7 +176,6 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                   data={logs}
                   renderItem={renderItem}
                   keyExtractor={(item) => item.id}
-                  estimatedItemSize={100}
                   ListEmptyComponent={renderEmpty}
                 />
               </S.Container>

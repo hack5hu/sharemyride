@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Alert } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { authService } from '@/serviceManager/authService';
 import { useAuthStore } from '@/store/useAuthStore';
 import { getDeviceId } from '@/utils/deviceId';
 import { getFcmToken } from '@/utils/fcm';
+import { useTranslation } from '@/hooks/useTranslation';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
 
 export const useOTPVerification = () => {
   const [timer, setTimer] = useState(45);
@@ -12,6 +14,7 @@ export const useOTPVerification = () => {
   const [otpValue, setOtpValue] = useState('');
   const route = useRoute<any>();
   const { phoneNumber } = route.params || {};
+  const { t } = useTranslation();
 
   const { setAuth } = useAuthStore();
 
@@ -28,7 +31,11 @@ export const useOTPVerification = () => {
 
   const handleVerify = async (code: string) => {
     if (!phoneNumber) {
-      Alert.alert('Error', 'Phone number missing');
+      showNotification(
+        NotificationType.ERROR,
+        t('notification.defaultErrorTitle'),
+        t('notification.defaultErrorMessage')
+      );
       return;
     }
 
@@ -75,14 +82,19 @@ export const useOTPVerification = () => {
         // but we can also trigger it here if needed.
         // For now, let's let the RootNavigator handle the switch.
       } else {
-        Alert.alert(
-          'Verification Failed',
-          response.data.message || 'Invalid OTP',
+        showNotification(
+          NotificationType.ERROR,
+          t('notification.defaultErrorTitle'),
+          response.data.message || t('notification.defaultErrorMessage')
         );
         setLoading(false);
       }
     } catch (error: any) {
-      Alert.alert('Error', error.message || 'Verification failed');
+      showNotification(
+        NotificationType.ERROR,
+        t('notification.defaultErrorTitle'),
+        error.message || t('notification.defaultErrorMessage')
+      );
       setLoading(false);
     }
   };
@@ -92,7 +104,11 @@ export const useOTPVerification = () => {
     try {
       await authService.resendOtp(phoneNumber);
     } catch (error: any) {
-      Alert.alert('Error', error.message || 'Failed to resend OTP');
+      showNotification(
+        NotificationType.ERROR,
+        t('notification.defaultErrorTitle'),
+        error.message || t('notification.defaultErrorMessage')
+      );
     }
   };
 

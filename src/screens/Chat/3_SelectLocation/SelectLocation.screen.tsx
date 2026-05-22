@@ -8,6 +8,13 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useSelectLocation } from './useSelectLocation';
 import { SelectLocationScreenProps } from './types.d';
 
+interface ExtendedUserLocationProps extends React.ComponentProps<typeof UserLocation> {
+  onUpdate?: (location: any) => void;
+  showsUserHeadingIndicator?: boolean;
+}
+
+const MapLibreUserLocation = UserLocation as React.ComponentType<ExtendedUserLocationProps>;
+
 export const SelectLocationScreen: React.FC<SelectLocationScreenProps> = memo(({ navigation }) => {
   const { t } = useTranslation();
   const {
@@ -37,10 +44,10 @@ export const SelectLocationScreen: React.FC<SelectLocationScreenProps> = memo(({
             ref={cameraRef}
             center={[region.longitude, region.latitude]}
             zoom={zoom}
-            animationMode="flyTo"
-            animationDuration={1000}
+            duration={1000}
+            easing="fly"
           />
-          <UserLocation 
+          <MapLibreUserLocation 
             showsUserHeadingIndicator={true}
             onUpdate={handleUserLocationUpdate} 
           />

@@ -2,12 +2,16 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 import { useNavigation } from '@react-navigation/native';
 import { authService } from '@/serviceManager/authService';
-import { Alert, Keyboard } from 'react-native';
+import { Keyboard } from 'react-native';
+import { useTranslation } from '@/hooks/useTranslation';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const navigation = useNavigation<any>();
+  const { t } = useTranslation();
 
   const toggleTerms = () => {
     Keyboard.dismiss();
@@ -22,10 +26,18 @@ export const useLogin = () => {
       if (response.data.status === 'success' || response.status === 200) {
         navigation.navigate('OTPVerification', { phoneNumber: phone });
       } else {
-        Alert.alert('Login', response.data.message || 'Verification failed');
+        showNotification(
+          NotificationType.ERROR,
+          t('notification.defaultErrorTitle'),
+          response.data.message || t('notification.defaultErrorMessage')
+        );
       }
     } catch (error: any) {
-      Alert.alert('Verification Error', error.message || 'Something went wrong');
+      showNotification(
+        NotificationType.ERROR,
+        t('notification.defaultErrorTitle'),
+        error.message || t('notification.defaultErrorMessage')
+      );
     } finally {
       setLoading(false);
     }

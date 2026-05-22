@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale, responsiveFont, responsiveSize } from '@/styles';
-import { KeyboardAvoidingView, Platform, Dimensions } from 'react-native';
+import { Platform, Dimensions } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
 const { height } = Dimensions.get('window');
 
