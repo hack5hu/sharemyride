@@ -6,6 +6,7 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 import { BookSeat, Passenger } from './types';
 
@@ -140,7 +141,7 @@ export const useBookSeatSelection = (
       showNotification(
         NotificationType.ERROR,
         translate('notification.defaultErrorTitle'),
-        error.message || translate('notification.defaultErrorMessage')
+        getErrorMessage(error, translate('notification.defaultErrorMessage'))
       );
     } finally {
       setIsBooking(false);

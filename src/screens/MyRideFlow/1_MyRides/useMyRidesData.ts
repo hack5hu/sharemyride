@@ -8,6 +8,7 @@ import { Logger } from '@/utils/logger';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const TAB_TO_FILTER: Record<string, RideCategory | null> = {
   requests: 'REQUESTS',
@@ -97,7 +98,7 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        t('notification.defaultErrorMessage')
+        getErrorMessage(error, t('notification.defaultErrorMessage'))
       );
     } finally {
       setIsLoading(false);

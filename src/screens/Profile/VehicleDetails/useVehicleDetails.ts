@@ -10,6 +10,7 @@ import { VEHICLE_TYPES, CAR_COLORS } from '@/constants/ride';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 const validationSchema = Yup.object().shape({
   company: Yup.string().required('Vehicle company is required'),
@@ -77,7 +78,7 @@ export const useVehicleDetails = () => {
         showNotification(
           NotificationType.ERROR,
           t('notification.defaultErrorTitle'),
-          error.message || t('notification.defaultErrorMessage')
+          getErrorMessage(error, t('notification.defaultErrorMessage'))
         );
       }
     },

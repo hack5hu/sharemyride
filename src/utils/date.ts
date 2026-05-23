@@ -40,3 +40,59 @@ export const parseDateFromDDMMYYYY = (text: string): Date => {
   const parsed = parse(text, 'dd/MM/yyyy', new Date());
   return isValid(parsed) ? parsed : new Date();
 };
+
+/**
+ * Safely parses any date string and returns a valid Date object.
+ * If the date is invalid, it returns null instead of crashing.
+ */
+export const safeParseDate = (dateStr: any): Date | null => {
+  if (!dateStr) return null;
+  if (dateStr instanceof Date) {
+    return isValid(dateStr) ? dateStr : null;
+  }
+  let d = new Date(dateStr);
+  if (isValid(d)) return d;
+
+  // Handle cross-platform iOS spaces: "2026-05-23 14:30:00" -> "2026-05-23T14:30:00"
+  if (typeof dateStr === 'string') {
+    const withT = dateStr.trim().replace(' ', 'T');
+    d = new Date(withT);
+    if (isValid(d)) return d;
+  }
+
+  return null;
+};
+
+/**
+ * Safely formats a date/time string to localized time.
+ */
+export const formatTimeSafely = (
+  dateStr: any,
+  options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' },
+  fallback = 'TBD'
+): string => {
+  const parsed = safeParseDate(dateStr);
+  if (!parsed) return fallback;
+  try {
+    return parsed.toLocaleTimeString([], options);
+  } catch (e) {
+    return fallback;
+  }
+};
+
+/**
+ * Safely formats a date/time string to localized date.
+ */
+export const formatDateSafely = (
+  dateStr: any,
+  options: Intl.DateTimeFormatOptions = { weekday: 'short', day: 'numeric', month: 'short' },
+  fallback = 'TBD'
+): string => {
+  const parsed = safeParseDate(dateStr);
+  if (!parsed) return fallback;
+  try {
+    return parsed.toLocaleDateString([], options);
+  } catch (e) {
+    return fallback;
+  }
+};

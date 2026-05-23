@@ -156,7 +156,9 @@ export const useRidePublishStore = create<RidePublishState>((set) => ({
     departureDate: null,
     departureTime: null,
     seatCount: 1,
+    selectedSeatIds: [],
     vehicleId: null,
+    publishVehicleType: '5',
     vehicleDetails: null,
     preferences: {
       nonSmoking: true,

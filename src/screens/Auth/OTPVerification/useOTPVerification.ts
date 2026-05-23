@@ -7,6 +7,7 @@ import { getFcmToken } from '@/utils/fcm';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const useOTPVerification = () => {
   const [timer, setTimer] = useState(45);
@@ -93,7 +94,7 @@ export const useOTPVerification = () => {
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        error.message || t('notification.defaultErrorMessage')
+        getErrorMessage(error, t('notification.defaultErrorMessage'))
       );
       setLoading(false);
     }
@@ -107,7 +108,7 @@ export const useOTPVerification = () => {
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        error.message || t('notification.defaultErrorMessage')
+        getErrorMessage(error, t('notification.defaultErrorMessage'))
       );
     }
   };

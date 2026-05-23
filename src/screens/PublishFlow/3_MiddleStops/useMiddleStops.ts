@@ -3,9 +3,14 @@ import { useRoute } from '@react-navigation/native';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { locationService } from '@/serviceManager/locationService';
 import { useAppNavigation } from '@/hooks/useAppNavigation'; // ensure custom navigation hook is used
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
+import { useLocale } from '@/constants/localization';
+
 export const useMiddleStops = () => {
   const navigation = useAppNavigation(); // use custom navigation hook per guidelines
   const route = useRoute();  
+  const { middleStops: locale } = useLocale();
   const { 
     startLocation, 
     destinationLocation, 
@@ -34,6 +39,26 @@ export const useMiddleStops = () => {
         updatedLocation: undefined,
         type: undefined,
       });
+
+      const currentStops = useRidePublishStore.getState().middleStops;
+      
+      const isStartDuplicate = startLocation.latitude === updatedLocation.latitude && startLocation.longitude === updatedLocation.longitude;
+      const isDestDuplicate = destinationLocation && destinationLocation.latitude === updatedLocation.latitude && destinationLocation.longitude === updatedLocation.longitude;
+      const isAlreadyStop = currentStops.some(
+        s => 
+          s.id === updatedLocation.id || 
+          (s.latitude === updatedLocation.latitude && s.longitude === updatedLocation.longitude) ||
+          (s.name && s.name === updatedLocation.name)
+      );
+
+      if (isStartDuplicate || isDestDuplicate || isAlreadyStop) {
+        showNotification(
+          NotificationType.WARNING,
+          locale.duplicateStopTitle,
+          locale.duplicateStopMsg
+        );
+        return;
+      }
 
       setIsSorting(true);
       try {
@@ -75,11 +100,11 @@ export const useMiddleStops = () => {
   const sortedStops = middleStops; // Already sorted in store
 
   const handleBackPress = useCallback(() => {
-    (navigation.navigate as any)('RouteSelection');
+    navigation.goBack();
   }, [navigation]);
 
   const handleAddStop = useCallback(() => {
-    (navigation.navigate as any)('MapPicker', {
+    navigation.push('MapPicker', {
       returnTo: 'MiddleStops',
       type: 'middleStop',
       module: 'publish'

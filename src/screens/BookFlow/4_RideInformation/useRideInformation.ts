@@ -7,6 +7,7 @@ import { useRideDataMapper } from './useRideDataMapper';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const useRideInformation = (rideId: string, sourceStopId?: number, destinationStopId?: number) => {
   const { navigate, goBack } = useAppNavigation();
@@ -44,7 +45,7 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
         showNotification(
           NotificationType.ERROR,
           locale.notification.defaultErrorTitle,
-          error.message || locale.notification.defaultErrorMessage
+          getErrorMessage(error, locale.notification.defaultErrorMessage)
         );
       } finally {
         setTimeout(() => setIsLoading(false), 300);

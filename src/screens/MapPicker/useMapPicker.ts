@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp, CommonActions } from '@react-navigation/native';
 import { RootStackParamList } from '@/navigation/types';
 import { Location, useLocationStore } from '@/store/useLocationStore';
 import { locationService, OlaPrediction } from '@/serviceManager/locationService';
@@ -185,18 +185,27 @@ export const useMapPicker = () => {
   const handleConfirmLocation = useCallback(() => {
     if (selectedLocation) {
       addSearchHistory(selectedLocation, contextKey);
-      (navigation.navigate as any)({
-        name: returnTo,
-        params: {
-          updatedLocation: selectedLocation,
-          type: pickerType,
-        },
-        merge: true,
-      });
+      
+      const routes = navigation.getState()?.routes;
+      if (routes && routes.length > 1) {
+        const prevRoute = routes[routes.length - 2];
+        if (prevRoute) {
+          navigation.dispatch(
+            CommonActions.setParams({
+              params: {
+                updatedLocation: selectedLocation,
+                type: pickerType,
+              },
+              source: prevRoute.key,
+            })
+          );
+        }
+      }
+      navigation.goBack();
     } else {
       navigation.goBack();
     }
-  }, [navigation, selectedLocation, pickerType, returnTo, addSearchHistory, contextKey]);
+  }, [navigation, selectedLocation, pickerType, addSearchHistory, contextKey]);
 
   return {
     pickerType,

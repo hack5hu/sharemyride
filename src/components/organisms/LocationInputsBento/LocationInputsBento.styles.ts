@@ -16,9 +16,9 @@ export const Container = styled.View`
 
 export const VisualPathLine = styled.View`
   position: absolute;
-  left: ${scale(36)}px;
-  top: ${verticalScale(72)}px;
-  bottom: ${verticalScale(72)}px;
+  left: ${moderateScale(35)}px;
+  top: ${moderateScale(42) + verticalScale(12)}px;
+  bottom: ${moderateScale(42) + verticalScale(12)}px;
   width: ${scale(2)}px;
   background-color: ${({ theme }) => theme.colors.primary};
   opacity: 0.4;
@@ -43,7 +43,7 @@ export const StartIconContainer = styled.View`
   background-color: ${({ theme }) => theme.colors.primary};
   align-items: center;
   justify-content: center;
-  margin-top: ${verticalScale(12)}px;
+  margin-top: ${verticalScale(20)}px;
   shadow-color: ${({ theme }) => theme.colors.primary};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.2;

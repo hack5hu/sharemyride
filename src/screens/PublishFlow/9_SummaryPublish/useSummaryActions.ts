@@ -7,6 +7,7 @@ import { useMyRidesStore } from '@/store/useMyRidesStore';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolean) => void) => {
   const navigation = useNavigation();
@@ -106,14 +107,20 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
         removeDraft(editingDraftId);
       }
 
-      (navigation.navigate as any)('PublishSuccess');
+      navigation.reset({
+        index: 1,
+        routes: [
+          { name: 'BookRideInfo' },
+          { name: 'PublishSuccess' },
+        ],
+      } as any);
       clearPublishState();
     } catch (error: any) {
       console.error('Publish failed:', error);
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        error.message || t('notification.defaultErrorMessage')
+        getErrorMessage(error, t('notification.defaultErrorMessage'))
       );
     } finally {
       setIsPublishing(false);

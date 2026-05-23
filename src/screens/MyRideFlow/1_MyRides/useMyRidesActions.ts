@@ -7,6 +7,7 @@ import rideService from '@/serviceManager/rideService';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const useMyRidesActions = (fetchInitialRides: () => void) => {
   const { t } = useTranslation();
@@ -83,7 +84,7 @@ export const useMyRidesActions = (fetchInitialRides: () => void) => {
             showNotification(
               NotificationType.ERROR,
               t('notification.defaultErrorTitle'),
-              t('myRides.cancelRideError') || error.message || t('notification.defaultErrorMessage')
+              getErrorMessage(error, t('myRides.cancelRideError') || t('notification.defaultErrorMessage'))
             );
           }
         } 

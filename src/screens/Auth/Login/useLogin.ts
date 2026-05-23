@@ -6,6 +6,7 @@ import { Keyboard } from 'react-native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
@@ -36,7 +37,7 @@ export const useLogin = () => {
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        error.message || t('notification.defaultErrorMessage')
+        getErrorMessage(error, t('notification.defaultErrorMessage'))
       );
     } finally {
       setLoading(false);

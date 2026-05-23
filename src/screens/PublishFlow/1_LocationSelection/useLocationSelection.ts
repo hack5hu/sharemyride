@@ -28,7 +28,7 @@ export const useLocationSelection = () => {
 
   const handlePressStart = useCallback(() => {
     Keyboard.dismiss();
-    navigation.navigate('MapPicker', { 
+    navigation.push('MapPicker', { 
       type: 'start', 
       returnTo: 'LocationSelection',
       module: 'publish'
@@ -37,7 +37,7 @@ export const useLocationSelection = () => {
 
   const handlePressDestination = useCallback(() => {
     Keyboard.dismiss();
-    navigation.navigate('MapPicker', { 
+    navigation.push('MapPicker', { 
       type: 'destination', 
       returnTo: 'LocationSelection',
       module: 'publish'

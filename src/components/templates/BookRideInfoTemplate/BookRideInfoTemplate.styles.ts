@@ -97,7 +97,7 @@ export const VisualLine = styled.View`
   left: 50%;
   margin-left: -1px;
   top: ${verticalScale(44)}px;
-  bottom: ${verticalScale(44)}px;
+  bottom: ${verticalScale(32)}px;
   background-color: ${({ theme }) => `${theme.colors.outline_variant}40`};
   z-index: 1;
 `;
@@ -132,7 +132,7 @@ export const IndicatorGroup = styled.View`
 `;
 
 export const LabelSpacer = styled.View`
-  height: ${verticalScale(20)}px;
+  height: ${verticalScale(16)}px;
 `;
 
 export const IndicatorIconBox = styled.View`

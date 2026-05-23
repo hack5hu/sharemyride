@@ -122,7 +122,7 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
   });
 
   return (
-    <ScreenShell title={mapPicker.title} onBack={true}>
+    <ScreenShell title={mapPicker.title} onBack={searchOverlayProps.onBackPress}>
       <MapSearchOverlay 
         {...searchOverlayProps} 
         isCondensed={isMapVisible} 

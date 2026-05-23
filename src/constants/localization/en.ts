@@ -354,6 +354,8 @@ export const en: Translations = {
     destinationLabel: 'Destination',
     optimizedRoute: 'Optimized Route',
     continue: 'Continue',
+    duplicateStopTitle: 'Duplicate Stop',
+    duplicateStopMsg: 'This stop is already included in your route.',
   },
   middleStopMap: {
     headerTitle: 'Add Stop',

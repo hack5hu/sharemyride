@@ -357,6 +357,8 @@ export const hi: Translations = {
     destinationLabel: 'गंतव्य',
     optimizedRoute: 'अनुकूलित मार्ग',
     continue: 'जारी रखें',
+    duplicateStopTitle: 'डुप्लिकेट स्टॉप',
+    duplicateStopMsg: 'यह स्टॉप पहले से ही आपके मार्ग में शामिल है।',
   },
   middleStopMap: {
     headerTitle: 'स्टॉप जोड़ें',

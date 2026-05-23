@@ -364,6 +364,8 @@ export interface MiddleStopsTranslations {
   destinationLabel: string;
   optimizedRoute: string;
   continue: string;
+  duplicateStopTitle: string;
+  duplicateStopMsg: string;
 }
 
 export interface MiddleStopMapTranslations {

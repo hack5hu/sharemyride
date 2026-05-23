@@ -10,6 +10,7 @@ import { useMyRidesStore } from '@/store/useMyRidesStore';
 import { Logger } from '@/utils/logger';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const useRideDetails = () => {
   const navigation = useNavigation();
@@ -45,7 +46,7 @@ export const useRideDetails = () => {
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        t('notification.defaultErrorMessage')
+        getErrorMessage(error, t('notification.defaultErrorMessage'))
       );
     } finally {
       setIsLoading(false);
@@ -132,7 +133,7 @@ export const useRideDetails = () => {
       setOtherReasonText('');
       Alert.alert(t('common.success'), t('cancelRide.successMessage'));
     } catch (error) {
-      Alert.alert(t('common.error'), t('cancelRide.errorMessage'));
+      Alert.alert(t('common.error'), getErrorMessage(error, t('cancelRide.errorMessage')));
     } finally {
       setIsCancelling(false);
     }

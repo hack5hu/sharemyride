@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { RideData } from '@/screens/BookFlow/3_AvailableRides/types';
 import { calculateDistance } from '@/utils/location';
+import { formatTimeSafely, formatDateSafely } from '@/utils/date';
 
 export const mapBackendRideToUI = (
   rideRaw: any, 
@@ -70,7 +71,7 @@ export const mapBackendRideToUI = (
 
     return {
       id: stop.id,
-      time: stop.arrivalTime ? new Date(stop.arrivalTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'TBD',
+      time: formatTimeSafely(stop.arrivalTime),
       durationSincePrevious,
       location: displayLocation,
       type: idx === 0 ? 'pickup' : (idx === arr.length - 1 ? 'destination' : 'stop'),
@@ -119,20 +120,16 @@ export const mapBackendRideToUI = (
     routePath: rideRaw.routePath,
     seats: rideRaw.seats || [],
     passengers: rideRaw.passengers || [],
-    departureDate: firstStop?.arrivalTime
-      ? new Date(firstStop.arrivalTime).toLocaleDateString('en-IN', {
-          weekday: 'short',
-          day: 'numeric',
-          month: 'short',
-        })
-      : 'Today',
-    departureTime: firstStop?.arrivalTime
-      ? new Date(firstStop.arrivalTime).toLocaleTimeString('en-US', {
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true,
-        })
-      : '--:--',
+    departureDate: formatDateSafely(firstStop?.arrivalTime, {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+    }, 'Today'),
+    departureTime: formatTimeSafely(firstStop?.arrivalTime, {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    }, '--:--'),
     rawStops: stops.map((s: any) => ({
       lat: s.lat,
       lon: s.lon,

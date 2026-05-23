@@ -45,7 +45,7 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
   return (
     <ScreenShell
       title={"Add stops"}
-      onBack
+      onBack={onBackPress}
     >
       <S.ContentLayer showsVerticalScrollIndicator={false}>
         {/* Title */}

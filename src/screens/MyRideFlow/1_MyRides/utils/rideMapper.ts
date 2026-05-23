@@ -1,9 +1,10 @@
 import { RideCategory } from '@/store/useMyRidesStore';
+import { safeParseDate, formatTimeSafely, formatDateSafely } from '@/utils/date';
 
 export const mapBackendRideToUI = (ride: any, type: 'upcoming' | 'completed' | 'requests' | 'archive', t: any) => {
   const startName = ride.sourceStopName || 'Unknown';
   const endName = ride.destinationStopName || 'Unknown';
-  const startTime = ride.startTime ? new Date(ride.startTime) : (ride.requestedAt ? new Date(ride.requestedAt) : new Date());
+  const startTime = safeParseDate(ride.startTime || ride.requestedAt) || new Date();
   
   const now = new Date();
   const diffMs = startTime.getTime() - now.getTime();
@@ -13,9 +14,13 @@ export const mapBackendRideToUI = (ride: any, type: 'upcoming' | 'completed' | '
   const isPassenger = ride.role === 'PASSENGER';
   const isRequest = type === 'requests';
   
-  const weekday = startTime.toLocaleDateString('en-US', { weekday: 'short' });
-  const dayMonth = startTime.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
-  const timeStr = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  let weekday = 'Today';
+  let dayMonth = '';
+  try {
+    weekday = startTime.toLocaleDateString('en-US', { weekday: 'short' });
+    dayMonth = startTime.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+  } catch (e) {}
+  const timeStr = formatTimeSafely(ride.startTime || ride.requestedAt);
 
   let timerLabel = '';
   let statusTag = '';
@@ -70,9 +75,11 @@ export const mapBackendRideToUI = (ride: any, type: 'upcoming' | 'completed' | '
       ? (ride.passengerPhotoUrl || 'https://i.pravatar.cc/150') 
       : (isDriver ? undefined : (ride.driverPhotoUrl || 'https://i.pravatar.cc/150')),
     pickupTime: timeStr,
-    dropoffTime: ride.endTime 
-      ? new Date(ride.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
-      : new Date(startTime.getTime() + 3600000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    dropoffTime: formatTimeSafely(
+      ride.endTime,
+      { hour: '2-digit', minute: '2-digit' },
+      formatTimeSafely(new Date(startTime.getTime() + 3600000))
+    ),
     pickupLocation: isRequest ? startName : startName.split(',')[0],
     dropoffLocation: isRequest ? endName : endName.split(',')[0],
     timerLabel,

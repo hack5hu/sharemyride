@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
+import { BackHandler, ToastAndroid } from 'react-native';
 import { format, isBefore, startOfDay } from 'date-fns';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useFocusEffect } from '@react-navigation/native';
 import { useLocale } from '@/constants/localization';
 import { useBookRideStore, RecentSearch } from '@/store/useBookRideStore';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
@@ -8,6 +9,7 @@ import rideService, { SearchRidePayload } from '@/serviceManager/rideService';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const useBookRideInfo = () => {
   const { navigation, navigate } = useAppNavigation();
@@ -16,6 +18,31 @@ export const useBookRideInfo = () => {
   const { t: translate } = useTranslation();
   const [isSearching, setIsSearching] = useState(false);
   const [isSwapped, setIsSwapped] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      let backPressCount = 0;
+      const onBackPress = () => {
+        if (backPressCount === 0) {
+          backPressCount++;
+          ToastAndroid.show('Press back again to exit the app', ToastAndroid.SHORT);
+          setTimeout(() => {
+            backPressCount = 0;
+          }, 2000);
+          return true;
+        } else {
+          BackHandler.exitApp();
+          return true;
+        }
+      };
+
+      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => {
+        subscription.remove();
+      };
+    }, [])
+  );
 
   const {
     startLocation,
@@ -117,7 +144,8 @@ export const useBookRideInfo = () => {
         });
 
         const results = await rideService.searchRides(payload);
-        setSearchResults(results.rides || results.data || results);
+        const ridesList = results?.rides || results?.data || (Array.isArray(results) ? results : []);
+        setSearchResults(ridesList);
         
         if (curType === 'local') {
           navigate('LocalRideResults');
@@ -129,7 +157,7 @@ export const useBookRideInfo = () => {
         showNotification(
           NotificationType.ERROR,
           translate('notification.defaultErrorTitle'),
-          error.message || translate('notification.defaultErrorMessage')
+          getErrorMessage(error, translate('notification.defaultErrorMessage'))
         );
       } finally {
         setIsSearching(false);
@@ -164,7 +192,8 @@ export const useBookRideInfo = () => {
         };
 
         const results = await rideService.searchRides(payload);
-        store.setSearchResults(results.rides || results.data || results);
+        const ridesList = results?.rides || results?.data || (Array.isArray(results) ? results : []);
+        store.setSearchResults(ridesList);
         
         if (store.rideType === 'local') {
           navigate('LocalRideResults');
@@ -176,7 +205,7 @@ export const useBookRideInfo = () => {
         showNotification(
           NotificationType.ERROR,
           translate('notification.defaultErrorTitle'),
-          error.message || translate('notification.defaultErrorMessage')
+          getErrorMessage(error, translate('notification.defaultErrorMessage'))
         );
       } finally {
         setIsSearching(false);

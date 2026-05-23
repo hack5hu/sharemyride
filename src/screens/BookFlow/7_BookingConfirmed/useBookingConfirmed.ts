@@ -6,6 +6,7 @@ import { RootStackParamList } from '@/navigation/types';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { RouteStop } from '@/serviceManager/rideService';
+import { formatTimeSafely } from '@/utils/date';
 
 export const useBookingConfirmed = () => {
   const { navigate } = useAppNavigation();
@@ -42,14 +43,11 @@ export const useBookingConfirmed = () => {
 
   const rideData = useMemo(() => {
     const firstStop = rideRaw?.stops?.[0];
-    let pickupTime = 'TBD';
-    if (firstStop?.arrivalTime) {
-      pickupTime = new Date(firstStop.arrivalTime).toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-      });
-    }
+    const pickupTime = formatTimeSafely(firstStop?.arrivalTime, {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
 
     return {
       driver: {

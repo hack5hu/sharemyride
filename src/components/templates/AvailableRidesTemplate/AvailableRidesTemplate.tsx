@@ -1,5 +1,6 @@
 import React from 'react';
 import { format } from 'date-fns';
+import { formatDateSafely } from '@/utils/date';
 import { useTheme } from 'styled-components/native';
 import { View, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -107,7 +108,7 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
                 <S.FooterItem>
                   <Icon name="calendar-today" size={moderateScale(20)} color={theme.colors.on_surface_variant} />
                   <Typography variant="label" size="md" weight="bold" color={theme.colors.on_surface_variant}>
-                    {travelDate ? format(new Date(travelDate), 'EEE, dd MMM') : t.searchSummaryDate}
+                    {travelDate ? formatDateSafely(travelDate, { weekday: 'short', day: '2-digit', month: 'short' }, t.searchSummaryDate) : t.searchSummaryDate}
                   </Typography>
                 </S.FooterItem>
                 <S.FooterItem>

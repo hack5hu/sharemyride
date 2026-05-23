@@ -10,6 +10,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const useEditProfile = () => {
   const { t } = useTranslation();
@@ -74,7 +75,7 @@ export const useEditProfile = () => {
         showNotification(
           NotificationType.ERROR,
           t('notification.defaultErrorTitle'),
-          err.message || t('notification.defaultErrorMessage')
+          getErrorMessage(err, t('notification.defaultErrorMessage'))
         );
       } finally {
         setLoading(false);

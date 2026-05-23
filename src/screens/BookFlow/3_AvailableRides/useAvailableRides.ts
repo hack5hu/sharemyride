@@ -9,6 +9,8 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { formatTimeSafely, safeParseDate } from '@/utils/date';
+import { getErrorMessage } from '@/utils/error';
 
 export const useAvailableRides = () => {
   const { navigate, goBack } = useAppNavigation();
@@ -87,7 +89,7 @@ export const useAvailableRides = () => {
       };
 
       const response = await rideService.searchRides(payload);
-      const newRides = response.rides || response.data || response;
+      const newRides = response?.rides || response?.data || (Array.isArray(response) ? response : []);
       
       if (newRides && newRides.length > 0) {
         store.appendSearchResults(newRides);
@@ -98,7 +100,7 @@ export const useAvailableRides = () => {
       showNotification(
         NotificationType.ERROR,
         translate('notification.defaultErrorTitle'),
-        error.message || translate('notification.defaultErrorMessage')
+        getErrorMessage(error, translate('notification.defaultErrorMessage'))
       );
     } finally {
       setIsFetchingMore(false);
@@ -106,9 +108,11 @@ export const useAvailableRides = () => {
   }, [isFetchingMore, selectedFilters, mapFiltersToPayload]);
 
   const mappedRides: RideData[] = useMemo(() => {
-    if (!searchResults || searchResults.length === 0) return [];
+    if (!searchResults || !Array.isArray(searchResults) || searchResults.length === 0) return [];
     
-    return searchResults.map((ride, index) => {
+    return searchResults
+      .filter(Boolean)
+      .map((ride, index) => {
       const hasStops = ride.stops && ride.stops.length > 0;
       const firstStop = hasStops ? ride.stops[0] : null;
       const lastStop = hasStops ? ride.stops[ride.stops.length - 1] : null;
@@ -140,20 +144,18 @@ export const useAvailableRides = () => {
 
       const timeline = hasStops 
         ? ride.stops.map((stop: any, idx: number, arr: any[]) => ({
-            time: stop.arrivalTime
-              ? new Date(stop.arrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-              : 'TBD',
+            time: formatTimeSafely(stop.arrivalTime),
             location: stop.name || stop.address || 'Unknown Location',
             type: idx === 0 ? 'pickup' : (idx === arr.length - 1 ? 'destination' : 'stop'),
           }))
         : [
             {
-              time: ride.startTime ? new Date(ride.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'TBD',
+              time: formatTimeSafely(ride.startTime),
               location: ride.sourceStopName || ride.sourceAddress || 'Pickup',
               type: 'pickup'
             },
             {
-              time: ride.endTime ? new Date(ride.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'TBD',
+              time: formatTimeSafely(ride.endTime),
               location: ride.destinationStopName || ride.destinationAddress || 'Dropoff',
               type: 'destination'
             }
@@ -179,10 +181,12 @@ export const useAvailableRides = () => {
         isFrequentCoRider: !!ride.isFrequentCoRider,
         pickupDistance,
         dropoffDistance,
-        totalDuration: (sTime && eTime)
-          ? Math.round((new Date(eTime).getTime() - new Date(sTime).getTime()) / (1000 * 60))
-          : 0,
-        departureHour: sTime ? new Date(sTime).getHours() : undefined,
+        totalDuration: (() => {
+          const start = safeParseDate(sTime);
+          const end = safeParseDate(eTime);
+          return start && end ? Math.round((end.getTime() - start.getTime()) / (1000 * 60)) : 0;
+        })(),
+        departureHour: sTime ? (safeParseDate(sTime)?.getHours() ?? undefined) : undefined,
         sourceStopId: ride.sourceStopId,
         destinationStopId: ride.destinationStopId,
       } as any;
@@ -289,13 +293,14 @@ export const useAvailableRides = () => {
         size: 10,
       };
       const response = await rideService.searchRides(payload);
-      setSearchResults(response.rides || response.data || response);
+      const ridesList = response?.rides || response?.data || (Array.isArray(response) ? response : []);
+      setSearchResults(ridesList);
     } catch (error: any) {
       console.error('Failed to clear filters and fetch:', error);
       showNotification(
         NotificationType.ERROR,
         translate('notification.defaultErrorTitle'),
-        error.message || translate('notification.defaultErrorMessage')
+        getErrorMessage(error, translate('notification.defaultErrorMessage'))
       );
     } finally {
       setIsLoading(false);
@@ -334,13 +339,14 @@ export const useAvailableRides = () => {
       };
 
       const response = await rideService.searchRides(payload);
-      setSearchResults(response.rides || response.data || response);
+      const ridesList = response?.rides || response?.data || (Array.isArray(response) ? response : []);
+      setSearchResults(ridesList);
     } catch (error: any) {
       console.error('Failed to apply filters:', error);
       showNotification(
         NotificationType.ERROR,
         translate('notification.defaultErrorTitle'),
-        error.message || translate('notification.defaultErrorMessage')
+        getErrorMessage(error, translate('notification.defaultErrorMessage'))
       );
     } finally {
       setIsLoading(false);

@@ -7,6 +7,7 @@ import { storage } from '@/utils/storage';
 import { authService } from '@/serviceManager/authService';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const useSettings = () => {
   const navigation = useNavigation();
@@ -60,7 +61,7 @@ export const useSettings = () => {
       showNotification(
         NotificationType.ERROR,
         t.notification.defaultErrorTitle,
-        e.message || t.notification.defaultErrorMessage
+        getErrorMessage(e, t.notification.defaultErrorMessage)
       );
     } finally {
       setIsLoggingOut(false);

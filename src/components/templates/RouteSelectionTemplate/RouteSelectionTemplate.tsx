@@ -38,20 +38,27 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
   const { routeSelection } = useLocale();
   const cameraRef = useRef<CameraRef>(null);
 
+  const [isMapLoaded, setIsMapLoaded] = React.useState(false);
+
   const selectedRouteData = routesData.find(r => r.uiData.id === selectedRouteId);
 
   useEffect(() => {
-    if (selectedRouteData && cameraRef.current) {
-      const [minLng, minLat, maxLng, maxLat] = selectedRouteData.bounds;
-      cameraRef.current.fitBounds(
-        [minLng, minLat, maxLng, maxLat],
-        {
-          padding: { top: 48, right: 48, bottom: 48, left: 48 },
-          duration: 500
+    if (selectedRouteData && cameraRef.current && isMapLoaded) {
+      const timer = setTimeout(() => {
+        if (cameraRef.current) {
+          const [minLng, minLat, maxLng, maxLat] = selectedRouteData.bounds;
+          cameraRef.current.fitBounds(
+            [minLng, minLat, maxLng, maxLat],
+            {
+              padding: { top: 48, right: 48, bottom: 48, left: 48 },
+              duration: 500
+            }
+          );
         }
-      );
+      }, 100);
+      return () => clearTimeout(timer);
     }
-  }, [selectedRouteId, selectedRouteData]);
+  }, [selectedRouteId, selectedRouteData, isMapLoaded]);
 
   const zoomRef = useRef(14);
 
@@ -126,13 +133,14 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
   return (
     <ScreenShell
       title={"Select Route"}
-      onBack={true}
+      onBack={onBackPress}
     >
       <View style={{ flex: 1 }}>
         <S.MapSection>
           <OlaMap
             style={{ flex: 1 }}
             onRegionDidChange={handleRegionDidChange}
+            onDidFinishLoadingMap={() => setIsMapLoaded(true)}
           >
             <Camera ref={cameraRef} />
 
@@ -200,12 +208,10 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
             </GeoJSONSource>
           </OlaMap>
 
-          <View style={{ position: 'absolute', right: moderateScale(16), bottom: moderateScale(16), zIndex: 10 }}>
-            <MapControlsFABs
-              onZoomIn={() => handleZoom(1)}
-              onZoomOut={() => handleZoom(-1)}
-            />
-          </View>
+          <MapControlsFABs
+            onZoomIn={() => handleZoom(1)}
+            onZoomOut={() => handleZoom(-1)}
+          />
 
           <LinearGradient
             colors={['transparent', `${theme.colors.surface}40`]}

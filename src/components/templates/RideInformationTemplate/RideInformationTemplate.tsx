@@ -78,7 +78,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = R
     <S.Root>
       <ScreenShell 
         title={translations.rideDetails.headerTitle} 
-        onBack={true}
+        onBack={handleBack}
         rightElement={!isArchived && onReportRide ? (
           <S.ReportButton onPress={onReportRide} activeOpacity={0.7}>
             <Icon name="flag" size={moderateScale(22)} color={theme.colors.error} />

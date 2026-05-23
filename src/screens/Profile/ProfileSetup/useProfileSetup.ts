@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { userService } from '@/serviceManager/userService';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const useProfileSetup = () => {
   const { t } = useTranslation();
@@ -51,7 +52,7 @@ export const useProfileSetup = () => {
         showNotification(
           NotificationType.ERROR,
           t('notification.defaultErrorTitle'),
-          error.message || t('notification.defaultErrorMessage')
+          getErrorMessage(error, t('notification.defaultErrorMessage'))
         );
       }
     },

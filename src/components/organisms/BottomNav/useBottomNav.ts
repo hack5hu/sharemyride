@@ -10,35 +10,40 @@ export const useBottomNav = (activeTab: BottomTabType) => {
   const handlePress = useCallback((tab: BottomTabType) => {
     if (tab === activeTab) return;
 
-    switch (tab) {
-      case 'BOOK':
-        navigation.navigate('BookRideInfo');
-        break;
-      case 'PROFILE':
-        navigation.navigate('ProfileHub');
-        break;
-      case 'CHATS':
-        navigation.navigate('ChatList');
-        break;
-      case 'MY_RIDES':
-        navigation.navigate('MyRides');
-        break;
-      case 'PUBLISH':
-        navigation.navigate('LocationSelection');
-        break;
-      default: {
-        const tabStr = tab as string;
-        navigation.navigate('Dummy', {
-          title: t(
-            `profileHub.nav${
-              tabStr.replace('_', '').toLowerCase().charAt(0).toUpperCase() +
-              tabStr.replace('_', '').toLowerCase().slice(1)
-            }`,
-          ),
-          activeTab: tab as BottomTabType,
-        });
-        break;
-      }
+    const tabActionMap: Record<BottomTabType, () => void> = {
+      BOOK: () => navigation.resetTo('BookRideInfo'),
+      PROFILE: () => navigation.resetWithStack([
+        { name: 'BookRideInfo' },
+        { name: 'ProfileHub' }
+      ]),
+      CHATS: () => navigation.resetWithStack([
+        { name: 'BookRideInfo' },
+        { name: 'ChatList' }
+      ]),
+      MY_RIDES: () => navigation.resetWithStack([
+        { name: 'BookRideInfo' },
+        { name: 'MyRides' }
+      ]),
+      PUBLISH: () => navigation.resetWithStack([
+        { name: 'BookRideInfo' },
+        { name: 'LocationSelection' }
+      ]),
+    };
+
+    const action = tabActionMap[tab];
+    if (action) {
+      action();
+    } else {
+      const tabStr = tab as string;
+      navigation.navigate('Dummy', {
+        title: t(
+          `profileHub.nav${
+            tabStr.replace('_', '').toLowerCase().charAt(0).toUpperCase() +
+            tabStr.replace('_', '').toLowerCase().slice(1)
+          }`,
+        ),
+        activeTab: tab as BottomTabType,
+      });
     }
   }, [activeTab, navigation, t]);
 
