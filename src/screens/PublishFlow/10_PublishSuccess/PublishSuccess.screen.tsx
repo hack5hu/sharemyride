@@ -52,9 +52,7 @@ export const PublishSuccessScreen: React.FC = () => {
   };
 
   return (
-    <ScreenShell
-      title={t.headerTitle}
-    >
+    <ScreenShell >
       <MainContent>
         <SuccessIconWrapper>
           <MaterialIcons name="check" size={moderateScale(56)} color={theme.colors.on_primary} />

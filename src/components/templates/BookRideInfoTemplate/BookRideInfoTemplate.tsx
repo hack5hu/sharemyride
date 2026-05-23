@@ -107,15 +107,29 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> = React.m
 
               <S.RouteContainer>
                 <S.RouteIndicator>
-                  <MaterialIcons name="my-location" size={moderateScale(20)} color={theme.colors.primary} />
-                  <S.IndicatorLine />
-                  <S.SwapButton activeOpacity={0.7} onPress={onSwapLocations}>
-                    <Animated.View style={{ transform: [{ rotate: spin }] }}>
-                      <MaterialIcons name="swap-vert" size={moderateScale(20)} color={theme.colors.primary} />
-                    </Animated.View>
-                  </S.SwapButton>
-                  <S.IndicatorLine />
-                  <MaterialIcons name="location-on" size={moderateScale(20)} color={theme.colors.tertiary} />
+                  <S.VisualLine />
+                  
+                  <S.SwapButtonWrapper>
+                    <S.SwapButton activeOpacity={0.7} onPress={onSwapLocations}>
+                      <Animated.View style={{ transform: [{ rotate: spin }] }}>
+                        <MaterialIcons name="swap-vert" size={moderateScale(20)} color={theme.colors.primary} />
+                      </Animated.View>
+                    </S.SwapButton>
+                  </S.SwapButtonWrapper>
+
+                  <S.IndicatorGroup>
+                    <S.LabelSpacer />
+                    <S.IndicatorIconBox>
+                      <MaterialIcons name="my-location" size={moderateScale(20)} color={theme.colors.primary} />
+                    </S.IndicatorIconBox>
+                  </S.IndicatorGroup>
+
+                  <S.IndicatorGroup>
+                    <S.LabelSpacer />
+                    <S.IndicatorIconBox>
+                      <MaterialIcons name="location-on" size={moderateScale(20)} color={theme.colors.tertiary} />
+                    </S.IndicatorIconBox>
+                  </S.IndicatorGroup>
                 </S.RouteIndicator>
 
                 <S.InputColumn>

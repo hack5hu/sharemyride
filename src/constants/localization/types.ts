@@ -441,6 +441,12 @@ export interface SummaryPublishTranslations {
   addPreferencesLabel: string;
 }
 
+export interface SplashTranslations {
+  appName: string;
+  subtitle: string;
+  loadingText: string;
+}
+
 export interface Translations {
   common: CommonTranslations;
   login: LoginTranslations;
@@ -480,6 +486,7 @@ export interface Translations {
   rideRoute: RideRouteTranslations;
   notification: NotificationTranslations;
   reportIssue: ReportIssueTranslations;
+  splash: SplashTranslations;
 }
 
 

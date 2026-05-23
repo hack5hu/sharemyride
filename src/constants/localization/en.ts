@@ -752,4 +752,9 @@ export const en: Translations = {
     submitReport: 'Submit Report',
     cancel: 'Cancel',
   },
+  splash: {
+    appName: 'The RPC',
+    subtitle: 'Intentional Movement',
+    loadingText: 'Securing connection...',
+  },
 };

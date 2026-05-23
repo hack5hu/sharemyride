@@ -1,10 +1,14 @@
 import React from 'react';
 import { View } from 'react-native';
+import Animated, { FadeIn, FadeOut, SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { useLocale } from '@/constants/localization';
 import { ReasonSelectorItem } from '@/components/molecules/ReasonSelectorItem';
 import { Button } from '@/components/atoms/Button';
 import * as S from './CancelRideTemplate.styles';
 import { CancelRideTemplateProps } from './types.d';
+
+const AnimatedBackdrop = Animated.createAnimatedComponent(S.Backdrop);
+const AnimatedContainer = Animated.createAnimatedComponent(S.BottomSheetContainer);
 
 export const CancelRideTemplate: React.FC<CancelRideTemplateProps> = ({
   reasons,
@@ -19,8 +23,16 @@ export const CancelRideTemplate: React.FC<CancelRideTemplateProps> = ({
   return (
     <View style={{ flex: 1 }}>
       <S.OverlayContext>
-        <S.Backdrop onPress={onDismiss} activeOpacity={1} />
-        <S.BottomSheetContainer>
+        <AnimatedBackdrop
+          onPress={onDismiss}
+          activeOpacity={1}
+          entering={FadeIn.duration(300)}
+          exiting={FadeOut.duration(200)}
+        />
+        <AnimatedContainer
+          entering={SlideInDown.springify().damping(18).stiffness(120)}
+          exiting={SlideOutDown.duration(250)}
+        >
           <S.BottomSheetSurface>
             <S.DragHandle />
             
@@ -63,7 +75,7 @@ export const CancelRideTemplate: React.FC<CancelRideTemplateProps> = ({
               </S.GhostButton>
             </S.ActionsContainer>
           </S.BottomSheetSurface>
-        </S.BottomSheetContainer>
+        </AnimatedContainer>
       </S.OverlayContext>
     </View>
   );

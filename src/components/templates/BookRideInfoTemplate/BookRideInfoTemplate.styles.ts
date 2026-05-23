@@ -86,16 +86,31 @@ export const RouteContainer = styled.View`
 `;
 
 export const RouteIndicator = styled.View`
-  align-items: center;
-  justify-content: center;
-  padding-vertical: ${verticalScale(12)}px;
+  width: ${moderateScale(32)}px;
+  gap: ${verticalScale(16)}px;
+  position: relative;
 `;
 
-export const IndicatorLine = styled.View`
+export const VisualLine = styled.View`
+  position: absolute;
   width: 2px;
-  flex: 1;
+  left: 50%;
+  margin-left: -1px;
+  top: ${verticalScale(44)}px;
+  bottom: ${verticalScale(44)}px;
   background-color: ${({ theme }) => `${theme.colors.outline_variant}40`};
-  margin-vertical: ${verticalScale(4)}px;
+  z-index: 1;
+`;
+
+export const SwapButtonWrapper = styled.View`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  margin-top: -${moderateScale(16)}px;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
 `;
 
 export const SwapButton = styled.TouchableOpacity`
@@ -105,12 +120,26 @@ export const SwapButton = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.colors.surface_container_high};
   align-items: center;
   justify-content: center;
-  margin-vertical: ${verticalScale(4)}px;
   shadow-color: ${({ theme }) => theme.colors.primary};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.1;
   shadow-radius: 8px;
   elevation: 2;
+`;
+
+export const IndicatorGroup = styled.View`
+  width: 100%;
+`;
+
+export const LabelSpacer = styled.View`
+  height: ${verticalScale(20)}px;
+`;
+
+export const IndicatorIconBox = styled.View`
+  height: ${verticalScale(48)}px;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
 `;
 
 export const InputColumn = styled.View`

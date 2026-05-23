@@ -65,8 +65,6 @@ export const useVehicleStore = create<VehicleState>()(
             }],
             isLoading: false
           }));
-
-          get().syncVehicles();
         } catch (error) {
           console.error('Failed to add vehicle to backend:', error);
           set({ isLoading: false });
@@ -75,7 +73,10 @@ export const useVehicleStore = create<VehicleState>()(
       },
 
       syncVehicles: async () => {
-        set({ isLoading: true });
+        const isInitialLoad = get().vehicles.length === 0;
+        if (isInitialLoad) {
+          set({ isLoading: true });
+        }
         try {
           const { userService } = require('@/serviceManager/userService');
           const data = await userService.getVehicles();
@@ -101,7 +102,25 @@ export const useVehicleStore = create<VehicleState>()(
               };
             });
 
-            set({ vehicles: mappedVehicles, isLoading: false });
+            const currentVehicles = get().vehicles;
+            const isIdentical = currentVehicles.length === mappedVehicles.length &&
+              currentVehicles.every((v, i) => 
+                v.id === mappedVehicles[i].id &&
+                v.company === mappedVehicles[i].company &&
+                v.model === mappedVehicles[i].model &&
+                v.numberPlate === mappedVehicles[i].numberPlate &&
+                v.color === mappedVehicles[i].color &&
+                v.seater === mappedVehicles[i].seater &&
+                v.type === mappedVehicles[i].type
+              );
+
+            if (!isIdentical) {
+              set({ vehicles: mappedVehicles });
+            }
+            
+            if (isInitialLoad) {
+              set({ isLoading: false });
+            }
             
             if (mappedVehicles.length > 0 && !get().selectedVehicleId) {
               set({ selectedVehicleId: mappedVehicles[0].id });
@@ -160,8 +179,6 @@ export const useVehicleStore = create<VehicleState>()(
             vehicles: state.vehicles.map((v) => (v.id === id ? { ...v, ...updates, numberPlate: (updates.numberPlate || v.numberPlate).toUpperCase() } : v)),
             isLoading: false
           }));
-          
-          get().syncVehicles();
         } catch (error) {
           console.error('Failed to update vehicle:', error);
           set({ isLoading: false });

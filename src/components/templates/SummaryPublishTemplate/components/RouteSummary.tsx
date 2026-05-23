@@ -6,12 +6,12 @@ import {
   SectionHeader, 
   SectionLabel, 
   RouteLayout, 
-  TimelineLine, 
+  RouteRow,
+  IndicatorColumn,
   TimelineDotOutline, 
   TimelineTrack, 
   TimelineDotMiddle, 
   TimelineDotEnd, 
-  RouteDetailsStack, 
   RouteStop, 
   StopLabel, 
   StopLocation,
@@ -44,38 +44,57 @@ export const RouteSummary: React.FC<RouteSummaryProps> = ({ route, onEdit, t: st
       </SectionHeader>
       
       <RouteLayout>
-        <TimelineLine>
-          <TimelineDotOutline />
-          <TimelineTrack colors={[theme.colors.primary, theme.colors.outline]} />
-          
-          {(route.middleStops || []).map((_, i) => (
-            <React.Fragment key={`dot-${i}`}>
-              <TimelineDotMiddle />
-              <TimelineTrack colors={[theme.colors.outline, i === (route.middleStops?.length || 0) - 1 ? theme.colors.primary : theme.colors.outline]} />
-            </React.Fragment>
-          ))}
-          
-          <TimelineDotEnd />
-        </TimelineLine>
-
-        <RouteDetailsStack>
+        {/* Departure Stop */}
+        <RouteRow>
+          <IndicatorColumn>
+            <TimelineTrack 
+              isFirst 
+              colors={[theme.colors.primary, theme.colors.outline]} 
+            />
+            <TimelineDotOutline />
+          </IndicatorColumn>
           <RouteStop>
             <StopLabel>{st.departureLabel}</StopLabel>
             <StopLocation numberOfLines={1}>{route.start}</StopLocation>
           </RouteStop>
+        </RouteRow>
 
-          {(route.middleStops || []).map((stop, i) => (
-            <RouteStop key={`stop-${i}`}>
-              <StopLabel>{t('common.stop', { number: i + 1 })}</StopLabel>
-              <StopLocation numberOfLines={1}>{stop}</StopLocation>
-            </RouteStop>
-          ))}
+        {/* Middle Stops */}
+        {(route.middleStops || []).map((stop, i) => {
+          const isLastStop = i === (route.middleStops?.length || 0) - 1;
+          return (
+            <RouteRow key={`stop-${i}`}>
+              <IndicatorColumn>
+                <TimelineTrack 
+                  colors={[
+                    theme.colors.outline,
+                    isLastStop ? theme.colors.primary : theme.colors.outline
+                  ]} 
+                />
+                <TimelineDotMiddle />
+              </IndicatorColumn>
+              <RouteStop>
+                <StopLabel>{t('common.stop', { number: i + 1 })}</StopLabel>
+                <StopLocation numberOfLines={1}>{stop}</StopLocation>
+              </RouteStop>
+            </RouteRow>
+          );
+        })}
 
+        {/* Arrival Stop */}
+        <RouteRow $isLast>
+          <IndicatorColumn>
+            <TimelineTrack 
+              isLast 
+              colors={[theme.colors.primary, theme.colors.primary]} 
+            />
+            <TimelineDotEnd />
+          </IndicatorColumn>
           <RouteStop>
             <StopLabel>{st.arrivalLabel}</StopLabel>
             <StopLocation numberOfLines={1}>{route.end}</StopLocation>
           </RouteStop>
-        </RouteDetailsStack>
+        </RouteRow>
       </RouteLayout>
     </GlassCard>
   );

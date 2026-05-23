@@ -758,4 +758,9 @@ export const hi: Translations = {
     submitReport: 'रिपोर्ट सबमिट करें',
     cancel: 'रद्द करें',
   },
+  splash: {
+    appName: 'The RPC',
+    subtitle: 'इरादतन आंदोलन',
+    loadingText: 'कनेक्शन सुरक्षित किया जा रहा है...',
+  },
 };

@@ -35,6 +35,7 @@ import { BookingConfirmedScreen } from '@/screens/BookFlow/7_BookingConfirmed';
 import { SettingsScreen } from '@/screens/Settings';
 import { RootStackParamList } from './types.d';
 import { useAuthStore } from '@/store/useAuthStore';
+import { SplashScreen } from '@/screens/Auth/Splash';
 import { BookDateSelectionScreen } from '@/screens/BookFlow/2_BookDateSelection/BookDateSelection.screen';
 import AvailableRidesScreen from '@/screens/BookFlow/3_AvailableRides';
 import RideRouteMapScreen from '@/screens/BookFlow/5_RideRouteMap';
@@ -43,7 +44,7 @@ import { BookSeatSelectionScreen } from '@/screens/BookFlow/6_BookSeatSelection'
 const Stack = createStackNavigator<RootStackParamList>();
 
 export const RootNavigator = () => {
-  const { isAuthenticated, isProfileCompleted } = useAuthStore();
+  const { isAuthenticated, isProfileCompleted, isInitializing } = useAuthStore();
 
   return (
     <Stack.Navigator
@@ -52,8 +53,9 @@ export const RootNavigator = () => {
         cardStyle: { backgroundColor: 'transparent' },
       }}
     >
-      {!isAuthenticated ? (
-        // ── Auth Stack ──────────────────────────────────────────────────────────
+      {isInitializing ? (
+        <Stack.Screen name="Splash" component={SplashScreen} />
+      ) : !isAuthenticated ? (
         <>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen
@@ -62,7 +64,6 @@ export const RootNavigator = () => {
           />
         </>
       ) : !isProfileCompleted ? (
-        // ── Mandatory Profile Setup ─────────────────────────────────────────────
         <Stack.Screen
           name="ProfileSetup"
           component={ProfileSetupScreen}
@@ -71,7 +72,6 @@ export const RootNavigator = () => {
           }}
         />
       ) : (
-        // ── Main App Stack ──────────────────────────────────────────────────────
         <>
           <Stack.Screen name="BookRideInfo" component={BookRideInfoScreen} />
           <Stack.Screen name="LocalRideResults" component={LocalRideResultsScreen} />
