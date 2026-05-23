@@ -372,6 +372,11 @@ export const en: Translations = {
     selectedStop: 'Selected Stop',
     addedStops: 'Added Stops',
     continue: 'Continue',
+    distanceFromRoute: '{{distance}} km from route',
+    tooFarFromRoute: 'Too far from your route',
+    tooFarFromRouteMsg: 'This stop is more than 1 km from your selected route. Please choose a closer location.',
+    selectOnMap: 'Or select on the map',
+    confirmStop: 'Confirm Stop',
   },
   dateSelection: {
     headerTitle: 'Select Date',

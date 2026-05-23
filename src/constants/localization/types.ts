@@ -382,6 +382,11 @@ export interface MiddleStopMapTranslations {
   selectedStop: string;
   addedStops: string;
   continue: string;
+  distanceFromRoute: string;
+  tooFarFromRoute: string;
+  tooFarFromRouteMsg: string;
+  selectOnMap: string;
+  confirmStop: string;
 }
 
 export interface DateSelectionTranslations {

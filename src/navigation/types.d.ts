@@ -86,12 +86,15 @@ export type RootStackParamList = {
   RideRouteMap: {
     routePath?: string;
     stops?: Array<{
+      id?: number | string;
       lat: number;
       lon: number;
       name: string;
       sequence: number;
     }>;
     initialStopIndex?: number;
+    sourceStopId?: number | string;
+    destinationStopId?: number | string;
     destination?: {
       latitude: number;
       longitude: number;

@@ -375,6 +375,11 @@ export const hi: Translations = {
     selectedStop: 'चयनित स्टॉप',
     addedStops: 'जोड़े गए स्टॉप',
     continue: 'जारी रखें',
+    distanceFromRoute: 'मार्ग से {{distance}} किमी दूर',
+    tooFarFromRoute: 'आपके मार्ग से बहुत दूर',
+    tooFarFromRouteMsg: 'यह स्टॉप आपके चयनित मार्ग से 1 किमी से अधिक दूर है। कृपया एक करीबी स्थान चुनें।',
+    selectOnMap: 'या मानचित्र पर चुनें',
+    confirmStop: 'स्टॉप पुष्टि करें',
   },
   dateSelection: {
     headerTitle: 'तारीख चुनें',

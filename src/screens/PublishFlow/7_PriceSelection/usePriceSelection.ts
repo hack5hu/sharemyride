@@ -57,14 +57,20 @@ export const usePriceSelection = () => {
       
       // If we have route details and price is already in store or set correctly, skip
       if (routeDetails && (storePrice > 0 || price > 0)) {
-        // Just sync segment prices if store is empty but we have legs
-        if (Object.keys(segmentPricesState).length === 0 && routeDetails.legs.length > 0) {
-           const initialSegmentPrices: Record<string, number> = {};
-           routeDetails.legs.forEach((leg, i) => {
-             const segId = `seg-${i}`;
-             initialSegmentPrices[segId] = calculateBasePrice(leg.distanceMeters / 1000, PRICING_MULTIPLIERS.MID, divisor);
-           });
-           setSegmentPricesState(initialSegmentPrices);
+        // Just sync segment prices if we have legs and some are missing (e.g. after adding middle stops)
+        if (routeDetails.legs.length > 0) {
+          let updated = false;
+          const newSegmentPrices = { ...segmentPricesState };
+          routeDetails.legs.forEach((leg, i) => {
+            const segId = `seg-${i}`;
+            if (newSegmentPrices[segId] === undefined) {
+              newSegmentPrices[segId] = calculateBasePrice(leg.distanceMeters / 1000, PRICING_MULTIPLIERS.MID, divisor);
+              updated = true;
+            }
+          });
+          if (updated || Object.keys(segmentPricesState).length !== routeDetails.legs.length) {
+            setSegmentPricesState(newSegmentPrices);
+          }
         }
         return;
       }

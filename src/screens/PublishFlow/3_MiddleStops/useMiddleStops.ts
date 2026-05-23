@@ -1,114 +1,35 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useRoute } from '@react-navigation/native';
+import { useCallback, useEffect, useState } from 'react';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { locationService } from '@/serviceManager/locationService';
 import { useAppNavigation } from '@/hooks/useAppNavigation'; // ensure custom navigation hook is used
-import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
-import { NotificationType } from '@/constants/enums';
-import { useLocale } from '@/constants/localization';
+import { decodePolyline, getBoundingBox } from '@/utils/polyline';
 
 export const useMiddleStops = () => {
   const navigation = useAppNavigation(); // use custom navigation hook per guidelines
-  const route = useRoute();  
-  const { middleStops: locale } = useLocale();
+
   const { 
     startLocation, 
     destinationLocation, 
     middleStops,
     setMiddleStops,
     removeMiddleStop,
-    setRouteDetails
+    setRouteDetails,
+    selectedRoute,
+    setSelectedRoute,
   } = useRidePublishStore();
 
   const [isSorting, setIsSorting] = useState(false);
   const [totalDistanceMeters, setTotalDistanceMeters] = useState<number | null>(null);
-  const processedStopId = useRef<string | null>(null);
 
-  const updatedLocation = (route.params as any)?.updatedLocation;
-  const type = (route.params as any)?.type;
-
-  // Handle incoming new stops from MapPicker
-  useEffect(() => {
-    const handleNewStop = async () => {
-      if (!updatedLocation || type !== 'middleStop' || !startLocation) return;
-      if (processedStopId.current === updatedLocation.id) return;
-
-      processedStopId.current = updatedLocation.id;
-      // Clear params immediately to prevent re-trigger on middleStops change
-      navigation.setParams?.({
-        updatedLocation: undefined,
-        type: undefined,
-      });
-
-      const currentStops = useRidePublishStore.getState().middleStops;
-      
-      const isStartDuplicate = startLocation.latitude === updatedLocation.latitude && startLocation.longitude === updatedLocation.longitude;
-      const isDestDuplicate = destinationLocation && destinationLocation.latitude === updatedLocation.latitude && destinationLocation.longitude === updatedLocation.longitude;
-      const isAlreadyStop = currentStops.some(
-        s => 
-          s.id === updatedLocation.id || 
-          (s.latitude === updatedLocation.latitude && s.longitude === updatedLocation.longitude) ||
-          (s.name && s.name === updatedLocation.name)
-      );
-
-      if (isStartDuplicate || isDestDuplicate || isAlreadyStop) {
-        showNotification(
-          NotificationType.WARNING,
-          locale.duplicateStopTitle,
-          locale.duplicateStopMsg
-        );
-        return;
-      }
-
-      setIsSorting(true);
-      try {
-        const results = await locationService.getDirections(
-          startLocation.latitude,
-          startLocation.longitude,
-          updatedLocation.latitude,
-          updatedLocation.longitude
-        );
-
-        let distanceMeters = 0;
-        if (results && results.length > 0) {
-          const mainRoute = results[0];
-          distanceMeters = mainRoute.distance ?? (mainRoute.legs?.reduce((acc, leg) => acc + (leg.distance || 0), 0) || 0);
-        }
-
-        const stopWithDistance = { ...updatedLocation, distanceFromStart: distanceMeters };
-        const currentStops = useRidePublishStore.getState().middleStops;
-        if (!currentStops.some(s => s.id === updatedLocation.id)) {
-          const sorted = [...currentStops, stopWithDistance].sort(
-            (a, b) => (a as any).distanceFromStart - (b as any).distanceFromStart
-          );
-          setMiddleStops(sorted);
-        }
-      } catch (error) {
-        console.error('Failed to calculate stop distance:', error);
-        const currentStops = useRidePublishStore.getState().middleStops;
-        if (!currentStops.some(s => s.id === updatedLocation.id)) {
-          setMiddleStops([...currentStops, updatedLocation]);
-        }
-      } finally {
-        setIsSorting(false);
-      }
-    };
-
-    handleNewStop();
-  }, [updatedLocation, type, navigation, setMiddleStops, startLocation]);
 
   const sortedStops = middleStops; // Already sorted in store
-
+  console.log('sortedStops', sortedStops);
   const handleBackPress = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
 
   const handleAddStop = useCallback(() => {
-    navigation.push('MapPicker', {
-      returnTo: 'MiddleStops',
-      type: 'middleStop',
-      module: 'publish'
-    });
+    navigation.push('MiddleStopMap');
   }, [navigation]);
 
   const handleRemoveStop = useCallback((id: string) => {
@@ -116,6 +37,7 @@ export const useMiddleStops = () => {
   }, [removeMiddleStop]);
 
   const handleContinuePress = useCallback(async () => {
+   
     if (!startLocation || !destinationLocation) {
       navigation.navigate('DateSelection' as any);
       return;
@@ -155,6 +77,27 @@ export const useMiddleStops = () => {
         setRouteDetails(details);
         // Store total distance for display in UI
         setTotalDistanceMeters(totalDistanceMeters);
+
+        // Update selectedRoute in store to route through the middle stops
+        const polyline = mainRoute.overview_polyline || mainRoute.geometry || '';
+        const coordinates = decodePolyline(polyline, 1e5);
+        const bounds = getBoundingBox(coordinates);
+
+        if (selectedRoute) {
+          setSelectedRoute({
+            ...selectedRoute,
+            coordinates,
+            bounds,
+            polylineString: polyline,
+            uiData: {
+              ...selectedRoute.uiData,
+              distance: `${(totalDistanceMeters / 1000).toFixed(1)} km`,
+              duration: Math.round(totalDurationSeconds / 60) > 60 
+                ? `${Math.floor(Math.round(totalDurationSeconds / 60) / 60)} hr ${Math.round(totalDurationSeconds / 60) % 60} min` 
+                : `${Math.round(totalDurationSeconds / 60)} min`,
+            },
+          });
+        }
       } else {
         setRouteDetails(null as any);
         setTotalDistanceMeters(null);
@@ -189,6 +132,25 @@ export const useMiddleStops = () => {
           const legs = route.legs?.map((leg) => ({ distance: leg.distance })) || [];
           const total = route.distance ?? legs.reduce((a, l) => a + (l.distance || 0), 0);
           setTotalDistanceMeters(total);
+
+          // Dynamically update the selectedRoute in store to pass through waypoints in real-time
+          const polyline = route.overview_polyline || route.geometry || '';
+          const coordinates = decodePolyline(polyline, 1e5);
+          const bounds = getBoundingBox(coordinates);
+
+          const currentRoute = useRidePublishStore.getState().selectedRoute;
+          if (currentRoute) {
+            useRidePublishStore.getState().setSelectedRoute({
+              ...currentRoute,
+              coordinates,
+              bounds,
+              polylineString: polyline,
+              uiData: {
+                ...currentRoute.uiData,
+                distance: `${(total / 1000).toFixed(1)} km`,
+              },
+            });
+          }
         } else {
           setTotalDistanceMeters(null);
         }

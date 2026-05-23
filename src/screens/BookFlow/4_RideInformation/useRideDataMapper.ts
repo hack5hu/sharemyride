@@ -51,7 +51,9 @@ export const mapBackendRideToUI = (
     // Only truncate if NOT highlighted AND NOT driver
     if (!isHighlighted && !isDriverRole) {
       const parts = address.split(', ');
-      if (parts.length >= 3) {
+      if (parts.length >= 4) {
+        displayLocation = `${parts[parts.length - 4]}, ${parts[parts.length - 3]}`;
+      } else if (parts.length >= 3) {
         displayLocation = parts[parts.length - 3];
       } else {
         displayLocation = parts[0];
@@ -91,14 +93,14 @@ export const mapBackendRideToUI = (
   return {
     id: rideRaw.id,
     driver: {
-      id: rideRaw.driver?.id,
-      name: rideRaw.driver?.name || 'Unknown Driver',
-      rating: rideRaw.driver?.rating || 4.8,
+      id: (rideRaw.user || rideRaw.driver)?.id,
+      name: (rideRaw.user || rideRaw.driver)?.name || 'Unknown Driver',
+      rating: (rideRaw.user || rideRaw.driver)?.rating || 4.8,
       rideCount: 15,
-      avatar: rideRaw.driver?.photoUrl || 'https://ui-avatars.com/api/?name=' + (rideRaw.driver?.name || 'U'),
-      driverPhotoUrl: rideRaw.driver?.photoUrl,
-      isVerified: !!rideRaw.driver?.verified,
-      bio: rideRaw.driver?.bio,
+      avatar: (rideRaw.user || rideRaw.driver)?.photoUrl || 'https://ui-avatars.com/api/?name=' + ((rideRaw.user || rideRaw.driver)?.name || 'U'),
+      driverPhotoUrl: (rideRaw.user || rideRaw.driver)?.photoUrl,
+      isVerified: !!(rideRaw.user || rideRaw.driver)?.verified,
+      bio: (rideRaw.user || rideRaw.driver)?.bio,
     },
     price: rideRaw.price || 0,
     timeline,
@@ -115,7 +117,16 @@ export const mapBackendRideToUI = (
       type: rideRaw.vehicle?.type,
       company: rideRaw.vehicle?.company,
     },
-    totalDistance: rideRaw.stops?.reduce((acc: number, stop: any) => acc + (stop.distanceFromPreviousStop || 0), 0) || 0,
+    totalDistance: rideRaw.stops?.reduce((acc: number, stop: any, idx: number, arr: any[]) => {
+      if (stop.distanceFromPreviousStop !== undefined) {
+        return acc + stop.distanceFromPreviousStop;
+      }
+      if (idx > 0) {
+        const prev = arr[idx - 1];
+        return acc + calculateDistance(prev.lat, prev.lon, stop.lat, stop.lon);
+      }
+      return acc;
+    }, 0) || 0,
     totalDuration: totalDurationMins,
     routePath: rideRaw.routePath,
     seats: rideRaw.seats || [],

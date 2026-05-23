@@ -62,7 +62,9 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
 
       const routeStops: RouteStop[] = allStops.map((stop, index) => {
         const segmentId = index > 0 ? `seg-${index - 1}` : '';
-        const segmentPrice = index > 0 ? (Number(segmentPrices[segmentId]) || Math.round(price / (allStops.length - 1))) : 0;
+        const segmentPrice = index > 0 
+          ? roundToNearest(Number(segmentPrices[segmentId]) || (price / (allStops.length - 1)), 10) 
+          : 0;
         const frontSeatSegmentPrice = premiumEnabled ? roundToNearest(segmentPrice * (1 + (premiumPercentage || 0) / 100), 10) : segmentPrice;
 
         cumulativePrice += segmentPrice;

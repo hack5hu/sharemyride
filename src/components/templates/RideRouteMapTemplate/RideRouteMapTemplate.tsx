@@ -35,39 +35,68 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> = React.m
   onZoomIn,
   onZoomOut,
   onOpenExternalMap,
+  isMapMounted,
 }) => {
   const theme = useTheme();
   const { rideRoute } = useLocale();
 
   return (
-    <ScreenShell title={title} onBack={onBack}>
+    <ScreenShell title={title} onBack={true}>
       <S.Container>
         <S.MapWrapper>
-          <S.StyledOlaMap
-            ref={mapRef}
-            onRegionDidChange={onRegionDidChange}
-          >
-            <Camera
-              ref={cameraRef}
-              center={[region.longitude, region.latitude]}
-              zoom={zoom}
-            />
-            
-            <MapLibreUserLocation 
-              onUpdate={handleUserLocationUpdate}
-              showsUserHeadingIndicator={true}
+          {isMapMounted && (
+            <S.StyledOlaMap
+              ref={mapRef}
+              onRegionDidChange={onRegionDidChange}
             >
-              <UserLocationMarker />
-            </MapLibreUserLocation>
+              <Camera
+                ref={cameraRef}
+                center={[region.longitude, region.latitude]}
+                zoom={zoom}
+              />
+              
+              <MapLibreUserLocation 
+                onUpdate={handleUserLocationUpdate}
+                showsUserHeadingIndicator={true}
+              >
+                <UserLocationMarker />
+              </MapLibreUserLocation>
 
-            <GeoJSONSource id="ride-route-source" data={mapData.geoJSON as any}>
+              <GeoJSONSource id="ride-route-source" data={mapData.geoJSON as any} />
+              
+              {/* Highlighted Booked Route Segment */}
               <Layer
-                id="route-line"
+                id="route-line-highlighted"
+                source="ride-route-source"
                 type="line"
-                filter={['==', ['get', 'type'], 'route']}
+                filter={[
+                  'all',
+                  ['==', ['get', 'type'], 'route'],
+                  ['==', ['get', 'status'], 'highlighted'],
+                ]}
                 paint={{
                   'line-color': theme.colors.primary,
-                  'line-width': 5,
+                  'line-width': 6,
+                }}
+                layout={{
+                  'line-cap': 'round',
+                  'line-join': 'round',
+                }}
+              />
+              {/* Muted Unselected Route Segments */}
+              <Layer
+                id="route-line-unselected"
+                source="ride-route-source"
+                type="line"
+                filter={[
+                  'all',
+                  ['==', ['get', 'type'], 'route'],
+                  ['==', ['get', 'status'], 'unselected'],
+                ]}
+                paint={{
+                  'line-color': theme.colors.outline,
+                  'line-width': 3.5,
+                  'line-opacity': 0.5,
                 }}
                 layout={{
                   'line-cap': 'round',
@@ -76,6 +105,7 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> = React.m
               />
               <Layer
                 id="marker-start"
+                source="ride-route-source"
                 type="circle"
                 filter={[
                   'all',
@@ -91,6 +121,7 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> = React.m
               />
               <Layer
                 id="marker-end"
+                source="ride-route-source"
                 type="circle"
                 filter={[
                   'all',
@@ -106,6 +137,7 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> = React.m
               />
               <Layer
                 id="marker-stop"
+                source="ride-route-source"
                 type="circle"
                 filter={[
                   'all',
@@ -119,8 +151,8 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> = React.m
                   'circle-stroke-color': theme.colors.primary,
                 }}
               />
-            </GeoJSONSource>
-          </S.StyledOlaMap>
+            </S.StyledOlaMap>
+          )}
         </S.MapWrapper>
 
         <S.ControlsWrapper>

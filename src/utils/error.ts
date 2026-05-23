@@ -15,10 +15,23 @@ interface BackendErrorResponse {
 export const getErrorMessage = (error: unknown, fallbackMessage?: string): string => {
   if (error && typeof error === 'object') {
     const axiosError = error as AxiosError<BackendErrorResponse>;
-    if (axiosError.response?.data?.message) {
-      return axiosError.response.data.message;
+    let responseData: any = axiosError.response?.data;
+    
+    if (typeof responseData === 'string') {
+      try {
+        responseData = JSON.parse(responseData);
+      } catch (e) {
+        // Not a JSON string
+      }
     }
+
+    if (responseData?.message) {
+      return responseData.message;
+    }
+    
     if (axiosError.message) {
+      // In Axios, 400 errors have a default message 'Request failed with status code 400'
+      // We only fallback to it if no backend message is provided
       return axiosError.message;
     }
   }

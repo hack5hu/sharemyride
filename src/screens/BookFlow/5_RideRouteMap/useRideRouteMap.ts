@@ -4,8 +4,30 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { CameraRef } from '@maplibre/maplibre-react-native';
 import { decodePolyline, getBoundingBox } from '@/utils/polyline';
 
-export const useRideRouteMap = (routePath?: string, stops?: any[], destination?: any, initialStopIndex?: number) => {
-  const { goBack } = useAppNavigation();
+const findClosestCoordinateIndex = (pt: [number, number], coords: [number, number][]) => {
+  let closestIndex = 0;
+  let minDistance = Infinity;
+  for (let i = 0; i < coords.length; i++) {
+    const dx = coords[i][0] - pt[0];
+    const dy = coords[i][1] - pt[1];
+    const distance = dx * dx + dy * dy;
+    if (distance < minDistance) {
+      minDistance = distance;
+      closestIndex = i;
+    }
+  }
+  return closestIndex;
+};
+
+export const useRideRouteMap = (
+  routePath?: string, 
+  stops?: any[], 
+  destination?: any, 
+  initialStopIndex?: number,
+  sourceStopId?: number | string,
+  destinationStopId?: number | string
+) => {
+  const { pop } = useAppNavigation();
   const cameraRef = useRef<CameraRef>(null);
   const mapRef = useRef<any>(null);
   const zoomRef = useRef(14);
@@ -24,9 +46,14 @@ export const useRideRouteMap = (routePath?: string, stops?: any[], destination?:
     longitude: initialPoint?.lon || 77.5946,
   });
 
+  const [isMapMounted, setIsMapMounted] = useState(true);
+
   const handleBack = useCallback(() => {
-    goBack();
-  }, [goBack]);
+    setIsMapMounted(false);
+    setTimeout(() => {
+      pop();
+    }, 150);
+  }, [pop]);
 
   const handleUserLocationUpdate = useCallback((location: any) => {
     if (location?.coords) {
@@ -88,35 +115,103 @@ export const useRideRouteMap = (routePath?: string, stops?: any[], destination?:
       }];
       coordinates = currentUserLocation ? [currentUserLocation, destCoord] : [destCoord];
     } else {
-      const decoded = routePath ? decodePolyline(routePath, 1e5) : [];
+      const decoded = (routePath && routePath.length > 0) ? decodePolyline(routePath, 1e5) : [];
       coordinates = decoded.length > 0 ? decoded : (stops || []).map(s => [s.lon, s.lat]);
-      stopMarkers = (stops || []).map((stop, idx) => ({
-        id: `stop-${stop.sequence}-${idx}`,
-        type: 'Feature',
-        properties: { 
-          type: 'marker', 
-          role: idx === 0 ? 'start' : (idx === (stops || []).length - 1 ? 'end' : 'stop'),
-          name: stop.name,
-        },
-        geometry: { type: 'Point', coordinates: [stop.lon, stop.lat] },
-      }));
+      
+      stopMarkers = (stops || []).map((stop, idx) => {
+        let role = 'stop';
+        if (sourceStopId !== undefined && destinationStopId !== undefined) {
+          /** Use loose equality (==) to handle string/number ID mismatches from API */
+          if (String(stop.id) === String(sourceStopId)) role = 'start';
+          else if (String(stop.id) === String(destinationStopId)) role = 'end';
+        } else {
+          role = idx === 0 ? 'start' : (idx === (stops || []).length - 1 ? 'end' : 'stop');
+        }
+
+        return {
+          id: `stop-${stop.sequence}-${idx}`,
+          type: 'Feature',
+          properties: { 
+            type: 'marker', 
+            role,
+            name: stop.name,
+          },
+          geometry: { type: 'Point', coordinates: [stop.lon, stop.lat] },
+        };
+      });
     }
 
     const bounds = coordinates.length > 0 ? getBoundingBox(coordinates) : null;
-    const routeFeature = {
-      type: 'Feature',
-      properties: { type: 'route' },
-      geometry: { type: 'LineString', coordinates: coordinates },
-    };
+    
+    // Split polyline coordinates into highlighted and unselected features
+    const routeFeatures: any[] = [];
+    
+    if (!destination && sourceStopId !== undefined && destinationStopId !== undefined && coordinates.length > 1) {
+      const pickupStop = (stops || []).find(s => String(s.id) === String(sourceStopId));
+      const dropoffStop = (stops || []).find(s => String(s.id) === String(destinationStopId));
+
+      if (pickupStop && dropoffStop) {
+        const pickupIdx = findClosestCoordinateIndex([pickupStop.lon, pickupStop.lat], coordinates);
+        const dropoffIdx = findClosestCoordinateIndex([dropoffStop.lon, dropoffStop.lat], coordinates);
+
+        const [startIdx, endIdx] = [pickupIdx, dropoffIdx].sort((a, b) => a - b);
+
+        const startCoords = coordinates.slice(0, startIdx + 1);
+        const highlightedCoords = coordinates.slice(startIdx, endIdx + 1);
+        const endCoords = coordinates.slice(endIdx);
+
+        if (startCoords.length > 1) {
+          routeFeatures.push({
+            type: 'Feature',
+            properties: { type: 'route', status: 'unselected' },
+            geometry: { type: 'LineString', coordinates: startCoords },
+          });
+        }
+
+        if (highlightedCoords.length > 1) {
+          routeFeatures.push({
+            type: 'Feature',
+            properties: { type: 'route', status: 'highlighted' },
+            geometry: { type: 'LineString', coordinates: highlightedCoords },
+          });
+        }
+
+        if (endCoords.length > 1) {
+          routeFeatures.push({
+            type: 'Feature',
+            properties: { type: 'route', status: 'unselected' },
+            geometry: { type: 'LineString', coordinates: endCoords },
+          });
+        }
+      } else {
+        // Fallback: no matching pickup/dropoff stops found, highlight entire route
+        routeFeatures.push({
+          type: 'Feature',
+          properties: { type: 'route', status: 'highlighted' },
+          geometry: { type: 'LineString', coordinates: coordinates },
+        });
+      }
+    } else if (coordinates.length > 1) {
+      routeFeatures.push({
+        type: 'Feature',
+        properties: { type: 'route', status: 'highlighted' },
+        geometry: { type: 'LineString', coordinates: coordinates },
+      });
+    }
+
+    // Safety: filter out any route features that have fewer than 2 coordinates
+    const validRouteFeatures = routeFeatures.filter(
+      f => f.geometry.coordinates && f.geometry.coordinates.length >= 2
+    );
 
     return {
       geoJSON: {
         type: 'FeatureCollection',
-        features: coordinates.length > 1 ? [routeFeature, ...stopMarkers] : stopMarkers,
+        features: [...validRouteFeatures, ...stopMarkers],
       },
       bounds,
     };
-  }, [routePath, stops, destination, currentUserLocation]);
+  }, [routePath, stops, destination, currentUserLocation, sourceStopId, destinationStopId]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -151,5 +246,6 @@ export const useRideRouteMap = (routePath?: string, stops?: any[], destination?:
     mapRef,
     zoom,
     region,
+    isMapMounted,
   };
 };

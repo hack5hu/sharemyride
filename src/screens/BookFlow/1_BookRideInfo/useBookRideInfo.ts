@@ -13,7 +13,6 @@ import { getErrorMessage } from '@/utils/error';
 
 export const useBookRideInfo = () => {
   const { navigation, navigate } = useAppNavigation();
-  const route = useRoute();
   const { bookRideInfo: t } = useLocale();
   const { t: translate } = useTranslation();
   const [isSearching, setIsSearching] = useState(false);
@@ -78,23 +77,6 @@ export const useBookRideInfo = () => {
     store.setStartLocation(currentDest);
     store.setDestinationLocation(currentStart);
   }, []);
-
-  useEffect(() => {
-    const params = route.params as any;
-    if (params?.updatedLocation && params?.type) {
-      const store = useBookRideStore.getState();
-      if (params.type === 'start') {
-        store.setStartLocation(params.updatedLocation);
-      } else if (params.type === 'destination') {
-        store.setDestinationLocation(params.updatedLocation);
-      }
-      // Reset params so they aren't processed again on re-focus
-      navigation.setParams({
-        updatedLocation: undefined,
-        type: undefined,
-      } as any);
-    }
-  }, [route.params, navigation]);
 
   const handleOpenDatePicker = useCallback(() => {
     navigate('BookDateSelection');
@@ -222,8 +204,8 @@ export const useBookRideInfo = () => {
   }, []);
 
   return {
-    pickup: startLocation?.address || '',
-    destination: destinationLocation?.address || '',
+    pickup: startLocation?.name || startLocation?.address || '',
+    destination: destinationLocation?.name || destinationLocation?.address || '',
     travelDate: travelDate ? new Date(travelDate) : null,
     peopleCount: seatCount,
     isSearching,

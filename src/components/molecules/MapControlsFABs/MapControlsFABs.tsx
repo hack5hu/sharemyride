@@ -18,10 +18,14 @@ export const MapControlsFABs: React.FC<MapControlsFABsProps> = ({
   
   return (
     <FABsContainer>
-      <FABControl onPress={onLocateMe} activeOpacity={0.7}>
-        <Ionicons name="locate-sharp" size={moderateScale(24)} color={theme.colors.primary} />
-      </FABControl>
-      <Separator />
+      {onLocateMe && (
+        <>
+          <FABControl onPress={onLocateMe} activeOpacity={0.7}>
+            <Ionicons name="locate-sharp" size={moderateScale(24)} color={theme.colors.primary} />
+          </FABControl>
+          <Separator />
+        </>
+      )}
       <FABControl onPress={onZoomIn} activeOpacity={0.7}>
         <Ionicons name="add-sharp" size={moderateScale(24)} color={theme.colors.on_surface_variant} />
       </FABControl>

@@ -11,8 +11,8 @@ import { getErrorMessage } from '@/utils/error';
 import { BookSeat, Passenger } from './types';
 
 export const useBookSeatSelection = (
-  rideId: string, 
-  sourceStopId?: number, 
+  rideId: string,
+  sourceStopId?: number,
   destinationStopId?: number,
   passedSeats?: BookSeat[],
   passedPassengers?: Passenger[],
@@ -45,21 +45,21 @@ export const useBookSeatSelection = (
   }, [passedSeats]);
 
   const occupiedSeats = useMemo(() => {
-    const occupied = new Set<string | number>();
-    const availableIds = new Set((passedSeats || []).map((s: BookSeat) => s.id));
+    const occupied = new Set<string>();
+    const availableIds = new Set((passedSeats || []).map((s: BookSeat) => String(s.id)));
 
     // 1. Any standard seat ID that is not in the backend's returned seats list is unavailable/occupied
     const allIds = vehicleType === '7' ? [2, 3, 4, 5, 6, 7] : [2, 3, 4, 5];
     allIds.forEach(id => {
-      if (!availableIds.has(id)) {
-        occupied.add(id);
+      if (!availableIds.has(String(id))) {
+        occupied.add(String(id));
       }
     });
 
     // 2. Any seat in the backend returned seats list that is explicitly marked as not available is occupied
     (passedSeats || []).forEach((s: BookSeat) => {
       if (!s.available) {
-        occupied.add(s.id);
+        occupied.add(String(s.id));
       }
     });
 
@@ -71,9 +71,9 @@ export const useBookSeatSelection = (
     const firstStop = rideRaw?.stops?.[0];
     return firstStop?.arrivalTime
       ? new Date(firstStop.arrivalTime).toLocaleDateString('en-IN', {
-          day: 'numeric',
-          month: 'short',
-        })
+        day: 'numeric',
+        month: 'short',
+      })
       : '-- ---';
   }, [rideRaw, passedDate]);
 
@@ -122,7 +122,7 @@ export const useBookSeatSelection = (
 
   const handleConfirm = useCallback(async () => {
     if (selectedSeats.size === 0 || isBooking) return;
-    
+
     setIsBooking(true);
     try {
       const payload = {
@@ -132,7 +132,7 @@ export const useBookSeatSelection = (
       };
 
       await rideService.bookRide(rideId, payload);
-      navigate('BookingConfirmed', { 
+      navigate('BookingConfirmed', {
         rideId,
         bookedSeats: Array.from(selectedSeats).map(String)
       });

@@ -52,6 +52,17 @@ export const useAppNavigation = () => {
     }
   }, [navigation]);
 
+  const pop = useCallback(
+    (count?: number) => {
+      if ('pop' in navigation) {
+        (navigation as any).pop(count);
+      } else {
+        (navigation as any).goBack();
+      }
+    },
+    [navigation]
+  );
+
   const popToTop = useCallback(() => {
     if ('popToTop' in navigation) {
       (navigation as any).popToTop();
@@ -100,6 +111,7 @@ export const useAppNavigation = () => {
     push,
     replace,
     goBack,
+    pop,
     popToTop,
     resetTo,
     resetWithStack,

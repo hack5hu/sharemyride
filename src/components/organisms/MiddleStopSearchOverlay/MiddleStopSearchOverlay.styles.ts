@@ -65,8 +65,6 @@ export const GridCard = styled.TouchableOpacity<{ isPopular?: boolean }>`
   background-color: ${({ theme, isPopular }) => isPopular ? theme.colors.surface_container_lowest : theme.colors.surface_container_low};
   padding: ${moderateScale(16)}px;
   border-radius: ${moderateScale(12)}px;
-  border-width: 1px;
-  border-color: ${({ theme }) => `${theme.colors.outline_variant}1A`};
   min-height: ${verticalScale(120)}px;
   justify-content: space-between;
 `;
@@ -127,4 +125,52 @@ export const HistoryText = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-size: ${responsiveFont(14)}px;
   color: ${({ theme }) => theme.colors.on_surface};
+  flex: 1;
+`;
+
+/* Distance Badge */
+export const DistanceBadge = styled.View<{ isWarning?: boolean }>`
+  background-color: ${({ theme, isWarning }) =>
+    isWarning ? `${theme.colors.error}1A` : `${theme.colors.primary}1A`};
+  padding-horizontal: ${scale(8)}px;
+  padding-vertical: ${verticalScale(2)}px;
+  border-radius: 9999px;
+`;
+
+export const DistanceBadgeText = styled.Text<{ isWarning?: boolean }>`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 700;
+  font-size: ${responsiveFont(10)}px;
+  color: ${({ theme, isWarning }) =>
+    isWarning ? theme.colors.error : theme.colors.primary};
+`;
+
+/* Search Result Item */
+export const SearchResultItem = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  padding: ${moderateScale(14)}px ${moderateScale(16)}px;
+  background-color: ${({ theme }) => `${theme.colors.surface_container_low}80`};
+  border-radius: ${moderateScale(12)}px;
+  margin-bottom: ${verticalScale(8)}px;
+`;
+
+export const SearchResultContent = styled.View`
+  flex: 1;
+  margin-left: ${scale(12)}px;
+  margin-right: ${scale(8)}px;
+`;
+
+export const SearchResultName = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 600;
+  font-size: ${responsiveFont(14)}px;
+  color: ${({ theme }) => theme.colors.on_surface};
+`;
+
+export const SearchResultAddress = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-size: ${responsiveFont(11)}px;
+  color: ${({ theme }) => theme.colors.on_surface_variant};
+  margin-top: ${verticalScale(2)}px;
 `;

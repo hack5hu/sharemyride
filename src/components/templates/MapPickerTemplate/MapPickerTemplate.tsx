@@ -58,6 +58,7 @@ export interface MapPickerTemplateProps {
   onZoomOut?: () => void;
   zoom?: number;
   setIsMapVisible: (val: boolean) => void;
+  isMapMounted: boolean;
 }
 
 export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
@@ -81,6 +82,7 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
   onZoomOut,
   zoom,
   setIsMapVisible,
+  isMapMounted,
 }) => {
   const theme = useTheme();
   const { mapPicker } = useLocale();
@@ -130,38 +132,40 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
       />
 
       {/* Map Layer - Warm Mounted */}
-      <OlaMap
-        ref={mapRef}
-        onRegionWillChange={onRegionWillChange}
-        onRegionDidChange={onRegionChangeComplete}
-        style={{ 
-          flex: 1,
-          width: '100%',
-          height: '100%',
-          opacity: isMapVisible ? 1 : 0,
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 0
-        }}
-        pointerEvents={isMapVisible ? 'auto' : 'none'}
-      >
-        <Camera
-          ref={cameraRef}
-          center={[region.longitude, region.latitude]}
-          zoom={zoom ?? 14}
-        />
-        {hasPermission && (
-          <MapLibreUserLocation 
-            onUpdate={onUserLocationUpdate} 
-            showsUserHeadingIndicator={true}
-          >
-            <UserLocationMarker heading={heading} />
-          </MapLibreUserLocation>
-        )}
-      </OlaMap>
+      {isMapMounted && (
+        <OlaMap
+          ref={mapRef}
+          onRegionWillChange={onRegionWillChange}
+          onRegionDidChange={onRegionChangeComplete}
+          style={{ 
+            flex: 1,
+            width: '100%',
+            height: '100%',
+            opacity: isMapVisible ? 1 : 0,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 0
+          }}
+          pointerEvents={isMapVisible ? 'auto' : 'none'}
+        >
+          <Camera
+            ref={cameraRef}
+            center={[region.longitude, region.latitude]}
+            zoom={zoom ?? 14}
+          />
+          {hasPermission && (
+            <MapLibreUserLocation 
+              onUpdate={onUserLocationUpdate} 
+              showsUserHeadingIndicator={true}
+            >
+              <UserLocationMarker heading={heading} />
+            </MapLibreUserLocation>
+          )}
+        </OlaMap>
+      )}
 
       {isMapVisible && (
         <>

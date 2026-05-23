@@ -101,8 +101,10 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
       routePath: ride?.routePath ?? '',
       stops,
       initialStopIndex: index,
+      sourceStopId,
+      destinationStopId,
     });
-  }, [navigate, ride]);
+  }, [navigate, ride, sourceStopId, destinationStopId]);
 
   const handleCopyAddress = useCallback((address: string) => {
     Clipboard.setString(address);

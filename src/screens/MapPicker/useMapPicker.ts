@@ -1,8 +1,11 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { useNavigation, useRoute, RouteProp, CommonActions } from '@react-navigation/native';
+import { useRoute, RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '@/navigation/types';
 import { Location, useLocationStore } from '@/store/useLocationStore';
 import { locationService, OlaPrediction } from '@/serviceManager/locationService';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useRidePublishStore } from '@/store/useRidePublishStore';
+import { useBookRideStore } from '@/store/useBookRideStore';
 import debounce from 'lodash/debounce';
 
 import { requestLocationPermission } from '@/utils/permissionUtils';
@@ -17,11 +20,10 @@ type MapPickerRouteProp = RouteProp<RootStackParamList, 'MapPicker'>;
 const EMPTY_HISTORY: Location[] = [];
 
 export const useMapPicker = () => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const route = useRoute<MapPickerRouteProp>();
   
   const pickerType = route.params?.type || 'start';
-  const returnTo = route.params?.returnTo || 'LocationSelection';
   const module = (route.params as any)?.module || 'publish';
   const contextKey = `${module}_${pickerType}`;
 
@@ -111,6 +113,8 @@ export const useMapPicker = () => {
     }, 500)
   ).current;
 
+  const [isMapMounted, setIsMapMounted] = useState(true);
+
   useEffect(() => {
     debouncedSearch(searchQuery);
   }, [searchQuery, debouncedSearch]);
@@ -120,7 +124,10 @@ export const useMapPicker = () => {
       setIsMapVisible(false);
       setSelectedLocation(null);
     } else {
-      navigation.goBack();
+      setIsMapMounted(false);
+      setTimeout(() => {
+        navigation.pop();
+      }, 150);
     }
   }, [navigation, isMapVisible]);
 
@@ -183,29 +190,35 @@ export const useMapPicker = () => {
   }, [isMapVisible]);
 
   const handleConfirmLocation = useCallback(() => {
-    if (selectedLocation) {
-      addSearchHistory(selectedLocation, contextKey);
-      
-      const routes = navigation.getState()?.routes;
-      if (routes && routes.length > 1) {
-        const prevRoute = routes[routes.length - 2];
-        if (prevRoute) {
-          navigation.dispatch(
-            CommonActions.setParams({
-              params: {
-                updatedLocation: selectedLocation,
-                type: pickerType,
-              },
-              source: prevRoute.key,
-            })
-          );
-        }
-      }
-      navigation.goBack();
-    } else {
-      navigation.goBack();
+    if (!selectedLocation) {
+      setIsMapMounted(false);
+      setTimeout(() => navigation.pop(), 150);
+      return;
     }
-  }, [navigation, selectedLocation, pickerType, addSearchHistory, contextKey]);
+
+    addSearchHistory(selectedLocation, contextKey);
+
+    // Write directly to the correct store — no navigation params needed.
+    // The parent screen already reads from this store reactively.
+    if (module === 'publish') {
+      const store = useRidePublishStore.getState();
+      if (pickerType === 'start') {
+        store.setStartLocation(selectedLocation);
+      } else {
+        store.setDestinationLocation(selectedLocation);
+      }
+    } else if (module === 'book' || module === 'search') {
+      const store = useBookRideStore.getState();
+      if (pickerType === 'start') {
+        store.setStartLocation(selectedLocation);
+      } else {
+        store.setDestinationLocation(selectedLocation);
+      }
+    }
+
+    setIsMapMounted(false);
+    setTimeout(() => navigation.pop(), 150);
+  }, [navigation, selectedLocation, pickerType, module, addSearchHistory, contextKey]);
 
   return {
     pickerType,
@@ -235,5 +248,6 @@ export const useMapPicker = () => {
     isMoving,
     handleRegionWillChange,
     hasPermission,
+    isMapMounted,
   };
 };
