@@ -621,6 +621,17 @@ export const hi: Translations = {
     plateLabel: 'प्लेट',
     carbonNeutralTransit: 'राइड पूल कंपनी कार्बन न्यूट्रल ट्रांजिट',
     brandTitle: 'राइड पूल कंपनी',
+    seatPositions: {
+      driver: 'ड्राइवर सीट',
+      frontPassenger: 'आगे की यात्री सीट (बाईं ओर)',
+      middleLeft: 'बीच की पंक्ति (बाईं खिड़की)',
+      middleCenter: 'बीच की पंक्ति (मध्य)',
+      middleRight: 'बीच की पंक्ति (दाईं खिड़की)',
+      backLeft: 'पिछली पंक्ति (बाईं खिड़की)',
+      backCenter: 'पिछली पंक्ति (मध्य)',
+      backRight: 'पिछली पंक्ति (दाईं खिड़की)',
+      defaultSeat: 'सीट {id}',
+    },
   },
   settings: {
     headerTitle: 'सेटिंग्स',

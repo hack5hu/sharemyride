@@ -204,9 +204,9 @@ export const useBookRideInfo = () => {
   }, []);
 
   return {
-    pickup: startLocation?.name || startLocation?.address || '',
-    destination: destinationLocation?.name || destinationLocation?.address || '',
-    travelDate: travelDate ? new Date(travelDate) : null,
+    pickup: startLocation?.address || '',
+    destination:  destinationLocation?.address || '',
+    travelDate: travelDate ? new Date(travelDate) : new Date(),
     peopleCount: seatCount,
     isSearching,
     isSwapped,

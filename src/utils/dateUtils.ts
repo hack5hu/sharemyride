@@ -5,16 +5,27 @@
  */
 export const getMonthDays = (year: number, month: number) => {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  // js Date: 0 is Sun, 1 is Mon. We want Mon=0, Sun=6.
-  let firstDayIndex = new Date(year, month, 1).getDay() - 1;
-  if (firstDayIndex === -1) firstDayIndex = 6;
+  // js Date: 0 is Sun, 1 is Mon. Our UI header starts with Sun, so we want Sun=0.
+  let firstDayIndex = new Date(year, month, 1).getDay();
 
   const result: Array<number | null> = [];
   for (let i = 0; i < firstDayIndex; i++) {
     result.push(null);
   }
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const maxDate = new Date();
+  maxDate.setDate(maxDate.getDate() + 60);
+  maxDate.setHours(23, 59, 59, 999);
+
   for (let i = 1; i <= daysInMonth; i++) {
-    result.push(i);
+    const currentDate = new Date(year, month, i);
+    if (currentDate.getTime() < today.getTime() || currentDate.getTime() > maxDate.getTime()) {
+      result.push(null);
+    } else {
+      result.push(i);
+    }
   }
   return result;
 };

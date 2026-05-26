@@ -47,7 +47,7 @@ export interface MapPickerTemplateProps {
   onLocateMe?: () => void;
   heading?: number;
   hasPermission?: boolean;
-  searchOverlayProps: Omit<MapSearchOverlayProps, 'isCondensed' | 'setIsCondensed'>;
+  searchOverlayProps: Omit<MapSearchOverlayProps, 'isCondensed'>;
   locationDetailsProps: LocationDetailsCardProps;
   mapRef?: React.RefObject<any>;
   cameraRef?: React.RefObject<any>;
@@ -125,10 +125,9 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
 
   return (
     <ScreenShell title={mapPicker.title} onBack={searchOverlayProps.onBackPress}>
-      <MapSearchOverlay 
-        {...searchOverlayProps} 
-        isCondensed={isMapVisible} 
-        setIsCondensed={setIsMapVisible}
+      <MapSearchOverlay
+        {...searchOverlayProps}
+        isCondensed={isMapVisible}
       />
 
       {/* Map Layer - Warm Mounted */}
@@ -137,17 +136,17 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
           ref={mapRef}
           onRegionWillChange={onRegionWillChange}
           onRegionDidChange={onRegionChangeComplete}
-          style={{ 
+          style={{
             flex: 1,
             width: '100%',
             height: '100%',
-            opacity: isMapVisible ? 1 : 0,
             position: 'absolute',
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
-            zIndex: 0
+            zIndex: 0,
+            opacity: isMapVisible ? 1 : 0
           }}
           pointerEvents={isMapVisible ? 'auto' : 'none'}
         >
@@ -157,8 +156,8 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
             zoom={zoom ?? 14}
           />
           {hasPermission && (
-            <MapLibreUserLocation 
-              onUpdate={onUserLocationUpdate} 
+            <MapLibreUserLocation
+              onUpdate={onUserLocationUpdate}
               showsUserHeadingIndicator={true}
             >
               <UserLocationMarker heading={heading} />
@@ -181,35 +180,35 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
                 ]
               }}
             >
-              <TooltipBubble 
-                as={Animated.View} 
-                style={{ 
+              <TooltipBubble
+                as={Animated.View}
+                style={{
                   opacity: pinAnim.interpolate({
                     inputRange: [0, 0.2, 1],
                     outputRange: [1, 0, 0]
-                  }) 
+                  })
                 }}
               >
                 <TooltipText>
-                  {pickerType === 'start' 
-                    ? mapPicker.setPickup 
-                    : pickerType === 'destination' 
-                      ? mapPicker.setDestination 
+                  {pickerType === 'start'
+                    ? mapPicker.setPickup
+                    : pickerType === 'destination'
+                      ? mapPicker.setDestination
                       : mapPicker.setStop}
                 </TooltipText>
               </TooltipBubble>
 
               <Ionicons
-                name="pin-sharp" 
-                size={moderateScale(28)} 
-                color={theme.colors.primary_container} 
+                name="pin-sharp"
+                size={moderateScale(28)}
+                color={theme.colors.primary_container}
               />
-              <PinShadow 
-                as={Animated.View} 
-                style={{ 
+              <PinShadow
+                as={Animated.View}
+                style={{
                   opacity: shadowOpacity,
                   transform: [{ scale: shadowScale }]
-                }} 
+                }}
               />
             </PinWrapper>
           </PinContainer>
@@ -248,9 +247,9 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
             </SelectButton>
           </SelectButtonContainer>
 
-          <MapControlsFABs 
-            onZoomIn={onZoomIn} 
-            onZoomOut={onZoomOut} 
+          <MapControlsFABs
+            onZoomIn={onZoomIn}
+            onZoomOut={onZoomOut}
             onLocateMe={onLocateMe}
           />
         </>

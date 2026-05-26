@@ -16,6 +16,7 @@ import {
 import { getBoundingBox } from '@/utils/polyline';
 import { LocationOption } from '@/components/organisms/MiddleStopSearchOverlay';
 import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle';
 
 const EMPTY_HISTORY: Location[] = [];
 
@@ -30,7 +31,7 @@ export interface MiddleStopMapLocation {
 
 export const useMiddleStopMap = () => {
   const navigation = useAppNavigation();
-  const { middleStopMap: t } = useLocale();
+  const { middleStopMap: t, middleStops: tStops } = useLocale();
 
   // Store data
   const {
@@ -182,15 +183,11 @@ export const useMiddleStopMap = () => {
 
   const [isMapMounted, setIsMapMounted] = useState(true);
 
-  // Handle back press
   const handleBackPress = useCallback(() => {
     if (isSearching) {
       setIsSearching(false);
     } else {
-      setIsMapMounted(false);
-      setTimeout(() => {
-        navigation.pop();
-      }, 150);
+      navigation.pop();
     }
   }, [isSearching, navigation]);
 
@@ -313,8 +310,8 @@ export const useMiddleStopMap = () => {
     if (isStartDuplicate || isDestDuplicate || isAlreadyStop) {
       showNotification(
         NotificationType.WARNING,
-        t.duplicateStopTitle,
-        t.duplicateStopMsg,
+        tStops.duplicateStopTitle,
+        tStops.duplicateStopMsg,
       );
       return;
     }
@@ -347,8 +344,7 @@ export const useMiddleStopMap = () => {
       useRidePublishStore.getState().setMiddleStops(sorted);
     }
 
-    setIsMapMounted(false);
-    setTimeout(() => navigation.pop(), 150);
+    navigation.pop();
   }, [selectedLocation, canConfirm, startLocation, destinationLocation, navigation, addSearchHistory, contextKey, t]);
 
   const handleZoom = useCallback((increment: number) => {
@@ -368,6 +364,35 @@ export const useMiddleStopMap = () => {
     Toast.hide();
   }, []);
 
+  // Throttled snap & selectedLocation coordinate update during dragging to ensure 60fps UI performance
+  const throttledRegionIsChanging = useRef(
+    throttle((longitude: number, latitude: number, coords: [number, number][]) => {
+      if (coords.length >= 2) {
+        const result = snapToRoute(
+          [longitude, latitude],
+          coords,
+        );
+        setSnapResult(result);
+      }
+
+      setSelectedLocation(prev => {
+        if (!prev) return null;
+        if (prev.latitude === latitude && prev.longitude === longitude) return prev;
+        return {
+          ...prev,
+          latitude,
+          longitude,
+        };
+      });
+    }, 120)
+  ).current;
+
+  useEffect(() => {
+    return () => {
+      throttledRegionIsChanging.cancel?.();
+    };
+  }, [throttledRegionIsChanging]);
+
   const handleRegionIsChanging = useCallback((event: any) => {
     if (isSearching) return;
 
@@ -375,29 +400,12 @@ export const useMiddleStopMap = () => {
     if (!viewState?.center) return;
 
     const [longitude, latitude] = viewState.center;
-
-    // Recalculate snap in real time via fast Turf.js math
-    if (routeCoordinates.length >= 2) {
-      const result = snapToRoute(
-        [longitude, latitude],
-        routeCoordinates,
-      );
-      setSnapResult(result);
-    }
-
-    // Update selectedLocation's latitude and longitude to trigger real-time connector line updates
-    setSelectedLocation(prev => {
-      if (!prev) return null;
-      return {
-        ...prev,
-        latitude,
-        longitude,
-      };
-    });
-  }, [isSearching, routeCoordinates]);
+    throttledRegionIsChanging(longitude, latitude, routeCoordinates);
+  }, [isSearching, routeCoordinates, throttledRegionIsChanging]);
 
   const handleRegionChangeComplete = useCallback(async (event: any) => {
     setIsMoving(false);
+    throttledRegionIsChanging.cancel?.();
 
     const viewState = event?.nativeEvent || event;
     if (!viewState?.center) return;
@@ -410,6 +418,15 @@ export const useMiddleStopMap = () => {
     }
 
     if (isSearching) return;
+
+    // 1. UPDATE SNAP RESULT IMMEDIATELY (Instant feedback!)
+    if (routeCoordinates.length >= 2) {
+      const result = snapToRoute(
+        [longitude, latitude],
+        routeCoordinates,
+      );
+      setSnapResult(result);
+    }
 
     setIsReverseGeocoding(true);
     try {
@@ -449,7 +466,7 @@ export const useMiddleStopMap = () => {
     } finally {
       setIsReverseGeocoding(false);
     }
-  }, [isSearching, routeCoordinates, t, selectedLocation]);
+  }, [isSearching, routeCoordinates, t, selectedLocation, throttledRegionIsChanging]);
 
   // Handle map press to select coordinates directly (places / moves the marker)
   const handleMapPress = useCallback(async (feature: any) => {
@@ -457,6 +474,15 @@ export const useMiddleStopMap = () => {
     const [longitude, latitude] = feature.geometry.coordinates;
 
     Toast.hide();
+
+    // 1. UPDATE SNAP RESULT IMMEDIATELY (Instant feedback!)
+    if (routeCoordinates.length >= 2) {
+      const result = snapToRoute(
+        [longitude, latitude],
+        routeCoordinates,
+      );
+      setSnapResult(result);
+    }
 
     setIsReverseGeocoding(true);
     try {

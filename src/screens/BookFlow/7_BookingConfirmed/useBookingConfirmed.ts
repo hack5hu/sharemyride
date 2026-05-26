@@ -49,6 +49,37 @@ export const useBookingConfirmed = () => {
       hour12: true,
     });
 
+    const getSeatDescription = (seatId: string | number, vehicleType?: string): string => {
+      const id = String(seatId);
+      const is7Seater = vehicleType === 'CAR_7_SEATER';
+
+      if (id === '1' || id === 'driver') return t.seatPositions.driver;
+      if (id === '2') return t.seatPositions.frontPassenger;
+      
+      if (is7Seater) {
+        switch (id) {
+          case '3': return t.seatPositions.middleLeft;
+          case '4': return t.seatPositions.middleCenter;
+          case '5': return t.seatPositions.middleRight;
+          case '6': return t.seatPositions.backLeft;
+          case '7': return t.seatPositions.backRight;
+        }
+      } else {
+        // 5 Seater or default
+        switch (id) {
+          case '3': return t.seatPositions.backLeft;
+          case '4': return t.seatPositions.backCenter;
+          case '5': return t.seatPositions.backRight;
+        }
+      }
+
+      return t.seatPositions.defaultSeat.replace('{id}', id);
+    };
+
+    const formattedSeats = bookedSeats.length > 0 
+      ? bookedSeats.map(seatId => getSeatDescription(seatId, rideRaw?.vehicleType)).join(', ')
+      : 'TBD';
+
     return {
       driver: {
         name: rideRaw?.driverName || 'Host',
@@ -60,10 +91,10 @@ export const useBookingConfirmed = () => {
       },
       pickupTime,
       arrivalInMins: 12, // Still mock or calculate if possible
-      seatNumber: bookedSeats.length > 0 ? bookedSeats.join(', ') : 'TBD',
+      seatNumber: formattedSeats,
       seatPreference: t.windowPreference,
     };
-  }, [rideRaw, bookedSeats, t.windowPreference]);
+  }, [rideRaw, bookedSeats, t]);
 
   const handleGoToMyRides = useCallback(() => {
     navigate('MyRides');

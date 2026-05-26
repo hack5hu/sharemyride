@@ -49,10 +49,7 @@ export const useRideRouteMap = (
   const [isMapMounted, setIsMapMounted] = useState(true);
 
   const handleBack = useCallback(() => {
-    setIsMapMounted(false);
-    setTimeout(() => {
-      pop();
-    }, 150);
+    pop();
   }, [pop]);
 
   const handleUserLocationUpdate = useCallback((location: any) => {

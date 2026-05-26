@@ -617,6 +617,17 @@ export const en: Translations = {
     plateLabel: 'Plate',
     carbonNeutralTransit: 'Ride Pool Company Carbon Neutral Transit',
     brandTitle: 'Ride Pool Company',
+    seatPositions: {
+      driver: 'Driver Seat',
+      frontPassenger: 'Front Passenger (Left)',
+      middleLeft: 'Middle Row (Left Window)',
+      middleCenter: 'Middle Row (Center)',
+      middleRight: 'Middle Row (Right Window)',
+      backLeft: 'Back Row (Left Window)',
+      backCenter: 'Back Row (Center)',
+      backRight: 'Back Row (Right Window)',
+      defaultSeat: 'Seat {id}',
+    },
   },
   settings: {
     headerTitle: 'Settings',

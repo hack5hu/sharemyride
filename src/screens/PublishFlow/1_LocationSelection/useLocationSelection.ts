@@ -50,8 +50,8 @@ export const useLocationSelection = () => {
   // Enforce validation: Must have both start and destination to proceed
   const canContinue = !!startLocation && !!destinationLocation;
   return {
-    startLocationName: startLocation?.name || startLocation?.address || '',
-    destinationLocationName: destinationLocation?.name || destinationLocation?.address || '',
+    startLocationName:  startLocation?.address || '',
+    destinationLocationName: destinationLocation?.address || '',
     handlePressStart,
     handlePressDestination,
     handleContinue,

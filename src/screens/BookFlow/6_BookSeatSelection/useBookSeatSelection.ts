@@ -106,7 +106,7 @@ export const useBookSeatSelection = (
   }, [selectedSeats, prices]);
 
   const toggleSeat = useCallback((id: string | number) => {
-    if (id === 'driver' || occupiedSeats.has(id)) return;
+    if (id === 'driver' || occupiedSeats.has(String(id))) return;
     setSelectedSeats(prev => {
       const next = new Set(prev);
       if (next.has(id)) {

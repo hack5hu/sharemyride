@@ -313,6 +313,21 @@ export const MiddleStopMapTemplate: React.FC<MiddleStopMapTemplateProps> = React
               <S.FloatingSearchText>{t.searchPlaceholder}</S.FloatingSearchText>
             </S.FloatingSearchBar>
 
+            {/* Permanent Warning Banner if too far from route */}
+            {isWarning && (
+              <S.WarningBanner>
+                <MaterialIcons
+                  name="warning"
+                  size={moderateScale(20)}
+                  color={theme.colors.error}
+                />
+                <S.WarningContent>
+                  <S.WarningTitle>{t.tooFarFromRoute}</S.WarningTitle>
+                  <S.WarningDescription>{t.tooFarFromRouteMsg}</S.WarningDescription>
+                </S.WarningContent>
+              </S.WarningBanner>
+            )}
+
             {/* Map controls */}
             <MapControlsFABs
               onZoomIn={onZoomIn}

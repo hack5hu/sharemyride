@@ -341,3 +341,41 @@ export const PinShadow = styled.View`
   background-color: rgba(0,0,0,0.2);
   border-radius: 9999px;
 `;
+
+export const WarningBanner = styled.View`
+  position: absolute;
+  top: ${verticalScale(76)}px;
+  left: ${scale(24)}px;
+  right: ${scale(24)}px;
+  background-color: ${({ theme }) => `${theme.colors.surface}FA`};
+  border-radius: ${moderateScale(12)}px;
+  padding: ${moderateScale(12)}px ${scale(16)}px;
+  shadow-color: rgb(0, 0, 0);
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.1;
+  shadow-radius: 8px;
+  elevation: 4;
+  z-index: 15;
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(12)}px;
+`;
+
+export const WarningContent = styled.View`
+  flex: 1;
+`;
+
+export const WarningTitle = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 700;
+  font-size: ${responsiveFont(13)}px;
+  color: ${({ theme }) => theme.colors.error};
+  margin-bottom: ${verticalScale(2)}px;
+`;
+
+export const WarningDescription = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-size: ${responsiveFont(11)}px;
+  color: ${({ theme }) => theme.colors.on_surface_variant};
+  line-height: ${responsiveFont(15)}px;
+`;

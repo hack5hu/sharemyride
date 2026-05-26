@@ -83,7 +83,7 @@ export const PassengerManagement: React.FC<PassengerManagementProps> = React.mem
         <S.PassengerList>
           {passengers.map((p, i) => (
             <S.PassengerCard key={p.bookingId || p.id || i}>
-              <Avatar source={{ uri: p.photoUrl }} size="sm" />
+              <Avatar source={{ uri: p.photoUrl }} placeholder={p.name} size="sm" />
               <S.PassengerInfo>
                 <Typography variant="body" size="sm" weight="bold">
                   {p.name}
@@ -108,16 +108,16 @@ export const PassengerManagement: React.FC<PassengerManagementProps> = React.mem
           ))}
         </S.PassengerList>
       ) : (
-        <S.CoRidersGrid>
+        <S.CoRidersList>
           {passengers.map((p, i) => (
             <S.CoRiderCapsule key={p.id || i}>
-              <Avatar source={{ uri: p.photoUrl }} size="sm" />
+              <Avatar source={{ uri: p.photoUrl }} placeholder={p.name} size="sm" />
               <Typography variant="body" size="sm" weight="semibold" color="on_surface">
                 {p.name}
               </Typography>
             </S.CoRiderCapsule>
           ))}
-        </S.CoRidersGrid>
+        </S.CoRidersList>
       )}
     </S.SectionCard>
   );

@@ -54,10 +54,9 @@ export const SeatBadge = styled.View`
   border-radius: ${moderateScale(8)}px;
 `;
 
-export const CoRidersGrid = styled.View`
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: ${scale(10)}px;
+export const CoRidersList = styled.ScrollView`
+  width: auto;
+  margin-horizontal: -20px;
 `;
 
 export const CoRiderCapsule = styled.View`
@@ -65,7 +64,8 @@ export const CoRiderCapsule = styled.View`
   align-items: center;
   gap: ${scale(8)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_low};
-  padding-horizontal: ${scale(14)}px;
+  padding-left: ${scale(14)}px;
+  padding-right: ${scale(14)}px;
   padding-vertical: ${verticalScale(8)}px;
   border-radius: ${moderateScale(16)}px;
 `;

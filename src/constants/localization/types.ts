@@ -617,6 +617,17 @@ export interface BookingConfirmedTranslations {
   plateLabel: string;
   carbonNeutralTransit: string;
   brandTitle: string;
+  seatPositions: {
+    driver: string;
+    frontPassenger: string;
+    middleLeft: string;
+    middleCenter: string;
+    middleRight: string;
+    backLeft: string;
+    backCenter: string;
+    backRight: string;
+    defaultSeat: string;
+  };
 }
 
 export interface BookRideInfoTranslations {

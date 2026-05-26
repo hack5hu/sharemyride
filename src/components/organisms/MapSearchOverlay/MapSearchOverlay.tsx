@@ -25,7 +25,6 @@ export interface MapSearchOverlayProps {
   results: Location[];
   history: Location[];
   isCondensed?: boolean;
-  setIsCondensed: (val: boolean) => void;
 }
 
 export const MapSearchOverlay: React.FC<MapSearchOverlayProps> = ({
@@ -35,13 +34,16 @@ export const MapSearchOverlay: React.FC<MapSearchOverlayProps> = ({
   onSearchChange,
   results,
   history,
-  isCondensed = false,
-  setIsCondensed
+  isCondensed: externalCondensed = false,
 }) => {
   const theme = useTheme();
   const { mapPicker } = useLocale();
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = React.useRef<any>(null);
+
+  // The list is hidden (condensed) when the parent says so (map is showing)
+  // AND the input is not focused. Focusing the input always expands the list.
+  const isCondensed = externalCondensed && !isFocused;
 
   const displayList = searchQuery.trim().length > 0 ? results : history;
   const isHistory = searchQuery.trim().length === 0;
@@ -57,17 +59,15 @@ export const MapSearchOverlay: React.FC<MapSearchOverlayProps> = ({
         <Ionicons name="search" size={moderateScale(24)} color={theme.colors.on_surface_variant} />
         <SearchInput
           ref={inputRef}
-          autoFocus={true}
+          autoFocus={!externalCondensed}
           placeholder={mapPicker.searchPlaceholder}
           value={searchQuery}
           onChangeText={onSearchChange}
           onFocus={() => {
             setIsFocused(true);
-            setIsCondensed(false);
           }}
           onBlur={() => {
             setIsFocused(false);
-            setIsCondensed(true);
           }}
         />
         <LocationButton>

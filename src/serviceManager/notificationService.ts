@@ -1,5 +1,5 @@
 import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
-import messaging from '@react-native-firebase/messaging';
+import { getMessaging, requestPermission, AuthorizationStatus, registerDeviceForRemoteMessages, getToken, onMessage, onTokenRefresh } from '@react-native-firebase/messaging';
 import { Platform } from 'react-native';
 import { Logger } from '@/utils/logger';
 import { navigate } from '@/navigation/navigationService';
@@ -94,10 +94,11 @@ class NotificationService {
       }
 
       // Also request FCM permission
-      const authStatus = await messaging().requestPermission();
+      const messagingInstance = getMessaging();
+      const authStatus = await requestPermission(messagingInstance);
       const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+        authStatus === AuthorizationStatus.AUTHORIZED ||
+        authStatus === AuthorizationStatus.PROVISIONAL;
 
       if (enabled) {
         Logger.log('[FCM] Auth status:', authStatus);
@@ -112,10 +113,11 @@ class NotificationService {
    */
   public static async getFcmToken(): Promise<string | null> {
     try {
-      if (typeof messaging().registerDeviceForRemoteMessages === 'function') {
-        await messaging().registerDeviceForRemoteMessages();
+      const messagingInstance = getMessaging();
+      if (typeof registerDeviceForRemoteMessages === 'function') {
+        await registerDeviceForRemoteMessages(messagingInstance);
       }
-      return await messaging().getToken();
+      return await getToken(messagingInstance);
     } catch (error) {
       Logger.error('[FCM] Token retrieval failed', error);
       return null;
@@ -126,8 +128,9 @@ class NotificationService {
    * Set up Firebase Cloud Messaging listeners
    */
   private static setupFcmListeners() {
+    const messagingInstance = getMessaging();
     // Foreground messages
-    messaging().onMessage(async remoteMessage => {
+    onMessage(messagingInstance, async remoteMessage => {
       Logger.log('[FCM] Foreground message arrived:', remoteMessage);
 
       const data = remoteMessage.data || {};
@@ -163,7 +166,7 @@ class NotificationService {
     });
 
     // Handle token refresh
-    messaging().onTokenRefresh(token => {
+    onTokenRefresh(messagingInstance, token => {
       Logger.log('[FCM] Token refreshed:', token);
     });
   }

@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar } from 'react-native';
+import { StatusBar, LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['InteractionManager has been deprecated']);
+
 import { LightTheme, DarkTheme } from '@/theme';
 import { RootNavigator } from '@/navigation';
 import { useAuthStore } from '@/store';

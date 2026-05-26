@@ -41,7 +41,7 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> = React.m
   const { rideRoute } = useLocale();
 
   return (
-    <ScreenShell title={title} onBack={true}>
+    <ScreenShell title={title} onBack={onBack}>
       <S.Container>
         <S.MapWrapper>
           {isMapMounted && (
