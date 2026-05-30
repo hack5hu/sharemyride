@@ -5,8 +5,6 @@ export const Container = styled.View`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  padding-bottom: ${verticalScale(20)}px;
-  padding-top: ${verticalScale(12)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   border-top-left-radius: ${moderateScale(24)}px;
   border-top-right-radius: ${moderateScale(24)}px;
@@ -19,7 +17,9 @@ export const Container = styled.View`
   bottom: 0;
   left: 0;
   right: 0;
+  padding-horizontal: ${scale(8)}px;
 `;
+
 
 
 export const NavItem = styled.TouchableOpacity<{ active?: boolean }>`

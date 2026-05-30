@@ -203,7 +203,28 @@ export const useMapPicker = () => {
     setIsMoving(true);
   }, []);
 
-  const handleRegionChangeComplete = useCallback(async (event: any) => {
+  // Debounced reverse geocoding to prevent rapid API calls while panning
+  const debouncedReverseGeocode = useCallback(
+    debounce(async (lat: number, lng: number) => {
+      try {
+        const geoData = await locationService.reverseGeocode(lat, lng);
+        setSelectedLocation((prev) => ({
+          id: `drag-${Date.now()}`,
+          latitude: lat,
+          longitude: lng,
+          name: geoData.name || 'Picked Location',
+          address: geoData.address || '',
+        }));
+      } catch (error) {
+        console.warn('Reverse geocode error:', error);
+      } finally {
+        setIsReverseGeocoding(false);
+      }
+    }, 800),
+    []
+  );
+
+  const handleRegionChangeComplete = useCallback((event: any) => {
     setIsMoving(false);
     // Guard: Only geocode if map is visible to user
     if (!isMapVisible) return;
@@ -212,11 +233,10 @@ export const useMapPicker = () => {
     if (!viewState?.center) return;
     const [longitude, latitude] = viewState.center;
     const currentZoom = viewState.zoom;
+    
     // Prevent redundant reverse geocode if center hasn't changed
     const lastCenter = lastCenterRef.current;
     if (lastCenter && Math.abs(lastCenter[0] - longitude) < 0.00001 && Math.abs(lastCenter[1] - latitude) < 0.00001) {
-      // Center unchanged, skip processing
-      setIsMoving(false);
       return;
     }
     lastCenterRef.current = [longitude, latitude];
@@ -224,8 +244,10 @@ export const useMapPicker = () => {
       zoomRef.current = currentZoom;
     }
 
+    setIsReverseGeocoding(true);
+    debouncedReverseGeocode(latitude, longitude);
 
-  }, [isMapVisible]);
+  }, [isMapVisible, debouncedReverseGeocode]);
 
   const handleConfirmLocation = useCallback(() => {
     if (!selectedLocation) {

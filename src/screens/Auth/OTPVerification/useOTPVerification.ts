@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Keyboard } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { authService } from '@/serviceManager/authService';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -31,6 +32,7 @@ export const useOTPVerification = () => {
   };
 
   const handleVerify = async (code: string) => {
+    Keyboard.dismiss();
     if (!phoneNumber) {
       showNotification(
         NotificationType.ERROR,

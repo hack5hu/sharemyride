@@ -24,7 +24,7 @@ const generateId = () =>
   `${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 12)}`;
 const apiClient = axios.create({
   baseURL: BASE_URL,
-  timeout: 100000,
+  timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',

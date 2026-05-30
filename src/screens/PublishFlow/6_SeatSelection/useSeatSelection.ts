@@ -49,7 +49,9 @@ export const useSeatSelection = () => {
 
   useEffect(() => {
     if (isFocused && vehicles.length > 0) {
-      if (selectedVehicleId) {
+      if (!selectedVehicleId) {
+        handleVehicleSelect(vehicles[0].id);
+      } else {
         // If one is selected, ensure publish store is synced with it
         const vehicle = vehicles.find(v => v.id === selectedVehicleId);
         if (vehicle && (publishVehicleType !== vehicle.seater || vehicleId !== vehicle.id)) {
@@ -66,7 +68,7 @@ export const useSeatSelection = () => {
         }
       }
     }
-  }, [isFocused, vehicles, selectedVehicleId, publishVehicleType, vehicleId, setVehicleId, setPublishVehicleType, setVehicleDetails]);
+  }, [isFocused, vehicles, selectedVehicleId, handleVehicleSelect, publishVehicleType, vehicleId, setVehicleId, setPublishVehicleType, setVehicleDetails]);
 
   const onSeatPress = useCallback((id: string | number) => {
     setSelectedSeats((prev) => {

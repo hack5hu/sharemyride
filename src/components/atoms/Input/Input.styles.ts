@@ -66,6 +66,7 @@ export const RequiredAsterisk = styled.Text`
 
 export const PrefixContainer = styled(IconContainer)`
   padding-right: 0px;
+  width: ${scale(35)}px;
 `;
 
 export const PrefixText = styled(LabelText)`

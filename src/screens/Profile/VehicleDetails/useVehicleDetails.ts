@@ -15,7 +15,7 @@ import { getErrorMessage } from '@/utils/error';
 const validationSchema = Yup.object().shape({
   company: Yup.string().required('Vehicle company is required'),
   model: Yup.string().required('Car model is required'),
-  numberPlate: Yup.string().required('Number plate is required'),
+  numberPlate: Yup.string(),
   type: Yup.string().required('Vehicle type is required'),
   color: Yup.string().required('Color is required'),
   seater: Yup.string().oneOf(['5', '7']).required('Seater count is required'),

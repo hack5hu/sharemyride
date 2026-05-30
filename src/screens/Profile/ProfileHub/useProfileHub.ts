@@ -34,7 +34,17 @@ export const useProfileHub = () => {
     navigation.navigate('Settings');
   }, [navigation]);
 
+  const navigateToTermsAndConditions = useCallback(() => {
+    navigation.navigate('TermsAndConditions');
+  }, [navigation]);
 
+  const navigateToAboutUs = useCallback(() => {
+    navigation.navigate('AboutUs');
+  }, [navigation]);
+
+  const navigateToHelpAndSupport = useCallback(() => {
+    navigation.navigate('HelpAndSupport');
+  }, [navigation]);
 
   return {
     t,
@@ -44,5 +54,8 @@ export const useProfileHub = () => {
     navigateToTravelPreferences,
     navigateToSettings,
     navigateToDummy,
+    navigateToTermsAndConditions,
+    navigateToAboutUs,
+    navigateToHelpAndSupport,
   };
 };

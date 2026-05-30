@@ -10,7 +10,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useVehicleDetails } from './useVehicleDetails';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import * as S from './VehicleDetails.styles';
-import { LabelText } from '@/components/atoms/Input/Input.styles';
+import { LabelText, RequiredAsterisk } from '@/components/atoms/Input/Input.styles';
 
 export const VehicleDetailsScreen: React.FC = () => {
   const theme = useTheme();
@@ -59,6 +59,7 @@ export const VehicleDetailsScreen: React.FC = () => {
                 value={formik.values.company}
                 onChangeText={formik.handleChange('company')}
                 error={formik.touched.company ? formik.errors.company : undefined}
+                required={true}
               />
               <Input
                 label={t('vehicleDetails.carModel')}
@@ -66,6 +67,7 @@ export const VehicleDetailsScreen: React.FC = () => {
                 value={formik.values.model}
                 onChangeText={formik.handleChange('model')}
                 error={formik.touched.model ? formik.errors.model : undefined}
+                required={true}
               />
             </S.InputGroup>
           </S.CardSection>
@@ -88,6 +90,7 @@ export const VehicleDetailsScreen: React.FC = () => {
             <S.ColorGroup>
               <LabelText>
                 {t('vehicleDetails.color')}
+                <RequiredAsterisk> *</RequiredAsterisk>
               </LabelText>
               <S.ColorScroll horizontal showsHorizontalScrollIndicator={false}>
                 <S.ColorRow>
@@ -119,6 +122,7 @@ export const VehicleDetailsScreen: React.FC = () => {
             </S.SectionHeader>
             <LabelText>
               {t('vehicleDetails.seaterCount')}
+              <RequiredAsterisk> *</RequiredAsterisk>
             </LabelText>
             <S.CapacityRow>
               <VehicleTypeCard

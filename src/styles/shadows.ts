@@ -1,4 +1,4 @@
-import { verticalScale } from '@/styles';
+import { verticalScale } from './scale';
 // removed unused Platform
 
 export const Elevation = {

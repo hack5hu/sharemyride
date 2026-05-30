@@ -157,12 +157,12 @@ export const en: Translations = {
   },
   dummyContent: {
     aboutTitle: 'About Us',
-    aboutBody:
-      'RidePoolCompany is dedicated to connecting travelers in a safe and efficient manner.',
+    aboutBody: 'RidePoolCompany is dedicated to connecting travelers in a safe and efficient manner.\n\nFounded in 2024, our mission is to reduce carbon emissions and build a community-driven travel network. We prioritize safety, verified profiles, and seamless coordination.',
     helpTitle: 'Help Center',
-    helpBody: 'If you have any questions, please contact our support team.',
+    helpBody: 'Common Questions:\n\nQ: How do I book a ride?\nA: Search for your destination, select a verified host, and request a seat.\n\nQ: Is my data secure?\nA: Yes, we use enterprise-grade encryption to protect your identity.\n\nQ: Can I cancel my booking?\nA: Yes, you can cancel up to 2 hours before departure without penalties.',
     termsTitle: 'Terms & Conditions',
-    termsBody: 'By using our service, you agree to our terms and conditions.',
+    termsBody: 'Welcome to RidePoolCompany.\n\n1. Acceptance of Terms\nBy accessing and using our application, you accept and agree to be bound by the terms and provision of this agreement.\n\n2. User Responsibilities\nUsers must provide accurate information and maintain the security of their accounts.\n\n3. Code of Conduct\nAny abusive, fraudulent, or illegal activity will result in immediate termination of the account.\n\n4. Limitation of Liability\nRidePoolCompany is not liable for any indirect damages arising from the use of our service.',
+    emailUs: 'Email Support',
   },
   travelPreferences: {
     headerTitle: 'Travel Preferences',

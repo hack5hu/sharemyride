@@ -14,6 +14,9 @@ export type RootStackParamList = {
     contentKey?: 'about' | 'help' | 'terms';
   };
 
+  TermsAndConditions: undefined;
+  AboutUs: undefined;
+  HelpAndSupport: undefined;
   EditProfile: undefined;
   TravelPreferences: undefined;
   VehicleList: undefined;

@@ -28,6 +28,9 @@ export const ProfileHubScreen: React.FC = () => {
     navigateToTravelPreferences,
     navigateToSettings,
     navigateToDummy,
+    navigateToTermsAndConditions,
+    navigateToAboutUs,
+    navigateToHelpAndSupport,
   } = useProfileHub();
   const theme = useTheme();
 
@@ -95,19 +98,19 @@ export const ProfileHubScreen: React.FC = () => {
                 icon="help-outline"
                 title={t('profileHub.helpSupport')}
                 showChevron={false}
-                onPress={() => navigateToDummy(t('profileHub.helpSupport'), { contentKey: 'help' })}
+                onPress={navigateToHelpAndSupport}
               />
               <ProfileMenuItem
                 icon="info"
                 title={t('profileHub.aboutUs')}
                 showChevron={false}
-                onPress={() => navigateToDummy(t('profileHub.aboutUs'), { contentKey: 'about' })}
+                onPress={navigateToAboutUs}
               />
               <ProfileMenuItem
                 icon="policy"
                 title={t('profileHub.termsPrivacy')}
                 showChevron={false}
-                onPress={() => navigateToDummy(t('profileHub.termsPrivacy'), { contentKey: 'terms' })}
+                onPress={navigateToTermsAndConditions}
               />
             </ActionGrid>
           </Section>
