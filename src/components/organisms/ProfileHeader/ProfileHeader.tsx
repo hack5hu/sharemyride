@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Avatar } from '../../atoms/Avatar';
 import { Typography } from '../../atoms/Typography';
 import { Badge } from '../../atoms/Badge';
@@ -26,6 +26,7 @@ export interface ProfileHeaderProps {
   avatarUri?: string;
   onEditPress?: () => void;
   onSettingsPress?: () => void;
+  onAvatarEditPress?: () => void;
 }
 
 export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
@@ -37,6 +38,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   avatarUri,
   onEditPress,
   onSettingsPress,
+  onAvatarEditPress,
 }) => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -45,19 +47,20 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
     <HeaderCard>
       <IconButton icon="settings" variant="surface" onPress={onSettingsPress} style={{ position: 'absolute', top: 10, right: 10 }} />
       <IdentitySection>
-        <View style={{ position: 'relative' }}>
+        <View style={{ alignItems: 'center' }}>
           <Avatar 
             source={avatarUri ? { uri: avatarUri } : undefined} 
             size="xl" 
             border 
           />
-          {/* <IconButton
-            icon="edit"
-            size="sm"
-            variant="primary"
-            style={{ position: 'absolute', bottom: -4, right: -4, borderRadius: 20 }}
-            onPress={onEditPress}
-          /> */}
+          {onAvatarEditPress && (
+            <TouchableOpacity onPress={onAvatarEditPress} style={{ marginTop: 8 }}>
+              <Typography variant="label" size="lg" color="primary" weight="bold">
+                {t('profileHub.editProfilePic') || 'Edit'}
+              </Typography>
+            </TouchableOpacity>
+          )}
+          
         </View>
         <InfoSection>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>

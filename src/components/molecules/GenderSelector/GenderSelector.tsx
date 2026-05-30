@@ -11,6 +11,7 @@ export interface GenderSelectorProps {
   value: string;
   onValueChange: (value: string) => void;
   required?: boolean;
+  disabled?: boolean;
 }
 
 export const GenderSelector: React.FC<GenderSelectorProps> = ({
@@ -18,6 +19,7 @@ export const GenderSelector: React.FC<GenderSelectorProps> = ({
   value,
   onValueChange,
   required,
+  disabled,
 }) => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -40,13 +42,14 @@ export const GenderSelector: React.FC<GenderSelectorProps> = ({
         {label}
         {required && <Typography variant="label" size="sm" color="error"> *</Typography>}
       </Typography>
-      <ButtonRow>
+      <ButtonRow style={{ opacity: disabled ? 0.6 : 1 }}>
         {options.map((option) => (
           <View key={option.value} style={{ flex: 1, marginHorizontal: 4 }}>
             <Button
               variant={value === option.value ? 'primary' : 'secondary'}
-              onPress={() => onValueChange(option.value)}
+              onPress={disabled ? undefined : () => onValueChange(option.value)}
               style={{ height: 48 }}
+              disabled={disabled}
             >
               {option.label}
             </Button>

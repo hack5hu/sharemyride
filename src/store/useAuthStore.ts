@@ -87,7 +87,7 @@ export const useAuthStore = create<AuthState>()(
           const profile = await userService.getProfile();
           if (profile) {
             const currentUser = useAuthStore.getState().user;
-            const isProfileCompleted = !!profile.name && !!profile.date;
+            const isProfileCompleted = !!profile.name && !!(profile.date || profile.dateOfBirth);
             
             const isIdentical = currentUser &&
               currentUser.name === profile.name &&

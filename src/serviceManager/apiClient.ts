@@ -55,13 +55,23 @@ apiClient.interceptors.request.use(
     } catch (error) {
       Logger.error('[Keychain] Failed to read auth token:', error);
     }
-    if (config.data instanceof FormData && config.headers) {
-      if (typeof config.headers.delete === 'function') {
-        config.headers.delete('Content-Type');
-        config.headers.delete('content-type');
-      } else {
-        delete config.headers['Content-Type'];
-        delete config.headers['content-type'];
+    // Detect FormData using duck-typing because `instanceof FormData` fails
+    // in React Native's Hermes engine (the RN FormData polyfill doesn't match
+    // the global FormData reference that Axios checks against).
+    const isFormDataPayload = config.data &&
+      (config.data instanceof FormData ||
+       (typeof config.data === 'object' && typeof config.data.append === 'function' && Array.isArray(config.data._parts)));
+
+    if (isFormDataPayload) {
+      // 1. Bypass Axios's default transformRequest which would JSON.stringify
+      //    the FormData object (producing {"_parts": [...]}) since it can't
+      //    detect RN's FormData polyfill either.
+      config.transformRequest = [(data: unknown) => data];
+      // 2. Set Content-Type to multipart/form-data so the RN XMLHttpRequest
+      //    adapter knows to encode FormData properly with boundaries.
+      //    The adapter will auto-append the boundary parameter.
+      if (config.headers) {
+        config.headers.set('Content-Type', 'multipart/form-data');
       }
     }
     const logId = generateId();

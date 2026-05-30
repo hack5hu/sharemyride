@@ -9,6 +9,7 @@ export interface OtpInputProps {
   onTextChange: (text: string) => void;
   onFilled?: (text: string) => void;
   error?: boolean;
+  disabled?: boolean;
 }
 
 export const OtpInput: React.FC<OtpInputProps> = ({
@@ -16,6 +17,7 @@ export const OtpInput: React.FC<OtpInputProps> = ({
   onTextChange,
   onFilled,
   error,
+  disabled,
 }) => {
   const theme = useTheme();
 
@@ -26,6 +28,7 @@ export const OtpInput: React.FC<OtpInputProps> = ({
         focusColor={error ? theme.colors.error : theme.colors.primary}
         onTextChange={onTextChange}
         onFilled={onFilled}
+        disabled={disabled}
         theme={{
           containerStyle: {
             width: '100%',

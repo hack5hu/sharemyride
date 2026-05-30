@@ -48,7 +48,7 @@ export const BookSeatSelectionTemplate: React.FC<BookSeatSelectionTemplateProps>
             </S.HeaderIntro>
 
             {/* ── Meta Info ── */}
-            <S.MetaStrip>
+            {/* <S.MetaStrip>
               <S.MetaItem>
                 <Typography variant="label" size="sm" weight="bold">
                   {departureDate}
@@ -67,7 +67,7 @@ export const BookSeatSelectionTemplate: React.FC<BookSeatSelectionTemplateProps>
                 </Typography>
                 <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>{st.driverLabel}</Typography>
               </S.MetaItem>
-            </S.MetaStrip>
+            </S.MetaStrip> */}
 
             {/* ── Legend ── */}
             <S.LegendWrapper>
@@ -79,39 +79,16 @@ export const BookSeatSelectionTemplate: React.FC<BookSeatSelectionTemplateProps>
             </S.LegendWrapper>
 
             {/* ── Car plan ── */}
-            <S.CarPlanWrapper>
+            <S.CarPlanWrapper style={{ opacity: isBooking ? 0.6 : 1 }}>
                 <CarFloorPlan
                     rows={rows}
                     selectedSeats={selectedSeats}
                     occupiedSeats={occupiedSeats}
                     prices={prices}
-                    onSeatPress={toggleSeat}
+                    onSeatPress={isBooking ? undefined : toggleSeat}
                     driverLabel={st.driverLabel}
                 />
             </S.CarPlanWrapper>
-
-            {/* ── Co-riders ── */}
-            {passengers.length > 0 && (
-              <S.CoRidersSection>
-                <S.CoRidersTitle variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
-                  {t('rideDetail.coRiders')}
-                </S.CoRidersTitle>
-                <S.CoRiderList>
-                  {passengers.map((passenger: any, idx: number) => (
-                    <S.CoRiderCard key={idx}>
-                      <S.PassengerAvatar source={{ uri: passenger.photoUrl }} />
-                      <S.PassengerInfo>
-                        <Typography variant="body" size="md" weight="bold">{passenger.name}</Typography>
-                        <Typography variant="label" size="xs" color={theme.colors.on_surface_variant} numberOfLines={1}>
-                          {passenger.segment}
-                        </Typography>
-                      </S.PassengerInfo>
-                    </S.CoRiderCard>
-                  ))}
-                </S.CoRiderList>
-              </S.CoRidersSection>
-            )}
-
           </S.ContentPadding>
         </S.ScrollContent>
 

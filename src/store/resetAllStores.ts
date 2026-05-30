@@ -38,11 +38,9 @@ export const resetAllStores = () => {
   useMyRidesStore.setState({
     drafts: [],
     rides: {
-      UPCOMING: { data: [], page: 0, hasMore: true },
-      COMPLETED: { data: [], page: 0, hasMore: true },
-      CANCELLED: { data: [], page: 0, hasMore: true },
-      REQUESTS: { data: [], page: 0, hasMore: true },
-      ARCHIVE: { data: [], page: 0, hasMore: true },
+      1: { data: [], page: 0, hasMore: true },
+      2: { data: [], page: 0, hasMore: true },
+      3: { data: [], page: 0, hasMore: true },
     },
   });
 

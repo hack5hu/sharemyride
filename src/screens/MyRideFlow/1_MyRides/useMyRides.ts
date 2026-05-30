@@ -26,7 +26,7 @@ export const useMyRides = (): MyRidesHookData => {
 
   // Auto-switch to requests tab if data exists on first load
   useState(() => {
-    if (rides?.REQUESTS?.data?.length > 0) {
+    if (rides?.[3]?.data?.length > 0) {
       setActiveTab('requests');
     }
   });
@@ -45,8 +45,8 @@ export const useMyRides = (): MyRidesHookData => {
   }, []);
 
   const mappedRequests = useMemo(() => 
-    (rides?.REQUESTS?.data || []).map(r => mapBackendRideToUI(r, 'requests' as any, t)), 
-  [rides?.REQUESTS?.data, t]);
+    (rides?.[3]?.data || []).map(r => mapBackendRideToUI(r, 'requests' as any, t)), 
+  [rides?.[3]?.data, t]);
 
   const hasRequests = mappedRequests.length > 0;
 
@@ -75,12 +75,12 @@ export const useMyRides = (): MyRidesHookData => {
   }, [drafts]);
 
   const mappedUpcoming = useMemo(() => 
-    (rides?.UPCOMING?.data || []).map(r => mapBackendRideToUI(r, 'upcoming', t)), 
-  [rides?.UPCOMING?.data, t]);
+    (rides?.[1]?.data || []).map(r => mapBackendRideToUI(r, 'upcoming', t)), 
+  [rides?.[1]?.data, t]);
 
   const mappedArchive = useMemo(() => 
-    (rides?.ARCHIVE?.data || []).map(r => mapBackendRideToUI(r, 'archive', t)), 
-  [rides?.ARCHIVE?.data, t]);
+    (rides?.[2]?.data || []).map(r => mapBackendRideToUI(r, 'archive', t)), 
+  [rides?.[2]?.data, t]);
 
   const currentRides = useMemo(() => {
     const filter = TAB_TO_FILTER[activeTab];

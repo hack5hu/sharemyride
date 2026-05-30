@@ -35,12 +35,17 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         error={error}
         keyboardType="phone-pad"
         maxLength={10}
+        editable={!loading}
       />
 
       <TermsContainer>
-        <Checkbox checked={isTermsAccepted} onToggle={onToggleTerms} />
-        <TermsText onPress={onToggleTerms}>
-          {t.dummyContent.termsBody}
+        <Checkbox 
+          checked={isTermsAccepted} 
+          onToggle={onToggleTerms} 
+          disabled={loading}
+        />
+        <TermsText onPress={loading ? undefined : onToggleTerms}>
+          {t.login.termsShort}
         </TermsText>
       </TermsContainer>
 

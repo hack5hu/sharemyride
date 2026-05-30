@@ -16,6 +16,7 @@ export interface IdentityProfileCardProps {
   errors?: any;
   submitCount?: number;
   maxDate?: Date;
+  disabled?: boolean;
 }
 
 export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = React.memo(({
@@ -23,6 +24,7 @@ export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = React.mem
   setFieldValue,
   errors,
   submitCount = 0,
+  disabled,
 }) => {
   const { t } = useTranslation();
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
@@ -42,11 +44,12 @@ export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = React.mem
 
   return (
     <Surface elevation="lowest" rounded="md" padding="lg" >
-      <HeaderRow>
+      <HeaderRow style={{ opacity: disabled ? 0.6 : 1 }}>
         <AvatarPicker
           dob={values.dob}
           onImageSelected={(asset) => setFieldValue('profileImage', asset)}
           uri={values.profileImage?.uri}
+          disabled={disabled}
         />
         <InfoContainer>
           <Typography variant="title" size="lg" weight="bold">
@@ -72,11 +75,12 @@ export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = React.mem
           placeholder={t('profileSetup.fullNamePlaceholder')}
           error={showError ? errors?.fullName : undefined}
           required
+          editable={!disabled}
         />
 
         <View style={{ flexDirection: 'row', gap: 16 }}>
-          <View style={{ flex: 1 }}>
-            <Pressable onPress={() => setIsDatePickerOpen(true)}>
+          <View style={{ flex: 1, opacity: disabled ? 0.6 : 1 }}>
+            <Pressable onPress={disabled ? undefined : () => setIsDatePickerOpen(true)}>
               <View pointerEvents="none">
                 <Input
                   label={t('profileSetup.dobLabel')}
@@ -96,6 +100,7 @@ export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = React.mem
           label={t('profileSetup.genderLabel')}
           value={values.gender}
           onValueChange={(val) => setFieldValue('gender', val)}
+          disabled={disabled}
         />
       </FormContainer>
 

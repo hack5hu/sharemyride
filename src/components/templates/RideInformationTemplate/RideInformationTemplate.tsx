@@ -14,6 +14,7 @@ import { PassengerManagement } from '@/components/organisms/PassengerManagement/
 import { RideFareCard } from '@/components/organisms/RideFareCard/RideFareCard';
 import { RideVehicleCard } from '@/components/organisms/RideVehicleCard/RideVehicleCard';
 import { useLocale } from '@/constants/localization';
+import { useAuthStore } from '@/store/useAuthStore';
 
 // Subcomponents
 import { CancellationReasonBox } from './components/CancellationReasonBox';
@@ -39,6 +40,11 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = R
 }) => {
   const theme = useTheme();
   const translations = useLocale();
+  const { user } = useAuthStore();
+
+  const isMyRide = useMemo(() => {
+    return isDriver || ride?.driver?.id === user?.id || ride?.driver?.id === user?.userId;
+  }, [isDriver, ride?.driver?.id, user?.id, user?.userId]);
 
   const departureTime = useMemo(() => {
     return ride?.timeline?.[0]?.time ?? '--:--';
@@ -124,6 +130,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = R
                 driver={ride.driver}
                 handleDriverProfile={handleDriverProfile}
                 handleChat={handleChat}
+                showChat={!isMyRide}
               />
             )}
 
@@ -150,6 +157,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = R
               seatsLeft={ride.seatsLeft}
               onCancelPassenger={onCancelPassenger}
               hideActions={isArchived}
+              vehicleType={ride.vehicle?.type}
             />
 
 

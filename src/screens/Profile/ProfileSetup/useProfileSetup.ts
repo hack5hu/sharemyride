@@ -41,14 +41,17 @@ export const useProfileSetup = () => {
           profileImage: values.profileImage,
         });
 
-        setProfileCompleted(true);
+        // Fetch updated profile first, then force profileCompleted = true
+        // so the navigator swaps to the main app stack (BookRideInfo).
         await fetchProfile();
+        setProfileCompleted(true);
+
         showNotification(
           NotificationType.SUCCESS,
           t('notification.defaultSuccessTitle'),
           t('notification.defaultSuccessMessage')
         );
-      } catch (error: any) {
+      } catch (error: unknown) {
         showNotification(
           NotificationType.ERROR,
           t('notification.defaultErrorTitle'),

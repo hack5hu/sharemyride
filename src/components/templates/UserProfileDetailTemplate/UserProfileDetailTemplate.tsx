@@ -32,18 +32,18 @@ export const UserProfileDetailTemplate: React.FC<UserProfileDetailTemplateProps>
       <S.ScrollContent showsVerticalScrollIndicator={false}>
         <S.ProfileHero>
           <S.AvatarWrapper>
-            <Avatar 
-              source={profile.profileImage ? { uri: profile.profileImage } : undefined} 
+            <Avatar
+              source={profile.profileImage ? { uri: profile.profileImage } : undefined}
               placeholder={profile.name}
               size="lg"
               isVerified={profile.isVerified}
             />
           </S.AvatarWrapper>
-          
+
           <Typography variant="headline" size="lg" weight="bold" style={{ marginTop: 16 }}>
             {profile.name}
           </Typography>
-          
+
           <S.StatsRow>
             {profile.isVerified && (
               <S.VerifiedTag>
@@ -149,11 +149,11 @@ export const UserProfileDetailTemplate: React.FC<UserProfileDetailTemplateProps>
                 </S.ReviewerInfo>
                 <S.StarsRow>
                   {[1, 2, 3, 4, 5].map((star) => (
-                    <Icon 
-                      key={star} 
-                      name="star" 
-                      size={12} 
-                      color={star <= review.rating ? theme.colors.primary : theme.colors.outline_variant} 
+                    <Icon
+                      key={star}
+                      name="star"
+                      size={12}
+                      color={star <= review.rating ? theme.colors.primary : theme.colors.outline_variant}
                     />
                   ))}
                 </S.StarsRow>

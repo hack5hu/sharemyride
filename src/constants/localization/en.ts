@@ -43,6 +43,7 @@ export const en: Translations = {
     noAccount: "Don't have an account?",
     signUp: 'Sign Up',
     orContinueWith: 'OR CONTINUE WITH',
+    termsShort: 'I agree to the Terms of Service and Privacy Policy of RidePoolCompany.',
   },
   otpVerification: {
     titlePrefix: "Confirm it's",
@@ -108,6 +109,7 @@ export const en: Translations = {
     supportLegal: 'Support & Legal',
     editProfile: 'Edit Profile',
     editProfileDescr: 'Name, Bio, and Contact details',
+    editProfilePic: 'Edit',
     identityVerification: 'Identity Verification',
     identityVerificationDescr: 'Aadhaar & Vehicle Documentation',
     travelPreferences: 'Travel Preferences',
@@ -618,8 +620,8 @@ export const en: Translations = {
     carbonNeutralTransit: 'Ride Pool Company Carbon Neutral Transit',
     brandTitle: 'Ride Pool Company',
     seatPositions: {
-      driver: 'Driver Seat',
-      frontPassenger: 'Front Passenger (Left)',
+      driver: 'Host Seat',
+      frontPassenger: 'Front (Left)',
       middleLeft: 'Middle Row (Left Window)',
       middleCenter: 'Middle Row (Center)',
       middleRight: 'Middle Row (Right Window)',
@@ -713,6 +715,8 @@ export const en: Translations = {
     viewRatings: 'View breakdown of {{count}} ratings',
     recentReviews: 'Recent Reviews',
     reportUser: 'Report {{name}}',
+    bioTitle: 'About Me',
+    defaultBio: 'Verified community partner ready to share rides and reduce carbon footprint! Enjoys meeting new people, listening to soft instrumental music, and promoting safe eco-friendly travels.',
   },
   developer: {
     networkLogsTitle: 'Network Logs',

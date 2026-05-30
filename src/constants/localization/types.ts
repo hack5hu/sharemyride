@@ -43,6 +43,7 @@ export interface LoginTranslations {
   noAccount: string;
   signUp: string;
   orContinueWith: string;
+  termsShort: string;
 }
 
 export interface OtpVerificationTranslations {
@@ -108,6 +109,7 @@ export interface ProfileHubTranslations {
   supportLegal: string;
   editProfile: string;
   editProfileDescr: string;
+  editProfilePic: string;
   identityVerification: string;
   identityVerificationDescr: string;
   travelPreferences: string;
@@ -521,6 +523,8 @@ export interface UserProfileDetailTranslations {
   viewRatings: string;
   recentReviews: string;
   reportUser: string;
+  bioTitle: string;
+  defaultBio: string;
 }
 
 export interface MyRidesTranslations {

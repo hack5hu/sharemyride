@@ -81,12 +81,12 @@ const rideService = {
       throw error;
     }
   },
-  getMyRides: async (filter: 'UPCOMING' | 'COMPLETED' | 'CANCELLED', page: number = 0, size: number = 15) => {
+  getMyRides: async (filter: 1 | 2 | 3, page: number = 0, size: number = 15) => {
     try {
       const response = await apiClient.get(`${API_ENDPOINTS.RIDE.GET_MY_RIDES}?filter=${filter}&page=${page}&size=${size}`);
       return response.data;
     } catch (error) {
-      console.error(`Fetching ${filter} rides failed:`, error);
+      console.error(`Fetching rides (filter ${filter}) failed:`, error);
       throw error;
     }
   },

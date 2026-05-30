@@ -116,13 +116,13 @@ export const useRideDetails = () => {
       if (cancelTarget.type === 'RIDE') {
         await rideService.cancelRide(bookingId, reason);
         const { removeRide } = useMyRidesStore.getState();
-        removeRide('UPCOMING', rideId);
+        removeRide(1, rideId);
         navigation.goBack();
       } else {
         await rideService.cancelBooking(bookingId, reason);
         if (cancelTarget.isSelf) {
           const { removeRide } = useMyRidesStore.getState();
-          removeRide('UPCOMING', bookingId);
+          removeRide(1, bookingId);
           navigation.goBack();
         } else {
           fetchDetails();

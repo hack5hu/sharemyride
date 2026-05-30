@@ -37,7 +37,7 @@ export const useMapPicker = () => {
   const [isReverseGeocoding, setIsReverseGeocoding] = useState(false);
   const [isInitiallyCentered, setIsInitiallyCentered] = useState(false);
   const [isMapVisible, setIsMapVisible] = useState(false);
-  const [isMapMounted, setIsMapMountedState] = useState(true);
+  const [isMapMounted, setIsMapMountedState] = useState(module === 'publish');
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [userHeading, setUserHeading] = useState<number>(0);
   const [isMoving, setIsMoving] = useState(false);
@@ -174,6 +174,18 @@ export const useMapPicker = () => {
       return;
     }
 
+    if (module === 'book' || module === 'search') {
+      addSearchHistory(location, contextKey);
+      const store = useBookRideStore.getState();
+      if (pickerType === 'start') {
+        store.setStartLocation(location);
+      } else {
+        store.setDestinationLocation(location);
+      }
+      navigation.pop();
+      return;
+    }
+
     setSelectedLocation(location);
     setSearchQuery('');
     setSearchResults([]);
@@ -197,7 +209,7 @@ export const useMapPicker = () => {
         console.warn('Camera setStop failed:', e);
       }
     }, 100);
-  }, []);
+  }, [module, pickerType, contextKey, addSearchHistory, navigation]);
 
   const handleRegionWillChange = useCallback(() => {
     setIsMoving(true);
@@ -233,7 +245,7 @@ export const useMapPicker = () => {
     if (!viewState?.center) return;
     const [longitude, latitude] = viewState.center;
     const currentZoom = viewState.zoom;
-    
+
     // Prevent redundant reverse geocode if center hasn't changed
     const lastCenter = lastCenterRef.current;
     if (lastCenter && Math.abs(lastCenter[0] - longitude) < 0.00001 && Math.abs(lastCenter[1] - latitude) < 0.00001) {

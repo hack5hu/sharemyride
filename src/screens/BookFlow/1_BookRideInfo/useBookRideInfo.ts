@@ -20,6 +20,7 @@ export const useBookRideInfo = () => {
 
   useFocusEffect(
     useCallback(() => {
+      setIsSearching(false);
       let backPressCount = 0;
       const onBackPress = () => {
         if (backPressCount === 0) {
@@ -141,7 +142,6 @@ export const useBookRideInfo = () => {
           translate('notification.defaultErrorTitle'),
           getErrorMessage(error, translate('notification.defaultErrorMessage'))
         );
-      } finally {
         setIsSearching(false);
       }
     }
@@ -189,7 +189,6 @@ export const useBookRideInfo = () => {
           translate('notification.defaultErrorTitle'),
           getErrorMessage(error, translate('notification.defaultErrorMessage'))
         );
-      } finally {
         setIsSearching(false);
       }
     }

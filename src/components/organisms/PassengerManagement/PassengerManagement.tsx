@@ -15,6 +15,7 @@ export interface Passenger {
   segment?: string;
   seatsBooked?: number;
   seatNames?: string[];
+  seatId?: string[];
 }
 
 interface PassengerManagementProps {
@@ -23,7 +24,19 @@ interface PassengerManagementProps {
   seatsLeft: number;
   onCancelPassenger?: (id: string) => void;
   hideActions?: boolean;
+  vehicleType?: string;
 }
+
+const formatSegment = (segment?: string) => {
+  if (!segment) return 'Full Trip';
+  const parts = segment.split('->');
+  if (parts.length === 2) {
+    const start = parts[0].split(',')[0].trim();
+    const end = parts[1].split(',')[0].trim();
+    return `${start} → ${end}`;
+  }
+  return segment.split(',')[0].trim();
+};
 
 export const PassengerManagement: React.FC<PassengerManagementProps> = React.memo(({
   isDriver,
@@ -31,11 +44,46 @@ export const PassengerManagement: React.FC<PassengerManagementProps> = React.mem
   seatsLeft,
   onCancelPassenger,
   hideActions = false,
+  vehicleType,
 }) => {
   const theme = useTheme();
   const locale = useLocale();
   const t = locale.rideDetails;
   const bookedCount = passengers.length;
+
+  const getSeatDescription = (seatId: string | number): string => {
+    const id = String(seatId).trim().toUpperCase();
+    const is7Seater = vehicleType === 'CAR_7_SEATER';
+    const sPos = locale.bookingConfirmed.seatPositions;
+
+    // Direct mapping for standard IDs
+    if (id === '1' || id === 'DRIVER') return sPos.driver;
+    if (id === '2' || id === '1A') return sPos.frontPassenger;
+    
+    // Row 2 mapping
+    if (id === '3' || id === '2A') return sPos.middleLeft;
+    if (id === '4' || id === '2B') {
+      return is7Seater ? sPos.middleCenter : sPos.backCenter;
+    }
+    if (id === '5' || id === '2C') {
+      return is7Seater ? sPos.middleRight : sPos.backRight;
+    }
+
+    // Row 3 mapping
+    if (id === '6' || id === '3A') return sPos.backLeft;
+    if (id === '7' || id === '3B') {
+      return is7Seater ? sPos.backCenter : sPos.defaultSeat.replace('{id}', id);
+    }
+    if (id === '3C') return sPos.backRight;
+
+    return sPos.defaultSeat.replace('{id}', id);
+  };
+
+  const getFormattedSeats = (p: Passenger) => {
+    const seats = p.seatNames || p.seatId;
+    if (!seats || seats.length === 0) return 'N/A';
+    return seats.map(s => getSeatDescription(s)).join(', ');
+  };
 
   return (
     <S.SectionCard>
@@ -89,11 +137,11 @@ export const PassengerManagement: React.FC<PassengerManagementProps> = React.mem
                   {p.name}
                 </Typography>
                 <Typography variant="label" size="xs" color="on_surface_variant" numberOfLines={1}>
-                  {p.segment || 'Full Trip'}
+                  {formatSegment(p.segment)}
                 </Typography>
                 <S.SeatBadge>
                   <Typography variant="label" size="xs" weight="bold" color="primary">
-                    {p.seatsBooked} {p.seatsBooked === 1 ? t.seatLabelSingular || 'seat' : t.seatsLabelPlural || 'seats'}: {p.seatNames?.join(', ') || 'N/A'}
+                    {p.seatsBooked} {p.seatsBooked === 1 ? t.seatLabelSingular || 'seat' : t.seatsLabelPlural || 'seats'}: {getFormattedSeats(p)}
                   </Typography>
                 </S.SeatBadge>
               </S.PassengerInfo>
@@ -108,19 +156,27 @@ export const PassengerManagement: React.FC<PassengerManagementProps> = React.mem
           ))}
         </S.PassengerList>
       ) : (
-        <S.CoRidersList>
+        <S.PassengerList>
           {passengers.map((p, i) => (
-            <S.CoRiderCapsule key={p.id || i}>
+            <S.PassengerCard key={p.bookingId || p.id || i}>
               <Avatar source={{ uri: p.photoUrl }} placeholder={p.name} size="sm" />
-              <Typography variant="body" size="sm" weight="semibold" color="on_surface">
-                {p.name}
-              </Typography>
-            </S.CoRiderCapsule>
+              <S.PassengerInfo>
+                <Typography variant="body" size="sm" weight="bold">
+                  {p.name}
+                </Typography>
+                <Typography variant="label" size="xs" color="on_surface_variant" numberOfLines={1}>
+                  {p.segment}
+                </Typography>
+                <S.SeatBadge>
+                  <Typography variant="label" size="xs" weight="bold" color="primary">
+                    {p.seatsBooked} {p.seatsBooked === 1 ? t.seatLabelSingular || 'seat' : t.seatsLabelPlural || 'seats'}: {getFormattedSeats(p)}
+                  </Typography>
+                </S.SeatBadge>
+              </S.PassengerInfo>
+            </S.PassengerCard>
           ))}
-        </S.CoRidersList>
+        </S.PassengerList>
       )}
     </S.SectionCard>
   );
 });
-
-

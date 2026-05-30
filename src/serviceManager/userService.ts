@@ -1,7 +1,7 @@
-import { API_ENDPOINTS, BASE_URL } from '@/constants/apiEndpoints';
+import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 import apiClient from './apiClient';
 import { Logger } from '@/utils/logger';
-import * as Keychain from 'react-native-keychain';
+
 export interface ProfileUpdateData {
   fullName: string;
   dob: string;
@@ -67,51 +67,20 @@ export const userService = {
         }
       }
 
-      // Appending as separate strings as confirmed working for the backend
       formData.append('name', data.fullName);
       formData.append('date', formattedDate);
       formData.append('gender', data.gender ? data.gender.toUpperCase() : 'OTHER');
 
-      // Append the profile image if selected
       if (data.profileImage?.uri) {
-         formData.append('file', {
+        formData.append('file', {
           uri: data.profileImage.uri,
           type: 'image/jpeg',
           name: 'profile_image.jpg',
-        } as any);
-      }
-      const credentials = await Keychain.getGenericPassword({ service: 'auth_token' });
-      if (!credentials) {
-        throw new Error('No authentication token found');
+        } as unknown as Blob);
       }
 
-      // Using native fetch for reliable multipart/form-data boundary generation in RN
-      console.log(`${BASE_URL}${API_ENDPOINTS.USER.PROFILE}`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${credentials.password}`,
-          // Note: Content-Type is omitted so fetch automatically adds boundary
-        },
-        body: formData,
-      })
-      const response = await fetch(`${BASE_URL}${API_ENDPOINTS.USER.PROFILE}`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${credentials.password}`,
-          // Note: Content-Type is omitted so fetch automatically adds boundary
-        },
-        body: formData as any,
-      });
-
-      const responseData = (await response.json()) as { message?: string } & Record<string, any>;
-
-      if (!response.ok) {
-        throw new Error(responseData.message || `Server Error ${response.status}`);
-      }
-      return responseData;
-
-      // Logger.log('[UserService] Profile updated successfully:', response.data);
-      // return response.data;
+      const response = await apiClient.post(API_ENDPOINTS.USER.PROFILE, formData);
+      return response.data;
     } catch (error) {
       Logger.error('Error updating profile:', error);
       throw error;

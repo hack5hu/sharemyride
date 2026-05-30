@@ -11,6 +11,7 @@ export interface AvatarPickerProps {
   dob?: string;
   onImageSelected?: (asset: { uri: string; name?: string; type?: string }) => void;
   style?: ViewStyle;
+  disabled?: boolean;
 }
 
 export const AvatarPicker: React.FC<AvatarPickerProps> = ({
@@ -18,8 +19,10 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({
   dob,
   onImageSelected,
   style,
+  disabled,
 }) => {
   const handlePicker = async () => {
+    if (disabled) return;
     if (Platform.OS === 'android') {
       try {
         const apiLevel = parseInt(Platform.Version.toString(), 10);
@@ -61,14 +64,14 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({
 
   return (
     <Container style={style}>
-      <AvatarWrapper>
+      <AvatarWrapper style={{ opacity: disabled ? 0.6 : 1 }}>
         <Avatar source={uri ? { uri } : undefined} size="lg" />
         <EditButtonContainer>
           <IconButton
             icon="photo-camera"
             size="sm"
             variant="primary"
-            onPress={handlePicker}
+            onPress={disabled ? undefined : handlePicker}
           />
         </EditButtonContainer>
       </AvatarWrapper>

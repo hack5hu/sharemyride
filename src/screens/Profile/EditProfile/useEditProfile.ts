@@ -59,11 +59,43 @@ export const useEditProfile = () => {
     onSubmit: async (values) => {
       setLoading(true);
       try {
-        await profileService.updateProfile({
-          ...values,
-          name: values.fullName, // Adjust keys if backend expects different names
-          date: typeof values.dob === 'object' ? values.dob.toISOString() : values.dob,
-        } as any);
+        const updatePayload: any = {};
+        
+        if (values.fullName !== formik.initialValues.fullName) {
+          updatePayload.fullName = values.fullName;
+        }
+        
+        const initialDobStr = formik.initialValues.dob instanceof Date 
+          ? formik.initialValues.dob.toISOString().split('T')[0] 
+          : String(formik.initialValues.dob);
+        const currentDobStr = values.dob instanceof Date 
+          ? values.dob.toISOString().split('T')[0] 
+          : String(values.dob);
+        if (initialDobStr !== currentDobStr) {
+          updatePayload.dob = currentDobStr;
+        }
+
+        if (values.gender !== formik.initialValues.gender) {
+          updatePayload.gender = values.gender;
+        }
+
+        if (values.bio !== formik.initialValues.bio) {
+          updatePayload.bio = values.bio;
+        }
+
+        if (Object.keys(updatePayload).length === 0) {
+          showNotification(
+            NotificationType.SUCCESS,
+            t('notification.defaultSuccessTitle') || 'Success',
+            t('editProfile.successMessage')
+          );
+          setTimeout(() => {
+            navigation.goBack();
+          }, 1000);
+          return;
+        }
+
+        await profileService.updateProfile(updatePayload);
         
         await fetchProfile();
         setShowSuccess(true);

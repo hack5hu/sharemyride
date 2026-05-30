@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useFormik } from 'formik';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { authService } from '@/serviceManager/authService';
 import { Keyboard } from 'react-native';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -13,6 +13,12 @@ export const useLogin = () => {
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const navigation = useNavigation<any>();
   const { t } = useTranslation();
+
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(false);
+    }, [])
+  );
 
   const toggleTerms = () => {
     Keyboard.dismiss();
@@ -32,6 +38,7 @@ export const useLogin = () => {
           t('notification.defaultErrorTitle'),
           response.data.message || t('notification.defaultErrorMessage')
         );
+        setLoading(false);
       }
     } catch (error: any) {
       showNotification(
@@ -39,7 +46,6 @@ export const useLogin = () => {
         t('notification.defaultErrorTitle'),
         getErrorMessage(error, t('notification.defaultErrorMessage'))
       );
-    } finally {
       setLoading(false);
     }
   };

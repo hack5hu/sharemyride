@@ -8,7 +8,7 @@ export interface DraftRide {
   state: any; // This will hold the entire publish store state
 }
 
-export type RideCategory = 'UPCOMING' | 'COMPLETED' | 'CANCELLED' | 'REQUESTS' | 'ARCHIVE';
+export type RideCategory = 1 | 2 | 3;
 
 interface CategoryState {
   data: any[];
@@ -36,11 +36,9 @@ export const useMyRidesStore = create<MyRidesState>()(
     (set) => ({
       drafts: [],
       rides: {
-        UPCOMING: { data: [], page: 0, hasMore: true },
-        COMPLETED: { data: [], page: 0, hasMore: true },
-        CANCELLED: { data: [], page: 0, hasMore: true },
-        REQUESTS: { data: [], page: 0, hasMore: true },
-        ARCHIVE: { data: [], page: 0, hasMore: true },
+        1: { data: [], page: 0, hasMore: true },
+        2: { data: [], page: 0, hasMore: true },
+        3: { data: [], page: 0, hasMore: true },
       },
 
       addDraft: (state, id) => set((prevState) => {
@@ -71,7 +69,7 @@ export const useMyRidesStore = create<MyRidesState>()(
 
       setRides: (category, data, hasMore) => set((state) => {
         let finalData = data;
-        if (category === 'ARCHIVE' && finalData.length > 10) {
+        if (category === 2 && finalData.length > 10) {
           finalData = finalData.slice(0, 10);
         }
         return {
@@ -89,7 +87,7 @@ export const useMyRidesStore = create<MyRidesState>()(
         );
         let finalData = [...existingData, ...newData];
         
-        if (category === 'ARCHIVE' && finalData.length > 10) {
+        if (category === 2 && finalData.length > 10) {
           finalData = finalData.slice(0, 10);
         }
 

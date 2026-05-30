@@ -49,23 +49,6 @@ export const EditProfileScreen: React.FC = () => {
               />
             )}
 
-            <S.AvatarSection>
-              <S.AvatarWrapper>
-                <Avatar
-                  size="xl"
-                  source={formik.values.avatarUri ? { uri: formik.values.avatarUri } : undefined}
-                  border
-                />
-                <S.EditButton activeOpacity={0.8} onPress={handleUpdateAvatar}>
-                  <Icon name="edit" size={18} color={theme.colors.on_primary} />
-                </S.EditButton>
-              </S.AvatarWrapper>
-
-              <S.UpdatePhotoLabel>
-                {t('editProfile.updatePhoto')}
-              </S.UpdatePhotoLabel>
-            </S.AvatarSection>
-
             <S.FormFields>
               <Input
                 label={t('editProfile.fullNameLabel')}

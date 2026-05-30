@@ -44,6 +44,7 @@ export const hi: Translations = {
     noAccount: 'खाता नहीं है?',
     signUp: 'साइन अप करें',
     orContinueWith: 'या इसके साथ जारी रखें',
+    termsShort: 'मैं राइडपूलकंपनी की सेवा शर्तों और गोपनीयता नीति से सहमत हूँ।',
   },
   otpVerification: {
     titlePrefix: 'पुष्टि करें कि यह',
@@ -109,6 +110,7 @@ export const hi: Translations = {
     supportLegal: 'सहायता और कानूनी',
     editProfile: 'प्रोफ़ाइल संपादित करें',
     editProfileDescr: 'नाम, बायो और संपर्क विवरण',
+    editProfilePic: 'संपादित करें',
     identityVerification: 'पहचान सत्यापन',
     identityVerificationDescr: 'आधार और वाहन दस्तावेज',
     travelPreferences: 'यात्रा प्राथमिकताएं',
@@ -717,6 +719,8 @@ export const hi: Translations = {
     viewRatings: '{{count}} रेटिंग का विवरण देखें',
     recentReviews: 'हाल की समीक्षाएं',
     reportUser: '{{name}} की रिपोर्ट करें',
+    bioTitle: 'मेरे बारे में',
+    defaultBio: 'सत्यापित कम्युनिटी पार्टनर जो राइड साझा करने और कार्बन पदचिह्न को कम करने के लिए तैयार है! नए लोगों से मिलना, शांत संगीत सुनना और सुरक्षित पर्यावरण-अनुकूल यात्राओं को बढ़ावा देना पसंद है।',
   },
   developer: {
     networkLogsTitle: 'नेटवर्क लॉग्स',

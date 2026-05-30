@@ -90,6 +90,7 @@ export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
             onTextChange={handleTextChange}
             onFilled={handleVerify}
             error={false}
+            disabled={loading}
           />
 
           <VerifyButton

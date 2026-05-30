@@ -23,6 +23,7 @@ export const useUserProfileDetail = (userId: string) => {
         id: data.id || userId,
         name: data.name || 'Unknown User',
         profileImage: data.profileImage,
+        bio: data.bio || t.defaultBio,
         isVerified: data.isVerified ?? true,
         rating: data.rating ?? 4.9,
         ratingCount: data.ratingCount ?? 124,

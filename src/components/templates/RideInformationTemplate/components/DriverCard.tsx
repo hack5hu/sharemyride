@@ -19,12 +19,14 @@ export interface DriverCardProps {
   };
   handleDriverProfile: () => void;
   handleChat: () => void;
+  showChat?: boolean;
 }
 
 export const DriverCard: React.FC<DriverCardProps> = React.memo(({
   driver,
   handleDriverProfile,
   handleChat,
+  showChat = true,
 }) => {
   const theme = useTheme();
   const translations = useLocale();
@@ -56,9 +58,11 @@ export const DriverCard: React.FC<DriverCardProps> = React.memo(({
         </S.DriverTextGroup>
       </S.DriverInfoGroup>
 
-      <S.ChatButton onPress={handleChat} activeOpacity={0.8}>
-        <Icon name="chat-bubble-outline" size={moderateScale(20)} color={theme.colors.primary} />
-      </S.ChatButton>
+      {showChat && (
+        <S.ChatButton onPress={handleChat} activeOpacity={0.8}>
+          <Icon name="chat-bubble-outline" size={moderateScale(20)} color={theme.colors.primary} />
+        </S.ChatButton>
+      )}
     </S.DriverCard>
   );
 });

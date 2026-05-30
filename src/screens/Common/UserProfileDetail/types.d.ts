@@ -24,6 +24,7 @@ export interface UserProfile {
   id: string;
   name: string;
   profileImage?: string;
+  bio?: string;
   isVerified: boolean;
   rating: number;
   ratingCount: number;
