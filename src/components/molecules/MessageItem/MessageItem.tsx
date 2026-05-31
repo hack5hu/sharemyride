@@ -49,7 +49,7 @@ export const MessageItem: React.FC<MessageItemProps> = React.memo(({
       );
     }
 
-    const iconInfo = getMessageStatusIcon(lastMessageStatus || MessageStatus.SENT, isLastMessageFromMe);
+    const iconInfo = getMessageStatusIcon(lastMessageStatus || MessageStatus.SENT, isLastMessageFromMe, theme);
     if (!iconInfo) return null;
 
     return (

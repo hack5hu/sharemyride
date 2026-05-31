@@ -11,6 +11,8 @@ import {
   LocationOption,
 } from '@/components/organisms/MiddleStopSearchOverlay';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Button } from '@/components/atoms/Button';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import { SnapResult } from '@/utils/routeSnap';
 import * as S from './MiddleStopMapTemplate.styles';
@@ -119,6 +121,7 @@ export const MiddleStopMapTemplate: React.FC<MiddleStopMapTemplateProps> = React
 }) => {
   const theme = useTheme();
   const { middleStopMap: t } = useLocale();
+  const insets = useSafeAreaInsets();
 
   const isWarning = snapResult ? !snapResult.isWithinThreshold : false;
 
@@ -159,8 +162,94 @@ export const MiddleStopMapTemplate: React.FC<MiddleStopMapTemplateProps> = React
       onBack={onBackPress}
     >
       <S.ContentArea>
+        {/* Map Layer - Always mounted to prevent camera race conditions */}
+        <S.MapLayer pointerEvents={isSearching ? 'none' : 'auto'}>
+          {isMapMounted && (
+            <OlaMap
+              ref={mapRef}
+              onPress={onMapPress}
+              onRegionWillChange={onRegionWillChange}
+              onRegionIsChanging={onRegionIsChanging}
+              onRegionDidChange={onRegionChangeComplete}
+              style={{ flex: 1, width: '100%', height: '100%' }}
+            >
+              <Camera
+                ref={cameraRef}
+                center={initialCenter}
+                zoom={14}
+              />
+
+              {/* Main route polyline */}
+              {routeGeoJSON && (
+                <>
+                  <GeoJSONSource
+                    id="route-line-source"
+                    data={routeGeoJSON}
+                  />
+                  <Layer
+                    id="route-line-layer"
+                    source="route-line-source"
+                    type="line"
+                    style={ROUTE_LINE_STYLE}
+                  />
+                </>
+              )}
+
+              {/* Dashed connector line */}
+              {connectorGeoJSON && (
+                <>
+                  <GeoJSONSource
+                    id="connector-line-source"
+                    data={connectorGeoJSON}
+                  />
+                  <Layer
+                    id="connector-line-layer"
+                    source="connector-line-source"
+                    type="line"
+                    style={CONNECTOR_LINE_STYLE}
+                  />
+                </>
+              )}
+
+              {/* Start marker */}
+              {startLocation && (
+                <Marker
+                  lngLat={[startLocation.longitude, startLocation.latitude]}
+                >
+                  <S.MarkerDotOuter color={theme.colors.primary}>
+                    <S.MarkerDot color={theme.colors.primary} size={10} />
+                  </S.MarkerDotOuter>
+                </Marker>
+              )}
+
+              {/* Destination marker */}
+              {destinationLocation && (
+                <Marker
+                  lngLat={[destinationLocation.longitude, destinationLocation.latitude]}
+                >
+                  <S.MarkerDotOuter color={theme.colors.error}>
+                    <S.MarkerDot color={theme.colors.error} size={10} />
+                  </S.MarkerDotOuter>
+                </Marker>
+              )}
+
+              {/* Snapped point on route */}
+              {snapResult && (
+                <Marker
+                  lngLat={snapResult.snappedPoint}
+                >
+                  <S.MarkerDot
+                    color={isWarning ? theme.colors.error : theme.colors.primary}
+                    size={8}
+                  />
+                </Marker>
+              )}
+            </OlaMap>
+          )}
+        </S.MapLayer>
+
         {/* Search mode overlay */}
-        {isSearching ? (
+        {isSearching && (
           <S.SearchOverlayLayer>
             <MiddleStopSearchOverlay
               searchQuery={searchQuery}
@@ -172,94 +261,10 @@ export const MiddleStopMapTemplate: React.FC<MiddleStopMapTemplateProps> = React
               isLoading={isLoading}
             />
           </S.SearchOverlayLayer>
-        ) : (
+        )}
+
+        {!isSearching && (
           <>
-            {/* Map */}
-            <S.MapLayer>
-              {isMapMounted && (
-                <OlaMap
-                  ref={mapRef}
-                  onPress={onMapPress}
-                  onRegionWillChange={onRegionWillChange}
-                  onRegionIsChanging={onRegionIsChanging}
-                  onRegionDidChange={onRegionChangeComplete}
-                  style={{ flex: 1, width: '100%', height: '100%' }}
-                >
-                  <Camera
-                    ref={cameraRef}
-                    center={initialCenter}
-                    zoom={14}
-                  />
-
-                  {/* Main route polyline */}
-                  {routeGeoJSON && (
-                    <>
-                      <GeoJSONSource
-                        id="route-line-source"
-                        data={routeGeoJSON}
-                      />
-                      <Layer
-                        id="route-line-layer"
-                        source="route-line-source"
-                        type="line"
-                        style={ROUTE_LINE_STYLE}
-                      />
-                    </>
-                  )}
-
-                  {/* Dashed connector line */}
-                  {connectorGeoJSON && (
-                    <>
-                      <GeoJSONSource
-                        id="connector-line-source"
-                        data={connectorGeoJSON}
-                      />
-                      <Layer
-                        id="connector-line-layer"
-                        source="connector-line-source"
-                        type="line"
-                        style={CONNECTOR_LINE_STYLE}
-                      />
-                    </>
-                  )}
-
-                  {/* Start marker */}
-                  {startLocation && (
-                    <Marker
-                      lngLat={[startLocation.longitude, startLocation.latitude]}
-                    >
-                      <S.MarkerDotOuter color={theme.colors.primary}>
-                        <S.MarkerDot color={theme.colors.primary} size={10} />
-                      </S.MarkerDotOuter>
-                    </Marker>
-                  )}
-
-                  {/* Destination marker */}
-                  {destinationLocation && (
-                    <Marker
-                      lngLat={[destinationLocation.longitude, destinationLocation.latitude]}
-                    >
-                      <S.MarkerDotOuter color={theme.colors.error}>
-                        <S.MarkerDot color={theme.colors.error} size={10} />
-                      </S.MarkerDotOuter>
-                    </Marker>
-                  )}
-
-                  {/* Snapped point on route */}
-                  {snapResult && (
-                    <Marker
-                      lngLat={snapResult.snappedPoint}
-                    >
-                      <S.MarkerDot
-                        color={isWarning ? theme.colors.error : theme.colors.primary}
-                        size={8}
-                      />
-                    </Marker>
-                  )}
-                </OlaMap>
-              )}
-            </S.MapLayer>
-
             {/* Centered Map Pin Selection Overlay */}
             <S.PinContainer pointerEvents="none">
               <S.PinWrapper
@@ -336,7 +341,7 @@ export const MiddleStopMapTemplate: React.FC<MiddleStopMapTemplateProps> = React
 
             {/* Bottom card with stop info + confirm */}
             {selectedLocation && (
-              <S.BottomCard>
+              <S.BottomCard style={{ paddingBottom: Math.max(insets.bottom + 16, 32) }}>
                 <S.BottomGradient />
 
                 <S.StopInfoCard>
@@ -367,20 +372,14 @@ export const MiddleStopMapTemplate: React.FC<MiddleStopMapTemplateProps> = React
                   </S.StopInfoRow>
                 </S.StopInfoCard>
 
-                <S.ConfirmButton
+                <Button
                   onPress={onConfirm}
                   disabled={!canConfirm || isReverseGeocoding}
-                  activeOpacity={0.9}
+                  icon="add-location-alt"
+                  iconPosition="left"
                 >
-                  <S.ConfirmGradient style={{ opacity: (canConfirm && !isReverseGeocoding) ? 1 : 0.5 }}>
-                    <MaterialIcons
-                      name="add-location-alt"
-                      size={moderateScale(18)}
-                      color={theme.colors.on_primary}
-                    />
-                    <S.ConfirmButtonText>{t.confirmStop}</S.ConfirmButtonText>
-                  </S.ConfirmGradient>
-                </S.ConfirmButton>
+                  {t.confirmStop}
+                </Button>
               </S.BottomCard>
             )}
           </>

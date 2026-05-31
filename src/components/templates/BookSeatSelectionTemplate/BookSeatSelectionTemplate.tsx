@@ -47,27 +47,8 @@ export const BookSeatSelectionTemplate: React.FC<BookSeatSelectionTemplateProps>
               </Typography>
             </S.HeaderIntro>
 
-            {/* ── Meta Info ── */}
-            {/* <S.MetaStrip>
-              <S.MetaItem>
-                <Typography variant="label" size="sm" weight="bold">
-                  {departureDate}
-                </Typography>
-                <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>{t('common.date')}</Typography>
-              </S.MetaItem>
-              <S.MetaItem>
-                <Typography variant="label" size="sm" weight="bold">
-                  {departureTime}
-                </Typography>
-                <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>{t('common.time')}</Typography>
-              </S.MetaItem>
-              <S.MetaItem>
-                <Typography variant="label" size="sm" weight="bold" numberOfLines={1}>
-                  {driverName.split(' ')[0]}
-                </Typography>
-                <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>{st.driverLabel}</Typography>
-              </S.MetaItem>
-            </S.MetaStrip> */}
+
+
 
             {/* ── Legend ── */}
             <S.LegendWrapper>
@@ -79,7 +60,7 @@ export const BookSeatSelectionTemplate: React.FC<BookSeatSelectionTemplateProps>
             </S.LegendWrapper>
 
             {/* ── Car plan ── */}
-            <S.CarPlanWrapper style={{ opacity: isBooking ? 0.6 : 1 }}>
+            <S.CarPlanWrapper pointerEvents={isBooking ? 'none' : 'auto'}>
                 <CarFloorPlan
                     rows={rows}
                     selectedSeats={selectedSeats}

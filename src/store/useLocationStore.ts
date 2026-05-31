@@ -24,14 +24,17 @@ export const useLocationStore = create<LocationStore>()(
         set((state) => {
           const currentBucket = state.history[contextKey] || [];
           
-          // Deduplicate by ID or identical coordinates (lat/lng)
+          // Deduplicate by ID, identical coordinates, or identical name and address
           const filteredBucket = currentBucket.filter((item) => {
             const isSameId = item.id === location.id;
             const isSameCoords = 
               item.latitude === location.latitude && 
               item.longitude === location.longitude;
+            const isSameAddress = 
+              item.name === location.name && 
+              item.address === location.address;
             
-            return !isSameId && !isSameCoords;
+            return !isSameId && !isSameCoords && !isSameAddress;
           });
 
           // Prepend new location and limit history size

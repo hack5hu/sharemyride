@@ -6,11 +6,14 @@ import { Container, NavItem, Badge, BadgeText } from './BottomNav.styles';
 import { BottomTabType, BottomNavProps } from './types';
 import { useBottomNav } from './useBottomNav';
 import { useChatStore } from '@/store/useChatStore';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { verticalScale } from '@/styles';
 
 export const BottomNav: React.FC<BottomNavProps> = ({ activeTab }) => {
   const theme = useTheme();
   const { t, handlePress } = useBottomNav(activeTab);
   const { conversations } = useChatStore();
+  const insets = useSafeAreaInsets();
   
   const unreadConversationsCount = conversations.filter(conv => (conv.unreadCount || 0) > 0).length;
 
@@ -45,7 +48,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab }) => {
   };
 
   return (
-    <Container>
+    <Container style={{ paddingBottom: Math.max(insets.bottom, verticalScale(8)) }}>
       {renderItem('BOOK', 'directions-car', 'navBook')}
       {renderItem('PUBLISH', 'add-circle', 'navPublish')}
       {renderItem('MY_RIDES', 'history', 'navMyRides')}

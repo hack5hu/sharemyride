@@ -4,11 +4,11 @@ import { ActivityIndicator, Modal, View } from 'react-native';
 import { Typography } from '../Typography';
 import { verticalScale } from '@/styles';
 
-const Container = styled.View`
+const Container = styled.View<{ transparent?: boolean }>`
   flex: 1;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.colors.surface};
+  background-color: ${({ theme, transparent }) => transparent ? 'transparent' : theme.colors.surface};
 `;
 
 const Message = styled(Typography)`
@@ -19,13 +19,14 @@ const Message = styled(Typography)`
 interface LoaderProps {
   message?: string;
   visible?: boolean;
+  transparent?: boolean;
 }
 
-export const Loader: React.FC<LoaderProps> = ({ message, visible }) => {
+export const Loader: React.FC<LoaderProps> = ({ message, visible, transparent }) => {
   const theme = useTheme();
 
   const content = (
-    <Container>
+    <Container transparent={transparent}>
       <ActivityIndicator size="large" color={theme.colors.primary} />
       {message && (
         <Message variant="body" size="md" weight="medium">

@@ -126,7 +126,7 @@ export const useAvailableRides = () => {
       if (ride.preferences?.womenOnly) features.push('ladiesOnly');
       if (ride.preferences?.petFriendly) features.push('petFriendly');
       if (ride.preferences?.luggageAllowed) features.push('luggageAllowed');
-      if (ride.preferences?.manualApproval) features.push('manualApproval');
+      if (ride.preferences?.manualApproval === false) features.push('autoApproval');
       if (ride.preferences?.musicPreference) features.push(`music:${ride.preferences.musicPreference}`);
 
       const sLat = hasStops ? firstStop?.lat : (ride.sourceLat || 0);

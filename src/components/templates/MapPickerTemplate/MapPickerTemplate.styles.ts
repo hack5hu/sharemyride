@@ -72,7 +72,8 @@ export const PinShadow = styled.View`
 `;
 
 export const SelectButtonContainer = styled.View`
-  margin: ${verticalScale(24)}px;
+  margin-horizontal: ${scale(24)}px;
+  margin-top: ${verticalScale(24)}px;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -83,7 +84,6 @@ export const LocationPreviewContainer = styled.View`
   background-color: ${({ theme }) => theme.colors.surface};
   padding: ${verticalScale(12)}px ${scale(16)}px;
   border-radius: ${moderateScale(12)}px;
-  margin-horizontal: ${scale(24)}px;
   margin-bottom: ${verticalScale(12)}px;
   flex-direction: row;
   align-items: center;
@@ -108,32 +108,4 @@ export const LocationPreviewText = styled.Text`
   color: ${({ theme }) => theme.colors.on_surface_variant};
   font-weight: 500;
   flex: 1;
-`;
-
-export const SelectGradient = styled(LinearGradient).attrs(({ theme }) => ({
-  colors: [theme.colors.primary, theme.colors.primary_container] as string[],
-  start: { x: 0, y: 0 },
-  end: { x: 1, y: 1 },
-}))`
-  width: 100%;
-  padding-vertical: ${verticalScale(18)}px;
-  border-radius: ${moderateScale(16)}px;
-  align-items: center;
-  shadow-color: ${({ theme }) => theme.colors.primary};
-  shadow-offset: 0px 12px;
-  shadow-opacity: 0.25;
-  shadow-radius: 24px;
-  elevation: 8;
-`;
-
-export const SelectButton = styled.TouchableOpacity`
-  width: 100%;
-  align-items: center;
-`;
-
-export const SelectButtonText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${responsiveFont(18)}px;
-  color: ${({ theme }) => theme.colors.on_primary};
 `;

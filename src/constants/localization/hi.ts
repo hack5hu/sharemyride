@@ -183,8 +183,8 @@ export const hi: Translations = {
     silence: 'शांति',
     luggageAllowed: 'सामान की अनुमति है',
     petFriendly: 'पेट फ्रेंडली',
-    manualApproval: 'मैनुअल अनुमोदन',
-    manualApprovalDescr: 'चालक बुकिंग अनुरोधों को मंजूरी देता है',
+    manualApproval: 'त्वरित अनुमोदन',
+    manualApprovalDescr: 'बुकिंग तुरंत पुष्टि हो जाती है',
     waitingTime: 'प्रतीक्षा समय',
     waitingTimeDescr: 'पिकअप पर चालक द्वारा प्रतीक्षा करने का अधिकतम समय',
     savePreferences: 'प्राथमिकताएं सहेजें',
@@ -757,6 +757,7 @@ export const hi: Translations = {
   notification: {
     defaultSuccessTitle: 'सफलता',
     defaultSuccessMessage: 'कार्य सफलतापूर्वक पूरा हुआ।',
+    profilePhotoUpdated: 'प्रोफ़ाइल फ़ोटो सफलतापूर्वक अपडेट की गई',
     defaultErrorTitle: 'त्रुटि',
     defaultErrorMessage: 'कुछ गलत हो गया। कृपया पुन: प्रयास करें।',
     defaultInfoTitle: 'जानकारी',

@@ -3,16 +3,20 @@ import { useNavigation } from '@react-navigation/native';
 import { useTravelPrefStore } from '@/store/useTravelPrefStore';
 import { TravelPreferenceState } from './types';
 import { Alert } from 'react-native';
+import { Notification } from '@/components/molecules/Notification';
+import { showNotification } from '@/components/organisms/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export const useTravelPreferences = () => {
   const navigation = useNavigation();
-  const { 
-    preferences: storedPrefs, 
-    isLoading, 
-    syncPreferences, 
-    savePreferences 
+  const {
+    preferences: storedPrefs,
+    isLoading,
+    syncPreferences,
+    savePreferences
   } = useTravelPrefStore();
-
+  const { t } = useTranslation();
   // Helper to convert comma-separated string to array
   const parseMusic = (musicStr?: string) => {
     if (!musicStr) return ['Pop'];
@@ -61,14 +65,14 @@ export const useTravelPreferences = () => {
       const current = prev.music;
       const exists = current.includes(genre);
       let next;
-      
+
       if (exists) {
         // Don't allow empty selection if you want, or just remove
         next = current.filter(g => g !== genre);
       } else {
         next = [...current, genre];
       }
-      
+
       return { ...prev, music: next };
     });
   }, []);
@@ -92,10 +96,20 @@ export const useTravelPreferences = () => {
         maxBackSeats: storedPrefs?.maxBackSeats ?? 2,
         waitingTime: preferences.waitingTime,
       });
-      Alert.alert('Success', 'Travel preferences updated successfully.');
+      // Alert.alert('Success', 'Travel preferences updated successfully.');
+      showNotification(
+        NotificationType.SUCCESS,
+        t('notification.defaultSuccessTitle'),
+       'Travel preferences updated successfully.'
+      );
       navigation.goBack();
     } catch (error) {
-      Alert.alert('Error', 'Failed to save preferences. Please try again.');
+
+      showNotification(
+        NotificationType.ERROR,
+        t('notification.defaultErrorTitle'),
+        error.message
+      );
     }
   }, [navigation, preferences, savePreferences, storedPrefs?.maxBackSeats]);
 

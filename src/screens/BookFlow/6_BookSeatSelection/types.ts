@@ -1,6 +1,5 @@
 export interface BookSeat {
-  id: number;
-  seatName: string;
+  seatId: number;
   available: boolean;
   price: number;
 }

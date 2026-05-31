@@ -20,6 +20,7 @@ interface GridInfoProps {
   onEditVehicle: () => void;
   onEditSeats: () => void;
   t: any;
+  disabled?: boolean;
 }
 
 export const GridInfo: React.FC<GridInfoProps> = ({ 
@@ -27,7 +28,8 @@ export const GridInfo: React.FC<GridInfoProps> = ({
   pricing, 
   onEditVehicle, 
   onEditSeats, 
-  t 
+  t,
+  disabled,
 }) => {
   const theme = useTheme();
 
@@ -36,8 +38,8 @@ export const GridInfo: React.FC<GridInfoProps> = ({
       <GridCard>
         <SectionHeader>
           <Icon name="directions-car" size={moderateScale(20)} color={theme.colors.primary} />
-          <EditButton onPress={onEditVehicle} activeOpacity={0.7}>
-            <Icon name="edit" size={moderateScale(16)} color={theme.colors.primary} />
+          <EditButton onPress={onEditVehicle} activeOpacity={0.7} disabled={disabled}>
+            <Icon name="edit" size={moderateScale(16)} color={theme.colors.primary} style={{ opacity: disabled ? 0.4 : 1 }} />
           </EditButton>
         </SectionHeader>
         <SectionLabel>{t.vehicleLabel}</SectionLabel>
@@ -57,8 +59,8 @@ export const GridInfo: React.FC<GridInfoProps> = ({
       <GridCard>
         <SectionHeader>
           <Icon name="group" size={moderateScale(20)} color={theme.colors.primary} />
-          <EditButton onPress={onEditSeats} activeOpacity={0.7}>
-            <Icon name="edit" size={moderateScale(16)} color={theme.colors.primary} />
+          <EditButton onPress={onEditSeats} activeOpacity={0.7} disabled={disabled}>
+            <Icon name="edit" size={moderateScale(16)} color={theme.colors.primary} style={{ opacity: disabled ? 0.4 : 1 }} />
           </EditButton>
         </SectionHeader>
         <SectionLabel>{t.availabilityLabel}</SectionLabel>

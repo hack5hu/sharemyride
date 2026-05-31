@@ -28,9 +28,10 @@ interface RouteSummaryProps {
   };
   onEdit: () => void;
   t: any;
+  disabled?: boolean;
 }
 
-export const RouteSummary: React.FC<RouteSummaryProps> = ({ route, onEdit, t: st }) => {
+export const RouteSummary: React.FC<RouteSummaryProps> = ({ route, onEdit, t: st, disabled }) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -38,8 +39,8 @@ export const RouteSummary: React.FC<RouteSummaryProps> = ({ route, onEdit, t: st
     <GlassCard>
       <SectionHeader>
         <SectionLabel>{st.routeSummaryLabel}</SectionLabel>
-        <EditButton onPress={onEdit} activeOpacity={0.7}>
-          <Icon name="edit" size={moderateScale(16)} color={theme.colors.primary} />
+        <EditButton onPress={onEdit} activeOpacity={0.7} disabled={disabled}>
+          <Icon name="edit" size={moderateScale(16)} color={theme.colors.primary} style={{ opacity: disabled ? 0.4 : 1 }} />
         </EditButton>
       </SectionHeader>
       

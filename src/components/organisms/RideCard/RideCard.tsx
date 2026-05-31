@@ -94,9 +94,9 @@ export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void
 
       <Header>
         <DriverInfo>
-          <Avatar 
-            source={{ uri: ride.driver.driverPhotoUrl }} 
-            size="md" 
+          <Avatar
+            source={{ uri: ride.driver.driverPhotoUrl }}
+            size="md"
           />
           <DriverTextGroup>
             <Typography variant="title" size="sm" weight="bold">
@@ -149,15 +149,15 @@ export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void
           else if (feature === 'ladiesOnly') { iconName = 'pregnant-woman'; label = rd.ladiesOnly; }
           else if (feature === 'petFriendly') { iconName = 'pets'; label = tp.petFriendly; }
           else if (feature === 'luggageAllowed') { iconName = 'luggage'; label = tp.luggageAllowed; }
-          else if (feature === 'manualApproval') { iconName = 'verified-user'; label = rd.approvalRequired; }
+          else if (feature === 'autoApproval') { iconName = 'flash-on'; label = rd.instantBooking }
           else if (feature.startsWith('music:')) return;
 
           return (
             <FeatureBadge key={idx}>
-              <Icon 
-                name={iconName} 
-                size={moderateScale(14)} 
-                color={theme.colors.on_surface_variant} 
+              <Icon
+                name={iconName}
+                size={moderateScale(14)}
+                color={theme.colors.on_surface_variant}
               />
               <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
                 {label}
@@ -165,7 +165,7 @@ export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void
             </FeatureBadge>
           );
         })}
-        
+
         <FeatureBadge>
           <Icon name="event-seat" size={moderateScale(14)} color={theme.colors.on_surface_variant} />
           <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>

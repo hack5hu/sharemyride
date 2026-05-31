@@ -17,9 +17,7 @@ export const mapBackendRideToUI = (
   if (rideRaw.preferences?.womenOnly) features.push('ladiesOnly');
   if (rideRaw.preferences?.petFriendly) features.push('petFriendly');
   if (rideRaw.preferences?.luggageAllowed) features.push('luggageAllowed');
-  if (rideRaw.preferences?.manualApproval) {
-    features.push('manualApproval');
-  } else if (rideRaw.preferences?.manualApproval === false) {
+  if (rideRaw.preferences?.manualApproval === false) {
     features.push('autoApproval');
   }
   if (rideRaw.preferences?.musicPreference) features.push(`music:${rideRaw.preferences.musicPreference}`);

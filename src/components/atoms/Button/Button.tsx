@@ -18,19 +18,16 @@ export const Button: React.FC<ButtonProps> = ({
   const theme = useTheme();
 
   const renderContent = () => {
-    if (loading) {
-      return <ActivityIndicator color={variant === 'primary' ? theme.colors.on_primary : theme.colors.primary} />;
-    }
-
     const color = variant === 'primary' ? theme.colors.on_primary : theme.colors.primary;
 
     return (
       <ButtonContent>
-        {icon && iconPosition === 'left' && <Icon name={icon} size={20} color={color} />}
+        {loading && <ActivityIndicator color={color} size="small" />}
+        {!loading && icon && iconPosition === 'left' && <Icon name={icon} size={20} color={color} />}
         <Typography variant="title" size="md" color={color} weight="bold">
           {children}
         </Typography>
-        {icon && iconPosition === 'right' && <Icon name={icon} size={20} color={color} />}
+        {!loading && icon && iconPosition === 'right' && <Icon name={icon} size={20} color={color} />}
       </ButtonContent>
     );
   };
@@ -39,11 +36,7 @@ export const Button: React.FC<ButtonProps> = ({
     return (
       <StyledButton disabled={disabled || loading} activeOpacity={0.8} {...props}>
         <GradientBackground
-          colors={
-            disabled || loading
-              ? [theme.colors.outline_variant, theme.colors.outline_variant]
-              : [theme.colors.primary, theme.colors.primary_container]
-          }
+          colors={[theme.colors.primary, theme.colors.primary_container]}
           disabled={disabled || loading}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}

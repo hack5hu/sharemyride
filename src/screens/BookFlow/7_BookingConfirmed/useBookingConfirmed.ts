@@ -43,7 +43,7 @@ export const useBookingConfirmed = () => {
 
   const rideData = useMemo(() => {
     const firstStop = rideRaw?.stops?.[0];
-    const pickupTime = formatTimeSafely(firstStop?.arrivalTime, {
+    const pickupTime = route.params?.pickupTime || formatTimeSafely(firstStop?.arrivalTime, {
       hour: 'numeric',
       minute: '2-digit',
       hour12: true,

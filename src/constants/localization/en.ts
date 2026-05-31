@@ -182,8 +182,8 @@ export const en: Translations = {
     silence: 'Silence',
     luggageAllowed: 'Luggage allowed',
     petFriendly: 'Pet friendly',
-    manualApproval: 'Manual Approval',
-    manualApprovalDescr: 'Host approves booking requests',
+    manualApproval: 'Instant Approval',
+    manualApprovalDescr: 'Bookings are confirmed instantly',
     waitingTime: 'Waiting Time',
     waitingTimeDescr: 'Max time Host waits at pickup',
     savePreferences: 'Save Preferences',
@@ -753,6 +753,7 @@ export const en: Translations = {
   notification: {
     defaultSuccessTitle: 'Success',
     defaultSuccessMessage: 'Action completed successfully.',
+    profilePhotoUpdated: 'Profile photo updated successfully',
     defaultErrorTitle: 'Error',
     defaultErrorMessage: 'Something went wrong. Please try again.',
     defaultInfoTitle: 'Information',

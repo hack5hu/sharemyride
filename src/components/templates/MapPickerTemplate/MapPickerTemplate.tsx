@@ -26,6 +26,8 @@ import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import { moderateScale, scale, verticalScale } from '@/styles';
 
 import { UserLocationMarker } from '@/components/atoms/UserLocationMarker';
+import { Button } from '@/components/atoms/Button';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface ExtendedUserLocationProps extends React.ComponentProps<typeof UserLocation> {
   onUpdate?: (location: any) => void;
@@ -86,6 +88,7 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
 }) => {
   const theme = useTheme();
   const { mapPicker } = useLocale();
+  const insets = useSafeAreaInsets();
   const pinAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -213,7 +216,7 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
             </PinWrapper>
           </PinContainer>
 
-          <SelectButtonContainer>
+          <SelectButtonContainer style={{ paddingBottom: Math.max(insets.bottom, verticalScale(12)) }}>
             <LocationPreviewContainer>
               <Ionicons
                 name="locate-sharp"
@@ -233,18 +236,12 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
               </View>
             </LocationPreviewContainer>
 
-            <SelectButton
+            <Button
               onPress={locationDetailsProps.onSelect}
               disabled={locationDetailsProps.disabled || !locationDetailsProps.locationName}
-              activeOpacity={0.9}
             >
-              <SelectGradient
-                colors={[theme.colors.primary, theme.colors.primary]}
-                style={{ opacity: (locationDetailsProps.disabled || !locationDetailsProps.locationName) ? 0.6 : 1 }}
-              >
-                <SelectButtonText>{mapPicker.selectLocation}</SelectButtonText>
-              </SelectGradient>
-            </SelectButton>
+              {mapPicker.selectLocation}
+            </Button>
           </SelectButtonContainer>
 
           <MapControlsFABs

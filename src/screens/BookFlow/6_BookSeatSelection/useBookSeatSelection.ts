@@ -36,17 +36,9 @@ export const useBookSeatSelection = (
     return t.includes('7') ? '7' : '5';
   }, [passedVehicleType, rideRaw]);
 
-  const seatNameIdMap = useMemo(() => {
-    const map: Record<string, number> = {};
-    (passedSeats || []).forEach((s: BookSeat) => {
-      map[s.seatName] = s.id;
-    });
-    return map;
-  }, [passedSeats]);
-
   const occupiedSeats = useMemo(() => {
     const occupied = new Set<string>();
-    const availableIds = new Set((passedSeats || []).map((s: BookSeat) => String(s.id)));
+    const availableIds = new Set((passedSeats || []).map((s: BookSeat) => String(s.seatId)));
 
     // 1. Any standard seat ID that is not in the backend's returned seats list is unavailable/occupied
     const allIds = vehicleType === '7' ? [2, 3, 4, 5, 6, 7] : [2, 3, 4, 5];
@@ -59,7 +51,7 @@ export const useBookSeatSelection = (
     // 2. Any seat in the backend returned seats list that is explicitly marked as not available is occupied
     (passedSeats || []).forEach((s: BookSeat) => {
       if (!s.available) {
-        occupied.add(String(s.id));
+        occupied.add(String(s.seatId));
       }
     });
 
@@ -92,7 +84,7 @@ export const useBookSeatSelection = (
   const prices = useMemo(() => {
     const priceMap: Record<string | number, number> = {};
     (passedSeats || []).forEach((s: BookSeat) => {
-      priceMap[s.id] = s.price;
+      priceMap[s.seatId] = s.price;
     });
     return priceMap;
   }, [passedSeats]);
@@ -134,7 +126,8 @@ export const useBookSeatSelection = (
       await rideService.bookRide(rideId, payload);
       navigate('BookingConfirmed', {
         rideId,
-        bookedSeats: Array.from(selectedSeats).map(String)
+        bookedSeats: Array.from(selectedSeats).map(String),
+        pickupTime: departureTime,
       });
     } catch (error: any) {
       console.error('Booking confirmation failed:', error);
@@ -146,7 +139,7 @@ export const useBookSeatSelection = (
     } finally {
       setIsBooking(false);
     }
-  }, [navigate, selectedSeats, rideId, seatNameIdMap, isBooking, sourceStopId, destinationStopId]);
+  }, [navigate, selectedSeats, rideId, isBooking, sourceStopId, destinationStopId]);
 
   return {
     rows: vehicleType === '7' ? SEVEN_SEATER_ROWS : FIVE_SEATER_ROWS,

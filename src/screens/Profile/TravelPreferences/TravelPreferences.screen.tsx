@@ -80,7 +80,7 @@ export const TravelPreferencesScreen: React.FC = () => {
 
           <S.PreferenceItem>
             <S.IconContainer color={theme.colors.tertiary_container}>
-              <Icon name="verified-user" size={24} color={theme.colors.primary} />
+              <Icon name="flash-on" size={24} color={theme.colors.primary} />
             </S.IconContainer>
             <S.TextWrapper>
               <Typography variant="title" size="sm" weight="bold">
@@ -90,7 +90,7 @@ export const TravelPreferencesScreen: React.FC = () => {
                 {t('travelPreferences.manualApprovalDescr')}
               </Typography>
             </S.TextWrapper>
-            <Toggle value={preferences.manualApproval} onValueChange={() => togglePreference('manualApproval')} />
+            <Toggle value={!preferences.manualApproval} onValueChange={() => togglePreference('manualApproval')} />
           </S.PreferenceItem>
 
           <S.MusicSectionHeader>

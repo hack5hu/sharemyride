@@ -23,6 +23,7 @@ export const SeatTouchable = styled.TouchableOpacity<{ state: SeatState }>`
     if (state === 'occupied') return theme.colors.outline_variant;
     return `${theme.colors.primary}40`;
   }};
+  border-style: solid;
   elevation: ${({ state }) => (state === 'selected' ? 4 : 0)};
   shadow-color: ${({ theme }) => theme.colors.primary};
   shadow-offset: 0px 2px;

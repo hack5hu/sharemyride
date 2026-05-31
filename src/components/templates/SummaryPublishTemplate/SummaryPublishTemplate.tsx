@@ -73,8 +73,8 @@ export const SummaryPublishTemplate: React.FC<SummaryPublishTemplateProps> = ({
       title={st.headerTitle}
       onBack={onBack}
       rightElement={
-        <S.SaveButton onPress={onSave} activeOpacity={0.7}>
-          <S.SaveText>{t('common.save')}</S.SaveText>
+        <S.SaveButton onPress={onSave} activeOpacity={0.7} disabled={isPublishing}>
+          <S.SaveText disabled={isPublishing}>{t('common.save')}</S.SaveText>
         </S.SaveButton>
       }
     >
@@ -86,13 +86,14 @@ export const SummaryPublishTemplate: React.FC<SummaryPublishTemplateProps> = ({
           <S.PageSubtitle>{st.subtitle}</S.PageSubtitle>
         </S.TitleSection>
 
-        <RouteSummary route={route} onEdit={onEditRoute} t={st} />
+        <RouteSummary route={route} onEdit={onEditRoute} t={st} disabled={isPublishing} />
 
         <ScheduleCard 
           schedule={schedule} 
           validationError={validationError} 
           onEdit={onEditSchedule} 
           t={st} 
+          disabled={isPublishing}
         />
 
         <GridInfo 
@@ -101,12 +102,14 @@ export const SummaryPublishTemplate: React.FC<SummaryPublishTemplateProps> = ({
           onEditVehicle={onEditVehicle} 
           onEditSeats={onEditSeats} 
           t={st} 
+          disabled={isPublishing}
         />
 
         <PreferenceList 
           preferences={preferences} 
           onEdit={onEditPreferences} 
           t={st} 
+          disabled={isPublishing}
         />
       </S.Content>
 

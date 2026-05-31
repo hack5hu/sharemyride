@@ -16,6 +16,7 @@ export const useProfileHub = () => {
   const [isUpdatingAvatar, setIsUpdatingAvatar] = useState(false);
 
   const handleAvatarEdit = useCallback(async () => {
+    if (isUpdatingAvatar) return;
     try {
       const result = await launchImageLibrary({
         mediaType: 'photo',
@@ -40,19 +41,19 @@ export const useProfileHub = () => {
       await fetchProfile();
       showNotification(
         NotificationType.SUCCESS,
-        t('notification.defaultSuccessTitle') || 'Success',
-        t('notification.profilePhotoUpdated') || 'Profile photo updated successfully'
+        t('notification.defaultSuccessTitle') ,
+        t('notification.profilePhotoUpdated')
       );
     } catch (error) {
       showNotification(
         NotificationType.ERROR,
-        t('notification.defaultErrorTitle') || 'Error',
-        t('notification.defaultErrorMessage') || 'Something went wrong'
+        t('notification.defaultErrorTitle') ,
+        t('notification.defaultErrorMessage')
       );
     } finally {
       setIsUpdatingAvatar(false);
     }
-  }, [user, fetchProfile, t]);
+  }, [user, fetchProfile, t, isUpdatingAvatar]);
 
   const navigateToEditProfile = useCallback(() => {
     navigation.navigate('EditProfile');

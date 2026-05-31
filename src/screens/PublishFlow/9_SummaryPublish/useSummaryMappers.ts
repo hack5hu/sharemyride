@@ -41,40 +41,50 @@ export const useSummaryMappers = (publishStore: any) => {
   }), [seatCount, price]);
 
   const preferencesData = useMemo(() => {
-    if (!storedPrefs) return [];
+    const prefs = {
+      nonSmoking: publishStore.preferences?.nonSmoking ?? storedPrefs?.nonSmoking ?? true,
+      womenOnly: publishStore.preferences?.womenOnly ?? storedPrefs?.womenOnly ?? false,
+      musicPreference: publishStore.preferences?.music ?? storedPrefs?.musicPreference ?? 'Pop',
+      luggageAllowed: publishStore.preferences?.luggage ?? storedPrefs?.luggageAllowed ?? true,
+      petFriendly: publishStore.preferences?.pets ?? storedPrefs?.petFriendly ?? false,
+      waitingTime: storedPrefs?.waitingTime ?? 10,
+    };
+    
     
     const data = [];
     
-    if (storedPrefs.nonSmoking) {
+    if (prefs.nonSmoking) {
       data.push({ id: 'smoking', label: pt.nonSmoking, icon: 'smoke-free' });
     }
     
-    if (storedPrefs.womenOnly) {
+    if (prefs.womenOnly) {
       data.push({ id: 'women', label: pt.womenOnly, icon: 'female' });
     }
     
-    if (storedPrefs.manualApproval) {
-      data.push({ id: 'approval', label: pt.manualApproval, icon: 'verified-user' });
+    const isInstantApproval = !(storedPrefs?.manualApproval ?? true);
+    
+    if (isInstantApproval) {
+      data.push({ id: 'approval', label: pt.manualApproval, icon: 'flash-on' });
     }
     
-    if (storedPrefs.musicPreference) {
-      data.push({ id: 'music', label: storedPrefs.musicPreference, icon: 'library-music' });
+    if (prefs.musicPreference) {
+      data.push({ id: 'music', label: prefs.musicPreference, icon: 'library-music' });
     }
     
-    if (storedPrefs.luggageAllowed) {
+    if (prefs.luggageAllowed) {
       data.push({ id: 'luggage', label: pt.luggageAllowed, icon: 'luggage' });
     }
     
-    if (storedPrefs.petFriendly) {
+    if (prefs.petFriendly) {
       data.push({ id: 'pets', label: pt.petFriendly, icon: 'pets' });
     }
 
-    if (storedPrefs.waitingTime) {
-      data.push({ id: 'waiting', label: `${storedPrefs.waitingTime}m wait`, icon: 'timer' });
+    if (prefs.waitingTime) {
+      data.push({ id: 'waiting', label: `${prefs.waitingTime}m wait`, icon: 'timer' });
     }
     
     return data;
-  }, [storedPrefs, pt]);
+  }, [storedPrefs, publishStore.preferences, pt]);
 
   return {
     formattedDate,

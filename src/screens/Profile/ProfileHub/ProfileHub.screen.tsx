@@ -23,6 +23,7 @@ export const ProfileHubScreen: React.FC = () => {
   const {
     t,
     user,
+    isUpdatingAvatar,
     handleAvatarEdit,
     navigateToEditProfile,
     navigateToVehicleDetails,
@@ -49,8 +50,9 @@ export const ProfileHubScreen: React.FC = () => {
               onEditPress={navigateToEditProfile}
               onSettingsPress={navigateToSettings}
               onAvatarEditPress={handleAvatarEdit}
+              isUpdatingAvatar={isUpdatingAvatar}
             />
-            <TrustScoreCard score={98} />
+            {/* <TrustScoreCard score={98} /> */}
           </BentoGrid>
 
           <Section>

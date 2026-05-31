@@ -128,37 +128,7 @@ export const DistancePillText = styled.Text<{ isWarning?: boolean }>`
     isWarning ? theme.colors.error : theme.colors.primary};
 `;
 
-/* Confirm button */
-export const ConfirmButton = styled.TouchableOpacity`
-  width: 100%;
-  align-items: center;
-`;
 
-export const ConfirmGradient = styled(LinearGradient).attrs(({ theme }) => ({
-  colors: [theme.colors.primary, theme.colors.primary_container] as string[],
-  start: { x: 0, y: 0 },
-  end: { x: 1, y: 1 },
-}))`
-  width: 100%;
-  padding-vertical: ${verticalScale(16)}px;
-  border-radius: ${moderateScale(16)}px;
-  align-items: center;
-  flex-direction: row;
-  justify-content: center;
-  gap: ${scale(8)}px;
-  shadow-color: ${({ theme }) => theme.colors.primary};
-  shadow-offset: 0px 8px;
-  shadow-opacity: 0.2;
-  shadow-radius: 20px;
-  elevation: 6;
-`;
-
-export const ConfirmButtonText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${responsiveFont(16)}px;
-  color: ${({ theme }) => theme.colors.on_primary};
-`;
 
 /* Search bar floating on map (non-search mode) */
 export const FloatingSearchBar = styled.TouchableOpacity`

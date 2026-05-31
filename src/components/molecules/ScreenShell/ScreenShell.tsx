@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScreenHeader } from '@/components/molecules/ScreenHeader';
 import { Shell } from './ScreenShell.styles';
-import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export interface ScreenShellProps {
   /** Screen title shown in the header. Pass undefined to hide the header entirely. */
@@ -28,9 +28,10 @@ export const ScreenShell: React.FC<ScreenShellProps> = ({
   transparent,
   children,
 }) => {
- 
+  const insets = useSafeAreaInsets();
+  
   return (
-    <Shell transparent={transparent}>
+    <Shell transparent={transparent} style={{ paddingTop: insets.top }}>
       {title != null && (
         <ScreenHeader
           title={title}
