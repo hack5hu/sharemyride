@@ -1,5 +1,5 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { useTravelPrefStore } from '@/store/useTravelPrefStore';
 import { TravelPreferenceState } from './types';
 import { Alert } from 'react-native';
@@ -9,7 +9,7 @@ import { NotificationType } from '@/constants/enums';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export const useTravelPreferences = () => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const {
     preferences: storedPrefs,
     isLoading,

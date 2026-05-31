@@ -1,5 +1,5 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { useSettingsStore } from '@/store/settings';
 import { useAuthStore } from '@/store';
 import { useLocale } from '@/constants/localization';
@@ -10,7 +10,7 @@ import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
 
 export const useSettings = () => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const t = useLocale();
 
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);

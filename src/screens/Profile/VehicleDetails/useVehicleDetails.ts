@@ -1,5 +1,6 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useCallback, useMemo } from 'react';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { useRoute, RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '@/navigation/types.d';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useVehicleStore } from '@/store/useVehicleStore';
@@ -22,7 +23,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export const useVehicleDetails = () => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const route = useRoute<RouteProp<RootStackParamList, 'VehicleDetails'>>();
   const vehicleId = route.params?.vehicleId;
   const { t } = useTranslation();

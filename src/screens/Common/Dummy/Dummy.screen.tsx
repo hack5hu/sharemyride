@@ -1,6 +1,7 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import React from 'react';
 import { Linking } from 'react-native';
-import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
+import { useRoute, RouteProp } from '@react-navigation/native';
 import { Typography } from '@/components/atoms/Typography';
 import { Button } from '@/components/atoms/Button';
 import { BottomNav, BottomTabType } from '@/components/organisms/BottomNav';
@@ -11,7 +12,7 @@ import * as S from './Dummy.styles';
 
 export const DummyScreen: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'Dummy'>>();
-  const navigation = useNavigation<any>();
+  const navigation = useAppNavigation();
   const { t } = useTranslation();
   const {
     title,

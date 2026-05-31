@@ -1,5 +1,5 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { addSeconds, format } from 'date-fns';
 import rideService, { PublishRidePayload, RouteStop } from '@/serviceManager/rideService';
 import { roundToNearest } from '@/utils/pricing';
@@ -10,7 +10,7 @@ import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
 
 export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolean) => void) => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const { t } = useTranslation();
   const { addDraft, removeDraft } = useMyRidesStore();
 

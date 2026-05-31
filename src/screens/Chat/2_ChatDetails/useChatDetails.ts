@@ -1,5 +1,6 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useEffect, useMemo } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/navigation/types.d';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -28,7 +29,7 @@ export interface Message {
 }
 
 export const useChatDetails = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation = useAppNavigation();
   const route = useRoute<any>();
   const { t } = useTranslation();
   const { user } = useAuthStore();

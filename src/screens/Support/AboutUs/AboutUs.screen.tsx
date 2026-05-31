@@ -1,10 +1,10 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { SupportTemplate } from '@/components/templates/SupportTemplate';
 
 export const AboutUsScreen: React.FC = () => {
-  const navigation = useNavigation<any>();
+  const navigation = useAppNavigation();
   const { t } = useTranslation();
 
   return (

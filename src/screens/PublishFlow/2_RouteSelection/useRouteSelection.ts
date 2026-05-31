@@ -1,5 +1,5 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { RouteOption } from '@/components/organisms/RouteCard';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { locationService } from '@/serviceManager/locationService';
@@ -13,7 +13,7 @@ export interface RouteData {
 }
 
 export const useRouteSelection = () => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const { startLocation, destinationLocation, setSelectedRoute } = useRidePublishStore();
   const [routesData, setRoutesData] = useState<RouteData[]>([]);
   const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null);

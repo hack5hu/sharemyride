@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { BackHandler } from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
@@ -27,7 +27,7 @@ import {
 export const PublishSuccessScreen: React.FC = () => {
   const theme = useTheme();
   const { navigate } = useAppNavigation();
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const { publishSuccess: t } = useLocale();
 
   // Disable header back button

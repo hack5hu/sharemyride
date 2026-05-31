@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react';
-import { useRoute, RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useRoute, RouteProp, useFocusEffect } from '@react-navigation/native';
 import { Share, BackHandler } from 'react-native';
 import { useLocale } from '@/constants/localization';
 import { RootStackParamList } from '@/navigation/types';
@@ -10,7 +10,7 @@ import { formatTimeSafely } from '@/utils/date';
 
 export const useBookingConfirmed = () => {
   const { navigate } = useAppNavigation();
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
 
   useEffect(() => {
     navigation.setOptions({ headerLeft: () => null });

@@ -1,11 +1,12 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useCallback, useEffect } from 'react';
-import { useNavigation, useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import { useVehicleStore } from '@/store/useVehicleStore';
 import { UseVehicleListReturn } from './types.d';
 import { Alert } from 'react-native';
 
 export const useVehicleList = (): UseVehicleListReturn => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const isFocused = useIsFocused();
   const { vehicles, isLoading, syncVehicles, removeVehicle } = useVehicleStore();
 

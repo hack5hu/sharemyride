@@ -1,6 +1,7 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback } from 'react';
 import { useFormik } from 'formik';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import { authService } from '@/serviceManager/authService';
 import { Keyboard } from 'react-native';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -11,7 +12,7 @@ import { getErrorMessage } from '@/utils/error';
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
-  const navigation = useNavigation<any>();
+  const navigation = useAppNavigation();
   const { t } = useTranslation();
 
   useFocusEffect(

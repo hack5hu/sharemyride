@@ -1,5 +1,5 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/navigation/types.d';
 import { locationService, OlaPrediction } from '@/serviceManager/locationService';
@@ -14,7 +14,7 @@ const DEFAULT_REGION = {
 };
 
 export const useSelectLocation = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation = useAppNavigation();
   const [region, setRegion] = useState(DEFAULT_REGION);
 
 

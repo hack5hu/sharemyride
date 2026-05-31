@@ -1,5 +1,6 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useMemo } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 
 const getNextRounded5 = (date: Date) => {
@@ -14,7 +15,7 @@ const getNextRounded5 = (date: Date) => {
 };
 
 export const useTimeSelection = () => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const route = useRoute();
 
   const params = route.params as any;

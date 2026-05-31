@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/navigation/types';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -11,7 +11,7 @@ import { NotificationType } from '@/constants/enums';
 
 export const useProfileHub = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation = useAppNavigation();
   const { user, fetchProfile } = useAuthStore();
   const [isUpdatingAvatar, setIsUpdatingAvatar] = useState(false);
 

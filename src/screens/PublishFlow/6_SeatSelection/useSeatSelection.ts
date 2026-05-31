@@ -1,12 +1,13 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { useNavigation, useRoute, RouteProp, useIsFocused } from '@react-navigation/native';
+import { useRoute, RouteProp, useIsFocused } from '@react-navigation/native';
 import { useLocale } from '@/constants/localization';
 import { RootStackParamList } from '@/navigation/types.d';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useVehicleStore } from '@/store/useVehicleStore';
 
 export const useSeatSelection = () => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const route = useRoute<RouteProp<RootStackParamList, 'SeatSelection'>>();
   const isFocused = useIsFocused();
   const { selectSeat: tSelect, seatSelection: tPublish } = useLocale();

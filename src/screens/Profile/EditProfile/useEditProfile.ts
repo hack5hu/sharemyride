@@ -1,8 +1,8 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useMemo } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/navigation/types';
 import { ProfileUpdateData, profileService } from '@/serviceManager/profileService';
@@ -14,7 +14,7 @@ import { getErrorMessage } from '@/utils/error';
 
 export const useEditProfile = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation = useAppNavigation();
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const { user, fetchProfile } = useAuthStore();

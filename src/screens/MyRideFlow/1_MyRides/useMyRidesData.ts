@@ -88,10 +88,10 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
   const fetchInitialRides = useCallback(() => {
     const filter = TAB_TO_FILTER[activeTab];
     
-    // Always fetch requests to know if we should show the tab/bento
+    // Always fetch requests to know if we should show the tab
     fetchCategoryRides(3, 0, false);
     
-    if (filter && filter !== 3) {
+    if (filter !== null && filter !== undefined && filter !== 3) {
       fetchCategoryRides(filter, 0, false);
     }
   }, [activeTab, fetchCategoryRides]);

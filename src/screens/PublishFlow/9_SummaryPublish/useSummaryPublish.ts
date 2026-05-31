@@ -1,11 +1,11 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useMemo, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useSummaryMappers } from './useSummaryMappers';
 import { useSummaryActions } from './useSummaryActions';
 
 export const useSummaryPublish = () => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const publishStore = useRidePublishStore();
   const [isPublishing, setIsPublishing] = useState(false);
 

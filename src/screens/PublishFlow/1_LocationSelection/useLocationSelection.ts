@@ -1,6 +1,6 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useCallback, useEffect } from 'react';
 import { Keyboard } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/navigation/types';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
@@ -8,7 +8,7 @@ import { useRidePublishStore } from '@/store/useRidePublishStore';
 type NavigationProp = StackNavigationProp<RootStackParamList, 'LocationSelection'>;
 
 export const useLocationSelection = () => {
-  const navigation = useNavigation<NavigationProp>();
+  const navigation = useAppNavigation();
 
   const { 
     startLocation, 

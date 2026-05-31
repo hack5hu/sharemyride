@@ -1,6 +1,7 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 import { Alert } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { RideDetailsScreenProps } from './types';
@@ -13,7 +14,7 @@ import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
 
 export const useRideDetails = () => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const route = useRoute<RideDetailsScreenProps['route']>();
   const { rideId, sourceStopId, destinationStopId } = route.params;
   const { t } = useTranslation();

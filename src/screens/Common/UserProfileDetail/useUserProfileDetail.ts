@@ -1,11 +1,11 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { userService } from '@/serviceManager/userService';
 import { useLocale } from '@/constants/localization';
 import { UserProfile } from './types';
 
 export const useUserProfileDetail = (userId: string) => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const { userProfileDetail: t } = useLocale();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);

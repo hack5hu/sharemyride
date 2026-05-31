@@ -1,5 +1,5 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useEffect, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { locationService } from '@/serviceManager/locationService';
 import { calculateBasePrice, calculateFrontSeatPrice, PRICING_MULTIPLIERS, roundToNearest } from '@/utils/pricing';
@@ -7,7 +7,7 @@ import { SegmentPrice } from '@/components/molecules/SegmentPricingCard';
 import { StopSegment } from '@/components/organisms/SegmentPricingSheet/utils';
 
 export const usePriceSelection = () => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
 // removed unused route
 
   const { 
