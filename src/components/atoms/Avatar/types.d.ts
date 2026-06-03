@@ -10,4 +10,5 @@ export interface AvatarProps {
   style?: ViewStyle;
   status?: 'online' | 'offline' | 'none';
   isVerified?: boolean;
+  iconName?: string;
 }

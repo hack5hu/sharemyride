@@ -8,6 +8,7 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import debounce from 'lodash/debounce';
+import { Logger } from '@/utils/logger';
 
 import { requestLocationPermission } from '@/utils/permissionUtils';
 
@@ -133,7 +134,8 @@ export const useMapPicker = () => {
               longitude: p.geometry.location.lng,
             }));
           setSearchResults(mappedResults);
-        } catch {
+        } catch (error) {
+          Logger.error('[MapPicker] debouncedSearch error:', error);
           setSearchResults([]);
         }
       } else {

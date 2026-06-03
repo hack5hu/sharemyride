@@ -5,7 +5,7 @@ export const mapBackendRideToUI = (ride: any, type: 'upcoming' | 'completed' | '
   const startName = ride.sourceStopName || 'Unknown';
   const endName = ride.destinationStopName || 'Unknown';
   const startTime = safeParseDate(ride.startTime || ride.requestedAt) || new Date();
-  
+
   const now = new Date();
   const diffMs = startTime.getTime() - now.getTime();
   const diffMins = Math.floor(diffMs / 60000);
@@ -13,13 +13,13 @@ export const mapBackendRideToUI = (ride: any, type: 'upcoming' | 'completed' | '
   const isDriver = ride.role === 'DRIVER';
   const isPassenger = ride.role === 'PASSENGER';
   const isRequest = type === 'requests';
-  
+
   let weekday = 'Today';
   let dayMonth = '';
   try {
     weekday = startTime.toLocaleDateString('en-US', { weekday: 'short' });
     dayMonth = startTime.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
-  } catch (e) {}
+  } catch (e) { }
   const timeStr = formatTimeSafely(ride.startTime || ride.requestedAt);
 
   let timerLabel = '';
@@ -60,20 +60,18 @@ export const mapBackendRideToUI = (ride: any, type: 'upcoming' | 'completed' | '
     price: `₹${ride.price || ride.totalPrice || 0}`,
     icon: type === 'completed' ? 'check-circle' : (type === 'requests' ? 'person-add' : (isDriver ? 'navigation' : 'directions-car')),
     type,
-    driverName: isRequest 
-      ? (ride.passengerName) 
-      : (isDriver ? undefined : (ride.driverName)),
-    carModel: isRequest 
-      ? `Requested by ${ride.passengerName}` 
-      : (ride.vehicleRegistration 
-        ? `${ride.vehicleType?.replace('_', ' ') || 'CAR'} (${ride.vehicleRegistration})` 
+    driverName: isRequest
+      ? (ride.passengerName)
+      : (isDriver ? undefined : (ride.name)),
+    carModel: isRequest
+      ? `Requested by ${ride.passengerName}`
+      : (ride.vehicleRegistration
+        ? `${ride.vehicleType?.replace('_', ' ') || 'CAR'} (${ride.vehicleRegistration})`
         : (isDriver ? t('myRides.yourVehicle') : t('myRides.vehicleDetails'))),
-    rating: isRequest 
-      ? (ride.passengerRating || 5) 
-      : (isDriver ? undefined : (ride.driverRating || 5)),
+    rating: (ride.rating || 0),
     avatarUri: isRequest 
-      ? (ride.passengerPhotoUrl || 'https://i.pravatar.cc/150') 
-      : (isDriver ? undefined : (ride.driverPhotoUrl || 'https://i.pravatar.cc/150')),
+      ? (ride.passengerPhotoUrl)
+      : (isDriver ? undefined : ride.photoUrl),
     pickupTime: timeStr,
     dropoffTime: formatTimeSafely(
       ride.endTime,

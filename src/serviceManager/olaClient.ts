@@ -1,6 +1,16 @@
 import axios from 'axios';
 import { OLA_API_KEY } from '@/constants/OlaStyle';
 import { Logger } from '@/utils/logger';
+import { useNetworkLoggerStore } from '@/store/useNetworkLoggerStore';
+import { isNetworkLoggerEnabled, redactSensitiveData, sanitizeHeaders } from '@/utils/networkSecurity';
+import { InternalAxiosRequestConfig, AxiosError } from 'axios';
+
+interface TrackedRequestConfig extends InternalAxiosRequestConfig {
+  _logId?: string;
+  _startTime?: number;
+}
+
+const generateId = () => `${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 12)}`;
 
 /**
  * Dedicated Axios instance for Ola Maps API.
@@ -23,6 +33,10 @@ const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 olaClient.interceptors.request.use(
   (config) => {
+    const trackedConfig = config as TrackedRequestConfig;
+    trackedConfig._logId = generateId();
+    trackedConfig._startTime = Date.now();
+
     config.params = {
       ...config.params,
       api_key: OLA_API_KEY,
@@ -49,6 +63,33 @@ olaClient.interceptors.request.use(
     }
 
     Logger.log(`[Ola Maps Request] ${config.method?.toUpperCase()} ${config.url}`);
+    
+    if (isNetworkLoggerEnabled()) {
+      let fullUrl = `${config.baseURL || ''}${config.url || ''}`;
+      if (config.params) {
+        const query = Object.entries(config.params)
+          .filter(([_, v]) => v !== undefined && v !== null)
+          .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`)
+          .join('&');
+        if (query) fullUrl += `?${query}`;
+      }
+
+      useNetworkLoggerStore.getState().addLog({
+        id: trackedConfig._logId,
+        method: config.method?.toUpperCase() || 'GET',
+        url: fullUrl,
+        requestHeaders: sanitizeHeaders(config.headers),
+        requestBody: redactSensitiveData(config.data || config.params),
+        responseStatus: null,
+        responseHeaders: null,
+        responseBody: null,
+        startTime: trackedConfig._startTime,
+        endTime: null,
+        duration: null,
+        isError: false,
+      });
+    }
+    
     return config;
   },
   (error) => Promise.reject(error)
@@ -56,8 +97,20 @@ olaClient.interceptors.request.use(
 
 olaClient.interceptors.response.use(
   (response) => {
+    const trackedConfig = response.config as TrackedRequestConfig;
     Logger.log(`[Ola Maps Success] ${response.status} ${response.config.url}`);
     
+    if (isNetworkLoggerEnabled() && trackedConfig._logId && trackedConfig._startTime) {
+      const endTime = Date.now();
+      useNetworkLoggerStore.getState().updateLog(trackedConfig._logId, {
+        responseStatus: response.status,
+        responseHeaders: sanitizeHeaders(response.headers),
+        responseBody: redactSensitiveData(response.data),
+        endTime,
+        duration: endTime - trackedConfig._startTime,
+      });
+    }
+
     const isCacheable = response.config.method === 'get' || 
                        (response.config.method === 'post' && response.config.url?.includes('directions'));
 
@@ -72,7 +125,22 @@ olaClient.interceptors.response.use(
     return response;
   },
   (error) => {
-    Logger.error(`[Ola Maps Error] ${error.response?.status} ${error.config?.url}`);
+    const axiosError = error as AxiosError;
+    const originalRequest = axiosError.config as TrackedRequestConfig | undefined;
+    Logger.error(`[Ola Maps Error] ${axiosError.response?.status} ${axiosError.config?.url}`);
+    
+    if (isNetworkLoggerEnabled() && originalRequest && originalRequest._logId && originalRequest._startTime) {
+      const endTime = Date.now();
+      useNetworkLoggerStore.getState().updateLog(originalRequest._logId, {
+        responseStatus: axiosError.response?.status || 0,
+        responseHeaders: sanitizeHeaders(axiosError.response?.headers),
+        responseBody: redactSensitiveData(axiosError.response?.data || axiosError.message),
+        endTime,
+        duration: endTime - originalRequest._startTime,
+        isError: true,
+      });
+    }
+    
     return Promise.reject(error);
   }
 );

@@ -18,6 +18,8 @@ export interface RideListItem {
   pickupLocation?: string;
   dropoffTime?: string;
   dropoffLocation?: string;
+  role?: 'DRIVER' | 'PASSENGER';
+  statusTag?: string;
 }
 
 export interface MyRidesHookData {

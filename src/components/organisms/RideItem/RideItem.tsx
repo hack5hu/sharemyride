@@ -24,6 +24,7 @@ export interface RideListItem {
   dropoffLocation?: string;
   statusTag?: string;
   showActions?: boolean;
+  role?: 'DRIVER' | 'PASSENGER';
 }
 
 interface RideItemProps {
@@ -83,6 +84,7 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
         onPress={() => onRidePress(item)}
         onMorePress={() => onCancelRide(item.id)}
         onChatPress={() => onChatPress?.(item)}
+        isDriver={item.role === 'DRIVER'}
       />
     );
   }

@@ -703,7 +703,7 @@ export const en: Translations = {
     rideConfirmed: 'Ride confirmed',
     confirmedStatus: 'Confirmed',
     pendingStatus: 'Pending',
-    youAreDriver: 'You are the Ride Host',
+    youAreDriver: 'Ride Host',
     yourVehicle: 'Your Vehicle',
     vehicleDetails: 'Vehicle Details',
   },

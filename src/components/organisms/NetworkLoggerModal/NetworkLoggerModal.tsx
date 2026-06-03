@@ -17,6 +17,11 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
 
   const { logs, clearLogs, isModalVisible, setModalVisible } = useNetworkLoggerStore();
   const [selectedLog, setSelectedLog] = useState<NetworkLog | null>(null);
+  const [activeTab, setActiveTab] = useState<'api' | 'ola'>('api');
+
+  const filteredLogs = logs.filter(log => 
+    activeTab === 'ola' ? log.url.includes('olamaps.io') : !log.url.includes('olamaps.io')
+  );
 
   const handleCopy = (text: string, label: string) => {
     Clipboard.setString(text);
@@ -171,12 +176,22 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                 </View>
               </S.ModalHeader>
 
+              <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderColor: theme.colors.outline_variant }}>
+                <TouchableOpacity onPress={() => setActiveTab('api')} style={{ flex: 1, paddingVertical: 12, borderBottomWidth: 2, borderColor: activeTab === 'api' ? theme.colors.primary : 'transparent', alignItems: 'center' }}>
+                  <Typography variant="label" size="sm" weight={activeTab === 'api' ? 'bold' : 'regular'} color={activeTab === 'api' ? theme.colors.primary : theme.colors.on_surface_variant}>Normal API</Typography>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setActiveTab('ola')} style={{ flex: 1, paddingVertical: 12, borderBottomWidth: 2, borderColor: activeTab === 'ola' ? theme.colors.primary : 'transparent', alignItems: 'center' }}>
+                  <Typography variant="label" size="sm" weight={activeTab === 'ola' ? 'bold' : 'regular'} color={activeTab === 'ola' ? theme.colors.primary : theme.colors.on_surface_variant}>Ola Maps</Typography>
+                </TouchableOpacity>
+              </View>
+
               <S.Container>
                 <FlashList
-                  data={logs}
+                  data={filteredLogs}
                   renderItem={renderItem}
                   keyExtractor={(item) => item.id}
                   ListEmptyComponent={renderEmpty}
+                  estimatedItemSize={100}
                 />
               </S.Container>
             </>

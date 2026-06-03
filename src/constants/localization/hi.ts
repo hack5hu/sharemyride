@@ -707,7 +707,7 @@ export const hi: Translations = {
     rideConfirmed: 'सवारी की पुष्टि की गई',
     confirmedStatus: 'पुष्टि की गई',
     pendingStatus: 'लंबित',
-    youAreDriver: 'आप सवारी के होस्ट हैं',
+    youAreDriver: 'सवारी होस्ट',
     yourVehicle: 'आपका वाहन',
     vehicleDetails: 'वाहन विवरण',
   },

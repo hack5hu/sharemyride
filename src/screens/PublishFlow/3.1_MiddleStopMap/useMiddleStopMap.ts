@@ -17,6 +17,7 @@ import { getBoundingBox } from '@/utils/polyline';
 import { LocationOption } from '@/components/organisms/MiddleStopSearchOverlay';
 import debounce from 'lodash/debounce';
 import throttle from 'lodash/throttle';
+import { Logger } from '@/utils/logger';
 
 const EMPTY_HISTORY: Location[] = [];
 
@@ -136,6 +137,7 @@ export const useMiddleStopMap = () => {
         mapped.sort((a, b) => (a.distanceFromRoute ?? 99) - (b.distanceFromRoute ?? 99));
         setSearchResults(mapped);
       } catch (error) {
+        Logger.error('[MiddleStopMap] debouncedSearch error:', error);
         setSearchResults([]);
       } finally {
         setIsLoading(false);

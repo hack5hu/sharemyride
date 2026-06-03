@@ -1,0 +1,13 @@
+export interface MyRideDetailsTemplateProps {
+  ride: any;
+  handleBack: () => void;
+  handleViewRoute: (index?: number) => void;
+  handleCopyAddress: (address: string) => void;
+  handleChat: () => void;
+  isLoading?: boolean;
+  isDriver: boolean;
+  onCancelRide: () => void;
+  onCancelPassenger: (id: string) => void;
+  onReportRide?: () => void;
+  t: any;
+}

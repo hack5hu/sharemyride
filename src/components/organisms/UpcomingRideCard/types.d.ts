@@ -14,5 +14,6 @@ export interface UpcomingRideCardProps {
   onMorePress: () => void;
   onChatPress?: () => void;
   onPress?: () => void;
+  isDriver?: boolean;
 }
 

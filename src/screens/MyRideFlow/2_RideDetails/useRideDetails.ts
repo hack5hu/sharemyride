@@ -6,7 +6,6 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { RideDetailsScreenProps } from './types';
 import rideService from '@/serviceManager/rideService';
-import { mapBackendRideToUI } from '@/screens/BookFlow/4_RideInformation/useRideDataMapper';
 import { useMyRidesStore } from '@/store/useMyRidesStore';
 import { Logger } from '@/utils/logger';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
@@ -26,22 +25,19 @@ export const useRideDetails = () => {
   const fetchDetails = useCallback(async () => {
     setIsLoading(true);
     try {
-      const data = await rideService.getRideDetail(rideId, sourceStopId, destinationStopId);
+      const data = await rideService.getMyRideDetail(rideId, sourceStopId, destinationStopId);
       
-      const resolvedSourceId = sourceStopId || data?.myBooking?.sourceStopId;
-      const resolvedDestId = destinationStopId || data?.myBooking?.destinationStopId;
-      
-      const mapped = mapBackendRideToUI(data, undefined, undefined, resolvedSourceId, resolvedDestId);
-      
-      // Merge with navigation params if fields are missing in detail response
-      if (mapped && !mapped.status && route.params.status) {
-        mapped.status = route.params.status;
-      }
-      if (mapped && !mapped.cancellationReason && route.params.cancellationReason) {
-        mapped.cancellationReason = route.params.cancellationReason;
+      // Merge route parameters if fields are missing in raw response
+      if (data) {
+        if (!data.status && route.params.status) {
+          data.status = route.params.status;
+        }
+        if (!data.cancellationReason && route.params.cancellationReason) {
+          data.cancellationReason = route.params.cancellationReason;
+        }
       }
       
-      setRideData(mapped);
+      setRideData(data);
     } catch (error) {
       Logger.error('Fetching ride details failed:', error);
       showNotification(
@@ -52,7 +48,7 @@ export const useRideDetails = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [rideId, sourceStopId, destinationStopId]);
+  }, [rideId, sourceStopId, destinationStopId, route.params]);
 
   useEffect(() => {
     fetchDetails();
@@ -67,13 +63,11 @@ export const useRideDetails = () => {
   }, []);
 
   const isDriver = useMemo(() => {
-    return rideData?.userRole === 'DRIVER';
+    return rideData?.role === 'DRIVER';
   }, [rideData]);
 
   const [isCancelModalVisible, setIsCancelModalVisible] = useState(false);
   const [cancelTarget, setCancelTarget] = useState<{ type: 'RIDE' | 'BOOKING'; id: string | number; isSelf?: boolean } | null>(null);
-  const [selectedReasonId, setSelectedReasonId] = useState<string | null>(null);
-  const [otherReasonText, setOtherReasonText] = useState('');
   const [isCancelling, setIsCancelling] = useState(false);
 
   const [isReportModalVisible, setIsReportModalVisible] = useState(false);
@@ -104,14 +98,12 @@ export const useRideDetails = () => {
     setIsCancelModalVisible(true);
   }, []);
 
-  const handleConfirmCancel = useCallback(async () => {
-    if (!cancelTarget || !selectedReasonId) return;
+  const handleConfirmCancel = useCallback(async ({ categoryId, description }: { categoryId: string; description: string }) => {
+    if (!cancelTarget) return;
 
-    const reason = selectedReasonId === 'other'
-      ? otherReasonText
-      : cancellationReasons.find(r => r.id === selectedReasonId)?.label || '';
+    const reason = description ? `${categoryId}: ${description}` : categoryId;
 
-    const bookingId = cancelTarget.id || rideData?.myBookingId;
+    const bookingId = cancelTarget.id || rideData?.myBooking?.bookingId || rideId;
     setIsCancelling(true);
     try {
       if (cancelTarget.type === 'RIDE') {
@@ -130,15 +122,13 @@ export const useRideDetails = () => {
         }
       }
       setIsCancelModalVisible(false);
-      setSelectedReasonId(null);
-      setOtherReasonText('');
       Alert.alert(t('common.success'), t('cancelRide.successMessage'));
     } catch (error) {
       Alert.alert(t('common.error'), getErrorMessage(error, t('cancelRide.errorMessage')));
     } finally {
       setIsCancelling(false);
     }
-  }, [cancelTarget, selectedReasonId, otherReasonText, cancellationReasons, rideData, fetchDetails, navigation, rideId, t]);
+  }, [cancelTarget, rideData, fetchDetails, navigation, rideId, t]);
 
   const handleCancelRide = useCallback(() => {
     handleOpenCancelModal('RIDE', rideId, true);
@@ -149,7 +139,7 @@ export const useRideDetails = () => {
   }, [handleOpenCancelModal]);
 
   const handleCancelOwnBooking = useCallback(() => {
-    handleOpenCancelModal('BOOKING', rideData?.myBookingId || 0, true);
+    handleOpenCancelModal('BOOKING', rideData?.myBooking?.bookingId || 0, true);
   }, [rideData, handleOpenCancelModal]);
 
   const handleDriverProfile = useCallback(() => {
@@ -158,25 +148,36 @@ export const useRideDetails = () => {
 
   const handleChat = useCallback(() => {
     const targetName = isDriver ? t('rideDetails.passengers') : (rideData?.driver?.name || t('rideDetails.driver'));
+    const startLoc = rideData?.stops?.[0]?.stopName?.split(',')[0] || '';
+    const endLoc = rideData?.stops?.[rideData?.stops.length - 1]?.stopName?.split(',')[0] || '';
+    const startTimeStr = rideData?.startTime 
+      ? new Date(rideData.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      : '';
+    const dateStr = rideData?.startTime
+      ? new Date(rideData.startTime).toLocaleDateString()
+      : '';
+
     (navigation.navigate as any)('ChatDetails', { 
-      userId:  rideData?.driver?.id,
+      userId: isDriver 
+        ? (rideData?.passengers?.[0]?.passengerId) 
+        : (rideData?.driver?.driverId || rideData?.driver?.userId),
       rideId: rideId,
       name: targetName,
-      avatarUri: isDriver ? undefined : rideData?.driver?.avatar,
+      avatarUri: isDriver ? undefined : rideData?.driver?.photoUrl,
       rideInfo: {
-        pickup: rideData?.timeline?.[0]?.location || '',
-        dropoff: rideData?.timeline?.[rideData?.timeline.length - 1]?.location || '',
-        date: rideData?.departureDate || '',
-        time: rideData?.departureTime || '',
+        pickup: startLoc,
+        dropoff: endLoc,
+        date: dateStr,
+        time: startTimeStr,
       }
     });
   }, [navigation, rideId, rideData, isDriver, t]);
 
   const handleViewRoute = useCallback((index?: number) => {
     if (index === undefined) return;
-    const point = rideData?.timeline?.[index];
+    const point = rideData?.stops?.[index];
     if (point) {
-      Alert.alert(t('common.openingMap'), `${t('common.navigatingTo')}: ${point.location}`);
+      Alert.alert(t('common.openingMap'), `${t('common.navigatingTo')}: ${point.stopName.split(',')[0]}`);
     }
   }, [rideData, t]);
 
@@ -232,6 +233,7 @@ export const useRideDetails = () => {
       premiumSuv: t('rideDetails.premiumSuv'),
       swiftBike: t('rideDetails.swiftBike'),
       standardVehicle: t('rideDetails.standardVehicle'),
+      cancellationReason: t('rideDetails.cancellationReason'),
     }), [t]),
 
     handleBack,
@@ -245,17 +247,13 @@ export const useRideDetails = () => {
     handleCancelOwnBooking,
     isCancelModalVisible,
     setIsCancelModalVisible,
-    selectedReasonId,
-    setSelectedReasonId,
-    otherReasonText,
-    setOtherReasonText,
     cancellationReasons,
     handleConfirmCancel,
     isCancelling,
+    cancelTarget,
     isReportModalVisible,
     setIsReportModalVisible,
     handleReportRide,
     handleReportSubmit,
   };
 };
-

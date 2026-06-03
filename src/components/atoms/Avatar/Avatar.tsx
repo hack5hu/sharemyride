@@ -20,14 +20,40 @@ export const Avatar: React.FC<AvatarProps> = ({
   status = 'none',
   isVerified = false,
   style,
+  iconName,
 }) => {
   const theme = useTheme();
+
+  const getIconSize = () => {
+    switch (size) {
+      case 'sm':
+        return moderateScale(20);
+      case 'lg':
+        return moderateScale(40);
+      case 'xl':
+        return moderateScale(60);
+      default:
+        return moderateScale(32);
+    }
+  };
 
   const renderContent = () => {
     const hasSource = source && (typeof source === 'number' || (source as any).uri);
     
     if (hasSource) {
       return <AvatarImage source={source} size={size} />;
+    }
+
+    if (iconName) {
+      return (
+        <PlaceholderContainer size={size}>
+          <MaterialIcon 
+            name={iconName} 
+            size={getIconSize()} 
+            color={theme.colors.primary} 
+          />
+        </PlaceholderContainer>
+      );
     }
 
     const getInitials = (name?: string) => {
@@ -39,7 +65,7 @@ export const Avatar: React.FC<AvatarProps> = ({
     
     return (
       <PlaceholderContainer size={size}>
-        <Typography variant="title" size="lg" weight="bold" color={theme.colors.on_primary_container}>
+        <Typography variant="title" size="lg" weight="bold" color={theme.colors.on_surface_variant}>
           {getInitials(placeholder)}
         </Typography>
       </PlaceholderContainer>

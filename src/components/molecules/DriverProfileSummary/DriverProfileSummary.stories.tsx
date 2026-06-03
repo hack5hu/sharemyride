@@ -12,8 +12,24 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const DriverHost: Story = {
   args: {
-    rating: 4.5
+    name: '',
+    rating: 0,
+    vehicleInfo: 'Your Vehicle',
+    avatarUri: '',
+    isDriver: true,
+    iconName: 'directions-car',
+  },
+};
+
+export const Passenger: Story = {
+  args: {
+    name: 'one zero',
+    rating: 5,
+    vehicleInfo: 'SEDAN (DL3C-XX-1234)',
+    avatarUri: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb',
+    isDriver: false,
+    price: '₹230',
   },
 };

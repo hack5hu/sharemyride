@@ -170,6 +170,24 @@ const rideService = {
       throw error;
     }
   },
+  getMyRideDetail: async (rideId: string | number, sourceStopId?: number, destinationStopId?: number) => {
+    try {
+      let url = API_ENDPOINTS.RIDE.GET_MY_RIDE_DETAIL(rideId);
+      const queryParams: string[] = [];
+      if (sourceStopId) queryParams.push(`sourceStopId=${sourceStopId}`);
+      if (destinationStopId) queryParams.push(`destinationStopId=${destinationStopId}`);
+      
+      if (queryParams.length > 0) {
+        url += `?${queryParams.join('&')}`;
+      }
+
+      const response = await apiClient.get(url);
+      return response.data;
+    } catch (error) {
+      console.error('Fetching my ride details failed:', error);
+      throw error;
+    }
+  },
   updateBookingStatus: async (bookingId: string | number, status: 'CONFIRMED' | 'REJECTED') => {
     try {
       const url = `${API_ENDPOINTS.RIDE.UPDATE_BOOKING_STATUS(bookingId)}?status=${status}`;
