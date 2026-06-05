@@ -116,6 +116,53 @@ export const authService = {
     }
   },
 
+  /**
+   * Complete login for a NON-Truecaller user verified via Truecaller's drop-call /
+   * IM-OTP flow. The native SDK returns an `accessToken` once verification succeeds;
+   * we send ONLY that token (plus device/push metadata) to the backend.
+   *
+   * BACKEND REQUIREMENT: the server must validate this accessToken against
+   * Truecaller's non-Truecaller-user server-side validation API
+   * (https://docs.truecaller.com/.../non-truecaller-user-verification/server-side-validation)
+   * and derive the phone number from the validated response — do NOT trust any
+   * client-supplied phone number. Response shape matches the OTP/OAuth login
+   * (token, refreshToken, userId, userProfileCompleted).
+   */
+  truecallerVerifyLogin: async (
+    accessToken: string,
+    deviceId?: string | null,
+    fcmToken?: string | null
+  ): Promise<{ status: number; data: VerifyOtpResponse }> => {
+    try {
+      const payload: any = { accessToken, isTrueCaller: true };
+      if (deviceId) payload.deviceId = deviceId;
+      if (fcmToken) payload.fcmToken = fcmToken;
+
+      const response = await apiClient.post<VerifyOtpResponse>(
+        API_ENDPOINTS.AUTH.VERIFY_OTP,
+        payload
+      );
+
+      if (response.data.status === 'success' || response.status === 200) {
+        await Promise.all([
+          Keychain.setGenericPassword('auth_token', response.data.token, {
+            service: 'auth_token',
+          }),
+          Keychain.setGenericPassword('refresh_token', response.data.refreshToken, {
+            service: 'refresh_token',
+          }),
+        ]);
+      }
+
+      return { status: response.status, data: response.data };
+    } catch (error: any) {
+      if (error.response) {
+        throw new Error(error.response.data.message || 'Truecaller verification failed');
+      }
+      throw new Error('Network error. Please try again.');
+    }
+  },
+
   logout: async (): Promise<void> => {
     try {
       const refreshCreds = await Keychain.getGenericPassword({ service: 'refresh_token' });

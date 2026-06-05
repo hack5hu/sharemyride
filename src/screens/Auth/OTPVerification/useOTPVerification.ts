@@ -9,16 +9,35 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
+import { useTruecallerVerification } from '@/hooks/useTruecallerVerification';
 
 export const useOTPVerification = () => {
   const [timer, setTimer] = useState(45);
   const [loading, setLoading] = useState(false);
   const [otpValue, setOtpValue] = useState('');
   const route = useRoute<any>();
-  const { phoneNumber } = route.params || {};
+  const { phoneNumber, mode } = route.params || {};
+  const isTruecaller = mode === 'truecaller';
   const { t } = useTranslation();
 
   const { setAuth } = useAuthStore();
+
+  // In Truecaller mode the OTP is finalized natively; backend login happens
+  // automatically when the SDK emits 'verification_complete'.
+  const { submitOtp } = useTruecallerVerification(
+    {
+      onSuccess: () => setLoading(false),
+      onFailure: (message) => {
+        setLoading(false);
+        showNotification(
+          NotificationType.ERROR,
+          t('notification.defaultErrorTitle'),
+          message || t('notification.defaultErrorMessage')
+        );
+      },
+    },
+    isTruecaller
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -39,6 +58,23 @@ export const useOTPVerification = () => {
         t('notification.defaultErrorTitle'),
         t('notification.defaultErrorMessage')
       );
+      return;
+    }
+
+    // Truecaller (non-Truecaller-user) mode: finalize via the native SDK; the
+    // backend login is triggered by the 'verification_complete' event.
+    if (isTruecaller) {
+      setLoading(true);
+      try {
+        await submitOtp(code);
+      } catch (error: any) {
+        setLoading(false);
+        showNotification(
+          NotificationType.ERROR,
+          t('notification.defaultErrorTitle'),
+          getErrorMessage(error, t('notification.defaultErrorMessage'))
+        );
+      }
       return;
     }
 
@@ -104,6 +140,11 @@ export const useOTPVerification = () => {
 
   const handleResend = async () => {
     setTimer(45);
+    // Truecaller-mode resend is driven by the SDK (TTL expiry retriggers the flow);
+    // the SMS resend endpoint doesn't apply here.
+    if (isTruecaller) {
+      return;
+    }
     try {
       await authService.resendOtp(phoneNumber);
     } catch (error: any) {

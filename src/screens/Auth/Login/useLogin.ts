@@ -1,9 +1,11 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { useFocusEffect } from '@react-navigation/native';
 import { authService } from '@/serviceManager/authService';
-import { Alert, Keyboard } from 'react-native';
+import { Alert, Keyboard, Platform } from 'react-native';
+import { truecallerVerify } from '@/serviceManager/truecallerVerify';
+import { useTruecallerVerification } from '@/hooks/useTruecallerVerification';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
@@ -24,6 +26,11 @@ export const useLogin = () => {
   const navigation = useAppNavigation();
   const { t } = useTranslation();
   const { setAuth } = useAuthStore();
+
+  // Phone being verified via the Truecaller non-Truecaller-user (drop-call) flow.
+  const pendingPhoneRef = useRef('');
+  // Once we hand off to the OTP screen, that screen owns the event stream.
+  const [tcHandoff, setTcHandoff] = useState(false);
 
   const verifyTruecaller = useCallback(
     async (params: {
@@ -187,28 +194,78 @@ export const useLogin = () => {
     setIsTermsAccepted((prev) => !prev);
   };
 
-  const handleGetOtp = async (phone: string) => {
-    setLoading(true);
-    try {
-      const response = await authService.login(phone, true);
-      if (response.data.status === 'success' || response.status === 200) {
-        navigation.navigate('OTPVerification', { phoneNumber: phone });
-      } else {
+  // Standard SMS-OTP path (also the fallback when Truecaller verification fails).
+  const smsFallback = useCallback(
+    async (phone: string) => {
+      setLoading(true);
+      try {
+        const response = await authService.login(phone, true);
+        if (response.data.status === 'success' || response.status === 200) {
+          navigation.navigate('OTPVerification', { phoneNumber: phone, mode: 'sms' });
+        } else {
+          showNotification(
+            NotificationType.ERROR,
+            t('notification.defaultErrorTitle'),
+            response.data.message || t('notification.defaultErrorMessage')
+          );
+          setLoading(false);
+        }
+      } catch (error: any) {
         showNotification(
           NotificationType.ERROR,
           t('notification.defaultErrorTitle'),
-          response.data.message || t('notification.defaultErrorMessage')
+          getErrorMessage(error, t('notification.defaultErrorMessage'))
         );
         setLoading(false);
       }
-    } catch (error: any) {
-      showNotification(
-        NotificationType.ERROR,
-        t('notification.defaultErrorTitle'),
-        getErrorMessage(error, t('notification.defaultErrorMessage'))
-      );
-      setLoading(false);
+    },
+    [navigation, t]
+  );
+
+  // Truecaller non-Truecaller-user (drop-call / IM-OTP) verification. Only active
+  // on the Login screen until we hand off to the OTP screen for manual OTP entry.
+  const { startVerification } = useTruecallerVerification(
+    {
+      onPending: () => {
+        // Keep the button in its loading state while Truecaller works.
+        setLoading(true);
+      },
+      onOtpRequired: () => {
+        // Manual OTP entry needed — hand off to the OTP screen in Truecaller mode.
+        setTcHandoff(true);
+        setLoading(false);
+        navigation.navigate('OTPVerification', {
+          phoneNumber: pendingPhoneRef.current,
+          mode: 'truecaller',
+        });
+      },
+      onSuccess: () => {
+        setLoading(false);
+        // RootNavigator switches screens based on the auth store.
+      },
+      onFailure: (message) => {
+        Logger.error('Truecaller verification failed; falling back to SMS OTP', message);
+        smsFallback(pendingPhoneRef.current);
+      },
+    },
+    Platform.OS === 'android' && !tcHandoff
+  );
+
+  const handleGetOtp = async (phone: string) => {
+    pendingPhoneRef.current = phone;
+    setLoading(true);
+
+    // On Android, try Truecaller's drop-call verification first (covers users
+    // without the Truecaller app). Any failure falls back to SMS OTP.
+    if (Platform.OS === 'android' && truecallerVerify.isAvailable()) {
+      const started = await startVerification(phone);
+      if (started) {
+        // Lifecycle is now event-driven (see the useTruecallerVerification hook).
+        return;
+      }
     }
+
+    await smsFallback(phone);
   };
 
   const formik = useFormik({

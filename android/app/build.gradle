@@ -143,4 +143,12 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:34.13.0"))
     implementation("com.google.firebase:firebase-analytics")
+
+    // Truecaller OAuth SDK (v3.x) — provides TcSdk, VerificationCallback,
+    // VerificationDataBundle, TrueProfile, TrueException used by the native
+    // non-Truecaller verification module (TruecallerVerifyModule.kt).
+    // The @ajitpatel28/react-native-truecaller package already pulls this in
+    // transitively; declared here so our Kotlin module compiles against it.
+    // If you hit a version conflict, align this version with the package's.
+    implementation("com.truecaller.android.sdk:truecaller-sdk:3.0.0")
 }
