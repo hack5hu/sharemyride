@@ -10,8 +10,8 @@ import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.truecaller.android.sdk.TrueException
 import com.truecaller.android.sdk.TrueProfile
-import com.truecaller.android.sdk.VerificationCallback
-import com.truecaller.android.sdk.VerificationDataBundle
+import com.truecaller.android.sdk.clients.VerificationCallback
+import com.truecaller.android.sdk.clients.VerificationDataBundle
 import com.truecaller.android.sdk.oAuth.TcOAuthCallback
 import com.truecaller.android.sdk.oAuth.TcOAuthData
 import com.truecaller.android.sdk.oAuth.TcOAuthError
