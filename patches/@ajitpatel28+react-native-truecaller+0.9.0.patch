@@ -1,0 +1,22 @@
+diff --git a/node_modules/@ajitpatel28/react-native-truecaller/android/src/main/java/com/ajit/reactnativetruecaller/TruecallerModule.java b/node_modules/@ajitpatel28/react-native-truecaller/android/src/main/java/com/ajit/reactnativetruecaller/TruecallerModule.java
+index a9a268d..b89aea5 100644
+--- a/node_modules/@ajitpatel28/react-native-truecaller/android/src/main/java/com/ajit/reactnativetruecaller/TruecallerModule.java
++++ b/node_modules/@ajitpatel28/react-native-truecaller/android/src/main/java/com/ajit/reactnativetruecaller/TruecallerModule.java
+@@ -83,12 +83,16 @@ public class TruecallerModule extends ReactContextBaseJavaModule implements Life
+ 
+         @Override
+         public void onFailure(TcOAuthError oauthError) {
+-            emitEvent("TruecallerAndroidFailure", createErrorMap(oauthError.getErrorCode(), oauthError.getErrorMessage()));
++            int errorCode = oauthError != null ? oauthError.getErrorCode() : 0;
++            String errorMessage = oauthError != null ? oauthError.getErrorMessage() : "User cancelled or unknown failure";
++            emitEvent("TruecallerAndroidFailure", createErrorMap(errorCode, errorMessage));
+         }
+ 
+         @Override
+         public void onVerificationRequired(TcOAuthError oauthError) {
+-            emitEvent("TruecallerAndroidVerificationRequired", createErrorMap(oauthError.getErrorCode(), oauthError.getErrorMessage()));
++            int errorCode = oauthError != null ? oauthError.getErrorCode() : 0;
++            String errorMessage = oauthError != null ? oauthError.getErrorMessage() : "Verification required";
++            emitEvent("TruecallerAndroidVerificationRequired", createErrorMap(errorCode, errorMessage));
+         }
+     };

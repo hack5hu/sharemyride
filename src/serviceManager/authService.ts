@@ -54,22 +54,31 @@ export const authService = {
    * @param fcmToken FCM messaging token for push notifications
    */
   verifyOtp: async (
-    phoneNumber: string,
+    phoneNumber?: string,
     otp?: string,
     deviceId?: string | null,
     fcmToken?: string | null,
-    isTrueCaller?: boolean
+    isTrueCaller?: boolean,
+    authorizationCode?: string,
+    codeVerifier?: string
   ): Promise<{ status: number; data: VerifyOtpResponse }> => {
     try {
-      const payload: any = {
-        phoneNumber: Number(phoneNumber),
-      };
-
+      const payload: any = {};
+      
+      if (phoneNumber) {
+        payload.phoneNumber = Number(phoneNumber);
+      }
       if (otp) {
         payload.otp = Number(otp);
       }
       if (isTrueCaller) {
         payload.isTrueCaller = true;
+      }
+      if (authorizationCode) {
+        payload.authorizationCode = authorizationCode;
+      }
+      if (codeVerifier) {
+        payload.codeVerifier = codeVerifier;
       }
 
       if (deviceId) {
