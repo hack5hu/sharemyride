@@ -33,7 +33,7 @@ export const RideComfortSection: React.FC<RideComfortSectionProps> = ({ features
 
   const preferenceFeatures = features.filter(f => !f.startsWith('music:'));
   const musicFeature = features.find(f => f.startsWith('music:'));
-  const musicGenre = musicFeature?.replace('music:', '');
+  const musicGenre = musicFeature?.replace('music:', '')?.split(',').join(', ');
 
   if (preferenceFeatures.length === 0 && !musicGenre) return null;
 

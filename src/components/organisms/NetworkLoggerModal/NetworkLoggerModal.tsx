@@ -19,9 +19,10 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
   const [selectedLog, setSelectedLog] = useState<NetworkLog | null>(null);
   const [activeTab, setActiveTab] = useState<'api' | 'ola'>('api');
 
-  const filteredLogs = logs.filter(log => 
-    activeTab === 'ola' ? log.url.includes('olamaps.io') : !log.url.includes('olamaps.io')
-  );
+  const filteredLogs = logs.filter(log => {
+    const url = log?.url || '';
+    return activeTab === 'ola' ? url.includes('olamaps.io') : !url.includes('olamaps.io');
+  });
 
   const handleCopy = (text: string, label: string) => {
     Clipboard.setString(text);

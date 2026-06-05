@@ -23,6 +23,7 @@ interface PassengerManagementProps {
   passengers?: Passenger[];
   seatsLeft: number;
   onCancelPassenger?: (id: string) => void;
+  onPassengerPress?: (id: string) => void;
   hideActions?: boolean;
   vehicleType?: string;
 }
@@ -43,6 +44,7 @@ export const PassengerManagement: React.FC<PassengerManagementProps> = React.mem
   passengers = [],
   seatsLeft,
   onCancelPassenger,
+  onPassengerPress,
   hideActions = false,
   vehicleType,
 }) => {
@@ -130,7 +132,11 @@ export const PassengerManagement: React.FC<PassengerManagementProps> = React.mem
       ) : isDriver ? (
         <S.PassengerList>
           {passengers.map((p, i) => (
-            <S.PassengerCard key={p.bookingId || p.id || i}>
+            <S.PassengerCard 
+              key={p.bookingId || p.id || i}
+              onPress={() => onPassengerPress?.(p.id || p.bookingId || '')}
+              disabled={!onPassengerPress}
+            >
               <Avatar source={{ uri: p.photoUrl }} placeholder={p.name} size="sm" />
               <S.PassengerInfo>
                 <Typography variant="body" size="sm" weight="bold">
@@ -158,7 +164,11 @@ export const PassengerManagement: React.FC<PassengerManagementProps> = React.mem
       ) : (
         <S.PassengerList>
           {passengers.map((p, i) => (
-            <S.PassengerCard key={p.bookingId || p.id || i}>
+            <S.PassengerCard 
+              key={p.bookingId || p.id || i}
+              onPress={() => onPassengerPress?.(p.id || p.bookingId || '')}
+              disabled={!onPassengerPress}
+            >
               <Avatar source={{ uri: p.photoUrl }} placeholder={p.name} size="sm" />
               <S.PassengerInfo>
                 <Typography variant="body" size="sm" weight="bold">

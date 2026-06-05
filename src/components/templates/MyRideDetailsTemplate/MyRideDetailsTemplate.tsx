@@ -16,6 +16,7 @@ import { useLocale } from '@/constants/localization';
 import { Button } from '@/components/atoms/Button';
 import { DriverCard } from '@/components/templates/RideInformationTemplate/components/DriverCard';
 import { CancellationReasonBox } from '@/components/templates/RideInformationTemplate/components/CancellationReasonBox';
+import { FareSummaryRow } from '@/components/templates/RideInformationTemplate/components/FareSummaryRow';
 
 export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> = React.memo(({
   ride,
@@ -28,6 +29,8 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> = React
   onCancelRide,
   onCancelPassenger,
   onReportRide,
+  handlePassengerProfile,
+  handleDriverProfile,
   t,
 }) => {
   const theme = useTheme();
@@ -77,7 +80,7 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> = React
       list.push('autoApproval');
     }
     if (prefs.musicPreference) {
-      list.push(`music:${prefs.musicPreference.split(',')[0]}`);
+      list.push(`music:${prefs.musicPreference}`);
     }
     return list;
   }, [ride?.preferences]);
@@ -100,9 +103,9 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> = React
       id: p.passengerId,
       name: p.name,
       photoUrl: p.photoUrl,
-      segment: `${p.sourceStopName.split(',')[0].trim()} → ${p.destinationStopName.split(',')[0].trim()}`,
-      seatsBooked: p.seatCount || 1,
-      seatId: (p.seatIds || []).map(String),
+      segment: p.segment || `${p.sourceStopName?.split(',')[0].trim() || 'Unknown'} → ${p.destinationStopName?.split(',')[0].trim() || 'Unknown'}`,
+      seatsBooked: p.seatCount || p.seatsBooked || 1,
+      seatId: (p.seatIds || p.seatId || []).map(String),
     }));
   }, [ride?.passengers]);
 
@@ -144,6 +147,9 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> = React
               <CancellationReasonBox cancellationReason={ride.cancellationReason} />
             )}
 
+            {/* Fare Summary */}
+            {!isDriver && <FareSummaryRow ride={ride} />}
+
             {/* Route Timeline */}
             <S.SectionCard>
               <S.SectionLabelRow>
@@ -168,7 +174,7 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> = React
             {!isDriver && driverData && (
               <DriverCard
                 driver={driverData}
-                handleDriverProfile={() => {}}
+                handleDriverProfile={() => handleDriverProfile?.(driverData.id)}
                 handleChat={handleChat}
                 showChat={true}
               />
@@ -191,6 +197,7 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> = React
               passengers={passengerData}
               seatsLeft={ride.availableSeats ?? ride.seatsLeft ?? 0}
               onCancelPassenger={onCancelPassenger}
+              onPassengerPress={handlePassengerProfile}
               hideActions={isArchived}
               vehicleType={ride.vehicle?.type}
             />

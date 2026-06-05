@@ -32,7 +32,7 @@ export const PassengerList = styled.View`
   gap: ${verticalScale(10)}px;
 `;
 
-export const PassengerCard = styled.View`
+export const PassengerCard = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   padding: ${moderateScale(14)}px;

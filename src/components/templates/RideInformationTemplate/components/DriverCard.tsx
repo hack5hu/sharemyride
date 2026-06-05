@@ -16,6 +16,7 @@ export interface DriverCardProps {
     driverPhotoUrl?: string;
     rating: number;
     rideCount: number;
+    isVerified?: boolean;
   };
   handleDriverProfile: () => void;
   handleChat: () => void;
@@ -40,9 +41,11 @@ export const DriverCard: React.FC<DriverCardProps> = React.memo(({
             size="md"
             border
           />
-          <S.BadgePin>
-            <VerifiedBadge size={14} />
-          </S.BadgePin>
+          {driver.isVerified && (
+            <S.BadgePin>
+              <VerifiedBadge size={20} />
+            </S.BadgePin>
+          )}
         </S.AvatarWrapper>
 
         <S.DriverTextGroup>

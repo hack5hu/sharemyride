@@ -36,7 +36,7 @@ export interface MyRidesHookData {
   onRefresh: () => void;
   onLoadMore: () => void;
   hasMore: boolean;
-  currentRides: RideListItem[];
+  getTabData: (tab: MyRidesTab) => RideListItem[];
   drafts: any[];
   mappedRequests: any[];
   hasRequests: boolean;

@@ -11,6 +11,7 @@ import { Logger } from '@/utils/logger';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
+import { navigate } from '@/navigation/navigationService';
 
 export const useRideDetails = () => {
   const navigation = useAppNavigation();
@@ -143,8 +144,14 @@ export const useRideDetails = () => {
   }, [rideData, handleOpenCancelModal]);
 
   const handleDriverProfile = useCallback(() => {
-    // Navigation to driver profile would go here
-  }, []);
+    if (rideData?.driver?.id) {
+      navigate('UserProfileDetail', { userId: rideData.driver.id });
+    }
+  }, [navigate, rideData]);
+
+  const handlePassengerProfile = useCallback((id: string) => {
+    navigate('UserProfileDetail', { userId: id });
+  }, [navigate]);
 
   const handleChat = useCallback(() => {
     const targetName = isDriver ? t('rideDetails.passengers') : (rideData?.driver?.name || t('rideDetails.driver'));
@@ -241,6 +248,7 @@ export const useRideDetails = () => {
     handleViewRoute,
     handleCopyAddress,
     handleDriverProfile,
+    handlePassengerProfile,
     handleChat,
     handleCancelRide,
     handleCancelPassenger,

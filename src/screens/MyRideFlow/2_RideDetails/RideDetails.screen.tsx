@@ -19,6 +19,8 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
     handleViewRoute, 
     handleCopyAddress,
     handleChat,
+    handleDriverProfile,
+    handlePassengerProfile,
     handleCancelRide,
     handleCancelPassenger,
     handleCancelOwnBooking,
@@ -53,6 +55,8 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
         handleViewRoute={handleViewRoute}
         handleCopyAddress={handleCopyAddress}
         handleChat={handleChat}
+        handleDriverProfile={handleDriverProfile}
+        handlePassengerProfile={handlePassengerProfile}
         isDriver={isDriver}
         onCancelRide={handleCancelRide}
         onCancelPassenger={(id) => (isDriver ? handleCancelPassenger(id) : handleCancelOwnBooking())}

@@ -8,6 +8,8 @@ export interface MyRideDetailsTemplateProps {
   isDriver: boolean;
   onCancelRide: () => void;
   onCancelPassenger: (id: string) => void;
+  handlePassengerProfile?: (id: string) => void;
+  handleDriverProfile?: (id: string) => void;
   onReportRide?: () => void;
   t: any;
 }

@@ -128,12 +128,17 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
     }
   }, [navigate, ride]);
 
+  const handlePassengerProfile = useCallback((id: string) => {
+    navigate('UserProfileDetail', { userId: id });
+  }, [navigate]);
+
   return {
     t,
     handleBack,
     handleBook,
     handleChat,
     handleDriverProfile,
+    handlePassengerProfile,
     handleViewRoute,
     handleCopyAddress,
     handleExternalMapOpen,

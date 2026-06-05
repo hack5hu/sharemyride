@@ -145,8 +145,13 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
       selectedSeatIds,
       publishVehicleType,
       vehicleDetails,
+      vehicleId,
       preferences,
       price,
+      fullJourneyPrice,
+      frontSeatPrice,
+      premiumEnabled,
+      premiumPercentage,
       routeDetails,
       segmentPrices,
       selectedRoute,
@@ -155,7 +160,7 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
 
     addDraft(currentState, editingDraftId);
     clearPublishState();
-    (navigation.navigate as any)('MyRides');
+    (navigation.navigate as any)('MyRides', { tab: 'drafts' });
   }, [
     addDraft, editingDraftId, navigation, startLocation, destinationLocation, middleStops, 
     departureDate, departureTime, seatCount, selectedSeatIds, publishVehicleType, vehicleDetails, 

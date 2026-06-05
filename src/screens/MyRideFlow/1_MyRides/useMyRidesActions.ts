@@ -26,6 +26,7 @@ export const useMyRidesActions = (fetchInitialRides: () => void) => {
     if (s.selectedSeatIds) publishStore.setSelectedSeatIds(s.selectedSeatIds);
     if (s.publishVehicleType) publishStore.setPublishVehicleType(s.publishVehicleType);
     if (s.vehicleDetails) publishStore.setVehicleDetails(s.vehicleDetails);
+    if (s.vehicleId) publishStore.setVehicleId(s.vehicleId);
     if (s.preferences) publishStore.setPreferences(s.preferences);
     if (s.routeDetails) publishStore.setRouteDetails(s.routeDetails);
     if (s.selectedRoute) publishStore.setSelectedRoute(s.selectedRoute);

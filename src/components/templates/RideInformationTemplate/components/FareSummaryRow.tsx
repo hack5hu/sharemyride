@@ -14,8 +14,12 @@ export const FareSummaryRow: React.FC<FareSummaryRowProps> = React.memo(({ ride 
   const theme = useTheme();
   const translations = useLocale();
 
-  const price = ride.bookingPrice?.toFixed(0) ?? ride.price?.toFixed(0) ?? '0';
-  const seatInfo = ride.seatNames?.join(', ') || `${ride.seatsBooked || 0} ${translations.rideDetails.seatLabel}`;
+  const booking = ride.myBooking;
+  const priceVal = booking?.price ?? ride.bookingPrice ?? ride.price ?? 0;
+  const price = Number(priceVal).toFixed(0);
+  
+  const seatsCount = booking?.seatCount ?? ride.seatsBooked ?? 0;
+  const seatInfo = ride.seatNames?.join(', ') || `${seatsCount} ${translations.rideDetails.seatLabel}`;
   const paymentMethod = ride.paymentMethod ?? translations.rideDetails.cashLabel;
 
   return (

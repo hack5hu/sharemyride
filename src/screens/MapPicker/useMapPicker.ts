@@ -127,11 +127,11 @@ export const useMapPicker = () => {
           const mappedResults: Location[] = predictions
             .filter((p: OlaPrediction) => p?.geometry?.location?.lat != null && p?.geometry?.location?.lng != null)
             .map((p: OlaPrediction) => ({
-              id: p.place_id,
-              name: p.structured_formatting.main_text,
-              address: p.description,
-              latitude: p.geometry.location.lat,
-              longitude: p.geometry.location.lng,
+              id: p?.place_id,
+              name: p?.structured_formatting?.main_text || p?.description,
+              address: p?.description,
+              latitude: p?.geometry?.location?.lat,
+              longitude: p?.geometry?.location?.lng,
             }));
           setSearchResults(mappedResults);
         } catch (error) {

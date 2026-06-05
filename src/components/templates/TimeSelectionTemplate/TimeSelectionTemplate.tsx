@@ -36,7 +36,7 @@ export const TimeSelectionTemplate: React.FC<TimeSelectionTemplateProps> = ({
 
   return (
     <ScreenShell
-      title={'Set your departure time'}
+      title={t.headerTitle}
       onBack={onBackPress}
     >
       <ScrollView

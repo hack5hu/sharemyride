@@ -35,6 +35,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = R
   isDriver = false,
   onCancelRide,
   onCancelPassenger,
+  handlePassengerProfile,
   showVehicleDetails = false,
   onReportRide,
 }) => {
@@ -156,6 +157,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = R
               passengers={ride.passengers}
               seatsLeft={ride.seatsLeft}
               onCancelPassenger={onCancelPassenger}
+              onPassengerPress={handlePassengerProfile}
               hideActions={isArchived}
               vehicleType={ride.vehicle?.type}
             />

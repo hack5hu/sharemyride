@@ -11,6 +11,7 @@ export const RideInformationScreen: React.FC<RideInformationProps> = memo(({ rou
     handleBook, 
     handleChat,
     handleDriverProfile,
+    handlePassengerProfile,
     handleViewRoute, 
     handleCopyAddress, 
     ride,
@@ -34,6 +35,7 @@ export const RideInformationScreen: React.FC<RideInformationProps> = memo(({ rou
         handleBook={handleBook}
         handleChat={handleChat}
         handleDriverProfile={handleDriverProfile}
+        handlePassengerProfile={handlePassengerProfile}
         handleViewRoute={handleViewRoute}
         handleCopyAddress={handleCopyAddress}
         isLoading={isLoading}

@@ -68,6 +68,7 @@ export interface RideInformationTemplateProps {
   isDriver?: boolean;
   onCancelRide?: () => void;
   onCancelPassenger?: (id: string) => void;
+  handlePassengerProfile?: (id: string) => void;
   showVehicleDetails?: boolean;
   onReportRide?: () => void;
 }
