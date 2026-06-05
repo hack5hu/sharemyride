@@ -55,20 +55,22 @@ export const authService = {
    */
   verifyOtp: async (
     phoneNumber: string,
-    otp: string,
+    otp?: string,
     deviceId?: string | null,
-    fcmToken?: string | null
+    fcmToken?: string | null,
+    isTrueCaller?: boolean
   ): Promise<{ status: number; data: VerifyOtpResponse }> => {
     try {
-      const payload: {
-        phoneNumber: number;
-        otp: number;
-        deviceId?: string;
-        fcmToken?: string;
-      } = {
+      const payload: any = {
         phoneNumber: Number(phoneNumber),
-        otp: Number(otp),
       };
+
+      if (otp) {
+        payload.otp = Number(otp);
+      }
+      if (isTrueCaller) {
+        payload.isTrueCaller = true;
+      }
 
       if (deviceId) {
         payload.deviceId = deviceId;

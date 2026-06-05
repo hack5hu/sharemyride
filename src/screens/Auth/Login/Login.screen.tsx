@@ -24,6 +24,8 @@ export const LoginScreen: React.FC = () => {
     isValid,
     isTermsAccepted,
     toggleTerms,
+    handleTruecallerLogin,
+    isTruecallerSupported,
   } = useLogin();
   const t = useLocale();
 
@@ -58,6 +60,7 @@ export const LoginScreen: React.FC = () => {
               loading={loading}
               isTermsAccepted={isTermsAccepted}
               onToggleTerms={toggleTerms}
+              onTruecallerLogin={isTruecallerSupported ? handleTruecallerLogin : undefined}
             />
           </LoginCard>
         </ContentWrapper>

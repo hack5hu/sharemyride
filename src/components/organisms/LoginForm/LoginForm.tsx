@@ -4,7 +4,8 @@ import { Button } from '../../atoms/Button';
 import { InfoBox } from '../../molecules/InfoBox';
 import { Checkbox } from '../../atoms/Checkbox';
 import { useLocale } from '@/constants/localization';
-import { FormContainer, TermsContainer, TermsText } from './LoginForm.styles';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { FormContainer, TermsContainer, TermsText, TruecallerRow, TruecallerText } from './LoginForm.styles';
 import { LoginFormProps } from './types';
 
 export const LoginForm: React.FC<LoginFormProps> = ({
@@ -17,6 +18,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   loading,
   isTermsAccepted,
   onToggleTerms,
+  onTruecallerLogin,
 }) => {
   const t = useLocale();
 
@@ -32,11 +34,21 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         value={value}
         onChangeText={onChangeText}
         onBlur={onBlur}
+        onFocus={onTruecallerLogin}
         error={error}
         keyboardType="phone-pad"
         maxLength={10}
         editable={!loading}
       />
+      
+      {onTruecallerLogin && (
+        <TruecallerRow onPress={onTruecallerLogin} disabled={loading}>
+          <TruecallerText>Or, Login with </TruecallerText>
+          <Icon name="verified-user" size={16} color="#0052FF" /> 
+          <TruecallerText style={{ color: '#0052FF', fontWeight: 'bold' }}>truecaller</TruecallerText>
+          <Icon name="keyboard-arrow-right" size={16} color="#0052FF" />
+        </TruecallerRow>
+      )}
 
       <TermsContainer>
         <Checkbox 

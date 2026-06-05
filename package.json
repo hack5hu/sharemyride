@@ -16,6 +16,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@ajitpatel28/react-native-truecaller": "^0.9.0",
     "@gorhom/bottom-sheet": "^5.2.14",
     "@maplibre/maplibre-react-native": "^11.0.0-beta.20",
     "@notifee/react-native": "^9.1.8",

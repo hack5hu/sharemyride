@@ -50,3 +50,17 @@ export const Footer = styled.View`
   border-top-color: ${({ theme }) => theme.colors.outline_variant};
   align-items: center;
 `;
+
+export const TruecallerRow = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: ${verticalScale(12)}px;
+`;
+
+export const TruecallerText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-size: 14px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.on_surface_variant};
+  margin-right: ${scale(4)}px;
+`;

@@ -8,4 +8,5 @@ export interface LoginFormProps {
   loading?: boolean;
   isTermsAccepted: boolean;
   onToggleTerms: () => void;
+  onTruecallerLogin?: () => void;
 }
