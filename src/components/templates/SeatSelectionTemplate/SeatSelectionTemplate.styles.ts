@@ -27,7 +27,7 @@ export const BriefingCard = styled.View`
   justify-content: space-between;
   align-items: center;
   elevation: 2;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.04;
   shadow-radius: 20px;
@@ -53,7 +53,7 @@ export const FixedFooter = styled.View`
   padding-bottom: ${verticalScale(34)}px;
   background-color: ${({ theme }) => theme.colors.surface};
   elevation: 8;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px -4px;
   shadow-opacity: 0.08;
   shadow-radius: 12px;

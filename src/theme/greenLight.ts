@@ -63,6 +63,7 @@ export const LightTheme: Theme = {
     on_tertiary_fixed_variant: '#3a3d8f',
     read_receipt: '#34B7F1',
     warning: '#EAB308',
+    truecaller: '#0052ff',
   },
 
   roundness: {

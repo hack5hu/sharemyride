@@ -106,7 +106,7 @@ export const CardSection = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_low};
   padding: ${moderateScale(20)}px;
   border-radius: ${moderateScale(24)}px;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.03;
   shadow-radius: 12px;

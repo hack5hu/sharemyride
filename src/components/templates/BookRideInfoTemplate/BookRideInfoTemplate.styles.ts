@@ -344,7 +344,7 @@ export const RecentItem = styled.TouchableOpacity`
   margin-bottom: ${verticalScale(16)}px;
   border-width: 1.5px;
   border-color: ${({ theme }) => `${theme.colors.outline_variant}10`};
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 2px;
   shadow-opacity: 0.03;
   shadow-radius: 8px;

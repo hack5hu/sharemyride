@@ -102,7 +102,7 @@ export const PreferenceItem = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   border-radius: ${moderateScale(16)}px;
   margin-bottom: ${moderateScale(12)}px;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.02;
   shadow-radius: 10px;

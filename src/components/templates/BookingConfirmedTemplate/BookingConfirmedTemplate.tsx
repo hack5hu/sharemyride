@@ -27,7 +27,7 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
-            <MaterialIcons name="check-circle" size={moderateScale(48)} color="#fff" />
+            <MaterialIcons name="check-circle" size={moderateScale(48)} color={theme.colors.on_primary} />
           </S.SuccessIconContainer>
           <S.SuccessTitle>{t.successTitle}</S.SuccessTitle>
           <S.SuccessSubtitle>{t.successSubtitle}</S.SuccessSubtitle>
@@ -108,10 +108,10 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
             >
-              <Typography variant="body" size="md" weight="bold" color="#fff">
+              <Typography variant="body" size="md" weight="bold" color={theme.colors.on_primary}>
                 {t.primaryCTA}
               </Typography>
-              <MaterialIcons name="arrow-forward" size={20} color="#fff" />
+              <MaterialIcons name="arrow-forward" size={20} color={theme.colors.on_primary} />
             </S.PrimaryButton>
           </S.PrimaryButtonWrapper>
 

@@ -51,7 +51,7 @@ export const Badge = styled.View`
 `;
 
 export const BadgeText = styled.Text`
-  color: #FFFFFF;
+  color: ${({ theme }) => theme.colors.on_error};
   font-size: ${moderateScale(9)}px;
   font-family: 'Plus Jakarta Sans';
   font-weight: 800;

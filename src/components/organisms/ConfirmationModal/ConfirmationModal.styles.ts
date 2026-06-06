@@ -8,7 +8,7 @@ export const ModalContainer = styled.View`
   border-radius: ${moderateScale(24)}px;
   padding: ${moderateScale(24)}px;
   align-items: center;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.1;
   shadow-radius: 12px;

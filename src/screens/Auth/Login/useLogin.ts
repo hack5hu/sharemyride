@@ -1,9 +1,9 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useFocusEffect } from '@react-navigation/native';
 import { authService } from '@/serviceManager/authService';
-import { Keyboard } from 'react-native';
+import { Keyboard, Platform } from 'react-native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
@@ -14,6 +14,23 @@ export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const navigation = useAppNavigation();
   const { t } = useTranslation();
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener(
+      Platform.OS === 'android' ? 'keyboardDidShow' : 'keyboardWillShow',
+      () => setIsKeyboardVisible(true)
+    );
+    const hideSubscription = Keyboard.addListener(
+      Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide',
+      () => setIsKeyboardVisible(false)
+    );
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   const {
     isTruecallerSupported,
@@ -82,5 +99,6 @@ export const useLogin = () => {
     handleInputFocus,
     isTruecallerSupported,
     hasDismissedTruecaller,
+    isKeyboardVisible,
   };
 };

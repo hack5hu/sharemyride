@@ -7,7 +7,7 @@ export const SectionCard = styled.View`
   padding: ${moderateScale(16)}px;
   margin-bottom: ${verticalScale(16)}px;
   elevation: 2;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 2px;
   shadow-opacity: 0.05;
   shadow-radius: 8px;

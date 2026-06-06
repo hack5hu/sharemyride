@@ -72,7 +72,7 @@ export const ChatInputSection: React.FC<ChatInputSectionProps> = ({
             <Icon 
               name="send" 
               size={moderateScale(20)} 
-              color="#FFFFFF" 
+              color={theme.colors.on_primary} 
             />
           </SendButton>
         </InputFieldContainer>

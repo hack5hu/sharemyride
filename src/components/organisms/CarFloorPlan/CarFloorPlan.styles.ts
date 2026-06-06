@@ -10,7 +10,7 @@ export const FloorPlanContainer = styled.View`
   align-self: center;
   position: relative;
   elevation: 2;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.1;
   shadow-radius: 8px;

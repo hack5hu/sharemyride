@@ -1,7 +1,7 @@
 export interface LoginFormProps {
   value: string;
   onChangeText: (text: string) => void;
-  onBlur: (e: any) => void;
+  onBlur: (e?: unknown) => void;
   error?: string;
   onSubmit: () => void;
   isValid: boolean;

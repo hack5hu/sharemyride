@@ -15,7 +15,7 @@ export const Knob = styled(Animated.View)`
   height: ${moderateScale(20)}px;
   border-radius: ${moderateScale(10)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 1px;
   shadow-opacity: 0.2;
   shadow-radius: 1px;

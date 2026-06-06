@@ -237,7 +237,7 @@ export const FixedFooter = styled.View`
   padding-bottom: ${verticalScale(34)}px;
   background-color: ${({ theme }) => theme.colors.surface};
   elevation: 8;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px -4px;
   shadow-opacity: 0.08;
   shadow-radius: 12px;
@@ -295,7 +295,7 @@ export const FareSummaryRow = styled.View`
   padding: ${moderateScale(16)}px;
   align-items: center;
   elevation: 1;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 1px;
   shadow-opacity: 0.05;
   shadow-radius: 4px;

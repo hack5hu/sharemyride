@@ -19,7 +19,7 @@ export const Chip = styled.View<{ color: string; selected: boolean }>`
     // For white/very light colors, show a subtle border
     return color.toLowerCase() === '#ffffff' ? theme.colors.outline_variant : 'transparent';
   }};
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 2px;
   shadow-opacity: 0.1;
   shadow-radius: 4px;

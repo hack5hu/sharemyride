@@ -4,7 +4,7 @@ import { verticalScale, moderateScale, scale } from '@/styles';
 
 export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.surface};
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px -8px;
   shadow-opacity: 0.04;
   shadow-radius: 30px;

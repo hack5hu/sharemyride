@@ -54,6 +54,17 @@ export interface LoginTranslations {
   truecallerInvalidCredentials: string;
   continueButton: string;
   orDivider: string;
+  termsOfService: string;
+  privacyPolicy: string;
+  termsPrefix: string;
+  termsAnd: string;
+  termsSuffix: string;
+  needHelp: string;
+  english: string;
+  hindi: string;
+  trustVerified: string;
+  trustSecure: string;
+  trustCommunity: string;
 }
 
 export interface OtpVerificationTranslations {
@@ -176,6 +187,7 @@ export interface DummyContentTranslations {
   helpBody: string;
   termsTitle: string;
   termsBody: string;
+  emailUs: string;
 }
 
 export interface TravelPreferencesTranslations {
