@@ -3,6 +3,10 @@ export type RootStackParamList = {
   Login: undefined;
   OTPVerification: {
     phoneNumber: string;
+    /** 'truecaller' = finalize a non-Truecaller-user verification via the native
+     *  SDK instead of the SMS OTP backend call. Defaults to SMS. */
+    mode?: 'sms' | 'truecaller';
+    ttl?: string;
   };
   ProfileSetup: undefined;
   ProfileHub: undefined;

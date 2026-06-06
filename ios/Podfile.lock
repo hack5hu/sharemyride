@@ -1,4 +1,26 @@
 PODS:
+  - ajit-react-native-truecaller (0.9.0):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - AsyncStorage (3.0.2):
     - hermes-engine
     - RCTRequired
@@ -103,7 +125,7 @@ PODS:
   - hermes-engine (250829098.0.9):
     - hermes-engine/Pre-built (= 250829098.0.9)
   - hermes-engine/Pre-built (250829098.0.9)
-  - MapLibreReactNative (11.1.2):
+  - MapLibreReactNative (11.3.2):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2665,9 +2687,11 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
+  - TrueSDK (0.2.3)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
+  - "ajit-react-native-truecaller (from `../node_modules/@ajitpatel28/react-native-truecaller`)"
   - "AsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -2768,6 +2792,7 @@ DEPENDENCIES:
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - RNWorklets (from `../node_modules/react-native-worklets`)
+  - TrueSDK
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -2787,8 +2812,11 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - PromisesSwift
+    - TrueSDK
 
 EXTERNAL SOURCES:
+  ajit-react-native-truecaller:
+    :path: "../node_modules/@ajitpatel28/react-native-truecaller"
   AsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   BVLinearGradient:
@@ -2992,6 +3020,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  ajit-react-native-truecaller: c1e58601268096d8966a066b5b56e55f325bd15f
   AsyncStorage: b9dbc3eecddb3ec3c5254c8eb57e9018724912d8
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   FBLazyVector: e97c19a5a442429d1988f182a1940fb08df514da
@@ -3007,7 +3036,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
   hermes-engine: d8e2fc1d17b3b6795e84fb9049c07130decad817
-  MapLibreReactNative: 0163e88d7616ef732a955288452c946ad049e0b7
+  MapLibreReactNative: 6333582ea3bd5a76709b363cf7872c638eb754a2
   MMKVCore: 3d16ce9f7d411e135020915fde98a056859a1efa
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   NitroMmkv: ca741ca3e53a3dfa9e2c9ad7082fca3de70a3afb
@@ -3106,8 +3135,9 @@ SPEC CHECKSUMS:
   RNSVG: 7f2453d6a1cb84b5fbc9144f6e6333c196ef784b
   RNVectorIcons: af977c18ed27deba54ed038b439fca2911a08cfc
   RNWorklets: 0d4c7664dfbb168bb4edf5906a0b7c11701677b8
+  TrueSDK: b6f116762c5c33e4a8216e84a2da758a86941eff
   Yoga: 7c1c3b93e408ac46c7ed64b5641ca7161747378d
 
-PODFILE CHECKSUM: 199040c8817dfd9dcb4e7cce7f27a6e1dda89b61
+PODFILE CHECKSUM: 329c6811fe0af15ee1e8eb54b6fef3d3a2c68ce1
 
 COCOAPODS: 1.15.2

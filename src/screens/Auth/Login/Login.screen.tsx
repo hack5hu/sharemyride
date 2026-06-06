@@ -3,6 +3,7 @@ import { Typography } from '@/components/atoms/Typography';
 import { LoginForm } from '@/components/organisms/LoginForm';
 import { useLocale } from '@/constants/localization';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { ZyncRideLogo } from '@/components/atoms/ZyncRideLogo';
 import {
   ScrollContent,
   BackgroundBubble,
@@ -22,10 +23,16 @@ export const LoginScreen: React.FC = () => {
     handleBlur,
     handleSubmit,
     isValid,
-    isTermsAccepted,
-    toggleTerms,
+
+    handleTruecallerLogin,
+    handleInputFocus,
+    isTruecallerSupported,
+    hasDismissedTruecaller,
   } = useLogin();
   const t = useLocale();
+
+  // Truecaller is the active path when it's installed AND user hasn't chosen another method
+  const isTruecallerActive = isTruecallerSupported && !hasDismissedTruecaller;
 
   return (
     <ScreenShell>
@@ -36,12 +43,13 @@ export const LoginScreen: React.FC = () => {
       <ScrollContent showsVerticalScrollIndicator={false}>
         <ContentWrapper>
           <BrandHeader>
-            <LogoText>{t.login.brandName}</LogoText>
+            <ZyncRideLogo width={180} height={60} />
             <Typography
               variant="body"
               size="sm"
               color="on-surface-variant"
               align="center"
+              style={{ marginTop: 12 }}
             >
               {t.login.brandTagline}
             </Typography>
@@ -56,8 +64,10 @@ export const LoginScreen: React.FC = () => {
               onSubmit={handleSubmit}
               isValid={isValid}
               loading={loading}
-              isTermsAccepted={isTermsAccepted}
-              onToggleTerms={toggleTerms}
+
+              onTruecallerLogin={isTruecallerSupported ? handleTruecallerLogin : undefined}
+              onInputFocus={handleInputFocus}
+              isTruecallerActive={isTruecallerActive}
             />
           </LoginCard>
         </ContentWrapper>

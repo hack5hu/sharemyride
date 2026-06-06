@@ -1,9 +1,4 @@
-import { 
-  getMessaging, 
-  requestPermission, 
-  registerDeviceForRemoteMessages, 
-  getToken 
-} from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging';
 import { Logger } from '@/utils/logger';
 
 /**
@@ -13,18 +8,18 @@ import { Logger } from '@/utils/logger';
  */
 export const getFcmToken = async (): Promise<string | null> => {
   try {
-    const messaging = getMessaging();
-    const authStatus = await requestPermission(messaging);
+    const authStatus = await messaging().requestPermission();
     
-    // AUTHORIZED = 1, PROVISIONAL = 2
-    const enabled = authStatus === 1 || authStatus === 2;
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
     if (enabled) {
       // On iOS, device must be registered for remote messages before retrieving the FCM token
-      if (typeof registerDeviceForRemoteMessages === 'function') {
-        await registerDeviceForRemoteMessages(messaging);
+      if (!messaging().isDeviceRegisteredForRemoteMessages) {
+        await messaging().registerDeviceForRemoteMessages();
       }
-      const token = await getToken(messaging);
+      const token = await messaging().getToken();
       Logger.log('[FCM] Token retrieved successfully:', token);
       return token;
     } else {

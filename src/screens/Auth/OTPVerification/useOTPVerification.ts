@@ -15,10 +15,10 @@ export const useOTPVerification = () => {
   const [loading, setLoading] = useState(false);
   const [otpValue, setOtpValue] = useState('');
   const route = useRoute<any>();
-  const { phoneNumber } = route.params || {};
+  const { phoneNumber, mode } = route.params || {};
   const { t } = useTranslation();
-
   const { setAuth } = useAuthStore();
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -41,6 +41,8 @@ export const useOTPVerification = () => {
       );
       return;
     }
+
+
 
     setLoading(true);
     try {
@@ -81,6 +83,12 @@ export const useOTPVerification = () => {
 
         setLoading(false);
 
+        showNotification(
+          NotificationType.SUCCESS,
+          t('notification.welcomeSuccessTitle'),
+          t('notification.welcomeBack')
+        );
+
         // Navigation is handled by RootNavigator reacting to store changes
         // but we can also trigger it here if needed.
         // For now, let's let the RootNavigator handle the switch.
@@ -104,6 +112,7 @@ export const useOTPVerification = () => {
 
   const handleResend = async () => {
     setTimer(45);
+
     try {
       await authService.resendOtp(phoneNumber);
     } catch (error: any) {

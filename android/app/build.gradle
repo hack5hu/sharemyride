@@ -1,7 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
-apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 /**
@@ -109,6 +108,8 @@ android {
             storePassword '123456'
             keyAlias 'abc'
             keyPassword '123456'
+            v1SigningEnabled true
+            v2SigningEnabled true
         }
     }
     buildTypes {

@@ -8,12 +8,19 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
+import { useTruecallerLogin } from './useTruecallerLogin';
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
-  const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const navigation = useAppNavigation();
   const { t } = useTranslation();
+
+  const {
+    isTruecallerSupported,
+    hasDismissedTruecaller,
+    handleTruecallerLogin,
+    handleInputFocus,
+  } = useTruecallerLogin({ setLoading });
 
   useFocusEffect(
     useCallback(() => {
@@ -21,55 +28,46 @@ export const useLogin = () => {
     }, [])
   );
 
-  const toggleTerms = () => {
-    Keyboard.dismiss();
-    setIsTermsAccepted((prev) => !prev);
-  };
-
-  const handleGetOtp = async (phone: string) => {
-    setLoading(true);
-    try {
-      const response = await authService.login(phone, true);
-      
-      if (response.data.status === 'success' || response.status === 200) {
-        navigation.navigate('OTPVerification', { phoneNumber: phone });
-      } else {
+  // Standard SMS-OTP path (also the fallback when Truecaller verification fails).
+  const smsFallback = useCallback(
+    async (phone: string) => {
+      setLoading(true);
+      try {
+        const response = await authService.login(phone, true);
+        if (response.data.status === 'success' || response.status === 200) {
+          navigation.navigate('OTPVerification', { phoneNumber: phone, mode: 'sms' });
+        } else {
+          showNotification(
+            NotificationType.ERROR,
+            t('notification.defaultErrorTitle'),
+            response.data.message || t('notification.defaultErrorMessage')
+          );
+          setLoading(false);
+        }
+      } catch (error: any) {
         showNotification(
           NotificationType.ERROR,
           t('notification.defaultErrorTitle'),
-          response.data.message || t('notification.defaultErrorMessage')
+          getErrorMessage(error, t('notification.defaultErrorMessage'))
         );
         setLoading(false);
       }
-    } catch (error: any) {
-      showNotification(
-        NotificationType.ERROR,
-        t('notification.defaultErrorTitle'),
-        getErrorMessage(error, t('notification.defaultErrorMessage'))
-      );
-      setLoading(false);
-    }
+    },
+    [navigation, t]
+  );
+
+  const handleGetOtp = async (phone: string) => {
+    await smsFallback(phone);
   };
 
   const formik = useFormik({
-    initialValues: {
-      phone: '',
-    },
-    validate: values => {
-      const errors: { phone?: string } = {};
-      if (!values.phone) {
-        errors.phone = 'Phone number is required';
-      } else if (!/^\d{10}$/.test(values.phone)) {
-        errors.phone = 'Please enter a valid 10-digit number';
-      }
-      return errors;
-    },
-    onSubmit: values => {
+    initialValues: { phone: '' },
+    validate: (v) => (/^\d{10}$/.test(v.phone) ? {} : { phone: '' }),
+    onSubmit: (v) => {
       Keyboard.dismiss();
-      handleGetOtp(values.phone);
+      handleGetOtp(v.phone);
     },
   });
-
 
   return {
     loading,
@@ -79,7 +77,10 @@ export const useLogin = () => {
     handleBlur: formik.handleBlur('phone'),
     handleSubmit: formik.handleSubmit,
     isValid: formik.isValid && formik.dirty,
-    isTermsAccepted,
-    toggleTerms,
+
+    handleTruecallerLogin,
+    handleInputFocus,
+    isTruecallerSupported,
+    hasDismissedTruecaller,
   };
 };

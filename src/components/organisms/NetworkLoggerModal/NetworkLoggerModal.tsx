@@ -151,9 +151,19 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                   <S.CodeText>{selectedLog.responseHeaders ? JSON.stringify(selectedLog.responseHeaders, null, 2) : t.noHeaders}</S.CodeText>
                 </S.CodeBlock>
 
-                <S.SectionTitle variant="label" size="xs" color={theme.colors.on_surface_variant} weight="bold">
-                  {t.responseBody}
-                </S.SectionTitle>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <S.SectionTitle variant="label" size="xs" color={theme.colors.on_surface_variant} weight="bold">
+                    {t.responseBody}
+                  </S.SectionTitle>
+                  {!!selectedLog.responseBody && (
+                    <S.CopyButton onPress={() => handleCopy(JSON.stringify(selectedLog.responseBody, null, 2), 'Response Body')}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Icon name="content-copy" size={14} color={theme.colors.on_surface_variant} style={{ marginRight: 4 }} />
+                        <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>Copy Response</Typography>
+                      </View>
+                    </S.CopyButton>
+                  )}
+                </View>
                 <S.CodeBlock>
                   <S.CodeText>{selectedLog.responseBody ? JSON.stringify(selectedLog.responseBody, null, 2) : t.noBody}</S.CodeText>
                 </S.CodeBlock>

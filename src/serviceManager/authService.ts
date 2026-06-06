@@ -1,4 +1,5 @@
 import * as Keychain from 'react-native-keychain';
+import { Platform } from 'react-native';
 import apiClient from './apiClient';
 import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -60,22 +61,18 @@ export const authService = {
     fcmToken?: string | null
   ): Promise<{ status: number; data: VerifyOtpResponse }> => {
     try {
-      const payload: {
-        phoneNumber: number;
-        otp: number;
-        deviceId?: string;
-        fcmToken?: string;
-      } = {
+      const payload: any = {
         phoneNumber: Number(phoneNumber),
         otp: Number(otp),
       };
-
+      
       if (deviceId) {
         payload.deviceId = deviceId;
       }
       if (fcmToken) {
         payload.fcmToken = fcmToken;
       }
+      payload.platform = Platform.OS.toUpperCase();
 
       const response = await apiClient.post<VerifyOtpResponse>(
         API_ENDPOINTS.AUTH.VERIFY_OTP,
@@ -100,6 +97,46 @@ export const authService = {
     } catch (error: any) {
       if (error.response) {
         throw new Error(error.response.data.message || 'OTP Verification failed');
+      }
+      throw new Error('Network error. Please try again.');
+    }
+  },
+
+  truecallerLogin: async (
+    authorizationCode: string,
+    deviceId?: string | null,
+    fcmToken?: string | null,
+    codeVerifier?: string
+  ): Promise<{ status: number; data: VerifyOtpResponse }> => {
+    try {
+      const payload: any = { 
+        authorizationCode,
+        platform: Platform.OS.toUpperCase(),
+      };
+      if (codeVerifier) payload.codeVerifier = codeVerifier;
+      if (deviceId) payload.deviceId = deviceId;
+      if (fcmToken) payload.fcmtoken = fcmToken;
+
+      const response = await apiClient.post<VerifyOtpResponse>(
+        API_ENDPOINTS.AUTH.TRUECALLER_LOGIN,
+        payload
+      );
+
+      if (response.data.status === 'success' || response.status === 200) {
+        await Promise.all([
+          Keychain.setGenericPassword('auth_token', response.data.token, {
+            service: 'auth_token',
+          }),
+          Keychain.setGenericPassword('refresh_token', response.data.refreshToken, {
+            service: 'refresh_token',
+          }),
+        ]);
+      }
+
+      return { status: response.status, data: response.data };
+    } catch (error: any) {
+      if (error.response) {
+        throw new Error(error.response.data.message || 'Truecaller verification failed');
       }
       throw new Error('Network error. Please try again.');
     }

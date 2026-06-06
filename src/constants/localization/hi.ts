@@ -33,18 +33,27 @@ export const hi: Translations = {
     cancelled: 'रद्द किया गया'
   },
   login: {
-    brandName: 'The RPC',
+    brandName: 'ZyncRide',
     brandTagline: 'सत्यापित समुदाय भागीदारों के साथ अपनी यात्रा नेविगेट करें।',
     phoneLabel: 'फोन नंबर',
     phonePlaceholder: '1234567890',
     phoneError: 'कृपया एक वैध फोन नंबर दर्ज करें',
     getOtp: 'ओटीपी प्राप्त करें',
     otpInfoBox:
-      'हम आपके खाते को सुरक्षित रूप से सत्यापित करने के लिए 6-अंकीय कोड भेजेंगे।',
+      'जारी रखकर, आप ZyncRide की सेवा शर्तों और गोपनीयता नीति से सहमत हैं।',
     noAccount: 'खाता नहीं है?',
     signUp: 'साइन अप करें',
     orContinueWith: 'या इसके साथ जारी रखें',
-    termsShort: 'मैं राइडपूलकंपनी की सेवा शर्तों और गोपनीयता नीति से सहमत हूँ।',
+    truecallerPrefix: 'या, लॉगिन करें ',
+    truecallerSuffix: 'truecaller के साथ',
+    truecallerErrorTitle: 'ट्रूकॉलर त्रुटि',
+    truecallerInitFailed: 'ट्रूकॉलर को प्रारंभ करने में विफल।',
+    truecallerLoginFailed: 'ट्रूकॉलर के साथ लॉगिन करने में विफल।',
+    truecallerUnavailableTitle: 'ट्रूकॉलर अनुपलब्ध',
+    truecallerUnavailableMessage: 'ट्रूकॉलर ऐप इस डिवाइस पर इंस्टॉल या कॉन्फ़िगर नहीं है।',
+    truecallerStartError: 'ट्रूकॉलर लॉगिन प्रारंभ नहीं किया जा सका',
+    truecallerInvalidCredentials: 'ट्रूकॉलर से अमान्य क्रेडेंशियल प्राप्त हुए',
+    continueButton: 'जारी रखें',
   },
   otpVerification: {
     titlePrefix: 'पुष्टि करें कि यह',
@@ -506,7 +515,7 @@ export const hi: Translations = {
     clearAll: 'सभी साफ करें',
     trustTitle: 'वर्डेंट ट्रस्ट',
     trustDescription: 'सुरक्षित और विश्वसनीय यात्रा का अनुभव।',
-    brandName: 'राइड पूल कंपनी',
+    brandName: 'ZyncRide',
     local: 'स्थानीय',
     intercity: 'इंटरसिटी',
     localServiceArea: 'स्थानीय सेवा क्षेत्र',
@@ -620,7 +629,7 @@ export const hi: Translations = {
     secondaryCTA: 'यात्रा विवरण साझा करें',
     plateLabel: 'प्लेट',
     carbonNeutralTransit: 'राइड पूल कंपनी कार्बन न्यूट्रल ट्रांजिट',
-    brandTitle: 'राइड पूल कंपनी',
+    brandTitle: 'ZyncRide',
     seatPositions: {
       driver: 'ड्राइवर सीट',
       frontPassenger: 'आगे की यात्री सीट (बाईं ओर)',
@@ -635,7 +644,7 @@ export const hi: Translations = {
   },
   settings: {
     headerTitle: 'सेटिंग्स',
-    appName: 'राइडपूलकंपनी',
+    appName: 'ZyncRide',
     notifications: 'सूचनाएं',
     pushNotifications: 'पुश सूचनाएं',
     pushNotificationsDesc: 'सवारी अपडेट के लिए सक्षम करें',
@@ -762,6 +771,8 @@ export const hi: Translations = {
     defaultErrorMessage: 'कुछ गलत हो गया। कृपया पुन: प्रयास करें।',
     defaultInfoTitle: 'जानकारी',
     defaultWarningTitle: 'चेतावनी',
+    welcomeSuccessTitle: 'स्वागत है',
+    welcomeBack: 'ZyncRide में आपका स्वागत है!',
   },
   reportIssue: {
     title: 'समस्या की रिपोर्ट करें',
@@ -780,8 +791,8 @@ export const hi: Translations = {
     cancel: 'रद्द करें',
   },
   splash: {
-    appName: 'The RPC',
-    subtitle: 'इरादतन आंदोलन',
-    loadingText: 'कनेक्शन सुरक्षित किया जा रहा है...',
+    appName: 'ZyncRide',
+    subtitle: 'स्मार्ट सवारी, साझा यात्राएं',
+    loadingText: 'आपकी सवारी तैयार हो रही है...',
   },
 };

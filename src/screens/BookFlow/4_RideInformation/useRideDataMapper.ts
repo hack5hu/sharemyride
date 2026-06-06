@@ -4,10 +4,10 @@ import { calculateDistance } from '@/utils/location';
 import { formatTimeSafely, formatDateSafely } from '@/utils/date';
 
 export const mapBackendRideToUI = (
-  rideRaw: any, 
-  startLocation?: any, 
-  destinationLocation?: any, 
-  sourceStopId?: number, 
+  rideRaw: any,
+  startLocation?: any,
+  destinationLocation?: any,
+  sourceStopId?: number,
   destinationStopId?: number
 ) => {
   if (!rideRaw) return null;
@@ -25,10 +25,10 @@ export const mapBackendRideToUI = (
   const firstStop = rideRaw.stops?.[0];
   const lastStop = rideRaw.stops?.[rideRaw.stops.length - 1];
 
-  const pickupDistance = (startLocation && firstStop) 
+  const pickupDistance = (startLocation && firstStop)
     ? calculateDistance(startLocation.latitude, startLocation.longitude, firstStop.lat, firstStop.lon)
     : undefined;
-  
+
   const dropoffDistance = (destinationLocation && lastStop)
     ? calculateDistance(destinationLocation.latitude, destinationLocation.longitude, lastStop.lat, lastStop.lon)
     : undefined;
@@ -43,9 +43,9 @@ export const mapBackendRideToUI = (
     const address = stop.stopName || stop.name || 'Unknown';
     let displayLocation = address;
     const isBetweenOrAt = idx >= startIdx && idx <= endIdx && startIdx !== -1 && endIdx !== -1;
-    
+
     const isDriverRole = rideRaw.userRole === 'DRIVER';
-    
+
     // Only truncate if NOT highlighted AND NOT driver
     if (!isHighlighted && !isDriverRole) {
       const parts = address.split(', ');
@@ -130,10 +130,9 @@ export const mapBackendRideToUI = (
     seats: rideRaw.seats || [],
     passengers: (rideRaw.passengers || []).map((p: any) => ({
       ...p,
-      id: p.id || p.passengerId || p.user?.id,
-      name: p.name || p.user?.name || p.passengerName || 'Unknown',
-      photoUrl: p.photoUrl || p.user?.photoUrl || p.passengerPhotoUrl,
-      seatId: p.seatIds || p.seatId,
+      id: p.passengerId,
+      name: p.name,
+      photoUrl: p.photoUrl,
     })),
     departureDate: formatDateSafely(firstStop?.arrivalTime, {
       weekday: 'short',
@@ -165,13 +164,13 @@ export const mapBackendRideToUI = (
 };
 
 export const useRideDataMapper = (
-  rideRaw: any, 
-  startLocation: any, 
-  destinationLocation: any, 
-  sourceStopId?: number, 
+  rideRaw: any,
+  startLocation: any,
+  destinationLocation: any,
+  sourceStopId?: number,
   destinationStopId?: number
 ) => {
-  return useMemo(() => 
+  return useMemo(() =>
     mapBackendRideToUI(rideRaw, startLocation, destinationLocation, sourceStopId, destinationStopId),
     [rideRaw, startLocation, destinationLocation, sourceStopId, destinationStopId]
   );

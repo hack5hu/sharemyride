@@ -14,6 +14,7 @@ export const API_ENDPOINTS = {
     REFRESH_TOKEN: '/auth/refresh',
     RESEND_OTP: 'auth/resend-otp',
     LOGOUT: 'auth/logout',
+    TRUECALLER_LOGIN: '/auth/truecaller-login',
   },
   USER: {
     PROFILE: '/user/profile',

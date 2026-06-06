@@ -21,6 +21,21 @@ export const FormContainer = styled.View`
   gap: ${verticalScale(16)}px;
 `;
 
+/** Wraps the Input so we can overlay a Pressable on top */
+export const InputContainer = styled.View`
+  position: relative;
+`;
+
+/** Sits on top of the Input to intercept taps when Truecaller is active */
+export const InputTapOverlay = styled.Pressable`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+`;
+
 export const PrefixText = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-size: 16px;
@@ -49,4 +64,23 @@ export const Footer = styled.View`
   border-top-width: 1px;
   border-top-color: ${({ theme }) => theme.colors.outline_variant};
   align-items: center;
+`;
+
+export const TruecallerRow = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: ${verticalScale(12)}px;
+`;
+
+export const TruecallerText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-size: 14px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.on_surface_variant};
+  margin-right: ${scale(4)}px;
+`;
+
+export const TruecallerBrandText = styled(TruecallerText)`
+  color: #0052FF;
+  font-weight: 700;
 `;
