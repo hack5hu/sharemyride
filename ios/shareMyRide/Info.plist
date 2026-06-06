@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>RidePoolCompany</string>
+	<string>ZyncRide</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -24,14 +24,12 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	
-	<!-- Truecaller -->
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>truecallersdk</string>
 	</array>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -39,12 +37,21 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>RidePoolCompany needs access to your location to share it with your riders.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+	<dict>
+	<key>CFBundleURLSchemes</key>
+	<array>
+		<string>truecallersdk-{xo3glydxwgapbf0zumg28mys6qud3tkzfnfzbxcqiay}</string>
+	</array>
+	</dict>
+	</array>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>RidePoolCompany needs access to your location in the background to share real-time progress of the ride with your riders.</string>
+	<string>ZyncRide needs access to your location in the background to share real-time progress of the ride with your riders.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>RidePoolCompany needs access to your location in the background to share real-time progress of the ride with your riders.</string>
+	<string>ZyncRide needs access to your location in the background to share real-time progress of the ride with your riders.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>ZyncRide needs access to your location to share it with your riders.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UIAppFonts</key>

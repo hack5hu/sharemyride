@@ -43,7 +43,16 @@ export interface LoginTranslations {
   noAccount: string;
   signUp: string;
   orContinueWith: string;
-  termsShort: string;
+  truecallerPrefix: string;
+  truecallerSuffix: string;
+  truecallerErrorTitle: string;
+  truecallerInitFailed: string;
+  truecallerLoginFailed: string;
+  truecallerUnavailableTitle: string;
+  truecallerUnavailableMessage: string;
+  truecallerStartError: string;
+  truecallerInvalidCredentials: string;
+  continueButton: string;
 }
 
 export interface OtpVerificationTranslations {
@@ -506,6 +515,9 @@ export interface NotificationTranslations {
   defaultErrorMessage: string;
   defaultInfoTitle: string;
   defaultWarningTitle: string;
+  welcomeSuccessTitle: string;
+  welcomeBack: string;
+  profilePhotoUpdated: string;
 }
 
 export interface RideRouteTranslations {

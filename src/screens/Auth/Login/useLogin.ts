@@ -1,198 +1,32 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback } from 'react';
 import { useFormik } from 'formik';
 import { useFocusEffect } from '@react-navigation/native';
 import { authService } from '@/serviceManager/authService';
-import { Alert, Keyboard, Platform } from 'react-native';
-import { truecallerVerify } from '@/serviceManager/truecallerVerify';
-import { useTruecallerVerification } from '@/hooks/useTruecallerVerification';
+import { Keyboard } from 'react-native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
-import {
-  useTruecaller,
-  TRUECALLER_ANDROID_CUSTOMIZATIONS,
-  type TruecallerAndroidResponse,
-} from '@ajitpatel28/react-native-truecaller';
-import { useAuthStore } from '@/store/useAuthStore';
-import { getDeviceId } from '@/utils/deviceId';
-import { getFcmToken } from '@/utils/fcm';
-import { Logger } from '@/utils/logger';
+import { useTruecallerLogin } from './useTruecallerLogin';
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
-  const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const navigation = useAppNavigation();
   const { t } = useTranslation();
-  const { setAuth } = useAuthStore();
-
-  // Phone being verified via the Truecaller non-Truecaller-user (drop-call) flow.
-  const pendingPhoneRef = useRef('');
-  // Once we hand off to the OTP screen, that screen owns the event stream.
-  const [tcHandoff, setTcHandoff] = useState(false);
-
-  const verifyTruecaller = useCallback(
-    async (params: {
-      phoneNumber?: string;
-      authorizationCode?: string;
-      codeVerifier?: string;
-    }) => {
-      setLoading(true);
-      try {
-        let phoneStr = params.phoneNumber || '';
-        if (phoneStr) {
-          phoneStr = phoneStr.startsWith('+91')
-            ? phoneStr.slice(3)
-            : phoneStr.startsWith('0')
-            ? phoneStr.slice(1)
-            : phoneStr;
-
-          if (phoneStr.length < 10) {
-            Alert.alert('Invalid phone number received from Truecaller');
-            setLoading(false);
-            return;
-          }
-        }
-
-        const [deviceId, fcmToken] = await Promise.all([
-          getDeviceId().catch(() => null),
-          getFcmToken().catch(() => null),
-        ]);
-
-        const response = await authService.verifyOtp(
-          phoneStr || undefined,
-          undefined,
-          deviceId,
-          fcmToken,
-          true,
-          params.authorizationCode,
-          params.codeVerifier
-        );
-
-        if (response.data.status === 'success' || response.status === 200) {
-          const { token, userId, userProfileCompleted: completed } = response.data;
-          await setAuth({ id: userId, phone: phoneStr }, token, completed);
-          if (completed) {
-            useAuthStore.getState().fetchProfile();
-            require('@/store/useVehicleStore').useVehicleStore.getState().syncVehicles();
-            require('@/store/useTravelPrefStore').useTravelPrefStore.getState().syncPreferences();
-          }
-        } else {
-          showNotification(
-            NotificationType.ERROR,
-            t('notification.defaultErrorTitle'),
-            response.data.message || t('notification.defaultErrorMessage')
-          );
-        }
-      } catch (error: any) {
-        Logger.error('Truecaller verification failed', error);
-        showNotification(
-          NotificationType.ERROR,
-          t('notification.defaultErrorTitle'),
-          getErrorMessage(error, 'Truecaller verification failed')
-        );
-      } finally {
-        setLoading(false);
-      }
-    },
-    [setAuth, t]
-  );
-
-  const handleTruecallerSuccess = useCallback(
-    (data: {
-      phoneNumber?: string;
-      authorizationCode?: string;
-      codeVerifier?: string;
-    }) => verifyTruecaller(data),
-    [verifyTruecaller]
-  );
 
   const {
-    initializeTruecallerSDK,
-    openTruecallerForVerification,
-    isSdkUsable,
-    userProfile,
-    error: truecallerError,
-  } = useTruecaller({
-    androidClientId: 'xo3glydxwgapbf0zumg28mys6qud3tkzfnfzbxcqiay',
-    iosAppKey: 'xo3glydxwgapbf0zumg28mys6qud3tkzfnfzbxcqiay',
-    iosAppLink: 'https://sharemyride.com/truecaller',
-    androidButtonColor: '#2C765CFF',
-    androidButtonTextColor: '#FFFFFF',
-    androidButtonShape: TRUECALLER_ANDROID_CUSTOMIZATIONS.BUTTON_SHAPES.ROUNDED,
-    androidButtonText: TRUECALLER_ANDROID_CUSTOMIZATIONS.BUTTON_TEXTS.ACCEPT,
-    androidFooterButtonText:
-      TRUECALLER_ANDROID_CUSTOMIZATIONS.FOOTER_TEXTS.ANOTHER_METHOD,
-    androidConsentHeading:
-      TRUECALLER_ANDROID_CUSTOMIZATIONS.CONSENT_HEADINGS.LOG_IN_TO,
-    androidSdkOptions: TRUECALLER_ANDROID_CUSTOMIZATIONS.SDK_OPTIONS.VERIFY_ALL_USERS,
-    androidSuccessHandler: (data: TruecallerAndroidResponse) =>
-      handleTruecallerSuccess({
-        phoneNumber: data.phone_number,
-        authorizationCode: data.authorizationCode,
-        codeVerifier: data.codeVerifier,
-      }),
-  });
-
-  const [isTruecallerSupported, setIsTruecallerSupported] = useState(false);
-
-  useEffect(() => {
-    initializeTruecallerSDK()
-      .then(isSdkUsable)
-      .then(setIsTruecallerSupported)
-      .catch(() => setIsTruecallerSupported(false));
-  }, [initializeTruecallerSDK, isSdkUsable]);
-
-  useEffect(() => {
-    if (userProfile) {
-      handleTruecallerSuccess({ phoneNumber: userProfile.phoneNumber || '' });
-    }
-  }, [userProfile, handleTruecallerSuccess]);
-
-  useEffect(() => {
-    console.log(truecallerError);
-    if (truecallerError && !/cancel|dismiss|4/i.test(truecallerError)) {
-      showNotification(
-        NotificationType.ERROR,
-        'Truecaller Error',
-        getErrorMessage(truecallerError, 'Failed to login with Truecaller')
-      );
-    }
-  }, [truecallerError]);
-
-  const handleTruecallerLogin = async () => {
-    Keyboard.dismiss();
-    try {
-      if (await isSdkUsable()) {
-        await openTruecallerForVerification();
-      } else {
-        showNotification(
-          NotificationType.ERROR,
-          'Truecaller Unavailable',
-          'Truecaller app is not installed or configured on this device.'
-        );
-      }
-    } catch (err) {
-      Logger.error('Could not start Truecaller login', err);
-      showNotification(
-        NotificationType.ERROR,
-        'Error',
-        'Could not start Truecaller login'
-      );
-    }
-  };
+    isTruecallerSupported,
+    hasDismissedTruecaller,
+    handleTruecallerLogin,
+    handleInputFocus,
+  } = useTruecallerLogin({ setLoading });
 
   useFocusEffect(
     useCallback(() => {
       setLoading(false);
     }, [])
   );
-
-  const toggleTerms = () => {
-    Keyboard.dismiss();
-    setIsTermsAccepted((prev) => !prev);
-  };
 
   // Standard SMS-OTP path (also the fallback when Truecaller verification fails).
   const smsFallback = useCallback(
@@ -222,60 +56,13 @@ export const useLogin = () => {
     [navigation, t]
   );
 
-  // Truecaller non-Truecaller-user (drop-call / IM-OTP) verification. Only active
-  // on the Login screen until we hand off to the OTP screen for manual OTP entry.
-  const { startVerification } = useTruecallerVerification(
-    {
-      onPending: () => {
-        // Keep the button in its loading state while Truecaller works.
-        setLoading(true);
-      },
-      onOtpRequired: () => {
-        // Manual OTP entry needed — hand off to the OTP screen in Truecaller mode.
-        setTcHandoff(true);
-        setLoading(false);
-        navigation.navigate('OTPVerification', {
-          phoneNumber: pendingPhoneRef.current,
-          mode: 'truecaller',
-        });
-      },
-      onSuccess: () => {
-        setLoading(false);
-        // RootNavigator switches screens based on the auth store.
-      },
-      onFailure: (message) => {
-        Logger.error('Truecaller verification failed; falling back to SMS OTP', message);
-        smsFallback(pendingPhoneRef.current);
-      },
-    },
-    Platform.OS === 'android' && !tcHandoff
-  );
-
   const handleGetOtp = async (phone: string) => {
-    pendingPhoneRef.current = phone;
-    setLoading(true);
-
-    // On Android, try Truecaller's drop-call verification first (covers users
-    // without the Truecaller app). Any failure falls back to SMS OTP.
-    if (Platform.OS === 'android' && truecallerVerify.isAvailable()) {
-      const started = await startVerification(phone);
-      if (started) {
-        // Lifecycle is now event-driven (see the useTruecallerVerification hook).
-        return;
-      }
-    }
-
     await smsFallback(phone);
   };
 
   const formik = useFormik({
     initialValues: { phone: '' },
-    validate: (v) =>
-      !v.phone
-        ? { phone: 'Phone number is required' }
-        : !/^\d{10}$/.test(v.phone)
-        ? { phone: 'Please enter a valid 10-digit number' }
-        : {},
+    validate: (v) => (/^\d{10}$/.test(v.phone) ? {} : { phone: '' }),
     onSubmit: (v) => {
       Keyboard.dismiss();
       handleGetOtp(v.phone);
@@ -290,9 +77,10 @@ export const useLogin = () => {
     handleBlur: formik.handleBlur('phone'),
     handleSubmit: formik.handleSubmit,
     isValid: formik.isValid && formik.dirty,
-    isTermsAccepted,
-    toggleTerms,
+
     handleTruecallerLogin,
+    handleInputFocus,
     isTruecallerSupported,
+    hasDismissedTruecaller,
   };
 };

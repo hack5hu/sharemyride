@@ -1,7 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
-apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 /**
@@ -109,6 +108,8 @@ android {
             storePassword '123456'
             keyAlias 'abc'
             keyPassword '123456'
+            v1SigningEnabled true
+            v2SigningEnabled true
         }
     }
     buildTypes {
@@ -143,11 +144,4 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:34.13.0"))
     implementation("com.google.firebase:firebase-analytics")
-
-    // Truecaller OAuth SDK — provides TcSdk (oAuth.*) plus the non-Truecaller
-    // verification classes (clients.VerificationCallback, clients.VerificationDataBundle,
-    // TrueException, TrueProfile). MUST match the version the
-    // @ajitpatel28/react-native-truecaller package compiles against (3.2.1); an
-    // older version (e.g. 3.0.0) lacks the clients.* classes and breaks the build.
-    implementation("com.truecaller.android.sdk:truecaller-sdk:3.2.1")
 }

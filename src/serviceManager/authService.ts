@@ -1,4 +1,5 @@
 import * as Keychain from 'react-native-keychain';
+import { Platform } from 'react-native';
 import apiClient from './apiClient';
 import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -54,39 +55,24 @@ export const authService = {
    * @param fcmToken FCM messaging token for push notifications
    */
   verifyOtp: async (
-    phoneNumber?: string,
-    otp?: string,
+    phoneNumber: string,
+    otp: string,
     deviceId?: string | null,
-    fcmToken?: string | null,
-    isTrueCaller?: boolean,
-    authorizationCode?: string,
-    codeVerifier?: string
+    fcmToken?: string | null
   ): Promise<{ status: number; data: VerifyOtpResponse }> => {
     try {
-      const payload: any = {};
+      const payload: any = {
+        phoneNumber: Number(phoneNumber),
+        otp: Number(otp),
+      };
       
-      if (phoneNumber) {
-        payload.phoneNumber = Number(phoneNumber);
-      }
-      if (otp) {
-        payload.otp = Number(otp);
-      }
-      if (isTrueCaller) {
-        payload.isTrueCaller = true;
-      }
-      if (authorizationCode) {
-        payload.authorizationCode = authorizationCode;
-      }
-      if (codeVerifier) {
-        payload.codeVerifier = codeVerifier;
-      }
-
       if (deviceId) {
         payload.deviceId = deviceId;
       }
       if (fcmToken) {
         payload.fcmToken = fcmToken;
       }
+      payload.platform = Platform.OS.toUpperCase();
 
       const response = await apiClient.post<VerifyOtpResponse>(
         API_ENDPOINTS.AUTH.VERIFY_OTP,
@@ -116,30 +102,23 @@ export const authService = {
     }
   },
 
-  /**
-   * Complete login for a NON-Truecaller user verified via Truecaller's drop-call /
-   * IM-OTP flow. The native SDK returns an `accessToken` once verification succeeds;
-   * we send ONLY that token (plus device/push metadata) to the backend.
-   *
-   * BACKEND REQUIREMENT: the server must validate this accessToken against
-   * Truecaller's non-Truecaller-user server-side validation API
-   * (https://docs.truecaller.com/.../non-truecaller-user-verification/server-side-validation)
-   * and derive the phone number from the validated response — do NOT trust any
-   * client-supplied phone number. Response shape matches the OTP/OAuth login
-   * (token, refreshToken, userId, userProfileCompleted).
-   */
-  truecallerVerifyLogin: async (
-    accessToken: string,
+  truecallerLogin: async (
+    authorizationCode: string,
     deviceId?: string | null,
-    fcmToken?: string | null
+    fcmToken?: string | null,
+    codeVerifier?: string
   ): Promise<{ status: number; data: VerifyOtpResponse }> => {
     try {
-      const payload: any = { accessToken, isTrueCaller: true };
+      const payload: any = { 
+        authorizationCode,
+        platform: Platform.OS.toUpperCase(),
+      };
+      if (codeVerifier) payload.codeVerifier = codeVerifier;
       if (deviceId) payload.deviceId = deviceId;
-      if (fcmToken) payload.fcmToken = fcmToken;
+      if (fcmToken) payload.fcmtoken = fcmToken;
 
       const response = await apiClient.post<VerifyOtpResponse>(
-        API_ENDPOINTS.AUTH.VERIFY_OTP,
+        API_ENDPOINTS.AUTH.TRUECALLER_LOGIN,
         payload
       );
 

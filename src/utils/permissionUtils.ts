@@ -11,7 +11,7 @@ export const requestLocationPermission = async (): Promise<boolean> => {
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
           title: 'Location Permission',
-          message: 'ShareMyRide needs access to your location to show it on the map.',
+          message: 'ZyncRide needs access to your location to show it on the map.',
           buttonNeutral: 'Ask Me Later',
           buttonNegative: 'Cancel',
           buttonPositive: 'OK',

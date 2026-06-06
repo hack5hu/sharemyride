@@ -1,4 +1,4 @@
-# 🤖 Agent Reference Guide: ShareMyRide (Tuktuk)
+# 🤖 Agent Reference Guide: ZyncRide
 
 ---
 
@@ -28,7 +28,7 @@
 
 ---
 
-This document is the **source of truth** for all development. AI agents must adhere to these rules strictly to maintain the "Ride Pool Company" brand identity and codebase integrity.
+This document is the **source of truth** for all development. AI agents must adhere to these rules strictly to maintain the "ZyncRide" brand identity and codebase integrity.
 
 ## 🔍 0. The "Storybook MCP" Protocol | Critical "Search-First" Protocol (MANDATORY)
 Before creating **any** new component, the AI Agent must perform a "Discovery Phase" using the Storybook MCP server.
@@ -73,7 +73,7 @@ ComponentName/
 
 ---
 
-## 🎨 3. Styling & "Ride Pool" Design System
+## 🎨 3. Styling & "ZyncRide" Design System
 **Creative North Star:** Editorial Fluidity & Organic Sophistication.
 
 * **Styled Components Only:** No inline styles. No `StyleSheet.create`.
@@ -133,7 +133,7 @@ AI must use alias imports to avoid deep relative paths (`../../`).
 
 ## ⚠️ 8. Critical "Do Not" List
 1.  **Do NOT** modify existing business logic unless explicitly requested.
-2.  **Do NOT** change provided UI designs; maintain "Ride Pool" fidelity.
+2.  **Do NOT** change provided UI designs; maintain "ZyncRide" fidelity.
 3.  **Do NOT** create duplicate components/hooks if they exist in `src/components/...`.
 4.  **Do NOT** use `fetch` API.
 5.  **Do NOT** use hardcoded hex codes or pixel values.

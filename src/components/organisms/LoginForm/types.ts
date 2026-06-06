@@ -6,7 +6,8 @@ export interface LoginFormProps {
   onSubmit: () => void;
   isValid: boolean;
   loading?: boolean;
-  isTermsAccepted: boolean;
-  onToggleTerms: () => void;
   onTruecallerLogin?: () => void;
+  onInputFocus?: () => void;
+  /** True when Truecaller is installed and user hasn't yet dismissed it */
+  isTruecallerActive?: boolean;
 }

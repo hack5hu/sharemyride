@@ -8,19 +8,6 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <!-- Required by Truecaller's non-Truecaller user verification (drop-call) flow.
-         NOTE: READ_CALL_LOG / ANSWER_PHONE_CALLS are Play-Store restricted permissions.
-         You must justify them in the Play Console "Permissions declaration" or the
-         listing may be rejected. They are only needed for the drop-call auto-detection;
-         the IM-OTP path still works without them. -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_CALL_LOG" />
-    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
-    <!-- For Android 7 and below, CALL_PHONE is used instead of ANSWER_PHONE_CALLS -->
-    <uses-permission
-      android:name="android.permission.CALL_PHONE"
-      android:maxSdkVersion="25" />
-
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
