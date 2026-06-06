@@ -53,6 +53,7 @@ export interface LoginTranslations {
   truecallerStartError: string;
   truecallerInvalidCredentials: string;
   continueButton: string;
+  orDivider: string;
 }
 
 export interface OtpVerificationTranslations {

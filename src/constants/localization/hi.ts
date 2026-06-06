@@ -54,6 +54,7 @@ export const hi: Translations = {
     truecallerStartError: 'ट्रूकॉलर लॉगिन प्रारंभ नहीं किया जा सका',
     truecallerInvalidCredentials: 'ट्रूकॉलर से अमान्य क्रेडेंशियल प्राप्त हुए',
     continueButton: 'जारी रखें',
+    orDivider: 'या',
   },
   otpVerification: {
     titlePrefix: 'पुष्टि करें कि यह',

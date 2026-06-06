@@ -43,7 +43,7 @@ export const en: Translations = {
     noAccount: "Don't have an account?",
     signUp: 'Sign Up',
     orContinueWith: 'OR CONTINUE WITH',
-    truecallerPrefix: 'Or, Login with ',
+    truecallerPrefix: 'Login with ',
     truecallerSuffix: 'truecaller',
     truecallerErrorTitle: 'Truecaller Error',
     truecallerInitFailed: 'Failed to initialize Truecaller.',
@@ -53,6 +53,7 @@ export const en: Translations = {
     truecallerStartError: 'Could not start Truecaller login',
     truecallerInvalidCredentials: 'Invalid credentials received from Truecaller',
     continueButton: 'Continue',
+    orDivider: 'or',
   },
   otpVerification: {
     titlePrefix: "Confirm it's",

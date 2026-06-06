@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useTranslation } from '@/hooks/useTranslation';
+import { RootStackParamList } from '@/navigation/types';
 import { BottomTabType } from './types';
 
 export const useBottomNav = (activeTab: BottomTabType) => {
@@ -10,30 +11,16 @@ export const useBottomNav = (activeTab: BottomTabType) => {
   const handlePress = useCallback((tab: BottomTabType) => {
     if (tab === activeTab) return;
 
-    const tabActionMap: Record<BottomTabType, () => void> = {
-      BOOK: () => navigation.resetTo('BookRideInfo'),
-      PROFILE: () => navigation.resetWithStack([
-        { name: 'BookRideInfo' },
-        { name: 'ProfileHub' }
-      ]),
-      CHATS: () => navigation.resetWithStack([
-        { name: 'BookRideInfo' },
-        { name: 'ChatList' }
-      ]),
-      MY_RIDES: () => navigation.resetWithStack([
-        { name: 'BookRideInfo' },
-        { name: 'MyRides' }
-      ]),
-      PUBLISH: () => navigation.resetWithStack([
-        { name: 'BookRideInfo' },
-        { name: 'LocationSelection' }
-      ]),
+    const tabScreenMap: Record<BottomTabType, keyof RootStackParamList> = {
+      BOOK: 'BookRideInfo',
+      PROFILE: 'ProfileHub',
+      CHATS: 'ChatList',
+      MY_RIDES: 'MyRides',
+      PUBLISH: 'LocationSelection',
     };
 
-    const action = tabActionMap[tab];
-    if (action) {
-      action();
-    } else {
+    const targetScreen = tabScreenMap[tab];
+    if (!targetScreen) {
       const tabStr = tab as string;
       navigation.navigate('Dummy', {
         title: t(
@@ -44,6 +31,17 @@ export const useBottomNav = (activeTab: BottomTabType) => {
         ),
         activeTab: tab as BottomTabType,
       });
+      return;
+    }
+
+    if (tab === 'BOOK') {
+      navigation.navigate('BookRideInfo');
+    } else {
+      if (activeTab === 'BOOK') {
+        navigation.navigate(targetScreen);
+      } else {
+        navigation.replace(targetScreen);
+      }
     }
   }, [activeTab, navigation, t]);
 

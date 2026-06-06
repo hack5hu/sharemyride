@@ -9,7 +9,10 @@ import {
   FormContainer,
   InputContainer,
   InputTapOverlay,
-
+  ActionGroup,
+  OrDividerContainer,
+  OrDividerLine,
+  OrDividerText,
   TruecallerRow,
   TruecallerText,
   TruecallerBrandText,
@@ -77,26 +80,34 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         )}
       </InputContainer>
 
-      {onTruecallerLogin && (
-        <TruecallerRow onPress={onTruecallerLogin} disabled={loading}>
-          <TruecallerText>{t.login.truecallerPrefix}</TruecallerText>
-          <Icon name="verified-user" size={16} color="#0052FF" />
-          <TruecallerBrandText>{t.login.truecallerSuffix}</TruecallerBrandText>
-          <Icon name="keyboard-arrow-right" size={16} color="#0052FF" />
-        </TruecallerRow>
-      )}
+      <ActionGroup>
+        <Button
+          variant="primary"
+          icon="arrow-forward"
+          onPress={onSubmit as any}
+          loading={loading}
+          disabled={isButtonDisabled}
+        >
+          {t.login.continueButton}
+        </Button>
 
+        {onTruecallerLogin && (
+          <>
+            <OrDividerContainer>
+              <OrDividerLine />
+              <OrDividerText>{t.login.orDivider}</OrDividerText>
+              <OrDividerLine />
+            </OrDividerContainer>
 
-
-      <Button
-        variant="primary"
-        icon="arrow-forward"
-        onPress={onSubmit as any}
-        loading={loading}
-        disabled={isButtonDisabled}
-      >
-        {t.login.continueButton}
-      </Button>
+            <TruecallerRow onPress={onTruecallerLogin} disabled={loading}>
+              <TruecallerText>{t.login.truecallerPrefix}</TruecallerText>
+              <Icon name="verified-user" size={16} color="#0052FF" />
+              <TruecallerBrandText>{t.login.truecallerSuffix}</TruecallerBrandText>
+              <Icon name="keyboard-arrow-right" size={16} color="#0052FF" />
+            </TruecallerRow>
+          </>
+        )}
+      </ActionGroup>
 
       <InfoBox>{t.login.otpInfoBox}</InfoBox>
     </FormContainer>

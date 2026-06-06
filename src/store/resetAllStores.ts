@@ -5,6 +5,7 @@ import { useMyRidesStore } from './useMyRidesStore';
 import { useRidePublishStore } from './useRidePublishStore';
 import { useTravelPrefStore } from './useTravelPrefStore';
 import { useVehicleStore } from './useVehicleStore';
+import { useChatStore } from './useChatStore';
 
 export const resetAllStores = () => {
   // We explicitly keep useSettingsStore intact as it contains user preferences like language/theme
@@ -95,5 +96,14 @@ export const resetAllStores = () => {
     vehicles: [],
     selectedVehicleId: null,
     isLoading: false,
+  });
+
+  // 8. Chat Store (Clear chats)
+  useChatStore.setState({
+    messages: {},
+    conversations: [],
+    users: {},
+    myUserId: null,
+    activeConversationId: null,
   });
 };

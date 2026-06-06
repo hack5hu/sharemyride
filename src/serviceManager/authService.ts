@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import apiClient from './apiClient';
 import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 import { useAuthStore } from '@/store/useAuthStore';
+import { getDeviceId } from '@/utils/deviceId';
 
 export interface LoginResponse {
   status: string;
@@ -115,7 +116,7 @@ export const authService = {
       };
       if (codeVerifier) payload.codeVerifier = codeVerifier;
       if (deviceId) payload.deviceId = deviceId;
-      if (fcmToken) payload.fcmtoken = fcmToken;
+      if (fcmToken) payload.fcmToken = fcmToken;
 
       const response = await apiClient.post<VerifyOtpResponse>(
         API_ENDPOINTS.AUTH.TRUECALLER_LOGIN,
@@ -147,10 +148,16 @@ export const authService = {
       const refreshCreds = await Keychain.getGenericPassword({ service: 'refresh_token' });
       
       if (refreshCreds) {
-        // Call logout API with refreshToken in body
-        await apiClient.post(API_ENDPOINTS.AUTH.LOGOUT, {
+        const deviceId = await getDeviceId().catch(() => null);
+        const payload: any = {
           refreshToken: refreshCreds.password
-        });
+        };
+        if (deviceId) {
+          payload.deviceId = deviceId;
+        }
+
+        // Call logout API with refreshToken in body
+        await apiClient.post(API_ENDPOINTS.AUTH.LOGOUT, payload);
       }
     } catch (error) {
       console.error('Logout API error', error);

@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { scale, verticalScale } from '@/styles';
+import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 
 export const Card = styled.View`
   width: 100%;
@@ -24,6 +24,7 @@ export const FormContainer = styled.View`
 /** Wraps the Input so we can overlay a Pressable on top */
 export const InputContainer = styled.View`
   position: relative;
+  margin-bottom: ${verticalScale(48)}px;
 `;
 
 /** Sits on top of the Input to intercept taps when Truecaller is active */
@@ -66,10 +67,39 @@ export const Footer = styled.View`
   align-items: center;
 `;
 
+/** Groups the Truecaller row + Continue button with tight internal spacing */
+export const ActionGroup = styled.View`
+  gap: ${verticalScale(24)}px;
+`;
+
+/** Horizontal "or" divider between input and action zone */
+export const OrDividerContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(12)}px;
+`;
+
+export const OrDividerLine = styled.View`
+  flex: 1;
+  height: ${verticalScale(1)}px;
+  background-color: ${({ theme }) => theme.colors.outline_variant};
+`;
+
+export const OrDividerText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-size: ${responsiveFont(12)}px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.outline};
+  text-transform: uppercase;
+`;
+
 export const TruecallerRow = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  margin-bottom: ${verticalScale(12)}px;
+  justify-content: center;
+  padding-vertical: ${verticalScale(10)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_low};
+  border-radius: ${moderateScale(12)}px;
 `;
 
 export const TruecallerText = styled.Text`
