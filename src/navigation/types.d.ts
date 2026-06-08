@@ -58,6 +58,7 @@ export type RootStackParamList = {
     | {
         updatedLocation?: { id: string; name: string; address: string };
         type?: string;
+        returnTo?: keyof RootStackParamList;
       }
     | undefined;
   MiddleStopMap: undefined;

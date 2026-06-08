@@ -70,8 +70,7 @@ export const useSummaryPublish = () => {
     handleSave,
     handlePublish,
     handleEditRoute: () =>
-      (navigation.navigate as any)('LocationSelection', {
-        flow: 'publish',
+      (navigation.navigate as any)('MiddleStops', {
         returnTo: 'SummaryPublish',
       }),
     handleEditSchedule: () =>
@@ -80,12 +79,15 @@ export const useSummaryPublish = () => {
       }),
     handleEditVehicle: () =>
       (navigation.navigate as any)('SeatSelection', {
-        returnTo: 'SummaryPublish',
+        flow: 'publish',
+        returnTo: 'PriceSelection',
+        nextReturnTo: 'SummaryPublish',
       }),
     handleEditSeats: () =>
-      (navigation.navigate as any)('PriceSelection', {
+      (navigation.navigate as any)('SeatSelection', {
         flow: 'publish',
-        returnTo: 'SummaryPublish',
+        returnTo: 'PriceSelection',
+        nextReturnTo: 'SummaryPublish',
       }),
     handleEditPreferences: () =>
       (navigation.navigate as any)('TravelPreferences', {

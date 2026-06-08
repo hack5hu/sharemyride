@@ -8,6 +8,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
+import { storage } from '@/utils/storage';
 
 export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolean) => void) => {
   const navigation = useAppNavigation();
@@ -104,6 +105,41 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
         frontSeatPrice: String(frontSeatPrice),
       };
       await rideService.publishRide(payload);
+      
+      try {
+        const existingRidesRaw = storage.getString('recent_published_rides');
+        let recentRides = existingRidesRaw ? JSON.parse(existingRidesRaw) : [];
+        
+        const currentRide = {
+          startLocation,
+          destinationLocation,
+          middleStops,
+          routeDetails,
+          selectedRoute,
+          seatCount,
+          selectedSeatIds,
+          vehicleId,
+          publishVehicleType,
+          vehicleDetails,
+          preferences,
+          price,
+          fullJourneyPrice,
+          frontSeatPrice,
+          premiumEnabled,
+          premiumPercentage,
+          segmentPrices,
+          requestType,
+          departureDate,
+          departureTime,
+        };
+        
+        recentRides.unshift(currentRide);
+        recentRides = recentRides.slice(0, 5);
+        
+        storage.set('recent_published_rides', JSON.stringify(recentRides));
+      } catch (err) {
+        console.error('[MMKV] Failed to save recent ride:', err);
+      }
       
       if (editingDraftId) {
         removeDraft(editingDraftId);

@@ -7,6 +7,10 @@ export const Container = styled.View`
   justify-content: center;
 `;
 
+export const TouchableAvatar = styled.TouchableOpacity`
+  align-items: center;
+`;
+
 export const AvatarWrapper = styled.View`
   position: relative;
   width: ${moderateScale(80)}px;

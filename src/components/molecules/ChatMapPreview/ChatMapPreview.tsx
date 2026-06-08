@@ -40,7 +40,7 @@ export const ChatMapPreview: React.FC<ChatMapPreviewProps> = ({
       </MapWrapper>
       <InfoContainer>
         <LocationName numberOfLines={1}>
-          {locationName || 'Selected Location'}
+          {locationName}
         </LocationName>
         {!!address && (
           <Address numberOfLines={1}>{address}</Address>

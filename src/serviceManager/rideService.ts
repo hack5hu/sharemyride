@@ -146,11 +146,20 @@ const rideService = {
       throw error;
     }
   },
+  getDriverPendingRequests: async () => {
+    try {
+      const response = await apiClient.get(API_ENDPOINTS.RIDE.DRIVER_PENDING_REQUESTS);
+      return response.data;
+    } catch (error) {
+      console.error('Fetching driver pending requests failed:', error);
+      throw error;
+    }
+  },
   acceptBooking: async (bookingId: string | number) => {
     return rideService.updateBookingStatus(bookingId, 'CONFIRMED');
   },
   rejectBooking: async (bookingId: string | number) => {
-    return rideService.updateBookingStatus(bookingId, 'REJECTED');
+    return rideService.updateBookingStatus(bookingId, 'CANCELLED');
   },
   getRideDetail: async (rideId: string | number, sourceStopId?: number, destinationStopId?: number) => {
     try {
@@ -188,7 +197,7 @@ const rideService = {
       throw error;
     }
   },
-  updateBookingStatus: async (bookingId: string | number, status: 'CONFIRMED' | 'REJECTED') => {
+  updateBookingStatus: async (bookingId: string | number, status: 'CONFIRMED' | 'CANCELLED') => {
     try {
       const url = `${API_ENDPOINTS.RIDE.UPDATE_BOOKING_STATUS(bookingId)}?status=${status}`;
       const response = await apiClient.put(url);

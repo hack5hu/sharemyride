@@ -115,6 +115,8 @@ export interface ProfileSetupTranslations {
   identityVerified: string;
   completeSetup: string;
   footerVersion: string;
+  addPhoto: string;
+  under18Error: string;
 }
 
 export interface ProfileHubTranslations {
@@ -128,6 +130,8 @@ export interface ProfileHubTranslations {
   trustScoreDescr: string;
   accountManagement: string;
   supportLegal: string;
+  chooseFromGallery: string;
+  removePhoto: string;
   editProfile: string;
   editProfileDescr: string;
   editProfilePic: string;
@@ -353,6 +357,7 @@ export interface LocationSelectionTranslations {
   destinationPlaceholder: string;
   continueJourney: string;
   contextualInfo: string;
+  recentRidesTitle: string;
 }
 
 export interface MapPickerTranslations {
@@ -470,6 +475,8 @@ export interface SummaryPublishTranslations {
   departureScheduleLabel: string;
   addVehicleLabel: string;
   addPreferencesLabel: string;
+  approvalRequired: string;
+  instantBooking: string;
 }
 
 export interface SplashTranslations {

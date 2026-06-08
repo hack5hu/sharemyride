@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useRoute } from '@react-navigation/native';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { locationService } from '@/serviceManager/locationService';
 import { useAppNavigation } from '@/hooks/useAppNavigation'; // ensure custom navigation hook is used
@@ -6,6 +7,8 @@ import { decodePolyline, getBoundingBox } from '@/utils/polyline';
 
 export const useMiddleStops = () => {
   const navigation = useAppNavigation(); // use custom navigation hook per guidelines
+  const route = useRoute();
+  const params = route.params as any;
 
   const { 
     startLocation, 
@@ -107,9 +110,13 @@ export const useMiddleStops = () => {
       setRouteDetails(null as any);
     } finally {
       setIsSorting(false);
-      (navigation.navigate as any)('DateSelection');
+      if (params?.returnTo === 'SummaryPublish') {
+        (navigation.navigate as any)('SummaryPublish');
+      } else {
+        (navigation.navigate as any)('DateSelection');
+      }
     }
-  }, [navigation, setRouteDetails, startLocation, destinationLocation, middleStops]);
+  }, [navigation, setRouteDetails, startLocation, destinationLocation, middleStops, params]);
 
   // Compute total distance for display as soon as stops are updated
   useEffect(() => {

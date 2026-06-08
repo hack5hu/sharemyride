@@ -77,6 +77,9 @@ export const userService = {
           type: 'image/jpeg',
           name: 'profile_image.jpg',
         } as unknown as Blob);
+      } else if (data.profileImage === null) {
+        // Explicitly send empty file to tell backend to remove it
+        formData.append('file', '');
       }
 
       const response = await apiClient.post(API_ENDPOINTS.USER.PROFILE, formData);

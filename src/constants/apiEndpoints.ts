@@ -35,6 +35,7 @@ export const API_ENDPOINTS = {
     PREFERENCES: '/ride/preferences',
     PUBLISHED: '/ride/published',
     PENDING_BOOKINGS: '/ride/bookings/pending',
+    DRIVER_PENDING_REQUESTS: '/ride/driver/pending-requests',
     UPDATE_LOCATION: (id: string | number) => `/ride/${id}/location`,
     SYNC_BACKLOG: (id: string | number) => `/ride/${id}/location/backlog`,
   },

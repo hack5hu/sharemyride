@@ -49,10 +49,18 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
       let rideList: any[] = [];
       let hasMore = false;
 
-      const response = await rideService.getMyRides(category, page, 10);
+      let response: any;
+      if (category === 3) {
+        response = await rideService.getDriverPendingRequests();
+      } else {
+        response = await rideService.getMyRides(category, page, 10);
+      }
+      
       rideList = parseRideResponse(response);
       
-      if (response?.totalPages !== undefined && response?.currentPage !== undefined) {
+      if (category === 3) {
+        hasMore = false; // Assuming driver pending requests API doesn't paginate
+      } else if (response?.totalPages !== undefined && response?.currentPage !== undefined) {
         hasMore = response.currentPage < response.totalPages - 1;
       } else {
         hasMore = rideList.length >= 10;

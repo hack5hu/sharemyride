@@ -114,6 +114,8 @@ export const en: Translations = {
     almostThere: 'Almost there!',
     identityVerified: 'Your core identity details are verified and secure.',
     completeSetup: 'Complete Setup',
+    addPhoto: 'Add Photo',
+    under18Error: 'You must be at least 18 years old.',
     footerVersion: 'Secure Editorial Environment • v1.0.2',
   },
   profileHub: {
@@ -128,6 +130,8 @@ export const en: Translations = {
       'Your consistency makes the community safer and more reliable for everyone.',
     accountManagement: 'Account Management',
     supportLegal: 'Support & Legal',
+    chooseFromGallery: 'Choose from Gallery',
+    removePhoto: 'Remove Photo',
     editProfile: 'Edit Profile',
     editProfileDescr: 'Name, Bio, and Contact details',
     editProfilePic: 'Edit',
@@ -345,6 +349,7 @@ export const en: Translations = {
     destinationPlaceholder: 'Search destination...',
     continueJourney: 'Continue Journey',
     contextualInfo: 'Ride with verified partners.',
+    recentRidesTitle: 'Recent Rides',
   },
   mapPicker: {
     title: 'Select Location',

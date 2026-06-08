@@ -14,9 +14,15 @@ export const useProfileHub = () => {
   const navigation = useAppNavigation();
   const { user, fetchProfile } = useAuthStore();
   const [isUpdatingAvatar, setIsUpdatingAvatar] = useState(false);
+  const [isAvatarModalVisible, setAvatarModalVisible] = useState(false);
 
-  const handleAvatarEdit = useCallback(async () => {
+  const handleAvatarEdit = useCallback(() => {
     if (isUpdatingAvatar) return;
+    setAvatarModalVisible(true);
+  }, [isUpdatingAvatar]);
+
+  const handleOpenGallery = useCallback(async () => {
+    setAvatarModalVisible(false);
     try {
       const result = await launchImageLibrary({
         mediaType: 'photo',
@@ -53,7 +59,35 @@ export const useProfileHub = () => {
     } finally {
       setIsUpdatingAvatar(false);
     }
-  }, [user, fetchProfile, t, isUpdatingAvatar]);
+  }, [user, fetchProfile, t]);
+
+  const handleRemoveAvatar = useCallback(async () => {
+    setAvatarModalVisible(false);
+    try {
+      setIsUpdatingAvatar(true);
+      await userService.updateProfile({
+        fullName: user?.name || '',
+        dob: user?.dateOfBirth || '',
+        gender: user?.gender || '',
+        profileImage: null,
+      });
+
+      await fetchProfile();
+      showNotification(
+        NotificationType.SUCCESS,
+        t('notification.defaultSuccessTitle') ,
+        t('notification.profilePhotoUpdated') // We can use the same generic success message or a new one
+      );
+    } catch (error) {
+      showNotification(
+        NotificationType.ERROR,
+        t('notification.defaultErrorTitle') ,
+        t('notification.defaultErrorMessage')
+      );
+    } finally {
+      setIsUpdatingAvatar(false);
+    }
+  }, [user, fetchProfile, t]);
 
   const navigateToEditProfile = useCallback(() => {
     navigation.navigate('EditProfile');
@@ -95,7 +129,11 @@ export const useProfileHub = () => {
     t,
     user,
     isUpdatingAvatar,
+    isAvatarModalVisible,
+    setAvatarModalVisible,
     handleAvatarEdit,
+    handleOpenGallery,
+    handleRemoveAvatar,
     navigateToEditProfile,
     navigateToVehicleDetails,
     navigateToTravelPreferences,

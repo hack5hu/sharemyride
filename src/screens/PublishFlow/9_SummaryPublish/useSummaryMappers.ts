@@ -12,7 +12,7 @@ export const useSummaryMappers = (publishStore: any) => {
   } = publishStore;
 
   const { preferences: storedPrefs } = useTravelPrefStore();
-  const { travelPreferences: pt } = useLocale();
+  const { travelPreferences: pt, summaryPublish: spt } = useLocale();
 
   const formattedDate = useMemo(() => {
     if (!departureDate) return null;
@@ -48,6 +48,7 @@ export const useSummaryMappers = (publishStore: any) => {
       luggageAllowed: publishStore.preferences?.luggage ?? storedPrefs?.luggageAllowed ?? true,
       petFriendly: publishStore.preferences?.pets ?? storedPrefs?.petFriendly ?? false,
       waitingTime: storedPrefs?.waitingTime ?? 10,
+      manualApproval: publishStore.preferences?.manualApproval ?? storedPrefs?.manualApproval ?? true,
     };
     
     
@@ -61,10 +62,10 @@ export const useSummaryMappers = (publishStore: any) => {
       data.push({ id: 'women', label: pt.womenOnly, icon: 'female' });
     }
     
-    const isInstantApproval = !(storedPrefs?.manualApproval ?? true);
-    
-    if (isInstantApproval) {
-      data.push({ id: 'approval', label: pt.manualApproval, icon: 'flash-on' });
+    if (prefs.manualApproval) {
+      data.push({ id: 'approval', label: spt.approvalRequired, icon: 'verified-user' });
+    } else {
+      data.push({ id: 'approval', label: spt.instantBooking, icon: 'flash-on' });
     }
     
     if (prefs.musicPreference) {

@@ -134,3 +134,71 @@ export const ContinueText = styled.Text`
   font-size: ${responsiveFont(16)}px;
   color: ${({ theme }) => theme.colors.on_primary};
 `;
+
+export const RecentRidesSection = styled.View`
+  margin-top: ${verticalScale(32)}px;
+  padding-horizontal: ${scale(4)}px;
+`;
+
+export const RecentRidesHeader = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${verticalScale(16)}px;
+`;
+
+export const RecentRidesTitle = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 800;
+  font-size: ${responsiveFont(18)}px;
+  color: ${({ theme }) => theme.colors.on_surface};
+  letter-spacing: -0.5px;
+`;
+
+export const RecentRideCard = styled.TouchableOpacity`
+  background-color: ${({ theme }) => theme.colors.surface_container_low};
+  border-radius: ${moderateScale(16)}px;
+  padding: ${moderateScale(16)}px;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: ${verticalScale(12)}px;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
+  shadow-offset: 0px 2px;
+  shadow-opacity: 0.02;
+  shadow-radius: 6px;
+  elevation: 1;
+`;
+
+export const RecentRideLeft = styled.View`
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(12)}px;
+`;
+
+export const RecentRideIconBox = styled.View`
+  width: ${moderateScale(40)}px;
+  height: ${moderateScale(40)}px;
+  border-radius: ${moderateScale(20)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
+  align-items: center;
+  justify-content: center;
+`;
+
+export const RecentRideTextContainer = styled.View`
+  flex: 1;
+`;
+
+export const RecentRideRouteText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 700;
+  font-size: ${responsiveFont(14)}px;
+  color: ${({ theme }) => theme.colors.on_surface};
+`;
+
+export const RecentRideSubText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-size: ${responsiveFont(11)}px;
+  color: ${({ theme }) => theme.colors.on_surface_variant};
+  margin-top: ${verticalScale(2)}px;
+`;

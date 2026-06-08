@@ -4,6 +4,7 @@ import { Logger } from '@/utils/logger';
 import { useNetworkLoggerStore } from '@/store/useNetworkLoggerStore';
 import { isNetworkLoggerEnabled, redactSensitiveData, sanitizeHeaders } from '@/utils/networkSecurity';
 import { InternalAxiosRequestConfig, AxiosError } from 'axios';
+import { storage } from '@/utils/storage';
 
 interface TrackedRequestConfig extends InternalAxiosRequestConfig {
   _logId?: string;
@@ -28,8 +29,35 @@ if (!OLA_API_KEY) {
 }
 
 // removed unused pendingRequests
-const cache = new Map<string, { data: unknown; timestamp: number }>();
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const CACHE_TTL = 30 * 60 * 1000; // 30 minutes persistent cache
+
+const getCachedResponse = (key: string): unknown | null => {
+  try {
+    const cachedStr = storage.getString(`ola_cache:${key}`);
+    if (!cachedStr) return null;
+    const cached = JSON.parse(cachedStr);
+    if (Date.now() - cached.timestamp < CACHE_TTL) {
+      return cached.data;
+    }
+    // Expired, clean up
+    storage.remove(`ola_cache:${key}`);
+  } catch (error) {
+    Logger.error('[Ola Maps Cache] Failed to read from MMKV:', error);
+  }
+  return null;
+};
+
+const setCachedResponse = (key: string, data: unknown) => {
+  try {
+    const cacheObj = {
+      data,
+      timestamp: Date.now()
+    };
+    storage.set(`ola_cache:${key}`, JSON.stringify(cacheObj));
+  } catch (error) {
+    Logger.error('[Ola Maps Cache] Failed to write to MMKV:', error);
+  }
+};
 
 olaClient.interceptors.request.use(
   (config) => {
@@ -47,12 +75,12 @@ olaClient.interceptors.request.use(
     
     if (isCacheable) {
       const cacheKey = `${config.method}:${config.url}:${JSON.stringify(config.params)}:${JSON.stringify(config.data || {})}`;
-      const cached = cache.get(cacheKey);
+      const cachedData = getCachedResponse(cacheKey);
       
-      if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+      if (cachedData) {
         Logger.log(`[Ola Maps Cache Hit] ${config.url}`);
         config.adapter = () => Promise.resolve({
-          data: cached.data,
+          data: cachedData,
           status: 200,
           statusText: 'OK',
           headers: {},
@@ -116,10 +144,7 @@ olaClient.interceptors.response.use(
 
     if (isCacheable && response.status === 200) {
       const cacheKey = `${response.config.method}:${response.config.url}:${JSON.stringify(response.config.params)}:${JSON.stringify(response.config.data || {})}`;
-      cache.set(cacheKey, {
-        data: response.data,
-        timestamp: Date.now()
-      });
+      setCachedResponse(cacheKey, response.data);
     }
     
     return response;

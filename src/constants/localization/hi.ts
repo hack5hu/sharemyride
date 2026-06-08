@@ -115,6 +115,8 @@ export const hi: Translations = {
     almostThere: 'बस पहुँच गए!',
     identityVerified: 'आपकी मूल पहचान विवरण सत्यापित और सुरक्षित हैं।',
     completeSetup: 'सेटअप पूरा करें',
+    addPhoto: 'फ़ोटो जोड़ें',
+    under18Error: 'आपकी आयु कम से कम 18 वर्ष होनी चाहिए।',
     footerVersion: 'सुरक्षित संपादकीय वातावरण • v1.0.2',
   },
   profileHub: {
@@ -129,6 +131,8 @@ export const hi: Translations = {
       'आपकी निरंतरता समुदाय को सभी के लिए सुरक्षित और अधिक विश्वसनीय बनाती है।',
     accountManagement: 'खाता प्रबंधन',
     supportLegal: 'सहायता और कानूनी',
+    chooseFromGallery: 'गैलरी से चुनें',
+    removePhoto: 'फोटो हटाएं',
     editProfile: 'प्रोफ़ाइल संपादित करें',
     editProfileDescr: 'नाम, बायो और संपर्क विवरण',
     editProfilePic: 'संपादित करें',
@@ -346,6 +350,7 @@ export const hi: Translations = {
     destinationPlaceholder: 'गंतव्य स्थान खोजें...',
     continueJourney: 'यात्रा जारी रखें',
     contextualInfo: 'सत्यापित भागीदारों के साथ सवारी करें।',
+    recentRidesTitle: 'हाल की सवारी',
   },
   mapPicker: {
     title: 'स्थान चुनें',

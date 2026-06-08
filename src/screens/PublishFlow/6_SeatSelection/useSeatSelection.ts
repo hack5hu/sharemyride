@@ -103,7 +103,9 @@ export const useSeatSelection = () => {
         setPublishVehicleType(publishVehicleType);
         
         if (returnTo) {
-          (navigation.navigate as any)(returnTo);
+          (navigation.navigate as any)(returnTo, {
+            returnTo: (route.params as any)?.nextReturnTo,
+          });
         } else {
           (navigation.navigate as any)('PriceSelection');
         }
