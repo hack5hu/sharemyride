@@ -103,8 +103,18 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
       initialStopIndex: index,
       sourceStopId,
       destinationStopId,
+      userSearchedPickup: startLocation ? {
+        latitude: startLocation.latitude,
+        longitude: startLocation.longitude,
+        name: startLocation.name || startLocation.address || 'Pickup Point',
+      } : undefined,
+      userSearchedDropoff: destinationLocation ? {
+        latitude: destinationLocation.latitude,
+        longitude: destinationLocation.longitude,
+        name: destinationLocation.name || destinationLocation.address || 'Dropoff Point',
+      } : undefined,
     });
-  }, [navigate, ride, sourceStopId, destinationStopId]);
+  }, [navigate, ride, sourceStopId, destinationStopId, startLocation, destinationLocation]);
 
   const handleCopyAddress = useCallback((address: string) => {
     Clipboard.setString(address);

@@ -31,6 +31,7 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
     if (response?.rides && Array.isArray(response.rides)) return response.rides;
     if (response?.data && Array.isArray(response.data)) return response.data;
     if (response?.content && Array.isArray(response.content)) return response.content;
+    if (response?.requests && Array.isArray(response.requests)) return response.requests;
     return [];
   };
 

@@ -3,9 +3,9 @@ import apiClient from './apiClient';
 import { Logger } from '@/utils/logger';
 
 export interface ProfileUpdateData {
-  fullName: string;
-  dob: string;
-  gender: string;
+  fullName?: string;
+  dob?: string;
+  gender?: string;
   profileImage?: { uri: string } | null;
 }
 
@@ -58,18 +58,25 @@ export const userService = {
     try {
       const formData = new FormData();
 
-      // Convert DD/MM/YYYY -> YYYY-MM-DD
-      let formattedDate = data.dob;
-      if (formattedDate && formattedDate.includes('/')) {
-        const parts = formattedDate.split('/');
-        if (parts.length === 3) {
-          formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
-        }
+      if (data.fullName !== undefined) {
+        formData.append('name', data.fullName);
       }
 
-      formData.append('name', data.fullName);
-      formData.append('date', formattedDate);
-      formData.append('gender', data.gender ? data.gender.toUpperCase() : 'OTHER');
+      if (data.dob !== undefined) {
+        // Convert DD/MM/YYYY -> YYYY-MM-DD
+        let formattedDate = data.dob;
+        if (formattedDate && formattedDate.includes('/')) {
+          const parts = formattedDate.split('/');
+          if (parts.length === 3) {
+            formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+          }
+        }
+        formData.append('date', formattedDate);
+      }
+
+      if (data.gender !== undefined) {
+        formData.append('gender', data.gender ? data.gender.toUpperCase() : 'OTHER');
+      }
 
       if (data.profileImage?.uri) {
         formData.append('file', {
@@ -77,15 +84,39 @@ export const userService = {
           type: 'image/jpeg',
           name: 'profile_image.jpg',
         } as unknown as Blob);
-      } else if (data.profileImage === null) {
-        // Explicitly send empty file to tell backend to remove it
-        formData.append('file', '');
       }
 
       const response = await apiClient.post(API_ENDPOINTS.USER.PROFILE, formData);
       return response.data;
     } catch (error) {
       Logger.error('Error updating profile:', error);
+      throw error;
+    }
+  },
+
+  uploadProfilePhoto: async (imageUri: string) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', {
+        uri: imageUri,
+        type: 'image/jpeg',
+        name: 'profile_image.jpg',
+      } as unknown as Blob);
+
+      const response = await apiClient.post(API_ENDPOINTS.USER.PROFILE, formData);
+      return response.data;
+    } catch (error) {
+      Logger.error('Error uploading profile photo:', error);
+      throw error;
+    }
+  },
+
+  deleteProfilePhoto: async () => {
+    try {
+      const response = await apiClient.delete(API_ENDPOINTS.USER.DELETE_PHOTO);
+      return response.data;
+    } catch (error) {
+      Logger.error('Error deleting profile photo:', error);
       throw error;
     }
   },

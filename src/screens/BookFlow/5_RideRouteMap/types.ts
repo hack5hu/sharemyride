@@ -16,6 +16,16 @@ export interface RideRouteMapParams {
     name: string;
     address?: string;
   };
+  userSearchedPickup?: {
+    latitude: number;
+    longitude: number;
+    name: string;
+  };
+  userSearchedDropoff?: {
+    latitude: number;
+    longitude: number;
+    name: string;
+  };
 }
 
 export interface RideRouteMapProps {

@@ -36,6 +36,7 @@ interface RideItemProps {
   onChatPress?: (item: any) => void;
   onAcceptRide?: (id: string) => void;
   onRejectRide?: (id: string) => void;
+  isActionLoading?: boolean;
 }
 
 export const RideItem: React.FC<RideItemProps> = React.memo(({
@@ -47,6 +48,7 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
   onChatPress,
   onAcceptRide,
   onRejectRide,
+  isActionLoading,
 }) => {
   if (activeTab === 'requests') {
     return (
@@ -63,6 +65,7 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
           onAccept={() => onAcceptRide?.(item.id)}
           onReject={() => onRejectRide?.(item.id)}
           onPress={() => onRidePress(item)}
+          disabled={isActionLoading}
         />
     );
   }

@@ -109,6 +109,11 @@ export const useMyRides = (): MyRidesHookData => {
     setIsActionLoading(true);
     try {
       await rideService.acceptBooking(id);
+      showNotification(
+        NotificationType.SUCCESS,
+        t('notification.defaultSuccessTitle'),
+        'Booking accepted successfully.'
+      );
       onRefresh();
     } catch (error: any) {
       console.error('Failed to accept booking:', error);
@@ -120,12 +125,17 @@ export const useMyRides = (): MyRidesHookData => {
     } finally {
       setIsActionLoading(false);
     }
-  }, [onRefresh]);
+  }, [onRefresh, t]);
 
   const onRejectBooking = useCallback(async (id: string) => {
     setIsActionLoading(true);
     try {
       await rideService.rejectBooking(id);
+      showNotification(
+        NotificationType.SUCCESS,
+        t('notification.defaultSuccessTitle'),
+        'Booking rejected successfully.'
+      );
       onRefresh();
     } catch (error: any) {
       console.error('Failed to reject booking:', error);
@@ -137,7 +147,7 @@ export const useMyRides = (): MyRidesHookData => {
     } finally {
       setIsActionLoading(false);
     }
-  }, [onRefresh]);
+  }, [onRefresh, t]);
 
   return {
     activeTab,

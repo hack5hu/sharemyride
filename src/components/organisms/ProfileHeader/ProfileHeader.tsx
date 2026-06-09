@@ -55,7 +55,8 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             <Avatar 
               source={avatarUri ? { uri: avatarUri } : undefined} 
               size="xl" 
-              border 
+              border
+              placeholder={name}
             />
             {isUpdatingAvatar && (
               <View style={{

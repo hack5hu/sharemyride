@@ -109,6 +109,16 @@ export type RootStackParamList = {
       name: string;
       address?: string;
     };
+    userSearchedPickup?: {
+      latitude: number;
+      longitude: number;
+      name: string;
+    };
+    userSearchedDropoff?: {
+      latitude: number;
+      longitude: number;
+      name: string;
+    };
   };
   BookSeatSelection: {
     rideId: string;

@@ -91,7 +91,7 @@ export const useAuthStore = create<AuthState>()(
             
             const isIdentical = currentUser &&
               currentUser.name === profile.name &&
-              currentUser.date === profile.date &&
+              currentUser.dateOfBirth === (profile.date || profile.dateOfBirth) &&
               currentUser.phoneNumber === profile.phoneNumber &&
               currentUser.profilePhotoUrl === profile.profilePhotoUrl &&
               currentUser.gender === profile.gender &&
@@ -104,7 +104,7 @@ export const useAuthStore = create<AuthState>()(
                   ...state.user, 
                   ...profile,
                   name: profile.name,
-                  dateOfBirth: profile.date, // Map API 'date' to 'dateOfBirth'
+                  dateOfBirth: profile.date || profile.dateOfBirth,
                   phoneNumber: profile.phoneNumber,
                   profilePhotoUrl: profile.profilePhotoUrl,
                 },

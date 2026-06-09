@@ -16,7 +16,7 @@ export const Typography: React.FC<TypographyProps> = ({
       variant={variant}
       size={size}
       weight={weight}
-      color={color}
+      $color={color}
       align={align}
       {...props}
     >

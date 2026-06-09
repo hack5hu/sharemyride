@@ -17,9 +17,13 @@ export const mapBackendRideToUI = (
   if (rideRaw.preferences?.womenOnly) features.push('ladiesOnly');
   if (rideRaw.preferences?.petFriendly) features.push('petFriendly');
   if (rideRaw.preferences?.luggageAllowed) features.push('luggageAllowed');
-  if (rideRaw.preferences?.manualApproval === false) {
+  
+  if (rideRaw.requestType === 'review' || rideRaw.preferences?.manualApproval === true) {
+    features.push('manualApproval');
+  } else if (rideRaw.requestType === 'instant' || rideRaw.preferences?.manualApproval === false) {
     features.push('autoApproval');
   }
+
   if (rideRaw.preferences?.musicPreference) features.push(`music:${rideRaw.preferences.musicPreference}`);
 
   const firstStop = rideRaw.stops?.[0];

@@ -14,4 +14,5 @@ export interface RideRouteMapTemplateProps {
   onZoomOut: () => void;
   onOpenExternalMap: (type: 'google' | 'apple') => void;
   isMapMounted: boolean;
+  onMapLoaded: () => void;
 }

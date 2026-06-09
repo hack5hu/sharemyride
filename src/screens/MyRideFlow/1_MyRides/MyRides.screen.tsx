@@ -74,8 +74,9 @@ export const MyRidesScreen: React.FC = memo(() => {
       onRemoveDraft={onRemoveDraft}
       onAcceptRide={onAcceptRide}
       onRejectRide={onRejectRide}
+      isActionLoading={isActionLoading}
     />
-  ), [onRidePress, onChatPress, onCancelRide, onRemoveDraft, onAcceptRide, onRejectRide]);
+  ), [onRidePress, onChatPress, onCancelRide, onRemoveDraft, onAcceptRide, onRejectRide, isActionLoading]);
 
   const renderTabContent = useCallback(({ item: tab }: { item: typeof TABS[number] }) => {
     const data = getTabData(tab);

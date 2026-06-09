@@ -37,12 +37,7 @@ export const useProfileHub = () => {
       setIsUpdatingAvatar(true);
       const selectedImage = result.assets[0];
 
-      await userService.updateProfile({
-        fullName: user?.name || '',
-        dob: user?.dateOfBirth || '',
-        gender: user?.gender || '',
-        profileImage: { uri: selectedImage.uri },
-      });
+      await userService.uploadProfilePhoto(selectedImage.uri!);
 
       await fetchProfile();
       showNotification(
@@ -50,27 +45,24 @@ export const useProfileHub = () => {
         t('notification.defaultSuccessTitle') ,
         t('notification.profilePhotoUpdated')
       );
-    } catch (error) {
+    } catch (error: unknown) {
+      const axiosError = error as { response?: { data?: { message?: string } }; message?: string };
+      const errorMessage = axiosError?.response?.data?.message || axiosError?.message || t('notification.defaultErrorMessage');
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle') ,
-        t('notification.defaultErrorMessage')
+        errorMessage
       );
     } finally {
       setIsUpdatingAvatar(false);
     }
-  }, [user, fetchProfile, t]);
+  }, [fetchProfile, t]);
 
   const handleRemoveAvatar = useCallback(async () => {
     setAvatarModalVisible(false);
     try {
       setIsUpdatingAvatar(true);
-      await userService.updateProfile({
-        fullName: user?.name || '',
-        dob: user?.dateOfBirth || '',
-        gender: user?.gender || '',
-        profileImage: null,
-      });
+      await userService.deleteProfilePhoto();
 
       await fetchProfile();
       showNotification(

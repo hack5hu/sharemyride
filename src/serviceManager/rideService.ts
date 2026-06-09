@@ -74,16 +74,25 @@ const rideService = {
   },
   publishRide: async (payload: PublishRidePayload) => {
     try {
-      const response = await apiClient.post(API_ENDPOINTS.RIDE.PUBLISH, payload);
+      const response = await apiClient.post(
+        API_ENDPOINTS.RIDE.PUBLISH,
+        payload,
+      );
       return response.data;
     } catch (error) {
       console.error('Ride publication failed:', error);
       throw error;
     }
   },
-  getMyRides: async (filter: 1 | 2 | 3, page: number = 0, size: number = 15) => {
+  getMyRides: async (
+    filter: 1 | 2 | 3,
+    page: number = 0,
+    size: number = 15,
+  ) => {
     try {
-      const response = await apiClient.get(`${API_ENDPOINTS.RIDE.GET_MY_RIDES}?filter=${filter}&page=${page}&size=${size}`);
+      const response = await apiClient.get(
+        `${API_ENDPOINTS.RIDE.GET_MY_RIDES}?filter=${filter}&page=${page}&size=${size}`,
+      );
       return response.data;
     } catch (error) {
       console.error(`Fetching rides (filter ${filter}) failed:`, error);
@@ -92,7 +101,9 @@ const rideService = {
   },
   cancelRide: async (rideId: string | number, reason: string) => {
     try {
-      const url = `${API_ENDPOINTS.RIDE.CANCEL_RIDE(rideId)}?reason=${encodeURIComponent(reason)}`;
+      const url = `${API_ENDPOINTS.RIDE.CANCEL_RIDE(
+        rideId,
+      )}?reason=${encodeURIComponent(reason)}`;
       const response = await apiClient.put(url);
       return response.data;
     } catch (error) {
@@ -102,7 +113,9 @@ const rideService = {
   },
   cancelBooking: async (bookingId: string | number, reason: string) => {
     try {
-      const url = `${API_ENDPOINTS.RIDE.CANCEL_BOOKING(bookingId)}?reason=${encodeURIComponent(reason)}`;
+      const url = `${API_ENDPOINTS.RIDE.CANCEL_BOOKING(
+        bookingId,
+      )}?reason=${encodeURIComponent(reason)}`;
       const response = await apiClient.put(url);
       return response.data;
     } catch (error) {
@@ -112,7 +125,10 @@ const rideService = {
   },
   savePreferences: async (payload: TravelPreferenceData) => {
     try {
-      const response = await apiClient.post(API_ENDPOINTS.RIDE.PREFERENCES, payload);
+      const response = await apiClient.post(
+        API_ENDPOINTS.RIDE.PREFERENCES,
+        payload,
+      );
       return response.data;
     } catch (error) {
       console.error('Saving preferences failed:', error);
@@ -130,7 +146,10 @@ const rideService = {
   },
   bookRide: async (rideId: string | number, payload: BookingPayload) => {
     try {
-      const response = await apiClient.post(API_ENDPOINTS.RIDE.BOOK_RIDE(rideId), payload);
+      const response = await apiClient.post(
+        API_ENDPOINTS.RIDE.BOOK_RIDE(rideId),
+        payload,
+      );
       return response.data;
     } catch (error) {
       console.error('Ride booking failed:', error);
@@ -148,7 +167,9 @@ const rideService = {
   },
   getDriverPendingRequests: async () => {
     try {
-      const response = await apiClient.get(API_ENDPOINTS.RIDE.DRIVER_PENDING_REQUESTS);
+      const response = await apiClient.get(
+        API_ENDPOINTS.RIDE.DRIVER_PENDING_REQUESTS,
+      );
       return response.data;
     } catch (error) {
       console.error('Fetching driver pending requests failed:', error);
@@ -159,15 +180,20 @@ const rideService = {
     return rideService.updateBookingStatus(bookingId, 'CONFIRMED');
   },
   rejectBooking: async (bookingId: string | number) => {
-    return rideService.updateBookingStatus(bookingId, 'CANCELLED');
+    return rideService.updateBookingStatus(bookingId, 'REJECTED');
   },
-  getRideDetail: async (rideId: string | number, sourceStopId?: number, destinationStopId?: number) => {
+  getRideDetail: async (
+    rideId: string | number,
+    sourceStopId?: number,
+    destinationStopId?: number,
+  ) => {
     try {
       let url = API_ENDPOINTS.RIDE.GET_RIDE_DETAIL(rideId);
       const queryParams: string[] = [];
       if (sourceStopId) queryParams.push(`sourceStopId=${sourceStopId}`);
-      if (destinationStopId) queryParams.push(`destinationStopId=${destinationStopId}`);
-      
+      if (destinationStopId)
+        queryParams.push(`destinationStopId=${destinationStopId}`);
+
       if (queryParams.length > 0) {
         url += `?${queryParams.join('&')}`;
       }
@@ -179,13 +205,18 @@ const rideService = {
       throw error;
     }
   },
-  getMyRideDetail: async (rideId: string | number, sourceStopId?: number, destinationStopId?: number) => {
+  getMyRideDetail: async (
+    rideId: string | number,
+    sourceStopId?: number,
+    destinationStopId?: number,
+  ) => {
     try {
       let url = API_ENDPOINTS.RIDE.GET_MY_RIDE_DETAIL(rideId);
       const queryParams: string[] = [];
       if (sourceStopId) queryParams.push(`sourceStopId=${sourceStopId}`);
-      if (destinationStopId) queryParams.push(`destinationStopId=${destinationStopId}`);
-      
+      if (destinationStopId)
+        queryParams.push(`destinationStopId=${destinationStopId}`);
+
       if (queryParams.length > 0) {
         url += `?${queryParams.join('&')}`;
       }
@@ -197,9 +228,14 @@ const rideService = {
       throw error;
     }
   },
-  updateBookingStatus: async (bookingId: string | number, status: 'CONFIRMED' | 'CANCELLED') => {
+  updateBookingStatus: async (
+    bookingId: string | number,
+    status: 'CONFIRMED' | 'REJECTED',
+  ) => {
     try {
-      const url = `${API_ENDPOINTS.RIDE.UPDATE_BOOKING_STATUS(bookingId)}?status=${status}`;
+      const url = `${API_ENDPOINTS.RIDE.UPDATE_BOOKING_STATUS(
+        bookingId,
+      )}?status=${status}`;
       const response = await apiClient.put(url);
       return response.data;
     } catch (error) {
@@ -209,7 +245,10 @@ const rideService = {
   },
   updateLocation: async (rideId: string | number, lat: number, lon: number) => {
     try {
-      const response = await apiClient.post(API_ENDPOINTS.RIDE.UPDATE_LOCATION(rideId), { lat, lon });
+      const response = await apiClient.post(
+        API_ENDPOINTS.RIDE.UPDATE_LOCATION(rideId),
+        { lat, lon },
+      );
       return response.data;
     } catch (error) {
       console.error('Updating location failed:', error);
@@ -218,10 +257,13 @@ const rideService = {
   },
   syncLocationBacklog: async (
     rideId: string | number,
-    backlog: Array<{ latitude: number; longitude: number; timestamp: number }>
+    backlog: Array<{ latitude: number; longitude: number; timestamp: number }>,
   ) => {
     try {
-      const response = await apiClient.post(API_ENDPOINTS.RIDE.SYNC_BACKLOG(rideId), { backlog });
+      const response = await apiClient.post(
+        API_ENDPOINTS.RIDE.SYNC_BACKLOG(rideId),
+        { backlog },
+      );
       return response.data;
     } catch (error) {
       console.error('Syncing location backlog failed:', error);

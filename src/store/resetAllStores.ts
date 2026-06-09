@@ -6,10 +6,18 @@ import { useRidePublishStore } from './useRidePublishStore';
 import { useTravelPrefStore } from './useTravelPrefStore';
 import { useVehicleStore } from './useVehicleStore';
 import { useChatStore } from './useChatStore';
+import { useSettingsStore } from './settings';
+import { useNetworkLoggerStore } from './useNetworkLoggerStore';
+import { storage } from '@/utils/storage';
 
 export const resetAllStores = () => {
-  // We explicitly keep useSettingsStore intact as it contains user preferences like language/theme
-  
+  // Clear all MMKV persistent storage
+  try {
+    storage.clearAll();
+  } catch (error) {
+    console.error('[Storage] Failed to clear MMKV storage on logout:', error);
+  }
+
   // 1. Auth Store
   useAuthStore.setState({
     user: null,
@@ -105,5 +113,16 @@ export const resetAllStores = () => {
     users: {},
     myUserId: null,
     activeConversationId: null,
+  });
+
+  // 9. Settings Store (Reset theme, language, and notification settings)
+  useSettingsStore.setState({
+    themeMode: 'light',
+    pushNotifications: true,
+    promoEmails: true,
+    rideReceipts: true,
+    accountSecurity: true,
+    language: 'en',
+    region: 'INDIA',
   });
 };

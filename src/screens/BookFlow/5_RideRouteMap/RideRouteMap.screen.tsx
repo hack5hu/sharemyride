@@ -5,7 +5,7 @@ import { RideRouteMapTemplate } from '@/components/templates/RideRouteMapTemplat
 import { useLocale } from '@/constants/localization';
 
 export const RideRouteMapScreen: React.FC<RideRouteMapProps> = React.memo(({ route }) => {
-  const { routePath, stops, initialStopIndex, destination, sourceStopId, destinationStopId } = route.params;
+  const { routePath, stops, initialStopIndex, destination, sourceStopId, destinationStopId, userSearchedPickup, userSearchedDropoff } = route.params;
   const { rideRoute } = useLocale();
   
   const { 
@@ -15,13 +15,14 @@ export const RideRouteMapScreen: React.FC<RideRouteMapProps> = React.memo(({ rou
     handleZoomIn,
     handleZoomOut,
     handleOpenExternalMap,
+    handleMapLoaded,
     mapData, 
     cameraRef,
     mapRef,
     zoom,
     region,
     isMapMounted,
-  } = useRideRouteMap(routePath, stops, destination, initialStopIndex, sourceStopId, destinationStopId);
+  } = useRideRouteMap(routePath, stops, destination, initialStopIndex, sourceStopId, destinationStopId, userSearchedPickup, userSearchedDropoff);
 
   return (
     <RideRouteMapTemplate
@@ -38,6 +39,7 @@ export const RideRouteMapScreen: React.FC<RideRouteMapProps> = React.memo(({ rou
       onZoomOut={handleZoomOut}
       onOpenExternalMap={handleOpenExternalMap}
       isMapMounted={isMapMounted}
+      onMapLoaded={handleMapLoaded}
     />
   );
 });

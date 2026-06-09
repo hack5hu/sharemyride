@@ -35,11 +35,12 @@ export const MatchedRideBento: React.FC<MatchedRideBentoProps> = ({
   onAccept,
   onReject,
   onPress,
+  disabled,
 }) => {
   const theme = useTheme();
 
   return (
-    <Container onPress={onPress} activeOpacity={0.9}>
+    <Container onPress={onPress} activeOpacity={0.9} disabled={disabled}>
       <GhostIconWrapper>
         <Icon name="auto-awesome" size={moderateScale(80)} color="#fff" />
       </GhostIconWrapper>
@@ -91,11 +92,11 @@ export const MatchedRideBento: React.FC<MatchedRideBentoProps> = ({
         </InfoRow>
       )}
 
-      <ActionButtonRow>
-        <SecondaryButton onPress={onReject} activeOpacity={0.8}>
+      <ActionButtonRow style={{ opacity: disabled ? 0.5 : 1 }}>
+        <SecondaryButton onPress={onReject} activeOpacity={0.8} disabled={disabled}>
           <ActionText isSecondary>Decline</ActionText>
         </SecondaryButton>
-        <ActionButton onPress={onAccept} activeOpacity={0.8}>
+        <ActionButton onPress={onAccept} activeOpacity={0.8} disabled={disabled}>
           <ActionText>Accept</ActionText>
         </ActionButton>
       </ActionButtonRow>

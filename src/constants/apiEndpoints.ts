@@ -18,6 +18,7 @@ export const API_ENDPOINTS = {
   },
   USER: {
     PROFILE: '/user/profile',
+    DELETE_PHOTO: '/user/profile/photo',
     VEHICLES: '/user/vehicle',
   },
   RIDE: {

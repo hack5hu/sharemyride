@@ -9,10 +9,11 @@ export const useSummaryMappers = (publishStore: any) => {
     seatCount,
     price,
     vehicleDetails,
+    requestType,
   } = publishStore;
 
   const { preferences: storedPrefs } = useTravelPrefStore();
-  const { travelPreferences: pt, summaryPublish: spt } = useLocale();
+  const { travelPreferences: pt, summaryPublish: spt, rideDetails: rdt } = useLocale();
 
   const formattedDate = useMemo(() => {
     if (!departureDate) return null;
@@ -48,7 +49,7 @@ export const useSummaryMappers = (publishStore: any) => {
       luggageAllowed: publishStore.preferences?.luggage ?? storedPrefs?.luggageAllowed ?? true,
       petFriendly: publishStore.preferences?.pets ?? storedPrefs?.petFriendly ?? false,
       waitingTime: storedPrefs?.waitingTime ?? 10,
-      manualApproval: publishStore.preferences?.manualApproval ?? storedPrefs?.manualApproval ?? true,
+      manualApproval: requestType === 'review',
     };
     
     
@@ -63,9 +64,9 @@ export const useSummaryMappers = (publishStore: any) => {
     }
     
     if (prefs.manualApproval) {
-      data.push({ id: 'approval', label: spt.approvalRequired, icon: 'verified-user' });
+      data.push({ id: 'approval', label: rdt.approvalRequired, icon: 'verified-user' });
     } else {
-      data.push({ id: 'approval', label: spt.instantBooking, icon: 'flash-on' });
+      data.push({ id: 'approval', label: rdt.instantBooking, icon: 'flash-on' });
     }
     
     if (prefs.musicPreference) {
@@ -85,7 +86,7 @@ export const useSummaryMappers = (publishStore: any) => {
     }
     
     return data;
-  }, [storedPrefs, publishStore.preferences, pt]);
+  }, [storedPrefs, publishStore.preferences, pt, requestType, rdt]);
 
   return {
     formattedDate,

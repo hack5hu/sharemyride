@@ -36,6 +36,7 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> = React.m
   onZoomOut,
   onOpenExternalMap,
   isMapMounted,
+  onMapLoaded,
 }) => {
   const theme = useTheme();
   const { rideRoute } = useLocale();
@@ -48,6 +49,7 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> = React.m
             <S.StyledOlaMap
               ref={mapRef}
               onRegionDidChange={onRegionDidChange}
+              onDidFinishLoadingMap={onMapLoaded}
             >
               <Camera
                 ref={cameraRef}
@@ -103,6 +105,46 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> = React.m
                   'line-join': 'round',
                 }}
               />
+              {/* Connecting Path: User Searched Pickup to Ride Pickup */}
+              <Layer
+                id="route-line-connection-pickup"
+                source="ride-route-source"
+                type="line"
+                filter={[
+                  'all',
+                  ['==', ['get', 'type'], 'connection'],
+                  ['==', ['get', 'status'], 'pickup'],
+                ]}
+                paint={{
+                  'line-color': '#00875a',
+                  'line-width': 4,
+                  'line-dasharray': [2, 2],
+                }}
+                layout={{
+                  'line-cap': 'round',
+                  'line-join': 'round',
+                }}
+              />
+              {/* Connecting Path: Ride Dropoff to User Searched Dropoff */}
+              <Layer
+                id="route-line-connection-dropoff"
+                source="ride-route-source"
+                type="line"
+                filter={[
+                  'all',
+                  ['==', ['get', 'type'], 'connection'],
+                  ['==', ['get', 'status'], 'dropoff'],
+                ]}
+                paint={{
+                  'line-color': theme.colors.error,
+                  'line-width': 4,
+                  'line-dasharray': [2, 2],
+                }}
+                layout={{
+                  'line-cap': 'round',
+                  'line-join': 'round',
+                }}
+              />
               <Layer
                 id="marker-start"
                 source="ride-route-source"
@@ -149,6 +191,40 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> = React.m
                   'circle-radius': 6,
                   'circle-stroke-width': 2,
                   'circle-stroke-color': theme.colors.primary,
+                }}
+              />
+              {/* User Searched Pickup Marker */}
+              <Layer
+                id="marker-user-pickup"
+                source="ride-route-source"
+                type="circle"
+                filter={[
+                  'all',
+                  ['==', ['get', 'type'], 'marker'],
+                  ['==', ['get', 'role'], 'user-pickup'],
+                ]}
+                paint={{
+                  'circle-color': theme.colors.primary,
+                  'circle-radius': 8,
+                  'circle-stroke-width': 3,
+                  'circle-stroke-color': '#FFFFFF',
+                }}
+              />
+              {/* User Searched Dropoff Marker */}
+              <Layer
+                id="marker-user-dropoff"
+                source="ride-route-source"
+                type="circle"
+                filter={[
+                  'all',
+                  ['==', ['get', 'type'], 'marker'],
+                  ['==', ['get', 'role'], 'user-dropoff'],
+                ]}
+                paint={{
+                  'circle-color': theme.colors.tertiary,
+                  'circle-radius': 8,
+                  'circle-stroke-width': 3,
+                  'circle-stroke-color': '#FFFFFF',
                 }}
               />
             </S.StyledOlaMap>
