@@ -1,4 +1,4 @@
-import { PermissionsAndroid, Platform, Linking, Alert } from 'react-native';
+import { PermissionsAndroid, Platform, Linking } from 'react-native';
 
 /**
  * Common utility to request location permissions on both Android and iOS.
@@ -33,24 +33,9 @@ export const requestLocationPermission = async (): Promise<boolean> => {
  * provides a standard way to guide the user to the correct settings page.
  */
 export const checkLocationServices = async (): Promise<void> => {
-  Alert.alert(
-    'Location Services',
-    'Please ensure your GPS is turned on to see your live location.',
-    [
-      {
-        text: 'Open Settings',
-        onPress: () => {
-          if (Platform.OS === 'android') {
-            Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
-          } else {
-            Linking.openURL('app-settings:');
-          }
-        },
-      },
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
-    ]
-  );
+  if (Platform.OS === 'android') {
+    Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
+  } else {
+    Linking.openURL('app-settings:');
+  }
 };

@@ -49,9 +49,18 @@ export const useBookingConfirmed = () => {
       hour12: true,
     });
 
-    const getSeatDescription = (seatId: string | number, vehicleType?: string): string => {
+    const vehicleType = route.params?.vehicleType || rideRaw?.vehicleType;
+    const departureDate = route.params?.departureDate || (firstStop?.arrivalTime
+      ? new Date(firstStop.arrivalTime).toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'short',
+      })
+      : '');
+
+    const getSeatDescription = (seatId: string | number, vType?: string): string => {
       const id = String(seatId);
-      const is7Seater = vehicleType === 'CAR_7_SEATER';
+      const typeStr = (vType || '').toUpperCase();
+      const is7Seater = typeStr.includes('7') || typeStr === '7';
 
       if (id === '1' || id === 'driver') return t.seatPositions.driver;
       if (id === '2') return t.seatPositions.frontPassenger;
@@ -77,7 +86,7 @@ export const useBookingConfirmed = () => {
     };
 
     const formattedSeats = bookedSeats.length > 0 
-      ? bookedSeats.map(seatId => getSeatDescription(seatId, rideRaw?.vehicleType)).join(', ')
+      ? bookedSeats.map(seatId => getSeatDescription(seatId, vehicleType)).join(', ')
       : 'TBD';
 
     return {
@@ -86,15 +95,16 @@ export const useBookingConfirmed = () => {
         rating: 4.9,
         avatar: rideRaw?.driverPhotoUrl || 'https://ui-avatars.com/api/?name=' + (rideRaw?.driverName || 'H'),
         isVerified: true,
-        car: rideRaw?.vehicleType?.replace('CAR_', '').replace('_', '-').toLowerCase().replace(/\b\w/g, (c: string) => c.toUpperCase()) || 'Vehicle',
+        car: vehicleType?.replace('CAR_', '').replace('_', '-').toLowerCase().replace(/\b\w/g, (c: string) => c.toUpperCase()) || 'Vehicle',
         plate: rideRaw?.vehicleRegistration || '...',
       },
       pickupTime,
       arrivalInMins: 12, // Still mock or calculate if possible
       seatNumber: formattedSeats,
       seatPreference: t.windowPreference,
+      departureDate,
     };
-  }, [rideRaw, bookedSeats, t]);
+  }, [rideRaw, bookedSeats, route.params, t]);
 
   const handleGoToMyRides = useCallback(() => {
     navigate('MyRides');

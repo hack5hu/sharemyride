@@ -128,9 +128,13 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
     }) || `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
     
     Linking.openURL(url).catch(() => {
-      Alert.alert('Error', 'Could not open map application');
+      showNotification(
+        NotificationType.ERROR,
+        locale.notification.defaultErrorTitle,
+        locale.notification.mapOpenError
+      );
     });
-  }, []);
+  }, [locale]);
 
   const handleDriverProfile = useCallback(() => {
     if (ride?.driver?.id) {

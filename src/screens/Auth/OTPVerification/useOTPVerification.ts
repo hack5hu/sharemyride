@@ -71,14 +71,7 @@ export const useOTPVerification = () => {
         // Background sync Profile, Vehicles, and Preferences immediately only if the profile is completed
         if (userProfileCompleted) {
           const { fetchProfile } = useAuthStore.getState();
-          const { useVehicleStore } = require('@/store/useVehicleStore');
-          const { useTravelPrefStore } = require('@/store/useTravelPrefStore');
-          const { syncVehicles } = useVehicleStore.getState();
-          const { syncPreferences } = useTravelPrefStore.getState();
-
           fetchProfile();
-          syncVehicles();
-          syncPreferences();
         }
 
         setLoading(false);

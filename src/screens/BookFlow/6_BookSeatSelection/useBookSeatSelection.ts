@@ -128,6 +128,8 @@ export const useBookSeatSelection = (
         rideId,
         bookedSeats: Array.from(selectedSeats).map(String),
         pickupTime: departureTime,
+        vehicleType: passedVehicleType || rideRaw?.vehicleType || (vehicleType === '7' ? 'CAR_7_SEATER' : 'CAR_5_SEATER'),
+        departureDate,
       });
     } catch (error: any) {
       console.error('Booking confirmation failed:', error);

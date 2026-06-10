@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { Keyboard } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
@@ -77,6 +78,7 @@ export const MiddleStopSearchOverlay: React.FC<MiddleStopSearchOverlayProps> = R
 
   const handleHistoryPress = useCallback(
     (item: LocationOption | Location) => {
+      Keyboard.dismiss();
       if (onSelectHistory && 'latitude' in item && 'longitude' in item) {
         onSelectHistory(item as Location);
       } else {
@@ -85,6 +87,11 @@ export const MiddleStopSearchOverlay: React.FC<MiddleStopSearchOverlayProps> = R
     },
     [onSelectHistory, onSelectLocation],
   );
+
+  const handleLocationSelect = useCallback((item: LocationOption) => {
+    Keyboard.dismiss();
+    onSelectLocation(item);
+  }, [onSelectLocation]);
 
   return (
     <Container>
@@ -114,7 +121,7 @@ export const MiddleStopSearchOverlay: React.FC<MiddleStopSearchOverlayProps> = R
       {!!searchQuery && suggestedLocations.length > 0 && (
         <>
           {suggestedLocations.map((item) => (
-            <SearchResultItem key={item.id} onPress={() => onSelectLocation(item)}>
+            <SearchResultItem key={item.id} onPress={() => handleLocationSelect(item)}>
               <MaterialIcons
                 name="location-on"
                 size={moderateScale(20)}

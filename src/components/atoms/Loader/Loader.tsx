@@ -6,6 +6,7 @@ import { verticalScale } from '@/styles';
 
 const Container = styled.View<{ transparent?: boolean }>`
   flex: 1;
+  width: 100%;
   justify-content: center;
   align-items: center;
   background-color: ${({ theme, transparent }) => transparent ? 'transparent' : theme.colors.surface};

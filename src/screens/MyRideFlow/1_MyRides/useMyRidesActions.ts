@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import { Alert } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useMyRidesStore } from '@/store/useMyRidesStore';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
@@ -9,7 +8,17 @@ import { showNotification } from '@/components/organisms/GlobalNotification/Glob
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
 
-export const useMyRidesActions = (fetchInitialRides: () => void) => {
+export const useMyRidesActions = (
+  fetchInitialRides: () => void,
+  showConfirm?: (config: {
+    title: string;
+    message: string;
+    confirmLabel?: string;
+    cancelLabel?: string;
+    onConfirm: () => void;
+    type?: 'info' | 'danger' | 'warning';
+  }) => void
+) => {
   const { t } = useTranslation();
   const navigation = useAppNavigation();
   const { drafts, clearDrafts, removeDraft } = useMyRidesStore();
@@ -65,19 +74,27 @@ export const useMyRidesActions = (fetchInitialRides: () => void) => {
   }, [navigation, drafts, publishStore, restoreDraftToStore]);
 
   const onRemoveDraft = useCallback((id: string) => {
-    Alert.alert(t('myRides.deleteDraftAlertTitle'), t('myRides.deleteDraftAlertMsg'), [
-      { text: t('myRides.deleteDraftCancel'), style: 'cancel' },
-      { text: t('myRides.deleteDraftConfirm'), style: 'destructive', onPress: () => removeDraft(id) }
-    ]);
-  }, [removeDraft, t]);
+    if (showConfirm) {
+      showConfirm({
+        title: t('myRides.deleteDraftAlertTitle'),
+        message: t('myRides.deleteDraftAlertMsg'),
+        confirmLabel: t('myRides.deleteDraftConfirm'),
+        cancelLabel: t('myRides.deleteDraftCancel'),
+        type: 'danger',
+        onConfirm: () => removeDraft(id),
+      });
+    }
+  }, [removeDraft, t, showConfirm]);
 
   const onCancelRide = useCallback((id: string | number) => {
-    Alert.alert(t('myRides.cancelRideAlertTitle'), t('myRides.cancelRideAlertMsg'), [
-      { text: t('myRides.cancelRideKeep'), style: 'cancel' },
-      { 
-        text: t('myRides.cancelRideConfirm'), 
-        style: 'destructive', 
-        onPress: async () => {
+    if (showConfirm) {
+      showConfirm({
+        title: t('myRides.cancelRideAlertTitle'),
+        message: t('myRides.cancelRideAlertMsg'),
+        confirmLabel: t('myRides.cancelRideConfirm'),
+        cancelLabel: t('myRides.cancelRideKeep'),
+        type: 'danger',
+        onConfirm: async () => {
           try {
             await rideService.cancelRide(id, 'Cancelled from my rides tab');
             fetchInitialRides();
@@ -88,17 +105,23 @@ export const useMyRidesActions = (fetchInitialRides: () => void) => {
               getErrorMessage(error, t('myRides.cancelRideError') || t('notification.defaultErrorMessage'))
             );
           }
-        } 
-      }
-    ]);
-  }, [fetchInitialRides, t]);
+        },
+      });
+    }
+  }, [fetchInitialRides, t, showConfirm]);
 
   const onClearDrafts = useCallback(() => {
-    Alert.alert(t('myRides.clearDraftsAlertTitle'), t('myRides.clearDraftsAlertMsg'), [
-      { text: t('myRides.clearDraftsCancel'), style: 'cancel' },
-      { text: t('myRides.clearDraftsConfirm'), style: 'destructive', onPress: () => clearDrafts() }
-    ]);
-  }, [clearDrafts, t]);
+    if (showConfirm) {
+      showConfirm({
+        title: t('myRides.clearDraftsAlertTitle'),
+        message: t('myRides.clearDraftsAlertMsg'),
+        confirmLabel: t('myRides.clearDraftsConfirm'),
+        cancelLabel: t('myRides.clearDraftsCancel'),
+        type: 'danger',
+        onConfirm: () => clearDrafts(),
+      });
+    }
+  }, [clearDrafts, t, showConfirm]);
 
   const onChatPress = useCallback((item: any) => {
     navigation.navigate('ChatDetails', {

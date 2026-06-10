@@ -41,6 +41,40 @@ export const useMyRides = (): MyRidesHookData => {
     }
   });
 
+  const [confirmModalConfig, setConfirmModalConfig] = useState<{
+    isVisible: boolean;
+    title: string;
+    message: string;
+    confirmLabel?: string;
+    cancelLabel?: string;
+    onConfirm: () => void;
+    type?: 'info' | 'danger' | 'warning';
+  }>({
+    isVisible: false,
+    title: '',
+    message: '',
+    onConfirm: () => {},
+  });
+
+  const showConfirm = useCallback((config: any) => {
+    setConfirmModalConfig({
+      isVisible: true,
+      title: config.title,
+      message: config.message,
+      confirmLabel: config.confirmLabel,
+      cancelLabel: config.cancelLabel,
+      onConfirm: () => {
+        config.onConfirm();
+        setConfirmModalConfig(prev => ({ ...prev, isVisible: false }));
+      },
+      type: config.type,
+    });
+  }, []);
+
+  const hideConfirmModal = useCallback(() => {
+    setConfirmModalConfig(prev => ({ ...prev, isVisible: false }));
+  }, []);
+
   const {
     onRidePress,
     onRemoveDraft,
@@ -48,7 +82,7 @@ export const useMyRides = (): MyRidesHookData => {
     onClearDrafts,
     onChatPress,
     drafts
-  } = useMyRidesActions(fetchInitialRides);
+  } = useMyRidesActions(fetchInitialRides, showConfirm);
 
   const onTabChange = useCallback((tab: MyRidesTab) => {
     setActiveTab(tab);
@@ -112,7 +146,7 @@ export const useMyRides = (): MyRidesHookData => {
       showNotification(
         NotificationType.SUCCESS,
         t('notification.defaultSuccessTitle'),
-        'Booking accepted successfully.'
+        t('notification.bookingAccepted')
       );
       onRefresh();
     } catch (error: any) {
@@ -134,7 +168,7 @@ export const useMyRides = (): MyRidesHookData => {
       showNotification(
         NotificationType.SUCCESS,
         t('notification.defaultSuccessTitle'),
-        'Booking rejected successfully.'
+        t('notification.bookingRejected')
       );
       onRefresh();
     } catch (error: any) {
@@ -171,5 +205,7 @@ export const useMyRides = (): MyRidesHookData => {
     onProfilePress: () => {},
     onAcceptRide: onAcceptBooking,
     onRejectRide: onRejectBooking,
+    confirmModalConfig,
+    hideConfirmModal,
   };
 };

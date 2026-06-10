@@ -169,7 +169,7 @@ export const RideTimeline: React.FC<{
                 variant="body" 
                 size="md" 
                 weight={point.isHighlighted ? "bold" : "medium"} 
-                numberOfLines={2} 
+                numberOfLines={point.isHighlighted ? 3 : 1} 
                 ellipsizeMode='tail'
                 color={point.isHighlighted ? theme.colors.primary : theme.colors.on_surface_variant}
               >

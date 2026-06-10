@@ -130,7 +130,13 @@ export type RootStackParamList = {
     departureDate?: string;
     departureTime?: string;
   };
-  BookingConfirmed: { rideId: string; bookedSeats?: string[]; pickupTime?: string };
+  BookingConfirmed: { 
+    rideId: string; 
+    bookedSeats?: string[]; 
+    pickupTime?: string;
+    vehicleType?: string;
+    departureDate?: string;
+  };
   Settings: undefined;
   UserProfileDetail: {
     userId: string;

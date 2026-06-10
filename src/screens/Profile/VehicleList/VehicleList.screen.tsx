@@ -8,6 +8,7 @@ import { VehicleCard } from '@/components/molecules/VehicleCard/VehicleCard';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useVehicleList } from './useVehicleList';
 import * as S from './VehicleList.styles';
+import { ConfirmationModal } from '@/components/organisms/ConfirmationModal';
 
 export const VehicleListScreen: React.FC = () => {
   const { t } = useTranslation();
@@ -18,14 +19,18 @@ export const VehicleListScreen: React.FC = () => {
     onEdit, 
     onDelete, 
     onAdd, 
-    onBack 
+    onBack,
+    isDeleteModalVisible,
+    setIsDeleteModalVisible,
+    handleConfirmDelete,
   } = useVehicleList();
 
   return (
-    <ScreenShell
-      title={t('vehicleDetails.headerTitle')}
-      onBack={onBack}
-    >
+    <>
+      <ScreenShell
+        title={t('vehicleDetails.headerTitle')}
+        onBack={onBack}
+      >
       <S.Container>
         <S.ScrollContainer>
           <S.ListHeader>
@@ -80,5 +85,18 @@ export const VehicleListScreen: React.FC = () => {
         </S.FloatingButtonContainer>
       </S.Container>
     </ScreenShell>
-  );
+
+    {isDeleteModalVisible && (
+      <ConfirmationModal
+        isVisible={isDeleteModalVisible}
+        onClose={() => setIsDeleteModalVisible(false)}
+        onConfirm={handleConfirmDelete}
+        title="Delete Vehicle"
+        message="Are you sure you want to remove this vehicle? This action cannot be undone."
+        confirmLabel="Delete"
+        type="danger"
+      />
+    )}
+  </>
+);
 };

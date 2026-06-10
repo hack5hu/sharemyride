@@ -2,11 +2,11 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useTravelPrefStore } from '@/store/useTravelPrefStore';
 import { TravelPreferenceState } from './types';
-import { Alert } from 'react-native';
 import { Notification } from '@/components/molecules/Notification';
 import { showNotification } from '@/components/organisms/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { useTranslation } from '@/hooks/useTranslation';
+import { getErrorMessage } from '@/utils/error';
 
 export const useTravelPreferences = () => {
   const navigation = useAppNavigation();
@@ -51,7 +51,7 @@ export const useTravelPreferences = () => {
     }
   }, [storedPrefs]);
 
-  const musicOptions = useMemo(() => ['Bollywood', 'Pop', 'Jazz', 'Podcast', 'Silence'], []);
+  const musicOptions = useMemo(() => ['Any', 'Bollywood', 'Pop', 'Jazz', 'Podcast', 'Silence'], []);
 
   const togglePreference = useCallback((key: keyof Omit<TravelPreferenceState, 'music' | 'waitingTime'>) => {
     setPreferences(prev => ({
@@ -96,7 +96,6 @@ export const useTravelPreferences = () => {
         maxBackSeats: storedPrefs?.maxBackSeats ?? 2,
         waitingTime: preferences.waitingTime,
       });
-      // Alert.alert('Success', 'Travel preferences updated successfully.');
       showNotification(
         NotificationType.SUCCESS,
         t('notification.defaultSuccessTitle'),
@@ -104,11 +103,10 @@ export const useTravelPreferences = () => {
       );
       navigation.goBack();
     } catch (error) {
-
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        error.message
+        getErrorMessage(error, 'Failed to update preferences.')
       );
     }
   }, [navigation, preferences, savePreferences, storedPrefs?.maxBackSeats]);

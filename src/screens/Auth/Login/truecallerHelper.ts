@@ -36,8 +36,6 @@ export const syncUserProfileAndData = async (
   setAuth({ id: userId, phone: '' }, token, completed);
   if (completed) {
     useAuthStore.getState().fetchProfile();
-    require('@/store/useVehicleStore').useVehicleStore.getState().syncVehicles();
-    require('@/store/useTravelPrefStore').useTravelPrefStore.getState().syncPreferences();
   }
 };
 

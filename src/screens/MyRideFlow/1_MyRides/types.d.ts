@@ -44,4 +44,14 @@ export interface MyRidesHookData {
   onProfilePress: () => void;
   onAcceptRide: (id: string) => void;
   onRejectRide: (id: string) => void;
+  confirmModalConfig: {
+    isVisible: boolean;
+    title: string;
+    message: string;
+    confirmLabel?: string;
+    cancelLabel?: string;
+    onConfirm: () => void;
+    type?: 'info' | 'danger' | 'warning';
+  };
+  hideConfirmModal: () => void;
 }

@@ -38,16 +38,38 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> = React
 
   const timelinePoints = useMemo(() => {
     if (!ride?.stops) return [];
-    return ride.stops.map((stop: any) => ({
-      location: stop.stopName.split(',')[0].trim(),
-      time: stop.arrivalTime
-        ? new Date(stop.arrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        : '',
-      lat: stop.lat,
-      lon: stop.lon,
-      stopId: stop.id,
-    }));
-  }, [ride?.stops]);
+    const sourceId = ride.myBooking?.sourceStopId ?? ride.sourceStopId;
+    const destId = ride.myBooking?.destinationStopId ?? ride.destinationStopId;
+
+    return ride.stops.map((stop: any) => {
+      const isHighlighted = stop.id === sourceId || stop.id === destId;
+      const address = stop.stopName || stop.name || '';
+      let displayLocation = address.trim();
+
+      if (!isHighlighted) {
+        const parts = address.split(',').map((p: string) => p.trim());
+        if (parts.length >= 4) {
+          displayLocation = parts[parts.length - 4];
+        } else if (parts.length >= 3) {
+          displayLocation = parts[parts.length - 3];
+        } else {
+          displayLocation = parts[0] || '';
+        }
+      }
+
+      return {
+        location: displayLocation,
+        time: stop.arrivalTime
+          ? new Date(stop.arrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          : '',
+        lat: stop.lat,
+        lon: stop.lon,
+        stopId: stop.id,
+        isHighlighted,
+        type: stop.id === sourceId ? 'pickup' : (stop.id === destId ? 'destination' : 'stop'),
+      };
+    });
+  }, [ride?.stops, ride?.myBooking, ride?.sourceStopId, ride?.destinationStopId]);
 
   const routeJourneyStops = useMemo(() => {
     if (!ride?.stops) return [];

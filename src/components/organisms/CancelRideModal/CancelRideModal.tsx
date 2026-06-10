@@ -88,7 +88,7 @@ export const CancelRideModal: React.FC<CancelRideModalProps> = ({
         <ModalContainer>
           {isLoading && (
             <LoadingOverlay>
-              <Loader message="Cancelling..." />
+              <Loader message="Cancelling..." transparent />
             </LoadingOverlay>
           )}
 

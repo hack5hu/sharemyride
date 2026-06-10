@@ -208,6 +208,7 @@ export interface TravelPreferencesTranslations {
   jazz: string;
   podcast: string;
   silence: string;
+  any: string;
   luggageAllowed: string;
   petFriendly: string;
   manualApproval: string;
@@ -246,6 +247,8 @@ export interface VehicleDetailsTranslations {
   seaterCount: string;
   seater5: string;
   seater7: string;
+  deleteVehicleTitle: string;
+  deleteVehicleConfirmMsg: string;
 }
 
 export interface ChatTranslations {
@@ -538,6 +541,11 @@ export interface NotificationTranslations {
   welcomeSuccessTitle: string;
   welcomeBack: string;
   profilePhotoUpdated: string;
+  bookingAccepted: string;
+  bookingRejected: string;
+  vehicleRemoved: string;
+  vehicleRemoveError: string;
+  mapOpenError: string;
 }
 
 export interface RideRouteTranslations {

@@ -43,11 +43,11 @@ export const useSummaryMappers = (publishStore: any) => {
 
   const preferencesData = useMemo(() => {
     const prefs = {
-      nonSmoking: publishStore.preferences?.nonSmoking ?? storedPrefs?.nonSmoking ?? true,
-      womenOnly: publishStore.preferences?.womenOnly ?? storedPrefs?.womenOnly ?? false,
-      musicPreference: publishStore.preferences?.music ?? storedPrefs?.musicPreference ?? 'Pop',
-      luggageAllowed: publishStore.preferences?.luggage ?? storedPrefs?.luggageAllowed ?? true,
-      petFriendly: publishStore.preferences?.pets ?? storedPrefs?.petFriendly ?? false,
+      nonSmoking: storedPrefs?.nonSmoking ?? true,
+      womenOnly: storedPrefs?.womenOnly ?? false,
+      musicPreference: storedPrefs?.musicPreference ?? 'Pop',
+      luggageAllowed: storedPrefs?.luggageAllowed ?? true,
+      petFriendly: storedPrefs?.petFriendly ?? false,
       waitingTime: storedPrefs?.waitingTime ?? 10,
       manualApproval: requestType === 'review',
     };
@@ -86,7 +86,7 @@ export const useSummaryMappers = (publishStore: any) => {
     }
     
     return data;
-  }, [storedPrefs, publishStore.preferences, pt, requestType, rdt]);
+  }, [storedPrefs, pt, requestType, rdt]);
 
   return {
     formattedDate,

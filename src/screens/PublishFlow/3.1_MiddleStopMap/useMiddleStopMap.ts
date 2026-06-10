@@ -186,12 +186,12 @@ export const useMiddleStopMap = () => {
   const [isMapMounted, setIsMapMounted] = useState(true);
 
   const handleBackPress = useCallback(() => {
-    if (isSearching) {
+    if (isSearching && selectedLocation) {
       setIsSearching(false);
     } else {
       navigation.pop();
     }
-  }, [isSearching, navigation]);
+  }, [isSearching, selectedLocation, navigation]);
 
   // Handle search input change
   const handleChangeSearch = useCallback((query: string) => {

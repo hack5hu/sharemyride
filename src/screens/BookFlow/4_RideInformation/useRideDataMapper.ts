@@ -52,13 +52,13 @@ export const mapBackendRideToUI = (
 
     // Only truncate if NOT highlighted AND NOT driver
     if (!isHighlighted && !isDriverRole) {
-      const parts = address.split(', ');
+      const parts = address.split(',').map((p: string) => p.trim());
       if (parts.length >= 4) {
-        displayLocation = `${parts[parts.length - 4]}, ${parts[parts.length - 3]}`;
+        displayLocation = parts[parts.length - 4];
       } else if (parts.length >= 3) {
         displayLocation = parts[parts.length - 3];
       } else {
-        displayLocation = parts[0];
+        displayLocation = parts[0] || '';
       }
     }
 

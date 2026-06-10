@@ -22,6 +22,8 @@
 10. ✅ **Define and use enums** for status/type constants across the codebase (e.g., `NotificationType`, `MessageStatus`) to ensure robust comparisons.
 11. ✅ **Use useAppNavigation** custom hook for screen transitions to keep typing clean.
 12. ✅ **Maintain Notification Standards**: Use `NotificationType` enum for all alerts and toasts.
+13. ✅ **NEVER use standard React Native `Alert.alert`**: Prefer custom `ConfirmationModal` for interactive confirmations and `showNotification` for auto-dismissing toast alerts.
+14. ✅ **Safe Loader overlay layouts**: Maintain loaders centered with `width: 100%` and correct transparency settings.
 
 > ⛔ **If any of the above are skipped, the output is INVALID and must be redone from scratch.**
 > The user should NOT have to ask for compliance — compliance is the default.
@@ -124,7 +126,7 @@ AI must use alias imports to avoid deep relative paths (`../../`).
 
 ## 🛡️ 7. Error Handling & Quality
 * **Error Boundaries:** All major screen segments must be wrapped in an Error Boundary.
-* **Modals:** Use the custom `Modal` atom/organism for alerts and confirmations.
+* **Modals & Alerts:** **NEVER** use standard React Native `Alert.alert`. Prefer the custom `ConfirmationModal` for interactive confirmations and the `showNotification` global method for auto-dismissing toast alerts.
 * **Logging:** Use the project's custom Logger that toggles behavior between Development and Production.
 * **Validation:** All forms must have validation (Zod/Yup) with user-friendly error messages shown via the UI.
 * **TypeScript:** `any` is strictly forbidden. Fix all linter and type errors before finalizing code.
@@ -137,6 +139,9 @@ AI must use alias imports to avoid deep relative paths (`../../`).
 3.  **Do NOT** create duplicate components/hooks if they exist in `src/components/...`.
 4.  **Do NOT** use `fetch` API.
 5.  **Do NOT** use hardcoded hex codes or pixel values.
+6.  **Do NOT** use standard React Native `Alert.alert`. Always use custom `ConfirmationModal` or `showNotification`.
+7.  **Do NOT** use hardcoded strings/literals in UI screens or hooks. Everything must be localized using `useLocale()` or `useTranslation()`.
+8.  **Do NOT** render loader overlays without `width: 100%` or correct centering and transparency settings.
 
 ---
 
@@ -199,6 +204,8 @@ AI must use alias imports to avoid deep relative paths (`../../`).
 * create template for new screens, and save them in @/components/templates folder. **very important** (MANDATORY) *RULES TO FOLLOW*
 * always make and use enums for status/type constants across the codebase to ensure robust comparisons. **very important** (MANDATORY) *RULES TO FOLLOW*
 * always use the custom navigation hook (useAppNavigation) for screen transitions instead of raw hook to ensure clean types without 'as any' casts. **very important** (MANDATORY) *RULES TO FOLLOW*
+* NEVER use React Native's `Alert.alert`. Use custom `ConfirmationModal` and `showNotification`. **very important** (MANDATORY) *RULES TO FOLLOW*
+* Ensure Loader overlays are centered safely with `width: 100%` and have the `transparent` prop enabled. **very important** (MANDATORY) *RULES TO FOLLOW*
 
 ---
 
@@ -218,5 +225,7 @@ AI must use alias imports to avoid deep relative paths (`../../`).
 * **ALWAYS use `React.memo`, `useCallback`, `useMemo`** for performance.
 * **ALWAYS define and use enums** for status/type constants across the codebase to ensure robust comparisons.
 * **ALWAYS use the custom navigation hook (useAppNavigation)** for screen transitions instead of raw hooks or raw navigation calls to avoid 'as any' casts.
+* **ALWAYS avoid standard React Native `Alert.alert` in favor of custom `ConfirmationModal` or `showNotification`.**
+* **ALWAYS ensure loader overlays are centered safely with `width: 100%` and correct transparency settings.**
 
 > 💬 If the AI ever violates any rule above, the correct response is to **redo the work from scratch** following the rules — not patch it.

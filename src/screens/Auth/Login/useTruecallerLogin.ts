@@ -34,7 +34,11 @@ export const useTruecallerLogin = ({ setLoading }: UseTruecallerLoginProps) => {
       setLoading(true);
       try {
         if (!params.authorizationCode) {
-          Alert.alert(t('login.truecallerInvalidCredentials'));
+          showNotification(
+            NotificationType.ERROR,
+            t('notification.defaultErrorTitle'),
+            t('login.truecallerInvalidCredentials')
+          );
           setLoading(false);
           return;
         }

@@ -13,6 +13,7 @@ import { RideItem } from '@/components/organisms/RideItem';
 import { RideListHeader } from '@/components/organisms/RideListHeader';
 import { Loader } from '@/components/atoms/Loader';
 import { Box } from '@/components/atoms/Box';
+import { ConfirmationModal } from '@/components/organisms/ConfirmationModal';
 
 const USER_AVATAR = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDExpYK8xVP2mpLZ72YLG07-Nvi79pQHHE3Bf4HEGBRuFOCym2D4P_hlE3flaGGaR4XKpWguxkVxRruV_VNmRQoLa2Sg179Af0ZYu5OuAE0XnhnyKnoGtEty2IKdSCPEpm4wlGP2YlXb08qxB2BkWjHpVIUO0XH8BgWiYyR4o6Ku2xPiwHS4dYGdV-aBsCeqKoBrDgJExj0TgYQDrb9mu-4Y4YSLPxze3tWxwjfF5l8SSkYi3zPx0RDth6HTJ54yE4zdBFrhiC14HB5';
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -39,6 +40,8 @@ export const MyRidesScreen: React.FC = memo(() => {
     drafts,
     hasRequests,
     mappedRequests,
+    confirmModalConfig,
+    hideConfirmModal,
   } = useMyRides();
 
   const flatListRef = useRef<FlatList>(null);
@@ -174,6 +177,18 @@ export const MyRidesScreen: React.FC = memo(() => {
         />
       </MyRidesTemplate>
       <Loader visible={isActionLoading} />
+      {confirmModalConfig.isVisible && (
+        <ConfirmationModal
+          isVisible={confirmModalConfig.isVisible}
+          onClose={hideConfirmModal}
+          onConfirm={confirmModalConfig.onConfirm}
+          title={confirmModalConfig.title}
+          message={confirmModalConfig.message}
+          confirmLabel={confirmModalConfig.confirmLabel}
+          cancelLabel={confirmModalConfig.cancelLabel}
+          type={confirmModalConfig.type}
+        />
+      )}
     </>
   );
 });

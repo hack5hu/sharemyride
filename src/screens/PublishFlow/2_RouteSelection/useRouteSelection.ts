@@ -5,6 +5,9 @@ import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { locationService } from '@/serviceManager/locationService';
 import { decodePolyline, getBoundingBox } from '@/utils/polyline';
 
+import { useVehicleStore } from '@/store/useVehicleStore';
+import { useTravelPrefStore } from '@/store/useTravelPrefStore';
+
 export interface RouteData {
   uiData: RouteOption;
   coordinates: [number, number][];
@@ -18,6 +21,12 @@ export const useRouteSelection = () => {
   const [routesData, setRoutesData] = useState<RouteData[]>([]);
   const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Background fetch vehicles and preferences
+  useEffect(() => {
+    useVehicleStore.getState().syncVehicles();
+    useTravelPrefStore.getState().syncPreferences();
+  }, []);
 
   useEffect(() => {
     const fetchRoutes = async () => {

@@ -1,6 +1,6 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useCallback, useEffect, useState, useMemo } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Clipboard } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -11,6 +11,7 @@ import { Logger } from '@/utils/logger';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
+import { useBookRideStore } from '@/store/useBookRideStore';
 import { navigate } from '@/navigation/navigationService';
 
 export const useRideDetails = () => {
@@ -123,9 +124,17 @@ export const useRideDetails = () => {
         }
       }
       setIsCancelModalVisible(false);
-      Alert.alert(t('common.success'), t('cancelRide.successMessage'));
+      showNotification(
+        NotificationType.SUCCESS,
+        t('common.success'),
+        t('cancelRide.successMessage')
+      );
     } catch (error) {
-      Alert.alert(t('common.error'), getErrorMessage(error, t('cancelRide.errorMessage')));
+      showNotification(
+        NotificationType.ERROR,
+        t('common.error'),
+        getErrorMessage(error, t('cancelRide.errorMessage'))
+      );
     } finally {
       setIsCancelling(false);
     }
@@ -181,15 +190,48 @@ export const useRideDetails = () => {
   }, [navigation, rideId, rideData, isDriver, t]);
 
   const handleViewRoute = useCallback((index?: number) => {
-    if (index === undefined) return;
-    const point = rideData?.stops?.[index];
-    if (point) {
-      Alert.alert(t('common.openingMap'), `${t('common.navigatingTo')}: ${point.stopName.split(',')[0]}`);
-    }
-  }, [rideData, t]);
+    const stops = rideData?.stops?.map((s: any) => ({
+      id: s.id,
+      lat: s.lat,
+      lon: s.lon,
+      name: s.stopName || s.name,
+      sequence: s.sequence,
+    }));
+    if (!stops || stops.length === 0) return;
+    
+    const sourceId = rideData?.myBooking?.sourceStopId || sourceStopId;
+    const destId = rideData?.myBooking?.destinationStopId || destinationStopId;
+
+    const store = useBookRideStore.getState();
+    const userSearchedPickup = store.startLocation ? {
+      latitude: store.startLocation.latitude,
+      longitude: store.startLocation.longitude,
+      name: store.startLocation.name || store.startLocation.address || 'Pickup Point',
+    } : undefined;
+    const userSearchedDropoff = store.destinationLocation ? {
+      latitude: store.destinationLocation.latitude,
+      longitude: store.destinationLocation.longitude,
+      name: store.destinationLocation.name || store.destinationLocation.address || 'Dropoff Point',
+    } : undefined;
+
+    (navigation.navigate as any)('RideRouteMap', {
+      routePath: rideData?.routePath ?? '',
+      stops,
+      initialStopIndex: index,
+      sourceStopId: sourceId,
+      destinationStopId: destId,
+      userSearchedPickup,
+      userSearchedDropoff,
+    });
+  }, [navigation, rideData, sourceStopId, destinationStopId]);
 
   const handleCopyAddress = useCallback((address: string) => {
-    Alert.alert(t('common.addressCopied'), address);
+    Clipboard.setString(address);
+    showNotification(
+      NotificationType.SUCCESS,
+      t('common.addressCopied') || 'Address Copied',
+      address
+    );
   }, [t]);
 
   return {

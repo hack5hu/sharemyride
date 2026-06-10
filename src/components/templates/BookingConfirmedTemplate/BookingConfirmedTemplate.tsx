@@ -18,7 +18,7 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
   const theme = useTheme();
 
   return (
-    <ScreenShell title={t.brandTitle}>
+    <ScreenShell>
       <S.MainContent showsVerticalScrollIndicator={false}>
         {/* Success Header */}
         <S.SuccessArea>
@@ -63,6 +63,11 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
               </S.DetailCardHeader>
               <S.ValueWrapper>
                 <Typography variant="title" size="md" weight="bold">{rideData.pickupTime}</Typography>
+                {rideData.departureDate ? (
+                  <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>
+                    {rideData.departureDate}
+                  </Typography>
+                ) : null}
               </S.ValueWrapper>
             </S.DetailCard>
 
@@ -76,7 +81,16 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
                 </Typography>
               </S.DetailCardHeader>
               <S.ValueWrapper>
-                <Typography variant="title" size="md" weight="bold">{rideData.seatNumber}</Typography>
+                <Typography 
+                  variant="title" 
+                  size="md" 
+                  weight="bold"
+                  numberOfLines={1}
+                  adjustsFontSizeToFit={true}
+                  minimumFontScale={0.7}
+                >
+                  {rideData.seatNumber}
+                </Typography>
                 <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>
                   {rideData.seatPreference}
                 </Typography>
