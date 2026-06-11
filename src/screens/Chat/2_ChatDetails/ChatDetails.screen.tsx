@@ -2,7 +2,6 @@ import React, { useCallback, useMemo } from 'react';
 import { useTheme } from 'styled-components/native';
 import { ChatDetailsTemplate } from '@/components/templates/ChatDetailsTemplate';
 import { ChatAppHeader } from '@/components/organisms/ChatAppHeader';
-import { RideSummaryCard } from '@/components/organisms/RideSummaryCard';
 import { MessageBubble } from '@/components/molecules/MessageBubble';
 import { ChatInputSection } from '@/components/organisms/ChatInputSection';
 import { useChatDetails } from './useChatDetails';
