@@ -155,6 +155,8 @@ export interface ProfileHubTranslations {
   navMyRides: string;
   navChats: string;
   navProfile: string;
+  suggestionsFeedback: string;
+  suggestionsFeedbackDescr: string;
 }
 
 export interface EditProfileTranslations {
@@ -536,6 +538,7 @@ export interface Translations {
   reportIssue: ReportIssueTranslations;
   splash: SplashTranslations;
   rating: RatingTranslations;
+  suggestions: SuggestionsTranslations;
 }
 
 export interface NotificationTranslations {
@@ -928,4 +931,38 @@ export interface RatingTranslations {
   ratingCardTitle: string;
   ratingCardSubtitle: string;
   rateButtonText: string;
+}
+
+export interface SuggestionsTranslations {
+  title: string;
+  submitTab: string;
+  historyTab: string;
+  categoryLabel: string;
+  categoryFeature: string;
+  categoryBug: string;
+  categoryImprovement: string;
+  categoryOther: string;
+  summaryLabel: string;
+  summaryPlaceholder: string;
+  descriptionLabel: string;
+  descriptionPlaceholder: string;
+  screenshotsLabel: string;
+  screenshotsDescription: string;
+  addPhoto: string;
+  submitButton: string;
+  submittingButton: string;
+  validationErrorCategory: string;
+  validationErrorSummary: string;
+  validationErrorDescription: string;
+  successTitle: string;
+  successMessage: string;
+  ticketNumber: string;
+  ticketStatusOpen: string;
+  ticketStatusInProgress: string;
+  ticketStatusResolved: string;
+  ticketStatusUnderReview: string;
+  ticketCreatedOn: string;
+  updatesLabel: string;
+  noTicketsTitle: string;
+  noTicketsMessage: string;
 }

@@ -1,6 +1,4 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '@/navigation/types';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useCallback, useState } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -76,7 +74,7 @@ export const useProfileHub = () => {
         t('notification.defaultSuccessTitle'),
         t('notification.profilePhotoUpdated'), // We can use the same generic success message or a new one
       );
-    } catch (error) {
+    } catch {
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
@@ -85,7 +83,7 @@ export const useProfileHub = () => {
     } finally {
       setIsUpdatingAvatar(false);
     }
-  }, [user, fetchProfile, t]);
+  }, [fetchProfile, t]);
 
   const navigateToEditProfile = useCallback(() => {
     navigation.navigate('EditProfile');
@@ -129,6 +127,10 @@ export const useProfileHub = () => {
     navigation.navigate('HelpAndSupport');
   }, [navigation]);
 
+  const navigateToSuggestions = useCallback(() => {
+    navigation.navigate('Suggestions');
+  }, [navigation]);
+
   return {
     t,
     user,
@@ -146,5 +148,6 @@ export const useProfileHub = () => {
     navigateToTermsAndConditions,
     navigateToAboutUs,
     navigateToHelpAndSupport,
+    navigateToSuggestions,
   };
 };

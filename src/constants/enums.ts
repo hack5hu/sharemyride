@@ -36,3 +36,18 @@ export enum RideStatus {
   COMPLETED = 'COMPLETED',
   CANCELLED = 'CANCELLED',
 }
+
+export enum TicketStatus {
+  OPEN = 'OPEN',
+  IN_PROGRESS = 'IN_PROGRESS',
+  UNDER_REVIEW = 'UNDER_REVIEW',
+  RESOLVED = 'RESOLVED',
+}
+
+export enum TicketCategory {
+  FEATURE = 'feature',
+  BUG = 'bug',
+  IMPROVEMENT = 'improvement',
+  OTHER = 'other',
+}
+

@@ -1,9 +1,6 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { ProfileHeader } from '@/components/organisms/ProfileHeader';
-import { TrustScoreCard } from '@/components/organisms/TrustScoreCard';
 import { ProfileMenuItem } from '@/components/molecules/ProfileMenuItem';
 import { BottomNav } from '@/components/organisms/BottomNav';
 import { useProfileHub } from './useProfileHub';
@@ -16,8 +13,6 @@ import {
   SectionTitle,
   BentoGrid,
   ActionGrid,
-  DangerSection,
-  DangerButton,
 } from './ProfileHub.styles';
 
 export const ProfileHubScreen: React.FC = () => {
@@ -34,12 +29,12 @@ export const ProfileHubScreen: React.FC = () => {
     navigateToTermsAndConditions,
     navigateToAboutUs,
     navigateToHelpAndSupport,
+    navigateToSuggestions,
     isAvatarModalVisible,
     setAvatarModalVisible,
     handleOpenGallery,
     handleRemoveAvatar,
   } = useProfileHub();
-  const theme = useTheme();
 
   return (
     <ScreenShell>
@@ -124,6 +119,12 @@ export const ProfileHubScreen: React.FC = () => {
                 title={t('profileHub.helpSupport')}
                 showChevron={false}
                 onPress={navigateToHelpAndSupport}
+              />
+              <ProfileMenuItem
+                icon="feedback"
+                title={t('profileHub.suggestionsFeedback')}
+                subtitle={t('profileHub.suggestionsFeedbackDescr')}
+                onPress={navigateToSuggestions}
               />
               <ProfileMenuItem
                 icon="info"

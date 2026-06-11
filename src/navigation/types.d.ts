@@ -147,4 +147,5 @@ export type RootStackParamList = {
     targetUserName: string;
     targetUserRole: 'DRIVER' | 'PASSENGER';
   };
+  Suggestions: undefined;
 };
