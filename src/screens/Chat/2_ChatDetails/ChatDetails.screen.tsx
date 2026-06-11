@@ -9,6 +9,9 @@ import { useChatDetails } from './useChatDetails';
 import { ChatDetailsScreenProps } from './types';
 import { ReportIssueModal } from '@/components/organisms/ReportIssueModal';
 import { ChatMapPreview } from '@/components/molecules/ChatMapPreview';
+import { Typography } from '@/components/atoms/Typography';
+import { ConnectionStatus } from '@/constants/enums';
+import { ConnectionBanner, DateHeaderContainer, DateHeaderPill } from './ChatDetails.styles';
 
 export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({ navigation, route }) => {
   const {
@@ -35,23 +38,42 @@ export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({ navigation
     handleSafetyClose,
     handleLoadMore,
     cachedUser,
+    handleRetry,
+    connectionStatus,
+    handleReconnect,
+    handleProfilePress,
   } = useChatDetails();
 
   const theme = useTheme();
 
-  const renderMessageItem = useCallback(({ item }: { item: any }) => (
-    <MessageBubble
-      content={item.type === 'map' ? (
-        <ChatMapPreview
-          {...item.locationData}
-          onPress={() => handleMapPress(item.locationData)}
-        />
-      ) : item.text}
-      timestamp={item.timestamp}
-      isSender={item.isSender}
-      status={item.status}
-    />
-  ), [handleMapPress]);
+  const renderMessageItem = useCallback(({ item }: { item: any }) => {
+    if (item.type === 'date_header') {
+      return (
+        <DateHeaderContainer>
+          <DateHeaderPill>
+            <Typography variant="label" size="xs" color="on_surface_variant" weight="bold">
+              {item.text}
+            </Typography>
+          </DateHeaderPill>
+        </DateHeaderContainer>
+      );
+    }
+
+    return (
+      <MessageBubble
+        content={item.type === 'map' ? (
+          <ChatMapPreview
+            {...item.locationData}
+            onPress={() => handleMapPress(item.locationData)}
+          />
+        ) : item.text}
+        timestamp={item.timestamp}
+        isSender={item.isSender}
+        status={item.status}
+        onPress={item.status === 'failed' ? () => handleRetry(item.id) : undefined}
+      />
+    );
+  }, [handleMapPress, handleRetry]);
 
   const header = useMemo(() => (
     <ChatAppHeader
@@ -61,8 +83,9 @@ export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({ navigation
       avatarUri={cachedUser?.avatarUri || avatarUri || undefined}
       onBackPress={() => navigation.goBack()}
       onReportPress={() => setIsReportModalVisible(true)}
+      onProfilePress={handleProfilePress}
     />
-  ), [cachedUser, name, userId, rating, avatarUri, navigation, setIsReportModalVisible]);
+  ), [cachedUser, name, userId, rating, avatarUri, navigation, setIsReportModalVisible, handleProfilePress]);
 
   const input = useMemo(() => (
     <ChatInputSection
@@ -79,7 +102,28 @@ export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({ navigation
   return (
     <>
       <ChatDetailsTemplate
-        header={header}
+        header={
+          <>
+            {header}
+            {connectionStatus !== ConnectionStatus.CONNECTED && (
+              <ConnectionBanner
+                onPress={handleReconnect}
+                isConnecting={connectionStatus === ConnectionStatus.CONNECTING}
+              >
+                <Typography
+                  variant="label"
+                  size="xs"
+                  color={connectionStatus === ConnectionStatus.CONNECTING ? 'on_secondary_container' : 'on_error_container'}
+                  weight="bold"
+                >
+                  {connectionStatus === ConnectionStatus.CONNECTING
+                    ? t('chat.connecting')
+                    : `${t('chat.offline')} — ${t('chat.tapToReconnect')}`}
+                </Typography>
+              </ConnectionBanner>
+            )}
+          </>
+        }
         data={messages}
         renderItem={renderMessageItem}
         onLoadMore={handleLoadMore}

@@ -2,6 +2,7 @@ import React from 'react';
 import { 
   Container, 
   BubbleWrapper, 
+  TouchableBubbleWrapper,
   MessageText, 
   Footer, 
   Timestamp 
@@ -14,10 +15,17 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(({
   timestamp,
   isSender,
   status,
+  onPress,
 }) => {
+  const BubbleComponent = (onPress ? TouchableBubbleWrapper : BubbleWrapper) as React.ComponentType<{
+    isSender: boolean;
+    onPress?: () => void;
+    children?: React.ReactNode;
+  }>;
+
   return (
     <Container isSender={isSender}>
-      <BubbleWrapper isSender={isSender}>
+      <BubbleComponent isSender={isSender} onPress={onPress}>
         {typeof content === 'string' ? (
           <MessageText isSender={isSender}>{content}</MessageText>
         ) : (
@@ -27,7 +35,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(({
           <Timestamp>{timestamp}</Timestamp>
           {isSender && status && <MessageStatus status={status} />}
         </Footer>
-      </BubbleWrapper>
+      </BubbleComponent>
     </Container>
   );
 });

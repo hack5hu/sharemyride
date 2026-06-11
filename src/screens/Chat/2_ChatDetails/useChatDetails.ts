@@ -1,8 +1,6 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '@/navigation/types.d';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useChatStore } from '@/store/useChatStore';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -10,6 +8,29 @@ import { chatService } from '@/serviceManager/chatService';
 import rideService from '@/serviceManager/rideService';
 import { useChatSocket } from '@/hooks/useChatSocket';
 import { ChatMessage } from '@/types/chat';
+import { ConnectionStatus, MessageStatus } from '@/constants/enums';
+
+const getFormatDate = (timestamp: number, t: any) => {
+  const date = new Date(timestamp);
+  const today = new Date();
+  
+  const isSameDay = (d1: Date, d2: Date) => 
+    d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate();
+    
+  if (isSameDay(date, today)) {
+    return t('common.today');
+  }
+  
+  const yesterday = new Date();
+  yesterday.setDate(today.getDate() - 1);
+  if (isSameDay(date, yesterday)) {
+    return t('chat.yesterday');
+  }
+  
+  return date.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+};
 
 export interface Message {
   id: string;
@@ -31,6 +52,7 @@ export interface Message {
 export const useChatDetails = () => {
   const navigation = useAppNavigation();
   const route = useRoute<any>();
+  const historyFetchStartedRef = useRef(false);
   const { t } = useTranslation();
   const { user } = useAuthStore();
   
@@ -40,11 +62,11 @@ export const useChatDetails = () => {
     ? (myUserId < receiverId ? `${myUserId}_${receiverId}` : `${receiverId}_${myUserId}`)
     : '';
 
-  const { 
-    messages: storeMessages, 
-    setActiveConversation,
-    users
-  } = useChatStore();
+  const storeMessages = useChatStore(state => state.messages);
+  const setActiveConversation = useChatStore(state => state.setActiveConversation);
+  const users = useChatStore(state => state.users);
+  const connectionStatus = useChatStore(state => state.connectionStatus);
+  const cachedUser = users[receiverId];
   const [message, setMessage] = useState('');
   const [isReportModalVisible, setIsReportModalVisible] = useState(false);
   const [isSafetyVisible, setIsSafetyVisible] = useState(true);
@@ -57,19 +79,23 @@ export const useChatDetails = () => {
   useEffect(() => {
     if (myUserId && receiverId && conversationId) {
       setActiveConversation(conversationId);
+      historyFetchStartedRef.current = true;
       chatService.fetchHistory(myUserId, receiverId);
       chatService.markAsRead(myUserId, receiverId);
-      
-      // Fetch profile if not in cache
-      if (receiverId !== 'Unknown' && !users[receiverId]) {
-        chatService.fetchUserProfile(receiverId);
-      }
     }
 
-    return () => setActiveConversation(null);
-  }, [myUserId, receiverId, conversationId, setActiveConversation, users]);
+    return () => {
+      setActiveConversation(null);
+      historyFetchStartedRef.current = false;
+    };
+  }, [myUserId, receiverId, conversationId, setActiveConversation]);
 
-  const cachedUser = users[receiverId];
+  // Fetch profile if not in cache
+  useEffect(() => {
+    if (receiverId && receiverId !== 'Unknown' && !cachedUser) {
+      chatService.fetchUserProfile(receiverId);
+    }
+  }, [receiverId, cachedUser]);
 
   // Fetch ride details if rideId exists
   useEffect(() => {
@@ -98,7 +124,12 @@ export const useChatDetails = () => {
   // Map store messages to UI interface (Reversed for Inverted FlashList)
   const messages = useMemo(() => {
     const rawMessages = storeMessages[conversationId] || [];
-    return [...rawMessages].reverse().map((m: ChatMessage): Message => {
+    const sorted = [...rawMessages].sort((a, b) => a.timestamp - b.timestamp);
+    
+    const mapped: (Message | { id: string; type: 'date_header'; text: string })[] = [];
+    let lastDateString = '';
+
+    sorted.forEach((m: ChatMessage) => {
       const isLocation = m.type === 'location' || m.content.startsWith('[LOCATION_DATA]:');
       let locationData = m.metadata?.location;
 
@@ -119,7 +150,17 @@ export const useChatDetails = () => {
         }
       }
 
-      return {
+      const dateString = getFormatDate(m.timestamp, t);
+      if (dateString !== lastDateString) {
+        mapped.push({
+          id: `date-header-${dateString}`,
+          type: 'date_header',
+          text: dateString,
+        });
+        lastDateString = dateString;
+      }
+
+      mapped.push({
         id: m.messageId,
         text: m.content.startsWith('[LOCATION_DATA]:') ? `Shared Location: ${locationData?.locationName || ''}` : m.content,
         timestamp: new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -127,9 +168,11 @@ export const useChatDetails = () => {
         status: (m.status || 'SENT').toLowerCase() as any,
         type: isLocation ? 'map' : 'text',
         locationData,
-      };
+      });
     });
-  }, [storeMessages, conversationId, myUserId]);
+
+    return [...mapped].reverse();
+  }, [storeMessages, conversationId, myUserId, t]);
 
   // Handle incoming location from MapPicker
   useEffect(() => {
@@ -242,6 +285,55 @@ export const useChatDetails = () => {
     setIsReportModalVisible(false);
   }, []);
 
+  const handleRetry = useCallback((messageId: string) => {
+    if (conversationId) {
+      chatService.resendMessage(conversationId, messageId);
+    }
+  }, [conversationId]);
+
+  const handleReconnect = useCallback(() => {
+    if (myUserId) {
+      chatService.connect(myUserId).catch(() => undefined);
+    }
+  }, [myUserId]);
+
+  const prevStatusRef = useRef<ConnectionStatus | null>(null);
+
+  // Auto-resend failed messages and fetch history when socket connects (upon transition to CONNECTED)
+  useEffect(() => {
+    const isTransitionToConnected =
+      connectionStatus === ConnectionStatus.CONNECTED &&
+      prevStatusRef.current !== null &&
+      prevStatusRef.current !== ConnectionStatus.CONNECTED;
+
+    if (isTransitionToConnected && conversationId && myUserId && receiverId) {
+      // Only fetch history if we haven't started fetching it yet,
+      // or if it's a reconnection (i.e. prevStatus was DISCONNECTED) to sync missed messages while offline.
+      if (!historyFetchStartedRef.current) {
+        historyFetchStartedRef.current = true;
+        chatService.fetchHistory(myUserId, receiverId).catch(() => undefined);
+      } else if (prevStatusRef.current === ConnectionStatus.DISCONNECTED) {
+        chatService.fetchHistory(myUserId, receiverId).catch(() => undefined);
+      }
+
+      const rawMessages = useChatStore.getState().messages[conversationId] || [];
+      const failedMessages = rawMessages.filter(
+        (m: ChatMessage) => m.senderId === myUserId && m.status === MessageStatus.FAILED
+      );
+      
+      failedMessages.forEach((m: ChatMessage) => {
+        chatService.resendMessage(conversationId, m.messageId);
+      });
+    }
+    prevStatusRef.current = connectionStatus;
+  }, [connectionStatus, conversationId, myUserId, receiverId]);
+
+  const handleProfilePress = useCallback(() => {
+    if (receiverId) {
+      navigation.navigate('UserProfileDetail', { userId: receiverId });
+    }
+  }, [navigation, receiverId]);
+
   return {
     t,
     message,
@@ -258,5 +350,9 @@ export const useChatDetails = () => {
     handleSafetyClose,
     handleLoadMore,
     cachedUser,
+    handleRetry,
+    connectionStatus,
+    handleReconnect,
+    handleProfilePress,
   };
 };

@@ -16,6 +16,7 @@ export interface Passenger {
   seatsBooked?: number;
   seatNames?: string[];
   seatId?: string[];
+  seatIds?: (string | number)[];
 }
 
 interface PassengerManagementProps {
@@ -82,7 +83,7 @@ export const PassengerManagement: React.FC<PassengerManagementProps> = React.mem
   };
 
   const getFormattedSeats = (p: Passenger) => {
-    const seats = p.seatNames || p.seatId;
+    const seats = p.seatNames || p.seatIds || p.seatId;
     if (!seats || seats.length === 0) return 'N/A';
     return seats.map(s => getSeatDescription(s)).join(', ');
   };

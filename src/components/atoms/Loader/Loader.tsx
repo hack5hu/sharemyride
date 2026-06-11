@@ -21,10 +21,18 @@ interface LoaderProps {
   message?: string;
   visible?: boolean;
   transparent?: boolean;
+  inline?: boolean;
+  size?: 'small' | 'large';
+  color?: string;
+  style?: any;
 }
 
-export const Loader: React.FC<LoaderProps> = ({ message, visible, transparent }) => {
+export const Loader: React.FC<LoaderProps> = ({ message, visible, transparent, inline, size = 'large', color, style }) => {
   const theme = useTheme();
+
+  if (inline) {
+    return <ActivityIndicator size={size} color={color || theme.colors.primary} style={style} />;
+  }
 
   const content = (
     <Container transparent={transparent}>

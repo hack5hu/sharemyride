@@ -7,4 +7,5 @@ export interface MessageBubbleProps {
   isSender: boolean;
   status?: MessageStatusVariant;
   showTail?: boolean;
+  onPress?: () => void;
 }

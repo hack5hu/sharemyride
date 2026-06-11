@@ -50,17 +50,24 @@ export const safeParseDate = (dateStr: any): Date | null => {
   if (dateStr instanceof Date) {
     return isValid(dateStr) ? dateStr : null;
   }
-  let d = new Date(dateStr);
-  if (isValid(d)) return d;
 
-  // Handle cross-platform iOS spaces: "2026-05-23 14:30:00" -> "2026-05-23T14:30:00"
+  // Handle cross-platform iOS spaces and enforce UTC parsing for timezone-less ISO strings
   if (typeof dateStr === 'string') {
-    const withT = dateStr.trim().replace(' ', 'T');
-    d = new Date(withT);
+    let normalized = dateStr.trim().replace(' ', 'T');
+    if (normalized.includes('T')) {
+      const parts = normalized.split('T');
+      const timePart = parts[1];
+      // Check if timePart does not contain timezone indicator Z or offset (+/-)
+      if (timePart && !timePart.includes('Z') && !timePart.includes('+') && !timePart.includes('-')) {
+        normalized += 'Z';
+      }
+    }
+    const d = new Date(normalized);
     if (isValid(d)) return d;
   }
 
-  return null;
+  const d = new Date(dateStr);
+  return isValid(d) ? d : null;
 };
 
 /**
@@ -95,4 +102,19 @@ export const formatDateSafely = (
   } catch (e) {
     return fallback;
   }
+};
+
+/**
+ * Extract epoch milliseconds from any message date representation (timestamp or createdAt).
+ */
+export const parseChatTimestamp = (message: { timestamp?: number | string; createdAt?: string }): number => {
+  if (message.timestamp) {
+    const parsed = typeof message.timestamp === 'number' ? new Date(message.timestamp) : safeParseDate(message.timestamp);
+    if (parsed) return parsed.getTime();
+  }
+  if (message.createdAt) {
+    const parsed = safeParseDate(message.createdAt);
+    if (parsed) return parsed.getTime();
+  }
+  return Date.now();
 };

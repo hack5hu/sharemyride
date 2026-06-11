@@ -1,4 +1,9 @@
 import { AxiosError } from 'axios';
+import { useSettingsStore } from '@/store/settings';
+import { en } from '@/constants/localization/en';
+import { hi } from '@/constants/localization/hi';
+
+const translations = { en, hi };
 
 interface BackendErrorResponse {
   message?: string;
@@ -26,7 +31,12 @@ export const getErrorMessage = (error: unknown, fallbackMessage?: string): strin
     }
 
     if (responseData?.message) {
-      return responseData.message;
+      const message = responseData.message;
+      if (message === 'You already have an active booking during this time. Please complete or cancel it first.') {
+        const lang = useSettingsStore.getState().language || 'en';
+        return translations[lang].notification.activeBookingOverlap;
+      }
+      return message;
     }
     
     if (axiosError.message) {

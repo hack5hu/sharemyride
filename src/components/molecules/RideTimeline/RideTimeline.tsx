@@ -135,7 +135,8 @@ export const RideTimeline: React.FC<{
   showActions?: boolean;
   onMapPress?: (index: number) => void;
   onCopyAddress?: (address: string) => void;
-}> = ({ points, showActions, onMapPress, onCopyAddress }) => {
+  isDriver?: boolean;
+}> = ({ points, showActions, onMapPress, onCopyAddress, isDriver = false }) => {
   const theme = useTheme();
   const [copiedIndex, setCopiedIndex] = React.useState<number | null>(null);
 
@@ -160,39 +161,47 @@ export const RideTimeline: React.FC<{
           </LeftContent>
 
             <DashColumn>
-              <Point type={point.type} isHighlighted={point.isHighlighted} />
+              <Point type={point.type} isHighlighted={point.isHighlighted || isDriver} />
               {index < points.length - 1 && <DashLine />}
             </DashColumn>
   
             <RightContent>
-              <Typography 
-                variant="body" 
-                size="md" 
-                weight={point.isHighlighted ? "bold" : "medium"} 
-                numberOfLines={point.isHighlighted ? 3 : 1} 
-                ellipsizeMode='tail'
-                color={point.isHighlighted ? theme.colors.primary : theme.colors.on_surface_variant}
-              >
-                {point.location}
-              </Typography>
-            {point.description && (
-              <DescriptionText variant="label" size="xs" color={theme.colors.on_surface_variant} numberOfLines={2} ellipsizeMode='tail'>
-                {point.description}
-              </DescriptionText>
-            )}
+              <LocationHeaderRow>
+                <LocationPressable 
+                  onPress={() => onMapPress?.(index)}
+                  disabled={!onMapPress}
+                  activeOpacity={0.7}
+                >
+                  <Typography 
+                    variant="body" 
+                    size="md" 
+                    weight={(point.isHighlighted || isDriver) ? "bold" : "medium"} 
+                    numberOfLines={isDriver ? 2 : (point.isHighlighted ? 3 : 1)} 
+                    ellipsizeMode='tail'
+                    color={(point.isHighlighted || isDriver) ? theme.colors.primary : theme.colors.on_surface_variant}
+                  >
+                    {point.location}
+                  </Typography>
+                </LocationPressable>
 
-            {point.isHighlighted && (
-              <ActionGroup>
-                <IconButton onPress={() => handleCopy(point.location, index)}>
-                  {copiedIndex === index && <FeedbackText variant="label" size="xs">Copied!</FeedbackText>}
-                  <Icon name={copiedIndex === index ? "check" : "content-copy"} size={moderateScale(16)} />
-                </IconButton>
-                <IconButton onPress={() => onMapPress?.(index)}>
-                  <Icon name="map" size={moderateScale(18)} color={theme.colors.primary} />
-                </IconButton>
-              </ActionGroup>
-            )}
-          </RightContent>
+                {(point.isHighlighted || isDriver) && (
+                  <InlineActionGroup>
+                    <IconButton onPress={() => onMapPress?.(index)}>
+                      <Icon name="map" size={moderateScale(18)} color={theme.colors.primary} />
+                    </IconButton>
+                    <IconButton onPress={() => handleCopy(point.location, index)}>
+                      {copiedIndex === index && <FeedbackText variant="label" size="xs">Copied!</FeedbackText>}
+                      <Icon name={copiedIndex === index ? "check" : "content-copy"} size={moderateScale(16)} />
+                    </IconButton>
+                  </InlineActionGroup>
+                )}
+              </LocationHeaderRow>
+              {point.description && (
+                <DescriptionText variant="label" size="xs" color={theme.colors.on_surface_variant} numberOfLines={2} ellipsizeMode='tail'>
+                  {point.description}
+                </DescriptionText>
+              )}
+            </RightContent>
         </TimelineRow>
       ))}
     </Container>

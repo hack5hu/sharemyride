@@ -7,6 +7,7 @@ import { IconButton } from '@/components/atoms/IconButton';
 import { 
   Container, 
   ProfileInfo, 
+  ProfileTouchable,
   TextContainer, 
   MetaRow, 
   RatingBox, 
@@ -24,6 +25,7 @@ export const ChatAppHeader: React.FC<ChatAppHeaderProps> = ({
   isVerified = true,
   onBackPress,
   onReportPress,
+  onProfilePress,
 }) => {
   const theme = useTheme();
 
@@ -33,39 +35,45 @@ export const ChatAppHeader: React.FC<ChatAppHeaderProps> = ({
         {onBackPress && (
           <IconButton icon="arrow-back" onPress={onBackPress} variant="surface" />
         )}
-        <Avatar 
-          source={avatarUri ? { uri: avatarUri } : undefined} 
-          placeholder={name}
-          size="sm"
-          isVerified={isVerified}
-          border={false}
-        />
-        
-        <TextContainer>
-          <Typography variant="title" size="md" weight="bold" color="primary">
-            {name}
-          </Typography>
-          <MetaRow>
-            <RatingBox>
-               <Typography variant="label" size="xs" weight="bold" color={theme.colors.secondary}>
-                {rating.toFixed(1)}
-              </Typography>
-              <Icon 
-                name="star" 
-                size={moderateScale(12)} 
-                color={theme.colors.secondary} 
-              />
-            </RatingBox>
-            {isTyping && (
-              <>
-                <PulseDot />
-                <Typography variant="label" size="xs" color="on_surface_variant">
-                  Typing...
+        <ProfileTouchable 
+          onPress={onProfilePress} 
+          disabled={!onProfilePress}
+          activeOpacity={0.7}
+        >
+          <Avatar 
+            source={avatarUri ? { uri: avatarUri } : undefined} 
+            placeholder={name}
+            size="sm"
+            isVerified={isVerified}
+            border={false}
+          />
+          
+          <TextContainer>
+            <Typography variant="title" size="md" weight="bold" color="primary">
+              {name}
+            </Typography>
+            <MetaRow>
+              <RatingBox>
+                 <Typography variant="label" size="xs" weight="bold" color={theme.colors.secondary}>
+                  {rating.toFixed(1)}
                 </Typography>
-              </>
-            )}
-          </MetaRow>
-        </TextContainer>
+                <Icon 
+                  name="star" 
+                  size={moderateScale(12)} 
+                  color={theme.colors.secondary} 
+                />
+              </RatingBox>
+              {isTyping && (
+                <>
+                  <PulseDot />
+                  <Typography variant="label" size="xs" color="on_surface_variant">
+                    Typing...
+                  </Typography>
+                </>
+              )}
+            </MetaRow>
+          </TextContainer>
+        </ProfileTouchable>
       </ProfileInfo>
 
       <Actions>

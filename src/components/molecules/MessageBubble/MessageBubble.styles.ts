@@ -20,6 +20,17 @@ export const BubbleWrapper = styled.View<{ isSender: boolean }>`
   min-width: ${scale(60)}px;
 `;
 
+export const TouchableBubbleWrapper = styled.TouchableOpacity<{ isSender: boolean }>`
+  background-color: ${({ theme, isSender }) =>
+    isSender ? theme.colors.primary_container : theme.colors.surface_container_high};
+  padding-horizontal: ${scale(16)}px;
+  padding-vertical: ${verticalScale(10)}px;
+  border-radius: ${moderateScale(20)}px;
+  border-bottom-left-radius: ${({ isSender }) => (isSender ? moderateScale(20) : 0)}px;
+  border-bottom-right-radius: ${({ isSender }) => (isSender ? 0 : moderateScale(20))}px;
+  min-width: ${scale(60)}px;
+`;
+
 export const MessageText = styled.Text<{ isSender: boolean }>`
   font-family: 'Plus Jakarta Sans';
   font-size: ${moderateScale(14)}px;

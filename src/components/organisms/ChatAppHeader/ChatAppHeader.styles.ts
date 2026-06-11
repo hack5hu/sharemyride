@@ -19,6 +19,13 @@ export const ProfileInfo = styled.View`
   flex: 1;
 `;
 
+export const ProfileTouchable = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(12)}px;
+  flex: 1;
+`;
+
 export const TextContainer = styled.View`
   flex: 1;
   gap: ${verticalScale(2)}px;

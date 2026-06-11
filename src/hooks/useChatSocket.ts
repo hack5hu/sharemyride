@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { AppState, AppStateStatus } from 'react-native';
 import { useAuthStore } from '@/store/useAuthStore';
 import { chatService } from '@/serviceManager/chatService';
 import { useChatStore } from '@/store/useChatStore';
@@ -25,4 +26,19 @@ export const useChatSocket = (isActive: boolean = true) => {
       // chatService.disconnect();
     };
   }, [isActive, user?.userId, flushOldMessages]);
+
+  useEffect(() => {
+    if (!isActive || !user?.userId) return;
+
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+      if (nextAppState === 'active' && user.userId) {
+        chatService.connect(user.userId).catch(() => undefined);
+      }
+    };
+
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+    return () => {
+      subscription.remove();
+    };
+  }, [isActive, user?.userId]);
 };

@@ -264,6 +264,11 @@ export interface ChatTranslations {
   safetmsg: string;
   emptyTitle: string;
   emptyDescription: string;
+  sendFailedTitle: string;
+  sendFailedMessage: string;
+  connecting: string;
+  offline: string;
+  tapToReconnect: string;
 }
 
 export interface RideDetailsTranslations {
@@ -372,6 +377,8 @@ export interface MapPickerTranslations {
   selectedArea: string;
   selectLocation: string;
   recentSearches: string;
+  locating: string;
+  pleaseWait: string;
 }
 
 export interface RouteSelectionTranslations {
@@ -546,6 +553,7 @@ export interface NotificationTranslations {
   vehicleRemoved: string;
   vehicleRemoveError: string;
   mapOpenError: string;
+  activeBookingOverlap: string;
 }
 
 export interface RideRouteTranslations {
@@ -893,5 +901,12 @@ export interface ChatLocationTranslations {
   sendCurrentLocationDesc: string;
   nearbyPlaces: string;
   searchPlaceholder: string;
+  gpsModalTitle: string;
+  gpsModalMessage: string;
+  enableGps: string;
+  gpsBannerMessage: string;
+  gpsSettingsPathAndroid: string;
+  gpsSettingsPathIos: string;
+  loadingCurrentLocation: string;
 }
 

@@ -259,6 +259,11 @@ export const en: Translations = {
     emptyTitle: 'No conversations yet',
     emptyDescription: 'Start a conversation with your co-riders to coordinate your journey.',
     locationShared: '📍 Location shared',
+    sendFailedTitle: 'Message Failed',
+    sendFailedMessage: 'Cannot send message please try again',
+    connecting: 'Connecting...',
+    offline: 'Offline',
+    tapToReconnect: 'Tap to reconnect',
   },
   rideDetails: {
     headerTitle: 'Ride Details',
@@ -363,6 +368,8 @@ export const en: Translations = {
     selectedArea: 'Selected Area',
     selectLocation: 'Select Location',
     recentSearches: 'Recent Searches',
+    locating: 'Locating...',
+    pleaseWait: 'Please wait...',
   },
   routeSelection: {
     headerTitle: 'Select Route',
@@ -507,6 +514,8 @@ export const en: Translations = {
     departureScheduleLabel: 'Departure Schedule',
     addVehicleLabel: 'Add Vehicle',
     addPreferencesLabel: 'Add Preferences',
+    approvalRequired: 'Approval Required',
+    instantBooking: 'Instant Booking',
   },
   publishSuccess: {
     headerTitle: 'Success',
@@ -772,6 +781,13 @@ export const en: Translations = {
     sendCurrentLocationDesc: 'Accurate to 15 meters',
     nearbyPlaces: 'NEARBY PLACES',
     searchPlaceholder: 'Search location...',
+    gpsModalTitle: 'GPS Disabled',
+    gpsModalMessage: 'Please enable GPS/location services to center on your current position.',
+    enableGps: 'Enable',
+    gpsBannerMessage: 'GPS is off. Enable it to locate yourself.',
+    gpsSettingsPathAndroid: 'Settings > Location',
+    gpsSettingsPathIos: 'Settings > Privacy > Location Services',
+    loadingCurrentLocation: 'Loading your current location...',
   },
   rideRoute: {
     title: 'Ride Route',
@@ -794,6 +810,7 @@ export const en: Translations = {
     vehicleRemoved: 'Vehicle removed successfully.',
     vehicleRemoveError: 'Could not delete vehicle. Please try again.',
     mapOpenError: 'Could not open map application',
+    activeBookingOverlap: 'You already have an active booking during this time. Please complete or cancel it first.',
   },
   reportIssue: {
     title: 'Report Issue',

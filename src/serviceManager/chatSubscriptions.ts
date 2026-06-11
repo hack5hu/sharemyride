@@ -1,8 +1,9 @@
 import { Client, IMessage } from '@stomp/stompjs';
 import { MessageStatus, MessageType } from '@/constants/enums';
-import { useChatStore } from '@/store/useChatStore';
+import { useChatStore, getConversationIdForMessage } from '@/store/useChatStore';
 import { ChatMessage } from '@/types/chat';
 import { Logger } from '@/utils/logger';
+import { parseChatTimestamp } from '@/utils/date';
 
 interface IncomingMessage {
   messageId: string;
@@ -10,6 +11,7 @@ interface IncomingMessage {
   receiverId: string;
   content: string;
   timestamp?: number;
+  createdAt?: string;
   type?: MessageType;
   metadata?: Record<string, unknown>;
 }
@@ -35,13 +37,6 @@ const parseMessage = <T>(msg: IMessage): T | null => {
   }
 };
 
-const findConversationWithMessage = (
-  messages: Record<string, ChatMessage[]>,
-  messageId: string,
-): string => Object.keys(messages).find(convId =>
-  messages[convId].some(message => message.messageId === messageId),
-) || '';
-
 const linkPendingMessage = (data: StatusMessage): boolean => {
   const { messages, linkPendingMessage: linkMessage } = useChatStore.getState();
 
@@ -62,28 +57,53 @@ const linkPendingMessage = (data: StatusMessage): boolean => {
   return false;
 };
 
-const syncActiveConversation = (
-  userId: string,
-  fetchHistory: ChatSubscriptionCallbacks['fetchHistory'],
-) => {
-  const { activeConversationId } = useChatStore.getState();
-  if (!activeConversationId) {
-    return;
-  }
+// Track active subscriptions to avoid duplicates on reconnection
+let activeSubscriptions: { unsubscribe: () => void }[] = [];
+let statusUpdateQueue: { conversationId: string; messageId: string; status: MessageStatus }[] = [];
+let statusUpdateTimeout: any = null;
 
-  const [u1, u2] = activeConversationId.split('_');
-  const otherUser = u1 === userId ? u2 : u1;
-  if (otherUser) {
-    fetchHistory(userId, otherUser);
+function processStatusUpdateQueue() {
+  const { updateMultipleMessageStatuses } = useChatStore.getState();
+  
+  const groups: Record<string, { messageId: string; status: MessageStatus }[]> = {};
+  statusUpdateQueue.forEach(item => {
+    if (!groups[item.conversationId]) {
+      groups[item.conversationId] = [];
+    }
+    groups[item.conversationId].push({ messageId: item.messageId, status: item.status });
+  });
+
+  Object.keys(groups).forEach(convId => {
+    updateMultipleMessageStatuses(convId, groups[convId]);
+  });
+
+  statusUpdateQueue = [];
+  statusUpdateTimeout = null;
+}
+
+function queueStatusUpdate(conversationId: string, messageId: string, status: MessageStatus) {
+  statusUpdateQueue.push({ conversationId, messageId, status });
+  if (!statusUpdateTimeout) {
+    statusUpdateTimeout = setTimeout(processStatusUpdateQueue, 0);
   }
-};
+}
 
 export const registerChatSubscriptions = (
   client: Client,
   userId: string,
   callbacks: ChatSubscriptionCallbacks,
 ) => {
-  client.subscribe('/user/queue/messages', (msg: IMessage) => {
+  // Unsubscribe from any existing subscriptions to prevent duplicate event listeners
+  activeSubscriptions.forEach((sub) => {
+    try {
+      sub.unsubscribe();
+    } catch (e) {
+      Logger.warn('[Socket] Failed to unsubscribe:', e);
+    }
+  });
+  activeSubscriptions = [];
+
+  const msgSub = client.subscribe('/user/queue/messages', (msg: IMessage) => {
     const data = parseMessage<IncomingMessage>(msg);
     if (!data) return;
 
@@ -96,7 +116,7 @@ export const registerChatSubscriptions = (
       senderId: data.senderId,
       receiverId: data.receiverId,
       content: data.content,
-      timestamp: data.timestamp || Date.now(),
+      timestamp: parseChatTimestamp(data),
       status: isRead ? MessageStatus.READ : MessageStatus.DELIVERED,
       type: data.type || MessageType.TEXT,
       metadata: data.metadata,
@@ -113,17 +133,17 @@ export const registerChatSubscriptions = (
     }
   });
 
-  client.subscribe('/user/queue/status', (msg: IMessage) => {
+  const statusSub = client.subscribe('/user/queue/status', (msg: IMessage) => {
     const data = parseMessage<StatusMessage>(msg);
     if (!data) return;
 
-    const { messages, updateMessageStatus } = useChatStore.getState();
-    const foundConvId = findConversationWithMessage(messages, data.messageId);
-
+    const foundConvId = getConversationIdForMessage(data.messageId);
     if (foundConvId) {
-      updateMessageStatus(foundConvId, data.messageId, data.status);
-    } else if (!linkPendingMessage(data)) {
-      syncActiveConversation(userId, callbacks.fetchHistory);
+      queueStatusUpdate(foundConvId, data.messageId, data.status);
+    } else {
+      linkPendingMessage(data);
     }
   });
+
+  activeSubscriptions.push(msgSub, statusSub);
 };

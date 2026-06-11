@@ -262,6 +262,11 @@ export const hi: Translations = {
       'अपनी सुरक्षा के लिए कभी भी अपना फोन नंबर या निजी जानकारी चैट में शेयर न करें। बातें ऐप के अंदर ही रखें।',
     emptyTitle: 'कोई बातचीत नहीं',
     emptyDescription: 'सफर तय करने के लिए अपने को-राइडर्स से बात शुरू करें।',
+    sendFailedTitle: 'मैसेज भेजने में विफल',
+    sendFailedMessage: 'मैसेज नहीं भेजा जा सका: कृपया फिर से कोशिश करें।',
+    connecting: 'कनेक्ट हो रहा है...',
+    offline: 'ऑफ़लाइन',
+    tapToReconnect: 'पुनः कनेक्ट करने के लिए टैप करें',
   },
   rideDetails: {
     headerTitle: 'राइड की जानकारी',
@@ -366,6 +371,8 @@ export const hi: Translations = {
     selectedArea: 'चुनी गई जगह',
     selectLocation: 'यहाँ सेट करें',
     recentSearches: 'हाल की खोजें',
+    locating: 'लोकेशन खोजी जा रही है...',
+    pleaseWait: 'कृपया प्रतीक्षा करें...',
   },
   routeSelection: {
     headerTitle: 'रास्ता चुनें',
@@ -510,6 +517,8 @@ export const hi: Translations = {
     departureScheduleLabel: 'निकलने का समय',
     addVehicleLabel: 'गाड़ी जोड़ें',
     addPreferencesLabel: 'पसंद जोड़ें',
+    approvalRequired: 'मंजूरी जरूरी',
+    instantBooking: 'इंस्टेंट बुकिंग',
   },
   publishSuccess: {
     headerTitle: 'सफल',
@@ -777,6 +786,13 @@ export const hi: Translations = {
     sendCurrentLocationDesc: '15 मीटर तक सटीक',
     nearbyPlaces: 'आस-पास की जगहें',
     searchPlaceholder: 'जगह खोजें...',
+    gpsModalTitle: 'जीपीएस बंद है',
+    gpsModalMessage: 'अपनी वर्तमान लोकेशन पर जाने के लिए कृपया जीपीएस/लोकेशन सेवा चालू करें।',
+    enableGps: 'चालू करें',
+    gpsBannerMessage: 'जीपीएस बंद है। अपनी लोकेशन देखने के लिए इसे चालू करें।',
+    gpsSettingsPathAndroid: 'सेटिंग्स > लोकेशन',
+    gpsSettingsPathIos: 'सेटिंग्स > प्राइवेसी > लोकेशन सर्विसेज़',
+    loadingCurrentLocation: 'आपकी वर्तमान लोकेशन खोजी जा रही है...',
   },
   rideRoute: {
     title: 'राइड का रास्ता',
@@ -799,6 +815,7 @@ export const hi: Translations = {
     vehicleRemoved: 'गाड़ी हटा दी गई।',
     vehicleRemoveError: 'गाड़ी नहीं हट सकी। कृपया फिर कोशिश करें।',
     mapOpenError: 'मैप ऐप नहीं खुल सका।',
+    activeBookingOverlap: 'इस समय के दौरान आपकी पहले से ही एक एक्टिव बुकिंग है। कृपया इसे पहले पूरा या कैंसल करें।',
   },
   reportIssue: {
     title: 'रिपोर्ट करें',
