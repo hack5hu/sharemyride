@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+
 import styled from 'styled-components/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';

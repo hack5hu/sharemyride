@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { moderateScale, verticalScale } from '@/styles';
 import { BottomNav } from '@/components/organisms/BottomNav';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { RideTypeToggle } from '@/components/molecules/RideTypeToggle';
+
 import { BookRideInfoTemplateProps } from './types.d';
 import * as S from './BookRideInfoTemplate.styles';
 import { RecentSearch } from '@/store/useBookRideStore';
@@ -32,8 +32,6 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
       onSelectRecentSearch,
       onClearRecentSearches,
       t,
-      rideType,
-      onSetRideType,
     }) => {
       const theme = useTheme();
 

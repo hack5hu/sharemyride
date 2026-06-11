@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { moderateScale } from '@/styles';
 
 export const Container = styled.View`
   width: 100%;

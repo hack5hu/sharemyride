@@ -16,7 +16,6 @@ import {
   HeaderTitle,
   CenterPinWrapper,
   BottomContainer,
-  ActionFABWrapper,
   ZoomControlsWrapper,
   LocationPreviewContainer,
   LocationPreviewTitle,

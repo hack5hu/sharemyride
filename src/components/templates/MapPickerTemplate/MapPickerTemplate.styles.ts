@@ -1,10 +1,6 @@
 import styled from 'styled-components/native';
-import { Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
-import { Map } from '@maplibre/maplibre-react-native';
-
-const { width, height } = Dimensions.get('window');
 
 export const Container = styled.View`
   flex: 1;

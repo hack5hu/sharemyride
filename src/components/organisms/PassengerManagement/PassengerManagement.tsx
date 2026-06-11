@@ -47,7 +47,6 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
     ({
       isDriver,
       passengers = [],
-      seatsLeft,
       onCancelPassenger,
       onPassengerPress,
       hideActions = false,

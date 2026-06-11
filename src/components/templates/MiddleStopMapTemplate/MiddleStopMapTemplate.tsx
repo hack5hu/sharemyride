@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Animated } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
@@ -100,15 +100,11 @@ export const MiddleStopMapTemplate: React.FC<MiddleStopMapTemplateProps> =
       selectedLocation,
       snapResult,
       canConfirm,
-      routeTitle,
       distanceText,
-      stopsCount,
       history,
       initialCenter,
       routeGeoJSON,
       connectorGeoJSON,
-      routeBounds,
-      routeCoordinates,
       mapRef,
       cameraRef,
       startLocation,

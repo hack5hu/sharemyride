@@ -1,8 +1,6 @@
 import styled from 'styled-components/native';
-import { Animated, Dimensions } from 'react-native';
+import { Animated } from 'react-native';
 import { scale, verticalScale, moderateScale } from '@/styles';
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export const Container = styled.View`
   flex: 1;

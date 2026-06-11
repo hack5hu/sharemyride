@@ -1,8 +1,7 @@
-import React, { useCallback } from 'react';
-import { TextInput, View } from 'react-native';
+import React from 'react';
+
 import styled, { useTheme } from 'styled-components/native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
-import { CounterButton } from '@/components/atoms/CounterButton';
 
 import { PriceCounter } from '@/components/molecules/PriceCounter';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -79,15 +78,6 @@ const PriceSection = styled.View`
   gap: ${scale(10)}px;
 `;
 
-const PriceLabel = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-size: ${responsiveFont(11)}px;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.outline};
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-`;
-
 /* Front seat section — Using 'No-Line' rule with subtle surface variance */
 const FrontSeatSection = styled.View`
   padding: ${moderateScale(14)}px;
@@ -114,14 +104,6 @@ const FrontSeatLabel = styled.Text`
   font-size: ${responsiveFont(11)}px;
   color: ${({ theme }) => theme.colors.secondary};
   text-transform: uppercase;
-`;
-
-const SeatLabel = styled.Text`
-font - family: 'Plus Jakarta Sans';
-font - weight: 700;
-font - size: ${responsiveFont(11)} px;
-color: ${({ theme }) => theme.colors.secondary};
-text - transform: uppercase;
 `;
 
 const MathBreakdown = styled.Text`

@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+import { scale, verticalScale, responsiveFont } from '@/styles';
 import { StatusBadgeVariant } from './types.d';
 
 interface ContainerProps {

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Modal, View, TouchableOpacity } from 'react-native';
+import { Modal, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
-import { moderateScale, verticalScale } from '@/styles';
+import { moderateScale } from '@/styles';
 import { Checkbox } from '@/components/atoms/Checkbox';
 import * as S from './RideFiltersModal.styles';
 

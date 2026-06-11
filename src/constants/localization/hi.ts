@@ -877,9 +877,11 @@ export const hi: Translations = {
     summaryLabel: 'प्रतिक्रिया का सारांश',
     summaryPlaceholder: 'जैसे, डार्क मोड सपोर्ट, प्रोफाइल क्रैश',
     descriptionLabel: 'अपने सुझाव या समस्या का वर्णन करें',
-    descriptionPlaceholder: 'कृपया विवरण, क्या हुआ या अपने फीचर का विचार साझा करें...',
+    descriptionPlaceholder:
+      'कृपया विवरण, क्या हुआ या अपने फीचर का विचार साझा करें...',
     screenshotsLabel: 'स्क्रीनशॉट संलग्न करें',
-    screenshotsDescription: 'हमें बेहतर समझने में मदद करने के लिए 5 तक स्क्रीनशॉट जोड़ें',
+    screenshotsDescription:
+      'हमें बेहतर समझने में मदद करने के लिए 5 तक स्क्रीनशॉट जोड़ें',
     addPhoto: 'फोटो जोड़ें',
     submitButton: 'प्रतिक्रिया सबमिट करें',
     submittingButton: 'सबमिट हो रहा है...',
@@ -887,7 +889,8 @@ export const hi: Translations = {
     validationErrorSummary: 'कृपया प्रतिक्रिया सारांश दर्ज करें',
     validationErrorDescription: 'कृपया विवरण दर्ज करें',
     successTitle: 'प्रतिक्रिया सबमिट की गई',
-    successMessage: 'धन्यवाद! आपका सुझाव टिकट नंबर #{{ticketNumber}} के रूप में दर्ज कर लिया गया है। चूंकि ZyncRide नया है, हम इस टिकट के अपडेट यहां पोस्ट करेंगे।',
+    successMessage:
+      'धन्यवाद! आपका सुझाव टिकट नंबर #{{ticketNumber}} के रूप में दर्ज कर लिया गया है। चूंकि ZyncRide नया है, हम इस टिकट के अपडेट यहां पोस्ट करेंगे।',
     ticketNumber: 'टिकट: #{{ticketNumber}}',
     ticketStatusOpen: 'खुला है',
     ticketStatusInProgress: 'प्रगति पर है',
@@ -896,6 +899,7 @@ export const hi: Translations = {
     ticketCreatedOn: 'बनाया गया: {{date}}',
     updatesLabel: 'अपडेट और टिप्पणियां',
     noTicketsTitle: 'कोई टिकट नहीं मिला',
-    noTicketsMessage: 'आपने अभी तक कोई प्रतिक्रिया सबमिट नहीं की है। शुरू करने के लिए फीडबैक सबमिट करें टैब का उपयोग करें!',
+    noTicketsMessage:
+      'आपने अभी तक कोई प्रतिक्रिया सबमिट नहीं की है। शुरू करने के लिए फीडबैक सबमिट करें टैब का उपयोग करें!',
   },
 };

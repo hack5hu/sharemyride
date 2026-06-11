@@ -39,7 +39,6 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   isVerified = true,
   avatarUri,
   isUpdatingAvatar = false,
-  onEditPress,
   onSettingsPress,
   onAvatarEditPress,
 }) => {

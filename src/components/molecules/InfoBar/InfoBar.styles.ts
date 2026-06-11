@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { moderateScale } from '@/styles';
-import { InfoBarProps, InfoBarVariant } from './types';
+import { InfoBarVariant } from './types';
 
 export const StyledInfoBar = styled.View<{
   variant: InfoBarVariant;

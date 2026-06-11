@@ -6,7 +6,7 @@ import { Avatar } from '@/components/atoms/Avatar';
 import { Button } from '@/components/atoms/Button';
 import { Input } from '@/components/atoms/Input';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { Box } from '@/components/atoms/Box';
+
 import * as S from './RatingTemplate.styles';
 import { RatingTemplateProps } from './types';
 import { moderateScale, verticalScale } from '@/styles';

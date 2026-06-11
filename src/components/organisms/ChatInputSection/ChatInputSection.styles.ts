@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { verticalScale, moderateScale, scale } from '@/styles';
 
 export const Container = styled.View`

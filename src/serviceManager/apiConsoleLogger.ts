@@ -5,8 +5,6 @@ import { Logger } from '@/utils/logger';
 type HeaderRecord = Record<string, unknown>;
 type JsonRecord = Record<string, unknown>;
 
-const FORM_DATA_VALUE = '[FORM_DATA]';
-const REDACTED_VALUE = '[REDACTED]';
 const CONSOLE_REDACTED_KEY_PARTS = [
   'password',
   'otp',
@@ -50,14 +48,6 @@ const getAuthorizationToken = (headers: unknown): string | undefined => {
 
 const isRecord = (value: unknown): value is JsonRecord =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
-
-const isFormDataValue = (value: unknown): boolean =>
-  typeof FormData !== 'undefined' && value instanceof FormData;
-
-const shouldRedactConsoleKey = (key: string): boolean => {
-  const normalizedKey = key.toLowerCase();
-  return CONSOLE_REDACTED_KEY_PARTS.some(part => normalizedKey.includes(part));
-};
 
 const redactConsoleData = (value: unknown): unknown => {
   if (value === null || value === undefined) return value;

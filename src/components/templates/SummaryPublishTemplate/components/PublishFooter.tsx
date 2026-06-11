@@ -18,8 +18,6 @@ export const PublishFooter: React.FC<PublishFooterProps> = ({
   onPublish,
   t,
 }) => {
-  const theme = useTheme();
-
   return (
     <FixedFooter>
       {validationError && <ErrorText>{validationError}</ErrorText>}

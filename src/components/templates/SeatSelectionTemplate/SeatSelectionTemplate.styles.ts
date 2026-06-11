@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
-import LinearGradient from 'react-native-linear-gradient';
+import { scale, verticalScale, moderateScale } from '@/styles';
+
 import { Typography } from '@/components/atoms/Typography';
 
 export const ContentScroll = styled.ScrollView`

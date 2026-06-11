@@ -13,13 +13,6 @@ import {
   SearchInputContainer,
   SearchInput,
   SectionHeader,
-  GridContainer,
-  GridCard,
-  BadgeRow,
-  CardBadge,
-  CardBadgeText,
-  CardTitle,
-  CardSubtext,
   HistoryItem,
   HistoryLeft,
   HistoryText,
@@ -61,7 +54,7 @@ export const MiddleStopSearchOverlay: React.FC<MiddleStopSearchOverlayProps> =
       recentHistory,
       onSelectLocation,
       onSelectHistory,
-      isLoading,
+      _isLoading,
     }) => {
       const theme = useTheme();
       const { middleStopMap: t } = useLocale();

@@ -12,14 +12,7 @@ import { ScreenShell } from '@/components/molecules/ScreenShell';
 
 export const UserProfileDetailTemplate: React.FC<
   UserProfileDetailTemplateProps
-> = ({
-  profile,
-  isLoading,
-  t,
-  handleBack,
-  handleReport,
-  handleViewRatings,
-}) => {
+> = ({ profile, isLoading, t, handleReport, handleViewRatings }) => {
   const theme = useTheme();
 
   if (isLoading || !profile) {

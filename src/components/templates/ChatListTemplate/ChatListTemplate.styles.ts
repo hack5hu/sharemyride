@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { View } from 'react-native';
-import { verticalScale, moderateScale, scale } from '@/styles';
+
+import { verticalScale, scale } from '@/styles';
 
 export const SafeAreaContainer = styled.View`
   flex: 1;

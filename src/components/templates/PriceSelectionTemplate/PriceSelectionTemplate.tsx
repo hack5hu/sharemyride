@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, ActivityIndicator } from 'react-native';
+import { ScrollView } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
@@ -9,7 +9,7 @@ import { FrontSeatPremium } from '@/components/molecules/FrontSeatPremium';
 import { SegmentPricingSheet } from '@/components/organisms/SegmentPricingSheet';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Button } from '@/components/atoms/Button';
-import { PricingTier } from '@/constants/pricing';
+
 import { SegmentPrice } from '@/components/molecules/SegmentPricingCard';
 import * as S from './PriceSelectionTemplate.styles';
 

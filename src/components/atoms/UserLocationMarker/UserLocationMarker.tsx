@@ -4,7 +4,7 @@ import {
   withRepeat,
   withTiming,
   useAnimatedStyle,
-  withDelay,
+  _withDelay,
 } from 'react-native-reanimated';
 import {
   Container,

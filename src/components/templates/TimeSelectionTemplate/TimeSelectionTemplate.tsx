@@ -31,7 +31,6 @@ export const TimeSelectionTemplate: React.FC<TimeSelectionTemplateProps> = ({
   minMinute,
   isContinueDisabled = false,
 }) => {
-  const theme = useTheme();
   const { timeSelection: t } = useLocale();
 
   return (

@@ -50,4 +50,3 @@ export enum TicketCategory {
   IMPROVEMENT = 'improvement',
   OTHER = 'other',
 }
-

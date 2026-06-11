@@ -1,13 +1,12 @@
 import React from 'react';
 import { Handlebar } from '@/components/atoms/Handlebar';
-import { DurationChip } from '@/components/atoms/DurationChip';
+
 import { LocationListItem } from '@/components/molecules/LocationListItem';
 import { useTranslation } from '@/hooks/useTranslation';
 import {
   Container,
   ScrollArea,
   Section,
-  DurationChipsList,
   SectionHeader,
   SuggestionsList,
 } from './LocationBottomSheet.styles';

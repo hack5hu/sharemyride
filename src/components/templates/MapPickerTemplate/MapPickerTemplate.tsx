@@ -85,7 +85,6 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
   onZoomIn,
   onZoomOut,
   zoom,
-  setIsMapVisible,
   isMapMounted,
 }) => {
   const theme = useTheme();

@@ -36,7 +36,6 @@ export const CancelRideModal: React.FC<CancelRideModalProps> = ({
   isLoading,
 }) => {
   const theme = useTheme();
-  const { rideDetails: t } = useLocale();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [description, setDescription] = useState('');
 

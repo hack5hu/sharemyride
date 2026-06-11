@@ -2,12 +2,10 @@ import React from 'react';
 import { ViewStyle, PermissionsAndroid, Platform } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { Avatar } from '../../atoms/Avatar';
-import { IconButton } from '../../atoms/IconButton';
+
 import {
   Container,
-  EditButtonContainer,
   AvatarWrapper,
-  DOBLabel,
   TouchableAvatar,
 } from './AvatarPicker.styles';
 import { Typography } from '../../atoms/Typography';

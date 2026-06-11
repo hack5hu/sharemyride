@@ -18,7 +18,7 @@ export const DotMark = styled.View<{ color: string }>`
   border-radius: ${moderateScale(5)}px;
   background-color: ${({ color }) => color};
   border-width: ${moderateScale(2)}px;
-  border-color: ${({ theme, color }) => color + '33'};
+  border-color: ${({ color }) => color + '33'};
 `;
 
 export const DashLine = styled.View`

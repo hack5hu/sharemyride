@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+
 import { Input } from '../../atoms/Input';
 import { Tag } from '../../atoms/Tag';
 import { Container, TagRow } from './LocationInput.styles';

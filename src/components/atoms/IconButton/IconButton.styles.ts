@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { moderateScale } from '@/styles';
-import { IconButtonProps, IconButtonSize, IconButtonVariant } from './types';
+import { IconButtonSize, IconButtonVariant } from './types';
 
 const sizes: Record<IconButtonSize, number> = {
   sm: 28,

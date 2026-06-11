@@ -23,7 +23,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   onBlur,
   error,
   onSubmit,
-  isValid,
   loading,
   onTruecallerLogin,
   onInputFocus,

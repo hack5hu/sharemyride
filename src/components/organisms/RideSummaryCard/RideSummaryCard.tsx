@@ -18,8 +18,6 @@ export const RideSummaryCard: React.FC<RideSummaryCardProps> = ({
   time,
   type,
 }) => {
-  const theme = useTheme();
-
   return (
     <Container>
       <Header>

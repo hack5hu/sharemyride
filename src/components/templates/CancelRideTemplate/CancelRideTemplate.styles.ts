@@ -1,11 +1,5 @@
 import styled from 'styled-components/native';
-import {
-  scale,
-  verticalScale,
-  moderateScale,
-  responsiveFont,
-  responsiveSize,
-} from '@/styles';
+import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
 import { Platform, Dimensions } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 

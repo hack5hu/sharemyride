@@ -73,21 +73,10 @@ const RightContent = styled.View`
   align-items: flex-start;
 `;
 
-const LocationInfo = styled.View`
-  flex: 1;
-`;
-
 const TimeText = styled(Typography)`
   font-size: ${moderateScale(12)}px;
   font-weight: 800;
   color: ${({ theme }) => theme.colors.primary};
-`;
-
-const ActionGroup = styled.View`
-  flex-direction: row;
-  gap: ${scale(8)}px;
-  align-items: center;
-  margin-top: ${verticalScale(10)}px;
 `;
 
 const IconButton = styled.TouchableOpacity`
@@ -115,10 +104,6 @@ const FeedbackText = styled(Typography)`
   width: ${scale(54)}px;
 `;
 
-const LocationWrapper = styled.View`
-  width: 100%;
-`;
-
 const LocationHeaderRow = styled.View`
   flex-direction: row;
   justify-content: space-between;
@@ -141,7 +126,7 @@ export const RideTimeline: React.FC<{
   onMapPress?: (index: number) => void;
   onCopyAddress?: (address: string) => void;
   isDriver?: boolean;
-}> = ({ points, showActions, onMapPress, onCopyAddress, isDriver = false }) => {
+}> = ({ points, onMapPress, onCopyAddress, isDriver = false }) => {
   const theme = useTheme();
   const [copiedIndex, setCopiedIndex] = React.useState<number | null>(null);
 

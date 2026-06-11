@@ -1,9 +1,8 @@
 import React from 'react';
-import { useTheme } from 'styled-components/native';
+
 import { useLocale } from '@/constants/localization';
 import { MonthCalendar } from '@/components/organisms/MonthCalendar';
-import { SelectionPreviewCard } from '@/components/molecules/SelectionPreviewCard';
-import { formatSelectedDate } from '@/utils/dateUtils';
+
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import * as S from './DateSelectionTemplate.styles';
 

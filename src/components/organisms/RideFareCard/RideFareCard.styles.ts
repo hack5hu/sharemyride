@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
-import { scale, verticalScale, moderateScale } from '@/styles';
+import { verticalScale, moderateScale } from '@/styles';
 
 export const FareCard = styled(LinearGradient)`
   flex-direction: row;

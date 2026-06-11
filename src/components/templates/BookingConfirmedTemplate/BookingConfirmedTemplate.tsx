@@ -10,13 +10,7 @@ import { BookingConfirmedTemplateProps } from './types.d';
 
 export const BookingConfirmedTemplate: React.FC<
   BookingConfirmedTemplateProps
-> = ({
-  t,
-  rideData,
-  handleGoToMyRides,
-  handleShareDetails,
-  handleMenuPress,
-}) => {
+> = ({ t, rideData, handleGoToMyRides, handleShareDetails }) => {
   const theme = useTheme();
 
   return (

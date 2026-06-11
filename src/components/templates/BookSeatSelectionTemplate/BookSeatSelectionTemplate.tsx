@@ -1,12 +1,12 @@
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
+
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Button } from '@/components/atoms/Button';
 import { CarFloorPlan } from '@/components/organisms/CarFloorPlan/CarFloorPlan';
 import { SeatLegend } from '@/components/molecules/SeatLegend/SeatLegend';
-import { verticalScale, moderateScale } from '@/styles';
+import { verticalScale } from '@/styles';
 import * as S from './BookSeatSelectionTemplate.styles';
 import { BookSeatSelectionTemplateProps } from './types.d';
 
@@ -21,15 +21,9 @@ export const BookSeatSelectionTemplate: React.FC<
   prices,
   totalPrice,
   seatCount,
-  vehicleType,
   toggleSeat,
   handleBack,
   handleConfirm,
-  driverName,
-  vehicleRegistration,
-  departureDate,
-  departureTime,
-  passengers,
   isBooking,
   isDisabled,
 }) => {

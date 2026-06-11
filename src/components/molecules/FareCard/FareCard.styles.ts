@@ -1,10 +1,5 @@
 import styled from 'styled-components/native';
-import {
-  scale,
-  verticalScale,
-  moderateScale,
-  responsiveFont,
-} from '@/styles/scale';
+import { scale, moderateScale, responsiveFont } from '@/styles/scale';
 
 export const Container = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.colors.surface_container_high};

@@ -63,7 +63,9 @@ export const CategoryItem = styled.TouchableOpacity<{ isSelected: boolean }>`
   padding-vertical: ${verticalScale(10)}px;
   border-radius: ${moderateScale(24)}px;
   background-color: ${({ theme, isSelected }) =>
-    isSelected ? theme.colors.primary_container : theme.colors.surface_container_high};
+    isSelected
+      ? theme.colors.primary_container
+      : theme.colors.surface_container_high};
 `;
 
 export const ScreenshotStrip = styled.View`
@@ -114,7 +116,9 @@ export const SubmitBtnWrapper = styled.TouchableOpacity`
   margin-vertical: ${verticalScale(12)}px;
 `;
 
-export const SubmitGradientBtn = styled(LinearGradient).attrs<{ isSubmitting: boolean }>(({ theme }) => ({
+export const SubmitGradientBtn = styled(LinearGradient).attrs<{
+  isSubmitting: boolean;
+}>(({ theme }) => ({
   colors: [theme.colors.primary, theme.colors.primary_container],
   start: { x: 0, y: 0 },
   end: { x: 1, y: 1 },

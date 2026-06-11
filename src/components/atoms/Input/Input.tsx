@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from 'styled-components/native';
-import {
-  NativeSyntheticEvent,
-  FocusEvent,
-  Keyboard,
-  TextInput,
-} from 'react-native';
+import { FocusEvent, Keyboard, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
   Container,

@@ -6,7 +6,7 @@ import {
   MiddleStopsList,
   RouteStop,
 } from '@/components/organisms/MiddleStopsList';
-import { BentoMapPreview } from '@/components/molecules/BentoMapPreview';
+
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Button } from '@/components/atoms/Button';
 import * as S from './MiddleStopsTemplate.styles';
@@ -33,15 +33,11 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
   startLocation,
   destination,
   middleStops,
-  startLocationRaw,
-  destinationLocationRaw,
-  middleStopsRaw,
   onAddStop,
   onRemoveStop,
   startDistanceText,
   destinationDistanceText,
 }) => {
-  const theme = useTheme();
   const { middleStops: t } = useLocale();
   console.log('startDistanceText', startDistanceText);
   console.log('destinationDistanceText', destinationDistanceText);

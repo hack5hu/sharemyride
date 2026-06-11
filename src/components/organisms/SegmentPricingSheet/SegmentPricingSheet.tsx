@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { TouchableWithoutFeedback, View } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+
 import styled, { useTheme } from 'styled-components/native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 import {
@@ -99,8 +99,6 @@ export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
   onSave,
   t,
 }) => {
-  const theme = useTheme();
-
   // localPrices tracks basePrice for each segment
   const [localPrices, setLocalPrices] = useState<Record<string, number>>({});
 

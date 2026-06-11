@@ -11,12 +11,12 @@ import { Loader } from '@/components/atoms/Loader';
 import { RideComfortSection } from '@/components/organisms/RideComfortSection/RideComfortSection';
 import { PassengerManagement } from '@/components/organisms/PassengerManagement/PassengerManagement';
 import { RideVehicleCard } from '@/components/organisms/RideVehicleCard/RideVehicleCard';
-import { RouteJourney } from '@/components/organisms/RouteJourney';
+
 import { useLocale } from '@/constants/localization';
 import { Button } from '@/components/atoms/Button';
 import { DriverCard } from '@/components/templates/RideInformationTemplate/components/DriverCard';
 import { CancellationReasonBox } from '@/components/templates/RideInformationTemplate/components/CancellationReasonBox';
-import { FareSummaryRow } from '@/components/templates/RideInformationTemplate/components/FareSummaryRow';
+
 import { RideStatsStrip } from '@/components/organisms/RideStatsStrip/RideStatsStrip';
 import { RideStatus } from '@/constants/enums';
 
@@ -37,7 +37,6 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
       handleDriverProfile,
       onRateDriver,
       onRatePassenger,
-      t,
     }) => {
       const theme = useTheme();
       const translations = useLocale();

@@ -5,7 +5,7 @@ import {
   MessageItem,
   MessageItemProps,
 } from '@/components/molecules/MessageItem';
-import { Typography } from '@/components/atoms/Typography';
+
 import {
   Container,
   TitleContainer,

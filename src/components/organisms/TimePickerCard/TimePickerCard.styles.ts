@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
-import LinearGradient from 'react-native-linear-gradient';
 
 export const CardContainer = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_low};

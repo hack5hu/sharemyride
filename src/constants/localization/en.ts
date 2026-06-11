@@ -888,9 +888,11 @@ export const en: Translations = {
     summaryLabel: 'Feedback Summary',
     summaryPlaceholder: 'E.g., Dark Mode support, profile crash',
     descriptionLabel: 'Describe your suggestion or issue',
-    descriptionPlaceholder: 'Please share details, what happened, or your feature idea...',
+    descriptionPlaceholder:
+      'Please share details, what happened, or your feature idea...',
     screenshotsLabel: 'Attach Screenshots',
-    screenshotsDescription: 'Add up to 5 screenshots to help us understand better',
+    screenshotsDescription:
+      'Add up to 5 screenshots to help us understand better',
     addPhoto: 'Add Photo',
     submitButton: 'Submit Feedback',
     submittingButton: 'Submitting...',
@@ -898,7 +900,8 @@ export const en: Translations = {
     validationErrorSummary: 'Please enter a feedback summary',
     validationErrorDescription: 'Please enter a description',
     successTitle: 'Feedback Submitted',
-    successMessage: 'Thank you! Your suggestion has been logged as ticket {{ticketNumber}}. Since ZyncRide is new, we will post status updates on this ticket here.',
+    successMessage:
+      'Thank you! Your suggestion has been logged as ticket {{ticketNumber}}. Since ZyncRide is new, we will post status updates on this ticket here.',
     ticketNumber: 'Ticket: #{{ticketNumber}}',
     ticketStatusOpen: 'Open',
     ticketStatusInProgress: 'In Progress',
@@ -907,6 +910,7 @@ export const en: Translations = {
     ticketCreatedOn: 'Created: {{date}}',
     updatesLabel: 'Updates & Comments',
     noTicketsTitle: 'No Tickets Found',
-    noTicketsMessage: 'You have not submitted any feedback yet. Use the Submit Feedback tab to get started!',
+    noTicketsMessage:
+      'You have not submitted any feedback yet. Use the Submit Feedback tab to get started!',
   },
 };

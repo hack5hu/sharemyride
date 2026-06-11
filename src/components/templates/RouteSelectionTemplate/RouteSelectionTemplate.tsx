@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';

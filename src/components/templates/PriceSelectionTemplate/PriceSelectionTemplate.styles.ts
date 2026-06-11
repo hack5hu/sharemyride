@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
-import LinearGradient from 'react-native-linear-gradient';
 
 export const TitleSection = styled.View`
   margin-bottom: ${verticalScale(24)}px;

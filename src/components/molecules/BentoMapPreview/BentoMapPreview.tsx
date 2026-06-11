@@ -4,7 +4,7 @@ import React, { useRef, useEffect, useMemo } from 'react';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { Location } from '@/store/useLocationStore';
-import { OlaMap } from '@/components/organisms/OlaMap';
+
 import {
   Camera,
   GeoJSONSource,
@@ -13,7 +13,7 @@ import {
 } from '@maplibre/maplibre-react-native';
 import { getBoundingBox } from '@/utils/polyline';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
-import { moderateScale } from '@/styles';
+
 import * as S from './BentoMapPreview.styles';
 
 export interface BentoMapPreviewProps {

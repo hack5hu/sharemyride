@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, TouchableOpacity, View, Alert } from 'react-native';
+import { Modal, TouchableOpacity, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { FlashList } from '@shopify/flash-list';
 import { useTheme } from 'styled-components/native';
@@ -11,7 +11,7 @@ import { Typography } from '@/components/atoms/Typography';
 import { useLocale } from '@/constants/localization';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as S from './NetworkLoggerModal.styles';
-import { ENABLE_NETWORK_LOGGER } from '@env';
+
 import { BASE_URL } from '@/constants/apiEndpoints';
 
 export const NetworkLoggerModal: React.FC = React.memo(() => {

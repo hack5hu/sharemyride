@@ -1,10 +1,9 @@
 import React from 'react';
-import { View } from 'react-native';
+
 import styled from 'styled-components/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
-import { CounterButton } from '@/components/atoms/CounterButton';
 
 const Wrapper = styled.View`
   gap: ${verticalScale(0)}px;
@@ -145,7 +144,6 @@ export const FrontSeatPremium: React.FC<FrontSeatPremiumProps> = ({
 }) => {
   const theme = useTheme();
   const maxPremium = Math.floor(basePrice * 0.1);
-  const isMax = premium >= maxPremium;
 
   const handleDecrement = () =>
     onPremiumChange(Math.max(0, premium - PREMIUM_STEP));

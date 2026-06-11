@@ -253,7 +253,10 @@ export const RootNavigator = () => {
             component={UserProfileDetailScreen as any}
           />
           <Stack.Screen name="Rating" component={RatingScreen as any} />
-          <Stack.Screen name="Suggestions" component={SuggestionsScreen as any} />
+          <Stack.Screen
+            name="Suggestions"
+            component={SuggestionsScreen as any}
+          />
         </>
       )}
     </Stack.Navigator>

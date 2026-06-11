@@ -22,7 +22,7 @@ export interface SuggestionsTemplateProps {
   title: string;
   activeTab: 'submit' | 'history';
   onTabChange: (tab: 'submit' | 'history') => void;
-  
+
   // Submit Form states and callbacks
   selectedCategory: TicketCategory | null;
   onSelectCategory: (category: TicketCategory) => void;

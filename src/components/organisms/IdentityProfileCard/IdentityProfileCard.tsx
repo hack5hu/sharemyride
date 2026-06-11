@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import React from 'react';
+
 import { DobInput } from '../../molecules/DobInput';
 import { Surface } from '../../atoms/Surface';
 import { Typography } from '../../atoms/Typography';
@@ -37,7 +37,6 @@ export const IdentityProfileCard: React.FC<IdentityProfileCardProps> =
       disabled,
     }) => {
       const { t } = useTranslation();
-      const showError = submitCount > 0;
 
       return (
         <Surface elevation="lowest" rounded="md" padding="lg">

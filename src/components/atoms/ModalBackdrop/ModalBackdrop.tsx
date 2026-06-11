@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal } from 'react-native';
-import { Backdrop, BlurOverlay } from './ModalBackdrop.styles';
+import { Backdrop } from './ModalBackdrop.styles';
 import { ModalBackdropProps } from './types.d';
 
 export const ModalBackdrop: React.FC<ModalBackdropProps> = ({

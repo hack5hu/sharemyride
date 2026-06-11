@@ -8,10 +8,11 @@ import { ScreenShell } from '@/components/molecules/ScreenShell';
 import * as S from './RideInformationTemplate.styles';
 import { moderateScale } from '@/styles';
 import { Loader } from '@/components/atoms/Loader';
-import { RideStatsStrip } from '@/components/organisms/RideStatsStrip/RideStatsStrip';
+// TODO
+// import { RideStatsStrip } from '@/components/organisms/RideStatsStrip/RideStatsStrip';
 import { RideComfortSection } from '@/components/organisms/RideComfortSection/RideComfortSection';
 import { PassengerManagement } from '@/components/organisms/PassengerManagement/PassengerManagement';
-import { RideFareCard } from '@/components/organisms/RideFareCard/RideFareCard';
+
 import { RideVehicleCard } from '@/components/organisms/RideVehicleCard/RideVehicleCard';
 import { useLocale } from '@/constants/localization';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -19,7 +20,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 // Subcomponents
 import { CancellationReasonBox } from './components/CancellationReasonBox';
 import { DriverCard } from './components/DriverCard';
-import { FareSummaryRow } from './components/FareSummaryRow';
+
 import { FixedFooterCTA } from './components/FixedFooterCTA';
 
 export const RideInformationTemplate: React.FC<RideInformationTemplateProps> =
@@ -38,7 +39,6 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> =
       onCancelRide,
       onCancelPassenger,
       handlePassengerProfile,
-      showVehicleDetails = false,
       onReportRide,
     }) => {
       const theme = useTheme();
@@ -53,22 +53,23 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> =
         );
       }, [isDriver, ride?.driver?.id, user?.id, user?.userId]);
 
-      const departureTime = useMemo(() => {
-        return ride?.timeline?.[0]?.time ?? '--:--';
-      }, [ride]);
+      // TODO
+      // const departureTime = useMemo(() => {
+      //   return ride?.timeline?.[0]?.time ?? '--:--';
+      // }, [ride]);
 
-      const departureDateLabel = useMemo(() => {
-        return ride?.departureDate ?? translations.common.today;
-      }, [ride, translations.common.today]);
+      // const departureDateLabel = useMemo(() => {
+      //   return ride?.departureDate ?? translations.common.today;
+      // }, [ride, translations.common.today]);
 
-      const durationLabel = useMemo(() => {
-        if (!ride) return '';
-        const durationHours = Math.floor(ride.totalDuration / 60);
-        const durationMins = ride.totalDuration % 60;
-        return durationHours > 0
-          ? `${durationHours}h ${durationMins}m`
-          : `${durationMins}m`;
-      }, [ride]);
+      // const durationLabel = useMemo(() => {
+      //   if (!ride) return '';
+      //   const durationHours = Math.floor(ride.totalDuration / 60);
+      //   const durationMins = ride.totalDuration % 60;
+      //   return durationHours > 0
+      //     ? `${durationHours}h ${durationMins}m`
+      //     : `${durationMins}m`;
+      // }, [ride]);
 
       const isArchived = useMemo(() => {
         if (!ride) return false;
@@ -143,6 +144,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> =
                 </S.SectionCard>
 
                 {/* ── Stats Strip ── */}
+                {/* TODO */}
                 {/* <RideStatsStrip
               departureDate={departureDateLabel}
               departureTime={departureTime}

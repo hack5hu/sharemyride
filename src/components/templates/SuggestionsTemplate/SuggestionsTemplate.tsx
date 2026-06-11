@@ -4,7 +4,10 @@ import { useTheme } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Typography } from '@/components/atoms/Typography';
 import { Input } from '@/components/atoms/Input';
-import { StatusBadge, type StatusBadgeVariant } from '@/components/atoms/StatusBadge';
+import {
+  StatusBadge,
+  type StatusBadgeVariant,
+} from '@/components/atoms/StatusBadge';
 import { IconButton } from '@/components/atoms/IconButton';
 import { EmptyState } from '@/components/molecules/EmptyState';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
@@ -36,7 +39,6 @@ import {
   StyledStaffUpdatesTitle,
 } from './SuggestionsTemplate.styles';
 import { SuggestionsTemplateProps, Ticket } from './types.d';
-import { moderateScale } from '@/styles';
 
 export const SuggestionsTemplate: React.FC<SuggestionsTemplateProps> = ({
   title,
@@ -69,7 +71,9 @@ export const SuggestionsTemplate: React.FC<SuggestionsTemplateProps> = ({
     { id: TicketCategory.OTHER, label: t.categoryOther },
   ];
 
-  const getStatusBadgeVariant = (status: Ticket['status']): StatusBadgeVariant => {
+  const getStatusBadgeVariant = (
+    status: Ticket['status'],
+  ): StatusBadgeVariant => {
     switch (status) {
       case TicketStatus.OPEN:
         return 'pending';
@@ -120,7 +124,11 @@ export const SuggestionsTemplate: React.FC<SuggestionsTemplateProps> = ({
                 variant="label"
                 size="sm"
                 weight="medium"
-                color={selectedCategory === cat.id ? 'on_primary_container' : 'on_surface_variant'}
+                color={
+                  selectedCategory === cat.id
+                    ? 'on_primary_container'
+                    : 'on_surface_variant'
+                }
               >
                 {cat.label}
               </Typography>
@@ -178,8 +186,16 @@ export const SuggestionsTemplate: React.FC<SuggestionsTemplateProps> = ({
             ))}
             {screenshots.length < 5 && (
               <AddScreenshotBtn onPress={onAddScreenshot}>
-                <Icon name="add-a-photo" size={24} color={theme.colors.on_surface_variant} />
-                <Typography variant="label" size="xxs" color="on_surface_variant">
+                <Icon
+                  name="add-a-photo"
+                  size={24}
+                  color={theme.colors.on_surface_variant}
+                />
+                <Typography
+                  variant="label"
+                  size="xxs"
+                  color="on_surface_variant"
+                >
                   {t.addPhoto}
                 </Typography>
               </AddScreenshotBtn>
@@ -190,7 +206,12 @@ export const SuggestionsTemplate: React.FC<SuggestionsTemplateProps> = ({
 
       <SubmitBtnWrapper onPress={onSubmit} disabled={isSubmitting}>
         <SubmitGradientBtn isSubmitting={isSubmitting}>
-          <Typography variant="title" size="md" weight="bold" color="on_primary">
+          <Typography
+            variant="title"
+            size="md"
+            weight="bold"
+            color="on_primary"
+          >
             {isSubmitting ? t.submittingButton : t.submitButton}
           </Typography>
         </SubmitGradientBtn>
@@ -215,9 +236,18 @@ export const SuggestionsTemplate: React.FC<SuggestionsTemplateProps> = ({
           const isExpanded = expandedTicketId === ticket.id;
           const categoryObj = categories.find(c => c.id === ticket.category);
           return (
-            <TicketCard key={ticket.id} onPress={() => toggleExpandTicket(ticket.id)} activeOpacity={0.9}>
+            <TicketCard
+              key={ticket.id}
+              onPress={() => toggleExpandTicket(ticket.id)}
+              activeOpacity={0.9}
+            >
               <TicketHeader>
-                <Typography variant="label" size="xs" weight="bold" color="secondary">
+                <Typography
+                  variant="label"
+                  size="xs"
+                  weight="bold"
+                  color="secondary"
+                >
                   {interpolate(t.ticketNumber, { ticketNumber: ticket.id })}
                 </Typography>
                 <StatusBadge
@@ -227,22 +257,39 @@ export const SuggestionsTemplate: React.FC<SuggestionsTemplateProps> = ({
               </TicketHeader>
 
               <TicketBody>
-                <Typography variant="title" size="md" weight="bold" color="on_surface">
+                <Typography
+                  variant="title"
+                  size="md"
+                  weight="bold"
+                  color="on_surface"
+                >
                   {ticket.summary}
                 </Typography>
-                <Typography variant="label" size="xxs" color="on_surface_variant">
-                  {categoryObj?.label || ticket.category} • {interpolate(t.ticketCreatedOn, { date: ticket.createdAt })}
+                <Typography
+                  variant="label"
+                  size="xxs"
+                  color="on_surface_variant"
+                >
+                  {categoryObj?.label || ticket.category} •{' '}
+                  {interpolate(t.ticketCreatedOn, { date: ticket.createdAt })}
                 </Typography>
               </TicketBody>
 
               {isExpanded && (
                 <ExpansionContent>
-                  <Typography variant="body" size="sm" color="on_surface_variant">
+                  <Typography
+                    variant="body"
+                    size="sm"
+                    color="on_surface_variant"
+                  >
                     {ticket.description}
                   </Typography>
 
                   {ticket.screenshots.length > 0 && (
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    <ScrollView
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                    >
                       <ScreenshotStrip>
                         {ticket.screenshots.map((uri, idx) => (
                           <ScreenshotThumbnailContainer key={`${uri}-${idx}`}>
@@ -253,13 +300,23 @@ export const SuggestionsTemplate: React.FC<SuggestionsTemplateProps> = ({
                     </ScrollView>
                   )}
 
-                  <StyledStaffUpdatesTitle variant="title" size="sm" color="on_surface" weight="bold">
+                  <StyledStaffUpdatesTitle
+                    variant="title"
+                    size="sm"
+                    color="on_surface"
+                    weight="bold"
+                  >
                     {t.updatesLabel}
                   </StyledStaffUpdatesTitle>
 
                   {ticket.updates.map((update, idx) => (
                     <UpdateItem key={idx}>
-                      <Typography variant="label" size="xs" weight="bold" color="primary">
+                      <Typography
+                        variant="label"
+                        size="xs"
+                        weight="bold"
+                        color="primary"
+                      >
                         {update.author} • {update.date}
                       </Typography>
                       <Typography variant="body" size="sm" color="on_surface">
@@ -279,24 +336,36 @@ export const SuggestionsTemplate: React.FC<SuggestionsTemplateProps> = ({
   return (
     <ScreenShell title={title} onBack={onBack}>
       <Container>
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        >
           <TabHeader>
-            <TabButton active={activeTab === 'submit'} onPress={() => onTabChange('submit')}>
+            <TabButton
+              active={activeTab === 'submit'}
+              onPress={() => onTabChange('submit')}
+            >
               <Typography
                 variant="title"
                 size="sm"
                 weight="bold"
-                color={activeTab === 'submit' ? 'primary' : 'on_surface_variant'}
+                color={
+                  activeTab === 'submit' ? 'primary' : 'on_surface_variant'
+                }
               >
                 {t.submitTab}
               </Typography>
             </TabButton>
-            <TabButton active={activeTab === 'history'} onPress={() => onTabChange('history')}>
+            <TabButton
+              active={activeTab === 'history'}
+              onPress={() => onTabChange('history')}
+            >
               <Typography
                 variant="title"
                 size="sm"
                 weight="bold"
-                color={activeTab === 'history' ? 'primary' : 'on_surface_variant'}
+                color={
+                  activeTab === 'history' ? 'primary' : 'on_surface_variant'
+                }
               >
                 {t.historyTab}
               </Typography>

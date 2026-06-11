@@ -3,8 +3,15 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { useLocale } from '@/constants/localization';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
-import { NotificationType, TicketStatus, TicketCategory } from '@/constants/enums';
-import { Ticket, TicketUpdate } from '@/components/templates/SuggestionsTemplate/types.d';
+import {
+  NotificationType,
+  TicketStatus,
+  TicketCategory,
+} from '@/constants/enums';
+import {
+  Ticket,
+  TicketUpdate,
+} from '@/components/templates/SuggestionsTemplate/types.d';
 import { Logger } from '@/utils/logger';
 
 // Simple string interpolation helper for templates
@@ -21,7 +28,8 @@ const INITIAL_MOCK_TICKETS = (): Ticket[] => [
     id: 'SR-3081',
     category: TicketCategory.FEATURE,
     summary: 'Add Dark Mode support',
-    description: 'It would be great to have dark mode support in the ZyncRide app. The white screens can be very bright during night travel. Standard dark mode theme across the app would improve readability.',
+    description:
+      'It would be great to have dark mode support in the ZyncRide app. The white screens can be very bright during night travel. Standard dark mode theme across the app would improve readability.',
     screenshots: [],
     createdAt: '10 Jun 2026',
     status: TicketStatus.IN_PROGRESS,
@@ -29,12 +37,14 @@ const INITIAL_MOCK_TICKETS = (): Ticket[] => [
       {
         date: '10 Jun 2026',
         author: 'Support Bot',
-        message: 'Thank you for suggesting this! We have registered your suggestion and categorized it as a feature request.',
+        message:
+          'Thank you for suggesting this! We have registered your suggestion and categorized it as a feature request.',
       },
       {
         date: '11 Jun 2026',
         author: 'ZyncRide Support',
-        message: 'We love this suggestion! Our design team is currently creating dark mode mockups, and this feature is planned for the next major release. We will update you once it goes live.',
+        message:
+          'We love this suggestion! Our design team is currently creating dark mode mockups, and this feature is planned for the next major release. We will update you once it goes live.',
       },
     ],
   },
@@ -42,7 +52,8 @@ const INITIAL_MOCK_TICKETS = (): Ticket[] => [
     id: 'SR-4920',
     category: TicketCategory.BUG,
     summary: 'Map picker freezes on low network',
-    description: 'When selecting location in low connectivity regions, the map component sometimes freezes or the loading indicator runs indefinitely.',
+    description:
+      'When selecting location in low connectivity regions, the map component sometimes freezes or the loading indicator runs indefinitely.',
     screenshots: [],
     createdAt: '08 Jun 2026',
     status: TicketStatus.RESOLVED,
@@ -50,35 +61,49 @@ const INITIAL_MOCK_TICKETS = (): Ticket[] => [
       {
         date: '08 Jun 2026',
         author: 'Support Bot',
-        message: 'Thank you for reporting this issue. We have logged it as a bug report.',
+        message:
+          'Thank you for reporting this issue. We have logged it as a bug report.',
       },
       {
         date: '09 Jun 2026',
         author: 'Dev Team',
-        message: 'We found a thread-blocking call during coordinate reverse-geocoding under slow networks. A fix has been merged.',
+        message:
+          'We found a thread-blocking call during coordinate reverse-geocoding under slow networks. A fix has been merged.',
       },
       {
         date: '10 Jun 2026',
         author: 'ZyncRide Support',
-        message: 'This issue is resolved in version 1.0.3. Please update your application via Play Store or App Store. Thank you for your feedback!',
+        message:
+          'This issue is resolved in version 1.0.3. Please update your application via Play Store or App Store. Thank you for your feedback!',
       },
     ],
   },
 ];
 
 export const useSuggestions = () => {
-  const { suggestions: t, common: commonTranslations, notification: notificationTranslations } = useLocale();
+  const {
+    suggestions: t,
+    common: commonTranslations,
+    notification: notificationTranslations,
+  } = useLocale();
   const navigation = useAppNavigation();
 
   const [activeTab, setActiveTab] = useState<'submit' | 'history'>('submit');
-  const [selectedCategory, setSelectedCategory] = useState<TicketCategory | null>(null);
+  const [selectedCategory, setSelectedCategory] =
+    useState<TicketCategory | null>(null);
   const [summary, setSummary] = useState('');
   const [description, setDescription] = useState('');
   const [screenshots, setScreenshots] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState<{ category?: string; summary?: string; description?: string }>({});
+  const [errors, setErrors] = useState<{
+    category?: string;
+    summary?: string;
+    description?: string;
+  }>({});
 
-  const [tickets, setTickets] = useState<Ticket[]>(() => INITIAL_MOCK_TICKETS());
+  const [tickets, setTickets] = useState<Ticket[]>(() =>
+    INITIAL_MOCK_TICKETS(),
+  );
 
   const handleSelectCategory = useCallback((category: TicketCategory) => {
     setSelectedCategory(category);
@@ -122,14 +147,22 @@ export const useSuggestions = () => {
         notificationTranslations.defaultErrorMessage,
       );
     }
-  }, [screenshots.length, commonTranslations.error, notificationTranslations.defaultErrorMessage]);
+  }, [
+    screenshots.length,
+    commonTranslations.error,
+    notificationTranslations.defaultErrorMessage,
+  ]);
 
   const handleDeleteScreenshot = useCallback((index: number) => {
     setScreenshots(prev => prev.filter((_, idx) => idx !== index));
   }, []);
 
   const validateForm = useCallback((): boolean => {
-    const newErrors: { category?: string; summary?: string; description?: string } = {};
+    const newErrors: {
+      category?: string;
+      summary?: string;
+      description?: string;
+    } = {};
 
     if (!selectedCategory) {
       newErrors.category = t.validationErrorCategory;
@@ -156,9 +189,13 @@ export const useSuggestions = () => {
 
       const ticketNum = Math.floor(1000 + Math.random() * 9000).toString();
       const ticketId = `SR-${ticketNum}`;
-      
+
       const today = new Date();
-      const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
+      const options: Intl.DateTimeFormatOptions = {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      };
       const formattedDate = today.toLocaleDateString('en-GB', options);
 
       const msg = interpolate(t.successMessage, { ticketNumber: ticketId });
@@ -181,12 +218,8 @@ export const useSuggestions = () => {
       };
 
       setTickets(prev => [newTicket, ...prev]);
-      
-      showNotification(
-        NotificationType.SUCCESS,
-        t.successTitle,
-        msg,
-      );
+
+      showNotification(NotificationType.SUCCESS, t.successTitle, msg);
 
       // Clear Form
       setSelectedCategory(null);
@@ -207,7 +240,16 @@ export const useSuggestions = () => {
     } finally {
       setIsSubmitting(false);
     }
-  }, [selectedCategory, summary, description, screenshots, t, commonTranslations.error, notificationTranslations.defaultErrorMessage, validateForm]);
+  }, [
+    selectedCategory,
+    summary,
+    description,
+    screenshots,
+    t,
+    commonTranslations.error,
+    notificationTranslations.defaultErrorMessage,
+    validateForm,
+  ]);
 
   const handleBack = useCallback(() => {
     navigation.goBack();

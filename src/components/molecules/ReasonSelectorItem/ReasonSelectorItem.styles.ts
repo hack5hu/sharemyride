@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
+import { verticalScale, moderateScale, responsiveFont } from '@/styles';
 
 export const Container = styled.TouchableOpacity<{ isSelected: boolean }>`
   width: 100%;

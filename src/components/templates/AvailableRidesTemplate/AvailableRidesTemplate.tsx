@@ -1,5 +1,5 @@
 import React from 'react';
-import { format } from 'date-fns';
+
 import { formatDateSafely } from '@/utils/date';
 import { useTheme } from 'styled-components/native';
 import { View, ActivityIndicator } from 'react-native';
@@ -38,7 +38,6 @@ export interface AvailableRidesTemplateProps {
 export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
   rides,
   selectedFilters,
-  onFilterToggle,
   onOpenFilters,
   isFilterModalOpen,
   onCloseFilters,
@@ -48,45 +47,10 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
   onLoadMore,
   isFetchingMore,
   isLoading,
-  hasMore,
   t,
   ft,
 }) => {
   const theme = useTheme();
-
-  const filters = [
-    {
-      id: 'nearPickup',
-      label: ft.nearPickup || 'Near Pickup',
-      icon: 'my-location',
-    },
-    {
-      id: 'nearDropoff',
-      label: ft.nearDropoff || 'Near Dropoff',
-      icon: 'location-on',
-    },
-    {
-      id: 'luggageAllowed',
-      label: ft.luggageAllowed || 'Luggage',
-      icon: 'luggage',
-    },
-    {
-      id: 'noSmoking',
-      label: ft.noSmoking || t.noSmokingFilterLabel || 'No Smoking',
-      icon: 'smoke-free',
-    },
-    {
-      id: 'ladiesOnly',
-      label: ft.ladiesOnly || t.ladiesOnlyFilterLabel || 'Ladies Only',
-      icon: 'pregnant-woman',
-    },
-    {
-      id: 'topRated',
-      label: t.topRatedFilterLabel || 'Top Rated',
-      icon: 'star',
-    },
-    { id: 'petFriendly', label: ft.petFriendly || 'Pets', icon: 'pets' },
-  ];
 
   const { startLocation, destinationLocation, seatCount, travelDate } =
     useBookRideStore();

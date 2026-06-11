@@ -22,7 +22,6 @@ export const GenderSelector: React.FC<GenderSelectorProps> = ({
   disabled,
 }) => {
   const { t } = useTranslation();
-  const theme = useTheme();
 
   const options = [
     { label: t('profileSetup.genderMale'), value: 'male' },

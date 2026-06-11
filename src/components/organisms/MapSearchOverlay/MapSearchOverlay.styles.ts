@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const OverlayContainer = styled.View`
   padding: 0 ${verticalScale(16)}px ${verticalScale(5)}px;

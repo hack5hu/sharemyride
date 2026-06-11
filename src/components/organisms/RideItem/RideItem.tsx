@@ -3,7 +3,6 @@ import { UpcomingRideCard } from '@/components/organisms/UpcomingRideCard';
 import { CompactRideItem } from '@/components/molecules/CompactRideItem';
 import { MatchedRideBento } from '@/components/organisms/MatchedRideBento';
 import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
-import { useTranslation } from '@/hooks/useTranslation';
 
 export interface RideListItem {
   id: string;

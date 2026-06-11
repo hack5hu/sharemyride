@@ -1,7 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
+
 import styled from 'styled-components/native';
-import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+import { moderateScale, verticalScale, responsiveFont } from '@/styles';
 
 const ToggleContainer = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_low};

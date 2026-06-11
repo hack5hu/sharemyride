@@ -5,9 +5,7 @@ import { useLocale } from '@/constants/localization';
 import { SafetyTrustCardProps } from './types';
 import * as S from './SafetyTrustCard.styles';
 
-export const SafetyTrustCard: React.FC<SafetyTrustCardProps> = ({
-  onPress,
-}) => {
+export const SafetyTrustCard: React.FC<SafetyTrustCardProps> = ({}) => {
   const theme = useTheme();
   const { rideDetails } = useLocale();
 

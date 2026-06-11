@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+import { moderateScale, scale, verticalScale } from '@/styles';
 import { ActivityIndicator as RNActivityIndicator } from 'react-native';
 
 export const ActivityIndicator = styled(RNActivityIndicator)``;

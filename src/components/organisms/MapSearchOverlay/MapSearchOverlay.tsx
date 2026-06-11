@@ -28,7 +28,6 @@ export interface MapSearchOverlayProps {
 }
 
 export const MapSearchOverlay: React.FC<MapSearchOverlayProps> = ({
-  onBackPress,
   onSelectLocation,
   searchQuery,
   onSearchChange,
