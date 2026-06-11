@@ -30,7 +30,9 @@ export const userService = {
   },
 
   getUserProfile: async (userId: string) => {
-    const response = await apiClient.get(`${API_ENDPOINTS.USER.PROFILE}?userId=${userId}`);
+    const response = await apiClient.get(
+      `${API_ENDPOINTS.USER.PROFILE}?userId=${userId}`,
+    );
     return response.data;
   },
 
@@ -45,12 +47,17 @@ export const userService = {
   },
 
   updateVehicle: async (id: string, data: VehiclePayload) => {
-    const response = await apiClient.put(`${API_ENDPOINTS.USER.VEHICLES}/${id}`, data);
+    const response = await apiClient.put(
+      `${API_ENDPOINTS.USER.VEHICLES}/${id}`,
+      data,
+    );
     return response.data;
   },
 
   deleteVehicle: async (id: string) => {
-    const response = await apiClient.delete(`${API_ENDPOINTS.USER.VEHICLES}/${id}`);
+    const response = await apiClient.delete(
+      `${API_ENDPOINTS.USER.VEHICLES}/${id}`,
+    );
     return response.data;
   },
 
@@ -75,7 +82,10 @@ export const userService = {
       }
 
       if (data.gender !== undefined) {
-        formData.append('gender', data.gender ? data.gender.toUpperCase() : 'OTHER');
+        formData.append(
+          'gender',
+          data.gender ? data.gender.toUpperCase() : 'OTHER',
+        );
       }
 
       if (data.profileImage?.uri) {
@@ -86,7 +96,10 @@ export const userService = {
         } as unknown as Blob);
       }
 
-      const response = await apiClient.post(API_ENDPOINTS.USER.PROFILE, formData);
+      const response = await apiClient.post(
+        API_ENDPOINTS.USER.PROFILE,
+        formData,
+      );
       return response.data;
     } catch (error) {
       Logger.error('Error updating profile:', error);
@@ -103,7 +116,10 @@ export const userService = {
         name: 'profile_image.jpg',
       } as unknown as Blob);
 
-      const response = await apiClient.post(API_ENDPOINTS.USER.PROFILE, formData);
+      const response = await apiClient.post(
+        API_ENDPOINTS.USER.PROFILE,
+        formData,
+      );
       return response.data;
     } catch (error) {
       Logger.error('Error uploading profile photo:', error);
@@ -121,4 +137,3 @@ export const userService = {
     }
   },
 };
-

@@ -35,9 +35,7 @@ export const LocationInput: React.FC<LocationInputProps> = ({
         <Tag active onPress={onPressNearby}>
           {t('profileSetup.nearbyOnly')}
         </Tag>
-        <Tag onPress={onPressGlobal}>
-          {t('profileSetup.globalReach')}
-        </Tag>
+        <Tag onPress={onPressGlobal}>{t('profileSetup.globalReach')}</Tag>
       </TagRow>
     </Container>
   );

@@ -8,6 +8,7 @@ export const createAppearanceSlice: StateCreator<
   AppearanceSlice
 > = (set, get) => ({
   themeMode: 'light',
-  setTheme: (theme) => set({ themeMode: theme }),
-  toggleTheme: () => set({ themeMode: get().themeMode === 'light' ? 'dark' : 'light' }),
+  setTheme: theme => set({ themeMode: theme }),
+  toggleTheme: () =>
+    set({ themeMode: get().themeMode === 'light' ? 'dark' : 'light' }),
 });

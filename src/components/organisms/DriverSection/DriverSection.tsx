@@ -5,13 +5,13 @@ import { useLocale } from '@/constants/localization';
 import { DriverSectionProps } from './types';
 import * as S from './DriverSection.styles';
 
-export const DriverSection: React.FC<DriverSectionProps> = ({ 
-  name, 
-  rating, 
-  carInfo, 
-  avatarUrl, 
+export const DriverSection: React.FC<DriverSectionProps> = ({
+  name,
+  rating,
+  carInfo,
+  avatarUrl,
   isDriverView,
-  onChatPress 
+  onChatPress,
 }) => {
   const theme = useTheme();
   const { rideDetails } = useLocale();
@@ -29,17 +29,23 @@ export const DriverSection: React.FC<DriverSectionProps> = ({
           <S.Name>{isDriverView ? rideDetails.myRide : name}</S.Name>
           <S.MetaRow>
             <S.RatingBadge>
-              <Icon name="star" size={12} color={theme.colors.on_secondary_container} />
+              <Icon
+                name="star"
+                size={12}
+                color={theme.colors.on_secondary_container}
+              />
               <S.RatingText>{rating.toFixed(1)}</S.RatingText>
             </S.RatingBadge>
             <S.CarInfo numberOfLines={1}>{carInfo}</S.CarInfo>
           </S.MetaRow>
         </S.TextContent>
       </S.InfoContainer>
-      
+
       <S.ChatButton onPress={onChatPress} activeOpacity={0.8}>
         <Icon name="chat" size={18} color={theme.colors.on_primary} />
-        <S.ChatText>{isDriverView ? rideDetails.groupChat : rideDetails.chat}</S.ChatText>
+        <S.ChatText>
+          {isDriverView ? rideDetails.groupChat : rideDetails.chat}
+        </S.ChatText>
       </S.ChatButton>
     </S.Container>
   );

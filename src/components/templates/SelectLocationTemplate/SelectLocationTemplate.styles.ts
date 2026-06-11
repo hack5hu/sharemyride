@@ -42,7 +42,7 @@ export const BackButton = styled.TouchableOpacity`
   width: ${moderateScale(36)}px;
   height: ${moderateScale(36)}px;
   border-radius: ${moderateScale(18)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container}; 
+  background-color: ${({ theme }) => theme.colors.surface_container};
   align-items: center;
   justify-content: center;
 `;
@@ -55,13 +55,13 @@ export const HeaderTitle = styled.Text`
   letter-spacing: -0.3px;
 `;
 
-
 // Center pin anchored at the true visual center of the map area (below header, above sheet)
 export const CenterPinWrapper = styled.View`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translateX(-${moderateScale(18)}px) translateY(-${moderateScale(56)}px);
+  transform: translateX(-${moderateScale(18)}px)
+    translateY(-${moderateScale(56)}px);
   z-index: 10;
 `;
 
@@ -79,7 +79,6 @@ export const ActionFABWrapper = styled.View`
   padding-bottom: ${verticalScale(16)}px;
   align-items: center;
 `;
-
 
 export const ZoomControlsWrapper = styled.View`
   position: absolute;

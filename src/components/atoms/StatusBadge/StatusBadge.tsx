@@ -2,10 +2,10 @@ import React from 'react';
 import { Container, LabelText } from './StatusBadge.styles';
 import { StatusBadgeProps } from './types.d';
 
-export const StatusBadge: React.FC<StatusBadgeProps> = ({ 
-  label, 
-  variant = 'primary', 
-  isUppercase = true 
+export const StatusBadge: React.FC<StatusBadgeProps> = ({
+  label,
+  variant = 'primary',
+  isUppercase = true,
 }) => {
   return (
     <Container variant={variant}>

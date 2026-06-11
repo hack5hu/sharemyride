@@ -17,7 +17,8 @@ export const BlurElement = styled.View`
   right: -40px;
   width: ${moderateScale(120)}px;
   height: ${moderateScale(120)}px;
-  background-color: ${({ theme }) => theme.colors.primary_fixed}33; // 20% opacity
+  background-color: ${({ theme }) =>
+    theme.colors.primary_fixed}33; // 20% opacity
   border-radius: 100px;
 `;
 

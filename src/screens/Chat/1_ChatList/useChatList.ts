@@ -8,17 +8,17 @@ import { chatService } from '@/serviceManager/chatService';
 export const useChatList = () => {
   const { t } = useTranslation();
   const { user } = useAuthStore();
-  const { 
-    conversations: storeConversations, 
+  const {
+    conversations: storeConversations,
     messages: storeMessages,
     setMyUserId,
-    users
+    users,
   } = useChatStore();
   const [searchQuery, setSearchQuery] = useState('');
 
   // Activate socket and fetch conversations
   useChatSocket(true);
-  
+
   useEffect(() => {
     if (user?.userId) {
       setMyUserId(user.userId);
@@ -28,16 +28,17 @@ export const useChatList = () => {
   const messages = useMemo(() => {
     const myUserId = user?.userId;
     if (!myUserId) return [];
-    
+
     return [...storeConversations]
       .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
-      .map((conv) => {
+      .map(conv => {
         const lastMsg = conv.lastMessage;
         if (!lastMsg) return null;
-        
+
         const otherParticipantId = conv.participants.find(p => p !== myUserId);
-        if (!otherParticipantId || otherParticipantId === 'Unknown') return null;
-        
+        if (!otherParticipantId || otherParticipantId === 'Unknown')
+          return null;
+
         // Trigger profile fetch if not in cache
         if (!users[otherParticipantId]) {
           chatService.fetchUserProfile(otherParticipantId);
@@ -48,13 +49,22 @@ export const useChatList = () => {
 
         return {
           id: otherParticipantId,
-          name: String(cachedUser?.name || metadata.userName || metadata.name || `User ${otherParticipantId.slice(0, 8)}`),
-          lastMessage: String(
-            (lastMsg.type === 'location' || lastMsg.content.startsWith('[LOCATION_DATA]:')) 
-              ? t('chat.locationShared') 
-              : lastMsg.content
+          name: String(
+            cachedUser?.name ||
+              metadata.userName ||
+              metadata.name ||
+              `User ${otherParticipantId.slice(0, 8)}`,
           ),
-          time: new Date(lastMsg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          lastMessage: String(
+            lastMsg.type === 'location' ||
+              lastMsg.content.startsWith('[LOCATION_DATA]:')
+              ? t('chat.locationShared')
+              : lastMsg.content,
+          ),
+          time: new Date(lastMsg.timestamp).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
           unreadCount: conv.unreadCount,
           isLastMessageFromMe: lastMsg.senderId === myUserId,
           lastMessageStatus: lastMsg.status,
@@ -62,21 +72,30 @@ export const useChatList = () => {
           destination: metadata.dropoff || metadata.destination,
           isOnline: true,
           isVerified: cachedUser?.isVerified ?? metadata.isVerified ?? true,
-          avatarSource: (cachedUser?.avatarUri || metadata.userAvatar || metadata.avatarUri) 
-            ? { uri: cachedUser?.avatarUri || metadata.userAvatar || metadata.avatarUri } 
-            : undefined,
+          avatarSource:
+            cachedUser?.avatarUri || metadata.userAvatar || metadata.avatarUri
+              ? {
+                  uri:
+                    cachedUser?.avatarUri ||
+                    metadata.userAvatar ||
+                    metadata.avatarUri,
+                }
+              : undefined,
           // Pass extra data for navigation
-          rating: cachedUser?.rating || metadata.userRating || metadata.rating || 5.0,
+          rating:
+            cachedUser?.rating || metadata.userRating || metadata.rating || 5.0,
           rideId: metadata.rideId,
           rideInfo: metadata.rideInfo,
         };
-      }).filter(Boolean);
+      })
+      .filter(Boolean);
   }, [storeConversations, user?.userId, users, t]);
 
   const filteredMessages = useMemo(() => {
-    return messages.filter(m => 
-      m!.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      m!.lastMessage.toLowerCase().includes(searchQuery.toLowerCase())
+    return messages.filter(
+      m =>
+        m!.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        m!.lastMessage.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [messages, searchQuery]);
 

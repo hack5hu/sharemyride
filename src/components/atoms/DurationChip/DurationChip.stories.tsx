@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/DurationChip',
   component: DurationChip,
-
 } satisfies Meta<typeof DurationChip>;
 
 export default meta;

@@ -11,45 +11,47 @@ export interface FixedFooterCTAProps {
   onCancelPassenger?: (id: string) => void;
 }
 
-export const FixedFooterCTA: React.FC<FixedFooterCTAProps> = React.memo(({
-  isDriver,
-  showBookButton,
-  onCancelRide,
-  handleBook,
-  onCancelPassenger,
-}) => {
-  const translations = useLocale();
+export const FixedFooterCTA: React.FC<FixedFooterCTAProps> = React.memo(
+  ({
+    isDriver,
+    showBookButton,
+    onCancelRide,
+    handleBook,
+    onCancelPassenger,
+  }) => {
+    const translations = useLocale();
 
-  return (
-    <S.FixedFooter>
-      {isDriver ? (
-        <Button
-          variant="outline"
-          icon="cancel"
-          iconPosition="left"
-          onPress={onCancelRide}
-        >
-          {translations.rideDetails.cancelRide}
-        </Button>
-      ) : showBookButton ? (
-        <Button
-          variant="primary"
-          icon="airline-seat-recline-normal"
-          iconPosition="left"
-          onPress={handleBook}
-        >
-          {translations.rideDetails.selectSeat}
-        </Button>
-      ) : (
-        <Button
-          variant="outline"
-          icon="person-remove"
-          iconPosition="left"
-          onPress={() => onCancelPassenger?.('')}
-        >
-          {translations.rideDetails.cancelBooking}
-        </Button>
-      )}
-    </S.FixedFooter>
-  );
-});
+    return (
+      <S.FixedFooter>
+        {isDriver ? (
+          <Button
+            variant="outline"
+            icon="cancel"
+            iconPosition="left"
+            onPress={onCancelRide}
+          >
+            {translations.rideDetails.cancelRide}
+          </Button>
+        ) : showBookButton ? (
+          <Button
+            variant="primary"
+            icon="airline-seat-recline-normal"
+            iconPosition="left"
+            onPress={handleBook}
+          >
+            {translations.rideDetails.selectSeat}
+          </Button>
+        ) : (
+          <Button
+            variant="outline"
+            icon="person-remove"
+            iconPosition="left"
+            onPress={() => onCancelPassenger?.('')}
+          >
+            {translations.rideDetails.cancelBooking}
+          </Button>
+        )}
+      </S.FixedFooter>
+    );
+  },
+);

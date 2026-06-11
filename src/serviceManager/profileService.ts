@@ -22,7 +22,7 @@ export const profileService = {
   updateProfile: async (data: Partial<ProfileUpdateData>) => {
     try {
       const formData = new FormData();
-      
+
       // Map only provided fields to FormData
       if (data.fullName !== undefined) {
         formData.append('name', String(data.fullName));
@@ -40,12 +40,18 @@ export const profileService = {
         formData.append('bio', data.bio);
       }
       if (data.dob !== undefined) {
-        const dateStr = typeof data.dob === 'object' ? data.dob.toISOString().split('T')[0] : data.dob;
+        const dateStr =
+          typeof data.dob === 'object'
+            ? data.dob.toISOString().split('T')[0]
+            : data.dob;
         formData.append('date', dateStr);
       }
       if (data.avatarUri !== undefined) {
         const uri = data.avatarUri;
-        if (uri && (uri.startsWith('file://') || uri.startsWith('content://'))) {
+        if (
+          uri &&
+          (uri.startsWith('file://') || uri.startsWith('content://'))
+        ) {
           const filename = uri.split('/').pop() || 'avatar.jpg';
           const profilePhoto: ReactNativeFile = {
             uri: uri,
@@ -56,7 +62,10 @@ export const profileService = {
         }
       }
 
-      const response = await apiClient.post(API_ENDPOINTS.USER.PROFILE, formData);
+      const response = await apiClient.post(
+        API_ENDPOINTS.USER.PROFILE,
+        formData,
+      );
       return response.data;
     } catch (error) {
       Logger.error('[ProfileService] Update failed:', error);

@@ -32,7 +32,8 @@ export const StatsSection = styled.View`
 export const StatDivider = styled.View`
   width: 1px;
   height: ${moderateScale(32)}px;
-  background-color: ${({ theme }) => theme.colors.outline_variant}4D; // 30% opacity
+  background-color: ${({ theme }) =>
+    theme.colors.outline_variant}4D; // 30% opacity
 `;
 
 export const VerifiedRow = styled.View`

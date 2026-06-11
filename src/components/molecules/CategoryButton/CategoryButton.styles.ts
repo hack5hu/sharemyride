@@ -6,11 +6,13 @@ export const Container = styled.TouchableOpacity<{ isSelected: boolean }>`
   align-items: center;
   padding: ${moderateScale(16)}px;
   gap: ${scale(16)}px;
-  background-color: ${({ theme, isSelected }) => 
-    isSelected ? theme.colors.surface_container_highest : theme.colors.surface_container_low};
+  background-color: ${({ theme, isSelected }) =>
+    isSelected
+      ? theme.colors.surface_container_highest
+      : theme.colors.surface_container_low};
   border-radius: ${moderateScale(12)}px;
   border-width: 2px;
-  border-color: ${({ theme, isSelected }) => 
+  border-color: ${({ theme, isSelected }) =>
     isSelected ? theme.colors.primary : 'transparent'};
 `;
 

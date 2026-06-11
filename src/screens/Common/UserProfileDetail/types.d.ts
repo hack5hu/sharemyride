@@ -2,8 +2,14 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/navigation/types.d';
 
-export type UserProfileDetailNavigationProp = StackNavigationProp<RootStackParamList, 'UserProfileDetail'>;
-export type UserProfileDetailRouteProp = RouteProp<RootStackParamList, 'UserProfileDetail'>;
+export type UserProfileDetailNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'UserProfileDetail'
+>;
+export type UserProfileDetailRouteProp = RouteProp<
+  RootStackParamList,
+  'UserProfileDetail'
+>;
 
 export interface UserProfileDetailProps {
   navigation: UserProfileDetailNavigationProp;

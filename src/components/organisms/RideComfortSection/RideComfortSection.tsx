@@ -19,7 +19,10 @@ interface RideComfortSectionProps {
   t: any;
 }
 
-export const RideComfortSection: React.FC<RideComfortSectionProps> = ({ features, t }) => {
+export const RideComfortSection: React.FC<RideComfortSectionProps> = ({
+  features,
+  t,
+}) => {
   const theme = useTheme();
 
   const PREFERENCE_LABELS: Record<string, string> = {
@@ -41,17 +44,24 @@ export const RideComfortSection: React.FC<RideComfortSectionProps> = ({ features
     <S.SectionCard>
       <S.SectionLabelRow>
         <S.SectionDot color={theme.colors.secondary} />
-        <Typography variant="label" size="xs" weight="bold" color="on_surface_variant">
-          {t.journeyComfort }
+        <Typography
+          variant="label"
+          size="xs"
+          weight="bold"
+          color="on_surface_variant"
+        >
+          {t.journeyComfort}
         </Typography>
       </S.SectionLabelRow>
       <S.ChipsWrap>
-        {preferenceFeatures.map((feat) => (
+        {preferenceFeatures.map(feat => (
           <S.PreferenceChip key={feat} accent={feat === 'noSmoking'}>
             <Icon
               name={PREFERENCE_ICONS[feat] || 'check-circle'}
               size={moderateScale(15)}
-              color={feat === 'noSmoking' ? theme.colors.error : theme.colors.primary}
+              color={
+                feat === 'noSmoking' ? theme.colors.error : theme.colors.primary
+              }
             />
             <Typography variant="label" size="sm" weight="medium">
               {PREFERENCE_LABELS[feat] || feat}
@@ -60,7 +70,11 @@ export const RideComfortSection: React.FC<RideComfortSectionProps> = ({ features
         ))}
         {musicGenre && (
           <S.PreferenceChip>
-            <Icon name="music-note" size={moderateScale(15)} color={theme.colors.secondary} />
+            <Icon
+              name="music-note"
+              size={moderateScale(15)}
+              color={theme.colors.secondary}
+            />
             <Typography variant="label" size="sm" weight="medium">
               {musicGenre} {t.vibes}
             </Typography>
@@ -70,4 +84,3 @@ export const RideComfortSection: React.FC<RideComfortSectionProps> = ({ features
     </S.SectionCard>
   );
 };
-

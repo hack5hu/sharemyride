@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/TimeDial',
   component: TimeDial,
-
 } satisfies Meta<typeof TimeDial>;
 
 export default meta;

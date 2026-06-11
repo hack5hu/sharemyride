@@ -3,7 +3,12 @@ import * as Keychain from 'react-native-keychain';
 import { BASE_URL } from '@/constants/apiEndpoints';
 import { useChatStore } from '@/store/useChatStore';
 import { ChatMessage, SendMessagePayload } from '@/types/chat';
-import { MessageStatus, MessageType, ConnectionStatus, NotificationType } from '@/constants/enums';
+import {
+  MessageStatus,
+  MessageType,
+  ConnectionStatus,
+  NotificationType,
+} from '@/constants/enums';
 import apiClient from './apiClient';
 import { Logger } from '@/utils/logger';
 import { registerChatSubscriptions } from './chatSubscriptions';
@@ -44,15 +49,17 @@ class ChatService {
       Logger.log('[Socket] Already active for user:', userId);
       return;
     }
-    
+
     this.currentUserId = userId;
     const { setConnectionStatus, setMyUserId } = useChatStore.getState();
-    
+
     setMyUserId(userId);
     setConnectionStatus(ConnectionStatus.CONNECTING);
-    
+
     const brokerUrl = BASE_URL.replace('http', 'ws') + '/ws/websocket';
-    const authCreds = await Keychain.getGenericPassword({ service: 'auth_token' });
+    const authCreds = await Keychain.getGenericPassword({
+      service: 'auth_token',
+    });
 
     if (!authCreds) {
       Logger.warn('[Socket] Missing auth token');
@@ -67,7 +74,7 @@ class ChatService {
           userId: userId,
           Authorization: `Bearer ${authCreds.password}`,
         },
-        debug: (msg) => {
+        debug: msg => {
           Logger.log('STOMP:', msg);
         },
         reconnectDelay: 5000,
@@ -77,11 +84,11 @@ class ChatService {
         appendMissingNULLonIncoming: true,
       });
 
-      this.client.onWebSocketError = (event) => {
+      this.client.onWebSocketError = event => {
         Logger.error('[Socket] WebSocket Error:', event);
       };
 
-      this.client.onWebSocketClose = (event) => {
+      this.client.onWebSocketClose = event => {
         Logger.log('[Socket] WebSocket Closed:', event);
       };
 
@@ -96,14 +103,14 @@ class ChatService {
         });
       };
 
-    this.client.onDisconnect = () => {
-      setConnectionStatus(ConnectionStatus.DISCONNECTED);
-    };
+      this.client.onDisconnect = () => {
+        setConnectionStatus(ConnectionStatus.DISCONNECTED);
+      };
 
-    this.client.onStompError = (frame) => {
-      Logger.error('STOMP Error:', frame.headers.message);
-      setConnectionStatus(ConnectionStatus.DISCONNECTED);
-    };
+      this.client.onStompError = frame => {
+        Logger.error('STOMP Error:', frame.headers.message);
+        setConnectionStatus(ConnectionStatus.DISCONNECTED);
+      };
 
       this.client.activate();
     } catch (error) {
@@ -116,12 +123,17 @@ class ChatService {
     if (this.client) {
       this.client.deactivate();
       this.client = null;
-      useChatStore.getState().setConnectionStatus(ConnectionStatus.DISCONNECTED);
+      useChatStore
+        .getState()
+        .setConnectionStatus(ConnectionStatus.DISCONNECTED);
     }
   }
 
   sendMessage(payload: SendMessagePayload) {
-    const conversationId = this.getConversationId(payload.senderId, payload.receiverId);
+    const conversationId = this.getConversationId(
+      payload.senderId,
+      payload.receiverId,
+    );
     const tempId = `temp-${Date.now()}`;
     const isConnected = !!this.client?.connected;
 
@@ -136,14 +148,18 @@ class ChatService {
       type: payload.type || MessageType.TEXT,
       metadata: payload.metadata,
     };
-    
+
     useChatStore.getState().addMessage(conversationId, tempMessage);
 
     if (!isConnected) {
       Logger.warn('Cannot send message: STOMP not connected');
       const lang = useSettingsStore.getState().language || 'en';
       const t = translations[lang] || en;
-      showNotification(NotificationType.ERROR, t.chat.sendFailedTitle, t.chat.sendFailedMessage);
+      showNotification(
+        NotificationType.ERROR,
+        t.chat.sendFailedTitle,
+        t.chat.sendFailedMessage,
+      );
       return;
     }
 
@@ -165,7 +181,11 @@ class ChatService {
       Logger.warn('Cannot resend message: STOMP not connected');
       const lang = useSettingsStore.getState().language || 'en';
       const t = translations[lang] || en;
-      showNotification(NotificationType.ERROR, t.chat.sendFailedTitle, t.chat.sendFailedMessage);
+      showNotification(
+        NotificationType.ERROR,
+        t.chat.sendFailedTitle,
+        t.chat.sendFailedMessage,
+      );
       return;
     }
 
@@ -202,10 +222,16 @@ class ChatService {
   async fetchHistory(myUserId: string, otherUserId: string) {
     const conversationId = this.getConversationId(myUserId, otherUserId);
     try {
-      const response = await apiClient.get(`/api/v1/chat/history/${myUserId}/${otherUserId}`);
+      const response = await apiClient.get(
+        `/api/v1/chat/history/${myUserId}/${otherUserId}`,
+      );
       const history = (response.data as HistoryMessage[]).map(m => ({
         ...m,
-        status: (m.status || m.messageStatus || MessageStatus.SENT).toUpperCase() as MessageStatus,
+        status: (
+          m.status ||
+          m.messageStatus ||
+          MessageStatus.SENT
+        ).toUpperCase() as MessageStatus,
         timestamp: parseChatTimestamp(m),
       }));
       useChatStore.getState().setHistory(conversationId, history);
@@ -220,13 +246,19 @@ class ChatService {
     const conversationId = this.getConversationId(myUserId, otherUserId);
     try {
       // Local-first: reset count immediately
-      const { markConversationAsRead, messages, updateMultipleMessageStatuses } = useChatStore.getState();
+      const {
+        markConversationAsRead,
+        messages,
+        updateMultipleMessageStatuses,
+      } = useChatStore.getState();
       markConversationAsRead(conversationId);
-      
+
       // Refresh local status of all messages immediately (Optimistic Update)
       const chatMessages = messages[conversationId] || [];
       const updates = chatMessages
-        .filter(m => m.receiverId === myUserId && m.status !== MessageStatus.READ)
+        .filter(
+          m => m.receiverId === myUserId && m.status !== MessageStatus.READ,
+        )
         .map(m => ({ messageId: m.messageId, status: MessageStatus.READ }));
 
       if (updates.length > 0) {
@@ -237,7 +269,6 @@ class ChatService {
       Logger.error('Failed to mark messages as read:', error);
     }
   }
-
 
   private getConversationId(u1: string, u2: string): string {
     return u1 < u2 ? `${u1}_${u2}` : `${u2}_${u1}`;

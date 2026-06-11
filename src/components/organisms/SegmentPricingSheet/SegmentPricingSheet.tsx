@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react';
-import {
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { TouchableWithoutFeedback, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import styled, { useTheme } from 'styled-components/native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
-import { SegmentPricingCard, SegmentPrice } from '@/components/molecules/SegmentPricingCard';
+import {
+  SegmentPricingCard,
+  SegmentPrice,
+} from '@/components/molecules/SegmentPricingCard';
 import { StopSegment } from './utils';
 import { Button } from '@/components/atoms/Button';
 
@@ -100,7 +100,7 @@ export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
   t,
 }) => {
   const theme = useTheme();
-  
+
   // localPrices tracks basePrice for each segment
   const [localPrices, setLocalPrices] = useState<Record<string, number>>({});
 
@@ -129,10 +129,28 @@ export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
 
   if (!visible) return null;
   return (
-    <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 999, elevation: 999 }}>
+    <View
+      style={{
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 999,
+        elevation: 999,
+      }}
+    >
       <Overlay>
         <TouchableWithoutFeedback onPress={onClose}>
-          <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}
+          />
         </TouchableWithoutFeedback>
 
         <Sheet>
@@ -160,9 +178,12 @@ export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
                   to={seg.to}
                   segmentPrice={{
                     ...segmentPrices[seg.id],
-                    basePrice: localPrices[seg.id] ?? segmentPrices[seg.id]?.basePrice ?? 0
+                    basePrice:
+                      localPrices[seg.id] ??
+                      segmentPrices[seg.id]?.basePrice ??
+                      0,
                   }}
-                  onPriceChange={(price) => handlePriceChange(seg.id, price)}
+                  onPriceChange={price => handlePriceChange(seg.id, price)}
                   segmentLabel={t.segmentLabel}
                   premiumEnabled={premiumEnabled}
                   frontSeatLabel={t.frontSeatProjectedLabel}

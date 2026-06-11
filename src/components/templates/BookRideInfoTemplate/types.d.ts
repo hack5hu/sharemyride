@@ -21,4 +21,3 @@ export interface BookRideInfoTemplateProps {
   rideType: 'local' | 'intercity';
   onSetRideType: (type: 'local' | 'intercity') => void;
 }
-

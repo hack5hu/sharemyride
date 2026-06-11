@@ -18,7 +18,8 @@ export const IconBox = styled.View`
   width: ${moderateScale(40)}px;
   height: ${moderateScale(40)}px;
   border-radius: ${moderateScale(20)}px;
-  background-color: ${({ theme }) => theme.colors.tertiary + '1A'}; // 10% opacity
+  background-color: ${({ theme }) =>
+    theme.colors.tertiary + '1A'}; // 10% opacity
   align-items: center;
   justify-content: center;
 `;

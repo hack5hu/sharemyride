@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/ModalBackdrop',
   component: ModalBackdrop,
-
 } satisfies Meta<typeof ModalBackdrop>;
 
 export default meta;

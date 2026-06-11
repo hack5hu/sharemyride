@@ -22,102 +22,128 @@ import { DriverCard } from './components/DriverCard';
 import { FareSummaryRow } from './components/FareSummaryRow';
 import { FixedFooterCTA } from './components/FixedFooterCTA';
 
-export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = React.memo(({
-  ride,
-  handleBack,
-  handleBook,
-  handleViewRoute,
-  handleCopyAddress,
-  handleDriverProfile,
-  handleChat,
-  isLoading,
-  showBookButton = true,
-  isDriver = false,
-  onCancelRide,
-  onCancelPassenger,
-  handlePassengerProfile,
-  showVehicleDetails = false,
-  onReportRide,
-}) => {
-  const theme = useTheme();
-  const translations = useLocale();
-  const { user } = useAuthStore();
+export const RideInformationTemplate: React.FC<RideInformationTemplateProps> =
+  React.memo(
+    ({
+      ride,
+      handleBack,
+      handleBook,
+      handleViewRoute,
+      handleCopyAddress,
+      handleDriverProfile,
+      handleChat,
+      isLoading,
+      showBookButton = true,
+      isDriver = false,
+      onCancelRide,
+      onCancelPassenger,
+      handlePassengerProfile,
+      showVehicleDetails = false,
+      onReportRide,
+    }) => {
+      const theme = useTheme();
+      const translations = useLocale();
+      const { user } = useAuthStore();
 
-  const isMyRide = useMemo(() => {
-    return isDriver || ride?.driver?.id === user?.id || ride?.driver?.id === user?.userId;
-  }, [isDriver, ride?.driver?.id, user?.id, user?.userId]);
+      const isMyRide = useMemo(() => {
+        return (
+          isDriver ||
+          ride?.driver?.id === user?.id ||
+          ride?.driver?.id === user?.userId
+        );
+      }, [isDriver, ride?.driver?.id, user?.id, user?.userId]);
 
-  const departureTime = useMemo(() => {
-    return ride?.timeline?.[0]?.time ?? '--:--';
-  }, [ride]);
+      const departureTime = useMemo(() => {
+        return ride?.timeline?.[0]?.time ?? '--:--';
+      }, [ride]);
 
-  const departureDateLabel = useMemo(() => {
-    return ride?.departureDate ?? translations.common.today;
-  }, [ride, translations.common.today]);
+      const departureDateLabel = useMemo(() => {
+        return ride?.departureDate ?? translations.common.today;
+      }, [ride, translations.common.today]);
 
-  const durationLabel = useMemo(() => {
-    if (!ride) return '';
-    const durationHours = Math.floor(ride.totalDuration / 60);
-    const durationMins = ride.totalDuration % 60;
-    return durationHours > 0
-      ? `${durationHours}h ${durationMins}m`
-      : `${durationMins}m`;
-  }, [ride]);
+      const durationLabel = useMemo(() => {
+        if (!ride) return '';
+        const durationHours = Math.floor(ride.totalDuration / 60);
+        const durationMins = ride.totalDuration % 60;
+        return durationHours > 0
+          ? `${durationHours}h ${durationMins}m`
+          : `${durationMins}m`;
+      }, [ride]);
 
-  const isArchived = useMemo(() => {
-    if (!ride) return false;
-    return ride.status === 'COMPLETED' || ride.status === 'CANCELLED' || ride.status === 'REJECTED';
-  }, [ride]);
+      const isArchived = useMemo(() => {
+        if (!ride) return false;
+        return (
+          ride.status === 'COMPLETED' ||
+          ride.status === 'CANCELLED' ||
+          ride.status === 'REJECTED'
+        );
+      }, [ride]);
 
-  if (isLoading) {
-    return (
-      <ScreenShell title={translations.rideDetails.headerTitle} onBack={handleBack}>
-        <Loader message={translations.rideDetails.fetchingDetails} />
-      </ScreenShell>
-    );
-  }
+      if (isLoading) {
+        return (
+          <ScreenShell
+            title={translations.rideDetails.headerTitle}
+            onBack={handleBack}
+          >
+            <Loader message={translations.rideDetails.fetchingDetails} />
+          </ScreenShell>
+        );
+      }
 
-  if (!ride) return null;
+      if (!ride) return null;
 
-  const showFooter = !isArchived && (showBookButton || isDriver || !showBookButton);
+      const showFooter =
+        !isArchived && (showBookButton || isDriver || !showBookButton);
 
-  return (
-    <S.Root>
-      <ScreenShell 
-        title={translations.rideDetails.headerTitle} 
-        onBack={handleBack}
-        rightElement={!isArchived && onReportRide ? (
-          <S.ReportButton onPress={onReportRide} activeOpacity={0.7}>
-            <Icon name="flag" size={moderateScale(22)} color={theme.colors.error} />
-          </S.ReportButton>
-        ) : undefined}
-      >
-        <S.ScrollContent showsVerticalScrollIndicator={false}>
-          <S.ContentPadding>
-            {/* ── Cancellation Reason (If archived & cancelled) ── */}
-            {isArchived && ride.cancellationReason && (
-              <CancellationReasonBox cancellationReason={ride.cancellationReason} />
-            )}
+      return (
+        <S.Root>
+          <ScreenShell
+            title={translations.rideDetails.headerTitle}
+            onBack={handleBack}
+            rightElement={
+              !isArchived && onReportRide ? (
+                <S.ReportButton onPress={onReportRide} activeOpacity={0.7}>
+                  <Icon
+                    name="flag"
+                    size={moderateScale(22)}
+                    color={theme.colors.error}
+                  />
+                </S.ReportButton>
+              ) : undefined
+            }
+          >
+            <S.ScrollContent showsVerticalScrollIndicator={false}>
+              <S.ContentPadding>
+                {/* ── Cancellation Reason (If archived & cancelled) ── */}
+                {isArchived && ride.cancellationReason && (
+                  <CancellationReasonBox
+                    cancellationReason={ride.cancellationReason}
+                  />
+                )}
 
-            {/* ── Route Timeline ── */}
-            <S.SectionCard>
-              <S.SectionLabelRow>
-                <S.SectionDot />
-                <Typography variant="label" size="xs" weight="bold" color="on_surface_variant">
-                  {translations.rideDetails.timelineTitle.toUpperCase()}
-                </Typography>
-              </S.SectionLabelRow>
-              <RideTimeline
-                points={ride.timeline}
-                showActions={true}
-                onMapPress={handleViewRoute}
-                onCopyAddress={handleCopyAddress}
-              />
-            </S.SectionCard>
+                {/* ── Route Timeline ── */}
+                <S.SectionCard>
+                  <S.SectionLabelRow>
+                    <S.SectionDot />
+                    <Typography
+                      variant="label"
+                      size="xs"
+                      weight="bold"
+                      color="on_surface_variant"
+                    >
+                      {translations.rideDetails.timelineTitle.toUpperCase()}
+                    </Typography>
+                  </S.SectionLabelRow>
+                  <RideTimeline
+                    points={ride.timeline}
+                    showActions={true}
+                    onMapPress={handleViewRoute}
+                    onCopyAddress={handleCopyAddress}
+                  />
+                </S.SectionCard>
 
-
-            {/* ── Stats Strip ── */}
-            {/* <RideStatsStrip
+                {/* ── Stats Strip ── */}
+                {/* <RideStatsStrip
               departureDate={departureDateLabel}
               departureTime={departureTime}
               durationLabel={durationLabel}
@@ -125,58 +151,63 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> = R
               t={translations.rideDetails}
             /> */}
 
-            {/* ── Driver Card (hidden for driver) ── */}
-            {!isDriver && (
-              <DriverCard 
-                driver={ride.driver}
-                handleDriverProfile={handleDriverProfile}
-                handleChat={handleChat}
-                showChat={!isMyRide}
-              />
-            )}
+                {/* ── Driver Card (hidden for driver) ── */}
+                {!isDriver && (
+                  <DriverCard
+                    driver={ride.driver}
+                    handleDriverProfile={handleDriverProfile}
+                    handleChat={handleChat}
+                    showChat={!isMyRide}
+                  />
+                )}
 
-           
-            
+                {/* ── Journey Comfort ── */}
+                <RideComfortSection
+                  features={ride.features}
+                  t={translations.rideDetails}
+                />
 
-            {/* ── Journey Comfort ── */}
-            <RideComfortSection features={ride.features} t={translations.rideDetails} />
-
-
-             {/* ── Fare Info ── */}
-            {/* {showVehicleDetails && (
+                {/* ── Fare Info ── */}
+                {/* {showVehicleDetails && (
               <FareSummaryRow ride={ride} />
             ) } */}
 
+                {/* ── Vehicle Details ── */}
+                <RideVehicleCard
+                  vehicle={ride.vehicle}
+                  t={
+                    translations.rideDetails as unknown as Record<
+                      string,
+                      string
+                    >
+                  }
+                />
 
-            {/* ── Vehicle Details ── */}
-              <RideVehicleCard vehicle={ride.vehicle} t={translations.rideDetails as unknown as Record<string, string>} />
+                {/* ── Fellow Travelers ── */}
+                <PassengerManagement
+                  isDriver={isDriver}
+                  passengers={ride.passengers}
+                  seatsLeft={ride.seatsLeft}
+                  onCancelPassenger={onCancelPassenger}
+                  onPassengerPress={handlePassengerProfile}
+                  hideActions={isArchived}
+                  vehicleType={ride.vehicle?.type}
+                />
+              </S.ContentPadding>
+            </S.ScrollContent>
 
-            {/* ── Fellow Travelers ── */}
-            <PassengerManagement
-              isDriver={isDriver}
-              passengers={ride.passengers}
-              seatsLeft={ride.seatsLeft}
-              onCancelPassenger={onCancelPassenger}
-              onPassengerPress={handlePassengerProfile}
-              hideActions={isArchived}
-              vehicleType={ride.vehicle?.type}
-            />
-
-
-          </S.ContentPadding>
-        </S.ScrollContent>
-
-        {/* ── Fixed Bottom CTA ── */}
-        {showFooter && (
-          <FixedFooterCTA 
-            isDriver={isDriver}
-            showBookButton={showBookButton}
-            onCancelRide={onCancelRide}
-            handleBook={handleBook}
-            onCancelPassenger={onCancelPassenger}
-          />
-        )}
-      </ScreenShell>
-    </S.Root>
+            {/* ── Fixed Bottom CTA ── */}
+            {showFooter && (
+              <FixedFooterCTA
+                isDriver={isDriver}
+                showBookButton={showBookButton}
+                onCancelRide={onCancelRide}
+                handleBook={handleBook}
+                onCancelPassenger={onCancelPassenger}
+              />
+            )}
+          </ScreenShell>
+        </S.Root>
+      );
+    },
   );
-});

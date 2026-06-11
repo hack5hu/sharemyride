@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/TrustInfoBar',
   component: TrustInfoBar,
-
 } satisfies Meta<typeof TrustInfoBar>;
 
 export default meta;

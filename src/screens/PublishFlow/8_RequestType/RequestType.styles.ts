@@ -81,7 +81,9 @@ export const OptionsContainer = styled.View`
 
 export const OptionCard = styled.TouchableOpacity<{ selected: boolean }>`
   background-color: ${({ theme, selected }) =>
-    selected ? `${theme.colors.primary_container}30` : `${theme.colors.surface_container_lowest}99`};
+    selected
+      ? `${theme.colors.primary_container}30`
+      : `${theme.colors.surface_container_lowest}99`};
   border-width: 1.5px;
   border-color: ${({ theme, selected }) =>
     selected ? theme.colors.primary : 'transparent'};
@@ -104,7 +106,9 @@ export const IconContainer = styled.View<{ type: 'instant' | 'review' }>`
   height: ${moderateScale(48)}px;
   border-radius: ${moderateScale(16)}px;
   background-color: ${({ theme, type }) =>
-    type === 'instant' ? `${theme.colors.primary}1A` : `${theme.colors.secondary}1A`};
+    type === 'instant'
+      ? `${theme.colors.primary}1A`
+      : `${theme.colors.secondary}1A`};
   align-items: center;
   justify-content: center;
 `;
@@ -133,10 +137,12 @@ export const RadioOuter = styled.View<{ selected: boolean }>`
   height: ${moderateScale(24)}px;
   border-radius: 12px;
   border-width: 2px;
-  border-color: ${({ theme, selected }) => (selected ? theme.colors.primary : theme.colors.outline_variant)};
+  border-color: ${({ theme, selected }) =>
+    selected ? theme.colors.primary : theme.colors.outline_variant};
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme, selected }) => (selected ? theme.colors.primary : 'transparent')};
+  background-color: ${({ theme, selected }) =>
+    selected ? theme.colors.primary : 'transparent'};
 `;
 
 export const RadioInner = styled.View<{ selected: boolean }>`

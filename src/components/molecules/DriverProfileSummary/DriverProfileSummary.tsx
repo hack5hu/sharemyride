@@ -1,16 +1,16 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { 
-  Container, 
-  LeftSection, 
-  AvatarWrapper, 
-  InfoSection, 
-  Name, 
-  RatingRow, 
-  SubInfo, 
+import {
+  Container,
+  LeftSection,
+  AvatarWrapper,
+  InfoSection,
+  Name,
+  RatingRow,
+  SubInfo,
   PriceText,
-  VehicleSubtitle
+  VehicleSubtitle,
 } from './DriverProfileSummary.styles';
 import { Avatar } from '@/components/atoms/Avatar';
 import { DriverProfileSummaryProps } from './types.d';
@@ -32,18 +32,21 @@ export const DriverProfileSummary: React.FC<DriverProfileSummaryProps> = ({
   price,
   variant = 'upcoming',
   isDriver = false,
-  iconName
+  iconName,
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const iconColor = variant === 'bento' ? theme.colors.on_primary_fixed_variant : theme.colors.primary;
+  const iconColor =
+    variant === 'bento'
+      ? theme.colors.on_primary_fixed_variant
+      : theme.colors.primary;
 
   return (
     <Container>
       <LeftSection>
         <AvatarWrapper>
-          <Avatar 
-            source={avatarUri ? { uri: avatarUri } : undefined} 
+          <Avatar
+            source={avatarUri ? { uri: avatarUri } : undefined}
             placeholder={name || vehicleInfo}
             size="md"
             isVerified={isDriver ? false : isVerified}
@@ -51,12 +54,16 @@ export const DriverProfileSummary: React.FC<DriverProfileSummaryProps> = ({
             iconName={iconName}
           />
         </AvatarWrapper>
-        
+
         <InfoSection>
           {isDriver ? (
             <>
               <Name variant={variant}>{t('myRides.youAreDriver')}</Name>
-              {vehicleInfo && <VehicleSubtitle variant={variant}>{vehicleInfo}</VehicleSubtitle>}
+              {vehicleInfo && (
+                <VehicleSubtitle variant={variant}>
+                  {vehicleInfo}
+                </VehicleSubtitle>
+              )}
             </>
           ) : (
             <>
@@ -65,26 +72,31 @@ export const DriverProfileSummary: React.FC<DriverProfileSummaryProps> = ({
               ) : (
                 vehicleInfo && <Name variant={variant}>{vehicleInfo}</Name>
               )}
-              
+
               <RatingRow>
                 {rating ? (
                   <>
-                    <StyledStarIcon 
-                      name="star" 
-                      size={moderateScale(12)} 
-                      color={iconColor} 
+                    <StyledStarIcon
+                      name="star"
+                      size={moderateScale(12)}
+                      color={iconColor}
                     />
-                    <SubInfo variant={variant}>{rating} {totalRides ? `• ${totalRides}` : ''}</SubInfo>
+                    <SubInfo variant={variant}>
+                      {rating} {totalRides ? `• ${totalRides}` : ''}
+                    </SubInfo>
                   </>
                 ) : (
-                  !name && vehicleInfo && <SubInfo variant={variant}>Personal Vehicle</SubInfo>
+                  !name &&
+                  vehicleInfo && (
+                    <SubInfo variant={variant}>Personal Vehicle</SubInfo>
+                  )
                 )}
               </RatingRow>
             </>
           )}
         </InfoSection>
       </LeftSection>
-      
+
       {price && <PriceText>{price}</PriceText>}
     </Container>
   );

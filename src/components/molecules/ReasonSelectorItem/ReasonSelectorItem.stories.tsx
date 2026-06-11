@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/ReasonSelectorItem',
   component: ReasonSelectorItem,
-
 } satisfies Meta<typeof ReasonSelectorItem>;
 
 export default meta;

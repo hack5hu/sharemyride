@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/DriverSection',
   component: DriverSection,
-
 } satisfies Meta<typeof DriverSection>;
 
 export default meta;

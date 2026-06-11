@@ -1,5 +1,5 @@
 // removed unused imports
-import { } from '@/styles';
+import {} from '@/styles';
 // import {Dimensions, PixelRatio, Platform} from 'react-native';
 
 // // --- 1. Screen Setup
@@ -167,7 +167,6 @@ import { } from '@/styles';
 //     height: responsiveSize(size),
 //   }),
 // };
-
 
 // 9. Example StyleSheet Usage
 /**

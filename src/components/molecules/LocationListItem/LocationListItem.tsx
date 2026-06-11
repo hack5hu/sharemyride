@@ -1,32 +1,36 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { 
-  Container, 
-  IconBox, 
-  TextContent, 
-  Title, 
-  SubAddress 
+import {
+  Container,
+  IconBox,
+  TextContent,
+  Title,
+  SubAddress,
 } from './LocationListItem.styles';
 import { LocationListItemProps } from './types.d';
 import { moderateScale } from '@/styles';
 
-export const LocationListItem: React.FC<LocationListItemProps> = ({ 
-  title, 
-  address, 
-  icon, 
+export const LocationListItem: React.FC<LocationListItemProps> = ({
+  title,
+  address,
+  icon,
   onPress,
-  isCurrentLocation = false
+  isCurrentLocation = false,
 }) => {
   const theme = useTheme();
 
   return (
     <Container onPress={onPress} activeOpacity={0.7}>
       <IconBox isCurrent={isCurrentLocation}>
-        <Icon 
-          name={icon} 
-          size={moderateScale(20)} 
-          color={isCurrentLocation ? theme.colors.on_secondary_container : theme.colors.on_surface_variant} 
+        <Icon
+          name={icon}
+          size={moderateScale(20)}
+          color={
+            isCurrentLocation
+              ? theme.colors.on_secondary_container
+              : theme.colors.on_surface_variant
+          }
         />
       </IconBox>
       <TextContent>

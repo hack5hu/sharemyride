@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/ChatAppHeader',
   component: ChatAppHeader,
-
 } satisfies Meta<typeof ChatAppHeader>;
 
 export default meta;

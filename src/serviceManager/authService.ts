@@ -28,14 +28,14 @@ export const authService = {
    */
   login: async (
     phoneNumber: string,
-    termandconditionSelected: boolean = true
+    termandconditionSelected: boolean = true,
   ): Promise<{ status: number; data: LoginResponse }> => {
     try {
       const response = await apiClient.post<LoginResponse>(
         API_ENDPOINTS.AUTH.LOGIN,
-        { phoneNumber, termandconditionSelected }
+        { phoneNumber, termandconditionSelected },
       );
-      
+
       return {
         status: response.status,
         data: response.data,
@@ -59,14 +59,14 @@ export const authService = {
     phoneNumber: string,
     otp: string,
     deviceId?: string | null,
-    fcmToken?: string | null
+    fcmToken?: string | null,
   ): Promise<{ status: number; data: VerifyOtpResponse }> => {
     try {
       const payload: any = {
         phoneNumber: Number(phoneNumber),
         otp: Number(otp),
       };
-      
+
       if (deviceId) {
         payload.deviceId = deviceId;
       }
@@ -77,7 +77,7 @@ export const authService = {
 
       const response = await apiClient.post<VerifyOtpResponse>(
         API_ENDPOINTS.AUTH.VERIFY_OTP,
-        payload
+        payload,
       );
       if (response.data.status === 'success' || response.status === 200) {
         // Store tokens securely
@@ -85,9 +85,13 @@ export const authService = {
           Keychain.setGenericPassword('auth_token', response.data.token, {
             service: 'auth_token',
           }),
-          Keychain.setGenericPassword('refresh_token', response.data.refreshToken, {
-            service: 'refresh_token',
-          }),
+          Keychain.setGenericPassword(
+            'refresh_token',
+            response.data.refreshToken,
+            {
+              service: 'refresh_token',
+            },
+          ),
         ]);
       }
 
@@ -97,7 +101,9 @@ export const authService = {
       };
     } catch (error: any) {
       if (error.response) {
-        throw new Error(error.response.data.message || 'OTP Verification failed');
+        throw new Error(
+          error.response.data.message || 'OTP Verification failed',
+        );
       }
       throw new Error('Network error. Please try again.');
     }
@@ -107,10 +113,10 @@ export const authService = {
     authorizationCode: string,
     deviceId?: string | null,
     fcmToken?: string | null,
-    codeVerifier?: string
+    codeVerifier?: string,
   ): Promise<{ status: number; data: VerifyOtpResponse }> => {
     try {
-      const payload: any = { 
+      const payload: any = {
         authorizationCode,
         platform: Platform.OS.toUpperCase(),
       };
@@ -120,7 +126,7 @@ export const authService = {
 
       const response = await apiClient.post<VerifyOtpResponse>(
         API_ENDPOINTS.AUTH.TRUECALLER_LOGIN,
-        payload
+        payload,
       );
 
       if (response.data.status === 'success' || response.status === 200) {
@@ -128,16 +134,22 @@ export const authService = {
           Keychain.setGenericPassword('auth_token', response.data.token, {
             service: 'auth_token',
           }),
-          Keychain.setGenericPassword('refresh_token', response.data.refreshToken, {
-            service: 'refresh_token',
-          }),
+          Keychain.setGenericPassword(
+            'refresh_token',
+            response.data.refreshToken,
+            {
+              service: 'refresh_token',
+            },
+          ),
         ]);
       }
 
       return { status: response.status, data: response.data };
     } catch (error: any) {
       if (error.response) {
-        throw new Error(error.response.data.message || 'Truecaller verification failed');
+        throw new Error(
+          error.response.data.message || 'Truecaller verification failed',
+        );
       }
       throw new Error('Network error. Please try again.');
     }
@@ -145,12 +157,14 @@ export const authService = {
 
   logout: async (): Promise<void> => {
     try {
-      const refreshCreds = await Keychain.getGenericPassword({ service: 'refresh_token' });
-      
+      const refreshCreds = await Keychain.getGenericPassword({
+        service: 'refresh_token',
+      });
+
       if (refreshCreds) {
         const deviceId = await getDeviceId().catch(() => null);
         const payload: any = {
-          refreshToken: refreshCreds.password
+          refreshToken: refreshCreds.password,
         };
         if (deviceId) {
           payload.deviceId = deviceId;
@@ -187,7 +201,7 @@ export const authService = {
     try {
       const response = await apiClient.post<LoginResponse>(
         API_ENDPOINTS.AUTH.RESEND_OTP,
-        { phoneNumber }
+        { phoneNumber },
       );
       return {
         status: response.status,

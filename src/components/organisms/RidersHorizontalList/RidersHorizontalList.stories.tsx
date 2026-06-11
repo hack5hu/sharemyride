@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/RidersHorizontalList',
   component: RidersHorizontalList,
-
 } satisfies Meta<typeof RidersHorizontalList>;
 
 export default meta;

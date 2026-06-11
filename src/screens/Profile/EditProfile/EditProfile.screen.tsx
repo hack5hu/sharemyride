@@ -35,7 +35,7 @@ export const EditProfileScreen: React.FC = () => {
         behavior="padding"
         keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
       >
-        <S.ScrollContent 
+        <S.ScrollContent
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
@@ -55,7 +55,9 @@ export const EditProfileScreen: React.FC = () => {
                 placeholder={t('editProfile.fullNamePlaceholder')}
                 value={formik.values.fullName}
                 onChangeText={formik.handleChange('fullName')}
-                error={formik.touched.fullName ? formik.errors.fullName : undefined}
+                error={
+                  formik.touched.fullName ? formik.errors.fullName : undefined
+                }
               />
 
               <Input
@@ -82,8 +84,12 @@ export const EditProfileScreen: React.FC = () => {
                   <DatePickerInput
                     label={t('editProfile.dobLabel')}
                     value={formik.values.dob}
-                    onDateChange={(date) => formik.setFieldValue('dob', date)}
-                    error={formik.touched.dob ? formik.errors.dob as string : undefined}
+                    onDateChange={date => formik.setFieldValue('dob', date)}
+                    error={
+                      formik.touched.dob
+                        ? (formik.errors.dob as string)
+                        : undefined
+                    }
                   />
                 </S.Column>
               </S.Row>
@@ -91,7 +97,7 @@ export const EditProfileScreen: React.FC = () => {
               <GenderSelector
                 label={t('editProfile.genderLabel')}
                 value={formik.values.gender}
-                onValueChange={(val) => formik.setFieldValue('gender', val)}
+                onValueChange={val => formik.setFieldValue('gender', val)}
               />
 
               <Input
@@ -106,13 +112,9 @@ export const EditProfileScreen: React.FC = () => {
             </S.FormFields>
           </S.Content>
         </S.ScrollContent>
-       
       </S.MainWrapper>
       <S.SaveButtonGradient>
-        <Button
-          onPress={() => formik.handleSubmit()}
-          disabled={loading}
-        >
+        <Button onPress={() => formik.handleSubmit()} disabled={loading}>
           {loading ? 'Saving...' : t('editProfile.saveChanges')}
         </Button>
       </S.SaveButtonGradient>

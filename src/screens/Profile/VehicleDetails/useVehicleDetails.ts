@@ -62,14 +62,14 @@ export const useVehicleDetails = () => {
     initialValues,
     enableReinitialize: true,
     validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async values => {
       try {
         if (vehicleId) {
           await updateVehicle(vehicleId, values);
         } else {
           await addVehicle(values);
         }
-        
+
         // Update current publish state if we're in the publish flow
         setVehicleDetails(values);
         setPublishVehicleType(values.seater);
@@ -79,23 +79,32 @@ export const useVehicleDetails = () => {
         showNotification(
           NotificationType.ERROR,
           t('notification.defaultErrorTitle'),
-          getErrorMessage(error, t('notification.defaultErrorMessage'))
+          getErrorMessage(error, t('notification.defaultErrorMessage')),
         );
       }
     },
   });
 
-  const setVehicleType = useCallback((type: VehicleType) => {
-    formik.setFieldValue('type', type);
-  }, [formik]);
+  const setVehicleType = useCallback(
+    (type: VehicleType) => {
+      formik.setFieldValue('type', type);
+    },
+    [formik],
+  );
 
-  const setSeater = useCallback((count: '5' | '7') => {
-    formik.setFieldValue('seater', count);
-  }, [formik]);
+  const setSeater = useCallback(
+    (count: '5' | '7') => {
+      formik.setFieldValue('seater', count);
+    },
+    [formik],
+  );
 
-  const setColor = useCallback((color: string) => {
-    formik.setFieldValue('color', color);
-  }, [formik]);
+  const setColor = useCallback(
+    (color: string) => {
+      formik.setFieldValue('color', color);
+    },
+    [formik],
+  );
 
   return {
     formik,
@@ -108,4 +117,3 @@ export const useVehicleDetails = () => {
     goBack: () => navigation.goBack(),
   };
 };
-

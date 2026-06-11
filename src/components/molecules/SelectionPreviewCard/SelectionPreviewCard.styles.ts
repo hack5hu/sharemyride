@@ -5,7 +5,8 @@ export const CardContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}E6`};
+  background-color: ${({ theme }) =>
+    `${theme.colors.surface_container_lowest}E6`};
   padding: ${moderateScale(16)}px;
   border-radius: ${moderateScale(12)}px;
   border-width: 1px;

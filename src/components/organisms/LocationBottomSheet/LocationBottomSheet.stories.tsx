@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/LocationBottomSheet',
   component: LocationBottomSheet,
-
 } satisfies Meta<typeof LocationBottomSheet>;
 
 export default meta;
@@ -14,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    title: "Sample Title",
-    icon: "star"
+    title: 'Sample Title',
+    icon: 'star',
   },
 };

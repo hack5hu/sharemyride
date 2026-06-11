@@ -5,7 +5,10 @@ import { IconContainer } from './MessageStatus.styles';
 import { MessageStatusProps } from './types.d';
 import { moderateScale } from '@/styles';
 
-export const MessageStatus: React.FC<MessageStatusProps> = ({ status, color }) => {
+export const MessageStatus: React.FC<MessageStatusProps> = ({
+  status,
+  color,
+}) => {
   const theme = useTheme();
 
   const getIcon = () => {
@@ -33,11 +36,7 @@ export const MessageStatus: React.FC<MessageStatusProps> = ({ status, color }) =
 
   return (
     <IconContainer>
-      <Icon 
-        name={getIcon()} 
-        size={moderateScale(14)} 
-        color={getIconColor()} 
-      />
+      <Icon name={getIcon()} size={moderateScale(14)} color={getIconColor()} />
     </IconContainer>
   );
 };

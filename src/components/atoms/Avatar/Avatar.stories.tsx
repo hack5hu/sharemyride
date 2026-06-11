@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/Avatar',
   component: Avatar,
-
 } satisfies Meta<typeof Avatar>;
 
 export default meta;

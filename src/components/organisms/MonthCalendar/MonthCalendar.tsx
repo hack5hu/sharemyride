@@ -1,6 +1,11 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
-import { getMonthDays, getMonthName, isSameDate, isDatePast } from '@/utils/dateUtils';
+import {
+  getMonthDays,
+  getMonthName,
+  isSameDate,
+  isDatePast,
+} from '@/utils/dateUtils';
 import {
   MonthContainer,
   MonthHeader,
@@ -46,7 +51,7 @@ export const MonthCalendar: React.FC<MonthCalendarProps> = ({
       </MonthHeader>
 
       <DaysGrid>
-        {daysOfWeek.map((day) => (
+        {daysOfWeek.map(day => (
           <DayHeaderCell key={day}>
             <DayHeaderText>{day}</DayHeaderText>
           </DayHeaderCell>
@@ -71,14 +76,21 @@ export const MonthCalendar: React.FC<MonthCalendarProps> = ({
               >
                 {isSelected ? (
                   <DaySelectedGradient
-                    colors={[theme.colors.primary, theme.colors.primary_container]}
+                    colors={[
+                      theme.colors.primary,
+                      theme.colors.primary_container,
+                    ]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
                   >
-                    <DayText isSelected isDisabled={false}>{day}</DayText>
+                    <DayText isSelected isDisabled={false}>
+                      {day}
+                    </DayText>
                   </DaySelectedGradient>
                 ) : (
-                  <DayText isSelected={false} isDisabled={isPast}>{day}</DayText>
+                  <DayText isSelected={false} isDisabled={isPast}>
+                    {day}
+                  </DayText>
                 )}
               </DayButton>
             </DayCell>

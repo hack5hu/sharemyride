@@ -4,7 +4,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
 import { Map } from '@maplibre/maplibre-react-native';
 
-
 const { width, height } = Dimensions.get('window');
 
 export const Container = styled.View`
@@ -13,7 +12,12 @@ export const Container = styled.View`
 `;
 
 export const GradientOverlay = styled(LinearGradient).attrs(({ theme }) => ({
-  colors: [`${theme.colors.surface}E6`, 'transparent', 'transparent', `${theme.colors.surface}E6`],
+  colors: [
+    `${theme.colors.surface}E6`,
+    'transparent',
+    'transparent',
+    `${theme.colors.surface}E6`,
+  ],
   locations: [0, 0.2, 0.8, 1],
 }))`
   position: absolute;
@@ -47,7 +51,7 @@ export const TooltipBubble = styled.View`
   padding: ${verticalScale(8)}px ${scale(16)}px;
   border-radius: 9999px;
   margin-bottom: ${verticalScale(16)}px;
-  shadow-color: rgb(0,0,0);
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px 10px;
   shadow-opacity: 0.15;
   shadow-radius: 12px;
@@ -67,7 +71,7 @@ export const PinShadow = styled.View`
   bottom: -4px;
   width: ${moderateScale(16)}px;
   height: ${verticalScale(4)}px;
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 9999px;
 `;
 
@@ -87,7 +91,7 @@ export const LocationPreviewContainer = styled.View`
   margin-bottom: ${verticalScale(12)}px;
   flex-direction: row;
   align-items: center;
-  shadow-color: rgb(0,0,0);
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px 4px;
   shadow-opacity: 0.1;
   shadow-radius: 8px;

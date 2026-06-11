@@ -42,16 +42,22 @@ export const useProfileHub = () => {
       await fetchProfile();
       showNotification(
         NotificationType.SUCCESS,
-        t('notification.defaultSuccessTitle') ,
-        t('notification.profilePhotoUpdated')
+        t('notification.defaultSuccessTitle'),
+        t('notification.profilePhotoUpdated'),
       );
     } catch (error: unknown) {
-      const axiosError = error as { response?: { data?: { message?: string } }; message?: string };
-      const errorMessage = axiosError?.response?.data?.message || axiosError?.message || t('notification.defaultErrorMessage');
+      const axiosError = error as {
+        response?: { data?: { message?: string } };
+        message?: string;
+      };
+      const errorMessage =
+        axiosError?.response?.data?.message ||
+        axiosError?.message ||
+        t('notification.defaultErrorMessage');
       showNotification(
         NotificationType.ERROR,
-        t('notification.defaultErrorTitle') ,
-        errorMessage
+        t('notification.defaultErrorTitle'),
+        errorMessage,
       );
     } finally {
       setIsUpdatingAvatar(false);
@@ -67,14 +73,14 @@ export const useProfileHub = () => {
       await fetchProfile();
       showNotification(
         NotificationType.SUCCESS,
-        t('notification.defaultSuccessTitle') ,
-        t('notification.profilePhotoUpdated') // We can use the same generic success message or a new one
+        t('notification.defaultSuccessTitle'),
+        t('notification.profilePhotoUpdated'), // We can use the same generic success message or a new one
       );
     } catch (error) {
       showNotification(
         NotificationType.ERROR,
-        t('notification.defaultErrorTitle') ,
-        t('notification.defaultErrorMessage')
+        t('notification.defaultErrorTitle'),
+        t('notification.defaultErrorMessage'),
       );
     } finally {
       setIsUpdatingAvatar(false);
@@ -93,13 +99,19 @@ export const useProfileHub = () => {
     navigation.navigate('TravelPreferences');
   }, [navigation]);
 
-  const navigateToDummy = useCallback((title: string, options?: { 
-    showBack?: boolean, 
-    showBottomNav?: boolean, 
-    contentKey?: 'about' | 'help' | 'terms' 
-  }) => {
-    navigation.navigate('Dummy', { title, ...options });
-  }, [navigation]);
+  const navigateToDummy = useCallback(
+    (
+      title: string,
+      options?: {
+        showBack?: boolean;
+        showBottomNav?: boolean;
+        contentKey?: 'about' | 'help' | 'terms';
+      },
+    ) => {
+      navigation.navigate('Dummy', { title, ...options });
+    },
+    [navigation],
+  );
 
   const navigateToSettings = useCallback(() => {
     navigation.navigate('Settings');
@@ -136,4 +148,3 @@ export const useProfileHub = () => {
     navigateToHelpAndSupport,
   };
 };
-

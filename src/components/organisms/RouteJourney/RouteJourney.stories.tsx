@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/RouteJourney',
   component: RouteJourney,
-
 } satisfies Meta<typeof RouteJourney>;
 
 export default meta;

@@ -10,31 +10,45 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useVehicleDetails } from './useVehicleDetails';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import * as S from './VehicleDetails.styles';
-import { LabelText, RequiredAsterisk } from '@/components/atoms/Input/Input.styles';
+import {
+  LabelText,
+  RequiredAsterisk,
+} from '@/components/atoms/Input/Input.styles';
 
 export const VehicleDetailsScreen: React.FC = () => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const { formik, isLoading, carColors, setSeater, setColor, goBack } = useVehicleDetails();
+  const { formik, isLoading, carColors, setSeater, setColor, goBack } =
+    useVehicleDetails();
 
   return (
-    <ScreenShell
-      title={t('vehicleDetails.headerTitle')}
-      onBack={goBack}
-    >
+    <ScreenShell title={t('vehicleDetails.headerTitle')} onBack={goBack}>
       <S.ScrollContainer>
         <S.HeroSection>
           <S.HeroImage
-            source={{ uri: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop' }}
+            source={{
+              uri: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop',
+            }}
             resizeMode="cover"
           />
           <S.HeroTint />
           <S.HeroContent>
             <S.IconBox>
-              <Icon name="directions-car" size={32} color={theme.colors.on_primary} />
+              <Icon
+                name="directions-car"
+                size={32}
+                color={theme.colors.on_primary}
+              />
             </S.IconBox>
             <S.HeroTextWrapper>
-              <Typography variant="title" size="lg" weight="bold" color="on_primary" numberOfLines={1} adjustsFontSizeToFit>
+              <Typography
+                variant="title"
+                size="lg"
+                weight="bold"
+                color="on_primary"
+                numberOfLines={1}
+                adjustsFontSizeToFit
+              >
                 {t('vehicleDetails.heroTitle')}
               </Typography>
               <S.HeroSubtitle>
@@ -58,7 +72,9 @@ export const VehicleDetailsScreen: React.FC = () => {
                 placeholder={t('vehicleDetails.companyPlaceholder')}
                 value={formik.values.company}
                 onChangeText={formik.handleChange('company')}
-                error={formik.touched.company ? formik.errors.company : undefined}
+                error={
+                  formik.touched.company ? formik.errors.company : undefined
+                }
                 required={true}
                 editable={!isLoading}
               />
@@ -85,8 +101,14 @@ export const VehicleDetailsScreen: React.FC = () => {
               label={t('vehicleDetails.numberPlate')}
               placeholder={t('vehicleDetails.platePlaceholder')}
               value={formik.values.numberPlate}
-              onChangeText={(text) => formik.setFieldValue('numberPlate', text.toUpperCase())}
-              error={formik.touched.numberPlate ? formik.errors.numberPlate : undefined}
+              onChangeText={text =>
+                formik.setFieldValue('numberPlate', text.toUpperCase())
+              }
+              error={
+                formik.touched.numberPlate
+                  ? formik.errors.numberPlate
+                  : undefined
+              }
               editable={!isLoading}
             />
 
@@ -102,14 +124,20 @@ export const VehicleDetailsScreen: React.FC = () => {
                       key={color.value}
                       color={color.value}
                       selected={formik.values.color === color.value}
-                      onPress={isLoading ? undefined : () => setColor(color.value)}
+                      onPress={
+                        isLoading ? undefined : () => setColor(color.value)
+                      }
                       label={color.label}
                     />
                   ))}
                 </S.ColorRow>
               </S.ColorScroll>
               {formik.touched.color && formik.errors.color && (
-                <Typography variant="label" size="sm" color={theme.colors.error}>
+                <Typography
+                  variant="label"
+                  size="sm"
+                  color={theme.colors.error}
+                >
                   {formik.errors.color || ''}
                 </Typography>
               )}
@@ -142,14 +170,10 @@ export const VehicleDetailsScreen: React.FC = () => {
               />
             </S.CapacityRow>
             {formik.touched.seater && formik.errors.seater && (
-              <S.CapacityError>
-                {formik.errors.seater}
-              </S.CapacityError>
+              <S.CapacityError>{formik.errors.seater}</S.CapacityError>
             )}
           </S.CardSection>
         </S.FormWrapper>
-
-       
       </S.ScrollContainer>
       <S.BottomAction>
         <Button

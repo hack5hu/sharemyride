@@ -39,7 +39,12 @@ export const SettingsScreen: React.FC = () => {
         title={t.headerTitle}
         onBack={goBack}
         rightElement={
-          <Typography variant="title" size="md" weight="bold" color={theme.colors.primary}>
+          <Typography
+            variant="title"
+            size="md"
+            weight="bold"
+            color={theme.colors.primary}
+          >
             {t.appName}
           </Typography>
         }
@@ -51,14 +56,29 @@ export const SettingsScreen: React.FC = () => {
             <S.SettingCard>
               <S.SettingInfo>
                 <S.IconBox color={theme.colors.primary}>
-                  <Icon name="notifications" size={24} color={theme.colors.primary} />
+                  <Icon
+                    name="notifications"
+                    size={24}
+                    color={theme.colors.primary}
+                  />
                 </S.IconBox>
                 <S.SettingLabelGroup>
-                  <Typography variant="label" size="md" weight="bold">{t.pushNotifications}</Typography>
-                  <Typography variant="body" size="xs" color="on_surface_variant">{t.pushNotificationsDesc}</Typography>
+                  <Typography variant="label" size="md" weight="bold">
+                    {t.pushNotifications}
+                  </Typography>
+                  <Typography
+                    variant="body"
+                    size="xs"
+                    color="on_surface_variant"
+                  >
+                    {t.pushNotificationsDesc}
+                  </Typography>
                 </S.SettingLabelGroup>
               </S.SettingInfo>
-              <Toggle value={pushNotifications} onValueChange={togglePushNotifications} />
+              <Toggle
+                value={pushNotifications}
+                onValueChange={togglePushNotifications}
+              />
             </S.SettingCard>
           </S.Section>
 
@@ -66,22 +86,39 @@ export const SettingsScreen: React.FC = () => {
           <S.Section>
             <S.SectionTitle>{t.appearance}</S.SectionTitle>
             <S.ThemeGrid>
-              <S.ThemeCard isCurrent={themeMode === 'light' || themeMode === 'dark'}>
+              <S.ThemeCard
+                isCurrent={themeMode === 'light' || themeMode === 'dark'}
+              >
                 <Icon name="palette" size={32} color={theme.colors.primary} />
                 <S.ThemeInfo>
-                  <Typography variant="title" size="sm" weight="bold">{t.theme}</Typography>
-                  <Typography variant="body" size="xs" color="on_surface_variant">
+                  <Typography variant="title" size="sm" weight="bold">
+                    {t.theme}
+                  </Typography>
+                  <Typography
+                    variant="body"
+                    size="xs"
+                    color="on_surface_variant"
+                  >
                     {themeMode === 'light' ? t.lightMode : t.darkMode}
                   </Typography>
                 </S.ThemeInfo>
               </S.ThemeCard>
               <S.ThemeCard>
                 <S.ThemeToggleRow>
-                   <Toggle value={themeMode === 'dark'} onValueChange={toggleTheme} />
+                  <Toggle
+                    value={themeMode === 'dark'}
+                    onValueChange={toggleTheme}
+                  />
                 </S.ThemeToggleRow>
                 <S.ThemeSwitchLabel>
-                  <Typography variant="title" size="sm" weight="bold">{t.darkModeToggle}</Typography>
-                  <Icon name={themeMode === 'dark' ? 'dark-mode' : 'light-mode'} size={24} color={theme.colors.on_surface_variant} />
+                  <Typography variant="title" size="sm" weight="bold">
+                    {t.darkModeToggle}
+                  </Typography>
+                  <Icon
+                    name={themeMode === 'dark' ? 'dark-mode' : 'light-mode'}
+                    size={24}
+                    color={theme.colors.on_surface_variant}
+                  />
                 </S.ThemeSwitchLabel>
               </S.ThemeCard>
             </S.ThemeGrid>
@@ -93,21 +130,42 @@ export const SettingsScreen: React.FC = () => {
             <S.OptionsList>
               <S.OptionRow onPress={handleToggleLanguage}>
                 <S.SettingInfo>
-                  <Icon name="language" size={24} color={theme.colors.secondary} />
-                  <Typography variant="label" size="md" weight="medium">{t.language}</Typography>
+                  <Icon
+                    name="language"
+                    size={24}
+                    color={theme.colors.secondary}
+                  />
+                  <Typography variant="label" size="md" weight="medium">
+                    {t.language}
+                  </Typography>
                 </S.SettingInfo>
                 <S.AlignmentRow>
-                  <Typography variant="label" size="sm" weight="bold" color={theme.colors.primary}>
+                  <Typography
+                    variant="label"
+                    size="sm"
+                    weight="bold"
+                    color={theme.colors.primary}
+                  >
                     {language === 'en' ? t.languageEn : t.languageHi}
                   </Typography>
-                  <Icon name="chevron-right" size={20} color={theme.colors.on_surface_variant} />
+                  <Icon
+                    name="chevron-right"
+                    size={20}
+                    color={theme.colors.on_surface_variant}
+                  />
                 </S.AlignmentRow>
               </S.OptionRow>
-              
+
               <S.OptionRow disabled>
                 <S.SettingInfo>
-                  <Icon name="public" size={24} color={theme.colors.secondary} />
-                  <Typography variant="label" size="md" weight="medium">{t.region}</Typography>
+                  <Icon
+                    name="public"
+                    size={24}
+                    color={theme.colors.secondary}
+                  />
+                  <Typography variant="label" size="md" weight="medium">
+                    {t.region}
+                  </Typography>
                 </S.SettingInfo>
                 <S.Badge>
                   <S.BadgeText color={theme.colors.on_secondary_container}>
@@ -121,19 +179,27 @@ export const SettingsScreen: React.FC = () => {
           {/* Email Settings */}
           <S.Section>
             <S.SectionTitle>{t.emailSettings}</S.SectionTitle>
-            
+
             <S.EmailCard>
               <S.AlignmentRow>
                 <Icon name="campaign" size={24} color={theme.colors.tertiary} />
-                <Typography variant="label" size="md" weight="semibold">{t.promotions}</Typography>
+                <Typography variant="label" size="md" weight="semibold">
+                  {t.promotions}
+                </Typography>
               </S.AlignmentRow>
               <Checkbox checked={promoEmails} onToggle={togglePromoEmails} />
             </S.EmailCard>
 
             <S.EmailCard>
               <S.AlignmentRow>
-                <Icon name="receipt-long" size={24} color={theme.colors.tertiary} />
-                <Typography variant="label" size="md" weight="semibold">{t.rideReceipts}</Typography>
+                <Icon
+                  name="receipt-long"
+                  size={24}
+                  color={theme.colors.tertiary}
+                />
+                <Typography variant="label" size="md" weight="semibold">
+                  {t.rideReceipts}
+                </Typography>
               </S.AlignmentRow>
               <Checkbox checked={rideReceipts} onToggle={toggleRideReceipts} />
             </S.EmailCard>
@@ -141,7 +207,9 @@ export const SettingsScreen: React.FC = () => {
             <S.DisabledEmailCard>
               <S.AlignmentRow>
                 <Icon name="shield" size={24} color={theme.colors.tertiary} />
-                <Typography variant="label" size="md" weight="semibold">{t.accountSecurity}</Typography>
+                <Typography variant="label" size="md" weight="semibold">
+                  {t.accountSecurity}
+                </Typography>
               </S.AlignmentRow>
               <Checkbox checked={accountSecurity} onToggle={() => {}} />
             </S.DisabledEmailCard>
@@ -151,18 +219,22 @@ export const SettingsScreen: React.FC = () => {
           <S.AccountSection>
             <S.LogoutButton onPress={showLogoutConfirmation}>
               <Icon name="logout" size={24} color={theme.colors.error} />
-              <Typography variant="title" size="sm" weight="bold" color={theme.colors.error}>
+              <Typography
+                variant="title"
+                size="sm"
+                weight="bold"
+                color={theme.colors.error}
+              >
                 {t.logout}
               </Typography>
             </S.LogoutButton>
-            
+
             <S.FooterVersion>
               <S.VersionText color={theme.colors.on_surface_variant}>
                 {t.version}
               </S.VersionText>
             </S.FooterVersion>
           </S.AccountSection>
-
         </S.ContentContainer>
       </ScreenShell>
 

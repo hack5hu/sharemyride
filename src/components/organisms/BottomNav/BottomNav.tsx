@@ -14,8 +14,10 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab }) => {
   const { t, handlePress } = useBottomNav(activeTab);
   const { conversations } = useChatStore();
   const insets = useSafeAreaInsets();
-  
-  const unreadConversationsCount = conversations.filter(conv => (conv.unreadCount || 0) > 0).length;
+
+  const unreadConversationsCount = conversations.filter(
+    conv => (conv.unreadCount || 0) > 0,
+  ).length;
 
   const renderItem = (tab: BottomTabType, icon: string, labelKey: string) => {
     const isActive = activeTab === tab;
@@ -23,21 +25,25 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab }) => {
 
     return (
       <NavItem active={isActive} onPress={() => handlePress(tab)}>
-        <Icon 
-          name={icon} 
-          size={24} 
-          color={isActive ? theme.colors.primary : theme.colors.outline} 
+        <Icon
+          name={icon}
+          size={24}
+          color={isActive ? theme.colors.primary : theme.colors.outline}
         />
         {showBadge && (
           <Badge>
-            <BadgeText>{unreadConversationsCount > 99 ? '99+' : unreadConversationsCount}</BadgeText>
+            <BadgeText>
+              {unreadConversationsCount > 99 ? '99+' : unreadConversationsCount}
+            </BadgeText>
           </Badge>
         )}
-        <Typography 
-          variant="label" 
-          size="sm" 
-          weight="bold" 
-          color={isActive ? theme.colors.primary : theme.colors.on_surface_variant}
+        <Typography
+          variant="label"
+          size="sm"
+          weight="bold"
+          color={
+            isActive ? theme.colors.primary : theme.colors.on_surface_variant
+          }
           numberOfLines={1}
           align="center"
         >
@@ -48,7 +54,9 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab }) => {
   };
 
   return (
-    <Container style={{ paddingBottom: Math.max(insets.bottom, verticalScale(8)) }}>
+    <Container
+      style={{ paddingBottom: Math.max(insets.bottom, verticalScale(8)) }}
+    >
       {renderItem('BOOK', 'directions-car', 'navBook')}
       {renderItem('PUBLISH', 'add-circle', 'navPublish')}
       {renderItem('MY_RIDES', 'history', 'navMyRides')}
@@ -57,4 +65,3 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab }) => {
     </Container>
   );
 };
-

@@ -28,7 +28,12 @@ export interface MyRidesHookData {
   isRefreshing: boolean;
   isActionLoading: boolean;
   onTabChange: (tab: MyRidesTab) => void;
-  onRidePress: (params: { id: string; rideId?: string; sourceStopId?: number; destinationStopId?: number }) => void;
+  onRidePress: (params: {
+    id: string;
+    rideId?: string;
+    sourceStopId?: number;
+    destinationStopId?: number;
+  }) => void;
   onRemoveDraft: (id: string) => void;
   onCancelRide: (id: string | number) => void;
   onClearDrafts: () => void;

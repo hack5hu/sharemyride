@@ -5,7 +5,12 @@ import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { Location } from '@/store/useLocationStore';
 import { OlaMap } from '@/components/organisms/OlaMap';
-import { Camera, GeoJSONSource, Layer, CameraRef } from '@maplibre/maplibre-react-native';
+import {
+  Camera,
+  GeoJSONSource,
+  Layer,
+  CameraRef,
+} from '@maplibre/maplibre-react-native';
 import { getBoundingBox } from '@/utils/polyline';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import { moderateScale } from '@/styles';
@@ -55,7 +60,10 @@ export const BentoMapPreview: React.FC<BentoMapPreviewProps> = ({
         properties: { type: 'marker', role: 'end' },
         geometry: {
           type: 'Point',
-          coordinates: [destinationLocation.longitude, destinationLocation.latitude],
+          coordinates: [
+            destinationLocation.longitude,
+            destinationLocation.latitude,
+          ],
         },
       });
     }
@@ -81,17 +89,22 @@ export const BentoMapPreview: React.FC<BentoMapPreviewProps> = ({
   useEffect(() => {
     if (cameraRef.current) {
       const allCoords: [number, number][] = [];
-      if (startLocation) allCoords.push([startLocation.longitude, startLocation.latitude]);
-      if (destinationLocation) allCoords.push([destinationLocation.longitude, destinationLocation.latitude]);
+      if (startLocation)
+        allCoords.push([startLocation.longitude, startLocation.latitude]);
+      if (destinationLocation)
+        allCoords.push([
+          destinationLocation.longitude,
+          destinationLocation.latitude,
+        ]);
       middleStops.forEach(s => allCoords.push([s.longitude, s.latitude]));
 
       if (allCoords.length >= 2) {
         const bounds = getBoundingBox(allCoords);
         const [minLng, minLat, maxLng, maxLat] = bounds;
-        cameraRef.current.fitBounds(
-          [minLng, minLat, maxLng, maxLat],
-          { padding: { top: 40, right: 40, bottom: 40, left: 40 }, duration: 600 }
-        );
+        cameraRef.current.fitBounds([minLng, minLat, maxLng, maxLat], {
+          padding: { top: 40, right: 40, bottom: 40, left: 40 },
+          duration: 600,
+        });
       } else if (allCoords.length === 1) {
         cameraRef.current.setStop({
           center: allCoords[0],
@@ -106,50 +119,45 @@ export const BentoMapPreview: React.FC<BentoMapPreviewProps> = ({
     <S.Container>
       <S.MapWrapper>
         <S.StyledOlaMap>
-        <Camera 
-          ref={cameraRef} 
-          center={initialCenter}
-          zoom={zoom}
-        />
-        
-        <GeoJSONSource id="points-source" data={pointsGeoJSON}>
-          <Layer
-            id="start-point"
-            type="circle"
-            filter={['==', ['get', 'role'], 'start']}
-            paint={{
-              'circle-color': '#00875a',
-              'circle-radius': 6,
-              'circle-stroke-width': 2,
-              'circle-stroke-color': '#FFFFFF',
-            }}
-          />
-          <Layer
-            id="end-point"
-            type="circle"
-            filter={['==', ['get', 'role'], 'end']}
-            paint={{
-              'circle-color': theme.colors.error,
-              'circle-radius': 6,
-              'circle-stroke-width': 2,
-              'circle-stroke-color': '#FFFFFF',
-            }}
-          />
-          <Layer
-            id="stops-points"
-            type="circle"
-            filter={['==', ['get', 'role'], 'stop']}
-            paint={{
-              'circle-color': theme.colors.primary,
-              'circle-radius': 5,
-              'circle-stroke-width': 2,
-              'circle-stroke-color': '#FFFFFF',
-            }}
-          />
-        </GeoJSONSource>
-      </S.StyledOlaMap>
-      </S.MapWrapper>
+          <Camera ref={cameraRef} center={initialCenter} zoom={zoom} />
 
+          <GeoJSONSource id="points-source" data={pointsGeoJSON}>
+            <Layer
+              id="start-point"
+              type="circle"
+              filter={['==', ['get', 'role'], 'start']}
+              paint={{
+                'circle-color': '#00875a',
+                'circle-radius': 6,
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#FFFFFF',
+              }}
+            />
+            <Layer
+              id="end-point"
+              type="circle"
+              filter={['==', ['get', 'role'], 'end']}
+              paint={{
+                'circle-color': theme.colors.error,
+                'circle-radius': 6,
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#FFFFFF',
+              }}
+            />
+            <Layer
+              id="stops-points"
+              type="circle"
+              filter={['==', ['get', 'role'], 'stop']}
+              paint={{
+                'circle-color': theme.colors.primary,
+                'circle-radius': 5,
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#FFFFFF',
+              }}
+            />
+          </GeoJSONSource>
+        </S.StyledOlaMap>
+      </S.MapWrapper>
 
       <S.ControlsWrapper>
         <MapControlsFABs
@@ -158,13 +166,13 @@ export const BentoMapPreview: React.FC<BentoMapPreviewProps> = ({
         />
       </S.ControlsWrapper>
 
-      <S.GradientOverlay 
-        colors={[theme.colors.surface_container, 'transparent']} 
-        start={{ x: 0, y: 1 }} 
-        end={{ x: 0, y: 0.5 }} 
+      <S.GradientOverlay
+        colors={[theme.colors.surface_container, 'transparent']}
+        start={{ x: 0, y: 1 }}
+        end={{ x: 0, y: 0.5 }}
         pointerEvents="none"
       />
-      
+
       <S.BadgeContainer>
         <S.BadgeText>{t.optimizedRoute}</S.BadgeText>
       </S.BadgeContainer>

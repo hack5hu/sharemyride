@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/Toggle',
   component: Toggle,
-
 } satisfies Meta<typeof Toggle>;
 
 export default meta;

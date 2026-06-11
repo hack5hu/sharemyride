@@ -12,7 +12,12 @@ import { ToastProps } from './types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 
-export const Toast: React.FC<ToastProps> = ({ type, message, isVisible, onHide }) => {
+export const Toast: React.FC<ToastProps> = ({
+  type,
+  message,
+  isVisible,
+  onHide,
+}) => {
   const theme = useTheme();
   const translateY = useSharedValue(-100);
   const opacity = useSharedValue(0);
@@ -25,10 +30,10 @@ export const Toast: React.FC<ToastProps> = ({ type, message, isVisible, onHide }
       if (onHide) {
         translateY.value = withSequence(
           withDelay(3000, withTiming(-100, { duration: 300 })),
-          withTiming(-100, {}, () => runOnJS(onHide)())
+          withTiming(-100, {}, () => runOnJS(onHide)()),
         );
         opacity.value = withSequence(
-          withDelay(3000, withTiming(0, { duration: 300 }))
+          withDelay(3000, withTiming(0, { duration: 300 })),
         );
       }
     } else {
@@ -48,7 +53,8 @@ export const Toast: React.FC<ToastProps> = ({ type, message, isVisible, onHide }
   }));
 
   const iconName = type === 'error' ? 'error' : 'check-circle';
-  const iconColor = type === 'error' ? theme.colors.error : theme.colors.primary;
+  const iconColor =
+    type === 'error' ? theme.colors.error : theme.colors.primary;
 
   return (
     <Animated.View style={animatedStyle} pointerEvents="none">

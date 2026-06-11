@@ -32,9 +32,12 @@ export const ScreenShell: React.FC<ScreenShellProps> = ({
   children,
 }) => {
   const insets = useSafeAreaInsets();
-  
+
   return (
-    <Shell transparent={transparent} style={{ paddingTop: noPaddingTop ? 0 : insets.top }}>
+    <Shell
+      transparent={transparent}
+      style={{ paddingTop: noPaddingTop ? 0 : insets.top }}
+    >
       {title != null && (
         <ScreenHeader
           title={title}

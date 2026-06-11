@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/MessageItem',
   component: MessageItem,
-
 } satisfies Meta<typeof MessageItem>;
 
 export default meta;

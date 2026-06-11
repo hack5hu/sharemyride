@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/ChatInputSection',
   component: ChatInputSection,
-
 } satisfies Meta<typeof ChatInputSection>;
 
 export default meta;

@@ -16,7 +16,10 @@ interface RideVehicleCardProps {
   t: Record<string, string>;
 }
 
-export const RideVehicleCard: React.FC<RideVehicleCardProps> = ({ vehicle, t }) => {
+export const RideVehicleCard: React.FC<RideVehicleCardProps> = ({
+  vehicle,
+  t,
+}) => {
   const theme = useTheme();
 
   if (!vehicle) return null;
@@ -89,7 +92,8 @@ export const RideVehicleCard: React.FC<RideVehicleCardProps> = ({ vehicle, t }) 
 
   const colorHex = getColorHex(vehicle.color);
   const colorName = getColorName(vehicle.color);
-  const showPlate = vehicle.plateNumber && vehicle.plateNumber.trim().length > 0;
+  const showPlate =
+    vehicle.plateNumber && vehicle.plateNumber.trim().length > 0;
 
   const displayCompany = capitalizeText(vehicle.company);
   const displayModel = capitalizeText(vehicle.model);
@@ -98,7 +102,12 @@ export const RideVehicleCard: React.FC<RideVehicleCardProps> = ({ vehicle, t }) 
     <S.VehicleCard>
       <S.VehicleLabelRow>
         <S.SectionDot color={theme.colors.primary} />
-        <Typography variant="label" size="xs" weight="bold" color="on_surface_variant">
+        <Typography
+          variant="label"
+          size="xs"
+          weight="bold"
+          color="on_surface_variant"
+        >
           {(t.assignedVehicle || 'ASSIGNED VEHICLE').toUpperCase()}
         </Typography>
       </S.VehicleLabelRow>
@@ -120,21 +129,38 @@ export const RideVehicleCard: React.FC<RideVehicleCardProps> = ({ vehicle, t }) 
           <S.PlateRow>
             {showPlate && (
               <S.PlateBadge>
-                <Typography variant="label" size="xs" weight="bold" color="on_surface">
+                <Typography
+                  variant="label"
+                  size="xs"
+                  weight="bold"
+                  color="on_surface"
+                >
                   {vehicle.plateNumber!.toUpperCase()}
                 </Typography>
               </S.PlateBadge>
             )}
             <S.CategoryPill>
-              <Typography variant="label" size="xs" weight="medium" color="on_surface_variant">
-                {VEHICLE_TYPE_LABELS[vehicle.type || ''] || t.standardVehicle || 'Standard'}
+              <Typography
+                variant="label"
+                size="xs"
+                weight="medium"
+                color="on_surface_variant"
+              >
+                {VEHICLE_TYPE_LABELS[vehicle.type || ''] ||
+                  t.standardVehicle ||
+                  'Standard'}
               </Typography>
             </S.CategoryPill>
 
             {colorHex && (
               <S.ColorPill>
                 <S.ColorDot colorHex={colorHex} />
-                <Typography variant="label" size="xs" weight="medium" color="on_surface_variant">
+                <Typography
+                  variant="label"
+                  size="xs"
+                  weight="medium"
+                  color="on_surface_variant"
+                >
                   {colorName}
                 </Typography>
               </S.ColorPill>
@@ -145,6 +171,3 @@ export const RideVehicleCard: React.FC<RideVehicleCardProps> = ({ vehicle, t }) 
     </S.VehicleCard>
   );
 };
-
-
-

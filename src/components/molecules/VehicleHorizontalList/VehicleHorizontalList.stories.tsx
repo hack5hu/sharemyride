@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/VehicleHorizontalList',
   component: VehicleHorizontalList,
-
 } satisfies Meta<typeof VehicleHorizontalList>;
 
 export default meta;
@@ -15,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     onSelect: () => {},
-    title: "Sample Title",
-    vehicles: []
+    title: 'Sample Title',
+    vehicles: [],
   },
 };

@@ -54,8 +54,8 @@ export const resetAllStores = () => {
   });
 
   // 5. Ride Publish Store (Clear current publishing flow)
-  useRidePublishStore.setState({ 
-    startLocation: null, 
+  useRidePublishStore.setState({
+    startLocation: null,
     destinationLocation: null,
     middleStops: [],
     routeDetails: null,

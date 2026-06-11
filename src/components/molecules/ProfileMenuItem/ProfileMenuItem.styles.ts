@@ -18,7 +18,8 @@ export const IconBox = styled.View<IconBoxProps>`
   width: ${moderateScale(48)}px;
   height: ${moderateScale(48)}px;
   border-radius: ${moderateScale(12)}px;
-  background-color: ${({ theme, bgcolor }) => bgcolor || theme.colors.surface_container_high};
+  background-color: ${({ theme, bgcolor }) =>
+    bgcolor || theme.colors.surface_container_high};
   align-items: center;
   justify-content: center;
 `;

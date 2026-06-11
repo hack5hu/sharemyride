@@ -8,16 +8,18 @@ export const Container = styled.TouchableOpacity<{ isSelected: boolean }>`
   justify-content: space-between;
   padding: ${moderateScale(16)}px;
   border-radius: ${moderateScale(16)}px;
-  background-color: ${({ theme, isSelected }) => 
-    isSelected ? theme.colors.primary_container : theme.colors.surface_container_low};
+  background-color: ${({ theme, isSelected }) =>
+    isSelected
+      ? theme.colors.primary_container
+      : theme.colors.surface_container_low};
   margin-bottom: ${verticalScale(12)}px;
 `;
 
 export const Label = styled.Text<{ isSelected: boolean }>`
   font-family: 'Plus Jakarta Sans';
   font-size: ${responsiveFont(15)}px;
-  font-weight: ${({ isSelected }) => isSelected ? '600' : '500'};
-  color: ${({ theme, isSelected }) => 
+  font-weight: ${({ isSelected }) => (isSelected ? '600' : '500')};
+  color: ${({ theme, isSelected }) =>
     isSelected ? theme.colors.on_primary_container : theme.colors.on_surface};
   flex: 1;
   text-align: left;

@@ -23,4 +23,3 @@ export const navigate = (name: keyof RootStackParamList, params?: any) => {
     }, 500);
   }
 };
-

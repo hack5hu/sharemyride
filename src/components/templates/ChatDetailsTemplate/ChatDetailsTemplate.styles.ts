@@ -12,7 +12,7 @@ export const ScreenContainer = styled.View`
 `;
 
 export const ScrollLayout = styled.ScrollView.attrs(() => ({
-  contentContainerStyle: { 
+  contentContainerStyle: {
     flexGrow: 1,
     paddingHorizontal: scale(16),
     paddingTop: verticalScale(16),

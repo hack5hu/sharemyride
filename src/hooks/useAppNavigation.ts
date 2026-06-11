@@ -24,18 +24,18 @@ export const useAppNavigation = () => {
   const navigate = useCallback(
     <RouteName extends keyof RootStackParamList>(
       name: RouteName,
-      params?: RootStackParamList[RouteName]
+      params?: RootStackParamList[RouteName],
     ) => {
       if (!canNavigate()) return;
       (navigation.navigate as any)(name, params);
     },
-    [navigation]
+    [navigation],
   );
 
   const push = useCallback(
     <RouteName extends keyof RootStackParamList>(
       name: RouteName,
-      params?: RootStackParamList[RouteName]
+      params?: RootStackParamList[RouteName],
     ) => {
       if (!canNavigate()) return;
       if ('push' in navigation) {
@@ -44,13 +44,13 @@ export const useAppNavigation = () => {
         (navigation as any).navigate(name, params);
       }
     },
-    [navigation]
+    [navigation],
   );
 
   const replace = useCallback(
     <RouteName extends keyof RootStackParamList>(
       name: RouteName,
-      params?: RootStackParamList[RouteName]
+      params?: RootStackParamList[RouteName],
     ) => {
       if (!canNavigate()) return;
       if ('replace' in navigation) {
@@ -59,7 +59,7 @@ export const useAppNavigation = () => {
         (navigation as any).navigate(name, params);
       }
     },
-    [navigation]
+    [navigation],
   );
 
   const goBack = useCallback(() => {
@@ -78,7 +78,7 @@ export const useAppNavigation = () => {
         (navigation as any).goBack();
       }
     },
-    [navigation]
+    [navigation],
   );
 
   const popToTop = useCallback(() => {
@@ -94,7 +94,7 @@ export const useAppNavigation = () => {
   const resetTo = useCallback(
     <RouteName extends keyof RootStackParamList>(
       name: RouteName,
-      params?: RootStackParamList[RouteName]
+      params?: RootStackParamList[RouteName],
     ) => {
       if (!canNavigate()) return;
       navigation.reset({
@@ -102,7 +102,7 @@ export const useAppNavigation = () => {
         routes: [{ name: name as any, params }],
       });
     },
-    [navigation]
+    [navigation],
   );
 
   /**
@@ -116,21 +116,21 @@ export const useAppNavigation = () => {
         routes: routes as any[],
       });
     },
-    [navigation]
+    [navigation],
   );
 
   const setParams = useCallback(
     (params: Partial<RootStackParamList[keyof RootStackParamList]>) => {
       navigation.setParams(params as any);
     },
-    [navigation]
+    [navigation],
   );
 
   const setOptions = useCallback(
     (options: Partial<any>) => {
       navigation.setOptions(options);
     },
-    [navigation]
+    [navigation],
   );
 
   const reset = useCallback(
@@ -138,7 +138,7 @@ export const useAppNavigation = () => {
       if (!canNavigate()) return;
       navigation.reset(state);
     },
-    [navigation]
+    [navigation],
   );
 
   return {
@@ -155,4 +155,3 @@ export const useAppNavigation = () => {
     setParams,
   };
 };
-

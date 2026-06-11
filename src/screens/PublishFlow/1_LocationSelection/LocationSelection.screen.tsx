@@ -15,8 +15,6 @@ export const LocationSelectionScreen: React.FC = () => {
     handleSelectRecentRide,
   } = useLocationSelection();
 
-
-
   return (
     <LocationSelectionTemplate
       startLocationName={startLocationName}
@@ -27,10 +25,7 @@ export const LocationSelectionScreen: React.FC = () => {
       canContinue={canContinue}
       recentRides={recentRides}
       onSelectRecentRide={handleSelectRecentRide}
-      navBar={
-        <BottomNav activeTab={ 'PUBLISH'} />
-      }
+      navBar={<BottomNav activeTab={'PUBLISH'} />}
     />
-
   );
 };

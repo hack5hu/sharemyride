@@ -52,125 +52,145 @@ export interface MiddleStopSearchOverlayProps {
   isLoading?: boolean;
 }
 
-export const MiddleStopSearchOverlay: React.FC<MiddleStopSearchOverlayProps> = React.memo(({
-  searchQuery,
-  onChangeSearch,
-  suggestedLocations,
-  recentHistory,
-  onSelectLocation,
-  onSelectHistory,
-  isLoading,
-}) => {
-  const theme = useTheme();
-  const { middleStopMap: t } = useLocale();
+export const MiddleStopSearchOverlay: React.FC<MiddleStopSearchOverlayProps> =
+  React.memo(
+    ({
+      searchQuery,
+      onChangeSearch,
+      suggestedLocations,
+      recentHistory,
+      onSelectLocation,
+      onSelectHistory,
+      isLoading,
+    }) => {
+      const theme = useTheme();
+      const { middleStopMap: t } = useLocale();
 
-  const renderDistanceBadge = useCallback((distance?: number) => {
-    if (distance === undefined) return null;
-    const isWarning = distance > MAX_DEVIATION_KM;
-    return (
-      <DistanceBadge isWarning={isWarning}>
-        <DistanceBadgeText isWarning={isWarning}>
-          {`${distance} km`}
-        </DistanceBadgeText>
-      </DistanceBadge>
-    );
-  }, []);
+      const renderDistanceBadge = useCallback((distance?: number) => {
+        if (distance === undefined) return null;
+        const isWarning = distance > MAX_DEVIATION_KM;
+        return (
+          <DistanceBadge isWarning={isWarning}>
+            <DistanceBadgeText isWarning={isWarning}>
+              {`${distance} km`}
+            </DistanceBadgeText>
+          </DistanceBadge>
+        );
+      }, []);
 
-  const handleHistoryPress = useCallback(
-    (item: LocationOption | Location) => {
-      Keyboard.dismiss();
-      if (onSelectHistory && 'latitude' in item && 'longitude' in item) {
-        onSelectHistory(item as Location);
-      } else {
-        onSelectLocation(item as LocationOption);
-      }
-    },
-    [onSelectHistory, onSelectLocation],
-  );
+      const handleHistoryPress = useCallback(
+        (item: LocationOption | Location) => {
+          Keyboard.dismiss();
+          if (onSelectHistory && 'latitude' in item && 'longitude' in item) {
+            onSelectHistory(item as Location);
+          } else {
+            onSelectLocation(item as LocationOption);
+          }
+        },
+        [onSelectHistory, onSelectLocation],
+      );
 
-  const handleLocationSelect = useCallback((item: LocationOption) => {
-    Keyboard.dismiss();
-    onSelectLocation(item);
-  }, [onSelectLocation]);
+      const handleLocationSelect = useCallback(
+        (item: LocationOption) => {
+          Keyboard.dismiss();
+          onSelectLocation(item);
+        },
+        [onSelectLocation],
+      );
 
-  return (
-    <Container>
-      <TitleText>{t.whereWillYouStop}</TitleText>
-      <Subtext>{t.addingStopsIncreasesInfo}</Subtext>
+      return (
+        <Container>
+          <TitleText>{t.whereWillYouStop}</TitleText>
+          <Subtext>{t.addingStopsIncreasesInfo}</Subtext>
 
-      <SearchInputContainer>
-        <MaterialIcons name="search" size={moderateScale(24)} color={theme.colors.primary} />
-        <SearchInput
-          placeholder={t.searchPlaceholder}
-          placeholderTextColor={`${theme.colors.outline_variant}99`}
-          value={searchQuery}
-          onChangeText={onChangeSearch}
-          autoFocus
-        />
-        {!!searchQuery && (
-          <MaterialIcons
-            name="close"
-            size={moderateScale(20)}
-            color={theme.colors.on_surface_variant}
-            onPress={() => onChangeSearch('')}
-          />
-        )}
-      </SearchInputContainer>
-
-      {/* Search results */}
-      {!!searchQuery && suggestedLocations.length > 0 && (
-        <>
-          {suggestedLocations.map((item) => (
-            <SearchResultItem key={item.id} onPress={() => handleLocationSelect(item)}>
+          <SearchInputContainer>
+            <MaterialIcons
+              name="search"
+              size={moderateScale(24)}
+              color={theme.colors.primary}
+            />
+            <SearchInput
+              placeholder={t.searchPlaceholder}
+              placeholderTextColor={`${theme.colors.outline_variant}99`}
+              value={searchQuery}
+              onChangeText={onChangeSearch}
+              autoFocus
+            />
+            {!!searchQuery && (
               <MaterialIcons
-                name="location-on"
+                name="close"
                 size={moderateScale(20)}
-                color={theme.colors.primary}
+                color={theme.colors.on_surface_variant}
+                onPress={() => onChangeSearch('')}
               />
-              <SearchResultContent>
-                <SearchResultName numberOfLines={1}>{item.name}</SearchResultName>
-                {!!item.address && (
-                  <SearchResultAddress numberOfLines={1}>{item.address}</SearchResultAddress>
-                )}
-              </SearchResultContent>
-              {renderDistanceBadge(item.distanceFromRoute)}
-            </SearchResultItem>
-          ))}
-        </>
-      )}
+            )}
+          </SearchInputContainer>
 
-      {/* Default state: suggestions + history */}
-      {!searchQuery && (
-        <>
-          {/* Recent History */}
-          {recentHistory.length > 0 && (
+          {/* Search results */}
+          {!!searchQuery && suggestedLocations.length > 0 && (
             <>
-              <SectionHeader>{t.recentHistory}</SectionHeader>
-              {recentHistory.map((item) => (
-                <HistoryItem key={item.id} onPress={() => handleHistoryPress(item)}>
-                  <HistoryLeft>
-                    <MaterialIcons
-                      name="history"
-                      size={moderateScale(20)}
-                      color={theme.colors.outline_variant}
-                    />
-                    <HistoryText numberOfLines={1}>
-                      {'name' in item ? item.name : ''}
-                    </HistoryText>
-                  </HistoryLeft>
+              {suggestedLocations.map(item => (
+                <SearchResultItem
+                  key={item.id}
+                  onPress={() => handleLocationSelect(item)}
+                >
                   <MaterialIcons
-                    name="chevron-right"
-                    size={moderateScale(24)}
-                    color={`${theme.colors.outline_variant}80`}
+                    name="location-on"
+                    size={moderateScale(20)}
+                    color={theme.colors.primary}
                   />
-                </HistoryItem>
+                  <SearchResultContent>
+                    <SearchResultName numberOfLines={1}>
+                      {item.name}
+                    </SearchResultName>
+                    {!!item.address && (
+                      <SearchResultAddress numberOfLines={1}>
+                        {item.address}
+                      </SearchResultAddress>
+                    )}
+                  </SearchResultContent>
+                  {renderDistanceBadge(item.distanceFromRoute)}
+                </SearchResultItem>
               ))}
             </>
           )}
-        </>
-      )}
-    </Container>
+
+          {/* Default state: suggestions + history */}
+          {!searchQuery && (
+            <>
+              {/* Recent History */}
+              {recentHistory.length > 0 && (
+                <>
+                  <SectionHeader>{t.recentHistory}</SectionHeader>
+                  {recentHistory.map(item => (
+                    <HistoryItem
+                      key={item.id}
+                      onPress={() => handleHistoryPress(item)}
+                    >
+                      <HistoryLeft>
+                        <MaterialIcons
+                          name="history"
+                          size={moderateScale(20)}
+                          color={theme.colors.outline_variant}
+                        />
+                        <HistoryText numberOfLines={1}>
+                          {'name' in item ? item.name : ''}
+                        </HistoryText>
+                      </HistoryLeft>
+                      <MaterialIcons
+                        name="chevron-right"
+                        size={moderateScale(24)}
+                        color={`${theme.colors.outline_variant}80`}
+                      />
+                    </HistoryItem>
+                  ))}
+                </>
+              )}
+            </>
+          )}
+        </Container>
+      );
+    },
   );
-});
 
 MiddleStopSearchOverlay.displayName = 'MiddleStopSearchOverlay';

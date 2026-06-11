@@ -76,4 +76,3 @@ export const ProfileWrapper = styled.View`
 export const ReportButton = styled.TouchableOpacity`
   padding: ${moderateScale(4)}px;
 `;
-

@@ -206,6 +206,7 @@ AI must use alias imports to avoid deep relative paths (`../../`).
 * always use the custom navigation hook (useAppNavigation) for screen transitions instead of raw hook to ensure clean types without 'as any' casts. **very important** (MANDATORY) *RULES TO FOLLOW*
 * NEVER use React Native's `Alert.alert`. Use custom `ConfirmationModal` and `showNotification`. **very important** (MANDATORY) *RULES TO FOLLOW*
 * Ensure Loader overlays are centered safely with `width: 100%` and have the `transparent` prop enabled. **very important** (MANDATORY) *RULES TO FOLLOW*
+* NEVER suppress lint errors (like unused variables or imports) using `eslint-disable` comments. Always fix them properly by removing the unused code. **very important** (MANDATORY) *RULES TO FOLLOW*
 
 ---
 
@@ -227,5 +228,6 @@ AI must use alias imports to avoid deep relative paths (`../../`).
 * **ALWAYS use the custom navigation hook (useAppNavigation)** for screen transitions instead of raw hooks or raw navigation calls to avoid 'as any' casts.
 * **ALWAYS avoid standard React Native `Alert.alert` in favor of custom `ConfirmationModal` or `showNotification`.**
 * **ALWAYS ensure loader overlays are centered safely with `width: 100%` and correct transparency settings.**
+* **NEVER suppress lint errors with comments.** Properly remove unused variables, imports, and dead code instead.
 
 > 💬 If the AI ever violates any rule above, the correct response is to **redo the work from scratch** following the rules — not patch it.

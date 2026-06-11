@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/SectionHeader',
   component: SectionHeader,
-
 } satisfies Meta<typeof SectionHeader>;
 
 export default meta;

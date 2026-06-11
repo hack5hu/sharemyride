@@ -19,26 +19,31 @@ const ContentBox = styled(Box)`
   margin-left: ${moderateScale(8)}px;
 `;
 
-export const CancellationReasonBox: React.FC<CancellationReasonBoxProps> = React.memo(({ cancellationReason }) => {
-  const theme = useTheme();
-  const translations = useLocale();
+export const CancellationReasonBox: React.FC<CancellationReasonBoxProps> =
+  React.memo(({ cancellationReason }) => {
+    const theme = useTheme();
+    const translations = useLocale();
 
-  return (
-    <ContainerBox 
-      backgroundColor={theme.colors.error + '10'} 
-      padding={moderateScale(12)} 
-      flexDirection="row"
-      alignItems="center"
-    >
-      <Icon name="error-outline" size={moderateScale(20)} color={theme.colors.error} />
-      <ContentBox flex={1}>
-        <Typography variant="label" size="xs" weight="bold" color="error">
-          {translations.rideDetails.cancellationReasonTitle.toUpperCase()}
-        </Typography>
-        <Typography variant="body" size="sm" color="on_surface">
-          {cancellationReason}
-        </Typography>
-      </ContentBox>
-    </ContainerBox>
-  );
-});
+    return (
+      <ContainerBox
+        backgroundColor={theme.colors.error + '10'}
+        padding={moderateScale(12)}
+        flexDirection="row"
+        alignItems="center"
+      >
+        <Icon
+          name="error-outline"
+          size={moderateScale(20)}
+          color={theme.colors.error}
+        />
+        <ContentBox flex={1}>
+          <Typography variant="label" size="xs" weight="bold" color="error">
+            {translations.rideDetails.cancellationReasonTitle.toUpperCase()}
+          </Typography>
+          <Typography variant="body" size="sm" color="on_surface">
+            {cancellationReason}
+          </Typography>
+        </ContentBox>
+      </ContainerBox>
+    );
+  });

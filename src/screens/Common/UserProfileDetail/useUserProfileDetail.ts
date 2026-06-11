@@ -16,7 +16,7 @@ export const useUserProfileDetail = (userId: string) => {
       setIsLoading(true);
       setError(null);
       const data = await userService.getUserProfile(userId);
-      
+
       // Basic mapping from API response to our UI interface
       // Note: In a real app, this mapping logic might be more complex
       const mappedProfile: UserProfile = {
@@ -32,19 +32,21 @@ export const useUserProfileDetail = (userId: string) => {
           { icon: 'pets', label: 'Pets allowed' },
           { icon: 'music_note', label: 'Lo-fi only' },
         ],
-        vehicle: data.vehicle ? {
-          model: data.vehicle.model,
-          color: data.vehicle.color,
-          plateNumber: data.vehicle.plateNumber,
-          type: data.vehicle.type || 'electric',
-          tag: data.vehicle.tag || 'EV Eco-Friendly',
-        } : {
-          model: 'Tesla Model 3',
-          color: 'Forest Green',
-          plateNumber: 'ABC-1234',
-          type: 'electric',
-          tag: 'EV Eco-Friendly',
-        },
+        vehicle: data.vehicle
+          ? {
+              model: data.vehicle.model,
+              color: data.vehicle.color,
+              plateNumber: data.vehicle.plateNumber,
+              type: data.vehicle.type || 'electric',
+              tag: data.vehicle.tag || 'EV Eco-Friendly',
+            }
+          : {
+              model: 'Tesla Model 3',
+              color: 'Forest Green',
+              plateNumber: 'ABC-1234',
+              type: 'electric',
+              tag: 'EV Eco-Friendly',
+            },
         reviews: data.reviews || [
           {
             id: '1',
@@ -52,7 +54,8 @@ export const useUserProfileDetail = (userId: string) => {
             rating: 5,
             date: '2 days ago',
             tripInfo: 'Trip to Downtown',
-            comment: 'Alex was a great driver! The car was immaculate and the music selection was perfect for a Monday morning. Very professional.',
+            comment:
+              'Alex was a great driver! The car was immaculate and the music selection was perfect for a Monday morning. Very professional.',
           },
           {
             id: '2',
@@ -60,11 +63,12 @@ export const useUserProfileDetail = (userId: string) => {
             rating: 4,
             date: '1 week ago',
             tripInfo: 'Late night commute',
-            comment: 'Smooth ride and arrived exactly on time. Alex is quiet but very polite. Highly recommend for airport runs.',
-          }
+            comment:
+              'Smooth ride and arrived exactly on time. Alex is quiet but very polite. Highly recommend for airport runs.',
+          },
         ],
       };
-      
+
       setProfile(mappedProfile);
     } catch (err: any) {
       console.error('Failed to fetch user profile:', err);

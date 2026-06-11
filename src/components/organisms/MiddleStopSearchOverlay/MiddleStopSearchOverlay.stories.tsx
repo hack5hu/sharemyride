@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/MiddleStopSearchOverlay',
   component: MiddleStopSearchOverlay,
-
 } satisfies Meta<typeof MiddleStopSearchOverlay>;
 
 export default meta;
@@ -34,8 +33,8 @@ export const Default: Story = {
       },
     ],
     isLoading: false,
-    onSelectLocation: (loc) => console.log('Selected location:', loc),
-    onSelectHistory: (loc) => console.log('Selected history:', loc),
+    onSelectLocation: loc => console.log('Selected location:', loc),
+    onSelectHistory: loc => console.log('Selected history:', loc),
   },
 };
 
@@ -56,7 +55,7 @@ export const Searching: Story = {
         id: '102',
         name: 'MG Road Mall',
         address: '12, MG Road, Ashok Nagar, Bengaluru, Karnataka 560001',
-        latitude: 12.9740,
+        latitude: 12.974,
         longitude: 77.6095,
         distanceFromRoute: 2.5,
       },

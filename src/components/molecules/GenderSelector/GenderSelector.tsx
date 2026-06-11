@@ -40,10 +40,15 @@ export const GenderSelector: React.FC<GenderSelectorProps> = ({
         style={{ marginBottom: 8, textTransform: 'uppercase' }}
       >
         {label}
-        {required && <Typography variant="label" size="sm" color="error"> *</Typography>}
+        {required && (
+          <Typography variant="label" size="sm" color="error">
+            {' '}
+            *
+          </Typography>
+        )}
       </Typography>
       <ButtonRow style={{ opacity: disabled ? 0.6 : 1 }}>
-        {options.map((option) => (
+        {options.map(option => (
           <View key={option.value} style={{ flex: 1, marginHorizontal: 4 }}>
             <Button
               variant={value === option.value ? 'primary' : 'secondary'}

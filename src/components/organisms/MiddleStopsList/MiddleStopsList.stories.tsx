@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/MiddleStopsList',
   component: MiddleStopsList,
-
 } satisfies Meta<typeof MiddleStopsList>;
 
 export default meta;

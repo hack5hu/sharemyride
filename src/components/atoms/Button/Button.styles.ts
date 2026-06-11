@@ -12,7 +12,9 @@ export const StyledButton = styled.TouchableOpacity`
   overflow: hidden;
 `;
 
-export const GradientBackground = styled(LinearGradient)<{ disabled?: boolean }>`
+export const GradientBackground = styled(LinearGradient)<{
+  disabled?: boolean;
+}>`
   flex: 1;
   width: 100%;
   height: 100%;
@@ -20,7 +22,8 @@ export const GradientBackground = styled(LinearGradient)<{ disabled?: boolean }>
   justify-content: center;
   flex-direction: row;
   gap: ${scale(8)}px;
-  background-color: ${({ theme, disabled }) => disabled ? theme.colors.outline_variant : 'transparent'};
+  background-color: ${({ theme, disabled }) =>
+    disabled ? theme.colors.outline_variant : 'transparent'};
 `;
 
 export const OutlineContainer = styled.View<{ variant: ButtonVariant }>`
@@ -32,9 +35,11 @@ export const OutlineContainer = styled.View<{ variant: ButtonVariant }>`
   flex-direction: row;
   gap: ${scale(8)}px;
   border-width: ${({ variant }) => (variant === 'outline' ? 1.5 : 0)}px;
-  border-color: ${({ theme, variant }) => variant === 'outline' ? theme.colors.outline_variant : 'transparent'};
+  border-color: ${({ theme, variant }) =>
+    variant === 'outline' ? theme.colors.outline_variant : 'transparent'};
   border-radius: ${({ theme }) => theme.roundness.md}px;
-  background-color: ${({ theme, variant }) => variant === 'secondary' ? theme.colors.surface_container : 'transparent'};
+  background-color: ${({ theme, variant }) =>
+    variant === 'secondary' ? theme.colors.surface_container : 'transparent'};
 `;
 
 export const ButtonContent = styled.View`

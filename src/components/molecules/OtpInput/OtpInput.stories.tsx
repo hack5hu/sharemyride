@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/OtpInput',
   component: OtpInput,
-
 } satisfies Meta<typeof OtpInput>;
 
 export default meta;

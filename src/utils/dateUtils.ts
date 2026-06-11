@@ -21,7 +21,10 @@ export const getMonthDays = (year: number, month: number) => {
 
   for (let i = 1; i <= daysInMonth; i++) {
     const currentDate = new Date(year, month, i);
-    if (currentDate.getTime() < today.getTime() || currentDate.getTime() > maxDate.getTime()) {
+    if (
+      currentDate.getTime() < today.getTime() ||
+      currentDate.getTime() > maxDate.getTime()
+    ) {
       result.push(null);
     } else {
       result.push(i);
@@ -34,7 +37,10 @@ export const getMonthDays = (year: number, month: number) => {
  * Gets the localized month name
  */
 export const getMonthName = (year: number, month: number, locale = 'en-US') => {
-  return new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(new Date(year, month));
+  return new Intl.DateTimeFormat(locale, {
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date(year, month));
 };
 
 export const isSameDate = (date1: Date | null, date2: Date | null) => {

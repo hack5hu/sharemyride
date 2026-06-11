@@ -23,11 +23,10 @@ export const HeaderContainer = styled.View`
 
 export const ScrollContainer = styled(KeyboardAwareScrollView).attrs(() => ({
   showsVerticalScrollIndicator: false,
-  contentContainerStyle: { paddingBottom: verticalScale(40) }
+  contentContainerStyle: { paddingBottom: verticalScale(40) },
 }))`
   flex: 1;
 `;
-
 
 export const HeroSection = styled.View`
   height: ${verticalScale(200)}px;
@@ -61,7 +60,6 @@ export const HeroTint = styled.View`
   bottom: 0;
   background-color: ${({ theme }) => theme.colors.primary + '33'};
 `;
-
 
 export const HeroContent = styled.View`
   position: absolute;
@@ -112,7 +110,6 @@ export const CardSection = styled.View`
   shadow-radius: 12px;
   elevation: 2;
 `;
-
 
 export const SectionHeader = styled.View`
   flex-direction: row;
@@ -179,4 +176,3 @@ export const CapacityError = styled(Typography).attrs({
 export const BottomAction = styled.View`
   padding: ${moderateScale(24)}px;
 `;
-

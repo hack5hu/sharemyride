@@ -19,7 +19,7 @@ export const DummyScreen: React.FC = () => {
     activeTab,
     showBottomNav = true,
     showBack = false,
-    contentKey
+    contentKey,
   } = route.params;
 
   const getContent = () => {
@@ -28,17 +28,17 @@ export const DummyScreen: React.FC = () => {
       case 'about':
         return {
           title: t('dummyContent.aboutTitle'),
-          body: t('dummyContent.aboutBody')
+          body: t('dummyContent.aboutBody'),
         };
       case 'help':
         return {
           title: t('dummyContent.helpTitle'),
-          body: t('dummyContent.helpBody')
+          body: t('dummyContent.helpBody'),
         };
       case 'terms':
         return {
           title: t('dummyContent.termsTitle'),
-          body: t('dummyContent.termsBody')
+          body: t('dummyContent.termsBody'),
         };
       default:
         return null;
@@ -52,21 +52,14 @@ export const DummyScreen: React.FC = () => {
   const content = getContent();
 
   return (
-    <ScreenShell
-      title={title}
-      onBack={()=>navigation.goBack()}
-    >
+    <ScreenShell title={title} onBack={() => navigation.goBack()}>
       <S.ContentScroll>
         <S.MainContainer>
           {content ? (
             <>
               <S.Card>
-                <S.CardTitle>
-                  {content.title}
-                </S.CardTitle>
-                <S.CardBody>
-                  {content.body}
-                </S.CardBody>
+                <S.CardTitle>{content.title}</S.CardTitle>
+                <S.CardBody>{content.body}</S.CardBody>
 
                 {contentKey === 'help' && (
                   <S.ActionContainer>
@@ -79,18 +72,23 @@ export const DummyScreen: React.FC = () => {
                 )}
               </S.Card>
 
-              <S.SectionTitle>
-                LATEST UPDATES
-              </S.SectionTitle>
+              <S.SectionTitle>LATEST UPDATES</S.SectionTitle>
               <S.UpdateBox>
                 <Typography variant="body" size="sm" color="on_surface">
-                  Our commitment to your safety and comfort is our top priority. New features are rolled out every week.
+                  Our commitment to your safety and comfort is our top priority.
+                  New features are rolled out every week.
                 </Typography>
               </S.UpdateBox>
             </>
           ) : (
             <S.EmptyState>
-              <Typography variant="display" size="sm" weight="bold" align="center" color="on_surface">
+              <Typography
+                variant="display"
+                size="sm"
+                weight="bold"
+                align="center"
+                color="on_surface"
+              >
                 {title}
               </Typography>
               <S.EmptySubtitle>

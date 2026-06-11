@@ -17,11 +17,17 @@ const preview: Preview = {
     },
   },
   decorators: [
-    (Story) => (
+    Story => (
       <SafeAreaProvider>
         <NavigationContainer>
           <ThemeProvider theme={LightTheme}>
-            <View style={{ flex: 1, backgroundColor: LightTheme.colors.background || '#FFFFFF', padding: 20 }}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: LightTheme.colors.background || '#FFFFFF',
+                padding: 20,
+              }}
+            >
               <Story />
             </View>
           </ThemeProvider>

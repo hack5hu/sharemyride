@@ -73,10 +73,10 @@ export const useTimeSelection = () => {
       setSelectedHour(h);
       // If we change to the min hour and current minute is too early, snap forward
       if (minHour !== undefined && minMinute !== undefined && h === minHour) {
-        setSelectedMinute((prev) => (prev < minMinute ? minMinute : prev));
+        setSelectedMinute(prev => (prev < minMinute ? minMinute : prev));
       }
     },
-    [minHour, minMinute]
+    [minHour, minMinute],
   );
 
   const handleMinuteChange = useCallback((m: number) => {
@@ -87,14 +87,15 @@ export const useTimeSelection = () => {
     navigation.goBack();
   }, [navigation]);
 
-
   const handleContinuePress = useCallback(() => {
     // removed unused timeString
     // Simple 12h conversion would be better but let's keep it consistent
     const hour12 = selectedHour % 12 || 12;
     const ampm = selectedHour >= 12 ? 'PM' : 'AM';
-    const displayTime = `${hour12.toString().padStart(2, '0')}:${selectedMinute.toString().padStart(2, '0')} ${ampm}`;
-    
+    const displayTime = `${hour12.toString().padStart(2, '0')}:${selectedMinute
+      .toString()
+      .padStart(2, '0')} ${ampm}`;
+
     setDepartureTime(displayTime);
 
     if (params?.returnTo === 'SummaryPublish') {

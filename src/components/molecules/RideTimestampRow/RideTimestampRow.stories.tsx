@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/RideTimestampRow',
   component: RideTimestampRow,
-
 } satisfies Meta<typeof RideTimestampRow>;
 
 export default meta;

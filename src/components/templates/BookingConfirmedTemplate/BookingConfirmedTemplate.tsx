@@ -8,7 +8,9 @@ import { moderateScale } from '@/styles';
 import * as S from './BookingConfirmedTemplate.styles';
 import { BookingConfirmedTemplateProps } from './types.d';
 
-export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> = ({
+export const BookingConfirmedTemplate: React.FC<
+  BookingConfirmedTemplateProps
+> = ({
   t,
   rideData,
   handleGoToMyRides,
@@ -27,7 +29,11 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
-            <MaterialIcons name="check-circle" size={moderateScale(48)} color={theme.colors.on_primary} />
+            <MaterialIcons
+              name="check-circle"
+              size={moderateScale(48)}
+              color={theme.colors.on_primary}
+            />
           </S.SuccessIconContainer>
           <S.SuccessTitle>{t.successTitle}</S.SuccessTitle>
           <S.SuccessSubtitle>{t.successSubtitle}</S.SuccessSubtitle>
@@ -43,9 +49,21 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
                 {rideData.driver.name}
               </S.DriverNameText>
               <S.RatingRow>
-                <MaterialIcons name="star" size={14} color={theme.colors.primary} />
-                <Typography variant="body" size="sm" weight="bold">{rideData.driver.rating}</Typography>
-                <Typography variant="body" size="sm" color={theme.colors.on_surface_variant}>• {rideData.driver.car}</Typography>
+                <MaterialIcons
+                  name="star"
+                  size={14}
+                  color={theme.colors.primary}
+                />
+                <Typography variant="body" size="sm" weight="bold">
+                  {rideData.driver.rating}
+                </Typography>
+                <Typography
+                  variant="body"
+                  size="sm"
+                  color={theme.colors.on_surface_variant}
+                >
+                  • {rideData.driver.car}
+                </Typography>
               </S.RatingRow>
             </S.DriverMeta>
           </S.DriverCard>
@@ -55,16 +73,31 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
             <S.DetailCard>
               <S.DetailCardHeader>
                 <S.IconBox>
-                  <MaterialIcons name="schedule" size={20} color={theme.colors.primary_container} />
+                  <MaterialIcons
+                    name="schedule"
+                    size={20}
+                    color={theme.colors.primary_container}
+                  />
                 </S.IconBox>
-                <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
+                <Typography
+                  variant="label"
+                  size="sm"
+                  weight="bold"
+                  color={theme.colors.on_surface_variant}
+                >
                   {t.pickupTimeLabel}
                 </Typography>
               </S.DetailCardHeader>
               <S.ValueWrapper>
-                <Typography variant="title" size="md" weight="bold">{rideData.pickupTime}</Typography>
+                <Typography variant="title" size="md" weight="bold">
+                  {rideData.pickupTime}
+                </Typography>
                 {rideData.departureDate ? (
-                  <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>
+                  <Typography
+                    variant="label"
+                    size="xs"
+                    color={theme.colors.on_surface_variant}
+                  >
                     {rideData.departureDate}
                   </Typography>
                 ) : null}
@@ -74,16 +107,25 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
             <S.DetailCard>
               <S.DetailCardHeader>
                 <S.IconBox>
-                  <MaterialIcons name="event-seat" size={20} color={theme.colors.primary_container} />
+                  <MaterialIcons
+                    name="event-seat"
+                    size={20}
+                    color={theme.colors.primary_container}
+                  />
                 </S.IconBox>
-                <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
+                <Typography
+                  variant="label"
+                  size="sm"
+                  weight="bold"
+                  color={theme.colors.on_surface_variant}
+                >
                   {t.seatNumberLabel}
                 </Typography>
               </S.DetailCardHeader>
               <S.ValueWrapper>
-                <Typography 
-                  variant="title" 
-                  size="md" 
+                <Typography
+                  variant="title"
+                  size="md"
                   weight="bold"
                   numberOfLines={1}
                   adjustsFontSizeToFit={true}
@@ -91,7 +133,11 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
                 >
                   {rideData.seatNumber}
                 </Typography>
-                <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>
+                <Typography
+                  variant="label"
+                  size="xs"
+                  color={theme.colors.on_surface_variant}
+                >
                   {rideData.seatPreference}
                 </Typography>
               </S.ValueWrapper>
@@ -101,13 +147,26 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
           {/* Safety Guard */}
           <S.SafetyBadge>
             <S.SafetyIconBox>
-              <MaterialIcons name="security" size={24} color={theme.colors.secondary} />
+              <MaterialIcons
+                name="security"
+                size={24}
+                color={theme.colors.secondary}
+              />
             </S.SafetyIconBox>
             <S.SafetyMeta>
-              <Typography variant="body" size="sm" weight="bold" color={theme.colors.on_secondary_container}>
+              <Typography
+                variant="body"
+                size="sm"
+                weight="bold"
+                color={theme.colors.on_secondary_container}
+              >
                 {t.safetyGuardTitle}
               </Typography>
-              <S.SafetySubtitleText variant="label" size="xs" color={theme.colors.on_secondary_container}>
+              <S.SafetySubtitleText
+                variant="label"
+                size="xs"
+                color={theme.colors.on_secondary_container}
+              >
                 {t.safetyGuardSubtitle}
               </S.SafetySubtitleText>
             </S.SafetyMeta>
@@ -116,22 +175,43 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
 
         {/* Final Actions */}
         <S.ActionArea>
-          <S.PrimaryButtonWrapper onPress={handleGoToMyRides} activeOpacity={0.8}>
+          <S.PrimaryButtonWrapper
+            onPress={handleGoToMyRides}
+            activeOpacity={0.8}
+          >
             <S.PrimaryButton
               colors={[theme.colors.primary, theme.colors.primary_container]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
             >
-              <Typography variant="body" size="md" weight="bold" color={theme.colors.on_primary}>
+              <Typography
+                variant="body"
+                size="md"
+                weight="bold"
+                color={theme.colors.on_primary}
+              >
                 {t.primaryCTA}
               </Typography>
-              <MaterialIcons name="arrow-forward" size={20} color={theme.colors.on_primary} />
+              <MaterialIcons
+                name="arrow-forward"
+                size={20}
+                color={theme.colors.on_primary}
+              />
             </S.PrimaryButton>
           </S.PrimaryButtonWrapper>
 
           <S.SecondaryButton onPress={handleShareDetails}>
-            <MaterialIcons name="share" size={20} color={theme.colors.primary} />
-            <Typography variant="body" size="md" weight="bold" color={theme.colors.primary}>
+            <MaterialIcons
+              name="share"
+              size={20}
+              color={theme.colors.primary}
+            />
+            <Typography
+              variant="body"
+              size="md"
+              weight="bold"
+              color={theme.colors.primary}
+            >
               {t.secondaryCTA}
             </Typography>
           </S.SecondaryButton>

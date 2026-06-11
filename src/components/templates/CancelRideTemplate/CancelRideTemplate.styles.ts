@@ -1,5 +1,11 @@
 import styled from 'styled-components/native';
-import { scale, verticalScale, moderateScale, responsiveFont, responsiveSize } from '@/styles';
+import {
+  scale,
+  verticalScale,
+  moderateScale,
+  responsiveFont,
+  responsiveSize,
+} from '@/styles';
 import { Platform, Dimensions } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
@@ -16,7 +22,8 @@ export const Backdrop = styled.TouchableOpacity`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: ${({ theme }) => `${theme.colors.on_surface}66`}; /* 40% opacity blur effect approx */
+  background-color: ${({ theme }) =>
+    `${theme.colors.on_surface}66`}; /* 40% opacity blur effect approx */
 `;
 
 export const BottomSheetContainer = styled(KeyboardAvoidingView).attrs({
@@ -42,7 +49,8 @@ export const BottomSheetSurface = styled.View`
 export const DragHandle = styled.View`
   width: ${scale(48)}px;
   height: ${verticalScale(6)}px;
-  background-color: ${({ theme }) => `${theme.colors.outline_variant}4D`}; /* 30% opacity */
+  background-color: ${({ theme }) =>
+    `${theme.colors.outline_variant}4D`}; /* 30% opacity */
   border-radius: 9999px;
   align-self: center;
   margin-bottom: ${verticalScale(32)}px;
@@ -71,7 +79,7 @@ export const ChoicesScroll = styled.ScrollView.attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: {
     paddingBottom: verticalScale(32),
-  }
+  },
 })`
   flex-shrink: 1;
   margin-bottom: ${verticalScale(16)}px;
@@ -96,7 +104,7 @@ export const ActionsContainer = styled.View`
 
 export const GhostButton = styled.TouchableOpacity`
   width: 100%;
-  paddingVertical: ${verticalScale(12)}px;
+  paddingvertical: ${verticalScale(12)}px;
   border-radius: ${moderateScale(16)}px;
   align-items: center;
   justify-content: center;

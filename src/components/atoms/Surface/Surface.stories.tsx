@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/Surface',
   component: Surface,
-
 } satisfies Meta<typeof Surface>;
 
 export default meta;

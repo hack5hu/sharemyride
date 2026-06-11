@@ -16,37 +16,48 @@ export const useSeatSelection = () => {
   const returnTo = (route.params as any)?.returnTo;
   const t = flow === 'book' ? tSelect : tPublish;
 
-  const { 
-    selectedSeatIds, 
-    setSelectedSeatIds, 
-    publishVehicleType, 
+  const {
+    selectedSeatIds,
+    setSelectedSeatIds,
+    publishVehicleType,
     setPublishVehicleType,
     setVehicleDetails,
     setSeatCount,
     setVehicleId,
     vehicleId,
   } = useRidePublishStore();
-  
-  const { vehicles, selectedVehicleId, setSelectedVehicle } = useVehicleStore();
-  const [selectedSeats, setSelectedSeats] = useState<Set<string | number>>(new Set(selectedSeatIds));
 
-  const handleVehicleSelect = useCallback((id: string) => {
-    const vehicle = vehicles.find(v => v.id === id);
-    if (vehicle) {
-      setSelectedVehicle(id);
-      setVehicleId(id);
-      setPublishVehicleType(vehicle.seater);
-      setVehicleDetails({
-        company: vehicle.company,
-        model: vehicle.model,
-        numberPlate: vehicle.numberPlate,
-        type: vehicle.type,
-        color: vehicle.color,
-        seater: vehicle.seater,
-      });
-      setSelectedSeats(new Set());
-    }
-  }, [vehicles, setSelectedVehicle, setVehicleId, setPublishVehicleType, setVehicleDetails]);
+  const { vehicles, selectedVehicleId, setSelectedVehicle } = useVehicleStore();
+  const [selectedSeats, setSelectedSeats] = useState<Set<string | number>>(
+    new Set(selectedSeatIds),
+  );
+
+  const handleVehicleSelect = useCallback(
+    (id: string) => {
+      const vehicle = vehicles.find(v => v.id === id);
+      if (vehicle) {
+        setSelectedVehicle(id);
+        setVehicleId(id);
+        setPublishVehicleType(vehicle.seater);
+        setVehicleDetails({
+          company: vehicle.company,
+          model: vehicle.model,
+          numberPlate: vehicle.numberPlate,
+          type: vehicle.type,
+          color: vehicle.color,
+          seater: vehicle.seater,
+        });
+        setSelectedSeats(new Set());
+      }
+    },
+    [
+      vehicles,
+      setSelectedVehicle,
+      setVehicleId,
+      setPublishVehicleType,
+      setVehicleDetails,
+    ],
+  );
 
   useEffect(() => {
     if (isFocused && vehicles.length > 0) {
@@ -55,7 +66,10 @@ export const useSeatSelection = () => {
       } else {
         // If one is selected, ensure publish store is synced with it
         const vehicle = vehicles.find(v => v.id === selectedVehicleId);
-        if (vehicle && (publishVehicleType !== vehicle.seater || vehicleId !== vehicle.id)) {
+        if (
+          vehicle &&
+          (publishVehicleType !== vehicle.seater || vehicleId !== vehicle.id)
+        ) {
           setPublishVehicleType(vehicle.seater);
           setVehicleId(vehicle.id);
           setVehicleDetails({
@@ -69,10 +83,20 @@ export const useSeatSelection = () => {
         }
       }
     }
-  }, [isFocused, vehicles, selectedVehicleId, handleVehicleSelect, publishVehicleType, vehicleId, setVehicleId, setPublishVehicleType, setVehicleDetails]);
+  }, [
+    isFocused,
+    vehicles,
+    selectedVehicleId,
+    handleVehicleSelect,
+    publishVehicleType,
+    vehicleId,
+    setVehicleId,
+    setPublishVehicleType,
+    setVehicleDetails,
+  ]);
 
   const onSeatPress = useCallback((id: string | number) => {
-    setSelectedSeats((prev) => {
+    setSelectedSeats(prev => {
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
@@ -101,7 +125,7 @@ export const useSeatSelection = () => {
         setSeatCount(selectedSeats.size);
         setSelectedSeatIds(Array.from(selectedSeats) as number[]);
         setPublishVehicleType(publishVehicleType);
-        
+
         if (returnTo) {
           (navigation.navigate as any)(returnTo, {
             returnTo: (route.params as any)?.nextReturnTo,
@@ -114,7 +138,17 @@ export const useSeatSelection = () => {
         navigation.goBack();
       }
     }
-  }, [selectedSeats, selectedVehicleId, navigation, flow, setSeatCount, setSelectedSeatIds, setPublishVehicleType, publishVehicleType, returnTo]);
+  }, [
+    selectedSeats,
+    selectedVehicleId,
+    navigation,
+    flow,
+    setSeatCount,
+    setSelectedSeatIds,
+    setPublishVehicleType,
+    publishVehicleType,
+    returnTo,
+  ]);
 
   return {
     flow,

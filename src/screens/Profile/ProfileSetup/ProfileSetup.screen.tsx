@@ -22,57 +22,79 @@ export const ProfileSetupScreen: React.FC = () => {
     return () => backHandler.remove();
   }, []);
 
-  const hero = useMemo(() => (
-    <HeroSection>
-      <Typography variant="headline" size="lg" weight="bold">
-        {t('profileSetup.heroTitle')}
-      </Typography>
-      <Typography variant="body" size="md" color="on_surface_variant">
-        {t('profileSetup.heroSubtitle')}
-      </Typography>
-    </HeroSection>
-  ), [t]);
+  const hero = useMemo(
+    () => (
+      <HeroSection>
+        <Typography variant="headline" size="lg" weight="bold">
+          {t('profileSetup.heroTitle')}
+        </Typography>
+        <Typography variant="body" size="md" color="on_surface_variant">
+          {t('profileSetup.heroSubtitle')}
+        </Typography>
+      </HeroSection>
+    ),
+    [t],
+  );
 
-  const identityCard = useMemo(() => (
-    <IdentityProfileCard
-      values={formik.values}
-      setFieldValue={handleFieldChange}
-      errors={formik.errors}
-      touched={formik.touched}
-      setFieldTouched={formik.setFieldTouched}
-      submitCount={formik.submitCount}
-      disabled={formik.isSubmitting}
-    />
-  ), [formik.values, handleFieldChange, formik.errors, formik.touched, formik.setFieldTouched, formik.submitCount, formik.isSubmitting]);
-
-  const preferences = useMemo(() => (
-    <PreferencesSection
-      values={formik.values}
-      setFieldValue={handleFieldChange}
-      disabled={formik.isSubmitting}
-    />
-  ), [formik.values, handleFieldChange, formik.isSubmitting]);
-
-  const infoBar = useMemo(() => 
-    formik.isValid && formik.values.fullName && formik.values.dob ? (
-      <InfoBar
-        variant="success"
-        title={t('profileSetup.almostThere')}
-        subtitle={t('profileSetup.identityVerified')}
-        style={{ marginTop: verticalScale(8) }}
+  const identityCard = useMemo(
+    () => (
+      <IdentityProfileCard
+        values={formik.values}
+        setFieldValue={handleFieldChange}
+        errors={formik.errors}
+        touched={formik.touched}
+        setFieldTouched={formik.setFieldTouched}
+        submitCount={formik.submitCount}
+        disabled={formik.isSubmitting}
       />
-    ) : null
-  , [formik.isValid, formik.values.fullName, formik.values.dob, t]);
+    ),
+    [
+      formik.values,
+      handleFieldChange,
+      formik.errors,
+      formik.touched,
+      formik.setFieldTouched,
+      formik.submitCount,
+      formik.isSubmitting,
+    ],
+  );
 
-  const footer = useMemo(() => (
-    <Button
-      variant="primary"
-      onPress={() => formik.handleSubmit()}
-      loading={formik.isSubmitting}
-    >
-      {t('profileSetup.completeSetup')}
-    </Button>
-  ), [formik.isSubmitting, formik.handleSubmit, t]);
+  const preferences = useMemo(
+    () => (
+      <PreferencesSection
+        values={formik.values}
+        setFieldValue={handleFieldChange}
+        disabled={formik.isSubmitting}
+      />
+    ),
+    [formik.values, handleFieldChange, formik.isSubmitting],
+  );
+
+  const infoBar = useMemo(
+    () =>
+      formik.isValid && formik.values.fullName && formik.values.dob ? (
+        <InfoBar
+          variant="success"
+          title={t('profileSetup.almostThere')}
+          subtitle={t('profileSetup.identityVerified')}
+          style={{ marginTop: verticalScale(8) }}
+        />
+      ) : null,
+    [formik.isValid, formik.values.fullName, formik.values.dob, t],
+  );
+
+  const footer = useMemo(
+    () => (
+      <Button
+        variant="primary"
+        onPress={() => formik.handleSubmit()}
+        loading={formik.isSubmitting}
+      >
+        {t('profileSetup.completeSetup')}
+      </Button>
+    ),
+    [formik.isSubmitting, formik.handleSubmit, t],
+  );
 
   return (
     <ProfileSetupTemplate

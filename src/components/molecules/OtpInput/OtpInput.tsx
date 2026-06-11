@@ -35,7 +35,9 @@ export const OtpInput: React.FC<OtpInputProps> = ({
             justifyContent: 'space-between',
           },
           pinCodeContainerStyle: {
-            backgroundColor: error ? theme.colors.error_container : theme.colors.surface_container,
+            backgroundColor: error
+              ? theme.colors.error_container
+              : theme.colors.surface_container,
             width: scale(44),
             height: scale(54),
             borderRadius: theme.roundness.md,
@@ -52,7 +54,9 @@ export const OtpInput: React.FC<OtpInputProps> = ({
             fontFamily: 'Plus Jakarta Sans',
             fontSize: scale(20),
             fontWeight: '700',
-            color: error ? theme.colors.on_error_container : theme.colors.on_surface,
+            color: error
+              ? theme.colors.on_error_container
+              : theme.colors.on_surface,
           },
           focusedPinCodeContainerStyle: {
             backgroundColor: theme.colors.surface_container_lowest,

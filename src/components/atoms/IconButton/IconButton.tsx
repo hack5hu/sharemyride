@@ -13,22 +13,30 @@ export const IconButton: React.FC<IconButtonProps> = ({
   ...props
 }) => {
   const theme = useTheme();
-  
+
   const getIconSize = () => {
     switch (size) {
-      case 'sm': return 16;
-      case 'md': return 20;
-      case 'lg': return 24;
-      default: return 20;
+      case 'sm':
+        return 16;
+      case 'md':
+        return 20;
+      case 'lg':
+        return 24;
+      default:
+        return 20;
     }
   };
 
   const getIconColor = () => {
     switch (variant) {
-      case 'primary': return theme.colors.on_primary;
-      case 'surface': return theme.colors.on_surface;
-      case 'secondary': return theme.colors.on_secondary_container;
-      default: return theme.colors.on_primary;
+      case 'primary':
+        return theme.colors.on_primary;
+      case 'surface':
+        return theme.colors.on_surface;
+      case 'secondary':
+        return theme.colors.on_secondary_container;
+      default:
+        return theme.colors.on_primary;
     }
   };
 

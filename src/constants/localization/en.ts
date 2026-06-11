@@ -39,7 +39,8 @@ export const en: Translations = {
     phonePlaceholder: '1234567890',
     phoneError: 'Please enter a valid phone number',
     getOtp: 'Get OTP',
-    otpInfoBox: "By continuing, you agree to the Terms of Service and Privacy Policy of ZyncRide.",
+    otpInfoBox:
+      'By continuing, you agree to the Terms of Service and Privacy Policy of ZyncRide.',
     noAccount: "Don't have an account?",
     signUp: 'Sign Up',
     orContinueWith: 'OR CONTINUE WITH',
@@ -49,9 +50,11 @@ export const en: Translations = {
     truecallerInitFailed: 'Failed to initialize Truecaller.',
     truecallerLoginFailed: 'Failed to login with Truecaller.',
     truecallerUnavailableTitle: 'Truecaller Unavailable',
-    truecallerUnavailableMessage: 'Truecaller app is not installed or configured on this device.',
+    truecallerUnavailableMessage:
+      'Truecaller app is not installed or configured on this device.',
     truecallerStartError: 'Could not start Truecaller login',
-    truecallerInvalidCredentials: 'Invalid credentials received from Truecaller',
+    truecallerInvalidCredentials:
+      'Invalid credentials received from Truecaller',
     continueButton: 'Continue',
     orDivider: 'or',
     termsOfService: 'Terms of Service',
@@ -184,11 +187,14 @@ export const en: Translations = {
   },
   dummyContent: {
     aboutTitle: 'About Us',
-    aboutBody: 'RidePoolCompany is dedicated to connecting travelers in a safe and efficient manner.\n\nFounded in 2024, our mission is to reduce carbon emissions and build a community-driven travel network. We prioritize safety, verified profiles, and seamless coordination.',
+    aboutBody:
+      'RidePoolCompany is dedicated to connecting travelers in a safe and efficient manner.\n\nFounded in 2024, our mission is to reduce carbon emissions and build a community-driven travel network. We prioritize safety, verified profiles, and seamless coordination.',
     helpTitle: 'Help Center',
-    helpBody: 'Common Questions:\n\nQ: How do I book a ride?\nA: Search for your destination, select a verified host, and request a seat.\n\nQ: Is my data secure?\nA: Yes, we use enterprise-grade encryption to protect your identity.\n\nQ: Can I cancel my booking?\nA: Yes, you can cancel up to 2 hours before departure without penalties.',
+    helpBody:
+      'Common Questions:\n\nQ: How do I book a ride?\nA: Search for your destination, select a verified host, and request a seat.\n\nQ: Is my data secure?\nA: Yes, we use enterprise-grade encryption to protect your identity.\n\nQ: Can I cancel my booking?\nA: Yes, you can cancel up to 2 hours before departure without penalties.',
     termsTitle: 'Terms & Conditions',
-    termsBody: 'Welcome to RidePoolCompany.\n\n1. Acceptance of Terms\nBy accessing and using our application, you accept and agree to be bound by the terms and provision of this agreement.\n\n2. User Responsibilities\nUsers must provide accurate information and maintain the security of their accounts.\n\n3. Code of Conduct\nAny abusive, fraudulent, or illegal activity will result in immediate termination of the account.\n\n4. Limitation of Liability\nRidePoolCompany is not liable for any indirect damages arising from the use of our service.',
+    termsBody:
+      'Welcome to RidePoolCompany.\n\n1. Acceptance of Terms\nBy accessing and using our application, you accept and agree to be bound by the terms and provision of this agreement.\n\n2. User Responsibilities\nUsers must provide accurate information and maintain the security of their accounts.\n\n3. Code of Conduct\nAny abusive, fraudulent, or illegal activity will result in immediate termination of the account.\n\n4. Limitation of Liability\nRidePoolCompany is not liable for any indirect damages arising from the use of our service.',
     emailUs: 'Email Support',
   },
   travelPreferences: {
@@ -244,7 +250,8 @@ export const en: Translations = {
     seater5: '5 Seater',
     seater7: '7 Seater',
     deleteVehicleTitle: 'Delete Vehicle',
-    deleteVehicleConfirmMsg: 'Are you sure you want to remove this vehicle? This action cannot be undone.',
+    deleteVehicleConfirmMsg:
+      'Are you sure you want to remove this vehicle? This action cannot be undone.',
   },
   chat: {
     headerTitle: 'Chats',
@@ -255,9 +262,11 @@ export const en: Translations = {
     rideLabel: 'Ride',
     yesterday: 'Yesterday',
     activeDrivers: 'Active Ride Hosts',
-    safetmsg: 'NEVER SHARE YOUR PHONE NUMBER OR PERSONAL DETAILS IN CHAT. KEEP CONVERSATIONS WITHIN THE APP FOR YOUR SAFETY.',
+    safetmsg:
+      'NEVER SHARE YOUR PHONE NUMBER OR PERSONAL DETAILS IN CHAT. KEEP CONVERSATIONS WITHIN THE APP FOR YOUR SAFETY.',
     emptyTitle: 'No conversations yet',
-    emptyDescription: 'Start a conversation with your co-riders to coordinate your journey.',
+    emptyDescription:
+      'Start a conversation with your co-riders to coordinate your journey.',
     locationShared: '📍 Location shared',
     sendFailedTitle: 'Message Failed',
     sendFailedMessage: 'Cannot send message please try again',
@@ -326,7 +335,8 @@ export const en: Translations = {
     seatLabelSingular: 'Seat',
     seatsLabelPlural: 'Seats',
     reportSuccessTitle: 'Report Submitted',
-    reportSuccessMessage: 'Thank you. Our Safety Excellence Team is investigating the incident.',
+    reportSuccessMessage:
+      'Thank you. Our Safety Excellence Team is investigating the incident.',
   },
   cancelRide: {
     title: 'Cancel Ride',
@@ -412,7 +422,8 @@ export const en: Translations = {
     continue: 'Continue',
     distanceFromRoute: '{{distance}} km from route',
     tooFarFromRoute: 'Too far from your route',
-    tooFarFromRouteMsg: 'This stop is more than 1 km from your selected route. Please choose a closer location.',
+    tooFarFromRouteMsg:
+      'This stop is more than 1 km from your selected route. Please choose a closer location.',
     selectOnMap: 'Or select on the map',
     confirmStop: 'Confirm Stop',
   },
@@ -444,7 +455,8 @@ export const en: Translations = {
     subtitle: 'How many seats are available?',
     seatSelected: 'seat selected',
     seatsSelected: 'seats selected',
-    selectVehicleFirst: 'Please select a vehicle to view the seating arrangement.',
+    selectVehicleFirst:
+      'Please select a vehicle to view the seating arrangement.',
     yourVehicles: 'Your Vehicles',
     fiveSeater: '5 Seater',
     sevenSeater: '7 Seater',
@@ -568,7 +580,8 @@ export const en: Translations = {
     durationValue: '{hours}h {minutes}m',
     fetchingRides: 'We are currently fetching best rides for you...',
     noRidesFoundTitle: 'No Rides Found',
-    noRidesFoundDesc: "We couldn't find any rides for this route and date. Try adjusting your filters or checking a different time.",
+    noRidesFoundDesc:
+      "We couldn't find any rides for this route and date. Try adjusting your filters or checking a different time.",
   },
   rideFilters: {
     title: 'Filters',
@@ -630,7 +643,8 @@ export const en: Translations = {
     legendSelected: 'Selected',
     legendBooked: 'Booked',
     legendOccupied: 'Occupied',
-    selectVehicleFirst: 'Please select a vehicle to view the seating arrangement.',
+    selectVehicleFirst:
+      'Please select a vehicle to view the seating arrangement.',
     yourVehicles: 'Your Vehicles',
     summaryTitle: 'Summary',
     seatSelected: 'seat selected',
@@ -691,7 +705,8 @@ export const en: Translations = {
     accountSecurity: 'Account Security',
     logout: 'Logout',
     logoutConfirmTitle: 'Logout',
-    logoutConfirmMessage: 'Are you sure you want to logout? You will need to login again to access your account.',
+    logoutConfirmMessage:
+      'Are you sure you want to logout? You will need to login again to access your account.',
     logoutConfirmButton: 'Logout',
     logoutConfirmCancel: 'Stay logged in',
     version: 'App Version 4.12.0-Verdant',
@@ -754,7 +769,8 @@ export const en: Translations = {
     recentReviews: 'Recent Reviews',
     reportUser: 'Report {{name}}',
     bioTitle: 'About Me',
-    defaultBio: 'Verified community partner ready to share rides and reduce carbon footprint! Enjoys meeting new people, listening to soft instrumental music, and promoting safe eco-friendly travels.',
+    defaultBio:
+      'Verified community partner ready to share rides and reduce carbon footprint! Enjoys meeting new people, listening to soft instrumental music, and promoting safe eco-friendly travels.',
   },
   developer: {
     networkLogsTitle: 'Network Logs',
@@ -782,7 +798,8 @@ export const en: Translations = {
     nearbyPlaces: 'NEARBY PLACES',
     searchPlaceholder: 'Search location...',
     gpsModalTitle: 'GPS Disabled',
-    gpsModalMessage: 'Please enable GPS/location services to center on your current position.',
+    gpsModalMessage:
+      'Please enable GPS/location services to center on your current position.',
     enableGps: 'Enable',
     gpsBannerMessage: 'GPS is off. Enable it to locate yourself.',
     gpsSettingsPathAndroid: 'Settings > Location',
@@ -810,21 +827,25 @@ export const en: Translations = {
     vehicleRemoved: 'Vehicle removed successfully.',
     vehicleRemoveError: 'Could not delete vehicle. Please try again.',
     mapOpenError: 'Could not open map application',
-    activeBookingOverlap: 'You already have an active booking during this time. Please complete or cancel it first.',
+    activeBookingOverlap:
+      'You already have an active booking during this time. Please complete or cancel it first.',
   },
   reportIssue: {
     title: 'Report Issue',
     whatHappenedTitle: 'What happened?',
-    whatHappenedSubtitle: 'Select the category that best describes your concern.',
+    whatHappenedSubtitle:
+      'Select the category that best describes your concern.',
     categorySafety: 'Safety Concern',
     categoryBehavior: 'Inappropriate Behavior',
     categoryVehicle: 'Vehicle Issue',
     categoryPayment: 'Payment/Price Issue',
     categoryOther: 'Other',
     tellUsMoreTitle: 'Tell us more',
-    tellUsMoreSubtitle: 'Your privacy is our priority. Shared details help us investigate faster.',
+    tellUsMoreSubtitle:
+      'Your privacy is our priority. Shared details help us investigate faster.',
     placeholder: 'Describe the incident in detail...',
-    safetyExcellentTeam: 'This report will be handled by our 24/7 Safety Excellence Team.',
+    safetyExcellentTeam:
+      'This report will be handled by our 24/7 Safety Excellence Team.',
     submitReport: 'Submit Report',
     cancel: 'Cancel',
   },

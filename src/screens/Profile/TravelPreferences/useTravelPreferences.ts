@@ -14,13 +14,16 @@ export const useTravelPreferences = () => {
     preferences: storedPrefs,
     isLoading,
     syncPreferences,
-    savePreferences
+    savePreferences,
   } = useTravelPrefStore();
   const { t } = useTranslation();
   // Helper to convert comma-separated string to array
   const parseMusic = (musicStr?: string) => {
     if (!musicStr) return ['Pop'];
-    return musicStr.split(',').map(s => s.trim()).filter(Boolean);
+    return musicStr
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean);
   };
 
   const [preferences, setPreferences] = useState<TravelPreferenceState>({
@@ -51,14 +54,20 @@ export const useTravelPreferences = () => {
     }
   }, [storedPrefs]);
 
-  const musicOptions = useMemo(() => ['Any', 'Bollywood', 'Pop', 'Jazz', 'Podcast', 'Silence'], []);
+  const musicOptions = useMemo(
+    () => ['Any', 'Bollywood', 'Pop', 'Jazz', 'Podcast', 'Silence'],
+    [],
+  );
 
-  const togglePreference = useCallback((key: keyof Omit<TravelPreferenceState, 'music' | 'waitingTime'>) => {
-    setPreferences(prev => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
-  }, []);
+  const togglePreference = useCallback(
+    (key: keyof Omit<TravelPreferenceState, 'music' | 'waitingTime'>) => {
+      setPreferences(prev => ({
+        ...prev,
+        [key]: !prev[key],
+      }));
+    },
+    [],
+  );
 
   const toggleMusicPreference = useCallback((genre: string) => {
     setPreferences(prev => {
@@ -99,14 +108,14 @@ export const useTravelPreferences = () => {
       showNotification(
         NotificationType.SUCCESS,
         t('notification.defaultSuccessTitle'),
-       'Travel preferences updated successfully.'
+        'Travel preferences updated successfully.',
       );
       navigation.goBack();
     } catch (error) {
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        getErrorMessage(error, 'Failed to update preferences.')
+        getErrorMessage(error, 'Failed to update preferences.'),
       );
     }
   }, [navigation, preferences, savePreferences, storedPrefs?.maxBackSeats]);

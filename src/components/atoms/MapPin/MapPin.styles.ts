@@ -26,4 +26,3 @@ export const PinStem = styled.View`
   border-bottom-right-radius: ${scale(2)}px;
   margin-top: -2px;
 `;
-

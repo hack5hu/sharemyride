@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/TimePickerCard',
   component: TimePickerCard,
-
 } satisfies Meta<typeof TimePickerCard>;
 
 export default meta;

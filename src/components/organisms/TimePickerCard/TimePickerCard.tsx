@@ -55,7 +55,11 @@ export const TimePickerCard: React.FC<TimePickerCardProps> = ({
 
       {/* 24-hour badge */}
       <FormatBadge>
-        <MaterialIcons name="schedule" size={moderateScale(14)} color={theme.colors.on_primary_fixed_variant} />
+        <MaterialIcons
+          name="schedule"
+          size={moderateScale(14)}
+          color={theme.colors.on_primary_fixed_variant}
+        />
         <FormatBadgeText>{t.formatLabel}</FormatBadgeText>
       </FormatBadge>
 
@@ -77,7 +81,6 @@ export const TimePickerCard: React.FC<TimePickerCardProps> = ({
           disabledBefore={disabledBeforeMinute}
         />
       </DialRow>
-      
     </CardContainer>
   );
 };

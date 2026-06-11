@@ -70,8 +70,10 @@ export const ProximityButton = styled.TouchableOpacity<{ active?: boolean }>`
   padding: ${moderateScale(16)}px;
   border-radius: ${moderateScale(16)}px;
   border-width: 1px;
-  border-color: ${({ theme, active }) => active ? theme.colors.primary : theme.colors.outline_variant + '4D'};
-  background-color: ${({ theme, active }) => active ? theme.colors.primary + '0D' : theme.colors.surface_container_low};
+  border-color: ${({ theme, active }) =>
+    active ? theme.colors.primary : theme.colors.outline_variant + '4D'};
+  background-color: ${({ theme, active }) =>
+    active ? theme.colors.primary + '0D' : theme.colors.surface_container_low};
 `;
 
 export const PreferenceItem = styled.TouchableOpacity`
@@ -131,13 +133,14 @@ export const TimeGrid = styled.View`
 
 export const TimeCell = styled.TouchableOpacity<{ active?: boolean }>`
   width: ${(scale(327) - scale(48) - scale(24)) / 3}px;
-  background-color: ${({ theme, active }) => active ? theme.colors.primary + '1A' : theme.colors.surface_container_low};
+  background-color: ${({ theme, active }) =>
+    active ? theme.colors.primary + '1A' : theme.colors.surface_container_low};
   border-width: 1px;
-  border-color: ${({ theme, active }) => active ? theme.colors.primary : theme.colors.outline_variant + '33'};
+  border-color: ${({ theme, active }) =>
+    active ? theme.colors.primary : theme.colors.outline_variant + '33'};
   border-radius: ${moderateScale(16)}px;
   padding-vertical: ${verticalScale(16)}px;
   align-items: center;
   justify-content: center;
   gap: ${verticalScale(4)}px;
 `;
-

@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/CategoryIcon',
   component: CategoryIcon,
-
 } satisfies Meta<typeof CategoryIcon>;
 
 export default meta;

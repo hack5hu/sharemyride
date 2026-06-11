@@ -257,7 +257,10 @@ export const StepperControls = styled.View`
   gap: ${scale(12)}px;
 `;
 
-export const StepperButton = styled.TouchableOpacity<{ primary?: boolean; disabled?: boolean }>`
+export const StepperButton = styled.TouchableOpacity<{
+  primary?: boolean;
+  disabled?: boolean;
+}>`
   width: ${moderateScale(32)}px;
   height: ${moderateScale(32)}px;
   border-radius: ${moderateScale(16)}px;
@@ -472,4 +475,3 @@ export const RecentItemContainer = styled.View`
 export const RecentSearchesHeader = styled(SectionHeader)`
   margin-bottom: ${verticalScale(12)}px;
 `;
-

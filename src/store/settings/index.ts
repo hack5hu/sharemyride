@@ -16,8 +16,8 @@ export const useSettingsStore = create<SettingsStore>()(
     {
       name: 'settings-storage',
       storage: createJSONStorage(() => mmkvStorage),
-    }
-  )
+    },
+  ),
 );
 
 export * from './types';

@@ -4,7 +4,7 @@ import { DefaultTheme } from 'styled-components/native';
 export const getMessageStatusIcon = (
   status: MessageStatus,
   isMe: boolean,
-  theme: DefaultTheme
+  theme: DefaultTheme,
 ) => {
   if (!isMe) {
     return null; // No status icon for incoming messages
@@ -21,4 +21,3 @@ export const getMessageStatusIcon = (
 
   return statusMap[normalizedStatus] || statusMap.SENT;
 };
-

@@ -8,7 +8,7 @@ const meta = {
   title: 'Molecules/Notification',
   component: Notification,
   decorators: [
-    (Story) => (
+    Story => (
       <View style={{ padding: 20, alignItems: 'center' }}>
         <Story />
       </View>

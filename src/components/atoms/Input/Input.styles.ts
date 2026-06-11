@@ -12,7 +12,8 @@ export const InputWrapper = styled.View<{
   multiline?: boolean;
 }>`
   width: 100%;
-  min-height: ${({ multiline }) => (multiline ? verticalScale(120) : verticalScale(52))}px;
+  min-height: ${({ multiline }) =>
+    multiline ? verticalScale(120) : verticalScale(52)}px;
   background-color: ${({ theme, isFocused, hasError }) => {
     if (hasError) return theme.colors.error_container;
     if (isFocused) return theme.colors.surface_container_lowest;
@@ -23,7 +24,7 @@ export const InputWrapper = styled.View<{
   align-items: ${({ multiline }) => (multiline ? 'flex-start' : 'center')};
   padding-horizontal: ${scale(12)}px;
   padding-vertical: ${({ multiline }) => (multiline ? verticalScale(10) : 0)}px;
-  
+
   /* Ambient shadow shift for active/focus states matching 'No-Line' rule */
   elevation: ${({ isFocused }) => (isFocused ? 2 : 0)};
   shadow-color: ${({ theme }) => theme.colors.shadow};
@@ -41,7 +42,6 @@ export const InnerInput = styled.TextInput<{ multiline?: boolean }>`
   color: ${({ theme }) => theme.colors.on_surface};
   text-align-vertical: ${({ multiline }) => (multiline ? 'top' : 'center')};
 `;
-
 
 export const IconContainer = styled.View`
   width: ${scale(24)}px;

@@ -51,7 +51,7 @@ export interface SearchRidePayload {
   radiusInMeters: number; // e.g. 10000 for 10km
   page?: number;
   size?: number;
-  
+
   // Filters
   proximityType?: 'PICKUP' | 'DROP_OFF';
   departureTimeSlot?: string;

@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/Chip',
   component: Chip,
-
 } satisfies Meta<typeof Chip>;
 
 export default meta;

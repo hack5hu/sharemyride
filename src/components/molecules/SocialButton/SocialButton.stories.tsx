@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/SocialButton',
   component: SocialButton,
-
 } satisfies Meta<typeof SocialButton>;
 
 export default meta;

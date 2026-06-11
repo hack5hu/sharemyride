@@ -18,7 +18,6 @@ export const Header = styled.View`
   align-items: center;
   padding: ${verticalScale(48)}px ${scale(24)}px ${verticalScale(16)}px;
   background-color: ${({ theme }) => theme.colors.surface}CC;
-  
 `;
 
 export const BrandTitle = styled.Text`
@@ -122,7 +121,6 @@ export const DetailCardHeader = styled.View`
   /* simple layout wrapper */
 `;
 
-
 export const IconBox = styled.View`
   width: ${moderateScale(40)}px;
   height: ${moderateScale(40)}px;
@@ -178,8 +176,6 @@ export const PlateBadge = styled.View`
   justify-content: center;
 `;
 
-
-
 export const DriverNameText = styled(Typography)`
   margin-bottom: ${verticalScale(2)}px;
 `;
@@ -230,4 +226,3 @@ export const TrustText = styled(Typography)`
   text-transform: uppercase;
   letter-spacing: 1.5px;
 `;
-

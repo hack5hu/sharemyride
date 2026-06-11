@@ -6,12 +6,14 @@ export const createNotificationSlice: StateCreator<
   [],
   [],
   NotificationSlice
-> = (set) => ({
+> = set => ({
   pushNotifications: true,
   promoEmails: true,
   rideReceipts: true,
   accountSecurity: true, // Static in UI for design
-  togglePushNotifications: () => set((state) => ({ pushNotifications: !state.pushNotifications })),
-  togglePromoEmails: () => set((state) => ({ promoEmails: !state.promoEmails })),
-  toggleRideReceipts: () => set((state) => ({ rideReceipts: !state.rideReceipts })),
+  togglePushNotifications: () =>
+    set(state => ({ pushNotifications: !state.pushNotifications })),
+  togglePromoEmails: () => set(state => ({ promoEmails: !state.promoEmails })),
+  toggleRideReceipts: () =>
+    set(state => ({ rideReceipts: !state.rideReceipts })),
 });

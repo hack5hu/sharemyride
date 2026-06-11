@@ -54,12 +54,14 @@ export const SendButton = styled.TouchableOpacity<{ disabled?: boolean }>`
   width: ${moderateScale(36)}px;
   height: ${moderateScale(36)}px;
   border-radius: ${moderateScale(8)}px;
-  background-color: ${({ theme, disabled }) => disabled ? theme.colors.outline_variant : theme.colors.primary};
+  background-color: ${({ theme, disabled }) =>
+    disabled ? theme.colors.outline_variant : theme.colors.primary};
   justify-content: center;
   align-items: center;
-  shadow-color: ${({ theme, disabled }) => disabled ? 'transparent' : theme.colors.primary};
+  shadow-color: ${({ theme, disabled }) =>
+    disabled ? 'transparent' : theme.colors.primary};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.2;
   shadow-radius: 8px;
-  elevation: ${({ disabled }) => disabled ? 0 : 4};
+  elevation: ${({ disabled }) => (disabled ? 0 : 4)};
 `;

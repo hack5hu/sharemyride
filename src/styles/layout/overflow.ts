@@ -7,7 +7,7 @@ export const OVERFLOW_VALUE = {
 export type OverflowType = (typeof OVERFLOW_VALUE)[keyof typeof OVERFLOW_VALUE];
 
 export const OVERFLOW = {
-  VISIBLE: {overflow: OVERFLOW_VALUE.VISIBLE},
-  HIDDEN: {overflow: OVERFLOW_VALUE.HIDDEN},
-  SCROLL: {overflow: OVERFLOW_VALUE.SCROLL},
+  VISIBLE: { overflow: OVERFLOW_VALUE.VISIBLE },
+  HIDDEN: { overflow: OVERFLOW_VALUE.HIDDEN },
+  SCROLL: { overflow: OVERFLOW_VALUE.SCROLL },
 } as const;

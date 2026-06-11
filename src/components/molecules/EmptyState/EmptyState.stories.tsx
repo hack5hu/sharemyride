@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/EmptyState',
   component: EmptyState,
-
 } satisfies Meta<typeof EmptyState>;
 
 export default meta;

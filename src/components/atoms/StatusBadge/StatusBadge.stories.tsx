@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/StatusBadge',
   component: StatusBadge,
-
 } satisfies Meta<typeof StatusBadge>;
 
 export default meta;

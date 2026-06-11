@@ -3,7 +3,12 @@ import { ActivityIndicator } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Typography } from '../Typography';
-import { StyledButton, GradientBackground, OutlineContainer, ButtonContent } from './Button.styles';
+import {
+  StyledButton,
+  GradientBackground,
+  OutlineContainer,
+  ButtonContent,
+} from './Button.styles';
 import { ButtonProps } from './types';
 
 export const Button: React.FC<ButtonProps> = ({
@@ -18,23 +23,32 @@ export const Button: React.FC<ButtonProps> = ({
   const theme = useTheme();
 
   const renderContent = () => {
-    const color = variant === 'primary' ? theme.colors.on_primary : theme.colors.primary;
+    const color =
+      variant === 'primary' ? theme.colors.on_primary : theme.colors.primary;
 
     return (
       <ButtonContent>
         {loading && <ActivityIndicator color={color} size="small" />}
-        {!loading && icon && iconPosition === 'left' && <Icon name={icon} size={20} color={color} />}
+        {!loading && icon && iconPosition === 'left' && (
+          <Icon name={icon} size={20} color={color} />
+        )}
         <Typography variant="title" size="md" color={color} weight="bold">
           {children}
         </Typography>
-        {!loading && icon && iconPosition === 'right' && <Icon name={icon} size={20} color={color} />}
+        {!loading && icon && iconPosition === 'right' && (
+          <Icon name={icon} size={20} color={color} />
+        )}
       </ButtonContent>
     );
   };
 
   if (variant === 'primary') {
     return (
-      <StyledButton disabled={disabled || loading} activeOpacity={0.8} {...props}>
+      <StyledButton
+        disabled={disabled || loading}
+        activeOpacity={0.8}
+        {...props}
+      >
         <GradientBackground
           colors={[theme.colors.primary, theme.colors.primary_container]}
           disabled={disabled || loading}

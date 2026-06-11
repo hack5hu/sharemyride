@@ -11,9 +11,7 @@ export const TitleContainer = styled.View`
   padding-left: ${moderateScale(4)}px;
 `;
 
-
 export const SectionTitle = styled(Typography)`
   letter-spacing: 1.5px;
   text-transform: uppercase;
 `;
-

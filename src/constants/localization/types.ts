@@ -537,7 +537,6 @@ export interface Translations {
   splash: SplashTranslations;
 }
 
-
 export interface NotificationTranslations {
   defaultSuccessTitle: string;
   defaultSuccessMessage: string;
@@ -892,7 +891,6 @@ export interface ReportIssueTranslations {
   cancel: string;
 }
 
-
 export interface ChatLocationTranslations {
   headerTitle: string;
   shareLiveLocation: string;
@@ -909,4 +907,3 @@ export interface ChatLocationTranslations {
   gpsSettingsPathIos: string;
   loadingCurrentLocation: string;
 }
-

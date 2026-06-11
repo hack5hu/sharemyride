@@ -38,7 +38,7 @@ interface RidePublishState {
   middleStops: Location[];
   routeDetails: FinalRouteDetails | null;
   selectedRoute: any | null;
-  
+
   // Schedule
   departureDate: string | null; // ISO string
   departureTime: string | null; // e.g., "08:30 AM"
@@ -50,7 +50,7 @@ interface RidePublishState {
   publishVehicleType: '5' | '7';
   vehicleDetails: VehicleDetails | null;
   preferences: RidePreferences | null;
-  
+
   // Pricing
   price: number; // base seat price
   fullJourneyPrice: number;
@@ -59,7 +59,6 @@ interface RidePublishState {
   premiumPercentage: number;
   segmentPrices: Record<string, number>;
 
-  
   // Strategy
   requestType: 'instant' | 'review';
 
@@ -82,20 +81,20 @@ interface RidePublishState {
   setPublishVehicleType: (type: '5' | '7') => void;
   setVehicleDetails: (details: VehicleDetails | null) => void;
   setPreferences: (prefs: RidePreferences | null) => void;
-  setPricing: (pricing: { 
-    price: number; 
+  setPricing: (pricing: {
+    price: number;
     fullJourneyPrice: number;
     frontSeatPrice: number;
-    premiumEnabled: boolean; 
-    premiumPercentage: number; 
-    segmentPrices: Record<string, number> 
+    premiumEnabled: boolean;
+    premiumPercentage: number;
+    segmentPrices: Record<string, number>;
   }) => void;
   setRequestType: (type: 'instant' | 'review') => void;
   setEditingDraftId: (id: string | null) => void;
   clearPublishState: () => void;
 }
 
-export const useRidePublishStore = create<RidePublishState>((set) => ({
+export const useRidePublishStore = create<RidePublishState>(set => ({
   startLocation: null,
   destinationLocation: null,
   middleStops: [],
@@ -123,57 +122,60 @@ export const useRidePublishStore = create<RidePublishState>((set) => ({
   segmentPrices: {},
   requestType: 'instant',
   editingDraftId: null,
-  
-  setStartLocation: (location) => set({ startLocation: location }),
-  setDestinationLocation: (location) => set({ destinationLocation: location }),
-  addMiddleStop: (location) => set((state) => ({ 
-    middleStops: [...state.middleStops, location] 
-  })),
-  removeMiddleStop: (id) => set((state) => ({
-    middleStops: state.middleStops.filter((stop) => stop.id !== id)
-  })),
-  setMiddleStops: (locations) => set({ middleStops: locations }),
-  setRouteDetails: (details) => set({ routeDetails: details }),
-  setSelectedRoute: (route) => set({ selectedRoute: route }),
-  setDepartureDate: (date) => set({ departureDate: date }),
-  setDepartureTime: (time) => set({ departureTime: time }),
-  setSeatCount: (count) => set({ seatCount: count }),
-  setSelectedSeatIds: (ids) => set({ selectedSeatIds: ids }),
-  setVehicleId: (id) => set({ vehicleId: id }),
-  setPublishVehicleType: (type) => set({ publishVehicleType: type }),
-  setVehicleDetails: (details) => set({ vehicleDetails: details }),
-  setPreferences: (preferences) => set({ preferences }),
-  setPricing: (pricing) => set({ ...pricing }),
-  setRequestType: (requestType) => set({ requestType }),
-  setEditingDraftId: (editingDraftId) => set({ editingDraftId }),
-  
-  clearPublishState: () => set({ 
-    startLocation: null, 
-    destinationLocation: null,
-    middleStops: [],
-    routeDetails: null,
-    selectedRoute: null,
-    departureDate: null,
-    departureTime: null,
-    seatCount: 1,
-    selectedSeatIds: [],
-    vehicleId: null,
-    publishVehicleType: '5',
-    vehicleDetails: null,
-    preferences: {
-      nonSmoking: true,
-      womenOnly: false,
-      music: 'Pop',
-      luggage: false,
-      pets: false,
-    },
-    price: 0,
-    fullJourneyPrice: 0,
-    frontSeatPrice: 0,
-    premiumEnabled: true,
-    premiumPercentage: 10,
-    segmentPrices: {},
-    requestType: 'instant',
-    editingDraftId: null,
-  }),
+
+  setStartLocation: location => set({ startLocation: location }),
+  setDestinationLocation: location => set({ destinationLocation: location }),
+  addMiddleStop: location =>
+    set(state => ({
+      middleStops: [...state.middleStops, location],
+    })),
+  removeMiddleStop: id =>
+    set(state => ({
+      middleStops: state.middleStops.filter(stop => stop.id !== id),
+    })),
+  setMiddleStops: locations => set({ middleStops: locations }),
+  setRouteDetails: details => set({ routeDetails: details }),
+  setSelectedRoute: route => set({ selectedRoute: route }),
+  setDepartureDate: date => set({ departureDate: date }),
+  setDepartureTime: time => set({ departureTime: time }),
+  setSeatCount: count => set({ seatCount: count }),
+  setSelectedSeatIds: ids => set({ selectedSeatIds: ids }),
+  setVehicleId: id => set({ vehicleId: id }),
+  setPublishVehicleType: type => set({ publishVehicleType: type }),
+  setVehicleDetails: details => set({ vehicleDetails: details }),
+  setPreferences: preferences => set({ preferences }),
+  setPricing: pricing => set({ ...pricing }),
+  setRequestType: requestType => set({ requestType }),
+  setEditingDraftId: editingDraftId => set({ editingDraftId }),
+
+  clearPublishState: () =>
+    set({
+      startLocation: null,
+      destinationLocation: null,
+      middleStops: [],
+      routeDetails: null,
+      selectedRoute: null,
+      departureDate: null,
+      departureTime: null,
+      seatCount: 1,
+      selectedSeatIds: [],
+      vehicleId: null,
+      publishVehicleType: '5',
+      vehicleDetails: null,
+      preferences: {
+        nonSmoking: true,
+        womenOnly: false,
+        music: 'Pop',
+        luggage: false,
+        pets: false,
+      },
+      price: 0,
+      fullJourneyPrice: 0,
+      frontSeatPrice: 0,
+      premiumEnabled: true,
+      premiumPercentage: 10,
+      segmentPrices: {},
+      requestType: 'instant',
+      editingDraftId: null,
+    }),
 }));

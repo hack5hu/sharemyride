@@ -122,4 +122,3 @@ export const PassengerInfo = styled.View`
   flex: 1;
   margin-left: ${moderateScale(12)}px;
 `;
-

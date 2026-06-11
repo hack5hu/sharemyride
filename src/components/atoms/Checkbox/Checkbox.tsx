@@ -9,7 +9,10 @@ interface CheckboxProps {
   disabled?: boolean;
 }
 
-const CheckboxContainer = styled.TouchableOpacity<{ checked: boolean; disabled?: boolean }>`
+const CheckboxContainer = styled.TouchableOpacity<{
+  checked: boolean;
+  disabled?: boolean;
+}>`
   width: ${moderateScale(24)}px;
   height: ${moderateScale(24)}px;
   border-radius: ${moderateScale(6)}px;
@@ -27,10 +30,14 @@ const CheckboxContainer = styled.TouchableOpacity<{ checked: boolean; disabled?:
   opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
 `;
 
-export const Checkbox: React.FC<CheckboxProps> = ({ checked, onToggle, disabled }) => {
+export const Checkbox: React.FC<CheckboxProps> = ({
+  checked,
+  onToggle,
+  disabled,
+}) => {
   return (
-    <CheckboxContainer 
-      checked={checked} 
+    <CheckboxContainer
+      checked={checked}
       disabled={disabled}
       onPress={disabled ? undefined : onToggle}
       activeOpacity={disabled ? 1 : 0.7}

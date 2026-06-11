@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/RiderCard',
   component: RiderCard,
-
 } satisfies Meta<typeof RiderCard>;
 
 export default meta;

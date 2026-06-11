@@ -28,7 +28,11 @@ const hasToJSON = (value: unknown): value is { toJSON: () => unknown } =>
 const toHeaderRecord = (headers: unknown): HeaderRecord => {
   const headerSource = hasToJSON(headers) ? headers.toJSON() : headers;
 
-  if (typeof headerSource !== 'object' || headerSource === null || Array.isArray(headerSource)) {
+  if (
+    typeof headerSource !== 'object' ||
+    headerSource === null ||
+    Array.isArray(headerSource)
+  ) {
     return {};
   }
 
@@ -62,7 +66,7 @@ const redactConsoleData = (value: unknown): unknown => {
   if (!isRecord(value)) return value;
 
   return Object.entries(value).reduce<JsonRecord>((acc, [key, item]) => {
-    acc[key] =  redactConsoleData(item);
+    acc[key] = redactConsoleData(item);
     return acc;
   }, {});
 };
@@ -71,7 +75,10 @@ export const logApiRequest = (config: InternalAxiosRequestConfig) => {
   if (!__DEV__) return;
 
   Logger.log('[API Request]', `${getMethod(config.method)} ${config.url}`);
-  Logger.log('[API Token]', getAuthorizationToken(config.headers) || 'No token');
+  Logger.log(
+    '[API Token]',
+    getAuthorizationToken(config.headers) || 'No token',
+  );
   Logger.log('[API Headers]', sanitizeHeaders(config.headers));
   Logger.log('[API Request Body]', redactConsoleData(config.data));
 };
@@ -81,7 +88,9 @@ export const logApiResponse = (response: AxiosResponse) => {
 
   Logger.log(
     '[API Response]',
-    `${getMethod(response.config.method)} ${response.config.url} ${response.status}`,
+    `${getMethod(response.config.method)} ${response.config.url} ${
+      response.status
+    }`,
   );
   Logger.log('[API Response Body]', redactConsoleData(response.data));
 };
@@ -91,8 +100,16 @@ export const logApiError = (error: AxiosError) => {
 
   Logger.error(
     '[API Error]',
-    `${getMethod(error.config?.method)} ${error.config?.url} ${error.response?.status || 0}`,
+    `${getMethod(error.config?.method)} ${error.config?.url} ${
+      error.response?.status || 0
+    }`,
   );
-  Logger.error('[API Token]', getAuthorizationToken(error.config?.headers) || 'No token');
-  Logger.error('[API Error Response]', redactConsoleData(error.response?.data || error.message));
+  Logger.error(
+    '[API Token]',
+    getAuthorizationToken(error.config?.headers) || 'No token',
+  );
+  Logger.error(
+    '[API Error Response]',
+    redactConsoleData(error.response?.data || error.message),
+  );
 };

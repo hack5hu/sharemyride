@@ -1,6 +1,9 @@
 import { Client, IMessage } from '@stomp/stompjs';
 import { MessageStatus, MessageType } from '@/constants/enums';
-import { useChatStore, getConversationIdForMessage } from '@/store/useChatStore';
+import {
+  useChatStore,
+  getConversationIdForMessage,
+} from '@/store/useChatStore';
 import { ChatMessage } from '@/types/chat';
 import { Logger } from '@/utils/logger';
 import { parseChatTimestamp } from '@/utils/date';
@@ -23,7 +26,11 @@ interface StatusMessage {
 
 interface ChatSubscriptionCallbacks {
   getConversationId: (u1: string, u2: string) => string;
-  updateStatus: (messageId: string, status: MessageStatus, userId: string) => void;
+  updateStatus: (
+    messageId: string,
+    status: MessageStatus,
+    userId: string,
+  ) => void;
   markAsRead: (myUserId: string, otherUserId: string) => void;
   fetchHistory: (myUserId: string, otherUserId: string) => void;
 }
@@ -43,13 +50,19 @@ const linkPendingMessage = (data: StatusMessage): boolean => {
   for (const convId of Object.keys(messages)) {
     const pendingMessage = [...messages[convId]]
       .reverse()
-      .find(message =>
-        message.messageId.startsWith('temp-') &&
-        message.status === MessageStatus.PENDING,
+      .find(
+        message =>
+          message.messageId.startsWith('temp-') &&
+          message.status === MessageStatus.PENDING,
       );
 
     if (pendingMessage) {
-      linkMessage(convId, pendingMessage.messageId, data.messageId, data.status);
+      linkMessage(
+        convId,
+        pendingMessage.messageId,
+        data.messageId,
+        data.status,
+      );
       return true;
     }
   }
@@ -59,18 +72,26 @@ const linkPendingMessage = (data: StatusMessage): boolean => {
 
 // Track active subscriptions to avoid duplicates on reconnection
 let activeSubscriptions: { unsubscribe: () => void }[] = [];
-let statusUpdateQueue: { conversationId: string; messageId: string; status: MessageStatus }[] = [];
+let statusUpdateQueue: {
+  conversationId: string;
+  messageId: string;
+  status: MessageStatus;
+}[] = [];
 let statusUpdateTimeout: any = null;
 
 function processStatusUpdateQueue() {
   const { updateMultipleMessageStatuses } = useChatStore.getState();
-  
-  const groups: Record<string, { messageId: string; status: MessageStatus }[]> = {};
+
+  const groups: Record<string, { messageId: string; status: MessageStatus }[]> =
+    {};
   statusUpdateQueue.forEach(item => {
     if (!groups[item.conversationId]) {
       groups[item.conversationId] = [];
     }
-    groups[item.conversationId].push({ messageId: item.messageId, status: item.status });
+    groups[item.conversationId].push({
+      messageId: item.messageId,
+      status: item.status,
+    });
   });
 
   Object.keys(groups).forEach(convId => {
@@ -81,7 +102,11 @@ function processStatusUpdateQueue() {
   statusUpdateTimeout = null;
 }
 
-function queueStatusUpdate(conversationId: string, messageId: string, status: MessageStatus) {
+function queueStatusUpdate(
+  conversationId: string,
+  messageId: string,
+  status: MessageStatus,
+) {
   statusUpdateQueue.push({ conversationId, messageId, status });
   if (!statusUpdateTimeout) {
     statusUpdateTimeout = setTimeout(processStatusUpdateQueue, 0);
@@ -94,7 +119,7 @@ export const registerChatSubscriptions = (
   callbacks: ChatSubscriptionCallbacks,
 ) => {
   // Unsubscribe from any existing subscriptions to prevent duplicate event listeners
-  activeSubscriptions.forEach((sub) => {
+  activeSubscriptions.forEach(sub => {
     try {
       sub.unsubscribe();
     } catch (e) {
@@ -107,7 +132,10 @@ export const registerChatSubscriptions = (
     const data = parseMessage<IncomingMessage>(msg);
     if (!data) return;
 
-    const conversationId = callbacks.getConversationId(data.senderId, data.receiverId);
+    const conversationId = callbacks.getConversationId(
+      data.senderId,
+      data.receiverId,
+    );
     const { activeConversationId, addMessage } = useChatStore.getState();
     const isFromOther = data.senderId !== userId;
     const isRead = isFromOther && activeConversationId === conversationId;

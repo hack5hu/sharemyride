@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { useTheme } from 'styled-components/native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { Container, InputWrapper, StyledTextInput, IconButton } from './SearchInput.styles';
+import {
+  Container,
+  InputWrapper,
+  StyledTextInput,
+  IconButton,
+} from './SearchInput.styles';
 import { SearchInputProps } from './types';
 import { moderateScale } from '@/styles';
 
@@ -28,10 +33,10 @@ export const SearchInput: React.FC<SearchInputProps> = ({
     <Container style={containerStyle}>
       <InputWrapper isFocused={isFocused}>
         <IconButton>
-          <MaterialIcon 
-            name="search" 
-            size={moderateScale(24)} 
-            color={theme.colors.outline} 
+          <MaterialIcon
+            name="search"
+            size={moderateScale(24)}
+            color={theme.colors.outline}
           />
         </IconButton>
         <StyledTextInput

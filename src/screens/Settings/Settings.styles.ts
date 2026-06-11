@@ -49,7 +49,8 @@ export const SettingInfo = styled.View`
 `;
 
 export const IconBox = styled.View<{ color?: string }>`
-  background-color: ${({ theme, color }) => (color || theme.colors.primary) + '20'};
+  background-color: ${({ theme, color }) =>
+    (color || theme.colors.primary) + '20'};
   padding: ${moderateScale(12)}px;
   border-radius: ${moderateScale(12)}px;
 `;
@@ -76,12 +77,14 @@ export const ThemeGrid = styled.View`
 export const ThemeCard = styled.View<{ isCurrent?: boolean }>`
   flex: 1;
   aspect-ratio: 1;
-  background-color: ${({ theme, isCurrent }) => 
-    isCurrent ? theme.colors.surface_container_highest + '80' : theme.colors.surface_container};
+  background-color: ${({ theme, isCurrent }) =>
+    isCurrent
+      ? theme.colors.surface_container_highest + '80'
+      : theme.colors.surface_container};
   border-radius: 24px;
   padding: ${scale(20)}px;
   border-width: 1px;
-  border-color: ${({ theme, isCurrent }) => 
+  border-color: ${({ theme, isCurrent }) =>
     isCurrent ? theme.colors.primary_container + '40' : 'transparent'};
   justify-content: space-between;
 `;
@@ -145,7 +148,7 @@ export const LogoutButton = styled.TouchableOpacity`
 
 export const FooterVersion = styled.View`
   align-items: center;
-  marginTop: ${verticalScale(24)}px;
+  margintop: ${verticalScale(24)}px;
 `;
 
 export const BadgeText = styled(Typography).attrs({
@@ -172,4 +175,3 @@ export const VersionText = styled(Typography).attrs({
 })`
   opacity: 0.5;
 `;
-

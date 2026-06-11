@@ -2,7 +2,10 @@ import React from 'react';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { Location } from '@/store/useLocationStore';
-import { MiddleStopsList, RouteStop } from '@/components/organisms/MiddleStopsList';
+import {
+  MiddleStopsList,
+  RouteStop,
+} from '@/components/organisms/MiddleStopsList';
 import { BentoMapPreview } from '@/components/molecules/BentoMapPreview';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Button } from '@/components/atoms/Button';
@@ -40,13 +43,10 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
 }) => {
   const theme = useTheme();
   const { middleStops: t } = useLocale();
-  console.log("startDistanceText", startDistanceText);
-  console.log("destinationDistanceText", destinationDistanceText);
+  console.log('startDistanceText', startDistanceText);
+  console.log('destinationDistanceText', destinationDistanceText);
   return (
-    <ScreenShell
-      title={"Add stops"}
-      onBack={onBackPress}
-    >
+    <ScreenShell title={'Add stops'} onBack={onBackPress}>
       <S.ContentLayer showsVerticalScrollIndicator={false}>
         {/* Title */}
         <S.TitleSection>

@@ -787,7 +787,8 @@ export const hi: Translations = {
     nearbyPlaces: 'आस-पास की जगहें',
     searchPlaceholder: 'जगह खोजें...',
     gpsModalTitle: 'जीपीएस बंद है',
-    gpsModalMessage: 'अपनी वर्तमान लोकेशन पर जाने के लिए कृपया जीपीएस/लोकेशन सेवा चालू करें।',
+    gpsModalMessage:
+      'अपनी वर्तमान लोकेशन पर जाने के लिए कृपया जीपीएस/लोकेशन सेवा चालू करें।',
     enableGps: 'चालू करें',
     gpsBannerMessage: 'जीपीएस बंद है। अपनी लोकेशन देखने के लिए इसे चालू करें।',
     gpsSettingsPathAndroid: 'सेटिंग्स > लोकेशन',
@@ -815,7 +816,8 @@ export const hi: Translations = {
     vehicleRemoved: 'गाड़ी हटा दी गई।',
     vehicleRemoveError: 'गाड़ी नहीं हट सकी। कृपया फिर कोशिश करें।',
     mapOpenError: 'मैप ऐप नहीं खुल सका।',
-    activeBookingOverlap: 'इस समय के दौरान आपकी पहले से ही एक एक्टिव बुकिंग है। कृपया इसे पहले पूरा या कैंसल करें।',
+    activeBookingOverlap:
+      'इस समय के दौरान आपकी पहले से ही एक एक्टिव बुकिंग है। कृपया इसे पहले पूरा या कैंसल करें।',
   },
   reportIssue: {
     title: 'रिपोर्ट करें',

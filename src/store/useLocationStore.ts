@@ -18,28 +18,27 @@ interface LocationStore {
 
 export const useLocationStore = create<LocationStore>()(
   persist(
-    (set) => ({
+    set => ({
       history: {},
       addSearchHistory: (location, contextKey) =>
-        set((state) => {
+        set(state => {
           const currentBucket = state.history[contextKey] || [];
-          
+
           // Deduplicate by ID, identical coordinates, or identical name and address
-          const filteredBucket = currentBucket.filter((item) => {
+          const filteredBucket = currentBucket.filter(item => {
             const isSameId = item.id === location.id;
-            const isSameCoords = 
-              item.latitude === location.latitude && 
+            const isSameCoords =
+              item.latitude === location.latitude &&
               item.longitude === location.longitude;
-            const isSameAddress = 
-              item.name === location.name && 
-              item.address === location.address;
-            
+            const isSameAddress =
+              item.name === location.name && item.address === location.address;
+
             return !isSameId && !isSameCoords && !isSameAddress;
           });
 
           // Prepend new location and limit history size
           const updatedBucket = [location, ...filteredBucket].slice(0, 5);
-          
+
           return {
             history: {
               ...state.history,
@@ -47,8 +46,8 @@ export const useLocationStore = create<LocationStore>()(
             },
           };
         }),
-      clearHistory: (contextKey) =>
-        set((state) => {
+      clearHistory: contextKey =>
+        set(state => {
           if (contextKey) {
             return {
               history: {
@@ -63,6 +62,6 @@ export const useLocationStore = create<LocationStore>()(
     {
       name: 'location-storage',
       storage: createJSONStorage(() => mmkvStorage),
-    }
-  )
+    },
+  ),
 );

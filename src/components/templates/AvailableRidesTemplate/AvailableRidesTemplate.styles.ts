@@ -84,7 +84,7 @@ export const FilterChip = styled.TouchableOpacity<{ active?: boolean }>`
   padding-horizontal: ${scale(16)}px;
   padding-vertical: ${verticalScale(8)}px;
   border-radius: ${moderateScale(999)}px;
-  background-color: ${({ theme, active }) => 
+  background-color: ${({ theme, active }) =>
     active ? theme.colors.primary : theme.colors.surface_container_high};
   margin-right: ${scale(12)}px;
 `;

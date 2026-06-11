@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/PreferenceCard',
   component: PreferenceCard,
-
 } satisfies Meta<typeof PreferenceCard>;
 
 export default meta;

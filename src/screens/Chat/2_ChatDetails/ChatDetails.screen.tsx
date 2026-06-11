@@ -10,16 +10,17 @@ import { ReportIssueModal } from '@/components/organisms/ReportIssueModal';
 import { ChatMapPreview } from '@/components/molecules/ChatMapPreview';
 import { Typography } from '@/components/atoms/Typography';
 import { ConnectionStatus } from '@/constants/enums';
-import { ConnectionBanner, DateHeaderContainer, DateHeaderPill } from './ChatDetails.styles';
+import {
+  ConnectionBanner,
+  DateHeaderContainer,
+  DateHeaderPill,
+} from './ChatDetails.styles';
 
-export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({ navigation, route }) => {
-  const {
-    name,
-    userId,
-    avatarUri,
-    rating = 5.0,
-    rideInfo
-  } = route.params;
+export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({
+  navigation,
+  route,
+}) => {
+  const { name, userId, avatarUri, rating = 5.0, rideInfo } = route.params;
 
   const {
     t,
@@ -45,58 +46,95 @@ export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({ navigation
 
   const theme = useTheme();
 
-  const renderMessageItem = useCallback(({ item }: { item: any }) => {
-    if (item.type === 'date_header') {
+  const renderMessageItem = useCallback(
+    ({ item }: { item: any }) => {
+      if (item.type === 'date_header') {
+        return (
+          <DateHeaderContainer>
+            <DateHeaderPill>
+              <Typography
+                variant="label"
+                size="xs"
+                color="on_surface_variant"
+                weight="bold"
+              >
+                {item.text}
+              </Typography>
+            </DateHeaderPill>
+          </DateHeaderContainer>
+        );
+      }
+
       return (
-        <DateHeaderContainer>
-          <DateHeaderPill>
-            <Typography variant="label" size="xs" color="on_surface_variant" weight="bold">
-              {item.text}
-            </Typography>
-          </DateHeaderPill>
-        </DateHeaderContainer>
+        <MessageBubble
+          content={
+            item.type === 'map' ? (
+              <ChatMapPreview
+                {...item.locationData}
+                onPress={() => handleMapPress(item.locationData)}
+              />
+            ) : (
+              item.text
+            )
+          }
+          timestamp={item.timestamp}
+          isSender={item.isSender}
+          status={item.status}
+          onPress={
+            item.status === 'failed' ? () => handleRetry(item.id) : undefined
+          }
+        />
       );
-    }
+    },
+    [handleMapPress, handleRetry],
+  );
 
-    return (
-      <MessageBubble
-        content={item.type === 'map' ? (
-          <ChatMapPreview
-            {...item.locationData}
-            onPress={() => handleMapPress(item.locationData)}
-          />
-        ) : item.text}
-        timestamp={item.timestamp}
-        isSender={item.isSender}
-        status={item.status}
-        onPress={item.status === 'failed' ? () => handleRetry(item.id) : undefined}
+  const header = useMemo(
+    () => (
+      <ChatAppHeader
+        name={cachedUser?.name || name || `User ${userId?.slice(0, 8)}`}
+        rating={cachedUser?.rating || rating}
+        isTyping={false}
+        avatarUri={cachedUser?.avatarUri || avatarUri || undefined}
+        onBackPress={() => navigation.goBack()}
+        onReportPress={() => setIsReportModalVisible(true)}
+        onProfilePress={handleProfilePress}
       />
-    );
-  }, [handleMapPress, handleRetry]);
+    ),
+    [
+      cachedUser,
+      name,
+      userId,
+      rating,
+      avatarUri,
+      navigation,
+      setIsReportModalVisible,
+      handleProfilePress,
+    ],
+  );
 
-  const header = useMemo(() => (
-    <ChatAppHeader
-      name={cachedUser?.name || name || `User ${userId?.slice(0, 8)}`}
-      rating={cachedUser?.rating || rating}
-      isTyping={false}
-      avatarUri={cachedUser?.avatarUri || avatarUri || undefined}
-      onBackPress={() => navigation.goBack()}
-      onReportPress={() => setIsReportModalVisible(true)}
-      onProfilePress={handleProfilePress}
-    />
-  ), [cachedUser, name, userId, rating, avatarUri, navigation, setIsReportModalVisible, handleProfilePress]);
-
-  const input = useMemo(() => (
-    <ChatInputSection
-      value={message}
-      onChangeText={setMessage}
-      onSendPress={handleSend}
-      onLocationPress={handleLocationShare}
-      safetyMessage={isSafetyVisible ? t('chat.safetmsg') : undefined}
-      onSafetyClose={handleSafetyClose}
-      isSendDisabled={!message.trim()}
-    />
-  ), [message, setMessage, handleSend, handleLocationShare, isSafetyVisible, t, handleSafetyClose]);
+  const input = useMemo(
+    () => (
+      <ChatInputSection
+        value={message}
+        onChangeText={setMessage}
+        onSendPress={handleSend}
+        onLocationPress={handleLocationShare}
+        safetyMessage={isSafetyVisible ? t('chat.safetmsg') : undefined}
+        onSafetyClose={handleSafetyClose}
+        isSendDisabled={!message.trim()}
+      />
+    ),
+    [
+      message,
+      setMessage,
+      handleSend,
+      handleLocationShare,
+      isSafetyVisible,
+      t,
+      handleSafetyClose,
+    ],
+  );
 
   return (
     <>
@@ -112,7 +150,11 @@ export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({ navigation
                 <Typography
                   variant="label"
                   size="xs"
-                  color={connectionStatus === ConnectionStatus.CONNECTING ? 'on_secondary_container' : 'on_error_container'}
+                  color={
+                    connectionStatus === ConnectionStatus.CONNECTING
+                      ? 'on_secondary_container'
+                      : 'on_error_container'
+                  }
                   weight="bold"
                 >
                   {connectionStatus === ConnectionStatus.CONNECTING

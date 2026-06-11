@@ -63,7 +63,7 @@ export const TabNavigation = styled.ScrollView.attrs({
 export const TabButton = styled.TouchableOpacity<{ isActive: boolean }>`
   padding-bottom: ${verticalScale(8)}px;
   border-bottom-width: 2px;
-  border-bottom-color: ${({ theme, isActive }) => 
+  border-bottom-color: ${({ theme, isActive }) =>
     isActive ? theme.colors.primary : 'transparent'};
 `;
 
@@ -71,6 +71,6 @@ export const TabLabel = styled.Text<{ isActive: boolean }>`
   font-family: 'Plus Jakarta Sans';
   font-size: ${moderateScale(14)}px;
   font-weight: ${({ isActive }) => (isActive ? '800' : '500')};
-  color: ${({ theme, isActive }) => 
+  color: ${({ theme, isActive }) =>
     isActive ? theme.colors.primary : theme.colors.on_surface_variant + '99'};
 `;

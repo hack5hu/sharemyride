@@ -25,7 +25,8 @@ export const TopHeader = styled.View`
   align-items: center;
   justify-content: space-between;
   border-bottom-width: 1px;
-  border-bottom-color: ${({ theme }) => `${theme.colors.outline_variant}26`}; /* 15% opacity */
+  border-bottom-color: ${({ theme }) =>
+    `${theme.colors.outline_variant}26`}; /* 15% opacity */
 `;
 
 export const HeaderLeft = styled.View`
@@ -84,8 +85,8 @@ export const MapImageWrapper = styled.View`
 /* Route Content Area */
 export const ContentLayer = styled.ScrollView.attrs({
   contentContainerStyle: {
-    paddingBottom: verticalScale(120), 
-  }
+    paddingBottom: verticalScale(120),
+  },
 })`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.surface};
@@ -146,7 +147,7 @@ export const SourcePin = styled.View`
   border-radius: 9999px;
   border-width: 4px;
   border-color: white;
-  shadow-color: rgb(0,0,0);
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px 4px;
   shadow-opacity: 0.3;
   shadow-radius: 10px;
@@ -168,7 +169,7 @@ export const DestinationPin = styled.View`
   background-color: ${({ theme }) => theme.colors.tertiary};
   padding: ${moderateScale(8)}px;
   border-radius: ${moderateScale(12)}px;
-  shadow-color: rgb(0,0,0);
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px 4px;
   shadow-opacity: 0.3;
   shadow-radius: 10px;
@@ -184,10 +185,12 @@ export const TrustBadge = styled.View`
   align-items: center;
   gap: ${scale(12)}px;
   padding: ${moderateScale(16)}px;
-  background-color: ${({ theme }) => `${theme.colors.primary_fixed}4D`}; /* 30% opacity */
+  background-color: ${({ theme }) =>
+    `${theme.colors.primary_fixed}4D`}; /* 30% opacity */
   border-radius: ${moderateScale(16)}px;
   border-width: 1px;
-  border-color: ${({ theme }) => `${theme.colors.primary_fixed_dim}33`}; /* 20% opacity */
+  border-color: ${({ theme }) =>
+    `${theme.colors.primary_fixed_dim}33`}; /* 20% opacity */
 `;
 
 export const TrustBadgeText = styled.Text`

@@ -19,8 +19,8 @@ export const HelpAndSupportScreen: React.FC = () => {
       content={t('dummyContent.helpBody') || ''}
       onBack={() => navigation.goBack()}
       actionButton={
-        <Button 
-          title={t('dummyContent.emailUs') || 'Email Support'} 
+        <Button
+          title={t('dummyContent.emailUs') || 'Email Support'}
           onPress={handleEmailSupport}
           variant="primary"
         />

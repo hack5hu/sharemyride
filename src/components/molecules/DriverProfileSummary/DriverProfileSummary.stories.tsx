@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/DriverProfileSummary',
   component: DriverProfileSummary,
-
 } satisfies Meta<typeof DriverProfileSummary>;
 
 export default meta;

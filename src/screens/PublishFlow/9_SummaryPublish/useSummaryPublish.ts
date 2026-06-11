@@ -17,21 +17,17 @@ export const useSummaryPublish = () => {
     departureTime,
   } = publishStore;
 
-  const {
-    formattedDate,
-    vehicleData,
-    pricingData,
-    preferencesData,
-  } = useSummaryMappers(publishStore);
+  const { formattedDate, vehicleData, pricingData, preferencesData } =
+    useSummaryMappers(publishStore);
 
-  const {
-    handlePublish,
-    handleSave,
-  } = useSummaryActions(publishStore, setIsPublishing);
+  const { handlePublish, handleSave } = useSummaryActions(
+    publishStore,
+    setIsPublishing,
+  );
 
   const validationError = useMemo(() => {
     if (!departureDate || !departureTime) return null;
-    
+
     const dateObj = new Date(departureDate);
     const [timeStr, ampm] = departureTime.split(' ');
     const [hours, minutes] = timeStr.split(':').map(Number);
@@ -47,8 +43,20 @@ export const useSummaryPublish = () => {
   }, [departureDate, departureTime]);
 
   const canPublish = useMemo(() => {
-    return !!(startLocation && destinationLocation && departureDate && departureTime && !validationError);
-  }, [startLocation, destinationLocation, departureDate, departureTime, validationError]);
+    return !!(
+      startLocation &&
+      destinationLocation &&
+      departureDate &&
+      departureTime &&
+      !validationError
+    );
+  }, [
+    startLocation,
+    destinationLocation,
+    departureDate,
+    departureTime,
+    validationError,
+  ]);
 
   return {
     routeData: {

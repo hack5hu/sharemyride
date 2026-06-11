@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/MessageBubble',
   component: MessageBubble,
-
 } satisfies Meta<typeof MessageBubble>;
 
 export default meta;

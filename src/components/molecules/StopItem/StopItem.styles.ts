@@ -1,5 +1,10 @@
 import styled from 'styled-components/native';
-import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles/scale';
+import {
+  scale,
+  verticalScale,
+  moderateScale,
+  responsiveFont,
+} from '@/styles/scale';
 
 export const Container = styled.View`
   flex-direction: row;
@@ -7,19 +12,24 @@ export const Container = styled.View`
   margin-bottom: ${verticalScale(32)}px;
 `;
 
-export const IconContainer = styled.View<{ type: 'pickup' | 'stop' | 'destination' }>`
+export const IconContainer = styled.View<{
+  type: 'pickup' | 'stop' | 'destination';
+}>`
   width: ${moderateScale(24)}px;
   height: ${moderateScale(24)}px;
   border-radius: ${moderateScale(12)}px;
-  background-color: ${({ theme, type }) => 
-    type === 'pickup' ? theme.colors.primary : 
-    type === 'destination' ? theme.colors.tertiary : 
-    theme.colors.surface_container_highest};
+  background-color: ${({ theme, type }) =>
+    type === 'pickup'
+      ? theme.colors.primary
+      : type === 'destination'
+      ? theme.colors.tertiary
+      : theme.colors.surface_container_highest};
   justify-content: center;
   align-items: center;
   z-index: 1;
-  border-width: ${({ type }) => type === 'stop' ? 2 : 0}px;
-  border-color: ${({ theme, type }) => type === 'stop' ? theme.colors.outline_variant : 'transparent'};
+  border-width: ${({ type }) => (type === 'stop' ? 2 : 0)}px;
+  border-color: ${({ theme, type }) =>
+    type === 'stop' ? theme.colors.outline_variant : 'transparent'};
 `;
 
 export const StopDot = styled.View`
@@ -49,5 +59,6 @@ export const Address = styled.Text`
   font-size: ${responsiveFont(14)}px;
   color: ${({ theme }) => theme.colors.on_surface};
   text-decoration-line: underline;
-  text-decoration-color: ${({ theme }) => `${theme.colors.primary}33`}; /* 20% opacity */
+  text-decoration-color: ${({ theme }) =>
+    `${theme.colors.primary}33`}; /* 20% opacity */
 `;

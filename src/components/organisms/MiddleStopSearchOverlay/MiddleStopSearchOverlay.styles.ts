@@ -62,7 +62,10 @@ export const GridContainer = styled.View`
 
 export const GridCard = styled.TouchableOpacity<{ isPopular?: boolean }>`
   flex: 1;
-  background-color: ${({ theme, isPopular }) => isPopular ? theme.colors.surface_container_lowest : theme.colors.surface_container_low};
+  background-color: ${({ theme, isPopular }) =>
+    isPopular
+      ? theme.colors.surface_container_lowest
+      : theme.colors.surface_container_low};
   padding: ${moderateScale(16)}px;
   border-radius: ${moderateScale(12)}px;
   min-height: ${verticalScale(120)}px;
@@ -76,7 +79,10 @@ export const BadgeRow = styled.View`
 `;
 
 export const CardBadge = styled.View<{ isPopular?: boolean }>`
-  background-color: ${({ theme, isPopular }) => isPopular ? `${theme.colors.primary_container}4D` : `${theme.colors.secondary_container}4D`};
+  background-color: ${({ theme, isPopular }) =>
+    isPopular
+      ? `${theme.colors.primary_container}4D`
+      : `${theme.colors.secondary_container}4D`};
   padding-horizontal: ${scale(8)}px;
   padding-vertical: ${verticalScale(2)}px;
   border-radius: 9999px;
@@ -86,7 +92,8 @@ export const CardBadgeText = styled.Text<{ isPopular?: boolean }>`
   font-family: 'Plus Jakarta Sans';
   font-weight: 700;
   font-size: ${responsiveFont(10)}px;
-  color: ${({ theme, isPopular }) => isPopular ? theme.colors.primary : theme.colors.secondary};
+  color: ${({ theme, isPopular }) =>
+    isPopular ? theme.colors.primary : theme.colors.secondary};
 `;
 
 export const CardTitle = styled.Text`

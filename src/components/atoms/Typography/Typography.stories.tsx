@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/Typography',
   component: Typography,
-
 } satisfies Meta<typeof Typography>;
 
 export default meta;

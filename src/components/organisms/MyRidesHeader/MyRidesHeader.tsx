@@ -6,7 +6,7 @@ import {
   TitleText,
   TabNavigation,
   TabButton,
-  TabLabel
+  TabLabel,
 } from './MyRidesHeader.styles';
 import { MyRidesHeaderProps, MyRidesTab } from './types.d';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -36,16 +36,14 @@ export const MyRidesHeader: React.FC<MyRidesHeaderProps> = ({
       </TopSection>
 
       <TabNavigation>
-        {TABS.map((tab) => (
+        {TABS.map(tab => (
           <TabButton
             key={tab.value}
             isActive={activeTab === tab.value}
             onPress={() => onTabChange(tab.value)}
             activeOpacity={0.7}
           >
-            <TabLabel isActive={activeTab === tab.value}>
-              {tab.label}
-            </TabLabel>
+            <TabLabel isActive={activeTab === tab.value}>{tab.label}</TabLabel>
           </TabButton>
         ))}
       </TabNavigation>

@@ -11,7 +11,9 @@ const getEncryptionKey = (): string => {
     return 'development-only-mmkv-key';
   }
 
-  throw new Error('MMKV_ENCRYPTION_KEY must be configured for production builds.');
+  throw new Error(
+    'MMKV_ENCRYPTION_KEY must be configured for production builds.',
+  );
 };
 
 export const storage = createMMKV({

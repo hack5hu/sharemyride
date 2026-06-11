@@ -17,7 +17,8 @@ export interface RouteData {
 
 export const useRouteSelection = () => {
   const navigation = useAppNavigation();
-  const { startLocation, destinationLocation, setSelectedRoute } = useRidePublishStore();
+  const { startLocation, destinationLocation, setSelectedRoute } =
+    useRidePublishStore();
   const [routesData, setRoutesData] = useState<RouteData[]>([]);
   const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -31,13 +32,13 @@ export const useRouteSelection = () => {
   useEffect(() => {
     const fetchRoutes = async () => {
       if (!startLocation || !destinationLocation) return;
-      
+
       setIsLoading(true);
       const routesResponse = await locationService.getDirections(
         startLocation.latitude,
         startLocation.longitude,
         destinationLocation.latitude,
-        destinationLocation.longitude
+        destinationLocation.longitude,
       );
       if (routesResponse && routesResponse.length > 0) {
         // Sort by distance (meters) ascending
@@ -49,21 +50,28 @@ export const useRouteSelection = () => {
 
         const mappedData: RouteData[] = sortedRoutes.map((route, index) => {
           const id = `route_${index + 1}`;
-          
-          const routeDistance = route.legs?.[0]?.distance || route.distance || 0;
-          const routeDuration = route.legs?.[0]?.duration || route.duration || 0;
-          
+
+          const routeDistance =
+            route.legs?.[0]?.distance || route.distance || 0;
+          const routeDuration =
+            route.legs?.[0]?.duration || route.duration || 0;
+
           // Format metrics
           const distKm = (routeDistance / 1000).toFixed(1);
           const mins = Math.round(routeDuration / 60);
-          const durStr = mins > 60 ? `${Math.floor(mins / 60)} hr ${mins % 60} min` : `${mins} min`;
-          
+          const durStr =
+            mins > 60
+              ? `${Math.floor(mins / 60)} hr ${mins % 60} min`
+              : `${mins} min`;
+
           // Determine description
           let desc = `Standard route via ${route.weight_name || 'main roads'}.`;
           if (route.has_toll) {
-             desc = route.toll_price ? `Includes tolls (~₹${route.toll_price}).` : 'This route has tolls.';
+            desc = route.toll_price
+              ? `Includes tolls (~₹${route.toll_price}).`
+              : 'This route has tolls.';
           } else if (index === 0) {
-             desc = 'Shortest distance available.';
+            desc = 'Shortest distance available.';
           }
 
           // Decode geometry
@@ -88,7 +96,11 @@ export const useRouteSelection = () => {
               duration: durStr,
               distance: `${distKm} km`,
               description: desc,
-              iconName: route.has_toll ? 'toll' : (index === 0 ? 'bolt' : 'straighten'),
+              iconName: route.has_toll
+                ? 'toll'
+                : index === 0
+                ? 'bolt'
+                : 'straighten',
             },
             coordinates,
             bounds,

@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/LoginForm',
   component: LoginForm,
-
 } satisfies Meta<typeof LoginForm>;
 
 export default meta;

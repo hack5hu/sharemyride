@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/MapPin',
   component: MapPin,
-
 } satisfies Meta<typeof MapPin>;
 
 export default meta;

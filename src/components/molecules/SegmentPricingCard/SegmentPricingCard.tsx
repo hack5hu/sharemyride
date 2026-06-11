@@ -60,7 +60,7 @@ const Line = styled.View`
   height: ${verticalScale(20)}px;
   background-color: ${({ theme }) => theme.colors.primary};
   margin-left: ${scale(6)}px;
-`
+`;
 const RouteText = styled.Text`
   flex: 1;
   font-family: 'Plus Jakarta Sans';
@@ -119,11 +119,10 @@ const FrontSeatLabel = styled.Text`
 const SeatLabel = styled.Text`
 font - family: 'Plus Jakarta Sans';
 font - weight: 700;
-font - size: ${ responsiveFont(11) } px;
-color: ${ ({ theme }) => theme.colors.secondary };
+font - size: ${responsiveFont(11)} px;
+color: ${({ theme }) => theme.colors.secondary};
 text - transform: uppercase;
 `;
-
 
 const MathBreakdown = styled.Text`
   font-family: 'Plus Jakarta Sans';
@@ -175,7 +174,10 @@ export const SegmentPricingCard: React.FC<SegmentPricingCardProps> = ({
   const { t } = useTranslation();
 
   // Calculate front seat price dynamically based on current basePrice
-  const totalFrontSeatPrice = calculateFrontSeatPrice(segmentPrice.basePrice, premiumPercentage);
+  const totalFrontSeatPrice = calculateFrontSeatPrice(
+    segmentPrice.basePrice,
+    premiumPercentage,
+  );
   const premiumAmount = totalFrontSeatPrice - segmentPrice.basePrice;
 
   return (
@@ -188,15 +190,22 @@ export const SegmentPricingCard: React.FC<SegmentPricingCardProps> = ({
         </SegmentBadge>
         <RouteContainer>
           <RouteItem>
-            <MaterialIcons name="trip-origin" size={moderateScale(14)} color={theme.colors.primary} />
+            <MaterialIcons
+              name="trip-origin"
+              size={moderateScale(14)}
+              color={theme.colors.primary}
+            />
             <RouteText numberOfLines={1}>{from}</RouteText>
           </RouteItem>
           <Line />
           <RouteItem>
-            <MaterialIcons name="trip-origin" size={moderateScale(14)} color={theme.colors.primary} />
+            <MaterialIcons
+              name="trip-origin"
+              size={moderateScale(14)}
+              color={theme.colors.primary}
+            />
             <RouteText numberOfLines={1}> {to}</RouteText>
           </RouteItem>
-
         </RouteContainer>
       </HeaderRow>
 
@@ -216,18 +225,25 @@ export const SegmentPricingCard: React.FC<SegmentPricingCardProps> = ({
         <FrontSeatSection>
           <FrontSeatTop>
             <FrontSeatLabelRow>
-              <MaterialIcons name="event-seat" size={moderateScale(16)} color={theme.colors.secondary} />
+              <MaterialIcons
+                name="event-seat"
+                size={moderateScale(16)}
+                color={theme.colors.secondary}
+              />
               <FrontSeatLabel>{frontSeatLabel}</FrontSeatLabel>
             </FrontSeatLabelRow>
             <TotalFrontSeatPrice>₹{totalFrontSeatPrice}</TotalFrontSeatPrice>
           </FrontSeatTop>
 
           <MathBreakdown>
-            ₹{segmentPrice.basePrice} + ₹{premiumAmount} = ₹{totalFrontSeatPrice}
+            ₹{segmentPrice.basePrice} + ₹{premiumAmount} = ₹
+            {totalFrontSeatPrice}
           </MathBreakdown>
 
           <HelperText>
-            {t('priceSelection.basePlusPremium', { percentage: Math.round(premiumPercentage) })}
+            {t('priceSelection.basePlusPremium', {
+              percentage: Math.round(premiumPercentage),
+            })}
           </HelperText>
         </FrontSeatSection>
       )}

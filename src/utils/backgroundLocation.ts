@@ -1,5 +1,7 @@
 import BackgroundService from 'react-native-background-actions';
-import Geolocation, { GeolocationResponse } from '@react-native-community/geolocation';
+import Geolocation, {
+  GeolocationResponse,
+} from '@react-native-community/geolocation';
 import rideService from '@/serviceManager/rideService';
 import { Logger } from '@/utils/logger';
 import { Platform } from 'react-native';
@@ -21,7 +23,9 @@ Geolocation.setRNConfiguration({
  * Resolves a single snapshot of high-accuracy device location wrapped cleanly in a Promise.
  * This guarantees execution even when native stream listeners get frozen by the OS.
  */
-const grabCurrentCoordinates = (highAccuracy: boolean): Promise<GeolocationResponse> => {
+const grabCurrentCoordinates = (
+  highAccuracy: boolean,
+): Promise<GeolocationResponse> => {
   return new Promise((resolve, reject) => {
     Geolocation.getCurrentPosition(
       position => resolve(position),
@@ -29,7 +33,7 @@ const grabCurrentCoordinates = (highAccuracy: boolean): Promise<GeolocationRespo
       {
         enableHighAccuracy: highAccuracy,
         timeout: highAccuracy ? 15000 : 8000, // Short network timeout for passive mode
-        maximumAge: highAccuracy ? 0 : 5000,   // Utilize cell tower/Wi-Fi positioning cache when stationary
+        maximumAge: highAccuracy ? 0 : 5000, // Utilize cell tower/Wi-Fi positioning cache when stationary
       },
     );
   });
@@ -124,7 +128,9 @@ const locationTrackingTask = async (
 
               // Clean out the cache upon success
               locationQueue.flush();
-              Logger.log('[BackgroundLocation] Offline backlog sync completed and purged.');
+              Logger.log(
+                '[BackgroundLocation] Offline backlog sync completed and purged.',
+              );
             }
           } catch (apiErr) {
             // Network dropped or signal dead zone encountered. Buffer the coordinate natively!

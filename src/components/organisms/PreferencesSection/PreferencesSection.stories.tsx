@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/PreferencesSection',
   component: PreferencesSection,
-
 } satisfies Meta<typeof PreferencesSection>;
 
 export default meta;

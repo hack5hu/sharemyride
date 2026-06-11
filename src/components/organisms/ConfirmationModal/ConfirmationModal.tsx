@@ -51,9 +51,12 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   const { icon, color } = getTypeStyles();
 
   return (
-    <ModalBackdrop isVisible={isVisible} onPress={isLoading ? undefined : onClose}>
-      <Pressable 
-        onPress={(e) => e.stopPropagation()} 
+    <ModalBackdrop
+      isVisible={isVisible}
+      onPress={isLoading ? undefined : onClose}
+    >
+      <Pressable
+        onPress={e => e.stopPropagation()}
         style={{ width: '100%', alignItems: 'center' }}
       >
         <ModalContainer>
@@ -62,13 +65,18 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           </IconContainer>
 
           <TextContainer>
-            <Typography variant="headline" size="sm" weight="bold" align="center">
+            <Typography
+              variant="headline"
+              size="sm"
+              weight="bold"
+              align="center"
+            >
               {title}
             </Typography>
-            <Typography 
-              variant="body" 
-              size="sm" 
-              color="on_surface_variant" 
+            <Typography
+              variant="body"
+              size="sm"
+              color="on_surface_variant"
               align="center"
               style={{ marginTop: 8 }}
             >
@@ -78,7 +86,12 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 
           <ButtonContainer>
             <SecondaryButton onPress={onClose} disabled={isLoading}>
-              <Typography variant="title" size="sm" weight="bold" color="on_surface_variant">
+              <Typography
+                variant="title"
+                size="sm"
+                weight="bold"
+                color="on_surface_variant"
+              >
                 {cancelLabel}
               </Typography>
             </SecondaryButton>
@@ -87,7 +100,10 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
               <GradientBtn
                 colors={
                   type === 'danger'
-                    ? [theme.colors.error || '#BA1A1A', theme.colors.error_container || '#FFDAD6']
+                    ? [
+                        theme.colors.error || '#BA1A1A',
+                        theme.colors.error_container || '#FFDAD6',
+                      ]
                     : [theme.colors.primary, theme.colors.primary_container]
                 }
                 start={{ x: 0, y: 0 }}
@@ -96,7 +112,12 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                 {isLoading ? (
                   <ActivityIndicator color={theme.colors.on_primary} />
                 ) : (
-                  <Typography variant="title" size="sm" weight="bold" color="on_primary">
+                  <Typography
+                    variant="title"
+                    size="sm"
+                    weight="bold"
+                    color="on_primary"
+                  >
                     {confirmLabel}
                   </Typography>
                 )}

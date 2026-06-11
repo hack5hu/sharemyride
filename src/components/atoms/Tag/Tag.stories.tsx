@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/Tag',
   component: Tag,
-
 } satisfies Meta<typeof Tag>;
 
 export default meta;

@@ -61,7 +61,7 @@ export const LightTheme: Theme = {
     tertiary_fixed_dim: '#c8c6c5',
     on_tertiary_fixed: '#1c1b1b',
     on_tertiary_fixed_variant: '#474646',
-    
+
     read_receipt: '#34B7F1',
     warning: '#F59E0B',
     truecaller: '#0052ff',

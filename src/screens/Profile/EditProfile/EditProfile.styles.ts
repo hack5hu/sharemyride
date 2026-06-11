@@ -94,9 +94,8 @@ export const CancelButton = styled.TouchableOpacity`
 `;
 
 export const SaveButtonGradient = styled.View`
-  margin-bottom: ${({ theme }) => verticalScale(24)}px;
-  margin-horizontal: ${({ theme }) => scale(24)}px;
-  
+  margin-bottom: ${verticalScale(24)}px;
+  margin-horizontal: ${scale(24)}px;
 `;
 
 export const MainWrapper = styled(KeyboardAvoidingView)`

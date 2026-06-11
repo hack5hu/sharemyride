@@ -8,13 +8,13 @@ import { Loader } from '../../atoms/Loader';
 import { Badge } from '../../atoms/Badge';
 import { StatItem } from '../../molecules/StatItem';
 import { IconButton } from '../../atoms/IconButton';
-import { 
-  HeaderCard, 
-  IdentitySection, 
-  InfoSection, 
-  StatsSection, 
-  StatDivider, 
-  VerifiedRow 
+import {
+  HeaderCard,
+  IdentitySection,
+  InfoSection,
+  StatsSection,
+  StatDivider,
+  VerifiedRow,
 } from './ProfileHeader.styles';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -48,37 +48,55 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
   return (
     <HeaderCard>
-      <IconButton icon="settings" variant="surface" onPress={onSettingsPress} style={{ position: 'absolute', top: 10, right: 10 }} />
+      <IconButton
+        icon="settings"
+        variant="surface"
+        onPress={onSettingsPress}
+        style={{ position: 'absolute', top: 10, right: 10 }}
+      />
       <IdentitySection>
         <View style={{ alignItems: 'center' }}>
           <View>
-            <Avatar 
-              source={avatarUri ? { uri: avatarUri } : undefined} 
-              size="xl" 
+            <Avatar
+              source={avatarUri ? { uri: avatarUri } : undefined}
+              size="xl"
               border
               placeholder={name}
             />
             {isUpdatingAvatar && (
-              <View style={{
-                position: 'absolute',
-                top: 0, left: 0, right: 0, bottom: 0,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'rgba(0,0,0,0.4)',
-                borderRadius: 100,
-              }}>
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'rgba(0,0,0,0.4)',
+                  borderRadius: 100,
+                }}
+              >
                 <Loader transparent />
               </View>
             )}
           </View>
           {onAvatarEditPress && (
-            <TouchableOpacity onPress={onAvatarEditPress} disabled={isUpdatingAvatar} style={{ marginTop: 8, opacity: isUpdatingAvatar ? 0.5 : 1 }}>
-              <Typography variant="label" size="lg" color="primary" weight="bold">
+            <TouchableOpacity
+              onPress={onAvatarEditPress}
+              disabled={isUpdatingAvatar}
+              style={{ marginTop: 8, opacity: isUpdatingAvatar ? 0.5 : 1 }}
+            >
+              <Typography
+                variant="label"
+                size="lg"
+                color="primary"
+                weight="bold"
+              >
                 {t('profileHub.editProfilePic') || 'Edit'}
               </Typography>
             </TouchableOpacity>
           )}
-          
         </View>
         <InfoSection>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
@@ -89,11 +107,11 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           </View>
           {isVerified && (
             <VerifiedRow>
-              <Icon 
-                name="verified" 
-                size={18} 
-                color={theme.colors.primary} 
-                style={{ opacity: 0.8 }} 
+              <Icon
+                name="verified"
+                size={18}
+                color={theme.colors.primary}
+                style={{ opacity: 0.8 }}
               />
               <Typography variant="label" size="sm" color="on_surface_variant">
                 {t('profileHub.identityVerified')}

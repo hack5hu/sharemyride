@@ -18,6 +18,6 @@ export const CAR_COLORS = [
 ];
 
 export const getColorLabel = (value: string) => {
-  const color = CAR_COLORS.find((c) => c.value === value || c.label === value);
+  const color = CAR_COLORS.find(c => c.value === value || c.label === value);
   return color ? color.label : value;
 };

@@ -94,7 +94,9 @@ export const LocationSelectionTemplate: React.FC<
               const destShort =
                 ride.destinationLocation?.address?.split(',')[0] || '';
               const formattedPublishDateTime = ride.departureDate
-                ? `${format(new Date(ride.departureDate), 'MMM dd, yyyy')} • ${ride.departureTime}`
+                ? `${format(new Date(ride.departureDate), 'MMM dd, yyyy')} • ${
+                    ride.departureTime
+                  }`
                 : '';
               return (
                 <RecentRideCard
@@ -115,9 +117,14 @@ export const LocationSelectionTemplate: React.FC<
                         {startShort} to {destShort}
                       </RecentRideRouteText>
                       <RecentRideSubText numberOfLines={1}>
-                        {ride.vehicleDetails ? `${ride.vehicleDetails.company} ${ride.vehicleDetails.model} • ` : ''}
-                        {ride.seatCount} {ride.seatCount === 1 ? common.seat : common.seats}
-                        {formattedPublishDateTime ? ` • ${formattedPublishDateTime}` : ''}
+                        {ride.vehicleDetails
+                          ? `${ride.vehicleDetails.company} ${ride.vehicleDetails.model} • `
+                          : ''}
+                        {ride.seatCount}{' '}
+                        {ride.seatCount === 1 ? common.seat : common.seats}
+                        {formattedPublishDateTime
+                          ? ` • ${formattedPublishDateTime}`
+                          : ''}
                       </RecentRideSubText>
                     </RecentRideTextContainer>
                   </RecentRideLeft>

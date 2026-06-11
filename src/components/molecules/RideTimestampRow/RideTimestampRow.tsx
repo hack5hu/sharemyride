@@ -1,14 +1,14 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
-import { 
-  Container, 
-  IndicatorWrapper, 
-  Dot, 
-  Line, 
-  Content, 
-  StopRow, 
-  StopText, 
-  TimeText 
+import {
+  Container,
+  IndicatorWrapper,
+  Dot,
+  Line,
+  Content,
+  StopRow,
+  StopText,
+  TimeText,
 } from './RideTimestampRow.styles';
 import { RideTimestampRowProps } from './types.d';
 
@@ -16,7 +16,7 @@ export const RideTimestampRow: React.FC<RideTimestampRowProps> = ({
   pickupTime,
   pickupLocation,
   dropoffTime,
-  dropoffLocation
+  dropoffLocation,
 }) => {
   const theme = useTheme();
 
@@ -27,13 +27,13 @@ export const RideTimestampRow: React.FC<RideTimestampRowProps> = ({
         <Line />
         <Dot color={theme.colors.tertiary} isSquare={true} />
       </IndicatorWrapper>
-      
+
       <Content>
         <StopRow>
           <StopText numberOfLines={1}>{pickupLocation}</StopText>
           <TimeText>{pickupTime}</TimeText>
         </StopRow>
-        
+
         <StopRow>
           <StopText numberOfLines={1}>{dropoffLocation}</StopText>
           <TimeText>{dropoffTime}</TimeText>

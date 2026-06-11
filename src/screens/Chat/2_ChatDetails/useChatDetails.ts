@@ -13,23 +13,27 @@ import { ConnectionStatus, MessageStatus } from '@/constants/enums';
 const getFormatDate = (timestamp: number, t: any) => {
   const date = new Date(timestamp);
   const today = new Date();
-  
-  const isSameDay = (d1: Date, d2: Date) => 
+
+  const isSameDay = (d1: Date, d2: Date) =>
     d1.getFullYear() === d2.getFullYear() &&
     d1.getMonth() === d2.getMonth() &&
     d1.getDate() === d2.getDate();
-    
+
   if (isSameDay(date, today)) {
     return t('common.today');
   }
-  
+
   const yesterday = new Date();
   yesterday.setDate(today.getDate() - 1);
   if (isSameDay(date, yesterday)) {
     return t('chat.yesterday');
   }
-  
-  return date.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+
+  return date.toLocaleDateString(undefined, {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
 };
 
 export interface Message {
@@ -55,22 +59,29 @@ export const useChatDetails = () => {
   const historyFetchStartedRef = useRef(false);
   const { t } = useTranslation();
   const { user } = useAuthStore();
-  
+
   const receiverId = route.params?.userId;
   const myUserId = user?.userId;
-  const conversationId = (myUserId && receiverId) 
-    ? (myUserId < receiverId ? `${myUserId}_${receiverId}` : `${receiverId}_${myUserId}`)
-    : '';
+  const conversationId =
+    myUserId && receiverId
+      ? myUserId < receiverId
+        ? `${myUserId}_${receiverId}`
+        : `${receiverId}_${myUserId}`
+      : '';
 
   const storeMessages = useChatStore(state => state.messages);
-  const setActiveConversation = useChatStore(state => state.setActiveConversation);
+  const setActiveConversation = useChatStore(
+    state => state.setActiveConversation,
+  );
   const users = useChatStore(state => state.users);
   const connectionStatus = useChatStore(state => state.connectionStatus);
   const cachedUser = users[receiverId];
   const [message, setMessage] = useState('');
   const [isReportModalVisible, setIsReportModalVisible] = useState(false);
   const [isSafetyVisible, setIsSafetyVisible] = useState(true);
-  const [dynamicRideInfo, setDynamicRideInfo] = useState<any>(route.params?.rideInfo);
+  const [dynamicRideInfo, setDynamicRideInfo] = useState<any>(
+    route.params?.rideInfo,
+  );
 
   // Connect socket and handle lifecycle
   useChatSocket(true);
@@ -106,18 +117,40 @@ export const useChatDetails = () => {
           const ride = await rideService.getRideDetail(rideId);
           if (ride) {
             setDynamicRideInfo({
-              pickup: ride.sourceStopName || ride.timeline?.[0]?.name || ride.startLocation?.name || 'Unknown Location',
-              dropoff: ride.destinationStopName || ride.timeline?.[ride.timeline.length - 1]?.name || ride.destinationLocation?.name || 'Unknown Location',
-              date: ride.departureDate || (ride.startTime ? new Date(ride.startTime).toLocaleDateString() : 'Today'),
-              time: ride.departureTime || (ride.startTime ? new Date(ride.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--'),
+              pickup:
+                ride.sourceStopName ||
+                ride.timeline?.[0]?.name ||
+                ride.startLocation?.name ||
+                'Unknown Location',
+              dropoff:
+                ride.destinationStopName ||
+                ride.timeline?.[ride.timeline.length - 1]?.name ||
+                ride.destinationLocation?.name ||
+                'Unknown Location',
+              date:
+                ride.departureDate ||
+                (ride.startTime
+                  ? new Date(ride.startTime).toLocaleDateString()
+                  : 'Today'),
+              time:
+                ride.departureTime ||
+                (ride.startTime
+                  ? new Date(ride.startTime).toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })
+                  : '--:--'),
             });
           }
         } catch (error) {
-          console.error('⚠️ [Chat Details] Failed to fetch ride details:', error);
+          console.error(
+            '⚠️ [Chat Details] Failed to fetch ride details:',
+            error,
+          );
         }
       }
     };
-    
+
     fetchRideDetails();
   }, [myUserId, receiverId, route.params?.rideId, route.params?.rideInfo]);
 
@@ -125,12 +158,16 @@ export const useChatDetails = () => {
   const messages = useMemo(() => {
     const rawMessages = storeMessages[conversationId] || [];
     const sorted = [...rawMessages].sort((a, b) => a.timestamp - b.timestamp);
-    
-    const mapped: (Message | { id: string; type: 'date_header'; text: string })[] = [];
+
+    const mapped: (
+      | Message
+      | { id: string; type: 'date_header'; text: string }
+    )[] = [];
     let lastDateString = '';
 
     sorted.forEach((m: ChatMessage) => {
-      const isLocation = m.type === 'location' || m.content.startsWith('[LOCATION_DATA]:');
+      const isLocation =
+        m.type === 'location' || m.content.startsWith('[LOCATION_DATA]:');
       let locationData = m.metadata?.location;
 
       // If it's a location message but metadata is missing, parse it from content
@@ -162,8 +199,13 @@ export const useChatDetails = () => {
 
       mapped.push({
         id: m.messageId,
-        text: m.content.startsWith('[LOCATION_DATA]:') ? `Shared Location: ${locationData?.locationName || ''}` : m.content,
-        timestamp: new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        text: m.content.startsWith('[LOCATION_DATA]:')
+          ? `Shared Location: ${locationData?.locationName || ''}`
+          : m.content,
+        timestamp: new Date(m.timestamp).toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
         isSender: m.senderId === myUserId,
         status: (m.status || 'SENT').toLowerCase() as any,
         type: isLocation ? 'map' : 'text',
@@ -176,11 +218,18 @@ export const useChatDetails = () => {
 
   // Handle incoming location from MapPicker
   useEffect(() => {
-    if (route.params?.selectedLocation && myUserId && receiverId && receiverId !== 'Unknown') {
+    if (
+      route.params?.selectedLocation &&
+      myUserId &&
+      receiverId &&
+      receiverId !== 'Unknown'
+    ) {
       const loc = route.params.selectedLocation;
-      
-      const locationString = `[LOCATION_DATA]:${loc.latitude},${loc.longitude}|${loc.name}|${loc.address || ''}`;
-      
+
+      const locationString = `[LOCATION_DATA]:${loc.latitude},${
+        loc.longitude
+      }|${loc.name}|${loc.address || ''}`;
+
       chatService.sendMessage({
         senderId: myUserId,
         receiverId,
@@ -197,10 +246,10 @@ export const useChatDetails = () => {
             longitude: loc.longitude,
             locationName: loc.name,
             address: loc.address,
-          }
-        }
+          },
+        },
       });
-      
+
       navigation.setParams({ selectedLocation: undefined } as any);
     }
   }, [
@@ -220,8 +269,9 @@ export const useChatDetails = () => {
   }, []);
 
   const handleSend = useCallback(() => {
-    if (!message.trim() || !myUserId || !receiverId || receiverId === 'Unknown') return;
-    
+    if (!message.trim() || !myUserId || !receiverId || receiverId === 'Unknown')
+      return;
+
     chatService.sendMessage({
       senderId: myUserId,
       receiverId,
@@ -233,7 +283,7 @@ export const useChatDetails = () => {
         userRating: route.params?.rating,
         rideId: route.params?.rideId,
         rideInfo: dynamicRideInfo,
-      }
+      },
     });
 
     setMessage('');
@@ -270,26 +320,35 @@ export const useChatDetails = () => {
     });
   }, [navigation, receiverId, route.params, dynamicRideInfo]);
 
-  const handleMapPress = useCallback((location: any) => {
-    navigation.navigate('RideRouteMap', {
-      destination: {
-        latitude: location.latitude,
-        longitude: location.longitude,
-        name: location.locationName || 'Destination',
-        address: location.address,
+  const handleMapPress = useCallback(
+    (location: any) => {
+      navigation.navigate('RideRouteMap', {
+        destination: {
+          latitude: location.latitude,
+          longitude: location.longitude,
+          name: location.locationName || 'Destination',
+          address: location.address,
+        },
+      });
+    },
+    [navigation],
+  );
+
+  const handleReportSubmit = useCallback(
+    (_data: { categoryId: string; description: string }) => {
+      setIsReportModalVisible(false);
+    },
+    [],
+  );
+
+  const handleRetry = useCallback(
+    (messageId: string) => {
+      if (conversationId) {
+        chatService.resendMessage(conversationId, messageId);
       }
-    });
-  }, [navigation]);
-
-  const handleReportSubmit = useCallback((_data: { categoryId: string; description: string }) => {
-    setIsReportModalVisible(false);
-  }, []);
-
-  const handleRetry = useCallback((messageId: string) => {
-    if (conversationId) {
-      chatService.resendMessage(conversationId, messageId);
-    }
-  }, [conversationId]);
+    },
+    [conversationId],
+  );
 
   const handleReconnect = useCallback(() => {
     if (myUserId) {
@@ -316,11 +375,13 @@ export const useChatDetails = () => {
         chatService.fetchHistory(myUserId, receiverId).catch(() => undefined);
       }
 
-      const rawMessages = useChatStore.getState().messages[conversationId] || [];
+      const rawMessages =
+        useChatStore.getState().messages[conversationId] || [];
       const failedMessages = rawMessages.filter(
-        (m: ChatMessage) => m.senderId === myUserId && m.status === MessageStatus.FAILED
+        (m: ChatMessage) =>
+          m.senderId === myUserId && m.status === MessageStatus.FAILED,
       );
-      
+
       failedMessages.forEach((m: ChatMessage) => {
         chatService.resendMessage(conversationId, m.messageId);
       });

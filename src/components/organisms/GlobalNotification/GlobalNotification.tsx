@@ -25,7 +25,7 @@ export const GlobalNotification = () => {
 export const showNotification = (
   type: NotificationType,
   title: string,
-  message?: string
+  message?: string,
 ) => {
   Toast.show({
     type,

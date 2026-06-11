@@ -24,8 +24,10 @@ const CheckboxOuter = styled.View<{ checked: boolean }>`
   height: ${moderateScale(24)}px;
   border-radius: ${moderateScale(6)}px;
   border-width: 2px;
-  border-color: ${({ theme, checked }) => checked ? theme.colors.primary : theme.colors.outline_variant};
-  background-color: ${({ theme, checked }) => checked ? theme.colors.primary : 'transparent'};
+  border-color: ${({ theme, checked }) =>
+    checked ? theme.colors.primary : theme.colors.outline_variant};
+  background-color: ${({ theme, checked }) =>
+    checked ? theme.colors.primary : 'transparent'};
   align-items: center;
   justify-content: center;
   margin-top: ${moderateScale(1)}px;
@@ -88,7 +90,7 @@ const MiniCounterPill = styled.View`
   padding-horizontal: ${scale(12)}px;
   padding-vertical: ${verticalScale(6)}px;
   border-radius: 9999px;
-  shadow-color: rgb(0,0,0);
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px 1px;
   shadow-opacity: 0.06;
   shadow-radius: 4px;
@@ -145,19 +147,31 @@ export const FrontSeatPremium: React.FC<FrontSeatPremiumProps> = ({
   const maxPremium = Math.floor(basePrice * 0.1);
   const isMax = premium >= maxPremium;
 
-  const handleDecrement = () => onPremiumChange(Math.max(0, premium - PREMIUM_STEP));
-  const handleIncrement = () => onPremiumChange(Math.min(maxPremium, premium + PREMIUM_STEP));
+  const handleDecrement = () =>
+    onPremiumChange(Math.max(0, premium - PREMIUM_STEP));
+  const handleIncrement = () =>
+    onPremiumChange(Math.min(maxPremium, premium + PREMIUM_STEP));
 
   return (
     <Wrapper>
       <CheckRow onPress={onToggle} activeOpacity={0.8}>
         <CheckboxOuter checked={checked}>
-          {checked && <MaterialIcons name="check" size={moderateScale(14)} color={theme.colors.on_primary} />}
+          {checked && (
+            <MaterialIcons
+              name="check"
+              size={moderateScale(14)}
+              color={theme.colors.on_primary}
+            />
+          )}
         </CheckboxOuter>
         <CheckRowRight>
           <CheckTitle>
             <CheckTitleText>{title}</CheckTitleText>
-            <MaterialIcons name="airline-seat-recline-extra" size={moderateScale(22)} color={theme.colors.primary} />
+            <MaterialIcons
+              name="airline-seat-recline-extra"
+              size={moderateScale(22)}
+              color={theme.colors.primary}
+            />
           </CheckTitle>
           <CheckDesc>{description}</CheckDesc>
         </CheckRowRight>
@@ -168,12 +182,28 @@ export const FrontSeatPremium: React.FC<FrontSeatPremiumProps> = ({
           <MiniRow>
             <MiniLabel>{amountLabel}</MiniLabel>
             <MiniCounterPill>
-              <MiniSmallButton onPress={handleDecrement} activeOpacity={0.7} disabled={premium <= 0}>
-                <MaterialIcons name="remove" size={moderateScale(16)} color={theme.colors.outline} />
+              <MiniSmallButton
+                onPress={handleDecrement}
+                activeOpacity={0.7}
+                disabled={premium <= 0}
+              >
+                <MaterialIcons
+                  name="remove"
+                  size={moderateScale(16)}
+                  color={theme.colors.outline}
+                />
               </MiniSmallButton>
               <MiniAmountText>₹{premium}</MiniAmountText>
-              <MiniSmallButton onPress={handleIncrement} activeOpacity={0.7} disabled={premium >= maxPremium}>
-                <MaterialIcons name="add" size={moderateScale(16)} color={theme.colors.outline} />
+              <MiniSmallButton
+                onPress={handleIncrement}
+                activeOpacity={0.7}
+                disabled={premium >= maxPremium}
+              >
+                <MaterialIcons
+                  name="add"
+                  size={moderateScale(16)}
+                  color={theme.colors.outline}
+                />
               </MiniSmallButton>
             </MiniCounterPill>
           </MiniRow>

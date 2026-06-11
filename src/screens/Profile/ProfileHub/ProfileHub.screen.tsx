@@ -62,7 +62,13 @@ export const ProfileHubScreen: React.FC = () => {
 
           <Section>
             <SectionTitle>
-              <Typography variant="label" size="sm" weight="bold" color="on_surface_variant" style={{ letterSpacing: 2 }}>
+              <Typography
+                variant="label"
+                size="sm"
+                weight="bold"
+                color="on_surface_variant"
+                style={{ letterSpacing: 2 }}
+              >
                 {t('profileHub.accountManagement')}
               </Typography>
             </SectionTitle>
@@ -78,7 +84,11 @@ export const ProfileHubScreen: React.FC = () => {
                 icon="verified-user"
                 title={t('profileHub.identityVerification')}
                 subtitle={t('profileHub.identityVerificationDescr')}
-                onPress={() => navigateToDummy(t('profileHub.identityVerification'), { showBack: true })}
+                onPress={() =>
+                  navigateToDummy(t('profileHub.identityVerification'), {
+                    showBack: true,
+                  })
+                }
               />
               <ProfileMenuItem
                 icon="directions-car"
@@ -98,7 +108,13 @@ export const ProfileHubScreen: React.FC = () => {
 
           <Section>
             <SectionTitle>
-              <Typography variant="label" size="sm" weight="bold" color="on_surface_variant" style={{ letterSpacing: 2 }}>
+              <Typography
+                variant="label"
+                size="sm"
+                weight="bold"
+                color="on_surface_variant"
+                style={{ letterSpacing: 2 }}
+              >
                 {t('profileHub.supportLegal')}
               </Typography>
             </SectionTitle>
@@ -155,5 +171,3 @@ export const ProfileHubScreen: React.FC = () => {
     </ScreenShell>
   );
 };
-
-

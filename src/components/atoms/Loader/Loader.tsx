@@ -9,7 +9,8 @@ const Container = styled.View<{ transparent?: boolean }>`
   width: 100%;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme, transparent }) => transparent ? 'transparent' : theme.colors.surface};
+  background-color: ${({ theme, transparent }) =>
+    transparent ? 'transparent' : theme.colors.surface};
 `;
 
 const Message = styled(Typography)`
@@ -27,11 +28,25 @@ interface LoaderProps {
   style?: any;
 }
 
-export const Loader: React.FC<LoaderProps> = ({ message, visible, transparent, inline, size = 'large', color, style }) => {
+export const Loader: React.FC<LoaderProps> = ({
+  message,
+  visible,
+  transparent,
+  inline,
+  size = 'large',
+  color,
+  style,
+}) => {
   const theme = useTheme();
 
   if (inline) {
-    return <ActivityIndicator size={size} color={color || theme.colors.primary} style={style} />;
+    return (
+      <ActivityIndicator
+        size={size}
+        color={color || theme.colors.primary}
+        style={style}
+      />
+    );
   }
 
   const content = (
@@ -49,17 +64,19 @@ export const Loader: React.FC<LoaderProps> = ({ message, visible, transparent, i
     return (
       <Modal visible={visible} transparent animationType="fade">
         <Container style={{ backgroundColor: 'rgba(0,0,0,0.3)' }}>
-          <View style={{ 
-            backgroundColor: theme.colors.surface, 
-            padding: verticalScale(32), 
-            borderRadius: 16,
-            alignItems: 'center',
-            elevation: 5,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-          }}>
+          <View
+            style={{
+              backgroundColor: theme.colors.surface,
+              padding: verticalScale(32),
+              borderRadius: 16,
+              alignItems: 'center',
+              elevation: 5,
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+            }}
+          >
             <ActivityIndicator size="large" color={theme.colors.primary} />
             {message && (
               <Message variant="body" size="md" weight="medium">

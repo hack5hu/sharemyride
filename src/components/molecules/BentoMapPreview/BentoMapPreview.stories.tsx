@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/BentoMapPreview',
   component: BentoMapPreview,
-
 } satisfies Meta<typeof BentoMapPreview>;
 
 export default meta;

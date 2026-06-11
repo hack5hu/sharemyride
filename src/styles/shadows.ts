@@ -11,7 +11,7 @@ export const Elevation = {
 export const Shadow = {
   IOS: {
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: verticalScale(2)},
+    shadowOffset: { width: 0, height: verticalScale(2) },
     shadowOpacity: 0.1,
     shadowRadius: 3,
   },

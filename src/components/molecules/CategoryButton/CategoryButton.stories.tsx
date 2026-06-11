@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/CategoryButton',
   component: CategoryButton,
-
 } satisfies Meta<typeof CategoryButton>;
 
 export default meta;

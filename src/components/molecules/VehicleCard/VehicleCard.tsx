@@ -42,7 +42,12 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({
         <S.AddIconCircle>
           <Icon name="add" size={24} color={theme.colors.outline} />
         </S.AddIconCircle>
-        <Typography variant="label" size="xs" weight="bold" color={theme.colors.outline}>
+        <Typography
+          variant="label"
+          size="xs"
+          weight="bold"
+          color={theme.colors.outline}
+        >
           Add New
         </Typography>
       </S.AddActionCard>
@@ -50,34 +55,53 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({
   }
 
   return (
-    <S.CardContainer isSelected={isSelected} onPress={onPress} fullWidth={fullWidth}>
+    <S.CardContainer
+      isSelected={isSelected}
+      onPress={onPress}
+      fullWidth={fullWidth}
+    >
       {isSelected && (
         <S.SelectionIndicator>
           <Icon name="check-circle" size={18} color={theme.colors.primary} />
         </S.SelectionIndicator>
       )}
-      
+
       <S.IconBox>
-        <Icon 
-          name={type === 'bike' ? 'motorcycle' : 'directions-car'} 
-          size={fullWidth ? 40 : 32} 
-          color={isSelected ? theme.colors.primary : theme.colors.outline} 
+        <Icon
+          name={type === 'bike' ? 'motorcycle' : 'directions-car'}
+          size={fullWidth ? 40 : 32}
+          color={isSelected ? theme.colors.primary : theme.colors.outline}
         />
       </S.IconBox>
 
       <S.InfoBox>
         <S.CompanyRow>
           <S.ColorDot color={color} />
-          <Typography variant="label" size={fullWidth ? 'sm' : 'xxs'} weight="bold" color={theme.colors.primary} style={{ textTransform: 'uppercase' }}>
+          <Typography
+            variant="label"
+            size={fullWidth ? 'sm' : 'xxs'}
+            weight="bold"
+            color={theme.colors.primary}
+            style={{ textTransform: 'uppercase' }}
+          >
             {company || 'Vehicle'}
           </Typography>
         </S.CompanyRow>
-        
-        <Typography variant="title" size={fullWidth ? 'md' : 'xs'} weight="bold" numberOfLines={1}>
-          {model} • {seater}-Seater 
+
+        <Typography
+          variant="title"
+          size={fullWidth ? 'md' : 'xs'}
+          weight="bold"
+          numberOfLines={1}
+        >
+          {model} • {seater}-Seater
         </Typography>
-        
-        <Typography variant="body" size={fullWidth ? 'sm' : 'xs'} color={theme.colors.on_surface_variant}>
+
+        <Typography
+          variant="body"
+          size={fullWidth ? 'sm' : 'xs'}
+          color={theme.colors.on_surface_variant}
+        >
           {(plate || '').toUpperCase()}
         </Typography>
       </S.InfoBox>
@@ -91,7 +115,11 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({
           )}
           {onDelete && (
             <S.ActionButton onPress={onDelete}>
-              <Icon name="delete-outline" size={18} color={theme.colors.error} />
+              <Icon
+                name="delete-outline"
+                size={18}
+                color={theme.colors.error}
+              />
             </S.ActionButton>
           )}
         </S.ActionRow>

@@ -41,7 +41,7 @@ export const MiddleStopsList: React.FC<MiddleStopsListProps> = ({
   onAddStop,
   onRemoveStop,
   startDistanceText,
-  destinationDistanceText
+  destinationDistanceText,
 }) => {
   const theme = useTheme();
   const { middleStops: t } = useLocale();
@@ -49,16 +49,24 @@ export const MiddleStopsList: React.FC<MiddleStopsListProps> = ({
   return (
     <ListContainer>
       <PathLine />
-      
+
       {/* Start Point */}
       <LocationItemArea>
         <IconCircle variant="start">
-          <MaterialIcons name="location-on" size={moderateScale(20)} color={theme.colors.on_primary_fixed_variant} />
+          <MaterialIcons
+            name="location-on"
+            size={moderateScale(20)}
+            color={theme.colors.on_primary_fixed_variant}
+          />
         </IconCircle>
         <TextContainer>
           <LabelText variant="start">{t.startPointLabel}</LabelText>
           <TitleText>{startLocation}</TitleText>
-          {startDistanceText && <AddSubtitleText style={{ marginTop: 2 }}>{startDistanceText}</AddSubtitleText>}
+          {startDistanceText && (
+            <AddSubtitleText style={{ marginTop: 2 }}>
+              {startDistanceText}
+            </AddSubtitleText>
+          )}
         </TextContainer>
       </LocationItemArea>
 
@@ -66,15 +74,32 @@ export const MiddleStopsList: React.FC<MiddleStopsListProps> = ({
       {middleStops.map((stop, index) => (
         <MiddleStopArea key={stop.id}>
           <IconCircle variant="stop">
-            <MaterialIcons name="trip-origin" size={moderateScale(20)} color={theme.colors.on_secondary_container} />
+            <MaterialIcons
+              name="trip-origin"
+              size={moderateScale(20)}
+              color={theme.colors.on_secondary_container}
+            />
           </IconCircle>
           <TextContainer>
-            <LabelText variant="stop">{`${t.stopLabel} ${index + 1}`}</LabelText>
+            <LabelText variant="stop">{`${t.stopLabel} ${
+              index + 1
+            }`}</LabelText>
             <TitleText>{stop.name}</TitleText>
-            {stop.distanceText && <AddSubtitleText style={{ marginTop: 2 }}>{stop.distanceText}</AddSubtitleText>}
+            {stop.distanceText && (
+              <AddSubtitleText style={{ marginTop: 2 }}>
+                {stop.distanceText}
+              </AddSubtitleText>
+            )}
           </TextContainer>
-          <RemoveButton onPress={() => onRemoveStop(stop.id)} activeOpacity={0.7}>
-            <MaterialIcons name="close" size={moderateScale(24)} color={theme.colors.tertiary} />
+          <RemoveButton
+            onPress={() => onRemoveStop(stop.id)}
+            activeOpacity={0.7}
+          >
+            <MaterialIcons
+              name="close"
+              size={moderateScale(24)}
+              color={theme.colors.tertiary}
+            />
           </RemoveButton>
         </MiddleStopArea>
       ))}
@@ -82,7 +107,11 @@ export const MiddleStopsList: React.FC<MiddleStopsListProps> = ({
       {/* Add Stop Button */}
       <AddStopButtonContainer onPress={onAddStop} activeOpacity={0.8}>
         <IconCircle variant="add">
-          <MaterialIcons name="add" size={moderateScale(20)} color={theme.colors.primary} />
+          <MaterialIcons
+            name="add"
+            size={moderateScale(20)}
+            color={theme.colors.primary}
+          />
         </IconCircle>
         <TextContainer>
           <AddTitleText>{t.addMiddleStop}</AddTitleText>
@@ -93,15 +122,22 @@ export const MiddleStopsList: React.FC<MiddleStopsListProps> = ({
       {/* End Point */}
       <LocationItemArea style={{ marginBottom: 0 }}>
         <IconCircle variant="end">
-          <MaterialIcons name="flag" size={moderateScale(20)} color={theme.colors.on_primary} />
+          <MaterialIcons
+            name="flag"
+            size={moderateScale(20)}
+            color={theme.colors.on_primary}
+          />
         </IconCircle>
         <TextContainer>
           <LabelText variant="end">{t.destinationLabel}</LabelText>
           <TitleText>{destination}</TitleText>
-          {destinationDistanceText && <AddSubtitleText style={{ marginTop: 2 }}>{destinationDistanceText}</AddSubtitleText>}
+          {destinationDistanceText && (
+            <AddSubtitleText style={{ marginTop: 2 }}>
+              {destinationDistanceText}
+            </AddSubtitleText>
+          )}
         </TextContainer>
       </LocationItemArea>
-
     </ListContainer>
   );
 };

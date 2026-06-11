@@ -9,28 +9,40 @@ export interface MapControlsFABsProps {
   onLocateMe?: () => void;
 }
 
-export const MapControlsFABs: React.FC<MapControlsFABsProps> = ({ 
-  onZoomIn, 
+export const MapControlsFABs: React.FC<MapControlsFABsProps> = ({
+  onZoomIn,
   onZoomOut,
-  onLocateMe 
+  onLocateMe,
 }) => {
   const theme = useTheme();
-  
+
   return (
     <FABsContainer>
       {onLocateMe && (
         <>
           <FABControl onPress={onLocateMe} activeOpacity={0.7}>
-            <Ionicons name="locate-sharp" size={moderateScale(24)} color={theme.colors.primary} />
+            <Ionicons
+              name="locate-sharp"
+              size={moderateScale(24)}
+              color={theme.colors.primary}
+            />
           </FABControl>
           <Separator />
         </>
       )}
       <FABControl onPress={onZoomIn} activeOpacity={0.7}>
-        <Ionicons name="add-sharp" size={moderateScale(24)} color={theme.colors.on_surface_variant} />
+        <Ionicons
+          name="add-sharp"
+          size={moderateScale(24)}
+          color={theme.colors.on_surface_variant}
+        />
       </FABControl>
       <FABControl onPress={onZoomOut} activeOpacity={0.7}>
-        <Ionicons name="remove-sharp" size={moderateScale(24)} color={theme.colors.on_surface_variant} />
+        <Ionicons
+          name="remove-sharp"
+          size={moderateScale(24)}
+          color={theme.colors.on_surface_variant}
+        />
       </FABControl>
     </FABsContainer>
   );

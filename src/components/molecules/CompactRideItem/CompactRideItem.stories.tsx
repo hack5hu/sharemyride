@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/CompactRideItem',
   component: CompactRideItem,
-
 } satisfies Meta<typeof CompactRideItem>;
 
 export default meta;

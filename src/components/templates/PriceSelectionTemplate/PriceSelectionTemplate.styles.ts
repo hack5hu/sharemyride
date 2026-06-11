@@ -44,7 +44,7 @@ export const SegmentIconBox = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   align-items: center;
   justify-content: center;
-  shadow-color: rgb(0,0,0);
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px 1px;
   shadow-opacity: 0.06;
   shadow-radius: 2px;
@@ -70,7 +70,7 @@ export const TierCard = styled.View`
   border-radius: ${moderateScale(20)}px;
   padding: ${moderateScale(28)}px ${scale(20)}px;
   align-items: center;
-  shadow-color: rgb(0,0,0);
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px 8px;
   shadow-opacity: 0.05;
   shadow-radius: 20px;
@@ -132,16 +132,20 @@ export const TierToggleItem = styled.TouchableOpacity<{ active: boolean }>`
   padding-vertical: ${verticalScale(10)}px;
   align-items: center;
   justify-content: center;
-  background-color: ${({ active, theme }) => active ? theme.colors.surface : 'transparent'};
+  background-color: ${({ active, theme }) =>
+    active ? theme.colors.surface : 'transparent'};
   border-radius: ${moderateScale(8)}px;
-  ${({ active }) => active && 'shadow-color: rgba(0,0,0,0.1); shadow-offset: 0px 2px; shadow-opacity: 0.1; shadow-radius: 4px; elevation: 2;'}
+  ${({ active }) =>
+    active &&
+    'shadow-color: rgba(0,0,0,0.1); shadow-offset: 0px 2px; shadow-opacity: 0.1; shadow-radius: 4px; elevation: 2;'}
 `;
 
 export const TierToggleText = styled.Text<{ active: boolean }>`
   font-family: 'Plus Jakarta Sans';
   font-size: ${responsiveFont(13)}px;
-  font-weight: ${({ active }) => active ? '700' : '600'};
-  color: ${({ active, theme }) => active ? theme.colors.primary : theme.colors.outline};
+  font-weight: ${({ active }) => (active ? '700' : '600')};
+  color: ${({ active, theme }) =>
+    active ? theme.colors.primary : theme.colors.outline};
 `;
 
 export const SegmentTextStack = styled.View`

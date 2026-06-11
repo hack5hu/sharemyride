@@ -28,7 +28,7 @@ const SelectorHighlight = styled.View`
   height: ${ITEM_HEIGHT}px;
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   border-radius: ${moderateScale(16)}px;
-  shadow-color: rgb(0,0,0);
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px 1px;
   shadow-opacity: 0.06;
   shadow-radius: 4px;
@@ -69,7 +69,7 @@ interface StyledDialTextProps {
   active: boolean;
 }
 
-const StyledDialText = styled(Typography) <StyledDialTextProps>`
+const StyledDialText = styled(Typography)<StyledDialTextProps>`
   font-weight: ${({ active }) => (active ? '800' : '700')};
 `;
 
@@ -91,113 +91,123 @@ const getTypographyConfig = (dist: number) => {
   return { variant: 'title' as const, size: 'xl' as const };
 };
 
-export const TimeDial: React.FC<TimeDialProps> = React.memo(({
-  values,
-  selectedValue,
-  onValueChange,
-  formatter = (v: number) => String(v).padStart(2, '0'),
-  disabled = false,
-  disabledBefore,
-}) => {
-  const theme = useTheme();
-  const scrollRef = useRef<ScrollView>(null);
-  const selectedIndex = values.indexOf(selectedValue);
+export const TimeDial: React.FC<TimeDialProps> = React.memo(
+  ({
+    values,
+    selectedValue,
+    onValueChange,
+    formatter = (v: number) => String(v).padStart(2, '0'),
+    disabled = false,
+    disabledBefore,
+  }) => {
+    const theme = useTheme();
+    const scrollRef = useRef<ScrollView>(null);
+    const selectedIndex = values.indexOf(selectedValue);
 
-  const lastReportedIndex = useRef(selectedIndex);
+    const lastReportedIndex = useRef(selectedIndex);
 
-  // Initial scroll on mount without animation
-  useEffect(() => {
-    if (scrollRef.current && selectedIndex >= 0) {
-      scrollRef.current.scrollTo({
-        y: selectedIndex * ITEM_HEIGHT,
-        animated: false,
-      });
-    }
-  }, []);
+    // Initial scroll on mount without animation
+    useEffect(() => {
+      if (scrollRef.current && selectedIndex >= 0) {
+        scrollRef.current.scrollTo({
+          y: selectedIndex * ITEM_HEIGHT,
+          animated: false,
+        });
+      }
+    }, []);
 
-  // Sync scroll when value changes externally
-  useEffect(() => {
-    if (scrollRef.current && selectedIndex >= 0 && selectedIndex !== lastReportedIndex.current) {
-      scrollRef.current.scrollTo({
-        y: selectedIndex * ITEM_HEIGHT,
-        animated: true,
-      });
-      lastReportedIndex.current = selectedIndex;
-    }
-  }, [selectedIndex]);
+    // Sync scroll when value changes externally
+    useEffect(() => {
+      if (
+        scrollRef.current &&
+        selectedIndex >= 0 &&
+        selectedIndex !== lastReportedIndex.current
+      ) {
+        scrollRef.current.scrollTo({
+          y: selectedIndex * ITEM_HEIGHT,
+          animated: true,
+        });
+        lastReportedIndex.current = selectedIndex;
+      }
+    }, [selectedIndex]);
 
-  const handleScrollEnd = useCallback(
-    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const offsetY = e.nativeEvent.contentOffset.y;
-      const index = Math.round(offsetY / ITEM_HEIGHT);
-      let clamped = Math.max(0, Math.min(index, values.length - 1));
+    const handleScrollEnd = useCallback(
+      (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+        const offsetY = e.nativeEvent.contentOffset.y;
+        const index = Math.round(offsetY / ITEM_HEIGHT);
+        let clamped = Math.max(0, Math.min(index, values.length - 1));
 
-      // Enforce the disabledBefore boundary: if the user scrolls onto a disabled value,
-      // snap them back to the first available valid value.
-      if (disabledBefore !== undefined && values[clamped] < disabledBefore) {
-        const firstValidIndex = values.findIndex(v => v >= disabledBefore);
-        if (firstValidIndex !== -1) {
-          clamped = firstValidIndex;
+        // Enforce the disabledBefore boundary: if the user scrolls onto a disabled value,
+        // snap them back to the first available valid value.
+        if (disabledBefore !== undefined && values[clamped] < disabledBefore) {
+          const firstValidIndex = values.findIndex(v => v >= disabledBefore);
+          if (firstValidIndex !== -1) {
+            clamped = firstValidIndex;
+          }
         }
-      }
 
-      lastReportedIndex.current = clamped;
-      onValueChange(values[clamped]);
+        lastReportedIndex.current = clamped;
+        onValueChange(values[clamped]);
 
-      // Only trigger scrollTo programmatically if the final clamped index differs
-      // from the current scroll position. This avoids recursive event loops.
-      if (clamped !== index) {
-        scrollRef.current?.scrollTo({ y: clamped * ITEM_HEIGHT, animated: true });
-      }
-    },
-    [values, onValueChange, disabledBefore]
-  );
+        // Only trigger scrollTo programmatically if the final clamped index differs
+        // from the current scroll position. This avoids recursive event loops.
+        if (clamped !== index) {
+          scrollRef.current?.scrollTo({
+            y: clamped * ITEM_HEIGHT,
+            animated: true,
+          });
+        }
+      },
+      [values, onValueChange, disabledBefore],
+    );
 
-  const getColor = useCallback((dist: number, isDisabledItem: boolean) => {
-    if (isDisabledItem) return `${theme.colors.outline_variant}4D`;
-    if (dist === 0) return theme.colors.primary;
-    if (dist === 1) return `${theme.colors.on_surface_variant}99`;
-    return `${theme.colors.on_surface_variant}66`;
-  }, [theme]);
+    const getColor = useCallback(
+      (dist: number, isDisabledItem: boolean) => {
+        if (isDisabledItem) return `${theme.colors.outline_variant}4D`;
+        if (dist === 0) return theme.colors.primary;
+        if (dist === 1) return `${theme.colors.on_surface_variant}99`;
+        return `${theme.colors.on_surface_variant}66`;
+      },
+      [theme],
+    );
 
-  return (
-    <DialWrapper>
-      <SelectorHighlight pointerEvents="none" />
-      <FadeTop pointerEvents="none" />
-      <FadeBottom pointerEvents="none" />
-      <ScrollView
-        ref={scrollRef}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={!disabled}
-        snapToInterval={ITEM_HEIGHT}
-        decelerationRate="fast"
-        onMomentumScrollEnd={handleScrollEnd}
-        contentContainerStyle={{ paddingVertical: ITEM_HEIGHT }}
-        nestedScrollEnabled
-        disableScrollViewPanResponder={true}
-      >
-        {values.map((val, i) => {
-          const dist = getDistance(i, selectedIndex);
-          const isDisabledItem = disabledBefore !== undefined && val < disabledBefore;
-          const { variant, size } = getTypographyConfig(dist);
+    return (
+      <DialWrapper>
+        <SelectorHighlight pointerEvents="none" />
+        <FadeTop pointerEvents="none" />
+        <FadeBottom pointerEvents="none" />
+        <ScrollView
+          ref={scrollRef}
+          showsVerticalScrollIndicator={false}
+          scrollEnabled={!disabled}
+          snapToInterval={ITEM_HEIGHT}
+          decelerationRate="fast"
+          onMomentumScrollEnd={handleScrollEnd}
+          contentContainerStyle={{ paddingVertical: ITEM_HEIGHT }}
+          nestedScrollEnabled
+          disableScrollViewPanResponder={true}
+        >
+          {values.map((val, i) => {
+            const dist = getDistance(i, selectedIndex);
+            const isDisabledItem =
+              disabledBefore !== undefined && val < disabledBefore;
+            const { variant, size } = getTypographyConfig(dist);
 
-          return (
-            <ItemContainer key={val}>
-              <StyledDialText
-                active={dist === 0}
-                variant={variant}
-                size={size}
-                color={getColor(dist, isDisabledItem)}
-              >
-                {formatter(val)}
-              </StyledDialText>
-            </ItemContainer>
-          );
-        })}
-      </ScrollView>
-    </DialWrapper>
-  );
-});
-
-
-
+            return (
+              <ItemContainer key={val}>
+                <StyledDialText
+                  active={dist === 0}
+                  variant={variant}
+                  size={size}
+                  color={getColor(dist, isDisabledItem)}
+                >
+                  {formatter(val)}
+                </StyledDialText>
+              </ItemContainer>
+            );
+          })}
+        </ScrollView>
+      </DialWrapper>
+    );
+  },
+);

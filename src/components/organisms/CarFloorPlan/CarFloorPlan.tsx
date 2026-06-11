@@ -42,7 +42,7 @@ export const CarFloorPlan: React.FC<CarFloorPlanProps> = ({
       <SeatsWrapper>
         {rows.map((row, rowIndex) => (
           <SeatRow key={`row-${rowIndex}`}>
-            {row.map((seat) => (
+            {row.map(seat => (
               <SeatButton
                 key={seat.seatId}
                 id={String(seat.seatId)}

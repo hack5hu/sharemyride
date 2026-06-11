@@ -30,10 +30,14 @@ export const useSettings = () => {
   const promoEmails = useSettingsStore(state => state.promoEmails);
   const rideReceipts = useSettingsStore(state => state.rideReceipts);
   const accountSecurity = useSettingsStore(state => state.accountSecurity);
-  
-  const togglePushNotifications = useSettingsStore(state => state.togglePushNotifications);
+
+  const togglePushNotifications = useSettingsStore(
+    state => state.togglePushNotifications,
+  );
   const togglePromoEmails = useSettingsStore(state => state.togglePromoEmails);
-  const toggleRideReceipts = useSettingsStore(state => state.toggleRideReceipts);
+  const toggleRideReceipts = useSettingsStore(
+    state => state.toggleRideReceipts,
+  );
 
   // Auth / Logout
   const logout = useAuthStore(state => state.logout);
@@ -61,7 +65,7 @@ export const useSettings = () => {
       showNotification(
         NotificationType.ERROR,
         t.notification.defaultErrorTitle,
-        getErrorMessage(e, t.notification.defaultErrorMessage)
+        getErrorMessage(e, t.notification.defaultErrorMessage),
       );
     } finally {
       setIsLoggingOut(false);

@@ -4,15 +4,15 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Avatar } from '@/components/atoms/Avatar';
 import { Typography } from '@/components/atoms/Typography';
 import { IconButton } from '@/components/atoms/IconButton';
-import { 
-  Container, 
-  ProfileInfo, 
+import {
+  Container,
+  ProfileInfo,
   ProfileTouchable,
-  TextContainer, 
-  MetaRow, 
-  RatingBox, 
-  PulseDot, 
-  Actions 
+  TextContainer,
+  MetaRow,
+  RatingBox,
+  PulseDot,
+  Actions,
 } from './ChatAppHeader.styles';
 import { ChatAppHeaderProps } from './types.d';
 import { moderateScale } from '@/styles';
@@ -33,40 +33,53 @@ export const ChatAppHeader: React.FC<ChatAppHeaderProps> = ({
     <Container>
       <ProfileInfo>
         {onBackPress && (
-          <IconButton icon="arrow-back" onPress={onBackPress} variant="surface" />
+          <IconButton
+            icon="arrow-back"
+            onPress={onBackPress}
+            variant="surface"
+          />
         )}
-        <ProfileTouchable 
-          onPress={onProfilePress} 
+        <ProfileTouchable
+          onPress={onProfilePress}
           disabled={!onProfilePress}
           activeOpacity={0.7}
         >
-          <Avatar 
-            source={avatarUri ? { uri: avatarUri } : undefined} 
+          <Avatar
+            source={avatarUri ? { uri: avatarUri } : undefined}
             placeholder={name}
             size="sm"
             isVerified={isVerified}
             border={false}
           />
-          
+
           <TextContainer>
             <Typography variant="title" size="md" weight="bold" color="primary">
               {name}
             </Typography>
             <MetaRow>
               <RatingBox>
-                 <Typography variant="label" size="xs" weight="bold" color={theme.colors.secondary}>
+                <Typography
+                  variant="label"
+                  size="xs"
+                  weight="bold"
+                  color={theme.colors.secondary}
+                >
                   {rating.toFixed(1)}
                 </Typography>
-                <Icon 
-                  name="star" 
-                  size={moderateScale(12)} 
-                  color={theme.colors.secondary} 
+                <Icon
+                  name="star"
+                  size={moderateScale(12)}
+                  color={theme.colors.secondary}
                 />
               </RatingBox>
               {isTyping && (
                 <>
                   <PulseDot />
-                  <Typography variant="label" size="xs" color="on_surface_variant">
+                  <Typography
+                    variant="label"
+                    size="xs"
+                    color="on_surface_variant"
+                  >
                     Typing...
                   </Typography>
                 </>
@@ -77,11 +90,7 @@ export const ChatAppHeader: React.FC<ChatAppHeaderProps> = ({
       </ProfileInfo>
 
       <Actions>
-        <IconButton 
-          icon="report" 
-          onPress={onReportPress} 
-          variant="surface" 
-        />
+        <IconButton icon="report" onPress={onReportPress} variant="surface" />
       </Actions>
     </Container>
   );

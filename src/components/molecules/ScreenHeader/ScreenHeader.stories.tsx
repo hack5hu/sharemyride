@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/ScreenHeader',
   component: ScreenHeader,
-
 } satisfies Meta<typeof ScreenHeader>;
 
 export default meta;
@@ -14,6 +13,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    title: "Sample Title"
+    title: 'Sample Title',
   },
 };

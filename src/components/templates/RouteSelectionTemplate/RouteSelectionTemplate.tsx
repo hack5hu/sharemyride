@@ -6,14 +6,18 @@ import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';
 import { RouteOption, RouteCard } from '@/components/organisms/RouteCard';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { Camera, GeoJSONSource, Layer, CameraRef } from '@maplibre/maplibre-react-native';
+import {
+  Camera,
+  GeoJSONSource,
+  Layer,
+  CameraRef,
+} from '@maplibre/maplibre-react-native';
 import { OlaMap } from '@/components/organisms/OlaMap';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import { Button } from '@/components/atoms/Button';
 import LinearGradient from 'react-native-linear-gradient';
 import * as S from './RouteSelectionTemplate.styles';
 import { RouteData } from '@/screens/PublishFlow/2_RouteSelection/useRouteSelection';
-
 
 export interface RouteSelectionTemplateProps {
   onBackPress: () => void;
@@ -40,20 +44,19 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
 
   const [isMapLoaded, setIsMapLoaded] = React.useState(false);
 
-  const selectedRouteData = routesData.find(r => r.uiData.id === selectedRouteId);
+  const selectedRouteData = routesData.find(
+    r => r.uiData.id === selectedRouteId,
+  );
 
   useEffect(() => {
     if (selectedRouteData && cameraRef.current && isMapLoaded) {
       const timer = setTimeout(() => {
         if (cameraRef.current) {
           const [minLng, minLat, maxLng, maxLat] = selectedRouteData.bounds;
-          cameraRef.current.fitBounds(
-            [minLng, minLat, maxLng, maxLat],
-            {
-              padding: { top: 48, right: 48, bottom: 48, left: 48 },
-              duration: 500
-            }
-          );
+          cameraRef.current.fitBounds([minLng, minLat, maxLng, maxLat], {
+            padding: { top: 48, right: 48, bottom: 48, left: 48 },
+            duration: 500,
+          });
         }
       }, 100);
       return () => clearTimeout(timer);
@@ -131,10 +134,7 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
   };
 
   return (
-    <ScreenShell
-      title={"Select Route"}
-      onBack={onBackPress}
-    >
+    <ScreenShell title={'Select Route'} onBack={onBackPress}>
       <View style={{ flex: 1 }}>
         <S.MapSection>
           <OlaMap
@@ -169,7 +169,11 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
               <Layer
                 id="routes-selected-layer"
                 type="line"
-                filter={['all', ['==', ['get', 'type'], 'route'], ['==', ['get', 'id'], selectedRouteId || '']]}
+                filter={[
+                  'all',
+                  ['==', ['get', 'type'], 'route'],
+                  ['==', ['get', 'id'], selectedRouteId || ''],
+                ]}
                 paint={{
                   'line-color': theme.colors.primary,
                   'line-width': 6,
@@ -184,7 +188,11 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
               <Layer
                 id="marker-start-layer"
                 type="circle"
-                filter={['all', ['==', ['get', 'type'], 'marker'], ['==', ['get', 'role'], 'start']]}
+                filter={[
+                  'all',
+                  ['==', ['get', 'type'], 'marker'],
+                  ['==', ['get', 'role'], 'start'],
+                ]}
                 paint={{
                   'circle-color': '#00875a', // Green
                   'circle-radius': 8,
@@ -197,7 +205,11 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
               <Layer
                 id="marker-end-layer"
                 type="circle"
-                filter={['all', ['==', ['get', 'type'], 'marker'], ['==', ['get', 'role'], 'end']]}
+                filter={[
+                  'all',
+                  ['==', ['get', 'type'], 'marker'],
+                  ['==', ['get', 'role'], 'end'],
+                ]}
                 paint={{
                   'circle-color': theme.colors.error, // Red
                   'circle-radius': 8,
@@ -221,7 +233,7 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
               bottom: 0,
               left: 0,
               right: 0,
-              height: moderateScale(40)
+              height: moderateScale(40),
             }}
           />
         </S.MapSection>
@@ -230,7 +242,9 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
           <S.RouteWrapper>
             {selectedRouteData && (
               <S.SelectedRouteBadge>
-                <S.SelectedRouteText>{selectedRouteData.uiData.title}</S.SelectedRouteText>
+                <S.SelectedRouteText>
+                  {selectedRouteData.uiData.title}
+                </S.SelectedRouteText>
               </S.SelectedRouteBadge>
             )}
             <S.ContentHeader>
@@ -239,9 +253,13 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
             </S.ContentHeader>
 
             {isLoading ? (
-              <ActivityIndicator size="large" color={theme.colors.primary} style={{ marginVertical: moderateScale(40) }} />
+              <ActivityIndicator
+                size="large"
+                color={theme.colors.primary}
+                style={{ marginVertical: moderateScale(40) }}
+              />
             ) : (
-              routes.map((route) => (
+              routes.map(route => (
                 <RouteCard
                   key={route.id}
                   route={route}

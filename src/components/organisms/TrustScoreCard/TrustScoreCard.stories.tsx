@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/TrustScoreCard',
   component: TrustScoreCard,
-
 } satisfies Meta<typeof TrustScoreCard>;
 
 export default meta;

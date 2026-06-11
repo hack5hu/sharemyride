@@ -25,7 +25,10 @@ export const useBookRideInfo = () => {
       const onBackPress = () => {
         if (backPressCount === 0) {
           backPressCount++;
-          ToastAndroid.show('Press back again to exit the app', ToastAndroid.SHORT);
+          ToastAndroid.show(
+            'Press back again to exit the app',
+            ToastAndroid.SHORT,
+          );
           setTimeout(() => {
             backPressCount = 0;
           }, 2000);
@@ -36,12 +39,15 @@ export const useBookRideInfo = () => {
         }
       };
 
-      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress,
+      );
 
       return () => {
         subscription.remove();
       };
-    }, [])
+    }, []),
   );
 
   const {
@@ -74,7 +80,7 @@ export const useBookRideInfo = () => {
     const store = useBookRideStore.getState();
     const currentStart = store.startLocation;
     const currentDest = store.destinationLocation;
-    
+
     store.setStartLocation(currentDest);
     store.setDestinationLocation(currentStart);
   }, []);
@@ -87,7 +93,7 @@ export const useBookRideInfo = () => {
     const store = useBookRideStore.getState();
     store.setSeatCount(Math.min(store.seatCount + 1, 6));
   }, []);
-  
+
   const decrementPeople = useCallback(() => {
     const store = useBookRideStore.getState();
     store.setSeatCount(Math.max(store.seatCount - 1, 1));
@@ -95,7 +101,15 @@ export const useBookRideInfo = () => {
 
   const handleSearchRides = useCallback(async () => {
     const store = useBookRideStore.getState();
-    const { startLocation: curStart, destinationLocation: curDest, travelDate: curDate, seatCount: curSeats, addRecentSearch, setSearchResults, rideType: curType } = store;
+    const {
+      startLocation: curStart,
+      destinationLocation: curDest,
+      travelDate: curDate,
+      seatCount: curSeats,
+      addRecentSearch,
+      setSearchResults,
+      rideType: curType,
+    } = store;
 
     if (curStart && curDest) {
       const selectedDate = curDate ? new Date(curDate) : new Date();
@@ -127,9 +141,12 @@ export const useBookRideInfo = () => {
         });
 
         const results = await rideService.searchRides(payload);
-        const ridesList = results?.rides || results?.data || (Array.isArray(results) ? results : []);
+        const ridesList =
+          results?.rides ||
+          results?.data ||
+          (Array.isArray(results) ? results : []);
         setSearchResults(ridesList);
-        
+
         if (curType === 'local') {
           navigate('LocalRideResults');
         } else {
@@ -140,59 +157,68 @@ export const useBookRideInfo = () => {
         showNotification(
           NotificationType.ERROR,
           translate('notification.defaultErrorTitle'),
-          getErrorMessage(error, translate('notification.defaultErrorMessage'))
+          getErrorMessage(error, translate('notification.defaultErrorMessage')),
         );
         setIsSearching(false);
       }
     }
   }, [navigate]);
 
-  const handleSelectRecentSearch = useCallback(async (search: RecentSearch) => {
-    const store = useBookRideStore.getState();
-    store.setStartLocation(search.startLocation);
-    store.setDestinationLocation(search.destinationLocation);
-    store.setTravelDate(search.travelDate);
-    store.setSeatCount(search.seatCount);
-    
-    const selectedDate = new Date(search.travelDate);
-    if (isBefore(selectedDate, startOfDay(new Date()))) {
-      store.setTravelDate(null);
-      navigate('BookDateSelection');
-    } else {
-      try {
-        setIsSearching(true);
-        const payload: SearchRidePayload = {
-          sourceLat: search.startLocation.latitude,
-          sourceLon: search.startLocation.longitude,
-          destLat: search.destinationLocation.latitude,
-          destLon: search.destinationLocation.longitude,
-          travelDate: format(selectedDate, "yyyy-MM-dd'T'HH:mm:ss"),
-          requestedSeats: search.seatCount,
-          radiusInMeters: 10000,
-          page: 0,
-          size: 15,
-        };
+  const handleSelectRecentSearch = useCallback(
+    async (search: RecentSearch) => {
+      const store = useBookRideStore.getState();
+      store.setStartLocation(search.startLocation);
+      store.setDestinationLocation(search.destinationLocation);
+      store.setTravelDate(search.travelDate);
+      store.setSeatCount(search.seatCount);
 
-        const results = await rideService.searchRides(payload);
-        const ridesList = results?.rides || results?.data || (Array.isArray(results) ? results : []);
-        store.setSearchResults(ridesList);
-        
-        if (store.rideType === 'local') {
-          navigate('LocalRideResults');
-        } else {
-          navigate('AvailableRides');
+      const selectedDate = new Date(search.travelDate);
+      if (isBefore(selectedDate, startOfDay(new Date()))) {
+        store.setTravelDate(null);
+        navigate('BookDateSelection');
+      } else {
+        try {
+          setIsSearching(true);
+          const payload: SearchRidePayload = {
+            sourceLat: search.startLocation.latitude,
+            sourceLon: search.startLocation.longitude,
+            destLat: search.destinationLocation.latitude,
+            destLon: search.destinationLocation.longitude,
+            travelDate: format(selectedDate, "yyyy-MM-dd'T'HH:mm:ss"),
+            requestedSeats: search.seatCount,
+            radiusInMeters: 10000,
+            page: 0,
+            size: 15,
+          };
+
+          const results = await rideService.searchRides(payload);
+          const ridesList =
+            results?.rides ||
+            results?.data ||
+            (Array.isArray(results) ? results : []);
+          store.setSearchResults(ridesList);
+
+          if (store.rideType === 'local') {
+            navigate('LocalRideResults');
+          } else {
+            navigate('AvailableRides');
+          }
+        } catch (error: any) {
+          console.error('Failed to search rides from recent search:', error);
+          showNotification(
+            NotificationType.ERROR,
+            translate('notification.defaultErrorTitle'),
+            getErrorMessage(
+              error,
+              translate('notification.defaultErrorMessage'),
+            ),
+          );
+          setIsSearching(false);
         }
-      } catch (error: any) {
-        console.error('Failed to search rides from recent search:', error);
-        showNotification(
-          NotificationType.ERROR,
-          translate('notification.defaultErrorTitle'),
-          getErrorMessage(error, translate('notification.defaultErrorMessage'))
-        );
-        setIsSearching(false);
       }
-    }
-  }, [navigate]);
+    },
+    [navigate],
+  );
 
   const handleSetRideType = useCallback((type: 'local' | 'intercity') => {
     useBookRideStore.getState().setRideType(type);
@@ -204,7 +230,7 @@ export const useBookRideInfo = () => {
 
   return {
     pickup: startLocation?.address || '',
-    destination:  destinationLocation?.address || '',
+    destination: destinationLocation?.address || '',
     travelDate: travelDate ? new Date(travelDate) : new Date(),
     peopleCount: seatCount,
     isSearching,

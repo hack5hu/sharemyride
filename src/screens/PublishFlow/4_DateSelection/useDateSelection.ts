@@ -11,7 +11,10 @@ const getMonthsData = (): MonthData[] => {
 
   const maxDate = new Date();
   maxDate.setDate(maxDate.getDate() + 60);
-  const monthCount = (maxDate.getFullYear() - currentYear) * 12 + (maxDate.getMonth() - currentMonth) + 1;
+  const monthCount =
+    (maxDate.getFullYear() - currentYear) * 12 +
+    (maxDate.getMonth() - currentMonth) +
+    1;
 
   const months: MonthData[] = [];
 
@@ -35,7 +38,7 @@ export const useDateSelection = () => {
 
   // Pre-fill with previously selected date from store
   const [selectedDate, setSelectedDate] = useState<Date | null>(
-    departureDate ? new Date(departureDate) : new Date()
+    departureDate ? new Date(departureDate) : new Date(),
   );
 
   const months = useMemo(() => getMonthsData(), []);
@@ -44,18 +47,21 @@ export const useDateSelection = () => {
     navigation.goBack();
   }, [navigation]);
 
-  const handleSelectDate = useCallback((date: Date) => {
-    setSelectedDate(date);
-    setDepartureDate(date.toISOString());
-    
-    // Slight delay to let the user see the selected state
-    setTimeout(() => {
-      (navigation.navigate as any)('TimeSelection', {
-        selectedDate: date.toISOString(),
-        returnTo: params?.returnTo,
-      });
-    }, 200);
-  }, [navigation, setDepartureDate, params]);
+  const handleSelectDate = useCallback(
+    (date: Date) => {
+      setSelectedDate(date);
+      setDepartureDate(date.toISOString());
+
+      // Slight delay to let the user see the selected state
+      setTimeout(() => {
+        (navigation.navigate as any)('TimeSelection', {
+          selectedDate: date.toISOString(),
+          returnTo: params?.returnTo,
+        });
+      }, 200);
+    },
+    [navigation, setDepartureDate, params],
+  );
 
   return {
     months,

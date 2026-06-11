@@ -58,11 +58,11 @@ export const locationService = {
   autocomplete: async (input: string): Promise<OlaPrediction[]> => {
     try {
       if (!input.trim()) return [];
-      
+
       const response = await olaClient.get('/places/v1/autocomplete', {
         params: { input },
       });
-      
+
       return response.data.predictions || [];
     } catch (error) {
       Logger.error('Ola Maps Autocomplete Error:', error);
@@ -70,7 +70,10 @@ export const locationService = {
     }
   },
 
-  reverseGeocode: async (latitude: number, longitude: number): Promise<{ name: string; address: string }> => {
+  reverseGeocode: async (
+    latitude: number,
+    longitude: number,
+  ): Promise<{ name: string; address: string }> => {
     const cacheKey = `${latitude.toFixed(6)},${longitude.toFixed(6)}`;
     if (geocodeCache.has(cacheKey)) {
       return geocodeCache.get(cacheKey)!;
@@ -101,13 +104,15 @@ export const locationService = {
   },
 
   getDirections: async (
-    originLat: number, 
-    originLng: number, 
-    destLat: number, 
+    originLat: number,
+    originLng: number,
+    destLat: number,
     destLng: number,
-    waypoints?: string 
+    waypoints?: string,
   ): Promise<OlaRoutingRoute[]> => {
-    const cacheKey = `${originLat.toFixed(6)},${originLng.toFixed(6)}|${destLat.toFixed(6)},${destLng.toFixed(6)}|${waypoints || ''}`;
+    const cacheKey = `${originLat.toFixed(6)},${originLng.toFixed(
+      6,
+    )}|${destLat.toFixed(6)},${destLng.toFixed(6)}|${waypoints || ''}`;
     if (directionsCache.has(cacheKey)) {
       return directionsCache.get(cacheKey)!;
     }
@@ -121,7 +126,7 @@ export const locationService = {
           alternatives: true,
           steps: false,
           overview: 'full',
-          mode: 'driving'
+          mode: 'driving',
         },
       });
 

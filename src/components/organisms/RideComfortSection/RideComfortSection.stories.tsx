@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/RideComfortSection',
   component: RideComfortSection,
-
 } satisfies Meta<typeof RideComfortSection>;
 
 export default meta;
@@ -15,6 +14,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     features: [],
-    t: {}
+    t: {},
   },
 };

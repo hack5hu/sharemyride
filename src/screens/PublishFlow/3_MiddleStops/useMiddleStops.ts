@@ -10,9 +10,9 @@ export const useMiddleStops = () => {
   const route = useRoute();
   const params = route.params as any;
 
-  const { 
-    startLocation, 
-    destinationLocation, 
+  const {
+    startLocation,
+    destinationLocation,
     middleStops,
     setMiddleStops,
     removeMiddleStop,
@@ -22,8 +22,9 @@ export const useMiddleStops = () => {
   } = useRidePublishStore();
 
   const [isSorting, setIsSorting] = useState(false);
-  const [totalDistanceMeters, setTotalDistanceMeters] = useState<number | null>(null);
-
+  const [totalDistanceMeters, setTotalDistanceMeters] = useState<number | null>(
+    null,
+  );
 
   const sortedStops = middleStops; // Already sorted in store
   console.log('sortedStops', sortedStops);
@@ -35,12 +36,14 @@ export const useMiddleStops = () => {
     navigation.push('MiddleStopMap');
   }, [navigation]);
 
-  const handleRemoveStop = useCallback((id: string) => {
-    removeMiddleStop(id);
-  }, [removeMiddleStop]);
+  const handleRemoveStop = useCallback(
+    (id: string) => {
+      removeMiddleStop(id);
+    },
+    [removeMiddleStop],
+  );
 
   const handleContinuePress = useCallback(async () => {
-   
     if (!startLocation || !destinationLocation) {
       navigation.navigate('DateSelection' as any);
       return;
@@ -48,29 +51,39 @@ export const useMiddleStops = () => {
 
     setIsSorting(true);
     try {
-      const waypoints = middleStops.length > 0 
-        ? middleStops.map(s => `${s.latitude},${s.longitude}`).join('|')
-        : undefined;
+      const waypoints =
+        middleStops.length > 0
+          ? middleStops.map(s => `${s.latitude},${s.longitude}`).join('|')
+          : undefined;
 
       const results = await locationService.getDirections(
         startLocation.latitude,
         startLocation.longitude,
         destinationLocation.latitude,
         destinationLocation.longitude,
-        waypoints
+        waypoints,
       );
 
       if (results && results.length > 0) {
         const mainRoute = results[0];
-        const legs = mainRoute.legs?.map((leg, i) => ({
-          distanceMeters: leg.distance,
-          durationSeconds: leg.duration,
-          startAddress: i === 0 ? startLocation.name : (middleStops[i - 1]?.name || 'Stop'),
-          endAddress: i === (mainRoute.legs?.length || 0) - 1 ? destinationLocation.name : (middleStops[i]?.name || 'Stop'),
-        })) || [];
+        const legs =
+          mainRoute.legs?.map((leg, i) => ({
+            distanceMeters: leg.distance,
+            durationSeconds: leg.duration,
+            startAddress:
+              i === 0 ? startLocation.name : middleStops[i - 1]?.name || 'Stop',
+            endAddress:
+              i === (mainRoute.legs?.length || 0) - 1
+                ? destinationLocation.name
+                : middleStops[i]?.name || 'Stop',
+          })) || [];
 
-        const totalDistanceMeters = mainRoute.distance ?? legs.reduce((acc, leg) => acc + leg.distanceMeters, 0);
-        const totalDurationSeconds = mainRoute.duration ?? legs.reduce((acc, leg) => acc + leg.durationSeconds, 0);
+        const totalDistanceMeters =
+          mainRoute.distance ??
+          legs.reduce((acc, leg) => acc + leg.distanceMeters, 0);
+        const totalDurationSeconds =
+          mainRoute.duration ??
+          legs.reduce((acc, leg) => acc + leg.durationSeconds, 0);
 
         const details = {
           totalDistanceMeters,
@@ -82,7 +95,8 @@ export const useMiddleStops = () => {
         setTotalDistanceMeters(totalDistanceMeters);
 
         // Update selectedRoute in store to route through the middle stops
-        const polyline = mainRoute.overview_polyline || mainRoute.geometry || '';
+        const polyline =
+          mainRoute.overview_polyline || mainRoute.geometry || '';
         const coordinates = decodePolyline(polyline, 1e5);
         const bounds = getBoundingBox(coordinates);
 
@@ -95,9 +109,12 @@ export const useMiddleStops = () => {
             uiData: {
               ...selectedRoute.uiData,
               distance: `${(totalDistanceMeters / 1000).toFixed(1)} km`,
-              duration: Math.round(totalDurationSeconds / 60) > 60 
-                ? `${Math.floor(Math.round(totalDurationSeconds / 60) / 60)} hr ${Math.round(totalDurationSeconds / 60) % 60} min` 
-                : `${Math.round(totalDurationSeconds / 60)} min`,
+              duration:
+                Math.round(totalDurationSeconds / 60) > 60
+                  ? `${Math.floor(
+                      Math.round(totalDurationSeconds / 60) / 60,
+                    )} hr ${Math.round(totalDurationSeconds / 60) % 60} min`
+                  : `${Math.round(totalDurationSeconds / 60)} min`,
             },
           });
         }
@@ -116,7 +133,14 @@ export const useMiddleStops = () => {
         (navigation.navigate as any)('DateSelection');
       }
     }
-  }, [navigation, setRouteDetails, startLocation, destinationLocation, middleStops, params]);
+  }, [
+    navigation,
+    setRouteDetails,
+    startLocation,
+    destinationLocation,
+    middleStops,
+    params,
+  ]);
 
   // Compute total distance for display as soon as stops are updated
   useEffect(() => {
@@ -126,18 +150,23 @@ export const useMiddleStops = () => {
         return;
       }
       try {
-        const waypoints = middleStops.length > 0 ? middleStops.map(s => `${s.latitude},${s.longitude}`).join('|') : undefined;
+        const waypoints =
+          middleStops.length > 0
+            ? middleStops.map(s => `${s.latitude},${s.longitude}`).join('|')
+            : undefined;
         const res = await locationService.getDirections(
           startLocation.latitude,
           startLocation.longitude,
           destinationLocation.latitude,
           destinationLocation.longitude,
-          waypoints
+          waypoints,
         );
         if (res && res.length > 0) {
           const route = res[0];
-          const legs = route.legs?.map((leg) => ({ distance: leg.distance })) || [];
-          const total = route.distance ?? legs.reduce((a, l) => a + (l.distance || 0), 0);
+          const legs =
+            route.legs?.map(leg => ({ distance: leg.distance })) || [];
+          const total =
+            route.distance ?? legs.reduce((a, l) => a + (l.distance || 0), 0);
           setTotalDistanceMeters(total);
 
           // Dynamically update the selectedRoute in store to pass through waypoints in real-time
@@ -170,11 +199,18 @@ export const useMiddleStops = () => {
   }, [startLocation, destinationLocation, middleStops]);
 
   const startDistanceText = '0 km';
-  const destinationDistanceText = totalDistanceMeters !== null ? `${(totalDistanceMeters / 1000).toFixed(1)} km` : undefined;
+  const destinationDistanceText =
+    totalDistanceMeters !== null
+      ? `${(totalDistanceMeters / 1000).toFixed(1)} km`
+      : undefined;
 
   return {
-    startLocation: startLocation?.name || startLocation?.address || 'Pick Start Location',
-    destination: destinationLocation?.name || destinationLocation?.address || 'Pick Destination',
+    startLocation:
+      startLocation?.name || startLocation?.address || 'Pick Start Location',
+    destination:
+      destinationLocation?.name ||
+      destinationLocation?.address ||
+      'Pick Destination',
     startLocationRaw: startLocation,
     destinationLocationRaw: destinationLocation,
     middleStops: sortedStops.map(s => ({

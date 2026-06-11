@@ -13,10 +13,10 @@ export const MapPin: React.FC<MapPinProps> = ({ isVisible = true }) => {
   return (
     <Container>
       <PinCircle>
-        <Icon 
-          name="location-on" 
-          size={moderateScale(18)} 
-          color={theme.colors.on_primary} 
+        <Icon
+          name="location-on"
+          size={moderateScale(18)}
+          color={theme.colors.on_primary}
         />
       </PinCircle>
       <PinStem />

@@ -55,7 +55,7 @@ export const ContentLayer = styled.ScrollView.attrs({
     paddingHorizontal: scale(24),
     paddingTop: verticalScale(32),
     paddingBottom: verticalScale(140), // Leave room for footer
-  }
+  },
 })`
   flex: 1;
 `;

@@ -77,16 +77,35 @@ const FeatureBadge = styled.View`
   gap: ${scale(6)}px;
 `;
 
-export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void }> = ({ ride, onPress }) => {
+export const RideCard: React.FC<{
+  ride: RideData;
+  onPress?: (id: string) => void;
+}> = ({ ride, onPress }) => {
   const theme = useTheme();
   const { t, translations } = useTranslation();
-  const { availableRides: tVal, rideDetails: rd, travelPreferences: tp } = translations;
+  const {
+    availableRides: tVal,
+    rideDetails: rd,
+    travelPreferences: tp,
+  } = translations;
   return (
-    <CardContainer isSpecial={ride.isFrequentCoRider} onPress={() => onPress?.(ride.id)}>
+    <CardContainer
+      isSpecial={ride.isFrequentCoRider}
+      onPress={() => onPress?.(ride.id)}
+    >
       {ride.isFrequentCoRider && (
         <SpecialBadge>
-          <Icon name="verified-user" size={moderateScale(12)} color={theme.colors.on_primary_container} />
-          <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_primary_container}>
+          <Icon
+            name="verified-user"
+            size={moderateScale(12)}
+            color={theme.colors.on_primary_container}
+          />
+          <Typography
+            variant="label"
+            size="sm"
+            weight="bold"
+            color={theme.colors.on_primary_container}
+          >
             {tVal.frequentCoRiderBadge.toUpperCase()}
           </Typography>
         </SpecialBadge>
@@ -94,28 +113,62 @@ export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void
 
       <Header>
         <DriverInfo>
-          <Avatar
-            source={{ uri: ride.driver.driverPhotoUrl }}
-            size="md"
-          />
+          <Avatar source={{ uri: ride.driver.driverPhotoUrl }} size="md" />
           <DriverTextGroup>
             <Typography variant="title" size="sm" weight="bold">
               {ride.driver.name}
             </Typography>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-              <Icon name="star" size={moderateScale(16)} color={theme.colors.primary} />
-              <Typography variant="label" size="sm" weight="bold" color={theme.colors.primary}>
+            <View
+              style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}
+            >
+              <Icon
+                name="star"
+                size={moderateScale(16)}
+                color={theme.colors.primary}
+              />
+              <Typography
+                variant="label"
+                size="sm"
+                weight="bold"
+                color={theme.colors.primary}
+              >
                 {ride.driver.rating}
               </Typography>
-              <Typography variant="label" size="sm" color={theme.colors.on_surface_variant}>
-                ({t('availableRides.driverRides', { count: ride.driver.rideCount })})
+              <Typography
+                variant="label"
+                size="sm"
+                color={theme.colors.on_surface_variant}
+              >
+                (
+                {t('availableRides.driverRides', {
+                  count: ride.driver.rideCount,
+                })}
+                )
               </Typography>
             </View>
-            {(ride.pickupDistance !== undefined && ride.pickupDistance < 50) && (
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 4 }}>
-                <Icon name="near-me" size={moderateScale(14)} color={theme.colors.primary} />
-                <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
-                  {t('availableRides.kmFromPickup', { distance: ride.pickupDistance.toFixed(1) })}
+            {ride.pickupDistance !== undefined && ride.pickupDistance < 50 && (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 4,
+                  marginTop: 4,
+                }}
+              >
+                <Icon
+                  name="near-me"
+                  size={moderateScale(14)}
+                  color={theme.colors.primary}
+                />
+                <Typography
+                  variant="label"
+                  size="sm"
+                  weight="bold"
+                  color={theme.colors.on_surface_variant}
+                >
+                  {t('availableRides.kmFromPickup', {
+                    distance: ride.pickupDistance.toFixed(1),
+                  })}
                 </Typography>
               </View>
             )}
@@ -124,33 +177,71 @@ export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void
 
         <PriceGroup>
           <PriceText>₹{ride.price.toFixed(0)}</PriceText>
-          <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
+          <Typography
+            variant="label"
+            size="sm"
+            weight="bold"
+            color={theme.colors.on_surface_variant}
+          >
             {tVal.perSeatLabel.toUpperCase()}
           </Typography>
           {ride.totalDuration > 0 && (
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 2 }}>
-              <Icon name="schedule" size={moderateScale(12)} color={theme.colors.primary} />
-              <Typography variant="label" size="xs" weight="bold" color={theme.colors.primary}>
-                {t('availableRides.durationValue', { hours: Math.floor(ride.totalDuration / 60), minutes: ride.totalDuration % 60 })}
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 4,
+                marginTop: 2,
+              }}
+            >
+              <Icon
+                name="schedule"
+                size={moderateScale(12)}
+                color={theme.colors.primary}
+              />
+              <Typography
+                variant="label"
+                size="xs"
+                weight="bold"
+                color={theme.colors.primary}
+              >
+                {t('availableRides.durationValue', {
+                  hours: Math.floor(ride.totalDuration / 60),
+                  minutes: ride.totalDuration % 60,
+                })}
               </Typography>
             </View>
           )}
         </PriceGroup>
       </Header>
 
-      <RideTimeline points={ride.timeline.filter((_, i, a) => i === 0 || i === a.length - 1)} />
+      <RideTimeline
+        points={ride.timeline.filter(
+          (_, i, a) => i === 0 || i === a.length - 1,
+        )}
+      />
 
       <Footer>
         {ride.features.map((feature, idx) => {
           let iconName = 'stars';
           let label = feature;
 
-          if (feature === 'noSmoking') { iconName = 'smoke-free'; label = rd.smokeFree; }
-          else if (feature === 'ladiesOnly') { iconName = 'pregnant-woman'; label = rd.ladiesOnly; }
-          else if (feature === 'petFriendly') { iconName = 'pets'; label = tp.petFriendly; }
-          else if (feature === 'luggageAllowed') { iconName = 'luggage'; label = tp.luggageAllowed; }
-          else if (feature === 'autoApproval') { iconName = 'flash-on'; label = rd.instantBooking }
-          else if (feature.startsWith('music:')) return;
+          if (feature === 'noSmoking') {
+            iconName = 'smoke-free';
+            label = rd.smokeFree;
+          } else if (feature === 'ladiesOnly') {
+            iconName = 'pregnant-woman';
+            label = rd.ladiesOnly;
+          } else if (feature === 'petFriendly') {
+            iconName = 'pets';
+            label = tp.petFriendly;
+          } else if (feature === 'luggageAllowed') {
+            iconName = 'luggage';
+            label = tp.luggageAllowed;
+          } else if (feature === 'autoApproval') {
+            iconName = 'flash-on';
+            label = rd.instantBooking;
+          } else if (feature.startsWith('music:')) return;
 
           return (
             <FeatureBadge key={idx}>
@@ -159,7 +250,12 @@ export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void
                 size={moderateScale(14)}
                 color={theme.colors.on_surface_variant}
               />
-              <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
+              <Typography
+                variant="label"
+                size="sm"
+                weight="bold"
+                color={theme.colors.on_surface_variant}
+              >
                 {label}
               </Typography>
             </FeatureBadge>
@@ -167,8 +263,17 @@ export const RideCard: React.FC<{ ride: RideData; onPress?: (id: string) => void
         })}
 
         <FeatureBadge>
-          <Icon name="event-seat" size={moderateScale(14)} color={theme.colors.on_surface_variant} />
-          <Typography variant="label" size="sm" weight="bold" color={theme.colors.on_surface_variant}>
+          <Icon
+            name="event-seat"
+            size={moderateScale(14)}
+            color={theme.colors.on_surface_variant}
+          />
+          <Typography
+            variant="label"
+            size="sm"
+            weight="bold"
+            color={theme.colors.on_surface_variant}
+          >
             {t('availableRides.seatsLeftLabel', { count: ride.seatsLeft ?? 0 })}
           </Typography>
         </FeatureBadge>

@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/Button',
   component: Button,
-
 } satisfies Meta<typeof Button>;
 
 export default meta;

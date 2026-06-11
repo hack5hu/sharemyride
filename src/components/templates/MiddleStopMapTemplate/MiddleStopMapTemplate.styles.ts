@@ -36,7 +36,12 @@ export const SearchOverlayLayer = styled.View`
 
 /* Map gradient overlay (top + bottom fade) */
 export const MapGradientOverlay = styled(LinearGradient).attrs(({ theme }) => ({
-  colors: [`${theme.colors.surface}E6`, 'transparent', 'transparent', `${theme.colors.surface}E6`],
+  colors: [
+    `${theme.colors.surface}E6`,
+    'transparent',
+    'transparent',
+    `${theme.colors.surface}E6`,
+  ],
   locations: [0, 0.15, 0.85, 1],
 }))`
   position: absolute;
@@ -73,7 +78,8 @@ export const BottomGradient = styled(LinearGradient).attrs(({ theme }) => ({
 
 /* Stop info card */
 export const StopInfoCard = styled.View`
-  background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}F2`};
+  background-color: ${({ theme }) =>
+    `${theme.colors.surface_container_lowest}F2`};
   border-radius: ${moderateScale(16)}px;
   padding: ${moderateScale(16)}px;
   margin-bottom: ${verticalScale(12)}px;
@@ -128,8 +134,6 @@ export const DistancePillText = styled.Text<{ isWarning?: boolean }>`
     isWarning ? theme.colors.error : theme.colors.primary};
 `;
 
-
-
 /* Search bar floating on map (non-search mode) */
 export const FloatingSearchBar = styled.TouchableOpacity`
   position: absolute;
@@ -174,7 +178,8 @@ export const MarkerDotOuter = styled.View<{ color?: string }>`
   width: ${moderateScale(24)}px;
   height: ${moderateScale(24)}px;
   border-radius: 9999px;
-  background-color: ${({ theme, color }) => `${color || theme.colors.primary}33`};
+  background-color: ${({ theme, color }) =>
+    `${color || theme.colors.primary}33`};
   align-items: center;
   justify-content: center;
 `;
@@ -212,7 +217,8 @@ export const SearchFloatingFooter = styled.View`
   bottom: ${verticalScale(32)}px;
   left: ${scale(24)}px;
   right: ${scale(24)}px;
-  background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}E6`};
+  background-color: ${({ theme }) =>
+    `${theme.colors.surface_container_lowest}E6`};
   border-radius: 9999px;
   padding: ${moderateScale(16)}px;
   flex-direction: row;
@@ -288,7 +294,7 @@ export const TooltipBubble = styled.View`
   padding: ${verticalScale(8)}px ${scale(16)}px;
   border-radius: 9999px;
   margin-bottom: ${verticalScale(16)}px;
-  shadow-color: rgb(0,0,0);
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px 10px;
   shadow-opacity: 0.15;
   shadow-radius: 12px;
@@ -308,7 +314,7 @@ export const PinShadow = styled.View`
   bottom: -4px;
   width: ${moderateScale(16)}px;
   height: ${verticalScale(4)}px;
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 9999px;
 `;
 

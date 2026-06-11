@@ -21,9 +21,8 @@ export const DatePickerInput: React.FC<DatePickerInputProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
 
-  const displayValue = value instanceof Date 
-    ? format(value, 'dd/MM/yyyy') 
-    : value;
+  const displayValue =
+    value instanceof Date ? format(value, 'dd/MM/yyyy') : value;
 
   return (
     <>
@@ -43,7 +42,7 @@ export const DatePickerInput: React.FC<DatePickerInputProps> = ({
         open={open}
         date={value instanceof Date ? value : new Date()}
         mode="date"
-        onConfirm={(date) => {
+        onConfirm={date => {
           setOpen(false);
           onDateChange(date);
         }}

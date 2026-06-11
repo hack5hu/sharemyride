@@ -58,7 +58,7 @@ export const ChatDetailsTemplate: React.FC<ChatDetailsTemplateProps> = ({
               ref={listRef}
               data={data}
               renderItem={renderItem}
-              keyExtractor={(item) => item.id}
+              keyExtractor={item => item.id}
               inverted
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
@@ -78,9 +78,7 @@ export const ChatDetailsTemplate: React.FC<ChatDetailsTemplateProps> = ({
             />
           </View>
 
-          <View>
-            {input}
-          </View>
+          <View>{input}</View>
         </ScreenContainer>
       </Animated.View>
     </ScreenShell>

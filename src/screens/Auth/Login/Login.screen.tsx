@@ -38,7 +38,7 @@ export const LoginScreen: React.FC = React.memo(() => {
     hasDismissedTruecaller,
     isKeyboardVisible,
   } = useLogin();
-  
+
   const t = useLocale();
   const theme = useTheme();
   const navigation = useAppNavigation();
@@ -54,7 +54,11 @@ export const LoginScreen: React.FC = React.memo(() => {
 
   return (
     <ScreenShell noPaddingTop>
-      <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle="dark-content"
+      />
       <Container>
         <ScrollContent showsVerticalScrollIndicator={false}>
           <ContentWrapper>
@@ -74,19 +78,22 @@ export const LoginScreen: React.FC = React.memo(() => {
                   <OverlayTagline>{t.login.brandTagline}</OverlayTagline>
                 </OverlayHeader>
 
-              <LoginForm
-                value={phone}
-                onChangeText={handleChange}
-                onBlur={handleBlur}
-                error={error}
-                onSubmit={handleSubmit}
-                isValid={isValid}
-                loading={loading}
-
-                onTruecallerLogin={isTruecallerSupported ? handleTruecallerLogin : undefined}
-                onInputFocus={handleInputFocus}
-                isTruecallerActive={isTruecallerSupported && !hasDismissedTruecaller}
-              />
+                <LoginForm
+                  value={phone}
+                  onChangeText={handleChange}
+                  onBlur={handleBlur}
+                  error={error}
+                  onSubmit={handleSubmit}
+                  isValid={isValid}
+                  loading={loading}
+                  onTruecallerLogin={
+                    isTruecallerSupported ? handleTruecallerLogin : undefined
+                  }
+                  onInputFocus={handleInputFocus}
+                  isTruecallerActive={
+                    isTruecallerSupported && !hasDismissedTruecaller
+                  }
+                />
               </LoginCard>
             </FormContentWrapper>
           </ContentWrapper>
@@ -94,11 +101,20 @@ export const LoginScreen: React.FC = React.memo(() => {
 
         {/* Sticky Top Language Button */}
         <TopLanguageButton onPress={handleLanguageToggle}>
-          <Icon name="language" size={16} color={theme.colors.on_surface_variant} />
-          <LanguageButtonText>{language === 'en' ? t.login.english : t.login.hindi}</LanguageButtonText>
-          <Icon name="keyboard-arrow-down" size={16} color={theme.colors.on_surface_variant} />
+          <Icon
+            name="language"
+            size={16}
+            color={theme.colors.on_surface_variant}
+          />
+          <LanguageButtonText>
+            {language === 'en' ? t.login.english : t.login.hindi}
+          </LanguageButtonText>
+          <Icon
+            name="keyboard-arrow-down"
+            size={16}
+            color={theme.colors.on_surface_variant}
+          />
         </TopLanguageButton>
-
       </Container>
     </ScreenShell>
   );

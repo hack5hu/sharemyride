@@ -1,50 +1,51 @@
 import React, { useEffect, forwardRef } from 'react';
-import { Map as MapView, TransformRequestManager, OfflineManager } from '@maplibre/maplibre-react-native';
+import {
+  Map as MapView,
+  TransformRequestManager,
+  OfflineManager,
+} from '@maplibre/maplibre-react-native';
 import { OLA_API_KEY } from '@/constants/OlaStyle';
 import { OlaMapProps } from './types.d';
 
 // Run setup only once
 let isTransformRequestSetup = false;
 
-const DEFAULT_STYLE = 'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json';
+const DEFAULT_STYLE =
+  'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json';
 
-export const OlaMap = React.memo(forwardRef<any, OlaMapProps>(({
-  mapStyle = DEFAULT_STYLE,
-  children,
-  ...rest
-}, ref) => {
-  useEffect(() => {
-    if (!isTransformRequestSetup) {
-      // Set 100MB ambient tile cache to ensure repeat location views are cached
-      OfflineManager.setMaximumAmbientCacheSize(100 * 1024 * 1024);
+export const OlaMap = React.memo(
+  forwardRef<any, OlaMapProps>(
+    ({ mapStyle = DEFAULT_STYLE, children, ...rest }, ref) => {
+      useEffect(() => {
+        if (!isTransformRequestSetup) {
+          // Set 100MB ambient tile cache to ensure repeat location views are cached
+          OfflineManager.setMaximumAmbientCacheSize(100 * 1024 * 1024);
 
-      TransformRequestManager.addUrlSearchParam({
-        id: "ola-api-key",
-        match: /api\.olamaps\.io/,
-        name: "api_key",
-        value: OLA_API_KEY,
-      });
+          TransformRequestManager.addUrlSearchParam({
+            id: 'ola-api-key',
+            match: /api\.olamaps\.io/,
+            name: 'api_key',
+            value: OLA_API_KEY,
+          });
 
-      TransformRequestManager.addUrlTransform({
-        id: "ola-key-cleanup",
-        match: "api\\.olamaps\\.io",
-        find: "([?&])key=[^&?]+",
-        replace: "$1",
-      });
+          TransformRequestManager.addUrlTransform({
+            id: 'ola-key-cleanup',
+            match: 'api\\.olamaps\\.io',
+            find: '([?&])key=[^&?]+',
+            replace: '$1',
+          });
 
-      isTransformRequestSetup = true;
-    }
-  }, []);
+          isTransformRequestSetup = true;
+        }
+      }, []);
 
-  return (
-    <MapView
-      ref={ref}
-      mapStyle={mapStyle}
-      {...rest}
-    >
-      {children}
-    </MapView>
-  );
-}));
+      return (
+        <MapView ref={ref} mapStyle={mapStyle} {...rest}>
+          {children}
+        </MapView>
+      );
+    },
+  ),
+);
 
 OlaMap.displayName = 'OlaMap';

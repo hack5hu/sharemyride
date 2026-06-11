@@ -33,4 +33,3 @@ export const DOBLabel = styled.View`
   padding-horizontal: ${moderateScale(12)}px;
   border-radius: ${moderateScale(12)}px;
 `;
-

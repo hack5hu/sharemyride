@@ -29,17 +29,14 @@ export const DateSelectionTemplate: React.FC<DateSelectionTemplateProps> = ({
   const { dateSelection: t } = useLocale();
 
   return (
-    <ScreenShell
-      title={"Select a date"}
-      onBack={onBackPress}
-    >
+    <ScreenShell title={'Select a date'} onBack={onBackPress}>
       <S.ProgressSection>
         <S.TitleText>{t.title}</S.TitleText>
       </S.ProgressSection>
 
       {/* Scrollable calendar */}
       <S.ScrollContent showsVerticalScrollIndicator={false}>
-        {months.map((m) => (
+        {months.map(m => (
           <MonthCalendar
             key={`${m.year}-${m.month}`}
             year={m.year}

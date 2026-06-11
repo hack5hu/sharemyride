@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/Checkbox',
   component: Checkbox,
-
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;

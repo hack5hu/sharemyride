@@ -8,14 +8,17 @@ interface ZyncRideLogoProps {
   height?: number | string;
 }
 
-export const ZyncRideLogo: React.FC<ZyncRideLogoProps> = ({ width = 300, height = 100 }) => {
+export const ZyncRideLogo: React.FC<ZyncRideLogoProps> = ({
+  width = 300,
+  height = 100,
+}) => {
   const theme = useTheme();
   const t = useLocale();
-  
+
   // E.g., 'ZyncRide' -> 'Zync' and 'Ride'
-  const brandName = t.login.brandName; 
+  const brandName = t.login.brandName;
   const part1 = brandName.slice(0, 4); // "Zync"
-  const part2 = brandName.slice(4);    // "Ride"
+  const part2 = brandName.slice(4); // "Ride"
 
   return (
     <Svg viewBox="0 0 300 100" width={width} height={height}>
@@ -39,7 +42,8 @@ export const ZyncRideLogo: React.FC<ZyncRideLogoProps> = ({ width = 300, height 
         fontSize="40"
         fill={theme.colors.on_surface}
       >
-        {part1}<TSpan fill={theme.colors.primary}>{part2}</TSpan>
+        {part1}
+        <TSpan fill={theme.colors.primary}>{part2}</TSpan>
       </SvgText>
     </Svg>
   );

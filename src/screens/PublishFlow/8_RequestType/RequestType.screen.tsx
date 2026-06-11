@@ -37,7 +37,9 @@ export const RequestTypeScreen: React.FC = () => {
   const { requestType: t } = useLocale();
 
   // State for booking type: 'instant' or 'review'
-  const [bookingType, setBookingType] = React.useState<'instant' | 'review'>('instant');
+  const [bookingType, setBookingType] = React.useState<'instant' | 'review'>(
+    'instant',
+  );
 
   const { setRequestType } = useRidePublishStore();
 
@@ -48,10 +50,7 @@ export const RequestTypeScreen: React.FC = () => {
   };
 
   return (
-    <ScreenShell
-      title={'Request Type'}
-      onBack={handleBackPress}
-    >
+    <ScreenShell title={'Request Type'} onBack={handleBackPress}>
       <Content>
         <TitleSection>
           <PageTitle>{t.title}</PageTitle>
@@ -67,11 +66,17 @@ export const RequestTypeScreen: React.FC = () => {
           >
             <OptionContent>
               <IconContainer type="instant">
-                <MaterialIcons name="bolt" size={moderateScale(28)} color={theme.colors.primary} />
+                <MaterialIcons
+                  name="bolt"
+                  size={moderateScale(28)}
+                  color={theme.colors.primary}
+                />
               </IconContainer>
               <OptionTextWrapper>
                 <OptionTitle>{t.instantBookingTitle}</OptionTitle>
-                <OptionDescription>{t.instantBookingSubtitle}</OptionDescription>
+                <OptionDescription>
+                  {t.instantBookingSubtitle}
+                </OptionDescription>
               </OptionTextWrapper>
             </OptionContent>
             <RadioOuter selected={bookingType === 'instant'}>
@@ -87,7 +92,11 @@ export const RequestTypeScreen: React.FC = () => {
           >
             <OptionContent>
               <IconContainer type="review">
-                <MaterialIcons name="verified-user" size={moderateScale(28)} color={theme.colors.secondary} />
+                <MaterialIcons
+                  name="verified-user"
+                  size={moderateScale(28)}
+                  color={theme.colors.secondary}
+                />
               </IconContainer>
               <OptionTextWrapper>
                 <OptionTitle>{t.requestReviewTitle}</OptionTitle>
@@ -103,7 +112,11 @@ export const RequestTypeScreen: React.FC = () => {
         {/* Pro Tip Box */}
         <ProTipCard>
           <ProTipHeader>
-            <MaterialIcons name="info" size={moderateScale(16)} color={theme.colors.primary} />
+            <MaterialIcons
+              name="info"
+              size={moderateScale(16)}
+              color={theme.colors.primary}
+            />
             <ProTipTitle>{t.proTipTitle}</ProTipTitle>
           </ProTipHeader>
           <ProTipText>{t.proTipText}</ProTipText>
@@ -124,7 +137,11 @@ export const RequestTypeScreen: React.FC = () => {
             end={{ x: 1, y: 1 }}
           >
             <ContinueText>{t.continueButton}</ContinueText>
-            <MaterialIcons name="arrow-forward" size={moderateScale(20)} color={theme.colors.on_primary} />
+            <MaterialIcons
+              name="arrow-forward"
+              size={moderateScale(20)}
+              color={theme.colors.on_primary}
+            />
           </ContinueGradient>
         </ContinueButton>
       </FloatingFooter>

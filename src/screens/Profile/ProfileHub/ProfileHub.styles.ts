@@ -7,7 +7,6 @@ export const ScreenWrapper = styled.View`
   background-color: ${({ theme }) => theme.colors.surface};
 `;
 
-
 export const Container = styled.ScrollView`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.background};
@@ -19,7 +18,6 @@ export const Content = styled.View`
   gap: ${moderateScale(24)}px;
   padding-bottom: ${verticalScale(120)}px;
 `;
-
 
 export const Section = styled.View`
   gap: ${moderateScale(16)}px;
@@ -64,6 +62,6 @@ export const NavItem = styled.TouchableOpacity<{ active?: boolean }>`
   padding-horizontal: ${moderateScale(16)}px;
   padding-vertical: ${moderateScale(8)}px;
   border-radius: ${moderateScale(12)}px;
-  background-color: ${({ active, theme }) => active ? theme.colors.primary_container + '33' : 'transparent'};
+  background-color: ${({ active, theme }) =>
+    active ? theme.colors.primary_container + '33' : 'transparent'};
 `;
-

@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/SelectionPreviewCard',
   component: SelectionPreviewCard,
-
 } satisfies Meta<typeof SelectionPreviewCard>;
 
 export default meta;
@@ -14,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    label: "Sample Label",
-    icon: "star"
+    label: 'Sample Label',
+    icon: 'star',
   },
 };

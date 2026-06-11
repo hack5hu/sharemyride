@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/IdentityProfileCard',
   component: IdentityProfileCard,
-
 } satisfies Meta<typeof IdentityProfileCard>;
 
 export default meta;

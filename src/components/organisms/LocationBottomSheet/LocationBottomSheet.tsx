@@ -3,19 +3,17 @@ import { Handlebar } from '@/components/atoms/Handlebar';
 import { DurationChip } from '@/components/atoms/DurationChip';
 import { LocationListItem } from '@/components/molecules/LocationListItem';
 import { useTranslation } from '@/hooks/useTranslation';
-import { 
-  Container, 
-  ScrollArea, 
-  Section, 
-  DurationChipsList, 
-  SectionHeader, 
-  SuggestionsList 
+import {
+  Container,
+  ScrollArea,
+  Section,
+  DurationChipsList,
+  SectionHeader,
+  SuggestionsList,
 } from './LocationBottomSheet.styles';
 import { LocationBottomSheetProps } from './types.d';
 
-
 export const LocationBottomSheet: React.FC<LocationBottomSheetProps> = ({
-
   onLocationSelect,
 
   searchResults,
@@ -25,10 +23,9 @@ export const LocationBottomSheet: React.FC<LocationBottomSheetProps> = ({
   return (
     <Container>
       <Handlebar />
-      
-      <ScrollArea showsVerticalScrollIndicator={false}>
 
-        <LocationListItem 
+      <ScrollArea showsVerticalScrollIndicator={false}>
+        <LocationListItem
           title={t('chatLocation.sendCurrentLocation')}
           address={t('chatLocation.sendCurrentLocationDesc')}
           icon="gps-fixed"
@@ -39,8 +36,8 @@ export const LocationBottomSheet: React.FC<LocationBottomSheetProps> = ({
           <Section>
             <SectionHeader>{t('chatLocation.nearbyPlaces')}</SectionHeader>
             <SuggestionsList>
-              {searchResults.map((item) => (
-                <LocationListItem 
+              {searchResults.map(item => (
+                <LocationListItem
                   key={item.id}
                   title={item.name}
                   address={item.address}
@@ -55,4 +52,3 @@ export const LocationBottomSheet: React.FC<LocationBottomSheetProps> = ({
     </Container>
   );
 };
-

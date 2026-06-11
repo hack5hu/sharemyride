@@ -29,7 +29,7 @@ export const LocationDetailsCard: React.FC<LocationDetailsCardProps> = ({
   locationName,
   locationAddress,
   onSelect,
-  disabled
+  disabled,
 }) => {
   const theme = useTheme();
   const { mapPicker } = useLocale();
@@ -39,10 +39,10 @@ export const LocationDetailsCard: React.FC<LocationDetailsCardProps> = ({
       <CardSurface>
         <LocationHeader>
           <IconContainer>
-            <MaterialIcons 
-              name="place" 
-              size={moderateScale(20)} 
-              color={theme.colors.on_primary_fixed_variant} 
+            <MaterialIcons
+              name="place"
+              size={moderateScale(20)}
+              color={theme.colors.on_primary_fixed_variant}
             />
           </IconContainer>
           <TextContainer>
@@ -57,8 +57,14 @@ export const LocationDetailsCard: React.FC<LocationDetailsCardProps> = ({
         </LocationHeader>
 
         <SelectButtonContainer>
-          <SelectButton onPress={onSelect} disabled={disabled || !locationName} activeOpacity={0.9}>
-            <SelectGradient style={{ opacity: (disabled || !locationName) ? 0.6 : 1 }}>
+          <SelectButton
+            onPress={onSelect}
+            disabled={disabled || !locationName}
+            activeOpacity={0.9}
+          >
+            <SelectGradient
+              style={{ opacity: disabled || !locationName ? 0.6 : 1 }}
+            >
               <SelectButtonText>{mapPicker.selectLocation}</SelectButtonText>
             </SelectGradient>
           </SelectButton>

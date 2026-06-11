@@ -7,7 +7,7 @@ export const Container = styled.View`
 `;
 
 export const ScrollContainer = styled.ScrollView.attrs(() => ({
-  contentContainerStyle: { 
+  contentContainerStyle: {
     paddingHorizontal: scale(20),
     paddingBottom: verticalScale(100),
     paddingTop: verticalScale(16),

@@ -25,18 +25,32 @@ export const VehicleHorizontalList: React.FC<VehicleHorizontalListProps> = ({
 
   return (
     <View style={{ marginBottom: 24 }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: scale(24), marginBottom: 12 }}>
-        <Typography variant="label" size="sm" weight="bold" color={theme.colors.outline} style={{ letterSpacing: 1.5, textTransform: 'uppercase' }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginHorizontal: scale(24),
+          marginBottom: 12,
+        }}
+      >
+        <Typography
+          variant="label"
+          size="sm"
+          weight="bold"
+          color={theme.colors.outline}
+          style={{ letterSpacing: 1.5, textTransform: 'uppercase' }}
+        >
           {title}
         </Typography>
       </View>
-      
-      <ScrollView 
-        horizontal 
+
+      <ScrollView
+        horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: scale(24), gap: scale(12) }}
       >
-        {vehicles.map((vehicle) => (
+        {vehicles.map(vehicle => (
           <VehicleCard
             key={vehicle.id}
             company={vehicle.company}
@@ -49,12 +63,7 @@ export const VehicleHorizontalList: React.FC<VehicleHorizontalListProps> = ({
             onPress={() => onSelect(vehicle.id)}
           />
         ))}
-        <VehicleCard
-          isAddButton
-          model=""
-          seater=""
-          onPress={onAddNew}
-        />
+        <VehicleCard isAddButton model="" seater="" onPress={onAddNew} />
       </ScrollView>
     </View>
   );

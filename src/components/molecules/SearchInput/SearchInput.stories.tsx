@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/SearchInput',
   component: SearchInput,
-
 } satisfies Meta<typeof SearchInput>;
 
 export default meta;

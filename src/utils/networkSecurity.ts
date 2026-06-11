@@ -30,8 +30,7 @@ const isSensitiveKey = (key: string): boolean => {
   return SENSITIVE_KEY_PARTS.some(part => normalizedKey.includes(part));
 };
 
-export const isNetworkLoggerEnabled = (): boolean =>
-  true;
+export const isNetworkLoggerEnabled = (): boolean => true;
 
 export const redactSensitiveData = (value: unknown): unknown => {
   if (value === null || value === undefined) {
@@ -63,8 +62,11 @@ export const sanitizeHeaders = (headers: unknown): JsonRecord => {
     return {};
   }
 
-  return Object.entries(headerSource).reduce<JsonRecord>((acc, [key, value]) => {
-    acc[key] = value;
-    return acc;
-  }, {});
+  return Object.entries(headerSource).reduce<JsonRecord>(
+    (acc, [key, value]) => {
+      acc[key] = value;
+      return acc;
+    },
+    {},
+  );
 };

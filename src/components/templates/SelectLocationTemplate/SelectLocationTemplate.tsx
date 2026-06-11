@@ -34,7 +34,8 @@ import {
 } from './SelectLocationTemplate.styles';
 import { SelectLocationTemplateProps } from './types.d';
 
-export interface SelectLocationTemplateExtendedProps extends SelectLocationTemplateProps {
+export interface SelectLocationTemplateExtendedProps
+  extends SelectLocationTemplateProps {
   title?: string;
   onBack?: () => void;
   onMyLocationPress?: () => void;
@@ -44,7 +45,9 @@ export interface SelectLocationTemplateExtendedProps extends SelectLocationTempl
   isLocating?: boolean;
 }
 
-export const SelectLocationTemplate: React.FC<SelectLocationTemplateExtendedProps> = ({
+export const SelectLocationTemplate: React.FC<
+  SelectLocationTemplateExtendedProps
+> = ({
   mapBackground,
   title,
   onBack,
@@ -108,14 +111,19 @@ export const SelectLocationTemplate: React.FC<SelectLocationTemplateExtendedProp
             ) : (
               <>
                 <View style={{ flex: 1 }}>
-                  <GpsWarningText>{chatLocation.gpsBannerMessage}</GpsWarningText>
+                  <GpsWarningText>
+                    {chatLocation.gpsBannerMessage}
+                  </GpsWarningText>
                   <GpsWarningPath>
                     {Platform.OS === 'android'
                       ? chatLocation.gpsSettingsPathAndroid
                       : chatLocation.gpsSettingsPathIos}
                   </GpsWarningPath>
                 </View>
-                <GpsEnableButton onPress={onOpenGpsSettings} activeOpacity={0.8}>
+                <GpsEnableButton
+                  onPress={onOpenGpsSettings}
+                  activeOpacity={0.8}
+                >
                   <GpsEnableText>{chatLocation.enableGps}</GpsEnableText>
                 </GpsEnableButton>
                 <GpsCloseButton onPress={onCloseGpsBanner} activeOpacity={0.7}>

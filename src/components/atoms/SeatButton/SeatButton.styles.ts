@@ -56,6 +56,7 @@ export const PriceText = styled.Text<{ selected: boolean }>`
   font-family: 'Plus Jakarta Sans';
   font-weight: 800;
   font-size: ${responsiveFont(10)}px;
-  color: ${({ theme, selected }) => (selected ? theme.colors.on_primary : theme.colors.primary)};
+  color: ${({ theme, selected }) =>
+    selected ? theme.colors.on_primary : theme.colors.primary};
   margin-top: ${moderateScale(1)}px;
 `;

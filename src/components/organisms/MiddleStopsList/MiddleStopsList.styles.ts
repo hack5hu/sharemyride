@@ -8,10 +8,10 @@ export const ListContainer = styled.View`
 
 export const PathLine = styled(LinearGradient).attrs(({ theme }) => ({
   colors: [
-    `${theme.colors.primary}80`, 
-    `${theme.colors.primary}33`, 
+    `${theme.colors.primary}80`,
+    `${theme.colors.primary}33`,
     theme.colors.secondary_container,
-    `${theme.colors.primary}80`
+    `${theme.colors.primary}80`,
   ],
   start: { x: 0, y: 0 },
   end: { x: 0, y: 1 },
@@ -70,7 +70,8 @@ export const AddStopButtonContainer = styled.TouchableOpacity`
   align-items: center;
   gap: ${scale(16)}px;
   padding: ${moderateScale(16)}px;
-  background-color: ${({ theme }) => `${theme.colors.primary_fixed_dim}1A`}; /* 10% opacity */
+  background-color: ${({ theme }) =>
+    `${theme.colors.primary_fixed_dim}1A`}; /* 10% opacity */
   border-width: 1px;
   border-style: dashed;
   border-color: ${({ theme }) => theme.colors.primary}66;
@@ -78,7 +79,9 @@ export const AddStopButtonContainer = styled.TouchableOpacity`
   margin-bottom: ${verticalScale(16)}px;
 `;
 
-export const IconCircle = styled.View<{ variant: 'start' | 'stop' | 'add' | 'end' }>`
+export const IconCircle = styled.View<{
+  variant: 'start' | 'stop' | 'add' | 'end';
+}>`
   width: ${moderateScale(48)}px;
   height: ${moderateScale(48)}px;
   border-radius: 9999px;
@@ -86,14 +89,21 @@ export const IconCircle = styled.View<{ variant: 'start' | 'stop' | 'add' | 'end
   justify-content: center;
   background-color: ${({ theme, variant }) => {
     switch (variant) {
-      case 'start': return theme.colors.primary_fixed;
-      case 'stop': return theme.colors.secondary_container;
-      case 'add': return theme.colors.surface_container_lowest;
-      case 'end': return theme.colors.primary;
-      default: return 'transparent';
+      case 'start':
+        return theme.colors.primary_fixed;
+      case 'stop':
+        return theme.colors.secondary_container;
+      case 'add':
+        return theme.colors.surface_container_lowest;
+      case 'end':
+        return theme.colors.primary;
+      default:
+        return 'transparent';
     }
   }};
-  ${({ variant, theme }) => variant === 'add' && `
+  ${({ variant, theme }) =>
+    variant === 'add' &&
+    `
     shadow-color: ${theme.colors.on_surface};
     shadow-offset: 0px 1px;
     shadow-opacity: 0.05;
@@ -112,7 +122,10 @@ export const LabelText = styled.Text<{ variant: 'start' | 'stop' | 'end' }>`
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: ${({ theme, variant }) => variant === 'stop' ? theme.colors.on_surface_variant : theme.colors.primary};
+  color: ${({ theme, variant }) =>
+    variant === 'stop'
+      ? theme.colors.on_surface_variant
+      : theme.colors.primary};
 `;
 
 export const TitleText = styled.Text`

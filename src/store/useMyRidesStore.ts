@@ -33,7 +33,7 @@ interface MyRidesState {
 
 export const useMyRidesStore = create<MyRidesState>()(
   persist(
-    (set) => ({
+    set => ({
       drafts: [],
       rides: {
         1: { data: [], page: 0, hasMore: true },
@@ -41,98 +41,117 @@ export const useMyRidesStore = create<MyRidesState>()(
         3: { data: [], page: 0, hasMore: true },
       },
 
-      addDraft: (state, id) => set((prevState) => {
-        if (id) {
-          const newDrafts = prevState.drafts.map((d) => 
-            d.id === id ? { ...d, state, savedAt: new Date().toISOString() } : d
-          );
-          return { drafts: newDrafts };
-        } else {
-          return {
-            drafts: [
-              {
-                id: `draft-${Date.now()}`,
-                savedAt: new Date().toISOString(),
-                state,
-              },
-              ...prevState.drafts,
-            ],
-          };
-        }
-      }),
+      addDraft: (state, id) =>
+        set(prevState => {
+          if (id) {
+            const newDrafts = prevState.drafts.map(d =>
+              d.id === id
+                ? { ...d, state, savedAt: new Date().toISOString() }
+                : d,
+            );
+            return { drafts: newDrafts };
+          } else {
+            return {
+              drafts: [
+                {
+                  id: `draft-${Date.now()}`,
+                  savedAt: new Date().toISOString(),
+                  state,
+                },
+                ...prevState.drafts,
+              ],
+            };
+          }
+        }),
 
-      removeDraft: (id) => set((prevState) => ({
-        drafts: prevState.drafts.filter((draft) => draft.id !== id),
-      })),
+      removeDraft: id =>
+        set(prevState => ({
+          drafts: prevState.drafts.filter(draft => draft.id !== id),
+        })),
 
       clearDrafts: () => set({ drafts: [] }),
 
-      setRides: (category, data, hasMore) => set((state) => {
-        let finalData = data;
-        if (category === 2 && finalData.length > 10) {
-          finalData = finalData.slice(0, 10);
-        }
-        return {
+      setRides: (category, data, hasMore) =>
+        set(state => {
+          let finalData = data;
+          if (category === 2 && finalData.length > 10) {
+            finalData = finalData.slice(0, 10);
+          }
+          return {
+            rides: {
+              ...state.rides,
+              [category]: {
+                ...state.rides[category],
+                data: finalData,
+                hasMore,
+                page: 0,
+              },
+            },
+          };
+        }),
+
+      appendRides: (category, data, hasMore) =>
+        set(state => {
+          const existingData = state.rides[category].data;
+          const newData = data.filter(
+            newRide =>
+              !existingData.some(
+                oldRide =>
+                  (oldRide.id || oldRide.bookingId) ===
+                  (newRide.id || newRide.bookingId),
+              ),
+          );
+          let finalData = [...existingData, ...newData];
+
+          if (category === 2 && finalData.length > 10) {
+            finalData = finalData.slice(0, 10);
+          }
+
+          return {
+            rides: {
+              ...state.rides,
+              [category]: {
+                ...state.rides[category],
+                data: finalData,
+                hasMore,
+              },
+            },
+          };
+        }),
+
+      setPage: (category, page) =>
+        set(state => ({
           rides: {
             ...state.rides,
-            [category]: { ...state.rides[category], data: finalData, hasMore, page: 0 }
-          }
-        };
-      }),
+            [category]: { ...state.rides[category], page },
+          },
+        })),
 
-      appendRides: (category, data, hasMore) => set((state) => {
-        const existingData = state.rides[category].data;
-        const newData = data.filter(
-          (newRide) => !existingData.some((oldRide) => (oldRide.id || oldRide.bookingId) === (newRide.id || newRide.bookingId))
-        );
-        let finalData = [...existingData, ...newData];
-        
-        if (category === 2 && finalData.length > 10) {
-          finalData = finalData.slice(0, 10);
-        }
-
-        return {
+      resetCategory: category =>
+        set(state => ({
           rides: {
             ...state.rides,
-            [category]: { 
-              ...state.rides[category], 
-              data: finalData, 
-              hasMore 
-            }
-          }
-        };
-      }),
+            [category]: { data: [], page: 0, hasMore: true },
+          },
+        })),
 
-      setPage: (category, page) => set((state) => ({
-        rides: {
-          ...state.rides,
-          [category]: { ...state.rides[category], page }
-        }
-      })),
-
-      resetCategory: (category) => set((state) => ({
-        rides: {
-          ...state.rides,
-          [category]: { data: [], page: 0, hasMore: true }
-        }
-      })),
-
-      removeRide: (category, id) => set((state) => {
-        const categoryData = state.rides[category];
-        const newData = categoryData.data.filter(
-          (ride) => (ride.id || ride.bookingId) !== id
-        );
-        return {
-          rides: {
-            ...state.rides,
-            [category]: { ...categoryData, data: newData }
-          }
-        };
-      }),
+      removeRide: (category, id) =>
+        set(state => {
+          const categoryData = state.rides[category];
+          const newData = categoryData.data.filter(
+            ride => (ride.id || ride.bookingId) !== id,
+          );
+          return {
+            rides: {
+              ...state.rides,
+              [category]: { ...categoryData, data: newData },
+            },
+          };
+        }),
     }),
     {
       name: 'my-rides-storage',
       storage: createJSONStorage(() => mmkvStorage),
-    }
-  )
+    },
+  ),
 );

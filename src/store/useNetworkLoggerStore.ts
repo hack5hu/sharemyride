@@ -24,13 +24,16 @@ interface NetworkLoggerState {
   setModalVisible: (visible: boolean) => void;
 }
 
-export const useNetworkLoggerStore = create<NetworkLoggerState>((set) => ({
+export const useNetworkLoggerStore = create<NetworkLoggerState>(set => ({
   logs: [],
   isModalVisible: false,
-  addLog: (log) => set((state) => ({ logs: [log, ...state.logs].slice(0, 100) })), // Keep last 100
-  updateLog: (id, updates) => set((state) => ({
-    logs: state.logs.map((log) => (log.id === id ? { ...log, ...updates } : log)),
-  })),
+  addLog: log => set(state => ({ logs: [log, ...state.logs].slice(0, 100) })), // Keep last 100
+  updateLog: (id, updates) =>
+    set(state => ({
+      logs: state.logs.map(log =>
+        log.id === id ? { ...log, ...updates } : log,
+      ),
+    })),
   clearLogs: () => set({ logs: [] }),
-  setModalVisible: (visible) => set({ isModalVisible: visible }),
+  setModalVisible: visible => set({ isModalVisible: visible }),
 }));

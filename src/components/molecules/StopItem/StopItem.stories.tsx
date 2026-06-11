@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/StopItem',
   component: StopItem,
-
 } satisfies Meta<typeof StopItem>;
 
 export default meta;

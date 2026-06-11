@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/SafetyBanner',
   component: SafetyBanner,
-
 } satisfies Meta<typeof SafetyBanner>;
 
 export default meta;

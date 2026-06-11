@@ -10,7 +10,11 @@ export const formatDOBInput = (text: string, prevText: string): string => {
   let cleaned = text.replace(/[^0-9/]/g, '');
 
   // Handle deletion - if user is deleting a slash, let them
-  if (text.length < prevText.length && prevText.endsWith('/') && !text.endsWith('/')) {
+  if (
+    text.length < prevText.length &&
+    prevText.endsWith('/') &&
+    !text.endsWith('/')
+  ) {
     return cleaned;
   }
 
@@ -58,7 +62,12 @@ export const safeParseDate = (dateStr: any): Date | null => {
       const parts = normalized.split('T');
       const timePart = parts[1];
       // Check if timePart does not contain timezone indicator Z or offset (+/-)
-      if (timePart && !timePart.includes('Z') && !timePart.includes('+') && !timePart.includes('-')) {
+      if (
+        timePart &&
+        !timePart.includes('Z') &&
+        !timePart.includes('+') &&
+        !timePart.includes('-')
+      ) {
         normalized += 'Z';
       }
     }
@@ -76,7 +85,7 @@ export const safeParseDate = (dateStr: any): Date | null => {
 export const formatTimeSafely = (
   dateStr: any,
   options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' },
-  fallback = 'TBD'
+  fallback = 'TBD',
 ): string => {
   const parsed = safeParseDate(dateStr);
   if (!parsed) return fallback;
@@ -92,8 +101,12 @@ export const formatTimeSafely = (
  */
 export const formatDateSafely = (
   dateStr: any,
-  options: Intl.DateTimeFormatOptions = { weekday: 'short', day: 'numeric', month: 'short' },
-  fallback = 'TBD'
+  options: Intl.DateTimeFormatOptions = {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+  },
+  fallback = 'TBD',
 ): string => {
   const parsed = safeParseDate(dateStr);
   if (!parsed) return fallback;
@@ -107,9 +120,15 @@ export const formatDateSafely = (
 /**
  * Extract epoch milliseconds from any message date representation (timestamp or createdAt).
  */
-export const parseChatTimestamp = (message: { timestamp?: number | string; createdAt?: string }): number => {
+export const parseChatTimestamp = (message: {
+  timestamp?: number | string;
+  createdAt?: string;
+}): number => {
   if (message.timestamp) {
-    const parsed = typeof message.timestamp === 'number' ? new Date(message.timestamp) : safeParseDate(message.timestamp);
+    const parsed =
+      typeof message.timestamp === 'number'
+        ? new Date(message.timestamp)
+        : safeParseDate(message.timestamp);
     if (parsed) return parsed.getTime();
   }
   if (message.createdAt) {

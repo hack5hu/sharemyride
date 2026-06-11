@@ -3,7 +3,10 @@ import { useRoute, RouteProp, useFocusEffect } from '@react-navigation/native';
 import { BackHandler } from 'react-native';
 import { RootStackParamList } from '@/navigation/types';
 import { Location, useLocationStore } from '@/store/useLocationStore';
-import { locationService, OlaPrediction } from '@/serviceManager/locationService';
+import {
+  locationService,
+  OlaPrediction,
+} from '@/serviceManager/locationService';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useBookRideStore } from '@/store/useBookRideStore';
@@ -34,12 +37,16 @@ export const useMapPicker = () => {
   const [region, setRegion] = useState(DEFAULT_REGION);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<Location[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+    null,
+  );
   const [isReverseGeocoding, setIsReverseGeocoding] = useState(false);
   const [isInitiallyCentered, setIsInitiallyCentered] = useState(false);
   const [isMapVisible, setIsMapVisible] = useState(false);
   const [isMapMounted, setIsMapMountedState] = useState(module === 'publish');
-  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(
+    null,
+  );
   const [userHeading, setUserHeading] = useState<number>(0);
   const [isMoving, setIsMoving] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
@@ -47,7 +54,6 @@ export const useMapPicker = () => {
   const lastCenterRef = useRef<[number, number] | null>(null);
   // Ref to keep current zoom level (used in handleZoom handlers)
   const zoomRef = useRef<number>(15); // default initial zoom
-
 
   // Request location permission on mount
   useEffect(() => {
@@ -77,14 +83,19 @@ export const useMapPicker = () => {
         return false; // Let navigation handle it
       };
 
-      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress,
+      );
       return () => subscription.remove();
-    }, [isMapVisible])
+    }, [isMapVisible]),
   );
 
   // Scoped history derived from the current context
-  const addSearchHistory = useLocationStore((state) => state.addSearchHistory);
-  const history = useLocationStore((state) => state.history[contextKey] || EMPTY_HISTORY);
+  const addSearchHistory = useLocationStore(state => state.addSearchHistory);
+  const history = useLocationStore(
+    state => state.history[contextKey] || EMPTY_HISTORY,
+  );
 
   const handleUserLocationUpdate = useCallback((location: any) => {
     if (location?.coords) {
@@ -125,7 +136,11 @@ export const useMapPicker = () => {
         try {
           const predictions = await locationService.autocomplete(query);
           const mappedResults: Location[] = predictions
-            .filter((p: OlaPrediction) => p?.geometry?.location?.lat != null && p?.geometry?.location?.lng != null)
+            .filter(
+              (p: OlaPrediction) =>
+                p?.geometry?.location?.lat != null &&
+                p?.geometry?.location?.lng != null,
+            )
             .map((p: OlaPrediction) => ({
               id: p?.place_id,
               name: p?.structured_formatting?.main_text || p?.description,
@@ -142,7 +157,7 @@ export const useMapPicker = () => {
         setSearchResults([]);
       }
     }, 500),
-    []
+    [],
   );
 
   useEffect(() => {
@@ -167,51 +182,56 @@ export const useMapPicker = () => {
     }
   }, [navigation, isMapVisible]);
 
-  const handleSearchSelect = useCallback((location: Location) => {
-    // Validate coordinates before proceeding — invalid values crash MapLibre
-    if (
-      location.latitude == null || location.longitude == null ||
-      isNaN(location.latitude) || isNaN(location.longitude)
-    ) {
-      return;
-    }
-
-    if (module === 'book' || module === 'search') {
-      addSearchHistory(location, contextKey);
-      const store = useBookRideStore.getState();
-      if (pickerType === 'start') {
-        store.setStartLocation(location);
-      } else {
-        store.setDestinationLocation(location);
+  const handleSearchSelect = useCallback(
+    (location: Location) => {
+      // Validate coordinates before proceeding — invalid values crash MapLibre
+      if (
+        location.latitude == null ||
+        location.longitude == null ||
+        isNaN(location.latitude) ||
+        isNaN(location.longitude)
+      ) {
+        return;
       }
-      navigation.pop();
-      return;
-    }
 
-    setSelectedLocation(location);
-    setSearchQuery('');
-    setSearchResults([]);
-    setIsMapVisible(true);
-
-    setRegion({
-      latitude: location.latitude,
-      longitude: location.longitude,
-    });
-
-    // Map is warm mounted, so we can setStop shortly after state updates
-    setTimeout(() => {
-      try {
-        const controller = cameraRef.current || mapRef.current;
-        controller?.setStop?.({
-          center: [location.longitude, location.latitude],
-          zoom: 17,
-          duration: 1000,
-        });
-      } catch (e) {
-        console.warn('Camera setStop failed:', e);
+      if (module === 'book' || module === 'search') {
+        addSearchHistory(location, contextKey);
+        const store = useBookRideStore.getState();
+        if (pickerType === 'start') {
+          store.setStartLocation(location);
+        } else {
+          store.setDestinationLocation(location);
+        }
+        navigation.pop();
+        return;
       }
-    }, 100);
-  }, [module, pickerType, contextKey, addSearchHistory, navigation]);
+
+      setSelectedLocation(location);
+      setSearchQuery('');
+      setSearchResults([]);
+      setIsMapVisible(true);
+
+      setRegion({
+        latitude: location.latitude,
+        longitude: location.longitude,
+      });
+
+      // Map is warm mounted, so we can setStop shortly after state updates
+      setTimeout(() => {
+        try {
+          const controller = cameraRef.current || mapRef.current;
+          controller?.setStop?.({
+            center: [location.longitude, location.latitude],
+            zoom: 17,
+            duration: 1000,
+          });
+        } catch (e) {
+          console.warn('Camera setStop failed:', e);
+        }
+      }, 100);
+    },
+    [module, pickerType, contextKey, addSearchHistory, navigation],
+  );
 
   const handleRegionWillChange = useCallback(() => {
     setIsMoving(true);
@@ -222,7 +242,7 @@ export const useMapPicker = () => {
     debounce(async (lat: number, lng: number) => {
       try {
         const geoData = await locationService.reverseGeocode(lat, lng);
-        setSelectedLocation((prev) => ({
+        setSelectedLocation(prev => ({
           id: `drag-${Date.now()}`,
           latitude: lat,
           longitude: lng,
@@ -235,33 +255,39 @@ export const useMapPicker = () => {
         setIsReverseGeocoding(false);
       }
     }, 800),
-    []
+    [],
   );
 
-  const handleRegionChangeComplete = useCallback((event: any) => {
-    setIsMoving(false);
-    // Guard: Only geocode if map is visible to user
-    if (!isMapVisible) return;
+  const handleRegionChangeComplete = useCallback(
+    (event: any) => {
+      setIsMoving(false);
+      // Guard: Only geocode if map is visible to user
+      if (!isMapVisible) return;
 
-    const viewState = event?.nativeEvent || event;
-    if (!viewState?.center) return;
-    const [longitude, latitude] = viewState.center;
-    const currentZoom = viewState.zoom;
+      const viewState = event?.nativeEvent || event;
+      if (!viewState?.center) return;
+      const [longitude, latitude] = viewState.center;
+      const currentZoom = viewState.zoom;
 
-    // Prevent redundant reverse geocode if center hasn't changed
-    const lastCenter = lastCenterRef.current;
-    if (lastCenter && Math.abs(lastCenter[0] - longitude) < 0.00001 && Math.abs(lastCenter[1] - latitude) < 0.00001) {
-      return;
-    }
-    lastCenterRef.current = [longitude, latitude];
-    if (currentZoom !== undefined) {
-      zoomRef.current = currentZoom;
-    }
+      // Prevent redundant reverse geocode if center hasn't changed
+      const lastCenter = lastCenterRef.current;
+      if (
+        lastCenter &&
+        Math.abs(lastCenter[0] - longitude) < 0.00001 &&
+        Math.abs(lastCenter[1] - latitude) < 0.00001
+      ) {
+        return;
+      }
+      lastCenterRef.current = [longitude, latitude];
+      if (currentZoom !== undefined) {
+        zoomRef.current = currentZoom;
+      }
 
-    setIsReverseGeocoding(true);
-    debouncedReverseGeocode(latitude, longitude);
-
-  }, [isMapVisible, debouncedReverseGeocode]);
+      setIsReverseGeocoding(true);
+      debouncedReverseGeocode(latitude, longitude);
+    },
+    [isMapVisible, debouncedReverseGeocode],
+  );
 
   const handleConfirmLocation = useCallback(() => {
     if (!selectedLocation) {
@@ -290,7 +316,14 @@ export const useMapPicker = () => {
     }
 
     navigation.pop();
-  }, [navigation, selectedLocation, pickerType, module, addSearchHistory, contextKey]);
+  }, [
+    navigation,
+    selectedLocation,
+    pickerType,
+    module,
+    addSearchHistory,
+    contextKey,
+  ]);
 
   return {
     pickerType,

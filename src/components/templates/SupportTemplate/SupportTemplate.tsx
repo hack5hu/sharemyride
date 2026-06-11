@@ -16,9 +16,7 @@ export const SupportTemplate: React.FC<SupportTemplateProps> = ({
           <S.Card>
             <S.CardBody>{content}</S.CardBody>
             {actionButton && (
-              <S.ActionContainer>
-                {actionButton}
-              </S.ActionContainer>
+              <S.ActionContainer>{actionButton}</S.ActionContainer>
             )}
           </S.Card>
         </S.MainContainer>

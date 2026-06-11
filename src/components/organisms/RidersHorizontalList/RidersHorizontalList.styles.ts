@@ -1,5 +1,10 @@
 import styled from 'styled-components/native';
-import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles/scale';
+import {
+  scale,
+  verticalScale,
+  moderateScale,
+  responsiveFont,
+} from '@/styles/scale';
 
 export const Container = styled.View`
   margin-top: ${verticalScale(4)}px;
@@ -22,7 +27,8 @@ export const Title = styled.Text`
 `;
 
 export const SpotsBadge = styled.View`
-  background-color: ${({ theme }) => `${theme.colors.primary_container}1A`}; /* 10% opacity */
+  background-color: ${({ theme }) =>
+    `${theme.colors.primary_container}1A`}; /* 10% opacity */
   padding-horizontal: ${scale(8)}px;
   padding-vertical: ${verticalScale(4)}px;
   border-radius: ${moderateScale(4)}px;

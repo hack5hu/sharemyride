@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/ColorChip',
   component: ColorChip,
-
 } satisfies Meta<typeof ColorChip>;
 
 export default meta;

@@ -55,16 +55,41 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
   const theme = useTheme();
 
   const filters = [
-    { id: 'nearPickup', label: ft.nearPickup || 'Near Pickup', icon: 'my-location' },
-    { id: 'nearDropoff', label: ft.nearDropoff || 'Near Dropoff', icon: 'location-on' },
-    { id: 'luggageAllowed', label: ft.luggageAllowed || 'Luggage', icon: 'luggage' },
-    { id: 'noSmoking', label: ft.noSmoking || t.noSmokingFilterLabel || 'No Smoking', icon: 'smoke-free' },
-    { id: 'ladiesOnly', label: ft.ladiesOnly || t.ladiesOnlyFilterLabel || 'Ladies Only', icon: 'pregnant-woman' },
-    { id: 'topRated', label: t.topRatedFilterLabel || 'Top Rated', icon: 'star' },
+    {
+      id: 'nearPickup',
+      label: ft.nearPickup || 'Near Pickup',
+      icon: 'my-location',
+    },
+    {
+      id: 'nearDropoff',
+      label: ft.nearDropoff || 'Near Dropoff',
+      icon: 'location-on',
+    },
+    {
+      id: 'luggageAllowed',
+      label: ft.luggageAllowed || 'Luggage',
+      icon: 'luggage',
+    },
+    {
+      id: 'noSmoking',
+      label: ft.noSmoking || t.noSmokingFilterLabel || 'No Smoking',
+      icon: 'smoke-free',
+    },
+    {
+      id: 'ladiesOnly',
+      label: ft.ladiesOnly || t.ladiesOnlyFilterLabel || 'Ladies Only',
+      icon: 'pregnant-woman',
+    },
+    {
+      id: 'topRated',
+      label: t.topRatedFilterLabel || 'Top Rated',
+      icon: 'star',
+    },
     { id: 'petFriendly', label: ft.petFriendly || 'Pets', icon: 'pets' },
   ];
 
-  const { startLocation, destinationLocation, seatCount, travelDate } = useBookRideStore();
+  const { startLocation, destinationLocation, seatCount, travelDate } =
+    useBookRideStore();
   return (
     <ScreenShell title={t.heroTitle} onBack>
       <SafeFlashList
@@ -86,52 +111,115 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
               <S.SummaryRow>
                 <S.RouteInfo>
                   <S.LocationVertical>
-                    <Icon name="circle" size={moderateScale(14)} color={theme.colors.primary} />
+                    <Icon
+                      name="circle"
+                      size={moderateScale(14)}
+                      color={theme.colors.primary}
+                    />
                     <S.Line />
-                    <Icon name="location-on" size={moderateScale(14)} color={theme.colors.tertiary} />
+                    <Icon
+                      name="location-on"
+                      size={moderateScale(14)}
+                      color={theme.colors.tertiary}
+                    />
                   </S.LocationVertical>
                   <View style={{ flex: 1, gap: verticalScale(32) }}>
-                    <Typography variant="title" size="sm" weight="bold" numberOfLines={1} ellipsizeMode="tail">
+                    <Typography
+                      variant="title"
+                      size="sm"
+                      weight="bold"
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
                       {startLocation?.address || 'Unknown'}
                     </Typography>
-                    <Typography variant="title" size="sm" weight="bold" numberOfLines={1} ellipsizeMode="tail" color={theme.colors.on_surface_variant}>
+                    <Typography
+                      variant="title"
+                      size="sm"
+                      weight="bold"
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                      color={theme.colors.on_surface_variant}
+                    >
                       {destinationLocation?.address || 'Unknown'}
                     </Typography>
                   </View>
                 </S.RouteInfo>
                 <S.FilterButton onPress={onOpenFilters}>
-                  <Icon name="tune" size={moderateScale(24)} color={theme.colors.on_surface_variant} />
+                  <Icon
+                    name="tune"
+                    size={moderateScale(24)}
+                    color={theme.colors.on_surface_variant}
+                  />
                 </S.FilterButton>
               </S.SummaryRow>
 
               <S.SummaryFooter>
                 <S.FooterItem>
-                  <Icon name="calendar-today" size={moderateScale(20)} color={theme.colors.on_surface_variant} />
-                  <Typography variant="label" size="md" weight="bold" color={theme.colors.on_surface_variant}>
-                    {travelDate ? formatDateSafely(travelDate, { weekday: 'short', day: '2-digit', month: 'short' }, t.searchSummaryDate) : t.searchSummaryDate}
+                  <Icon
+                    name="calendar-today"
+                    size={moderateScale(20)}
+                    color={theme.colors.on_surface_variant}
+                  />
+                  <Typography
+                    variant="label"
+                    size="md"
+                    weight="bold"
+                    color={theme.colors.on_surface_variant}
+                  >
+                    {travelDate
+                      ? formatDateSafely(
+                          travelDate,
+                          { weekday: 'short', day: '2-digit', month: 'short' },
+                          t.searchSummaryDate,
+                        )
+                      : t.searchSummaryDate}
                   </Typography>
                 </S.FooterItem>
                 <S.FooterItem>
-                  <Icon name="group" size={moderateScale(20)} color={theme.colors.on_surface_variant} />
-                  <Typography variant="label" size="md" weight="bold" color={theme.colors.on_surface_variant}>
-                    {t.searchSummarySeats.replace('{count}', seatCount.toString())}
+                  <Icon
+                    name="group"
+                    size={moderateScale(20)}
+                    color={theme.colors.on_surface_variant}
+                  />
+                  <Typography
+                    variant="label"
+                    size="md"
+                    weight="bold"
+                    color={theme.colors.on_surface_variant}
+                  >
+                    {t.searchSummarySeats.replace(
+                      '{count}',
+                      seatCount.toString(),
+                    )}
                   </Typography>
                 </S.FooterItem>
               </S.SummaryFooter>
             </S.SearchSummaryCard>
-
           </View>
         }
         ListEmptyComponent={
           isLoading ? (
-            <View style={{ paddingVertical: verticalScale(60), alignItems: 'center', justifyContent: 'center' }}>
+            <View
+              style={{
+                paddingVertical: verticalScale(60),
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
               <ActivityIndicator color={theme.colors.primary} size="large" />
-              <Typography variant="body" size="md" color={theme.colors.on_surface_variant} weight="medium" style={{ marginTop: verticalScale(16) }}>
+              <Typography
+                variant="body"
+                size="md"
+                color={theme.colors.on_surface_variant}
+                weight="medium"
+                style={{ marginTop: verticalScale(16) }}
+              >
                 {t.fetchingRides}
               </Typography>
             </View>
           ) : (
-            <EmptyState 
+            <EmptyState
               icon="search-off"
               title={t.noRidesFoundTitle}
               description={t.noRidesFoundDesc}
@@ -139,7 +227,7 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
           )
         }
         ListFooterComponent={
-          (isFetchingMore || (isLoading && rides.length > 0)) ? (
+          isFetchingMore || (isLoading && rides.length > 0) ? (
             <View style={{ paddingVertical: verticalScale(20) }}>
               <ActivityIndicator color={theme.colors.primary} />
             </View>

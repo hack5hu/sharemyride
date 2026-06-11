@@ -8,10 +8,14 @@ export const Container = styled.TouchableOpacity.attrs({
   align-items: center;
   padding: ${moderateScale(16)}px;
   border-radius: ${({ theme }) => theme.roundness.lg}px;
-  background-color: ${({ theme, isUnread }) => 
-    isUnread ? theme.colors.surface_container_lowest : theme.colors.surface_container_low};
+  background-color: ${({ theme, isUnread }) =>
+    isUnread
+      ? theme.colors.surface_container_lowest
+      : theme.colors.surface_container_low};
   margin-bottom: ${verticalScale(12)}px;
-  ${({ isUnread, theme }) => isUnread && `
+  ${({ isUnread, theme }) =>
+    isUnread &&
+    `
     shadow-color: ${theme.colors.shadow};
     shadow-offset: 0px 4px;
     shadow-opacity: 0.05;

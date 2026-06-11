@@ -3,12 +3,8 @@ import { DateSelectionTemplate } from '@/components/templates/DateSelectionTempl
 import { useDateSelection } from './useDateSelection';
 
 export const DateSelectionScreen: React.FC = () => {
-  const {
-    months,
-    selectedDate,
-    handleBackPress,
-    handleSelectDate,
-  } = useDateSelection();
+  const { months, selectedDate, handleBackPress, handleSelectDate } =
+    useDateSelection();
 
   return (
     <DateSelectionTemplate

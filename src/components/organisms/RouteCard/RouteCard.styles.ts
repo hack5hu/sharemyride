@@ -5,17 +5,21 @@ export const CardContainer = styled.TouchableOpacity<{ $isActive: boolean }>`
   flex-direction: row;
   align-items: flex-start;
   gap: ${scale(16)}px;
-  background-color: ${({ theme, $isActive }) => 
-    $isActive ? theme.colors.surface_container_lowest : theme.colors.surface_container_low};
+  background-color: ${({ theme, $isActive }) =>
+    $isActive
+      ? theme.colors.surface_container_lowest
+      : theme.colors.surface_container_low};
   padding: ${moderateScale(20)}px;
   border-radius: ${moderateScale(12)}px;
   border-width: ${({ $isActive }) => ($isActive ? 2 : 1)}px;
-  border-color: ${({ theme, $isActive }) => 
+  border-color: ${({ theme, $isActive }) =>
     $isActive ? theme.colors.primary : `${theme.colors.outline_variant}1A`};
   /* Mock hover/transition with opacity elsewhere or just visually static for native */
   margin-bottom: ${verticalScale(12)}px;
-  
-  ${({ $isActive, theme }) => $isActive && `
+
+  ${({ $isActive, theme }) =>
+    $isActive &&
+    `
     shadow-color: ${theme.colors.primary};
     shadow-offset: 0px 4px;
     shadow-opacity: 0.08;
@@ -28,7 +32,7 @@ export const IconContainer = styled.View<{ $isActive: boolean }>`
   width: ${moderateScale(48)}px;
   height: ${moderateScale(48)}px;
   border-radius: 9999px;
-  background-color: ${({ theme, $isActive }) => 
+  background-color: ${({ theme, $isActive }) =>
     $isActive ? theme.colors.primary_fixed : theme.colors.secondary_container};
   align-items: center;
   justify-content: center;

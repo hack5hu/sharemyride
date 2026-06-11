@@ -40,7 +40,7 @@ export const PublishSuccessScreen: React.FC = () => {
     React.useCallback(() => {
       const sub = BackHandler.addEventListener('hardwareBackPress', () => true);
       return () => sub.remove();
-    }, [])
+    }, []),
   );
 
   const handleGoToMyRides = () => {
@@ -52,10 +52,14 @@ export const PublishSuccessScreen: React.FC = () => {
   };
 
   return (
-    <ScreenShell >
+    <ScreenShell>
       <MainContent>
         <SuccessIconWrapper>
-          <MaterialIcons name="check" size={moderateScale(56)} color={theme.colors.on_primary} />
+          <MaterialIcons
+            name="check"
+            size={moderateScale(56)}
+            color={theme.colors.on_primary}
+          />
         </SuccessIconWrapper>
 
         <Title>{t.title}</Title>
@@ -63,7 +67,11 @@ export const PublishSuccessScreen: React.FC = () => {
 
         <InfoCard>
           <InfoHeader>
-            <MaterialIcons name="security" size={moderateScale(20)} color={theme.colors.primary} />
+            <MaterialIcons
+              name="security"
+              size={moderateScale(20)}
+              color={theme.colors.primary}
+            />
             <InfoTitle>{t.infoTitle}</InfoTitle>
           </InfoHeader>
           <InfoText>{t.infoText}</InfoText>
@@ -78,7 +86,11 @@ export const PublishSuccessScreen: React.FC = () => {
             end={{ x: 1, y: 1 }}
           >
             <PrimaryButtonText>{t.primaryCTA}</PrimaryButtonText>
-            <MaterialIcons name="arrow-forward" size={moderateScale(20)} color={theme.colors.on_primary} />
+            <MaterialIcons
+              name="arrow-forward"
+              size={moderateScale(20)}
+              color={theme.colors.on_primary}
+            />
           </PrimaryGradient>
         </PrimaryButton>
 

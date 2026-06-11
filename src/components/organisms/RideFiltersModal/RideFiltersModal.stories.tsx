@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/RideFiltersModal',
   component: RideFiltersModal,
-
 } satisfies Meta<typeof RideFiltersModal>;
 
 export default meta;
@@ -14,6 +13,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    t: {}
+    t: {},
   },
 };

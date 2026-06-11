@@ -14,9 +14,12 @@ import {
   GradientOverlay,
   LocationPreviewContainer,
   LocationPreviewTitle,
-  LocationPreviewText
+  LocationPreviewText,
 } from './MapPickerTemplate.styles';
-import { MapSearchOverlayProps, MapSearchOverlay } from '@/components/organisms/MapSearchOverlay';
+import {
+  MapSearchOverlayProps,
+  MapSearchOverlay,
+} from '@/components/organisms/MapSearchOverlay';
 import { LocationDetailsCardProps } from '@/components/molecules/LocationDetailsCard';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
@@ -26,12 +29,14 @@ import { UserLocationMarker } from '@/components/atoms/UserLocationMarker';
 import { Button } from '@/components/atoms/Button';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-interface ExtendedUserLocationProps extends React.ComponentProps<typeof UserLocation> {
+interface ExtendedUserLocationProps
+  extends React.ComponentProps<typeof UserLocation> {
   onUpdate?: (location: any) => void;
   showsUserHeadingIndicator?: boolean;
 }
 
-const MapLibreUserLocation = UserLocation as React.ComponentType<ExtendedUserLocationProps>;
+const MapLibreUserLocation =
+  UserLocation as React.ComponentType<ExtendedUserLocationProps>;
 
 export interface MapPickerTemplateProps {
   pickerType: 'start' | 'destination' | 'middleStop';
@@ -124,11 +129,11 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
   });
 
   return (
-    <ScreenShell title={mapPicker.title} onBack={searchOverlayProps.onBackPress}>
-      <MapSearchOverlay
-        {...searchOverlayProps}
-        isCondensed={isMapVisible}
-      />
+    <ScreenShell
+      title={mapPicker.title}
+      onBack={searchOverlayProps.onBackPress}
+    >
+      <MapSearchOverlay {...searchOverlayProps} isCondensed={isMapVisible} />
 
       {/* Map Layer - Warm Mounted */}
       {isMapMounted && (
@@ -146,7 +151,7 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
             right: 0,
             bottom: 0,
             zIndex: 0,
-            opacity: isMapVisible ? 1 : 0
+            opacity: isMapVisible ? 1 : 0,
           }}
           pointerEvents={isMapVisible ? 'auto' : 'none'}
         >
@@ -174,10 +179,7 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
             <PinWrapper
               as={Animated.View}
               style={{
-                transform: [
-                  { translateY: pinTranslateY },
-                  { scale: pinScale }
-                ]
+                transform: [{ translateY: pinTranslateY }, { scale: pinScale }],
               }}
             >
               <TooltipBubble
@@ -185,16 +187,16 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
                 style={{
                   opacity: pinAnim.interpolate({
                     inputRange: [0, 0.2, 1],
-                    outputRange: [1, 0, 0]
-                  })
+                    outputRange: [1, 0, 0],
+                  }),
                 }}
               >
                 <TooltipText>
                   {pickerType === 'start'
                     ? mapPicker.setPickup
                     : pickerType === 'destination'
-                      ? mapPicker.setDestination
-                      : mapPicker.setStop}
+                    ? mapPicker.setDestination
+                    : mapPicker.setStop}
                 </TooltipText>
               </TooltipBubble>
 
@@ -207,13 +209,17 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
                 as={Animated.View}
                 style={{
                   opacity: shadowOpacity,
-                  transform: [{ scale: shadowScale }]
+                  transform: [{ scale: shadowScale }],
                 }}
               />
             </PinWrapper>
           </PinContainer>
 
-          <SelectButtonContainer style={{ paddingBottom: Math.max(insets.bottom, verticalScale(12)) }}>
+          <SelectButtonContainer
+            style={{
+              paddingBottom: Math.max(insets.bottom, verticalScale(12)),
+            }}
+          >
             <LocationPreviewContainer>
               <Ionicons
                 name="locate-sharp"
@@ -223,7 +229,8 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
               />
               <View style={{ flex: 1, justifyContent: 'center' }}>
                 <LocationPreviewTitle numberOfLines={1}>
-                  {locationDetailsProps.locationName || 'Select a spot on the map'}
+                  {locationDetailsProps.locationName ||
+                    'Select a spot on the map'}
                 </LocationPreviewTitle>
                 {!!locationDetailsProps.locationAddress && (
                   <LocationPreviewText numberOfLines={1}>
@@ -235,7 +242,10 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
 
             <Button
               onPress={locationDetailsProps.onSelect}
-              disabled={locationDetailsProps.disabled || !locationDetailsProps.locationName}
+              disabled={
+                locationDetailsProps.disabled ||
+                !locationDetailsProps.locationName
+              }
             >
               {mapPicker.selectLocation}
             </Button>

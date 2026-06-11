@@ -14,10 +14,10 @@ export const ColorChip: React.FC<ColorChipProps> = ({
       <Chip color={color} selected={selected} />
 
       {label && (
-        <Typography 
-          variant="label" 
-          size="sm" 
-          weight={selected ? 'bold' : 'regular'} 
+        <Typography
+          variant="label"
+          size="sm"
+          weight={selected ? 'bold' : 'regular'}
           color={selected ? 'primary' : 'on_surface_variant'}
         >
           {label}

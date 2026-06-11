@@ -10,10 +10,14 @@ const sizes: Record<IconButtonSize, number> = {
 
 const getBackground = (variant: IconButtonVariant, theme: any) => {
   switch (variant) {
-    case 'primary': return theme.colors.primary;
-    case 'surface': return theme.colors.surface_container;
-    case 'secondary': return theme.colors.secondary_container;
-    default: return theme.colors.primary;
+    case 'primary':
+      return theme.colors.primary;
+    case 'surface':
+      return theme.colors.surface_container;
+    case 'secondary':
+      return theme.colors.secondary_container;
+    default:
+      return theme.colors.primary;
   }
 };
 
@@ -27,7 +31,9 @@ export const StyledIconButton = styled.TouchableOpacity<{
   background-color: ${({ variant, theme }) => getBackground(variant, theme)};
   justify-content: center;
   align-items: center;
-  ${({ theme, variant }) => variant === 'surface' && `
+  ${({ theme, variant }) =>
+    variant === 'surface' &&
+    `
     border-width: 1px;
     border-color: ${theme.colors.outline_variant};
   `}

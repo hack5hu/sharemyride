@@ -1,8 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from 'styled-components/native';
-import { NativeSyntheticEvent, FocusEvent, Keyboard, TextInput } from 'react-native';
+import {
+  NativeSyntheticEvent,
+  FocusEvent,
+  Keyboard,
+  TextInput,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Container, InputWrapper, InnerInput, IconContainer, LabelText, ErrorText, RequiredAsterisk, PrefixContainer, PrefixText } from './Input.styles';
+import {
+  Container,
+  InputWrapper,
+  InnerInput,
+  IconContainer,
+  LabelText,
+  ErrorText,
+  RequiredAsterisk,
+  PrefixContainer,
+  PrefixText,
+} from './Input.styles';
 import { InputProps } from './types';
 
 export const Input: React.FC<InputProps> = ({
@@ -56,10 +71,18 @@ export const Input: React.FC<InputProps> = ({
           {required && <RequiredAsterisk> *</RequiredAsterisk>}
         </LabelText>
       )}
-      <InputWrapper isFocused={isFocused} hasError={!!error} multiline={props.multiline}>
+      <InputWrapper
+        isFocused={isFocused}
+        hasError={!!error}
+        multiline={props.multiline}
+      >
         {leftIcon && (
           <IconContainer>
-            <Icon name={leftIcon} size={20} color={theme.colors.on_surface_variant} />
+            <Icon
+              name={leftIcon}
+              size={20}
+              color={theme.colors.on_surface_variant}
+            />
           </IconContainer>
         )}
         {prefix && (
@@ -80,7 +103,11 @@ export const Input: React.FC<InputProps> = ({
 
         {rightIcon && (
           <IconContainer>
-            <Icon name={rightIcon} size={20} color={theme.colors.on_surface_variant} />
+            <Icon
+              name={rightIcon}
+              size={20}
+              color={theme.colors.on_surface_variant}
+            />
           </IconContainer>
         )}
       </InputWrapper>

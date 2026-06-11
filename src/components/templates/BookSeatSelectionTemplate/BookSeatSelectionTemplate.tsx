@@ -10,7 +10,9 @@ import { verticalScale, moderateScale } from '@/styles';
 import * as S from './BookSeatSelectionTemplate.styles';
 import { BookSeatSelectionTemplateProps } from './types.d';
 
-export const BookSeatSelectionTemplate: React.FC<BookSeatSelectionTemplateProps> = ({
+export const BookSeatSelectionTemplate: React.FC<
+  BookSeatSelectionTemplateProps
+> = ({
   t,
   st,
   rows,
@@ -36,39 +38,44 @@ export const BookSeatSelectionTemplate: React.FC<BookSeatSelectionTemplateProps>
   return (
     <S.Root>
       <ScreenShell title={st.headerTitle} onBack={handleBack}>
-        <S.ScrollContent showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: verticalScale(240) }}>
+        <S.ScrollContent
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: verticalScale(240) }}
+        >
           <S.ContentPadding>
-
             {/* ── Header Intro ── */}
             <S.HeaderIntro>
-              <Typography variant="title" size="md" weight="bold">{st.title}</Typography>
-              <Typography variant="body" size="sm" color={theme.colors.on_surface_variant}>
+              <Typography variant="title" size="md" weight="bold">
+                {st.title}
+              </Typography>
+              <Typography
+                variant="body"
+                size="sm"
+                color={theme.colors.on_surface_variant}
+              >
                 {st.subtitle}
               </Typography>
             </S.HeaderIntro>
 
-
-
-
             {/* ── Legend ── */}
             <S.LegendWrapper>
-                <SeatLegend
-                    availableLabel={st.legendAvailable}
-                    selectedLabel={st.legendSelected}
-                    occupiedLabel={st.legendBooked}
-                />
+              <SeatLegend
+                availableLabel={st.legendAvailable}
+                selectedLabel={st.legendSelected}
+                occupiedLabel={st.legendBooked}
+              />
             </S.LegendWrapper>
 
             {/* ── Car plan ── */}
             <S.CarPlanWrapper pointerEvents={isBooking ? 'none' : 'auto'}>
-                <CarFloorPlan
-                    rows={rows}
-                    selectedSeats={selectedSeats}
-                    occupiedSeats={occupiedSeats}
-                    prices={prices}
-                    onSeatPress={isBooking ? undefined : toggleSeat}
-                    driverLabel={st.driverLabel}
-                />
+              <CarFloorPlan
+                rows={rows}
+                selectedSeats={selectedSeats}
+                occupiedSeats={occupiedSeats}
+                prices={prices}
+                onSeatPress={isBooking ? undefined : toggleSeat}
+                driverLabel={st.driverLabel}
+              />
             </S.CarPlanWrapper>
           </S.ContentPadding>
         </S.ScrollContent>
@@ -77,10 +84,21 @@ export const BookSeatSelectionTemplate: React.FC<BookSeatSelectionTemplateProps>
         <S.FixedFooter>
           <S.SummaryRow>
             <S.PillBadge>
-              <Typography variant="label" size="sm" weight="bold" color="primary">
-                {seatCount === 1 
-                  ? t('selectSeat.seatsSelected', { count: seatCount, seatWord: t('common.seat') }) 
-                  : t('selectSeat.seatsSelected', { count: seatCount, seatWord: t('common.seats') })}
+              <Typography
+                variant="label"
+                size="sm"
+                weight="bold"
+                color="primary"
+              >
+                {seatCount === 1
+                  ? t('selectSeat.seatsSelected', {
+                      count: seatCount,
+                      seatWord: t('common.seat'),
+                    })
+                  : t('selectSeat.seatsSelected', {
+                      count: seatCount,
+                      seatWord: t('common.seats'),
+                    })}
               </Typography>
             </S.PillBadge>
             <Typography variant="title" size="md" weight="bold">

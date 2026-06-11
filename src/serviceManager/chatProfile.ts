@@ -23,7 +23,9 @@ export const fetchChatUserProfile = async (
   if (users[userId]) return users[userId];
 
   try {
-    const profile = await userService.getUserProfile(userId) as RemoteUserProfile;
+    const profile = (await userService.getUserProfile(
+      userId,
+    )) as RemoteUserProfile;
     if (!profile) return undefined;
 
     const userData: UserProfile = {

@@ -29,7 +29,10 @@ interface VehicleState {
 const SEATER_TO_TYPE_ID: Record<string, number> = { '5': 1, '7': 2 };
 const TYPE_ID_TO_SEATER: Record<number, '5' | '7'> = { 1: '5', 2: '7' };
 
-const TYPE_STRING_TO_SEATER: Record<string, '5' | '7'> = { 'CAR_5_SEATER': '5', 'CAR_7_SEATER': '7' };
+const TYPE_STRING_TO_SEATER: Record<string, '5' | '7'> = {
+  CAR_5_SEATER: '5',
+  CAR_7_SEATER: '7',
+};
 
 export const useVehicleStore = create<VehicleState>()(
   persist(
@@ -38,11 +41,11 @@ export const useVehicleStore = create<VehicleState>()(
       selectedVehicleId: null,
       isLoading: false,
 
-      addVehicle: async (vehicle) => {
+      addVehicle: async vehicle => {
         set({ isLoading: true });
         try {
           const { userService } = require('@/serviceManager/userService');
-          
+
           // Map to backend schema (Capitalized number plate)
           const payload = {
             vehicleNumber: vehicle.numberPlate.toUpperCase(),
@@ -53,17 +56,20 @@ export const useVehicleStore = create<VehicleState>()(
           };
 
           const response = await userService.saveVehicle(payload);
-          
+
           // Normalized ID from backend
           const newId = response.id?.toString() || `vehicle-${Date.now()}`;
-          
-          set((state) => ({
-            vehicles: [...state.vehicles, { 
-              ...vehicle, 
-              id: newId, 
-              numberPlate: vehicle.numberPlate.toUpperCase() 
-            }],
-            isLoading: false
+
+          set(state => ({
+            vehicles: [
+              ...state.vehicles,
+              {
+                ...vehicle,
+                id: newId,
+                numberPlate: vehicle.numberPlate.toUpperCase(),
+              },
+            ],
+            isLoading: false,
           }));
         } catch (error) {
           console.error('Failed to add vehicle to backend:', error);
@@ -80,14 +86,17 @@ export const useVehicleStore = create<VehicleState>()(
         try {
           const { userService } = require('@/serviceManager/userService');
           const data = await userService.getVehicles();
-          
+
           if (Array.isArray(data)) {
             const mappedVehicles: Vehicle[] = data.map((v: any) => {
               // Handle both vehicleTypeId (number) and vehicleType (string)
               let seater: '5' | '7' = '5';
               if (v.vehicleType && TYPE_STRING_TO_SEATER[v.vehicleType]) {
                 seater = TYPE_STRING_TO_SEATER[v.vehicleType];
-              } else if (v.vehicleTypeId && TYPE_ID_TO_SEATER[v.vehicleTypeId]) {
+              } else if (
+                v.vehicleTypeId &&
+                TYPE_ID_TO_SEATER[v.vehicleTypeId]
+              ) {
                 seater = TYPE_ID_TO_SEATER[v.vehicleTypeId];
               }
 
@@ -103,25 +112,27 @@ export const useVehicleStore = create<VehicleState>()(
             });
 
             const currentVehicles = get().vehicles;
-            const isIdentical = currentVehicles.length === mappedVehicles.length &&
-              currentVehicles.every((v, i) => 
-                v.id === mappedVehicles[i].id &&
-                v.company === mappedVehicles[i].company &&
-                v.model === mappedVehicles[i].model &&
-                v.numberPlate === mappedVehicles[i].numberPlate &&
-                v.color === mappedVehicles[i].color &&
-                v.seater === mappedVehicles[i].seater &&
-                v.type === mappedVehicles[i].type
+            const isIdentical =
+              currentVehicles.length === mappedVehicles.length &&
+              currentVehicles.every(
+                (v, i) =>
+                  v.id === mappedVehicles[i].id &&
+                  v.company === mappedVehicles[i].company &&
+                  v.model === mappedVehicles[i].model &&
+                  v.numberPlate === mappedVehicles[i].numberPlate &&
+                  v.color === mappedVehicles[i].color &&
+                  v.seater === mappedVehicles[i].seater &&
+                  v.type === mappedVehicles[i].type,
               );
 
             if (!isIdentical) {
               set({ vehicles: mappedVehicles });
             }
-            
+
             if (isInitialLoad) {
               set({ isLoading: false });
             }
-            
+
             if (mappedVehicles.length > 0 && !get().selectedVehicleId) {
               set({ selectedVehicleId: mappedVehicles[0].id });
             }
@@ -132,16 +143,17 @@ export const useVehicleStore = create<VehicleState>()(
         }
       },
 
-      removeVehicle: async (id) => {
+      removeVehicle: async id => {
         set({ isLoading: true });
         try {
           const { userService } = require('@/serviceManager/userService');
           await userService.deleteVehicle(id);
-          
-          set((state) => ({
-            vehicles: state.vehicles.filter((v) => v.id !== id),
-            selectedVehicleId: state.selectedVehicleId === id ? null : state.selectedVehicleId,
-            isLoading: false
+
+          set(state => ({
+            vehicles: state.vehicles.filter(v => v.id !== id),
+            selectedVehicleId:
+              state.selectedVehicleId === id ? null : state.selectedVehicleId,
+            isLoading: false,
           }));
         } catch (error) {
           console.error('Failed to delete vehicle:', error);
@@ -150,20 +162,20 @@ export const useVehicleStore = create<VehicleState>()(
         }
       },
 
-      setSelectedVehicle: (id) => set({ selectedVehicleId: id }),
+      setSelectedVehicle: id => set({ selectedVehicleId: id }),
 
       updateVehicle: async (id, updates) => {
         set({ isLoading: true });
         try {
           const { userService } = require('@/serviceManager/userService');
-          
-          const existing = get().vehicles.find((v) => v.id === id);
+
+          const existing = get().vehicles.find(v => v.id === id);
           if (!existing) {
             throw new Error('Vehicle not found');
           }
 
           const merged = { ...existing, ...updates };
-          
+
           // Map to backend schema
           const payload = {
             vehicleNumber: merged.numberPlate.toUpperCase(),
@@ -174,10 +186,20 @@ export const useVehicleStore = create<VehicleState>()(
           };
 
           await userService.updateVehicle(id, payload);
-          
-          set((state) => ({
-            vehicles: state.vehicles.map((v) => (v.id === id ? { ...v, ...updates, numberPlate: (updates.numberPlate || v.numberPlate).toUpperCase() } : v)),
-            isLoading: false
+
+          set(state => ({
+            vehicles: state.vehicles.map(v =>
+              v.id === id
+                ? {
+                    ...v,
+                    ...updates,
+                    numberPlate: (
+                      updates.numberPlate || v.numberPlate
+                    ).toUpperCase(),
+                  }
+                : v,
+            ),
+            isLoading: false,
           }));
         } catch (error) {
           console.error('Failed to update vehicle:', error);
@@ -189,6 +211,6 @@ export const useVehicleStore = create<VehicleState>()(
     {
       name: 'user-vehicles-storage',
       storage: createJSONStorage(() => mmkvStorage),
-    }
-  )
+    },
+  ),
 );

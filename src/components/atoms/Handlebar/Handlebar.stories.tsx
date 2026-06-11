@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/Handlebar',
   component: Handlebar,
-
 } satisfies Meta<typeof Handlebar>;
 
 export default meta;

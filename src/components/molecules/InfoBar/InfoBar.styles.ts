@@ -2,7 +2,10 @@ import styled from 'styled-components/native';
 import { moderateScale } from '@/styles';
 import { InfoBarProps, InfoBarVariant } from './types';
 
-export const StyledInfoBar = styled.View<{ variant: InfoBarVariant; colors: any }>`
+export const StyledInfoBar = styled.View<{
+  variant: InfoBarVariant;
+  colors: any;
+}>`
   flex-direction: row;
   align-items: flex-start;
   padding: ${moderateScale(16)}px;

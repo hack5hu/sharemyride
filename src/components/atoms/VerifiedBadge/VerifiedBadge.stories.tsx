@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/VerifiedBadge',
   component: VerifiedBadge,
-
 } satisfies Meta<typeof VerifiedBadge>;
 
 export default meta;

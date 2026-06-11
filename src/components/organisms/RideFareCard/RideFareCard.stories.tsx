@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/RideFareCard',
   component: RideFareCard,
-
 } satisfies Meta<typeof RideFareCard>;
 
 export default meta;
@@ -15,6 +14,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     price: 450,
-    t: {}
+    t: {},
   },
 };

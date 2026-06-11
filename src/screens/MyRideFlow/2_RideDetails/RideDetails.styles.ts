@@ -15,4 +15,3 @@ export const Overlay = styled.View`
   elevation: 9999;
   background-color: rgba(0, 0, 0, 0.4);
 `;
-

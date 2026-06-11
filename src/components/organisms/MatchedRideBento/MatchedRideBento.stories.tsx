@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/MatchedRideBento',
   component: MatchedRideBento,
-
 } satisfies Meta<typeof MatchedRideBento>;
 
 export default meta;

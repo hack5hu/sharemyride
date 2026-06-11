@@ -42,7 +42,8 @@ export const RouteItem = styled.View`
 export const StopPoint = styled.View`
   width: ${moderateScale(2)}px;
   height: ${verticalScale(12)}px;
-  background-color: ${({ theme }) => theme.colors.on_primary_fixed_variant + '33'};
+  background-color: ${({ theme }) =>
+    theme.colors.on_primary_fixed_variant + '33'};
   margin-left: ${scale(7)}px;
 `;
 
@@ -77,7 +78,10 @@ export const ActionText = styled.Text<{ isSecondary?: boolean }>`
   font-family: 'Plus Jakarta Sans';
   font-size: ${moderateScale(14)}px;
   font-weight: 800;
-  color: ${({ theme, isSecondary }) => isSecondary ? theme.colors.on_primary_fixed_variant : theme.colors.primary_fixed};
+  color: ${({ theme, isSecondary }) =>
+    isSecondary
+      ? theme.colors.on_primary_fixed_variant
+      : theme.colors.primary_fixed};
 `;
 
 export const InfoRow = styled.View`
@@ -86,7 +90,8 @@ export const InfoRow = styled.View`
   align-items: center;
   padding-vertical: ${verticalScale(4)}px;
   border-top-width: 1px;
-  border-top-color: ${({ theme }) => theme.colors.on_primary_fixed_variant + '1A'};
+  border-top-color: ${({ theme }) =>
+    theme.colors.on_primary_fixed_variant + '1A'};
 `;
 
 export const InfoItem = styled.View`

@@ -25,7 +25,12 @@ export const StatItem: React.FC<StatItemProps> = ({ label, value }) => {
   return (
     <Container>
       <StatValue size="md">{value}</StatValue>
-      <Label variant="label" size="sm" weight="semibold" color="on_surface_variant">
+      <Label
+        variant="label"
+        size="sm"
+        weight="semibold"
+        color="on_surface_variant"
+      >
         {label}
       </Label>
     </Container>

@@ -37,7 +37,8 @@ export const PreferenceChip = styled.View<{ accent?: boolean }>`
   flex-direction: row;
   align-items: center;
   padding: ${moderateScale(8)}px ${moderateScale(12)}px;
-  background-color: ${({ theme, accent }) => accent ? theme.colors.error_container : theme.colors.surface_container};
+  background-color: ${({ theme, accent }) =>
+    accent ? theme.colors.error_container : theme.colors.surface_container};
   border-radius: ${moderateScale(20)}px;
   gap: ${scale(6)}px;
 `;

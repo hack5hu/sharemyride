@@ -42,12 +42,12 @@ export const IconContainer = styled.View<{ color?: string }>`
   width: ${moderateScale(44)}px;
   height: ${moderateScale(44)}px;
   border-radius: ${moderateScale(22)}px;
-  background-color: ${({ theme, color }) => color || theme.colors.surface_container};
+  background-color: ${({ theme, color }) =>
+    color || theme.colors.surface_container};
   align-items: center;
   justify-content: center;
   margin-right: ${moderateScale(16)}px;
 `;
-
 
 export const HeroImage = styled.Image`
   width: 100%;

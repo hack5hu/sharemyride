@@ -4,9 +4,9 @@ import { RiderCard } from '@/components/molecules/RiderCard';
 import { RidersHorizontalListProps } from './types';
 import * as S from './RidersHorizontalList.styles';
 
-export const RidersHorizontalList: React.FC<RidersHorizontalListProps> = ({ 
-  riders, 
-  spotsLeft 
+export const RidersHorizontalList: React.FC<RidersHorizontalListProps> = ({
+  riders,
+  spotsLeft,
 }) => {
   const { rideDetails } = useLocale();
 
@@ -20,11 +20,8 @@ export const RidersHorizontalList: React.FC<RidersHorizontalListProps> = ({
           </S.SpotsText>
         </S.SpotsBadge>
       </S.Header>
-      
-      <S.ScrollArea 
-        horizontal 
-        showsHorizontalScrollIndicator={false}
-      >
+
+      <S.ScrollArea horizontal showsHorizontalScrollIndicator={false}>
         {riders.map((rider, index) => (
           <RiderCard key={`${rider.name}-${index}`} {...rider} />
         ))}

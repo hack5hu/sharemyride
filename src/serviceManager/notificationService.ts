@@ -1,5 +1,13 @@
 import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
-import { getMessaging, requestPermission, AuthorizationStatus, registerDeviceForRemoteMessages, getToken, onMessage, onTokenRefresh } from '@react-native-firebase/messaging';
+import {
+  getMessaging,
+  requestPermission,
+  AuthorizationStatus,
+  registerDeviceForRemoteMessages,
+  getToken,
+  onMessage,
+  onTokenRefresh,
+} from '@react-native-firebase/messaging';
 import { Platform } from 'react-native';
 import { Logger } from '@/utils/logger';
 import { navigate } from '@/navigation/navigationService';
@@ -31,7 +39,11 @@ class NotificationService {
     notifee.onBackgroundEvent(async ({ type, detail }) => {
       const { notification, pressAction } = detail;
 
-      if (type === EventType.PRESS && pressAction?.id === 'default' && notification) {
+      if (
+        type === EventType.PRESS &&
+        pressAction?.id === 'default' &&
+        notification
+      ) {
         // Handle notification press from background
         this.handleNotificationTap(notification);
         await notifee.cancelNotification(notification.id!);
@@ -40,7 +52,7 @@ class NotificationService {
 
     // Request permissions
     await this.requestPermission();
-    
+
     // Set up FCM foreground listener
     this.setupFcmListeners();
 
@@ -58,22 +70,26 @@ class NotificationService {
    */
   public static handleNotificationTap(notification: any) {
     const data = notification.data || {};
-    
+
     if (data.type === 'chat' && data.userId && data.name) {
-      Logger.log('[NotificationService] Navigating to ChatDetails from tap', data);
+      Logger.log(
+        '[NotificationService] Navigating to ChatDetails from tap',
+        data,
+      );
 
       // Optimistically mark all messages in this conversation as read
       const { myUserId } = useChatStore.getState();
       if (myUserId) {
         const senderId = String(data.userId);
-        const conversationId = myUserId < senderId
-          ? `${myUserId}_${senderId}`
-          : `${senderId}_${myUserId}`;
+        const conversationId =
+          myUserId < senderId
+            ? `${myUserId}_${senderId}`
+            : `${senderId}_${myUserId}`;
         useChatStore.getState().markConversationAsRead(conversationId);
       }
 
-      navigate('ChatDetails', { 
-        userId: String(data.userId), 
+      navigate('ChatDetails', {
+        userId: String(data.userId),
         name: String(data.name),
         rideId: data.rideId ? String(data.rideId) : undefined,
       });
@@ -86,7 +102,7 @@ class NotificationService {
   public static async requestPermission() {
     try {
       const settings = await notifee.requestPermission();
-      
+
       if (settings.authorizationStatus >= 1) {
         Logger.log('[Notifee] Permissions enabled');
       } else {
@@ -141,12 +157,13 @@ class NotificationService {
         const { activeConversationId, myUserId } = useChatStore.getState();
         const myId = myUserId || '';
         const senderId = String(data.userId || '');
-        const expectedConvId = myId < senderId
-          ? `${myId}_${senderId}`
-          : `${senderId}_${myId}`;
+        const expectedConvId =
+          myId < senderId ? `${myId}_${senderId}` : `${senderId}_${myId}`;
 
         if (activeConversationId === expectedConvId) {
-          Logger.log('[FCM] Suppressed notification: user is already in this chat');
+          Logger.log(
+            '[FCM] Suppressed notification: user is already in this chat',
+          );
           return;
         }
 
@@ -154,13 +171,13 @@ class NotificationService {
         await this.displayLocalNotification(
           `💬 ${String(data.name || 'New message')}`,
           String(data.message || 'You have a new message'),
-          data as Record<string, string>
+          data as Record<string, string>,
         );
       } else if (remoteMessage.notification) {
         await this.displayLocalNotification(
           remoteMessage.notification.title || 'Notification',
           remoteMessage.notification.body || '',
-          remoteMessage.data as Record<string, string>
+          remoteMessage.data as Record<string, string>,
         );
       }
     });
@@ -177,7 +194,7 @@ class NotificationService {
   public static async displayLocalNotification(
     title: string,
     body: string,
-    data?: Record<string, string | number | object>
+    data?: Record<string, string | number | object>,
   ) {
     const isChat = data?.type === 'chat';
     const groupId = isChat ? `chat-${data.userId}` : 'default-group';

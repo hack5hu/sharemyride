@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScreenShell } from '../../molecules/ScreenShell';
-import { 
-  MainContent, 
-  FooterContainer, 
+import {
+  MainContent,
+  FooterContainer,
   ScrollContainer,
   Wrapper,
-  StyledKeyboardScrollView
+  StyledKeyboardScrollView,
 } from './ProfileSetupTemplate.styles';
 import { ProfileSetupTemplateProps } from './types.d';
 
@@ -33,9 +33,7 @@ export const ProfileSetupTemplate: React.FC<ProfileSetupTemplateProps> = ({
           </ScrollContainer>
         </StyledKeyboardScrollView>
 
-        <FooterContainer insetsBottom={insets.bottom}>
-          {footer}
-        </FooterContainer>
+        <FooterContainer insetsBottom={insets.bottom}>{footer}</FooterContainer>
       </Wrapper>
     </ScreenShell>
   );

@@ -1,4 +1,9 @@
-export type CategoryIconVariant = 'primary' | 'secondary' | 'tertiary' | 'surface' | 'emerald';
+export type CategoryIconVariant =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'surface'
+  | 'emerald';
 
 export interface CategoryIconProps {
   icon: string;

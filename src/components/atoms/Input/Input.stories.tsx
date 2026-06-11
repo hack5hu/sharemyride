@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Atoms/Input',
   component: Input,
-
 } satisfies Meta<typeof Input>;
 
 export default meta;

@@ -27,75 +27,113 @@ export const useBookingConfirmed = () => {
         return true;
       };
 
-      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress,
+      );
 
       return () => subscription.remove();
-    }, [])
+    }, []),
   );
 
   const rideId = route.params?.rideId;
   const bookedSeats = route.params?.bookedSeats || [];
 
   const rideRaw = useMemo(
-    () => searchResults?.find((r: { id: string; stops?: RouteStop[]; driverName?: string; driverPhotoUrl?: string; vehicleType?: string; vehicleRegistration?: string }) => r.id === rideId),
+    () =>
+      searchResults?.find(
+        (r: {
+          id: string;
+          stops?: RouteStop[];
+          driverName?: string;
+          driverPhotoUrl?: string;
+          vehicleType?: string;
+          vehicleRegistration?: string;
+        }) => r.id === rideId,
+      ),
     [searchResults, rideId],
   );
 
   const rideData = useMemo(() => {
     const firstStop = rideRaw?.stops?.[0];
-    const pickupTime = route.params?.pickupTime || formatTimeSafely(firstStop?.arrivalTime, {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    });
+    const pickupTime =
+      route.params?.pickupTime ||
+      formatTimeSafely(firstStop?.arrivalTime, {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      });
 
     const vehicleType = route.params?.vehicleType || rideRaw?.vehicleType;
-    const departureDate = route.params?.departureDate || (firstStop?.arrivalTime
-      ? new Date(firstStop.arrivalTime).toLocaleDateString('en-IN', {
-        day: 'numeric',
-        month: 'short',
-      })
-      : '');
+    const departureDate =
+      route.params?.departureDate ||
+      (firstStop?.arrivalTime
+        ? new Date(firstStop.arrivalTime).toLocaleDateString('en-IN', {
+            day: 'numeric',
+            month: 'short',
+          })
+        : '');
 
-    const getSeatDescription = (seatId: string | number, vType?: string): string => {
+    const getSeatDescription = (
+      seatId: string | number,
+      vType?: string,
+    ): string => {
       const id = String(seatId);
       const typeStr = (vType || '').toUpperCase();
       const is7Seater = typeStr.includes('7') || typeStr === '7';
 
       if (id === '1' || id === 'driver') return t.seatPositions.driver;
       if (id === '2') return t.seatPositions.frontPassenger;
-      
+
       if (is7Seater) {
         switch (id) {
-          case '3': return t.seatPositions.middleLeft;
-          case '4': return t.seatPositions.middleCenter;
-          case '5': return t.seatPositions.middleRight;
-          case '6': return t.seatPositions.backLeft;
-          case '7': return t.seatPositions.backRight;
+          case '3':
+            return t.seatPositions.middleLeft;
+          case '4':
+            return t.seatPositions.middleCenter;
+          case '5':
+            return t.seatPositions.middleRight;
+          case '6':
+            return t.seatPositions.backLeft;
+          case '7':
+            return t.seatPositions.backRight;
         }
       } else {
         // 5 Seater or default
         switch (id) {
-          case '3': return t.seatPositions.backLeft;
-          case '4': return t.seatPositions.backCenter;
-          case '5': return t.seatPositions.backRight;
+          case '3':
+            return t.seatPositions.backLeft;
+          case '4':
+            return t.seatPositions.backCenter;
+          case '5':
+            return t.seatPositions.backRight;
         }
       }
 
       return t.seatPositions.defaultSeat.replace('{id}', id);
     };
 
-    const formattedSeats = bookedSeats.length > 0 
-      ? bookedSeats.map(seatId => getSeatDescription(seatId, vehicleType)).join(', ')
-      : 'TBD';
+    const formattedSeats =
+      bookedSeats.length > 0
+        ? bookedSeats
+            .map(seatId => getSeatDescription(seatId, vehicleType))
+            .join(', ')
+        : 'TBD';
 
     return {
       driver: {
         name: rideRaw?.driverName || 'Host',
         rating: 4.9,
-        avatar: rideRaw?.driverPhotoUrl || 'https://ui-avatars.com/api/?name=' + (rideRaw?.driverName || 'H'),
+        avatar:
+          rideRaw?.driverPhotoUrl ||
+          'https://ui-avatars.com/api/?name=' + (rideRaw?.driverName || 'H'),
         isVerified: true,
-        car: vehicleType?.replace('CAR_', '').replace('_', '-').toLowerCase().replace(/\b\w/g, (c: string) => c.toUpperCase()) || 'Vehicle',
+        car:
+          vehicleType
+            ?.replace('CAR_', '')
+            .replace('_', '-')
+            .toLowerCase()
+            .replace(/\b\w/g, (c: string) => c.toUpperCase()) || 'Vehicle',
         plate: rideRaw?.vehicleRegistration || '...',
       },
       pickupTime,

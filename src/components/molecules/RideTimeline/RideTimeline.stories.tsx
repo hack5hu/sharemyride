@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/RideTimeline',
   component: RideTimeline,
-
 } satisfies Meta<typeof RideTimeline>;
 
 export default meta;
@@ -16,7 +15,7 @@ export const Default: Story = {
   args: {
     items: [],
     points: [],
-    type: "default",
-    size: "md"
+    type: 'default',
+    size: 'md',
   },
 };

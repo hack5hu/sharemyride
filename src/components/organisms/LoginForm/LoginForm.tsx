@@ -79,11 +79,19 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             >
               {t.login.truecallerPrefix}
             </Typography>
-            <Icon name="verified-user" size={16} color={theme.colors.truecaller} />
+            <Icon
+              name="verified-user"
+              size={16}
+              color={theme.colors.truecaller}
+            />
             <Typography size="md" weight="bold" color={theme.colors.truecaller}>
               {t.login.truecallerSuffix}
             </Typography>
-            <Icon name="keyboard-arrow-right" size={16} color={theme.colors.truecaller} />
+            <Icon
+              name="keyboard-arrow-right"
+              size={16}
+              color={theme.colors.truecaller}
+            />
           </TruecallerRow>
         ) : (
           <DummyRow />

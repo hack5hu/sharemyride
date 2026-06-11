@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/MapActionFAB',
   component: MapActionFAB,
-
 } satisfies Meta<typeof MapActionFAB>;
 
 export default meta;

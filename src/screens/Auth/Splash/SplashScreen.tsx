@@ -5,7 +5,6 @@ import * as S from './SplashScreen.styles';
 import { SplashScreenProps } from './types.d';
 
 const SplashScreenComponent: React.FC<SplashScreenProps> = () => {
-   
   const {} = useSplashScreen();
 
   return (

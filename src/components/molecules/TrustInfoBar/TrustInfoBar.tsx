@@ -10,10 +10,10 @@ export const TrustInfoBar: React.FC<TrustInfoBarProps> = ({ message }) => {
 
   return (
     <Container>
-      <Icon 
-        name="verified-user" 
-        size={moderateScale(16)} 
-        color={theme.colors.on_primary_fixed_variant} 
+      <Icon
+        name="verified-user"
+        size={moderateScale(16)}
+        color={theme.colors.on_primary_fixed_variant}
       />
       <InfoText>{message}</InfoText>
     </Container>

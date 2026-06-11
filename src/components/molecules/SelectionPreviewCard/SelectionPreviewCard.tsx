@@ -28,14 +28,22 @@ export const SelectionPreviewCard: React.FC<SelectionPreviewCardProps> = ({
     <CardContainer>
       <LeftSection>
         <IconCircle>
-          <MaterialIcons name={icon} size={moderateScale(20)} color={theme.colors.primary} />
+          <MaterialIcons
+            name={icon}
+            size={moderateScale(20)}
+            color={theme.colors.primary}
+          />
         </IconCircle>
         <View>
           <LabelText>{label}</LabelText>
           <ValueText>{value}</ValueText>
         </View>
       </LeftSection>
-      <MaterialIcons name="check-circle" size={moderateScale(24)} color={theme.colors.primary} />
+      <MaterialIcons
+        name="check-circle"
+        size={moderateScale(24)}
+        color={theme.colors.primary}
+      />
     </CardContainer>
   );
 };

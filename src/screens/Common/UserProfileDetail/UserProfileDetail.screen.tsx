@@ -3,15 +3,11 @@ import { UserProfileDetailTemplate } from '@/components/templates/UserProfileDet
 import { useUserProfileDetail } from './useUserProfileDetail';
 import { UserProfileDetailProps } from './types';
 
-export const UserProfileDetail: React.FC<UserProfileDetailProps> = ({ route }) => {
-  const { 
-    profile, 
-    isLoading, 
-    handleBack, 
-    handleReport, 
-    handleViewRatings,
-    t
-  } = useUserProfileDetail(route.params.userId);
+export const UserProfileDetail: React.FC<UserProfileDetailProps> = ({
+  route,
+}) => {
+  const { profile, isLoading, handleBack, handleReport, handleViewRatings, t } =
+    useUserProfileDetail(route.params.userId);
 
   return (
     <UserProfileDetailTemplate

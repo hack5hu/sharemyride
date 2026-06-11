@@ -1,4 +1,4 @@
-import {TextStyle, ViewStyle} from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 
 export const FLEX_DIRECTION: Record<string, ViewStyle['flexDirection']> = {
   ROW: 'row',

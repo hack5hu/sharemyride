@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/RouteIndicator',
   component: RouteIndicator,
-
 } satisfies Meta<typeof RouteIndicator>;
 
 export default meta;

@@ -39,19 +39,20 @@ interface RideItemProps {
   isActionLoading?: boolean;
 }
 
-export const RideItem: React.FC<RideItemProps> = React.memo(({
-  item,
-  activeTab,
-  onRidePress,
-  onCancelRide,
-  onRemoveDraft,
-  onChatPress,
-  onAcceptRide,
-  onRejectRide,
-  isActionLoading,
-}) => {
-  if (activeTab === 'requests') {
-    return (
+export const RideItem: React.FC<RideItemProps> = React.memo(
+  ({
+    item,
+    activeTab,
+    onRidePress,
+    onCancelRide,
+    onRemoveDraft,
+    onChatPress,
+    onAcceptRide,
+    onRejectRide,
+    isActionLoading,
+  }) => {
+    if (activeTab === 'requests') {
+      return (
         <MatchedRideBento
           driverName={item.driverName || 'Passenger'}
           rating={item.rating || 5}
@@ -67,42 +68,51 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
           onPress={() => onRidePress(item)}
           disabled={isActionLoading}
         />
-    );
-  }
+      );
+    }
 
-  if (activeTab === 'upcoming') {
+    if (activeTab === 'upcoming') {
+      return (
+        <UpcomingRideCard
+          timerLabel={item.timerLabel || ''}
+          driverName={item.driverName || ''}
+          carModel={item.carModel || ''}
+          rating={item.rating ?? 0}
+          price={item.price}
+          avatarUri={item.avatarUri || ''}
+          pickupTime={item.pickupTime || ''}
+          pickupLocation={item.pickupLocation || ''}
+          dropoffTime={item.dropoffTime || ''}
+          dropoffLocation={item.dropoffLocation || ''}
+          statusTag={item.statusTag}
+          onPress={() => onRidePress(item)}
+          onMorePress={() => onCancelRide(item.id)}
+          onChatPress={() => onChatPress?.(item)}
+          isDriver={item.role === 'DRIVER'}
+        />
+      );
+    }
+
     return (
-      <UpcomingRideCard
-        timerLabel={item.timerLabel || ''}
-        driverName={item.driverName || ''}
-        carModel={item.carModel || ''}
-        rating={item.rating ?? 0}
+      <CompactRideItem
+        title={item.title}
+        subtitle={item.subtitle}
         price={item.price}
-        avatarUri={item.avatarUri || ''}
-        pickupTime={item.pickupTime || ''}
-        pickupLocation={item.pickupLocation || ''}
-        dropoffTime={item.dropoffTime || ''}
-        dropoffLocation={item.dropoffLocation || ''}
+        icon={item.icon}
+        type={
+          activeTab === 'drafts'
+            ? 'draft'
+            : activeTab === 'archive'
+            ? 'archive'
+            : 'completed'
+        }
         statusTag={item.statusTag}
+        actionIcon={activeTab === 'drafts' ? 'delete-outline' : undefined}
+        onActionPress={() =>
+          activeTab === 'drafts' ? onRemoveDraft(item.id) : undefined
+        }
         onPress={() => onRidePress(item)}
-        onMorePress={() => onCancelRide(item.id)}
-        onChatPress={() => onChatPress?.(item)}
-        isDriver={item.role === 'DRIVER'}
       />
     );
-  }
-
-  return (
-    <CompactRideItem
-      title={item.title}
-      subtitle={item.subtitle}
-      price={item.price}
-      icon={item.icon}
-      type={activeTab === 'drafts' ? 'draft' : (activeTab === 'archive' ? 'archive' : 'completed')}
-      statusTag={item.statusTag}
-      actionIcon={activeTab === 'drafts' ? 'delete-outline' : undefined}
-      onActionPress={() => activeTab === 'drafts' ? onRemoveDraft(item.id) : undefined}
-      onPress={() => onRidePress(item)}
-    />
-  );
-});
+  },
+);

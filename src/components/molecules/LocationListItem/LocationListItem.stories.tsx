@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/LocationListItem',
   component: LocationListItem,
-
 } satisfies Meta<typeof LocationListItem>;
 
 export default meta;

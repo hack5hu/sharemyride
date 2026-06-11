@@ -4,42 +4,62 @@ import { RideRouteMapProps } from './types';
 import { RideRouteMapTemplate } from '@/components/templates/RideRouteMapTemplate';
 import { useLocale } from '@/constants/localization';
 
-export const RideRouteMapScreen: React.FC<RideRouteMapProps> = React.memo(({ route }) => {
-  const { routePath, stops, initialStopIndex, destination, sourceStopId, destinationStopId, userSearchedPickup, userSearchedDropoff } = route.params;
-  const { rideRoute } = useLocale();
-  
-  const { 
-    handleBack, 
-    handleUserLocationUpdate, 
-    handleRegionDidChange,
-    handleZoomIn,
-    handleZoomOut,
-    handleOpenExternalMap,
-    handleMapLoaded,
-    mapData, 
-    cameraRef,
-    mapRef,
-    zoom,
-    region,
-    isMapMounted,
-  } = useRideRouteMap(routePath, stops, destination, initialStopIndex, sourceStopId, destinationStopId, userSearchedPickup, userSearchedDropoff);
+export const RideRouteMapScreen: React.FC<RideRouteMapProps> = React.memo(
+  ({ route }) => {
+    const {
+      routePath,
+      stops,
+      initialStopIndex,
+      destination,
+      sourceStopId,
+      destinationStopId,
+      userSearchedPickup,
+      userSearchedDropoff,
+    } = route.params;
+    const { rideRoute } = useLocale();
 
-  return (
-    <RideRouteMapTemplate
-      title={destination ? rideRoute.locationDetails : rideRoute.title}
-      onBack={handleBack}
-      mapRef={mapRef}
-      cameraRef={cameraRef}
-      region={region}
-      zoom={zoom}
-      onRegionDidChange={handleRegionDidChange}
-      handleUserLocationUpdate={handleUserLocationUpdate}
-      mapData={mapData}
-      onZoomIn={handleZoomIn}
-      onZoomOut={handleZoomOut}
-      onOpenExternalMap={handleOpenExternalMap}
-      isMapMounted={isMapMounted}
-      onMapLoaded={handleMapLoaded}
-    />
-  );
-});
+    const {
+      handleBack,
+      handleUserLocationUpdate,
+      handleRegionDidChange,
+      handleZoomIn,
+      handleZoomOut,
+      handleOpenExternalMap,
+      handleMapLoaded,
+      mapData,
+      cameraRef,
+      mapRef,
+      zoom,
+      region,
+      isMapMounted,
+    } = useRideRouteMap(
+      routePath,
+      stops,
+      destination,
+      initialStopIndex,
+      sourceStopId,
+      destinationStopId,
+      userSearchedPickup,
+      userSearchedDropoff,
+    );
+
+    return (
+      <RideRouteMapTemplate
+        title={destination ? rideRoute.locationDetails : rideRoute.title}
+        onBack={handleBack}
+        mapRef={mapRef}
+        cameraRef={cameraRef}
+        region={region}
+        zoom={zoom}
+        onRegionDidChange={handleRegionDidChange}
+        handleUserLocationUpdate={handleUserLocationUpdate}
+        mapData={mapData}
+        onZoomIn={handleZoomIn}
+        onZoomOut={handleZoomOut}
+        onOpenExternalMap={handleOpenExternalMap}
+        isMapMounted={isMapMounted}
+        onMapLoaded={handleMapLoaded}
+      />
+    );
+  },
+);

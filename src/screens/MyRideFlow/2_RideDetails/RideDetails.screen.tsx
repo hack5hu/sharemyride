@@ -10,13 +10,13 @@ import { Box } from '@/components/atoms/Box';
 import { ReportIssueModal } from '@/components/organisms/ReportIssueModal';
 
 export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
-  const { 
-    ride, 
-    isLoading, 
+  const {
+    ride,
+    isLoading,
     isDriver,
-    t, 
-    handleBack, 
-    handleViewRoute, 
+    t,
+    handleBack,
+    handleViewRoute,
     handleCopyAddress,
     handleChat,
     handleDriverProfile,
@@ -59,7 +59,9 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
         handlePassengerProfile={handlePassengerProfile}
         isDriver={isDriver}
         onCancelRide={handleCancelRide}
-        onCancelPassenger={(id) => (isDriver ? handleCancelPassenger(id) : handleCancelOwnBooking())}
+        onCancelPassenger={id =>
+          isDriver ? handleCancelPassenger(id) : handleCancelOwnBooking()
+        }
         onReportRide={handleReportRide}
       />
 
@@ -68,9 +70,16 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
           isVisible={isCancelModalVisible}
           onClose={() => setIsCancelModalVisible(false)}
           onSubmit={handleConfirmCancel}
-          bookingId={cancelTarget?.id?.toString() || ride.myBookingId || ride.id || 'Ride'}
+          bookingId={
+            cancelTarget?.id?.toString() ||
+            ride.myBookingId ||
+            ride.id ||
+            'Ride'
+          }
           isDriver={isDriver}
-          isSpecificUser={cancelTarget?.type === 'BOOKING' && !cancelTarget?.isSelf}
+          isSpecificUser={
+            cancelTarget?.type === 'BOOKING' && !cancelTarget?.isSelf
+          }
           isLoading={isCancelling}
         />
       )}
@@ -86,4 +95,3 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
     </Container>
   );
 });
-

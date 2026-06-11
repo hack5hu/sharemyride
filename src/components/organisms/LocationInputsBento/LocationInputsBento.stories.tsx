@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/LocationInputsBento',
   component: LocationInputsBento,
-
 } satisfies Meta<typeof LocationInputsBento>;
 
 export default meta;

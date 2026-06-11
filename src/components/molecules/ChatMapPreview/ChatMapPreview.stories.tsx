@@ -12,7 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    "latitude": 0,
-    "longitude": 0
+    latitude: 0,
+    longitude: 0,
   },
 };

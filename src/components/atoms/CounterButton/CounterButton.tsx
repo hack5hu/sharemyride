@@ -28,17 +28,17 @@ export interface CounterButtonProps {
   size?: 'small' | 'medium';
 }
 
-export const CounterButton: React.FC<CounterButtonProps> = ({ 
-  type, 
-  onPress, 
-  disabled, 
-  size = 'medium' 
+export const CounterButton: React.FC<CounterButtonProps> = ({
+  type,
+  onPress,
+  disabled,
+  size = 'medium',
 }) => (
-  <Button 
-    onPress={onPress} 
-    disabled={disabled} 
+  <Button
+    onPress={onPress}
+    disabled={disabled}
     size={size}
-    activeOpacity={0.7} 
+    activeOpacity={0.7}
     style={{ opacity: disabled ? 0.4 : 1 }}
   >
     <ButtonText size={size}>{type === 'add' ? '+' : '−'}</ButtonText>

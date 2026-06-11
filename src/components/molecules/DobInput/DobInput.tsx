@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Modal, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import {
+  View,
+  Modal,
+  ScrollView,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Input } from '../../atoms/Input';
@@ -109,7 +114,8 @@ export const DobInput: React.FC<DobInputProps> = ({
     emitChange(day, month, numericText);
   };
 
-  const currentMonthLabel = months.find((m) => m.value === month)?.label || 'Month';
+  const currentMonthLabel =
+    months.find(m => m.value === month)?.label || 'Month';
 
   return (
     <Container>
@@ -117,7 +123,7 @@ export const DobInput: React.FC<DobInputProps> = ({
         {label}
         {required && <RequiredAsterisk> *</RequiredAsterisk>}
       </LabelText>
-      
+
       <Row>
         <DayContainer style={{ opacity: disabled ? 0.6 : 1 }}>
           <Input
@@ -179,7 +185,12 @@ export const DobInput: React.FC<DobInputProps> = ({
       </Row>
 
       {error && (
-        <Typography variant="label" size="sm" color="error" style={{ marginTop: 4 }}>
+        <Typography
+          variant="label"
+          size="sm"
+          color="error"
+          style={{ marginTop: 4 }}
+        >
           {error}
         </Typography>
       )}
@@ -210,7 +221,7 @@ export const DobInput: React.FC<DobInputProps> = ({
             <TouchableWithoutFeedback>
               <ModalContent>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                  {months.map((m) => (
+                  {months.map(m => (
                     <MonthItem
                       key={m.value}
                       onPress={() => handleMonthSelect(m.value)}

@@ -34,8 +34,11 @@ export const StyledSurface = styled.View<{
   $rounded?: SurfaceRounded;
   $padding?: SurfacePadding;
 }>`
-  border-radius: ${({ $rounded = 'md', theme }) => theme.roundness[$rounded as keyof typeof theme.roundness]}px;
-  padding: ${({ $padding = 'md', theme }) => ($padding === 'none' ? 0 : theme.spacing[$padding as keyof typeof theme.spacing])}px;
+  border-radius: ${({ $rounded = 'md', theme }) =>
+    theme.roundness[$rounded as keyof typeof theme.roundness]}px;
+  padding: ${({ $padding = 'md', theme }) =>
+    $padding === 'none'
+      ? 0
+      : theme.spacing[$padding as keyof typeof theme.spacing]}px;
   ${({ $elevation = 'low', theme }) => getElevationStyle($elevation, theme)}
-  
 `;

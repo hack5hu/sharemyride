@@ -91,4 +91,3 @@ export const EmptyIconCircle = styled.View`
   align-items: center;
   justify-content: center;
 `;
-

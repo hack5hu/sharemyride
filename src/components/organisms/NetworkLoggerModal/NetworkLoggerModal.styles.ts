@@ -64,7 +64,8 @@ export const LogItem = styled.TouchableOpacity<{ isError: boolean }>`
   padding: ${moderateScale(16)}px;
   border-bottom-width: 1px;
   border-bottom-color: ${({ theme }) => theme.colors.surface_variant};
-  background-color: ${({ theme, isError }) => isError ? theme.colors.error_container : theme.colors.surface};
+  background-color: ${({ theme, isError }) =>
+    isError ? theme.colors.error_container : theme.colors.surface};
 `;
 
 export const LogHeader = styled.View`
@@ -79,26 +80,36 @@ export const MethodBadge = styled.View<{ method: string }>`
   padding-vertical: ${verticalScale(4)}px;
   border-radius: ${moderateScale(4)}px;
   background-color: ${({ theme, method }) => {
-    switch(method) {
-      case 'GET': return theme.colors.primary_container;
-      case 'POST': return '#e8f5e9'; // success tint
+    switch (method) {
+      case 'GET':
+        return theme.colors.primary_container;
+      case 'POST':
+        return '#e8f5e9'; // success tint
       case 'PUT':
-      case 'PATCH': return '#fff3e0'; // warning tint
-      case 'DELETE': return theme.colors.error_container;
-      default: return theme.colors.surface_variant;
+      case 'PATCH':
+        return '#fff3e0'; // warning tint
+      case 'DELETE':
+        return theme.colors.error_container;
+      default:
+        return theme.colors.surface_variant;
     }
   }};
 `;
 
 export const MethodText = styled(Typography as any)<{ method: string }>`
   color: ${({ theme, method }) => {
-    switch(method) {
-      case 'GET': return theme.colors.on_primary_container;
-      case 'POST': return '#2e7d32'; 
+    switch (method) {
+      case 'GET':
+        return theme.colors.on_primary_container;
+      case 'POST':
+        return '#2e7d32';
       case 'PUT':
-      case 'PATCH': return '#e65100'; 
-      case 'DELETE': return theme.colors.on_error_container;
-      default: return theme.colors.on_surface_variant;
+      case 'PATCH':
+        return '#e65100';
+      case 'DELETE':
+        return theme.colors.on_error_container;
+      default:
+        return theme.colors.on_surface_variant;
     }
   }};
   font-weight: bold;

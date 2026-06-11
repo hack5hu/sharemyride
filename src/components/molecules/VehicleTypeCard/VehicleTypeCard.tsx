@@ -16,16 +16,20 @@ export const VehicleTypeCard: React.FC<VehicleTypeCardProps> = ({
   return (
     <Container selected={selected} onPress={onPress}>
       <IconWrapper>
-        <Icon 
-          name={icon} 
-          size={24} 
-          color={selected ? theme.colors.on_secondary_fixed_variant : theme.colors.on_surface_variant} 
+        <Icon
+          name={icon}
+          size={24}
+          color={
+            selected
+              ? theme.colors.on_secondary_fixed_variant
+              : theme.colors.on_surface_variant
+          }
         />
       </IconWrapper>
-      <Typography 
-        variant="label" 
-        size="sm" 
-        weight="bold" 
+      <Typography
+        variant="label"
+        size="sm"
+        weight="bold"
         color={selected ? 'on_secondary_fixed_variant' : 'on_surface_variant'}
         style={{ textAlign: 'center', textTransform: 'uppercase' }}
       >

@@ -20,8 +20,6 @@ export const Container = styled.View`
   padding-horizontal: ${scale(8)}px;
 `;
 
-
-
 export const NavItem = styled.TouchableOpacity<{ active?: boolean }>`
   flex: 1;
   align-items: center;
@@ -31,7 +29,8 @@ export const NavItem = styled.TouchableOpacity<{ active?: boolean }>`
   padding-horizontal: ${moderateScale(2)}px;
   padding-vertical: ${moderateScale(8)}px;
   border-radius: ${moderateScale(12)}px;
-  background-color: ${({ active, theme }) => active ? theme.colors.primary_container + '33' : 'transparent'};
+  background-color: ${({ active, theme }) =>
+    active ? theme.colors.primary_container + '33' : 'transparent'};
 `;
 
 export const Badge = styled.View`

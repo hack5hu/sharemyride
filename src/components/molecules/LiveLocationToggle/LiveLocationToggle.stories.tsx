@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/LiveLocationToggle',
   component: LiveLocationToggle,
-
 } satisfies Meta<typeof LiveLocationToggle>;
 
 export default meta;

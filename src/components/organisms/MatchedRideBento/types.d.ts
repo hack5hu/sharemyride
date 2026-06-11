@@ -12,4 +12,3 @@ export interface MatchedRideBentoProps {
   onPress?: () => void;
   disabled?: boolean;
 }
-

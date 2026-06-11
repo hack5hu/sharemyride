@@ -5,14 +5,15 @@ import { getFcmToken } from '@/utils/fcm';
 import { TRUECALLER_ANDROID_CUSTOMIZATIONS } from '@ajitpatel28/react-native-truecaller';
 
 // User explicitly chose "another method" or tapped cancel/dismiss
-export const USER_DISMISS_CODES = /cancel|dismiss|another[_\s]?method|use_another_method|footer|denied/i;
+export const USER_DISMISS_CODES =
+  /cancel|dismiss|another[_\s]?method|use_another_method|footer|denied/i;
 
 // Transient SDK noise — silently ignore without changing state
 export const TRANSIENT_SDK_CODES = /activity is null|^null$|4|5/i;
 
 export const executeTruecallerAuth = async (
   authorizationCode: string,
-  codeVerifier?: string
+  codeVerifier?: string,
 ) => {
   const [deviceId, fcmToken] = await Promise.all([
     getDeviceId().catch(() => null),
@@ -23,7 +24,7 @@ export const executeTruecallerAuth = async (
     authorizationCode,
     deviceId,
     fcmToken,
-    codeVerifier
+    codeVerifier,
   );
 };
 
@@ -31,7 +32,7 @@ export const syncUserProfileAndData = async (
   userId: string,
   token: string,
   completed: boolean,
-  setAuth: (user: any, token: string, completed?: boolean) => void
+  setAuth: (user: any, token: string, completed?: boolean) => void,
 ) => {
   setAuth({ id: userId, phone: '' }, token, completed);
   if (completed) {
@@ -39,7 +40,9 @@ export const syncUserProfileAndData = async (
   }
 };
 
-export const getTruecallerOptions = (androidSuccessHandler: (data: any) => void) => ({
+export const getTruecallerOptions = (
+  androidSuccessHandler: (data: any) => void,
+) => ({
   androidClientId: 'xo3glydxwgapbf0zumg28mys6qud3tkzfnfzbxcqiay',
   iosAppKey: 'xo3glydxwgapbf0zumg28mys6qud3tkzfnfzbxcqiay',
   iosAppLink: 'https://sharemyride.com/truecaller',
@@ -51,6 +54,7 @@ export const getTruecallerOptions = (androidSuccessHandler: (data: any) => void)
     TRUECALLER_ANDROID_CUSTOMIZATIONS.FOOTER_TEXTS.ANOTHER_METHOD,
   androidConsentHeading:
     TRUECALLER_ANDROID_CUSTOMIZATIONS.CONSENT_HEADINGS.LOG_IN_TO,
-  androidSdkOptions: TRUECALLER_ANDROID_CUSTOMIZATIONS.SDK_OPTIONS.VERIFY_ONLY_TC_USERS,
+  androidSdkOptions:
+    TRUECALLER_ANDROID_CUSTOMIZATIONS.SDK_OPTIONS.VERIFY_ONLY_TC_USERS,
   androidSuccessHandler,
 });

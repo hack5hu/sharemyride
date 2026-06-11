@@ -27,7 +27,7 @@ const apiClient = axios.create({
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
+    Accept: 'application/json',
   },
 });
 let isRefreshing = false;
@@ -58,9 +58,12 @@ apiClient.interceptors.request.use(
     // Detect FormData using duck-typing because `instanceof FormData` fails
     // in React Native's Hermes engine (the RN FormData polyfill doesn't match
     // the global FormData reference that Axios checks against).
-    const isFormDataPayload = config.data &&
+    const isFormDataPayload =
+      config.data &&
       (config.data instanceof FormData ||
-       (typeof config.data === 'object' && typeof config.data.append === 'function' && Array.isArray(config.data._parts)));
+        (typeof config.data === 'object' &&
+          typeof config.data.append === 'function' &&
+          Array.isArray(config.data._parts)));
 
     if (isFormDataPayload) {
       // 1. Bypass Axios's default transformRequest which would JSON.stringify
@@ -102,7 +105,11 @@ apiClient.interceptors.response.use(
   response => {
     const trackedConfig = response.config as TrackedRequestConfig;
     logApiResponse(response);
-    if (isNetworkLoggerEnabled() && trackedConfig._logId && trackedConfig._startTime) {
+    if (
+      isNetworkLoggerEnabled() &&
+      trackedConfig._logId &&
+      trackedConfig._startTime
+    ) {
       const endTime = Date.now();
       useNetworkLoggerStore.getState().updateLog(trackedConfig._logId, {
         responseStatus: response.status,
@@ -116,17 +123,25 @@ apiClient.interceptors.response.use(
   },
   async error => {
     const axiosError = error as AxiosError;
-    const originalRequest = axiosError.config as TrackedRequestConfig | undefined;
+    const originalRequest = axiosError.config as
+      | TrackedRequestConfig
+      | undefined;
     if (!originalRequest) {
       return Promise.reject(error);
     }
     logApiError(axiosError);
-    if (isNetworkLoggerEnabled() && originalRequest._logId && originalRequest._startTime) {
+    if (
+      isNetworkLoggerEnabled() &&
+      originalRequest._logId &&
+      originalRequest._startTime
+    ) {
       const endTime = Date.now();
       useNetworkLoggerStore.getState().updateLog(originalRequest._logId, {
         responseStatus: axiosError.response?.status || 0,
         responseHeaders: sanitizeHeaders(axiosError.response?.headers),
-        responseBody: redactSensitiveData(axiosError.response?.data || axiosError.message),
+        responseBody: redactSensitiveData(
+          axiosError.response?.data || axiosError.message,
+        ),
         endTime,
         duration: endTime - originalRequest._startTime,
         isError: true,

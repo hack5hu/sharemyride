@@ -15,9 +15,12 @@ export const InfoBar: React.FC<InfoBarProps> = ({
 
   const getIconName = () => {
     switch (variant) {
-      case 'error': return 'error';
-      case 'success': return 'check-circle';
-      default: return 'info';
+      case 'error':
+        return 'error';
+      case 'success':
+        return 'check-circle';
+      default:
+        return 'info';
     }
   };
 
@@ -55,12 +58,7 @@ export const InfoBar: React.FC<InfoBarProps> = ({
         <Icon name={getIconName()} size={20} color={colors.icon} />
       </IconContainer>
       <TextContainer>
-        <Typography
-          variant="label"
-          size="md"
-          weight="bold"
-          color={colors.text}
-        >
+        <Typography variant="label" size="md" weight="bold" color={colors.text}>
           {title}
         </Typography>
         {subtitle && (

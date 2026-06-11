@@ -1,10 +1,10 @@
 import React from 'react';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { useLocale } from '@/constants/localization';
-import { 
-  ScrollContainer, 
-  SearchWrapper, 
-  FABContainer 
+import {
+  ScrollContainer,
+  SearchWrapper,
+  FABContainer,
 } from './ChatListTemplate.styles';
 import { ChatListTemplateProps } from './types.d';
 
@@ -19,18 +19,12 @@ export const ChatListTemplate: React.FC<ChatListTemplateProps> = ({
   return (
     <ScreenShell title={chat.headerTitle}>
       <ScrollContainer showsVerticalScrollIndicator={false}>
-        <SearchWrapper>
-          {searchBar}
-        </SearchWrapper>
-        
+        <SearchWrapper>{searchBar}</SearchWrapper>
+
         {content}
       </ScrollContainer>
 
-      {fab && (
-        <FABContainer>
-          {fab}
-        </FABContainer>
-      )}
+      {fab && <FABContainer>{fab}</FABContainer>}
 
       {bottomNav}
     </ScreenShell>

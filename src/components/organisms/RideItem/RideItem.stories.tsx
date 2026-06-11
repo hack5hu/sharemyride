@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/RideItem',
   component: RideItem,
-
 } satisfies Meta<typeof RideItem>;
 
 export default meta;
@@ -14,6 +13,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    activeTab: "upcoming"
+    activeTab: 'upcoming',
   },
 };

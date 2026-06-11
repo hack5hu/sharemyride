@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/MapControlsFABs',
   component: MapControlsFABs,
-
 } satisfies Meta<typeof MapControlsFABs>;
 
 export default meta;

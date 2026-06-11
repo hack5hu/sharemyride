@@ -13,44 +13,43 @@ interface RideListHeaderProps {
   requests?: RideListItem[];
 }
 
-export const RideListHeader: React.FC<RideListHeaderProps> = React.memo(({
-  activeTab,
-  draftsCount,
-  onClearDrafts,
-  requests = []
-}) => {
-  const { t } = useTranslation();
+export const RideListHeader: React.FC<RideListHeaderProps> = React.memo(
+  ({ activeTab, draftsCount, onClearDrafts, requests = [] }) => {
+    const { t } = useTranslation();
 
-  return (
-    <View style={{ gap: verticalScale(20), marginBottom: verticalScale(16) }}>
-      {activeTab === 'requests' && (
-        <>
-          {requests.length > 0 && (
-            <>
-              <SectionHeader
-                title={t('myRides.newRequestsTitle')}
-                badgeLabel={t('myRides.pendingBadge', { count: requests.length })}
-              />
-            </>
-          )}
-        </>
-      )}
-      {activeTab === 'upcoming' && (
-        <>
-          <SectionHeader title={t('myRides.publishedRidesTitle')} />
-        </>
-      )}
+    return (
+      <View style={{ gap: verticalScale(20), marginBottom: verticalScale(16) }}>
+        {activeTab === 'requests' && (
+          <>
+            {requests.length > 0 && (
+              <>
+                <SectionHeader
+                  title={t('myRides.newRequestsTitle')}
+                  badgeLabel={t('myRides.pendingBadge', {
+                    count: requests.length,
+                  })}
+                />
+              </>
+            )}
+          </>
+        )}
+        {activeTab === 'upcoming' && (
+          <>
+            <SectionHeader title={t('myRides.publishedRidesTitle')} />
+          </>
+        )}
 
-      {activeTab === 'drafts' && (
-        <SectionHeader
-          title={t('myRides.draftsTitle')}
-          actionLabel={draftsCount > 0 ? t('myRides.clearAll') : undefined}
-          onActionPress={onClearDrafts}
-        />
-      )}
-      {activeTab === 'archive' && (
-        <SectionHeader title={t('myRides.completedTitle')} />
-      )}
-    </View>
-  );
-});
+        {activeTab === 'drafts' && (
+          <SectionHeader
+            title={t('myRides.draftsTitle')}
+            actionLabel={draftsCount > 0 ? t('myRides.clearAll') : undefined}
+            onActionPress={onClearDrafts}
+          />
+        )}
+        {activeTab === 'archive' && (
+          <SectionHeader title={t('myRides.completedTitle')} />
+        )}
+      </View>
+    );
+  },
+);

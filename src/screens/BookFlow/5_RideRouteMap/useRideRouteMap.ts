@@ -5,7 +5,10 @@ import { CameraRef } from '@maplibre/maplibre-react-native';
 import { decodePolyline, getBoundingBox } from '@/utils/polyline';
 import { locationService } from '@/serviceManager/locationService';
 
-const findClosestCoordinateIndex = (pt: [number, number], coords: [number, number][]) => {
+const findClosestCoordinateIndex = (
+  pt: [number, number],
+  coords: [number, number][],
+) => {
   let closestIndex = 0;
   let minDistance = Infinity;
   for (let i = 0; i < coords.length; i++) {
@@ -21,23 +24,29 @@ const findClosestCoordinateIndex = (pt: [number, number], coords: [number, numbe
 };
 
 export const useRideRouteMap = (
-  routePath?: string, 
-  stops?: any[], 
-  destination?: any, 
+  routePath?: string,
+  stops?: any[],
+  destination?: any,
   initialStopIndex?: number,
   sourceStopId?: number | string,
   destinationStopId?: number | string,
   userSearchedPickup?: { latitude: number; longitude: number; name: string },
-  userSearchedDropoff?: { latitude: number; longitude: number; name: string }
+  userSearchedDropoff?: { latitude: number; longitude: number; name: string },
 ) => {
   const { pop } = useAppNavigation();
   const cameraRef = useRef<CameraRef>(null);
   const mapRef = useRef<any>(null);
   const zoomRef = useRef(14);
-  
-  const [currentUserLocation, setCurrentUserLocation] = useState<[number, number] | null>(null);
-  const [pickupRouteCoords, setPickupRouteCoords] = useState<[number, number][]>([]);
-  const [dropoffRouteCoords, setDropoffRouteCoords] = useState<[number, number][]>([]);
+
+  const [currentUserLocation, setCurrentUserLocation] = useState<
+    [number, number] | null
+  >(null);
+  const [pickupRouteCoords, setPickupRouteCoords] = useState<
+    [number, number][]
+  >([]);
+  const [dropoffRouteCoords, setDropoffRouteCoords] = useState<
+    [number, number][]
+  >([]);
 
   const ridePickup = useMemo(() => {
     return (stops || []).find(s => String(s.id) === String(sourceStopId));
@@ -58,23 +67,24 @@ export const useRideRouteMap = (
             userSearchedPickup.latitude,
             userSearchedPickup.longitude,
             ridePickup.lat,
-            ridePickup.lon
+            ridePickup.lon,
           );
           if (active && routes && routes.length > 0) {
-            const polyline = routes[0].overview_polyline || routes[0].geometry || '';
+            const polyline =
+              routes[0].overview_polyline || routes[0].geometry || '';
             const coords = decodePolyline(polyline, 1e5);
             if (coords && coords.length > 0) {
               setPickupRouteCoords(coords);
             } else {
               setPickupRouteCoords([
                 [userSearchedPickup.longitude, userSearchedPickup.latitude],
-                [ridePickup.lon, ridePickup.lat]
+                [ridePickup.lon, ridePickup.lat],
               ]);
             }
           } else if (active) {
             setPickupRouteCoords([
               [userSearchedPickup.longitude, userSearchedPickup.latitude],
-              [ridePickup.lon, ridePickup.lat]
+              [ridePickup.lon, ridePickup.lat],
             ]);
           }
         } catch (err) {
@@ -82,7 +92,7 @@ export const useRideRouteMap = (
           if (active) {
             setPickupRouteCoords([
               [userSearchedPickup.longitude, userSearchedPickup.latitude],
-              [ridePickup.lon, ridePickup.lat]
+              [ridePickup.lon, ridePickup.lat],
             ]);
           }
         }
@@ -95,23 +105,24 @@ export const useRideRouteMap = (
             rideDropoff.lat,
             rideDropoff.lon,
             userSearchedDropoff.latitude,
-            userSearchedDropoff.longitude
+            userSearchedDropoff.longitude,
           );
           if (active && routes && routes.length > 0) {
-            const polyline = routes[0].overview_polyline || routes[0].geometry || '';
+            const polyline =
+              routes[0].overview_polyline || routes[0].geometry || '';
             const coords = decodePolyline(polyline, 1e5);
             if (coords && coords.length > 0) {
               setDropoffRouteCoords(coords);
             } else {
               setDropoffRouteCoords([
                 [rideDropoff.lon, rideDropoff.lat],
-                [userSearchedDropoff.longitude, userSearchedDropoff.latitude]
+                [userSearchedDropoff.longitude, userSearchedDropoff.latitude],
               ]);
             }
           } else if (active) {
             setDropoffRouteCoords([
               [rideDropoff.lon, rideDropoff.lat],
-              [userSearchedDropoff.longitude, userSearchedDropoff.latitude]
+              [userSearchedDropoff.longitude, userSearchedDropoff.latitude],
             ]);
           }
         } catch (err) {
@@ -119,7 +130,7 @@ export const useRideRouteMap = (
           if (active) {
             setDropoffRouteCoords([
               [rideDropoff.lon, rideDropoff.lat],
-              [userSearchedDropoff.longitude, userSearchedDropoff.latitude]
+              [userSearchedDropoff.longitude, userSearchedDropoff.latitude],
             ]);
           }
         }
@@ -133,12 +144,18 @@ export const useRideRouteMap = (
   }, [userSearchedPickup, userSearchedDropoff, ridePickup, rideDropoff]);
 
   const initialPoint = useMemo(() => {
-    if (destination) return { lat: destination.latitude, lon: destination.longitude };
-    if (initialStopIndex !== undefined && stops && stops[initialStopIndex]) return stops[initialStopIndex];
-    return (stops && stops.length > 0) ? stops[0] : { lat: 12.9716, lon: 77.5946 };
+    if (destination)
+      return { lat: destination.latitude, lon: destination.longitude };
+    if (initialStopIndex !== undefined && stops && stops[initialStopIndex])
+      return stops[initialStopIndex];
+    return stops && stops.length > 0
+      ? stops[0]
+      : { lat: 12.9716, lon: 77.5946 };
   }, [destination, initialStopIndex, stops]);
 
-  const [zoom, setZoom] = useState(initialStopIndex !== undefined || destination ? 15 : 12);
+  const [zoom, setZoom] = useState(
+    initialStopIndex !== undefined || destination ? 15 : 12,
+  );
   const [region, setRegion] = useState({
     latitude: initialPoint?.lat || 12.9716,
     longitude: initialPoint?.lon || 77.5946,
@@ -152,7 +169,10 @@ export const useRideRouteMap = (
 
   const handleUserLocationUpdate = useCallback((location: any) => {
     if (location?.coords) {
-      setCurrentUserLocation([location.coords.longitude, location.coords.latitude]);
+      setCurrentUserLocation([
+        location.coords.longitude,
+        location.coords.latitude,
+      ]);
     }
   }, []);
 
@@ -178,72 +198,102 @@ export const useRideRouteMap = (
   const handleZoomIn = useCallback(() => handleZoom(1), [handleZoom]);
   const handleZoomOut = useCallback(() => handleZoom(-1), [handleZoom]);
 
-  const handleOpenExternalMap = useCallback((type: 'google' | 'apple') => {
-    let originLat: number | undefined;
-    let originLon: number | undefined;
-    let destLat: number | undefined;
-    let destLon: number | undefined;
+  const handleOpenExternalMap = useCallback(
+    (type: 'google' | 'apple') => {
+      let originLat: number | undefined;
+      let originLon: number | undefined;
+      let destLat: number | undefined;
+      let destLon: number | undefined;
 
-    const clickedStop = (initialStopIndex !== undefined && stops && stops[initialStopIndex]) ? stops[initialStopIndex] : null;
-    const isPickup = clickedStop && String(clickedStop.id) === String(sourceStopId);
-    const isDropoff = clickedStop && String(clickedStop.id) === String(destinationStopId);
+      const clickedStop =
+        initialStopIndex !== undefined && stops && stops[initialStopIndex]
+          ? stops[initialStopIndex]
+          : null;
+      const isPickup =
+        clickedStop && String(clickedStop.id) === String(sourceStopId);
+      const isDropoff =
+        clickedStop && String(clickedStop.id) === String(destinationStopId);
 
-    if (isPickup && userSearchedPickup && ridePickup) {
-      originLat = userSearchedPickup.latitude;
-      originLon = userSearchedPickup.longitude;
-      destLat = ridePickup.lat;
-      destLon = ridePickup.lon;
-    } else if (isDropoff && userSearchedDropoff && rideDropoff) {
-      originLat = rideDropoff.lat;
-      originLon = rideDropoff.lon;
-      destLat = userSearchedDropoff.latitude;
-      destLon = userSearchedDropoff.longitude;
-    } else {
-      destLat = initialPoint?.lat;
-      destLon = initialPoint?.lon;
-      if (currentUserLocation) {
-        originLon = currentUserLocation[0];
-        originLat = currentUserLocation[1];
-      }
-    }
-
-    if (!destLat || !destLon) return;
-
-    let url = '';
-    if (type === 'apple') {
-      if (originLat !== undefined && originLon !== undefined) {
-        url = `http://maps.apple.com/?saddr=${originLat},${originLon}&daddr=${destLat},${destLon}&dirflg=d`;
+      if (isPickup && userSearchedPickup && ridePickup) {
+        originLat = userSearchedPickup.latitude;
+        originLon = userSearchedPickup.longitude;
+        destLat = ridePickup.lat;
+        destLon = ridePickup.lon;
+      } else if (isDropoff && userSearchedDropoff && rideDropoff) {
+        originLat = rideDropoff.lat;
+        originLon = rideDropoff.lon;
+        destLat = userSearchedDropoff.latitude;
+        destLon = userSearchedDropoff.longitude;
       } else {
-        url = `http://maps.apple.com/?daddr=${destLat},${destLon}&dirflg=d`;
+        destLat = initialPoint?.lat;
+        destLon = initialPoint?.lon;
+        if (currentUserLocation) {
+          originLon = currentUserLocation[0];
+          originLat = currentUserLocation[1];
+        }
       }
-    } else {
-      if (originLat !== undefined && originLon !== undefined) {
-        url = `https://www.google.com/maps/dir/?api=1&origin=${originLat},${originLon}&destination=${destLat},${destLon}&travelmode=driving`;
-      } else {
-        url = `https://www.google.com/maps/dir/?api=1&destination=${destLat},${destLon}&travelmode=driving`;
-      }
-    }
 
-    Linking.openURL(url).catch(err => console.error("Couldn't load maps", err));
-  }, [initialStopIndex, stops, sourceStopId, destinationStopId, userSearchedPickup, userSearchedDropoff, ridePickup, rideDropoff, initialPoint, currentUserLocation]);
+      if (!destLat || !destLon) return;
+
+      let url = '';
+      if (type === 'apple') {
+        if (originLat !== undefined && originLon !== undefined) {
+          url = `http://maps.apple.com/?saddr=${originLat},${originLon}&daddr=${destLat},${destLon}&dirflg=d`;
+        } else {
+          url = `http://maps.apple.com/?daddr=${destLat},${destLon}&dirflg=d`;
+        }
+      } else {
+        if (originLat !== undefined && originLon !== undefined) {
+          url = `https://www.google.com/maps/dir/?api=1&origin=${originLat},${originLon}&destination=${destLat},${destLon}&travelmode=driving`;
+        } else {
+          url = `https://www.google.com/maps/dir/?api=1&destination=${destLat},${destLon}&travelmode=driving`;
+        }
+      }
+
+      Linking.openURL(url).catch(err =>
+        console.error("Couldn't load maps", err),
+      );
+    },
+    [
+      initialStopIndex,
+      stops,
+      sourceStopId,
+      destinationStopId,
+      userSearchedPickup,
+      userSearchedDropoff,
+      ridePickup,
+      rideDropoff,
+      initialPoint,
+      currentUserLocation,
+    ],
+  );
 
   const mapData = useMemo(() => {
     let coordinates: [number, number][] = [];
     let stopMarkers: any[] = [];
 
     if (destination) {
-      const destCoord: [number, number] = [destination.longitude, destination.latitude];
-      stopMarkers = [{
-        id: 'shared-destination',
-        type: 'Feature',
-        properties: { type: 'marker', role: 'end', name: destination.name },
-        geometry: { type: 'Point', coordinates: destCoord },
-      }];
-      coordinates = currentUserLocation ? [currentUserLocation, destCoord] : [destCoord];
+      const destCoord: [number, number] = [
+        destination.longitude,
+        destination.latitude,
+      ];
+      stopMarkers = [
+        {
+          id: 'shared-destination',
+          type: 'Feature',
+          properties: { type: 'marker', role: 'end', name: destination.name },
+          geometry: { type: 'Point', coordinates: destCoord },
+        },
+      ];
+      coordinates = currentUserLocation
+        ? [currentUserLocation, destCoord]
+        : [destCoord];
     } else {
-      const decoded = (routePath && routePath.length > 0) ? decodePolyline(routePath, 1e5) : [];
-      coordinates = decoded.length > 0 ? decoded : (stops || []).map(s => [s.lon, s.lat]);
-      
+      const decoded =
+        routePath && routePath.length > 0 ? decodePolyline(routePath, 1e5) : [];
+      coordinates =
+        decoded.length > 0 ? decoded : (stops || []).map(s => [s.lon, s.lat]);
+
       stopMarkers = (stops || []).map((stop, idx) => {
         let role = 'stop';
         if (sourceStopId !== undefined && destinationStopId !== undefined) {
@@ -251,14 +301,19 @@ export const useRideRouteMap = (
           if (String(stop.id) === String(sourceStopId)) role = 'start';
           else if (String(stop.id) === String(destinationStopId)) role = 'end';
         } else {
-          role = idx === 0 ? 'start' : (idx === (stops || []).length - 1 ? 'end' : 'stop');
+          role =
+            idx === 0
+              ? 'start'
+              : idx === (stops || []).length - 1
+              ? 'end'
+              : 'stop';
         }
 
         return {
           id: `stop-${stop.sequence}-${idx}`,
           type: 'Feature',
-          properties: { 
-            type: 'marker', 
+          properties: {
+            type: 'marker',
             role,
             name: stop.name,
           },
@@ -267,34 +322,66 @@ export const useRideRouteMap = (
       });
     }
 
-    const showPickup = initialStopIndex === undefined || 
-      (initialStopIndex !== undefined && stops && stops[initialStopIndex] && String(stops[initialStopIndex].id) === String(sourceStopId));
-    
-    const showDropoff = initialStopIndex === undefined || 
-      (initialStopIndex !== undefined && stops && stops[initialStopIndex] && String(stops[initialStopIndex].id) === String(destinationStopId));
+    const showPickup =
+      initialStopIndex === undefined ||
+      (initialStopIndex !== undefined &&
+        stops &&
+        stops[initialStopIndex] &&
+        String(stops[initialStopIndex].id) === String(sourceStopId));
+
+    const showDropoff =
+      initialStopIndex === undefined ||
+      (initialStopIndex !== undefined &&
+        stops &&
+        stops[initialStopIndex] &&
+        String(stops[initialStopIndex].id) === String(destinationStopId));
 
     const boundsCoords = [...coordinates];
     if (showPickup && userSearchedPickup) {
-      boundsCoords.push([userSearchedPickup.longitude, userSearchedPickup.latitude]);
+      boundsCoords.push([
+        userSearchedPickup.longitude,
+        userSearchedPickup.latitude,
+      ]);
     }
     if (showDropoff && userSearchedDropoff) {
-      boundsCoords.push([userSearchedDropoff.longitude, userSearchedDropoff.latitude]);
+      boundsCoords.push([
+        userSearchedDropoff.longitude,
+        userSearchedDropoff.latitude,
+      ]);
     }
 
-    const bounds = boundsCoords.length > 0 ? getBoundingBox(boundsCoords) : null;
-    
+    const bounds =
+      boundsCoords.length > 0 ? getBoundingBox(boundsCoords) : null;
+
     // Split polyline coordinates into highlighted and unselected features
     const routeFeatures: any[] = [];
-    
-    if (!destination && sourceStopId !== undefined && destinationStopId !== undefined && coordinates.length > 1) {
-      const pickupStop = (stops || []).find(s => String(s.id) === String(sourceStopId));
-      const dropoffStop = (stops || []).find(s => String(s.id) === String(destinationStopId));
+
+    if (
+      !destination &&
+      sourceStopId !== undefined &&
+      destinationStopId !== undefined &&
+      coordinates.length > 1
+    ) {
+      const pickupStop = (stops || []).find(
+        s => String(s.id) === String(sourceStopId),
+      );
+      const dropoffStop = (stops || []).find(
+        s => String(s.id) === String(destinationStopId),
+      );
 
       if (pickupStop && dropoffStop) {
-        const pickupIdx = findClosestCoordinateIndex([pickupStop.lon, pickupStop.lat], coordinates);
-        const dropoffIdx = findClosestCoordinateIndex([dropoffStop.lon, dropoffStop.lat], coordinates);
+        const pickupIdx = findClosestCoordinateIndex(
+          [pickupStop.lon, pickupStop.lat],
+          coordinates,
+        );
+        const dropoffIdx = findClosestCoordinateIndex(
+          [dropoffStop.lon, dropoffStop.lat],
+          coordinates,
+        );
 
-        const [startIdx, endIdx] = [pickupIdx, dropoffIdx].sort((a, b) => a - b);
+        const [startIdx, endIdx] = [pickupIdx, dropoffIdx].sort(
+          (a, b) => a - b,
+        );
 
         const startCoords = coordinates.slice(0, startIdx + 1);
         const highlightedCoords = coordinates.slice(startIdx, endIdx + 1);
@@ -359,12 +446,18 @@ export const useRideRouteMap = (
       stopMarkers.push({
         id: 'user-searched-pickup',
         type: 'Feature',
-        properties: { 
-          type: 'marker', 
+        properties: {
+          type: 'marker',
           role: 'user-pickup',
           name: userSearchedPickup.name,
         },
-        geometry: { type: 'Point', coordinates: [userSearchedPickup.longitude, userSearchedPickup.latitude] },
+        geometry: {
+          type: 'Point',
+          coordinates: [
+            userSearchedPickup.longitude,
+            userSearchedPickup.latitude,
+          ],
+        },
       });
     }
 
@@ -372,18 +465,24 @@ export const useRideRouteMap = (
       stopMarkers.push({
         id: 'user-searched-dropoff',
         type: 'Feature',
-        properties: { 
-          type: 'marker', 
+        properties: {
+          type: 'marker',
           role: 'user-dropoff',
           name: userSearchedDropoff.name,
         },
-        geometry: { type: 'Point', coordinates: [userSearchedDropoff.longitude, userSearchedDropoff.latitude] },
+        geometry: {
+          type: 'Point',
+          coordinates: [
+            userSearchedDropoff.longitude,
+            userSearchedDropoff.latitude,
+          ],
+        },
       });
     }
 
     // Safety: filter out any route features that have fewer than 2 coordinates
     const validRouteFeatures = routeFeatures.filter(
-      f => f.geometry.coordinates && f.geometry.coordinates.length >= 2
+      f => f.geometry.coordinates && f.geometry.coordinates.length >= 2,
     );
 
     return {
@@ -393,7 +492,19 @@ export const useRideRouteMap = (
       },
       bounds,
     };
-  }, [routePath, stops, destination, currentUserLocation, sourceStopId, destinationStopId, userSearchedPickup, userSearchedDropoff, pickupRouteCoords, dropoffRouteCoords, initialStopIndex]);
+  }, [
+    routePath,
+    stops,
+    destination,
+    currentUserLocation,
+    sourceStopId,
+    destinationStopId,
+    userSearchedPickup,
+    userSearchedDropoff,
+    pickupRouteCoords,
+    dropoffRouteCoords,
+    initialStopIndex,
+  ]);
 
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const handleMapLoaded = useCallback(() => setIsMapLoaded(true), []);
@@ -402,10 +513,10 @@ export const useRideRouteMap = (
     if (initialStopIndex !== undefined && stops && stops[initialStopIndex]) {
       const stop = stops[initialStopIndex];
       const stopCoord: [number, number] = [stop.lon, stop.lat];
-      
+
       const isPickup = String(stop.id) === String(sourceStopId);
       const isDropoff = String(stop.id) === String(destinationStopId);
-      
+
       if (isPickup && userSearchedPickup) {
         return getBoundingBox([
           stopCoord,
@@ -419,7 +530,14 @@ export const useRideRouteMap = (
       }
     }
     return null;
-  }, [initialStopIndex, stops, sourceStopId, destinationStopId, userSearchedPickup, userSearchedDropoff]);
+  }, [
+    initialStopIndex,
+    stops,
+    sourceStopId,
+    destinationStopId,
+    userSearchedPickup,
+    userSearchedDropoff,
+  ]);
 
   useEffect(() => {
     if (!isMapLoaded) return;
@@ -427,10 +545,10 @@ export const useRideRouteMap = (
       const controller = cameraRef.current || mapRef.current;
       if (focusBounds) {
         const [minLon, minLat, maxLon, maxLat] = focusBounds;
-        cameraRef.current?.fitBounds(
-          [minLon, minLat, maxLon, maxLat],
-          { padding: { top: 120, right: 60, bottom: 280, left: 60 }, duration: 1000 }
-        );
+        cameraRef.current?.fitBounds([minLon, minLat, maxLon, maxLat], {
+          padding: { top: 120, right: 60, bottom: 280, left: 60 },
+          duration: 1000,
+        });
       } else if (initialStopIndex !== undefined || destination) {
         controller?.setStop({
           center: [initialPoint.lon, initialPoint.lat],
@@ -439,14 +557,21 @@ export const useRideRouteMap = (
         });
       } else if (mapData.bounds) {
         const [minLon, minLat, maxLon, maxLat] = mapData.bounds;
-        cameraRef.current?.fitBounds(
-          [minLon, minLat, maxLon, maxLat],
-          { padding: { top: 120, right: 60, bottom: 280, left: 60 }, duration: 1000 }
-        );
+        cameraRef.current?.fitBounds([minLon, minLat, maxLon, maxLat], {
+          padding: { top: 120, right: 60, bottom: 280, left: 60 },
+          duration: 1000,
+        });
       }
     }, 200);
     return () => clearTimeout(timer);
-  }, [initialStopIndex, mapData.bounds, focusBounds, initialPoint, destination, isMapLoaded]);
+  }, [
+    initialStopIndex,
+    mapData.bounds,
+    focusBounds,
+    initialPoint,
+    destination,
+    isMapLoaded,
+  ]);
 
   return {
     handleBack,

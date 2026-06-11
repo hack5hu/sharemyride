@@ -5,7 +5,10 @@ import * as Yup from 'yup';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/navigation/types';
-import { ProfileUpdateData, profileService } from '@/serviceManager/profileService';
+import {
+  ProfileUpdateData,
+  profileService,
+} from '@/serviceManager/profileService';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
@@ -19,25 +22,26 @@ export const useEditProfile = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const { user, fetchProfile } = useAuthStore();
 
-  const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+  const phoneRegExp =
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-  const validationSchema = useMemo(() => Yup.object().shape({
-    fullName: Yup.string()
-      .min(3, t('editProfile.fullNameMin'))
-      .required(t('editProfile.fullNameRequired')),
-    email: Yup.string()
-      .email(t('editProfile.emailInvalid'))
-      .required(t('editProfile.emailRequired')),
+  const validationSchema = useMemo(
+    () =>
+      Yup.object().shape({
+        fullName: Yup.string()
+          .min(3, t('editProfile.fullNameMin'))
+          .required(t('editProfile.fullNameRequired')),
+        email: Yup.string()
+          .email(t('editProfile.emailInvalid'))
+          .required(t('editProfile.emailRequired')),
 
-    phone: Yup.string()
-      .required(t('editProfile.phoneRequired')),
-    dob: Yup.date()
-      .required(t('editProfile.dobRequired')),
-    gender: Yup.string()
-      .required(t('editProfile.genderRequired')),
-    bio: Yup.string()
-      .max(200, t('editProfile.bioMax')),
-  }), [t]);
+        phone: Yup.string().required(t('editProfile.phoneRequired')),
+        dob: Yup.date().required(t('editProfile.dobRequired')),
+        gender: Yup.string().required(t('editProfile.genderRequired')),
+        bio: Yup.string().max(200, t('editProfile.bioMax')),
+      }),
+    [t],
+  );
 
   const formattedPhone = useMemo(() => {
     if (!user?.phoneNumber) return '';
@@ -56,21 +60,23 @@ export const useEditProfile = () => {
       avatarUri: user?.profilePhotoUrl || '',
     },
     validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async values => {
       setLoading(true);
       try {
         const updatePayload: any = {};
-        
+
         if (values.fullName !== formik.initialValues.fullName) {
           updatePayload.fullName = values.fullName;
         }
-        
-        const initialDobStr = formik.initialValues.dob instanceof Date 
-          ? formik.initialValues.dob.toISOString().split('T')[0] 
-          : String(formik.initialValues.dob);
-        const currentDobStr = values.dob instanceof Date 
-          ? values.dob.toISOString().split('T')[0] 
-          : String(values.dob);
+
+        const initialDobStr =
+          formik.initialValues.dob instanceof Date
+            ? formik.initialValues.dob.toISOString().split('T')[0]
+            : String(formik.initialValues.dob);
+        const currentDobStr =
+          values.dob instanceof Date
+            ? values.dob.toISOString().split('T')[0]
+            : String(values.dob);
         if (initialDobStr !== currentDobStr) {
           updatePayload.dob = currentDobStr;
         }
@@ -87,7 +93,7 @@ export const useEditProfile = () => {
           showNotification(
             NotificationType.SUCCESS,
             t('notification.defaultSuccessTitle') || 'Success',
-            t('editProfile.successMessage')
+            t('editProfile.successMessage'),
           );
           setTimeout(() => {
             navigation.goBack();
@@ -96,7 +102,7 @@ export const useEditProfile = () => {
         }
 
         await profileService.updateProfile(updatePayload);
-        
+
         await fetchProfile();
         setShowSuccess(true);
         setTimeout(() => {
@@ -107,7 +113,7 @@ export const useEditProfile = () => {
         showNotification(
           NotificationType.ERROR,
           t('notification.defaultErrorTitle'),
-          getErrorMessage(err, t('notification.defaultErrorMessage'))
+          getErrorMessage(err, t('notification.defaultErrorMessage')),
         );
       } finally {
         setLoading(false);
@@ -126,8 +132,6 @@ export const useEditProfile = () => {
     }
   };
 
-
-
   const handleCloseSuccess = () => setShowSuccess(false);
 
   return {
@@ -140,4 +144,3 @@ export const useEditProfile = () => {
     t,
   };
 };
-

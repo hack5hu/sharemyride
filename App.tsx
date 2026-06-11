@@ -22,7 +22,7 @@ const App = () => {
   const initialize = useAuthStore(state => state.initialize);
   const initialiseDeviceId = useDeviceIdStore(state => state.initialise);
   const themeMode = useSettingsStore(state => state.themeMode);
-  
+
   const activeTheme = themeMode === 'dark' ? DarkTheme : LightTheme;
 
   useEffect(() => {
@@ -35,21 +35,20 @@ const App = () => {
     <SafeAreaProvider>
       <KeyboardProvider>
         <ThemeProvider theme={activeTheme}>
-        <StatusBar 
-          barStyle={themeMode === 'dark' ? 'light-content' : 'dark-content'} 
-          backgroundColor="transparent" 
-          translucent 
-        />
-        <NavigationContainer ref={navigationRef}>
-          <RootNavigator />
-        </NavigationContainer>
-        <NetworkLoggerModal />
-        <GlobalNotification />
+          <StatusBar
+            barStyle={themeMode === 'dark' ? 'light-content' : 'dark-content'}
+            backgroundColor="transparent"
+            translucent
+          />
+          <NavigationContainer ref={navigationRef}>
+            <RootNavigator />
+          </NavigationContainer>
+          <NetworkLoggerModal />
+          <GlobalNotification />
         </ThemeProvider>
       </KeyboardProvider>
     </SafeAreaProvider>
   );
 };
-
 
 export default App;

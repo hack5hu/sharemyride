@@ -19,11 +19,11 @@ export const useLogin = () => {
   useEffect(() => {
     const showSubscription = Keyboard.addListener(
       Platform.OS === 'android' ? 'keyboardDidShow' : 'keyboardWillShow',
-      () => setIsKeyboardVisible(true)
+      () => setIsKeyboardVisible(true),
     );
     const hideSubscription = Keyboard.addListener(
       Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide',
-      () => setIsKeyboardVisible(false)
+      () => setIsKeyboardVisible(false),
     );
 
     return () => {
@@ -42,7 +42,7 @@ export const useLogin = () => {
   useFocusEffect(
     useCallback(() => {
       setLoading(false);
-    }, [])
+    }, []),
   );
 
   // Standard SMS-OTP path (also the fallback when Truecaller verification fails).
@@ -52,12 +52,15 @@ export const useLogin = () => {
       try {
         const response = await authService.login(phone, true);
         if (response.data.status === 'success' || response.status === 200) {
-          navigation.navigate('OTPVerification', { phoneNumber: phone, mode: 'sms' });
+          navigation.navigate('OTPVerification', {
+            phoneNumber: phone,
+            mode: 'sms',
+          });
         } else {
           showNotification(
             NotificationType.ERROR,
             t('notification.defaultErrorTitle'),
-            response.data.message || t('notification.defaultErrorMessage')
+            response.data.message || t('notification.defaultErrorMessage'),
           );
           setLoading(false);
         }
@@ -65,12 +68,12 @@ export const useLogin = () => {
         showNotification(
           NotificationType.ERROR,
           t('notification.defaultErrorTitle'),
-          getErrorMessage(error, t('notification.defaultErrorMessage'))
+          getErrorMessage(error, t('notification.defaultErrorMessage')),
         );
         setLoading(false);
       }
     },
-    [navigation, t]
+    [navigation, t],
   );
 
   const handleGetOtp = async (phone: string) => {
@@ -79,8 +82,8 @@ export const useLogin = () => {
 
   const formik = useFormik({
     initialValues: { phone: '' },
-    validate: (v) => (/^\d{10}$/.test(v.phone) ? {} : { phone: '' }),
-    onSubmit: (v) => {
+    validate: v => (/^\d{10}$/.test(v.phone) ? {} : { phone: '' }),
+    onSubmit: v => {
       Keyboard.dismiss();
       handleGetOtp(v.phone);
     },

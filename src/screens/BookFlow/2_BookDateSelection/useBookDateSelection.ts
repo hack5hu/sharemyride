@@ -11,7 +11,10 @@ const getMonthsData = (): MonthData[] => {
 
   const maxDate = new Date();
   maxDate.setDate(maxDate.getDate() + 60);
-  const monthCount = (maxDate.getFullYear() - currentYear) * 12 + (maxDate.getMonth() - currentMonth) + 1;
+  const monthCount =
+    (maxDate.getFullYear() - currentYear) * 12 +
+    (maxDate.getMonth() - currentMonth) +
+    1;
 
   const months: MonthData[] = [];
 
@@ -32,7 +35,7 @@ export const useBookDateSelection = () => {
   const travelDate = useBookRideStore(state => state.travelDate);
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(
-    travelDate ? new Date(travelDate) : new Date()
+    travelDate ? new Date(travelDate) : new Date(),
   );
 
   const months = useMemo(() => getMonthsData(), []);
@@ -41,15 +44,20 @@ export const useBookDateSelection = () => {
     goBack();
   }, [goBack]);
 
-  const handleSelectDate = useCallback((date: Date) => {
-    setSelectedDate(date);
-    useBookRideStore.getState().setTravelDate(format(date, "yyyy-MM-dd'T'HH:mm:ss"));
-    
-    // Auto navigation back
-    setTimeout(() => {
-      goBack();
-    }, 200);
-  }, [goBack]);
+  const handleSelectDate = useCallback(
+    (date: Date) => {
+      setSelectedDate(date);
+      useBookRideStore
+        .getState()
+        .setTravelDate(format(date, "yyyy-MM-dd'T'HH:mm:ss"));
+
+      // Auto navigation back
+      setTimeout(() => {
+        goBack();
+      }, 200);
+    },
+    [goBack],
+  );
 
   return {
     months,

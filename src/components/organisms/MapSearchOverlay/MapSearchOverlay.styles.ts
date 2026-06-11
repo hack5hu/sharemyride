@@ -11,7 +11,8 @@ export const TopBarMockup = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: ${({ theme }) => `${theme.colors.surface}CC`}; /* 80% opacity */
+  background-color: ${({ theme }) =>
+    `${theme.colors.surface}CC`}; /* 80% opacity */
   border-radius: 9999px;
   padding: ${moderateScale(8)}px;
   shadow-color: ${({ theme }) => theme.colors.on_surface};
@@ -49,14 +50,16 @@ export const SearchInputContainer = styled.View<{ $isFocused?: boolean }>`
   border-radius: ${moderateScale(12)}px;
   padding-horizontal: ${scale(16)}px;
   height: ${verticalScale(56)}px;
-  shadow-color: rgb(0,0,0);
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px 8px;
   shadow-opacity: 0.04;
   shadow-radius: 30px;
   elevation: 4;
   border-width: 1px;
-  border-color: ${({ theme, $isFocused }) => 
-    $isFocused ? `${theme.colors.primary}33` : `${theme.colors.outline_variant}26`};
+  border-color: ${({ theme, $isFocused }) =>
+    $isFocused
+      ? `${theme.colors.primary}33`
+      : `${theme.colors.outline_variant}26`};
 `;
 
 export const SearchInput = styled.TextInput.attrs(({ theme }) => ({
@@ -79,7 +82,7 @@ export const SearchResultsBox = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   border-radius: ${moderateScale(12)}px;
   margin-top: ${verticalScale(8)}px;
-  shadow-color: rgb(0,0,0);
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px 8px;
   shadow-opacity: 0.1;
   shadow-radius: 20px;

@@ -5,7 +5,10 @@ import { useLocale } from '@/constants/localization';
 import { ETAInfoProps } from './types';
 import * as S from './ETAInfo.styles';
 
-export const ETAInfo: React.FC<ETAInfoProps> = ({ arrivalTime, minutesAway }) => {
+export const ETAInfo: React.FC<ETAInfoProps> = ({
+  arrivalTime,
+  minutesAway,
+}) => {
   const theme = useTheme();
   const { rideDetails } = useLocale();
 
@@ -16,10 +19,10 @@ export const ETAInfo: React.FC<ETAInfoProps> = ({ arrivalTime, minutesAway }) =>
         <S.TimeLabel>{arrivalTime}</S.TimeLabel>
       </S.TopSection>
       <S.BottomSection>
-        <Icon 
-          name="schedule" 
-          size={20} 
-          color={theme.colors.on_primary_fixed_variant} 
+        <Icon
+          name="schedule"
+          size={20}
+          color={theme.colors.on_primary_fixed_variant}
         />
         <S.AwayText>
           {rideDetails.minsAway.replace('{count}', minutesAway.toString())}

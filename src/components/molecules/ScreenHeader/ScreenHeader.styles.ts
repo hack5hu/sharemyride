@@ -8,7 +8,7 @@ export const Wrapper = styled.View`
   padding-horizontal: ${scale(8)}px;
   padding-bottom: ${verticalScale(8)}px;
   background-color: ${({ theme }) => theme.colors.surface};
-  z-index:100;
+  z-index: 100;
 `;
 
 export const LeftSection = styled.View`
