@@ -6,7 +6,7 @@ import { RideTimeline } from '@/components/molecules/RideTimeline/RideTimeline';
 import { MyRideDetailsTemplateProps } from './types.d';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import * as S from './MyRideDetailsTemplate.styles';
-import { moderateScale } from '@/styles';
+import { moderateScale, verticalScale } from '@/styles';
 import { Loader } from '@/components/atoms/Loader';
 import { RideComfortSection } from '@/components/organisms/RideComfortSection/RideComfortSection';
 import { PassengerManagement } from '@/components/organisms/PassengerManagement/PassengerManagement';
@@ -18,6 +18,7 @@ import { DriverCard } from '@/components/templates/RideInformationTemplate/compo
 import { CancellationReasonBox } from '@/components/templates/RideInformationTemplate/components/CancellationReasonBox';
 import { FareSummaryRow } from '@/components/templates/RideInformationTemplate/components/FareSummaryRow';
 import { RideStatsStrip } from '@/components/organisms/RideStatsStrip/RideStatsStrip';
+import { RideStatus } from '@/constants/enums';
 
 export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
   React.memo(
@@ -34,6 +35,8 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
       onReportRide,
       handlePassengerProfile,
       handleDriverProfile,
+      onRateDriver,
+      onRatePassenger,
       t,
     }) => {
       const theme = useTheme();
@@ -230,10 +233,16 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
         if (!ride) return false;
         const status = ride.rideStatus || ride.status;
         return (
-          status === 'COMPLETED' ||
-          status === 'CANCELLED' ||
+          status === RideStatus.COMPLETED ||
+          status === RideStatus.CANCELLED ||
           status === 'REJECTED'
         );
+      }, [ride]);
+
+      const isCompleted = useMemo(() => {
+        if (!ride) return false;
+        const status = ride.rideStatus || ride.status;
+        return status === RideStatus.COMPLETED;
       }, [ride]);
 
       if (isLoading) {
@@ -275,6 +284,39 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
                   <CancellationReasonBox
                     cancellationReason={ride.cancellationReason}
                   />
+                )}
+
+                {/* Rating Invitation for Passenger */}
+                {isCompleted && !isDriver && onRateDriver && (
+                  <S.SectionCard
+                    style={{ backgroundColor: theme.colors.warning + '1A' }}
+                  >
+                    <S.SectionLabelRow>
+                      <S.SectionDot color={theme.colors.warning} />
+                      <Typography
+                        variant="label"
+                        size="xs"
+                        weight="bold"
+                        color="on_surface"
+                      >
+                        {translations.rating.ratingCardTitle.toUpperCase()}
+                      </Typography>
+                    </S.SectionLabelRow>
+                    <Typography
+                      variant="body"
+                      size="sm"
+                      color="on_surface_variant"
+                      style={{ marginBottom: verticalScale(12) }}
+                    >
+                      {translations.rating.ratingCardSubtitle.replace(
+                        '{{name}}',
+                        ride.driver?.name || 'Driver',
+                      )}
+                    </Typography>
+                    <Button variant="primary" onPress={onRateDriver}>
+                      {translations.rating.rateButtonText}
+                    </Button>
+                  </S.SectionCard>
                 )}
 
                 {/* Route Timeline */}
@@ -448,6 +490,8 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
                   onPassengerPress={handlePassengerProfile}
                   hideActions={isArchived}
                   vehicleType={ride.vehicle?.type}
+                  onRatePassenger={onRatePassenger}
+                  isCompleted={isCompleted}
                 />
               </S.ContentPadding>
             </S.ScrollContent>

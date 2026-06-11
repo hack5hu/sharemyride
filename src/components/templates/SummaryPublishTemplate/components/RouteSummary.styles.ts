@@ -3,11 +3,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 
 export const GlassCard = styled.View<{ hasError?: boolean }>`
-  background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}99`};
+  background-color: ${({ theme }) =>
+    `${theme.colors.surface_container_lowest}99`};
   border-radius: ${moderateScale(20)}px;
   padding: ${moderateScale(20)}px;
   border-width: 1px;
-  border-color: ${({ theme, hasError }) => hasError ? theme.colors.error : `${theme.colors.on_surface}1A`};
+  border-color: ${({ theme, hasError }) =>
+    hasError ? theme.colors.error : `${theme.colors.on_surface}1A`};
   margin-bottom: ${verticalScale(16)}px;
 `;
 
@@ -34,7 +36,8 @@ export const RouteLayout = styled.View`
 export const RouteRow = styled.View<{ $isLast?: boolean }>`
   flex-direction: row;
   gap: ${scale(12)}px;
-  padding-bottom: ${({ $isLast }) => $isLast ? '0px' : `${verticalScale(20)}px`};
+  padding-bottom: ${({ $isLast }) =>
+    $isLast ? '0px' : `${verticalScale(20)}px`};
 `;
 
 export const IndicatorColumn = styled.View`
@@ -63,14 +66,17 @@ export const TimelineDotMiddle = styled.View`
   z-index: 2;
 `;
 
-export const TimelineTrack = styled(LinearGradient)<{ isFirst?: boolean; isLast?: boolean }>`
+export const TimelineTrack = styled(LinearGradient)<{
+  isFirst?: boolean;
+  isLast?: boolean;
+}>`
   position: absolute;
   width: 2px;
   left: 50%;
   margin-left: -1px;
-  top: ${({ isFirst }) => isFirst ? `${verticalScale(10)}px` : '0px'};
-  bottom: ${({ isLast }) => isLast ? 'auto' : '0px'};
-  height: ${({ isLast }) => isLast ? `${verticalScale(10)}px` : 'auto'};
+  top: ${({ isFirst }) => (isFirst ? `${verticalScale(10)}px` : '0px')};
+  bottom: ${({ isLast }) => (isLast ? 'auto' : '0px')};
+  height: ${({ isLast }) => (isLast ? `${verticalScale(10)}px` : 'auto')};
   z-index: 1;
 `;
 

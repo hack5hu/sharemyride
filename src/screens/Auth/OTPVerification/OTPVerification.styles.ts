@@ -129,7 +129,6 @@ export const ResendActionText = styled.Text<{ active: boolean }>`
   margin-left: ${scale(4)}px;
 `;
 
-
 export const SupportRow = styled.View`
   flex-direction: row;
   align-items: center;

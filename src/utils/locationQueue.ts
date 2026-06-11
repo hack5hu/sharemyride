@@ -24,12 +24,17 @@ export const locationQueue = {
         longitude,
         timestamp: Date.now(),
       };
-      
+
       currentQueue.push(newEntry);
       storage.set(QUEUE_KEY, JSON.stringify(currentQueue));
-      Logger.log(`[LocationQueue] Coordinate buffered. Queue count: ${currentQueue.length}`);
+      Logger.log(
+        `[LocationQueue] Coordinate buffered. Queue count: ${currentQueue.length}`,
+      );
     } catch (error) {
-      Logger.error('[LocationQueue] Failed to buffer coordinate to MMKV:', error);
+      Logger.error(
+        '[LocationQueue] Failed to buffer coordinate to MMKV:',
+        error,
+      );
     }
   },
 
@@ -43,7 +48,10 @@ export const locationQueue = {
         return JSON.parse(rawData) as QueuedLocation[];
       }
     } catch (error) {
-      Logger.error('[LocationQueue] Failed to read cached queue from disk:', error);
+      Logger.error(
+        '[LocationQueue] Failed to read cached queue from disk:',
+        error,
+      );
     }
     return [];
   },

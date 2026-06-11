@@ -34,6 +34,8 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
     isReportModalVisible,
     setIsReportModalVisible,
     handleReportSubmit,
+    handleRateDriver,
+    handleRatePassenger,
   } = useRideDetails();
 
   if (isLoading) {
@@ -63,6 +65,8 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
           isDriver ? handleCancelPassenger(id) : handleCancelOwnBooking()
         }
         onReportRide={handleReportRide}
+        onRateDriver={handleRateDriver}
+        onRatePassenger={handleRatePassenger}
       />
 
       {isCancelModalVisible && (

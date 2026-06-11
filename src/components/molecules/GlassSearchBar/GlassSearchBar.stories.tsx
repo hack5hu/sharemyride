@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/GlassSearchBar',
   component: GlassSearchBar,
-
 } satisfies Meta<typeof GlassSearchBar>;
 
 export default meta;

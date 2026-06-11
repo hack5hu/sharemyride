@@ -1,21 +1,21 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { 
-  GlassCard, 
-  SectionHeader, 
-  SectionLabel, 
-  RouteLayout, 
+import {
+  GlassCard,
+  SectionHeader,
+  SectionLabel,
+  RouteLayout,
   RouteRow,
   IndicatorColumn,
-  TimelineDotOutline, 
-  TimelineTrack, 
-  TimelineDotMiddle, 
-  TimelineDotEnd, 
-  RouteStop, 
-  StopLabel, 
+  TimelineDotOutline,
+  TimelineTrack,
+  TimelineDotMiddle,
+  TimelineDotEnd,
+  RouteStop,
+  StopLabel,
   StopLocation,
-  EditButton
+  EditButton,
 } from './RouteSummary.styles';
 import { moderateScale } from '@/styles';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -31,7 +31,12 @@ interface RouteSummaryProps {
   disabled?: boolean;
 }
 
-export const RouteSummary: React.FC<RouteSummaryProps> = ({ route, onEdit, t: st, disabled }) => {
+export const RouteSummary: React.FC<RouteSummaryProps> = ({
+  route,
+  onEdit,
+  t: st,
+  disabled,
+}) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -40,17 +45,22 @@ export const RouteSummary: React.FC<RouteSummaryProps> = ({ route, onEdit, t: st
       <SectionHeader>
         <SectionLabel>{st.routeSummaryLabel}</SectionLabel>
         <EditButton onPress={onEdit} activeOpacity={0.7} disabled={disabled}>
-          <Icon name="edit" size={moderateScale(16)} color={theme.colors.primary} style={{ opacity: disabled ? 0.4 : 1 }} />
+          <Icon
+            name="edit"
+            size={moderateScale(16)}
+            color={theme.colors.primary}
+            style={{ opacity: disabled ? 0.4 : 1 }}
+          />
         </EditButton>
       </SectionHeader>
-      
+
       <RouteLayout>
         {/* Departure Stop */}
         <RouteRow>
           <IndicatorColumn>
-            <TimelineTrack 
-              isFirst 
-              colors={[theme.colors.primary, theme.colors.outline]} 
+            <TimelineTrack
+              isFirst
+              colors={[theme.colors.primary, theme.colors.outline]}
             />
             <TimelineDotOutline />
           </IndicatorColumn>
@@ -66,11 +76,11 @@ export const RouteSummary: React.FC<RouteSummaryProps> = ({ route, onEdit, t: st
           return (
             <RouteRow key={`stop-${i}`}>
               <IndicatorColumn>
-                <TimelineTrack 
+                <TimelineTrack
                   colors={[
                     theme.colors.outline,
-                    isLastStop ? theme.colors.primary : theme.colors.outline
-                  ]} 
+                    isLastStop ? theme.colors.primary : theme.colors.outline,
+                  ]}
                 />
                 <TimelineDotMiddle />
               </IndicatorColumn>
@@ -85,9 +95,9 @@ export const RouteSummary: React.FC<RouteSummaryProps> = ({ route, onEdit, t: st
         {/* Arrival Stop */}
         <RouteRow $isLast>
           <IndicatorColumn>
-            <TimelineTrack 
-              isLast 
-              colors={[theme.colors.primary, theme.colors.primary]} 
+            <TimelineTrack
+              isLast
+              colors={[theme.colors.primary, theme.colors.primary]}
             />
             <TimelineDotEnd />
           </IndicatorColumn>

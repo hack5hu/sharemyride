@@ -13,7 +13,12 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ children, style }) => {
       <IconContainer>
         <Icon name="info" size={20} color={theme.colors.primary} />
       </IconContainer>
-      <Typography variant="label" size="md" color={theme.colors.on_surface_variant} style={{ flex: 1 }}>
+      <Typography
+        variant="label"
+        size="md"
+        color={theme.colors.on_surface_variant}
+        style={{ flex: 1 }}
+      >
         {children}
       </Typography>
     </StyledInfoBox>

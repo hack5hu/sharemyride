@@ -10,7 +10,7 @@ const mockScheduledRide: RideDetails = {
   maskedLocation: {
     center: {
       latitude: 28.6139,
-      longitude: 77.2090,
+      longitude: 77.209,
     },
     radius: 1500,
   },
@@ -22,23 +22,23 @@ const mockActiveDriverRide: RideDetails = {
   status: RideStatus.ACTIVE,
   driverLocation: {
     latitude: 28.6139,
-    longitude: 77.2090,
+    longitude: 77.209,
   },
   passengers: [
     {
       id: 'p1',
       name: 'Rohan Sharma',
       pickupLocation: {
-        latitude: 28.6200,
-        longitude: 77.2150,
+        latitude: 28.62,
+        longitude: 77.215,
       },
     },
     {
       id: 'p2',
       name: 'Sneha Patel',
       pickupLocation: {
-        latitude: 28.6100,
-        longitude: 77.2000,
+        latitude: 28.61,
+        longitude: 77.2,
       },
     },
   ],
@@ -50,11 +50,11 @@ const mockActivePassengerRide: RideDetails = {
   status: RideStatus.ACTIVE,
   driverLocation: {
     latitude: 28.6139,
-    longitude: 77.2090,
+    longitude: 77.209,
   },
   myPickupLocation: {
-    latitude: 28.6200,
-    longitude: 77.2150,
+    latitude: 28.62,
+    longitude: 77.215,
   },
   unifiedPolyline: 's_v`FcwixM_AmC{BwEqB}D_@sA', // Mock simple polyline string
 };

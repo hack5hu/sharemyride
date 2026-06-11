@@ -75,6 +75,11 @@ export const RemoveButton = styled(IconButton)`
   background-color: ${({ theme }) => `${theme.colors.error}08`};
 `;
 
+export const RateButton = styled(IconButton)`
+  border-color: ${({ theme }) => theme.colors.warning};
+  background-color: ${({ theme }) => `${theme.colors.warning}1A`};
+`;
+
 // Empty State Styles
 export const EmptyStateContainer = styled.View`
   align-items: center;

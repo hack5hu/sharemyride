@@ -1,10 +1,7 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
 import { Button } from '@/components/atoms/Button';
-import { 
-  FixedFooter, 
-  ErrorText 
-} from './PublishFooter.styles';
+import { FixedFooter, ErrorText } from './PublishFooter.styles';
 
 interface PublishFooterProps {
   isPublishing?: boolean;
@@ -14,12 +11,12 @@ interface PublishFooterProps {
   t: any;
 }
 
-export const PublishFooter: React.FC<PublishFooterProps> = ({ 
-  isPublishing, 
-  validationError, 
-  canPublish, 
-  onPublish, 
-  t 
+export const PublishFooter: React.FC<PublishFooterProps> = ({
+  isPublishing,
+  validationError,
+  canPublish,
+  onPublish,
+  t,
 }) => {
   const theme = useTheme();
 

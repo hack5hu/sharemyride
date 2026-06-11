@@ -535,6 +535,7 @@ export interface Translations {
   notification: NotificationTranslations;
   reportIssue: ReportIssueTranslations;
   splash: SplashTranslations;
+  rating: RatingTranslations;
 }
 
 export interface NotificationTranslations {
@@ -906,4 +907,25 @@ export interface ChatLocationTranslations {
   gpsSettingsPathAndroid: string;
   gpsSettingsPathIos: string;
   loadingCurrentLocation: string;
+}
+
+export interface RatingTranslations {
+  title: string;
+  subtitle: string;
+  submitButton: string;
+  submittingButton: string;
+  successTitle: string;
+  successMessage: string;
+  ratingRequired: string;
+  reviewPlaceholder: string;
+  rateUser: string;
+  cameOnTime: string;
+  ridingExperience: string;
+  talkingExperience: string;
+  cleanliness: string;
+  behavior: string;
+  overall: string;
+  ratingCardTitle: string;
+  ratingCardSubtitle: string;
+  rateButtonText: string;
 }

@@ -2,16 +2,16 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { moderateScale } from '@/styles';
-import { 
-  GlassCard, 
-  SectionHeader, 
-  SectionLabel, 
-  EditButton, 
-  BadgeRow, 
-  PrefBadge, 
-  PrefBadgeText, 
-  EmptyStateWrapper, 
-  EmptyStateText 
+import {
+  GlassCard,
+  SectionHeader,
+  SectionLabel,
+  EditButton,
+  BadgeRow,
+  PrefBadge,
+  PrefBadgeText,
+  EmptyStateWrapper,
+  EmptyStateText,
 } from './PreferenceList.styles';
 
 interface PreferenceListProps {
@@ -21,7 +21,12 @@ interface PreferenceListProps {
   disabled?: boolean;
 }
 
-export const PreferenceList: React.FC<PreferenceListProps> = ({ preferences, onEdit, t, disabled }) => {
+export const PreferenceList: React.FC<PreferenceListProps> = ({
+  preferences,
+  onEdit,
+  t,
+  disabled,
+}) => {
   const theme = useTheme();
 
   return (
@@ -29,15 +34,24 @@ export const PreferenceList: React.FC<PreferenceListProps> = ({ preferences, onE
       <SectionHeader>
         <SectionLabel>{t.ridePreferencesLabel}</SectionLabel>
         <EditButton onPress={onEdit} activeOpacity={0.7} disabled={disabled}>
-          <Icon name="edit" size={moderateScale(16)} color={theme.colors.primary} style={{ opacity: disabled ? 0.4 : 1 }} />
+          <Icon
+            name="edit"
+            size={moderateScale(16)}
+            color={theme.colors.primary}
+            style={{ opacity: disabled ? 0.4 : 1 }}
+          />
         </EditButton>
       </SectionHeader>
-      
+
       {preferences && preferences.length > 0 ? (
         <BadgeRow>
-          {preferences.map((pref) => (
+          {preferences.map(pref => (
             <PrefBadge key={pref.id}>
-              <Icon name={pref.icon} size={moderateScale(16)} color={theme.colors.primary} />
+              <Icon
+                name={pref.icon}
+                size={moderateScale(16)}
+                color={theme.colors.primary}
+              />
               <PrefBadgeText>{pref.label}</PrefBadgeText>
             </PrefBadge>
           ))}

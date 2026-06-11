@@ -17,7 +17,9 @@ const LegendItem = styled.View<{ dimmed?: boolean }>`
   opacity: ${({ dimmed }) => (dimmed ? 0.6 : 1)};
 `;
 
-const LegendDot = styled.View<{ variant: 'selected' | 'available' | 'occupied' }>`
+const LegendDot = styled.View<{
+  variant: 'selected' | 'available' | 'occupied';
+}>`
   width: ${moderateScale(16)}px;
   height: ${moderateScale(16)}px;
   border-radius: ${moderateScale(4)}px;
@@ -27,8 +29,10 @@ const LegendDot = styled.View<{ variant: 'selected' | 'available' | 'occupied' }
     return theme.colors.outline_variant;
   }};
   border-width: 1px;
-  border-color: ${({ theme, variant }) => 
-    variant === 'available' ? theme.colors.primary + '40' : theme.colors.outline_variant};
+  border-color: ${({ theme, variant }) =>
+    variant === 'available'
+      ? theme.colors.primary + '40'
+      : theme.colors.outline_variant};
 `;
 
 const LegendLabel = styled.Text`

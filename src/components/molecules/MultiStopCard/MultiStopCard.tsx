@@ -45,7 +45,7 @@ const CustomizeButton = styled.TouchableOpacity`
   padding-vertical: ${verticalScale(12)}px;
   padding-horizontal: ${scale(16)}px;
   border-radius: ${moderateScale(12)}px;
-  shadow-color: rgb(0,0,0);
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px 1px;
   shadow-opacity: 0.06;
   shadow-radius: 4px;
@@ -79,12 +79,20 @@ export const MultiStopCard: React.FC<MultiStopCardProps> = ({
   return (
     <Card>
       <WatermarkContainer>
-        <MaterialIcons name="route" size={moderateScale(60)} color={theme.colors.on_surface} />
+        <MaterialIcons
+          name="route"
+          size={moderateScale(60)}
+          color={theme.colors.on_surface}
+        />
       </WatermarkContainer>
       <Title>{title}</Title>
       <Subtitle>{subtitle}</Subtitle>
       <CustomizeButton onPress={onCustomize} activeOpacity={0.8}>
-        <MaterialIcons name="settings-input-component" size={moderateScale(20)} color={theme.colors.primary} />
+        <MaterialIcons
+          name="settings-input-component"
+          size={moderateScale(20)}
+          color={theme.colors.primary}
+        />
         <CustomizeText>{buttonLabel}</CustomizeText>
       </CustomizeButton>
     </Card>

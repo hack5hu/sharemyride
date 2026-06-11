@@ -1,10 +1,15 @@
 import styled from 'styled-components/native';
-import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles/scale';
+import {
+  scale,
+  verticalScale,
+  moderateScale,
+  responsiveFont,
+} from '@/styles/scale';
 
 export const Container = styled.ScrollView.attrs({
   contentContainerStyle: {
     paddingBottom: verticalScale(40),
-  }
+  },
 })`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.background};
@@ -33,7 +38,8 @@ export const LiveTrackingBadge = styled.View`
   position: absolute;
   bottom: ${verticalScale(16)}px;
   left: ${scale(24)}px;
-  background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}E6`}; /* 90% opacity */
+  background-color: ${({ theme }) =>
+    `${theme.colors.surface_container_lowest}E6`}; /* 90% opacity */
   padding-horizontal: ${scale(16)}px;
   padding-vertical: ${verticalScale(8)}px;
   border-radius: ${moderateScale(24)}px;
@@ -74,7 +80,8 @@ export const SectionSpacer = styled.View`
 `;
 
 export const CancelButton = styled.TouchableOpacity`
-  background-color: ${({ theme }) => `${theme.colors.surface_container_highest}80`}; /* 50% opacity */
+  background-color: ${({ theme }) =>
+    `${theme.colors.surface_container_highest}80`}; /* 50% opacity */
   padding: ${moderateScale(20)}px;
   border-radius: ${moderateScale(24)}px;
   flex-direction: row;

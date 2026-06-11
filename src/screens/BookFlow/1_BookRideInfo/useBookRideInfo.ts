@@ -10,6 +10,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
+import { storage } from '@/utils/storage';
 
 export const useBookRideInfo = () => {
   const { navigation, navigate } = useAppNavigation();
@@ -21,6 +22,7 @@ export const useBookRideInfo = () => {
   useFocusEffect(
     useCallback(() => {
       setIsSearching(false);
+      checkUnratedRides();
       let backPressCount = 0;
       const onBackPress = () => {
         if (backPressCount === 0) {
@@ -47,7 +49,7 @@ export const useBookRideInfo = () => {
       return () => {
         subscription.remove();
       };
-    }, []),
+    }, [checkUnratedRides]),
   );
 
   const {
@@ -228,6 +230,85 @@ export const useBookRideInfo = () => {
     useBookRideStore.getState().clearRecentSearches();
   }, []);
 
+  const [ratingPromptRide, setRatingPromptRide] = useState<any>(null);
+  const [isRatingPromptVisible, setIsRatingPromptVisible] = useState(false);
+
+  const checkUnratedRides = useCallback(async () => {
+    try {
+      // Fetch archived/past rides
+      const response = await rideService.getMyRides(2, 0, 10);
+      let rideList: any[] = [];
+      if (Array.isArray(response)) rideList = response;
+      else if (response?.rides && Array.isArray(response.rides))
+        rideList = response.rides;
+      else if (response?.data && Array.isArray(response.data))
+        rideList = response.data;
+      else if (response?.content && Array.isArray(response.content))
+        rideList = response.content;
+
+      // Find completed rides
+      const completedRides = rideList.filter(
+        (r: any) => r.rideStatus === 'COMPLETED' || r.status === 'COMPLETED',
+      );
+
+      if (completedRides.length === 0) return;
+
+      // Get already rated/dismissed ride IDs from MMKV
+      const ratedStr = storage.getString('rated_rides') || '[]';
+      const ratedIds = JSON.parse(ratedStr);
+
+      // Find first unrated completed ride
+      const unrated = completedRides.find((r: any) => !ratedIds.includes(r.id));
+      if (unrated) {
+        setRatingPromptRide(unrated);
+        setIsRatingPromptVisible(true);
+      }
+    } catch (error) {
+      console.error('[RatingCheck] Failed to check unrated rides:', error);
+    }
+  }, []);
+
+  const handleConfirmRating = useCallback(() => {
+    if (!ratingPromptRide) return;
+
+    // Save as rated/dismissed so we don't prompt again
+    const ratedStr = storage.getString('rated_rides') || '[]';
+    const ratedIds = JSON.parse(ratedStr);
+    ratedIds.push(ratingPromptRide.id);
+    storage.set('rated_rides', JSON.stringify(ratedIds));
+    setIsRatingPromptVisible(false);
+
+    // Navigate based on role
+    const isUserDriver = ratingPromptRide.role === 'DRIVER';
+    if (isUserDriver) {
+      // Driver rates passenger(s) on RideDetails
+      (navigation.navigate as any)('RideDetails', {
+        rideId: ratingPromptRide.id,
+        status: 'COMPLETED',
+      });
+    } else {
+      // Passenger rates driver on RatingScreen
+      (navigation.navigate as any)('Rating', {
+        rideId: ratingPromptRide.id,
+        targetUserId:
+          ratingPromptRide.driver?.driverId ||
+          ratingPromptRide.driver?.userId ||
+          'driver-1',
+        targetUserName: ratingPromptRide.driver?.name || 'Driver',
+        targetUserRole: 'DRIVER',
+      });
+    }
+  }, [navigation, ratingPromptRide]);
+
+  const handleDismissRating = useCallback(() => {
+    if (!ratingPromptRide) return;
+    const ratedStr = storage.getString('rated_rides') || '[]';
+    const ratedIds = JSON.parse(ratedStr);
+    ratedIds.push(ratingPromptRide.id);
+    storage.set('rated_rides', JSON.stringify(ratedIds));
+    setIsRatingPromptVisible(false);
+  }, [ratingPromptRide]);
+
   return {
     pickup: startLocation?.address || '',
     destination: destinationLocation?.address || '',
@@ -248,5 +329,9 @@ export const useBookRideInfo = () => {
     t,
     rideType,
     setRideType: handleSetRideType,
+    ratingPromptRide,
+    isRatingPromptVisible,
+    handleConfirmRating,
+    handleDismissRating,
   };
 };

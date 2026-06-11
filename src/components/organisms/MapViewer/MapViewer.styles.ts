@@ -15,7 +15,8 @@ export const StyledOverlayCard = styled.View`
   left: ${scale(16)}px;
   right: ${scale(16)}px;
   padding: ${moderateScale(14)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_highest + 'EE'};
+  background-color: ${({ theme }) =>
+    theme.colors.surface_container_highest + 'EE'};
   border-radius: ${moderateScale(16)}px;
   shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 4px;
@@ -31,10 +32,10 @@ export const IndicatorDot = styled.View<{ active?: boolean }>`
   width: ${moderateScale(8)}px;
   height: ${moderateScale(8)}px;
   border-radius: ${moderateScale(4)}px;
-  background-color: ${({ active, theme }) => active ? theme.colors.primary : theme.colors.outline};
+  background-color: ${({ active, theme }) =>
+    active ? theme.colors.primary : theme.colors.outline};
 `;
 
 export const OverlayTextContainer = styled.View`
   flex: 1;
 `;
-

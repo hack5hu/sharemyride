@@ -42,7 +42,6 @@ export const IconCircle = styled.View`
   justify-content: center;
 `;
 
-
 export const FixedFooter = styled.View`
   position: absolute;
   bottom: 0;

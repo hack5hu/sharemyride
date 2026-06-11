@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/SeatSummaryBar',
   component: SeatSummaryBar,
-
 } satisfies Meta<typeof SeatSummaryBar>;
 
 export default meta;

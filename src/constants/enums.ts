@@ -29,3 +29,10 @@ export enum NotificationType {
   WARNING = 'warning',
   INFO = 'info',
 }
+
+export enum RideStatus {
+  SCHEDULED = 'SCHEDULED',
+  ACTIVE = 'ACTIVE',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
+}

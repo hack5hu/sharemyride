@@ -11,5 +11,7 @@ export interface MyRideDetailsTemplateProps {
   handlePassengerProfile?: (id: string) => void;
   handleDriverProfile?: (id: string) => void;
   onReportRide?: () => void;
+  onRateDriver?: () => void;
+  onRatePassenger?: (id: string, name: string) => void;
   t: any;
 }

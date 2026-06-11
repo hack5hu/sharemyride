@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/InfoBox',
   component: InfoBox,
-
 } satisfies Meta<typeof InfoBox>;
 
 export default meta;

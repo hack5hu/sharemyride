@@ -48,6 +48,7 @@ import { BookDateSelectionScreen } from '@/screens/BookFlow/2_BookDateSelection/
 import AvailableRidesScreen from '@/screens/BookFlow/3_AvailableRides';
 import RideRouteMapScreen from '@/screens/BookFlow/5_RideRouteMap';
 import { BookSeatSelectionScreen } from '@/screens/BookFlow/6_BookSeatSelection';
+import { RatingScreen } from '@/screens/Rating';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -250,6 +251,7 @@ export const RootNavigator = () => {
             name="UserProfileDetail"
             component={UserProfileDetailScreen as any}
           />
+          <Stack.Screen name="Rating" component={RatingScreen as any} />
         </>
       )}
     </Stack.Navigator>

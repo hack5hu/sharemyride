@@ -27,6 +27,8 @@ interface PassengerManagementProps {
   onPassengerPress?: (id: string) => void;
   hideActions?: boolean;
   vehicleType?: string;
+  onRatePassenger?: (id: string, name: string) => void;
+  isCompleted?: boolean;
 }
 
 const formatSegment = (segment?: string) => {
@@ -50,6 +52,8 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
       onPassengerPress,
       hideActions = false,
       vehicleType,
+      onRatePassenger,
+      isCompleted = false,
     }) => {
       const theme = useTheme();
       const locale = useLocale();
@@ -186,6 +190,15 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                       variant="surface"
                       onPress={() =>
                         onCancelPassenger?.(p.bookingId || p.id || '')
+                      }
+                    />
+                  )}
+                  {isCompleted && onRatePassenger && (
+                    <S.RateButton
+                      icon="star"
+                      variant="surface"
+                      onPress={() =>
+                        onRatePassenger?.(p.id || p.bookingId || '', p.name)
                       }
                     />
                   )}

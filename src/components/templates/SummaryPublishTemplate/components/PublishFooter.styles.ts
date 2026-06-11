@@ -28,8 +28,6 @@ export const ErrorText = styled.Text`
   padding-horizontal: ${scale(24)}px;
 `;
 
-
-
 export const TermsText = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-size: ${responsiveFont(11)}px;

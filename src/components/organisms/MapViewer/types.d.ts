@@ -26,10 +26,10 @@ export interface RideDetails {
   isDriver: boolean;
   status: RideStatus;
   maskedLocation?: MaskedLocation; // Used in Phase 1 (Scheduled)
-  driverLocation?: Coordinate;     // Initial or fallback driver coordinates
-  passengers?: PassengerInfo[];    // Used by Driver in Phase 2
-  myPickupLocation?: Coordinate;   // Used by Passenger in Phase 2
-  unifiedPolyline?: string;        // Used by Passenger in Phase 2
+  driverLocation?: Coordinate; // Initial or fallback driver coordinates
+  passengers?: PassengerInfo[]; // Used by Driver in Phase 2
+  myPickupLocation?: Coordinate; // Used by Passenger in Phase 2
+  unifiedPolyline?: string; // Used by Passenger in Phase 2
 }
 
 export interface DriverLocationPayload {

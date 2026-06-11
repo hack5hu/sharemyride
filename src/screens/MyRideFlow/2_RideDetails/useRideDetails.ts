@@ -236,6 +236,29 @@ export const useRideDetails = () => {
     });
   }, [navigation, rideId, rideData, isDriver, t]);
 
+  const handleRateDriver = useCallback(() => {
+    if (rideData?.driver) {
+      navigation.navigate('Rating', {
+        rideId,
+        targetUserId: rideData.driver.driverId || rideData.driver.userId,
+        targetUserName: rideData.driver.name,
+        targetUserRole: 'DRIVER',
+      });
+    }
+  }, [navigation, rideId, rideData]);
+
+  const handleRatePassenger = useCallback(
+    (passengerId: string, name: string) => {
+      navigation.navigate('Rating', {
+        rideId,
+        targetUserId: passengerId,
+        targetUserName: name,
+        targetUserRole: 'PASSENGER',
+      });
+    },
+    [navigation, rideId],
+  );
+
   const handleViewRoute = useCallback(
     (index?: number) => {
       const stops = rideData?.stops?.map((s: any) => ({
@@ -372,5 +395,7 @@ export const useRideDetails = () => {
     setIsReportModalVisible,
     handleReportRide,
     handleReportSubmit,
+    handleRateDriver,
+    handleRatePassenger,
   };
 };

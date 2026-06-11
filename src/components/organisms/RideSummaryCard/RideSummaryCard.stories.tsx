@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/RideSummaryCard',
   component: RideSummaryCard,
-
 } satisfies Meta<typeof RideSummaryCard>;
 
 export default meta;

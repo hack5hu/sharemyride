@@ -26,21 +26,22 @@ export const RideDetailsTemplate: React.FC<RideDetailsTemplateProps> = ({
   const { rideDetails } = useLocale();
 
   return (
-    <ScreenShell
-      title={rideDetails.headerTitle}
-      onBack={onBackPress}
-    >
+    <ScreenShell title={rideDetails.headerTitle} onBack={onBackPress}>
       <S.Container showsVerticalScrollIndicator={false}>
         <S.MainContent>
           {/* Map Visualization */}
           <S.MapPlaceholder>
-            <S.MapImage 
-              source={{ uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDPp9uD4jSjM9BxRjifb2BQRVNVCThWkezi3P9WbBaiE4FOxl8u3rYxk3tfHNHI6Rnp1qrHaE3jk334UYey0Gf3_GuW7J8ZhBb5eUO_TWrOSia9Q0Ew2gqreRzH0ep0-Z-0hc_tJoT5a1YwGY70KBeyaLJECOury8CxcZ3KPXwhOXghxJ3vlcwFZ8XZgKk4y3a3iynYjU1VE_dm0uEem-5YawGGxk-CTz2f745239HVZEc_ynKsMQ0irx_L21H20jto0k5zKGanotD9' }} 
+            <S.MapImage
+              source={{
+                uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDPp9uD4jSjM9BxRjifb2BQRVNVCThWkezi3P9WbBaiE4FOxl8u3rYxk3tfHNHI6Rnp1qrHaE3jk334UYey0Gf3_GuW7J8ZhBb5eUO_TWrOSia9Q0Ew2gqreRzH0ep0-Z-0hc_tJoT5a1YwGY70KBeyaLJECOury8CxcZ3KPXwhOXghxJ3vlcwFZ8XZgKk4y3a3iynYjU1VE_dm0uEem-5YawGGxk-CTz2f745239HVZEc_ynKsMQ0irx_L21H20jto0k5zKGanotD9',
+              }}
               resizeMode="cover"
             />
             <S.LiveTrackingBadge>
               <Icon name="route" size={14} color={theme.colors.primary} />
-              <S.LiveTrackingText>{rideDetails.liveTracking}</S.LiveTrackingText>
+              <S.LiveTrackingText>
+                {rideDetails.liveTracking}
+              </S.LiveTrackingText>
             </S.LiveTrackingBadge>
           </S.MapPlaceholder>
 
@@ -61,7 +62,7 @@ export const RideDetailsTemplate: React.FC<RideDetailsTemplateProps> = ({
 
           {/* Driver Section */}
           <DriverSection {...driverSection} />
-          
+
           <S.SectionSpacer />
 
           {/* Riders List */}

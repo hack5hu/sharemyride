@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/SocialSection',
   component: SocialSection,
-
 } satisfies Meta<typeof SocialSection>;
 
 export default meta;

@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styled from 'styled-components/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -43,11 +42,11 @@ const IconButton = styled.TouchableOpacity`
 /**
  * @deprecated Use ScreenShell and ScreenHeader for unified header management.
  */
-export const CommonHeader: React.FC<CommonHeaderProps> = ({ 
-  title, 
-  onBackPress, 
-  showSearch, 
-  onSearchPress 
+export const CommonHeader: React.FC<CommonHeaderProps> = ({
+  title,
+  onBackPress,
+  showSearch,
+  onSearchPress,
 }) => {
   return (
     <HeaderContainer>
@@ -55,9 +54,11 @@ export const CommonHeader: React.FC<CommonHeaderProps> = ({
         <IconButton onPress={onBackPress} activeOpacity={0.7}>
           <Icon name="arrow-back" size={moderateScale(24)} color="#334155" />
         </IconButton>
-        <Typography variant="title" size="md" weight="bold">{title}</Typography>
+        <Typography variant="title" size="md" weight="bold">
+          {title}
+        </Typography>
       </LeftSection>
-      
+
       {showSearch && (
         <IconButton onPress={onSearchPress} activeOpacity={0.7}>
           <Icon name="search" size={moderateScale(24)} color="#10b981" />

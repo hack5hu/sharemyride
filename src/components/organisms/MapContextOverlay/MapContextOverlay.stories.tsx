@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Organisms/MapContextOverlay',
   component: MapContextOverlay,
-
 } satisfies Meta<typeof MapContextOverlay>;
 
 export default meta;

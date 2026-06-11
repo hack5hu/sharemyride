@@ -26,10 +26,11 @@ export const SearchBarWrapper = styled.View`
 export const SearchBarMock = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}E6`}; /* 90% opacity */
+  background-color: ${({ theme }) =>
+    `${theme.colors.surface_container_lowest}E6`}; /* 90% opacity */
   padding: ${moderateScale(12)}px;
   border-radius: ${moderateScale(12)}px;
-  shadow-color: rgb(0,107,71);
+  shadow-color: rgb(0, 107, 71);
   shadow-offset: 0px 4px;
   shadow-opacity: 0.08;
   shadow-radius: 24px;
@@ -40,7 +41,8 @@ export const SearchText = styled.Text`
   flex: 1;
   font-family: 'Plus Jakarta Sans';
   font-size: ${responsiveFont(14)}px;
-  color: ${({ theme }) => `${theme.colors.on_surface_variant}99`}; /* placeholder style */
+  color: ${({ theme }) =>
+    `${theme.colors.on_surface_variant}99`}; /* placeholder style */
   margin-left: ${scale(12)}px;
   margin-right: ${scale(12)}px;
 `;
@@ -64,7 +66,8 @@ export const BottomGradient = styled(LinearGradient)`
 `;
 
 export const TooltipCard = styled.View`
-  background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}CC`}; /* 80% opacity */
+  background-color: ${({ theme }) =>
+    `${theme.colors.surface_container_lowest}CC`}; /* 80% opacity */
   padding: ${moderateScale(16)}px;
   border-radius: ${moderateScale(16)}px;
   flex-direction: row;
@@ -88,7 +91,8 @@ export const Dot = styled.View`
 export const Line = styled.View`
   width: ${moderateScale(2)}px;
   height: ${verticalScale(32)}px;
-  background-color: ${({ theme }) => `${theme.colors.outline_variant}4D`}; /* 30% opacity */
+  background-color: ${({ theme }) =>
+    `${theme.colors.outline_variant}4D`}; /* 30% opacity */
 `;
 
 export const TooltipContent = styled.View`
@@ -101,15 +105,16 @@ export const TooltipLabel = styled.Text<{ isPrimary?: boolean }>`
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: ${({ theme, isPrimary }) => isPrimary ? theme.colors.primary : theme.colors.on_surface_variant};
+  color: ${({ theme, isPrimary }) =>
+    isPrimary ? theme.colors.primary : theme.colors.on_surface_variant};
 `;
 
 export const TooltipValue = styled.Text<{ isBold?: boolean }>`
   font-family: 'Plus Jakarta Sans';
   font-size: ${responsiveFont(14)}px;
-  font-weight: ${({ isBold }) => isBold ? 700 : 500};
+  font-weight: ${({ isBold }) => (isBold ? 700 : 500)};
   color: ${({ theme }) => theme.colors.on_surface};
-  margin-bottom: ${({ isBold }) => isBold ? 0 : verticalScale(16)}px;
+  margin-bottom: ${({ isBold }) => (isBold ? 0 : verticalScale(16))}px;
 `;
 
 export const ContinueGradient = styled(LinearGradient)`
@@ -154,7 +159,7 @@ export const MapControlButton = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   align-items: center;
   justify-content: center;
-  shadow-color: rgb(0,0,0);
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px 4px;
   shadow-opacity: 0.1;
   shadow-radius: 12px;
@@ -180,7 +185,7 @@ export const MapCenterTooltipBox = styled.View`
   gap: ${scale(8)}px;
   border-width: 1px;
   border-color: ${({ theme }) => `${theme.colors.primary}1A`};
-  shadow-color: rgb(0,0,0);
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px 4px;
   shadow-opacity: 0.1;
   shadow-radius: 12px;

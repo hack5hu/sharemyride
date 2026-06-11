@@ -26,14 +26,15 @@ export const BackgroundBubble = styled(View)<{
 
 export const SaveButton = styled.TouchableOpacity<{ disabled?: boolean }>`
   padding-right: ${moderateScale(24)}px;
-  opacity: ${({ disabled }) => disabled ? 0.4 : 1};
+  opacity: ${({ disabled }) => (disabled ? 0.4 : 1)};
 `;
 
 export const SaveText = styled.Text<{ disabled?: boolean }>`
   font-family: 'Plus Jakarta Sans';
   font-weight: 700;
   font-size: ${responsiveFont(14)}px;
-  color: ${({ theme, disabled }) => disabled ? theme.colors.on_surface_variant : theme.colors.on_surface};
+  color: ${({ theme, disabled }) =>
+    disabled ? theme.colors.on_surface_variant : theme.colors.on_surface};
 `;
 
 export const Content = styled.ScrollView.attrs({

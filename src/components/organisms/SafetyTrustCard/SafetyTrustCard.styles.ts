@@ -1,6 +1,11 @@
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
-import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles/scale';
+import {
+  scale,
+  verticalScale,
+  moderateScale,
+  responsiveFont,
+} from '@/styles/scale';
 
 export const Container = styled(LinearGradient)`
   padding: ${moderateScale(20)}px;

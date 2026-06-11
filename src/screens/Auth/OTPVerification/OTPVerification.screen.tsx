@@ -57,10 +57,7 @@ export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
   const isButtonDisabled = otpValue.length < 6 || loading;
 
   return (
-    <ScreenShell
-      title={t.screenName}
-      onBack={true}
-    >
+    <ScreenShell title={t.screenName} onBack={true}>
       <Toast
         type={toastConfig.type}
         message={toastConfig.message}

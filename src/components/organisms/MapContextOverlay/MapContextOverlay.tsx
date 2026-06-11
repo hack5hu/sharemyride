@@ -29,7 +29,8 @@ import {
   MapCenterTriangle,
 } from './MapContextOverlay.styles';
 
-const MAP_IMAGE_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuCDPfsboIAIoE_mlqCHbUp2PLDLVybJ3E56Zlra61KNlhOyljABXcMLtl0jvugePlNlslasCjJNvPeYScW7Addc-5dyVyCGgjFtlWyBU45K0ZM1_8tRNAsmRd4trlML7wzMfF3k2SepEuRw7d59L2X6f9WfucB-fkkb-HE0LfRqIZAZtKXPrDnnyP4oPTn4MT4irfAu0NE1IH7eijlsnI79wsOLtivnVs1rPIIrORn47-Ujv6lMKIq-Z1eXkAJ0p6HyeeM0v3eCfVJt';
+const MAP_IMAGE_URL =
+  'https://lh3.googleusercontent.com/aida-public/AB6AXuCDPfsboIAIoE_mlqCHbUp2PLDLVybJ3E56Zlra61KNlhOyljABXcMLtl0jvugePlNlslasCjJNvPeYScW7Addc-5dyVyCGgjFtlWyBU45K0ZM1_8tRNAsmRd4trlML7wzMfF3k2SepEuRw7d59L2X6f9WfucB-fkkb-HE0LfRqIZAZtKXPrDnnyP4oPTn4MT4irfAu0NE1IH7eijlsnI79wsOLtivnVs1rPIIrORn47-Ujv6lMKIq-Z1eXkAJ0p6HyeeM0v3eCfVJt';
 
 export interface MapContextOverlayProps {
   onSearchPress: () => void;
@@ -55,7 +56,11 @@ export const MapContextOverlay: React.FC<MapContextOverlayProps> = ({
       {selectedLocationName && (
         <MapCenterOverlay>
           <MapCenterTooltipBox>
-            <MaterialIcons name="add-location" size={moderateScale(14)} color={theme.colors.primary} />
+            <MaterialIcons
+              name="add-location"
+              size={moderateScale(14)}
+              color={theme.colors.primary}
+            />
             <MapCenterLabel>Add Stop: {selectedLocationName}</MapCenterLabel>
           </MapCenterTooltipBox>
           <MapCenterTriangle />
@@ -65,10 +70,18 @@ export const MapContextOverlay: React.FC<MapContextOverlayProps> = ({
       {/* Top Search Bar (Mock) */}
       <SearchBarWrapper>
         <SearchBarMock onPress={onSearchPress} activeOpacity={0.8}>
-          <MaterialIcons name="search" size={moderateScale(24)} color={theme.colors.primary} />
+          <MaterialIcons
+            name="search"
+            size={moderateScale(24)}
+            color={theme.colors.primary}
+          />
           <SearchText>{t.searchPlaceholder}</SearchText>
           <IconButton>
-            <MaterialIcons name="tune" size={moderateScale(20)} color={theme.colors.on_surface_variant} />
+            <MaterialIcons
+              name="tune"
+              size={moderateScale(20)}
+              color={theme.colors.on_surface_variant}
+            />
           </IconButton>
         </SearchBarMock>
       </SearchBarWrapper>
@@ -76,16 +89,28 @@ export const MapContextOverlay: React.FC<MapContextOverlayProps> = ({
       {/* Side Map Controls */}
       <MapControls>
         <MapControlButton activeOpacity={0.7}>
-          <MaterialIcons name="my-location" size={moderateScale(24)} color={theme.colors.on_surface} />
+          <MaterialIcons
+            name="my-location"
+            size={moderateScale(24)}
+            color={theme.colors.on_surface}
+          />
         </MapControlButton>
         <MapControlButton activeOpacity={0.7}>
-          <MaterialIcons name="layers" size={moderateScale(24)} color={theme.colors.on_surface} />
+          <MaterialIcons
+            name="layers"
+            size={moderateScale(24)}
+            color={theme.colors.on_surface}
+          />
         </MapControlButton>
       </MapControls>
 
       {/* Bottom Tooltip & Action */}
       <BottomGradient
-        colors={['transparent', `${theme.colors.surface}E6`, theme.colors.surface]}
+        colors={[
+          'transparent',
+          `${theme.colors.surface}E6`,
+          theme.colors.surface,
+        ]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
       >
@@ -93,9 +118,13 @@ export const MapContextOverlay: React.FC<MapContextOverlayProps> = ({
           <TooltipVisual>
             <Dot />
             <Line />
-            <MaterialIcons name="location-on" size={moderateScale(18)} color={theme.colors.primary} />
+            <MaterialIcons
+              name="location-on"
+              size={moderateScale(18)}
+              color={theme.colors.primary}
+            />
           </TooltipVisual>
-          
+
           <TooltipContent>
             <TooltipLabel>{t.currentRoute}</TooltipLabel>
             <TooltipValue>{routeTitle}</TooltipValue>
@@ -107,15 +136,23 @@ export const MapContextOverlay: React.FC<MapContextOverlayProps> = ({
           </TooltipContent>
         </TooltipCard>
 
-        <ContinueButton onPress={onContinue} activeOpacity={0.9} disabled={!selectedLocationName}>
-          <ContinueGradient 
+        <ContinueButton
+          onPress={onContinue}
+          activeOpacity={0.9}
+          disabled={!selectedLocationName}
+        >
+          <ContinueGradient
             colors={[theme.colors.primary, theme.colors.primary_container]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={{ opacity: selectedLocationName ? 1 : 0.5 }}
           >
             <ContinueButtonText>{t.continue}</ContinueButtonText>
-            <MaterialIcons name="arrow-forward" size={moderateScale(18)} color={theme.colors.on_primary} />
+            <MaterialIcons
+              name="arrow-forward"
+              size={moderateScale(18)}
+              color={theme.colors.on_primary}
+            />
           </ContinueGradient>
         </ContinueButton>
       </BottomGradient>

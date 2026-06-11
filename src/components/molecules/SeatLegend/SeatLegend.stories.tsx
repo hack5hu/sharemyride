@@ -6,7 +6,6 @@ import { View } from 'react-native';
 const meta = {
   title: 'Molecules/SeatLegend',
   component: SeatLegend,
-
 } satisfies Meta<typeof SeatLegend>;
 
 export default meta;

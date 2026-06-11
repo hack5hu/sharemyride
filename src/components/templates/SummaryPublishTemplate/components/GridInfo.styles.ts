@@ -9,7 +9,8 @@ export const GridRow = styled.View`
 
 export const GridCard = styled.View`
   flex: 1;
-  background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}99`};
+  background-color: ${({ theme }) =>
+    `${theme.colors.surface_container_lowest}99`};
   border-radius: ${moderateScale(20)}px;
   padding: ${moderateScale(16)}px;
   border-width: 1px;

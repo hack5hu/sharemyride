@@ -107,16 +107,26 @@ export const SeatSummaryBar: React.FC<SeatSummaryBarProps> = ({
     <BarWrapper>
       <SummaryRow>
         <SummaryBlock>
-          <SummaryLabel 
+          <SummaryLabel
             color={isBook ? theme.colors.primary_container : undefined}
-            style={{ textTransform: 'uppercase', letterSpacing: 1.5, fontWeight: '800' }}
+            style={{
+              textTransform: 'uppercase',
+              letterSpacing: 1.5,
+              fontWeight: '800',
+            }}
           >
             {summaryTitle}
           </SummaryLabel>
-          <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4 }}>
-            <SeatCountText>{seatCount} {seatCount === 1 ? 'Seat' : 'Seats'}</SeatCountText>
+          <View
+            style={{ flexDirection: 'row', alignItems: 'baseline', gap: 4 }}
+          >
+            <SeatCountText>
+              {seatCount} {seatCount === 1 ? 'Seat' : 'Seats'}
+            </SeatCountText>
             {isBook && seatIdLabel && (
-              <SummaryLabel style={{ fontSize: responsiveFont(14), fontWeight: '500' }}>
+              <SummaryLabel
+                style={{ fontSize: responsiveFont(14), fontWeight: '500' }}
+              >
                 ({seatIdLabel})
               </SummaryLabel>
             )}
@@ -124,14 +134,27 @@ export const SeatSummaryBar: React.FC<SeatSummaryBarProps> = ({
         </SummaryBlock>
         {!!moneyValue && (
           <SummaryBlock alignEnd>
-            <SummaryLabel style={{ fontWeight: '700', textTransform: 'uppercase' }}>{moneyLabel}</SummaryLabel>
-            <MoneyValueText style={{ fontSize: isBook ? responsiveFont(20) : responsiveFont(18), fontWeight: '800' }}>
+            <SummaryLabel
+              style={{ fontWeight: '700', textTransform: 'uppercase' }}
+            >
+              {moneyLabel}
+            </SummaryLabel>
+            <MoneyValueText
+              style={{
+                fontSize: isBook ? responsiveFont(20) : responsiveFont(18),
+                fontWeight: '800',
+              }}
+            >
               {moneyValue}
             </MoneyValueText>
           </SummaryBlock>
         )}
       </SummaryRow>
-      <ContinueButton onPress={onContinue} activeOpacity={0.9} disabled={disabled}>
+      <ContinueButton
+        onPress={onContinue}
+        activeOpacity={0.9}
+        disabled={disabled}
+      >
         <ContinueGradient
           colors={[theme.colors.primary_container, theme.colors.primary]}
           start={{ x: 0, y: 0 }}
@@ -141,7 +164,15 @@ export const SeatSummaryBar: React.FC<SeatSummaryBarProps> = ({
         </ContinueGradient>
       </ContinueButton>
       {isBook && holdTimerNote && (
-        <SummaryLabel style={{ textAlign: 'center', marginTop: 16, fontSize: responsiveFont(10), fontStyle: 'italic', opacity: 0.7 }}>
+        <SummaryLabel
+          style={{
+            textAlign: 'center',
+            marginTop: 16,
+            fontSize: responsiveFont(10),
+            fontStyle: 'italic',
+            opacity: 0.7,
+          }}
+        >
           {holdTimerNote}
         </SummaryLabel>
       )}

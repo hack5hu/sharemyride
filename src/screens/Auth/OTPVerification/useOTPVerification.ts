@@ -19,7 +19,6 @@ export const useOTPVerification = () => {
   const { t } = useTranslation();
   const { setAuth } = useAuthStore();
 
-
   useEffect(() => {
     const interval = setInterval(() => {
       setTimer(prev => (prev > 0 ? prev - 1 : 0));
@@ -37,12 +36,10 @@ export const useOTPVerification = () => {
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        t('notification.defaultErrorMessage')
+        t('notification.defaultErrorMessage'),
       );
       return;
     }
-
-
 
     setLoading(true);
     try {
@@ -79,7 +76,7 @@ export const useOTPVerification = () => {
         showNotification(
           NotificationType.SUCCESS,
           t('notification.welcomeSuccessTitle'),
-          t('notification.welcomeBack')
+          t('notification.welcomeBack'),
         );
 
         // Navigation is handled by RootNavigator reacting to store changes
@@ -89,7 +86,7 @@ export const useOTPVerification = () => {
         showNotification(
           NotificationType.ERROR,
           t('notification.defaultErrorTitle'),
-          response.data.message || t('notification.defaultErrorMessage')
+          response.data.message || t('notification.defaultErrorMessage'),
         );
         setLoading(false);
       }
@@ -97,7 +94,7 @@ export const useOTPVerification = () => {
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        getErrorMessage(error, t('notification.defaultErrorMessage'))
+        getErrorMessage(error, t('notification.defaultErrorMessage')),
       );
       setLoading(false);
     }
@@ -112,7 +109,7 @@ export const useOTPVerification = () => {
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        getErrorMessage(error, t('notification.defaultErrorMessage'))
+        getErrorMessage(error, t('notification.defaultErrorMessage')),
       );
     }
   };
