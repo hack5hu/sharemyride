@@ -8,7 +8,6 @@ import { Typography } from '@/components/atoms/Typography';
 import { useLocale } from '@/constants/localization';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as S from './NetworkLoggerModal.styles';
-import { ENABLE_NETWORK_LOGGER } from '@env';
 import { BASE_URL } from '@/constants/apiEndpoints';
 
 export const NetworkLoggerModal: React.FC = React.memo(() => {
@@ -90,10 +89,6 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
       </Typography>
     </S.EmptyState>
   );
-
-  // if (ENABLE_NETWORK_LOGGER !== 'true') {
-  //   return null;
-  // }
 
   return (
     <>
@@ -202,7 +197,6 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                   renderItem={renderItem}
                   keyExtractor={(item) => item.id}
                   ListEmptyComponent={renderEmpty}
-                  estimatedItemSize={100}
                 />
               </S.Container>
             </>

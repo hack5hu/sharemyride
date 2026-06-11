@@ -5,7 +5,7 @@ import * as S from './SplashScreen.styles';
 import { SplashScreenProps } from './types.d';
 
 const SplashScreenComponent: React.FC<SplashScreenProps> = () => {
-  // eslint-disable-next-line no-empty-pattern
+   
   const {} = useSplashScreen();
 
   return (
