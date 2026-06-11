@@ -84,7 +84,7 @@ export const DriverCard = styled.View`
   flex-direction: row;
   align-items: center;
   elevation: 2;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.04;
   shadow-radius: 20px;

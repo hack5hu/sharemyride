@@ -3,13 +3,11 @@ import {
   ScrollView,
   NativeSyntheticEvent,
   NativeScrollEvent,
-  View,
-  Text,
-  TouchableOpacity,
 } from 'react-native';
 import { useTheme } from 'styled-components/native';
-import { moderateScale, verticalScale, responsiveFont } from '@/styles';
+import { moderateScale } from '@/styles';
 import styled from 'styled-components/native';
+import { Typography } from '@/components/atoms/Typography';
 
 /* ---- Styles kept inline here since they are tightly scoped ---- */
 
@@ -67,6 +65,14 @@ const ItemContainer = styled.View`
   justify-content: center;
 `;
 
+interface StyledDialTextProps {
+  active: boolean;
+}
+
+const StyledDialText = styled(Typography) <StyledDialTextProps>`
+  font-weight: ${({ active }) => (active ? '800' : '700')};
+`;
+
 export interface TimeDialProps {
   values: number[];
   selectedValue: number;
@@ -79,11 +85,17 @@ export interface TimeDialProps {
 const getDistance = (index: number, selectedIndex: number) =>
   Math.abs(index - selectedIndex);
 
-export const TimeDial: React.FC<TimeDialProps> = ({
+const getTypographyConfig = (dist: number) => {
+  if (dist === 0) return { variant: 'display' as const, size: 'sm' as const };
+  if (dist === 1) return { variant: 'headline' as const, size: 'md' as const };
+  return { variant: 'title' as const, size: 'xl' as const };
+};
+
+export const TimeDial: React.FC<TimeDialProps> = React.memo(({
   values,
   selectedValue,
   onValueChange,
-  formatter = (v) => String(v).padStart(2, '0'),
+  formatter = (v: number) => String(v).padStart(2, '0'),
   disabled = false,
   disabledBefore,
 }) => {
@@ -91,6 +103,9 @@ export const TimeDial: React.FC<TimeDialProps> = ({
   const scrollRef = useRef<ScrollView>(null);
   const selectedIndex = values.indexOf(selectedValue);
 
+  const lastReportedIndex = useRef(selectedIndex);
+
+  // Initial scroll on mount without animation
   useEffect(() => {
     if (scrollRef.current && selectedIndex >= 0) {
       scrollRef.current.scrollTo({
@@ -99,6 +114,17 @@ export const TimeDial: React.FC<TimeDialProps> = ({
       });
     }
   }, []);
+
+  // Sync scroll when value changes externally
+  useEffect(() => {
+    if (scrollRef.current && selectedIndex >= 0 && selectedIndex !== lastReportedIndex.current) {
+      scrollRef.current.scrollTo({
+        y: selectedIndex * ITEM_HEIGHT,
+        animated: true,
+      });
+      lastReportedIndex.current = selectedIndex;
+    }
+  }, [selectedIndex]);
 
   const handleScrollEnd = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -115,24 +141,24 @@ export const TimeDial: React.FC<TimeDialProps> = ({
         }
       }
 
+      lastReportedIndex.current = clamped;
       onValueChange(values[clamped]);
-      scrollRef.current?.scrollTo({ y: clamped * ITEM_HEIGHT, animated: true });
+
+      // Only trigger scrollTo programmatically if the final clamped index differs
+      // from the current scroll position. This avoids recursive event loops.
+      if (clamped !== index) {
+        scrollRef.current?.scrollTo({ y: clamped * ITEM_HEIGHT, animated: true });
+      }
     },
     [values, onValueChange, disabledBefore]
   );
 
-  const getColor = (dist: number, isDisabledItem: boolean) => {
+  const getColor = useCallback((dist: number, isDisabledItem: boolean) => {
     if (isDisabledItem) return `${theme.colors.outline_variant}4D`;
     if (dist === 0) return theme.colors.primary;
     if (dist === 1) return `${theme.colors.on_surface_variant}99`;
     return `${theme.colors.on_surface_variant}66`;
-  };
-
-  const getFontSize = (dist: number) => {
-    if (dist === 0) return responsiveFont(36);
-    if (dist === 1) return responsiveFont(28);
-    return responsiveFont(22);
-  };
+  }, [theme]);
 
   return (
     <DialWrapper>
@@ -148,26 +174,30 @@ export const TimeDial: React.FC<TimeDialProps> = ({
         onMomentumScrollEnd={handleScrollEnd}
         contentContainerStyle={{ paddingVertical: ITEM_HEIGHT }}
         nestedScrollEnabled
+        disableScrollViewPanResponder={true}
       >
         {values.map((val, i) => {
           const dist = getDistance(i, selectedIndex);
           const isDisabledItem = disabledBefore !== undefined && val < disabledBefore;
+          const { variant, size } = getTypographyConfig(dist);
+
           return (
             <ItemContainer key={val}>
-              <Text
-                style={{
-                  fontFamily: 'Plus Jakarta Sans',
-                  fontWeight: dist === 0 ? '800' : '700',
-                  fontSize: getFontSize(dist),
-                  color: getColor(dist, isDisabledItem),
-                }}
+              <StyledDialText
+                active={dist === 0}
+                variant={variant}
+                size={size}
+                color={getColor(dist, isDisabledItem)}
               >
                 {formatter(val)}
-              </Text>
+              </StyledDialText>
             </ItemContainer>
           );
         })}
       </ScrollView>
     </DialWrapper>
   );
-};
+});
+
+
+

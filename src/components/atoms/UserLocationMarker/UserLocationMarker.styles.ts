@@ -25,7 +25,7 @@ export const OuterCircle = styled.View`
   align-items: center;
   justify-content: center;
   elevation: 4;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 2px;
   shadow-opacity: 0.25;
   shadow-radius: 3.84px;

@@ -39,7 +39,7 @@ export const MapButtonGradient = styled(LinearGradient).attrs({
   border-radius: ${moderateScale(12)}px;
   overflow: hidden;
   elevation: 6;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.2;
   shadow-radius: 8px;

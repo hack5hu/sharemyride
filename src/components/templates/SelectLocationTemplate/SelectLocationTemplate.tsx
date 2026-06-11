@@ -1,9 +1,11 @@
 import React from 'react';
-import { StatusBar, View } from 'react-native';
+import { StatusBar, View, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
+import { useLocale } from '@/constants/localization';
+import { Loader } from '@/components/atoms/Loader';
 import { moderateScale } from '@/styles';
 import {
   FullScreenContainer,
@@ -23,6 +25,12 @@ import {
   SelectButton,
   SelectGradient,
   SelectButtonText,
+  GpsWarningBanner,
+  GpsWarningText,
+  GpsWarningPath,
+  GpsEnableButton,
+  GpsEnableText,
+  GpsCloseButton,
 } from './SelectLocationTemplate.styles';
 import { SelectLocationTemplateProps } from './types.d';
 
@@ -30,13 +38,16 @@ export interface SelectLocationTemplateExtendedProps extends SelectLocationTempl
   title?: string;
   onBack?: () => void;
   onMyLocationPress?: () => void;
+  isGpsBannerVisible?: boolean;
+  onCloseGpsBanner?: () => void;
+  onOpenGpsSettings?: () => void;
+  isLocating?: boolean;
 }
 
 export const SelectLocationTemplate: React.FC<SelectLocationTemplateExtendedProps> = ({
   mapBackground,
   title,
   onBack,
-  actionFAB,
   centerPin,
   onZoomIn,
   onZoomOut,
@@ -45,13 +56,22 @@ export const SelectLocationTemplate: React.FC<SelectLocationTemplateExtendedProp
   locationAddress,
   onSendLocation,
   sendLocationLabel,
+  isGpsBannerVisible,
+  onCloseGpsBanner,
+  onOpenGpsSettings,
+  isLocating,
 }) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const { chatLocation } = useLocale();
 
   return (
     <FullScreenContainer>
-      <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle="dark-content"
+      />
 
       {/* Layer 0 — Full-bleed map */}
       <MapWrapper>{mapBackground}</MapWrapper>
@@ -70,46 +90,60 @@ export const SelectLocationTemplate: React.FC<SelectLocationTemplateExtendedProp
           )}
           {title && <HeaderTitle>{title}</HeaderTitle>}
         </HeaderRow>
+
+        {isGpsBannerVisible && (
+          <GpsWarningBanner>
+            {isLocating ? (
+              <>
+                <Loader
+                  inline
+                  size="small"
+                  color={theme.colors.on_error_container}
+                  style={{ marginRight: moderateScale(10) }}
+                />
+                <GpsWarningText style={{ flex: 1 }}>
+                  {chatLocation.loadingCurrentLocation}
+                </GpsWarningText>
+              </>
+            ) : (
+              <>
+                <View style={{ flex: 1 }}>
+                  <GpsWarningText>{chatLocation.gpsBannerMessage}</GpsWarningText>
+                  <GpsWarningPath>
+                    {Platform.OS === 'android'
+                      ? chatLocation.gpsSettingsPathAndroid
+                      : chatLocation.gpsSettingsPathIos}
+                  </GpsWarningPath>
+                </View>
+                <GpsEnableButton onPress={onOpenGpsSettings} activeOpacity={0.8}>
+                  <GpsEnableText>{chatLocation.enableGps}</GpsEnableText>
+                </GpsEnableButton>
+                <GpsCloseButton onPress={onCloseGpsBanner} activeOpacity={0.7}>
+                  <Icon
+                    name="close"
+                    size={moderateScale(16)}
+                    color={theme.colors.on_error_container}
+                  />
+                </GpsCloseButton>
+              </>
+            )}
+          </GpsWarningBanner>
+        )}
       </FloatingHeader>
 
       {/* Layer 2 — Center pin (pointer-events none so map stays interactive) */}
-      <CenterPinWrapper pointerEvents="none">
-        {centerPin}
-      </CenterPinWrapper>
+      <CenterPinWrapper pointerEvents="none">{centerPin}</CenterPinWrapper>
 
-      {/* Layer 2.5 — Zoom Controls */}
-      {(onZoomIn || onZoomOut) && (
-        <ZoomControlsWrapper>
-          <MapControlsFABs onZoomIn={onZoomIn} onZoomOut={onZoomOut} />
-        </ZoomControlsWrapper>
-      )}
+      <ZoomControlsWrapper>
+        <MapControlsFABs
+          onZoomIn={onZoomIn}
+          onZoomOut={onZoomOut}
+          onLocateMe={onMyLocationPress}
+        />
+      </ZoomControlsWrapper>
 
       {/* Layer 3 — Stacked bottom elements */}
       <BottomContainer pointerEvents="box-none">
-        {/* Locate Me FAB (optional) */}
-        {onMyLocationPress && (
-          <ActionFABWrapper style={{ alignItems: 'flex-end', paddingBottom: 0 }}>
-            <BackButton 
-              onPress={onMyLocationPress} 
-              activeOpacity={0.8} 
-              style={{ 
-                backgroundColor: theme.colors.surface,
-                shadowColor: theme.colors.on_surface,
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.15,
-                shadowRadius: 8,
-                elevation: 6
-              }}
-            >
-              <Icon
-                name="my-location"
-                size={moderateScale(20)}
-                color={theme.colors.primary}
-              />
-            </BackButton>
-          </ActionFABWrapper>
-        )}
-
         <SelectButtonContainer>
           {(locationName || locationAddress) && (
             <LocationPreviewContainer>
@@ -124,21 +158,26 @@ export const SelectLocationTemplate: React.FC<SelectLocationTemplateExtendedProp
                   {locationName || 'Loading location...'}
                 </LocationPreviewTitle>
                 {!!locationAddress && (
-                  <LocationPreviewText numberOfLines={1} style={{ marginTop: 2 }}>
+                  <LocationPreviewText
+                    numberOfLines={1}
+                    style={{ marginTop: 2 }}
+                  >
                     {locationAddress}
                   </LocationPreviewText>
                 )}
               </View>
             </LocationPreviewContainer>
           )}
-          
+
           <SelectButton
             onPress={onSendLocation}
             disabled={!locationName}
             activeOpacity={0.9}
           >
             <SelectGradient style={{ opacity: !locationName ? 0.6 : 1 }}>
-              <SelectButtonText>{sendLocationLabel || 'Send Location'}</SelectButtonText>
+              <SelectButtonText>
+                {sendLocationLabel || 'Send Location'}
+              </SelectButtonText>
             </SelectGradient>
           </SelectButton>
         </SelectButtonContainer>

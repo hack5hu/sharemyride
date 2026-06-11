@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal } from 'react-native';
-import { BlurView } from '@react-native-community/blur';
 import { Backdrop, BlurOverlay } from './ModalBackdrop.styles';
 import { ModalBackdropProps } from './types.d';
 

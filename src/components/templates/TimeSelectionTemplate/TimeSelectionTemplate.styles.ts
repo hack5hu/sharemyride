@@ -99,48 +99,21 @@ export const SubtitleText = styled.Text`
   line-height: ${responsiveFont(20)}px;
 `;
 
-/* Floating footer */
-export const FloatingFooter = styled.View`
+/* Footer */
+export const FixedFooter = styled.View`
   position: absolute;
+  bottom: 0;
   left: 0;
   right: 0;
-  bottom: 0;
   padding-horizontal: ${scale(24)}px;
-  padding-bottom: ${verticalScale(32)}px;
-  padding-top: ${verticalScale(24)}px;
-`;
-
-export const FooterGradient = styled(LinearGradient)`
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: -${verticalScale(40)}px;
-`;
-
-export const ContinueButton = styled.TouchableOpacity`
-  width: 100%;
-`;
-
-export const ContinueGradient = styled(LinearGradient)<{ disabled?: boolean }>`
-  width: 100%;
-  padding-vertical: ${verticalScale(16)}px;
-  border-radius: ${moderateScale(12)}px;
-  align-items: center;
-  justify-content: center;
-  shadow-color: ${({ theme, disabled }) => disabled ? 'transparent' : theme.colors.primary};
-  shadow-offset: 0px 12px;
-  shadow-opacity: ${({ disabled }) => disabled ? 0 : 0.3};
-  shadow-radius: 24px;
-  elevation: ${({ disabled }) => disabled ? 0 : 8};
-  margin-bottom: ${verticalScale(12)}px;
-`;
-
-export const ContinueText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(18)}px;
-  color: ${({ theme }) => theme.colors.on_primary};
+  padding-top: ${verticalScale(16)}px;
+  padding-bottom: ${verticalScale(34)}px;
+  background-color: ${({ theme }) => theme.colors.surface};
+  elevation: 8;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
+  shadow-offset: 0px -4px;
+  shadow-opacity: 0.08;
+  shadow-radius: 12px;
 `;
 
 export const ArrivalNote = styled.Text`

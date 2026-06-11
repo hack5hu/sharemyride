@@ -10,12 +10,13 @@ import {
   TimerText, 
   StatusTag,
   StatusTagText,
-  ProfileWrapper
+  ProfileWrapper,
+  AccentBar
 } from './UpcomingRideCard.styles';
 import { UpcomingRideCardProps } from './types.d';
 import { moderateScale } from '@/styles';
 
-export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = ({
+export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = React.memo(({
   timerLabel,
   driverName,
   carModel,
@@ -28,12 +29,14 @@ export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = ({
   dropoffTime,
   dropoffLocation,
   onPress,
-  statusTag
+  statusTag,
+  isDriver = false
 }) => {
   const theme = useTheme();
 
   return (
     <Container onPress={onPress} activeOpacity={0.9}>
+      {isDriver && <AccentBar />}
 
       <CardHeader>
         <TimerBadge>
@@ -46,8 +49,8 @@ export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = ({
         </TimerBadge>
 
         {statusTag && (
-          <StatusTag>
-            <StatusTagText>{statusTag}</StatusTagText>
+          <StatusTag status={statusTag.toUpperCase()}>
+            <StatusTagText status={statusTag.toUpperCase()}>{statusTag}</StatusTagText>
           </StatusTag>
         )}
       </CardHeader>
@@ -62,6 +65,8 @@ export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = ({
             isVerified={isVerified}
             price={price}
             variant="upcoming"
+            isDriver={isDriver}
+            iconName={isDriver ? 'directions-car' : undefined}
           />
         </ProfileWrapper>
       )}
@@ -74,4 +79,4 @@ export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = ({
       />
     </Container>
   );
-};
+});

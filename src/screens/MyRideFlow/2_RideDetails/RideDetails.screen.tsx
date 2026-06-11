@@ -1,12 +1,13 @@
 import React, { memo } from 'react';
-import { RideInformationTemplate } from '@/components/templates/RideInformationTemplate/RideInformationTemplate';
+import { MyRideDetailsTemplate } from '@/components/templates/MyRideDetailsTemplate';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Loader } from '@/components/atoms/Loader';
 import { useRideDetails } from './useRideDetails';
 import { RideDetailsScreenProps } from './types';
-import { CancelRideTemplate } from '@/components/templates/CancelRideTemplate';
+import { CancelRideModal } from '@/components/organisms/CancelRideModal';
 import { Container, Overlay } from './RideDetails.styles';
 import { Box } from '@/components/atoms/Box';
+import { ReportIssueModal } from '@/components/organisms/ReportIssueModal';
 
 export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
   const { 
@@ -15,22 +16,24 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
     isDriver,
     t, 
     handleBack, 
-    handleBook, 
     handleViewRoute, 
     handleCopyAddress,
-    handleDriverProfile,
     handleChat,
+    handleDriverProfile,
+    handlePassengerProfile,
     handleCancelRide,
     handleCancelPassenger,
     handleCancelOwnBooking,
     isCancelModalVisible,
     setIsCancelModalVisible,
-    selectedReasonId,
-    setSelectedReasonId,
-    otherReasonText,
-    setOtherReasonText,
     cancellationReasons,
     handleConfirmCancel,
+    isCancelling,
+    cancelTarget,
+    handleReportRide,
+    isReportModalVisible,
+    setIsReportModalVisible,
+    handleReportSubmit,
   } = useRideDetails();
 
   if (isLoading) {
@@ -45,34 +48,40 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
 
   return (
     <Container>
-      <RideInformationTemplate
+      <MyRideDetailsTemplate
         t={t}
         handleBack={handleBack}
         ride={ride}
-        handleBook={handleBook}
         handleViewRoute={handleViewRoute}
         handleCopyAddress={handleCopyAddress}
-        handleDriverProfile={handleDriverProfile}
         handleChat={handleChat}
-        showBookButton={false}
+        handleDriverProfile={handleDriverProfile}
+        handlePassengerProfile={handlePassengerProfile}
         isDriver={isDriver}
         onCancelRide={handleCancelRide}
         onCancelPassenger={(id) => (isDriver ? handleCancelPassenger(id) : handleCancelOwnBooking())}
-        showVehicleDetails={true}
+        onReportRide={handleReportRide}
       />
 
       {isCancelModalVisible && (
-        <Overlay>
-          <CancelRideTemplate
-            reasons={cancellationReasons}
-            selectedReasonId={selectedReasonId}
-            onSelectReason={setSelectedReasonId}
-            otherReasonText={otherReasonText}
-            onOtherReasonTextChange={setOtherReasonText}
-            onConfirm={handleConfirmCancel}
-            onDismiss={() => setIsCancelModalVisible(false)}
-          />
-        </Overlay>
+        <CancelRideModal
+          isVisible={isCancelModalVisible}
+          onClose={() => setIsCancelModalVisible(false)}
+          onSubmit={handleConfirmCancel}
+          bookingId={cancelTarget?.id?.toString() || ride.myBookingId || ride.id || 'Ride'}
+          isDriver={isDriver}
+          isSpecificUser={cancelTarget?.type === 'BOOKING' && !cancelTarget?.isSelf}
+          isLoading={isCancelling}
+        />
+      )}
+
+      {isReportModalVisible && (
+        <ReportIssueModal
+          isVisible={isReportModalVisible}
+          onClose={() => setIsReportModalVisible(false)}
+          onSubmit={handleReportSubmit}
+          bookingId={ride.myBookingId || ride.id || 'Ride'}
+        />
       )}
     </Container>
   );

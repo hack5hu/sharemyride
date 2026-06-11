@@ -1,12 +1,18 @@
-import * as Keychain from 'react-native-keychain';
-import { BASE_URL, API_ENDPOINTS } from '@/constants/apiEndpoints';
+import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 import apiClient from './apiClient';
+import { Logger } from '@/utils/logger';
 
 export interface ProfileUpdateData {
-  fullName: string;
-  dob: string;
-  gender: string;
+  fullName?: string;
+  dob?: string;
+  gender?: string;
   profileImage?: { uri: string } | null;
+}
+
+interface ReactNativeFile {
+  uri: string;
+  type: string;
+  name: string;
 }
 
 export interface VehiclePayload {
@@ -52,54 +58,67 @@ export const userService = {
     try {
       const formData = new FormData();
 
-      // Convert DD/MM/YYYY -> YYYY-MM-DD
-      let formattedDate = data.dob;
-      if (formattedDate && formattedDate.includes('/')) {
-        const parts = formattedDate.split('/');
-        if (parts.length === 3) {
-          formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
-        }
+      if (data.fullName !== undefined) {
+        formData.append('name', data.fullName);
       }
 
-      // Appending as separate strings as confirmed working for the backend
-      formData.append('name', data.fullName);
-      formData.append('date', formattedDate);
-      formData.append('gender', data.gender ? data.gender.toUpperCase() : 'OTHER');
+      if (data.dob !== undefined) {
+        // Convert DD/MM/YYYY -> YYYY-MM-DD
+        let formattedDate = data.dob;
+        if (formattedDate && formattedDate.includes('/')) {
+          const parts = formattedDate.split('/');
+          if (parts.length === 3) {
+            formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+          }
+        }
+        formData.append('date', formattedDate);
+      }
 
-      // Append the profile image if selected
+      if (data.gender !== undefined) {
+        formData.append('gender', data.gender ? data.gender.toUpperCase() : 'OTHER');
+      }
+
       if (data.profileImage?.uri) {
         formData.append('file', {
           uri: data.profileImage.uri,
           type: 'image/jpeg',
           name: 'profile_image.jpg',
-        } as any);
+        } as unknown as Blob);
       }
 
-      const credentials = await Keychain.getGenericPassword({ service: 'auth_token' });
-      if (!credentials) {
-        throw new Error('No authentication token found');
-      }
-
-      // Using native fetch for reliable multipart/form-data boundary generation in RN
-      const response = await fetch(`${BASE_URL}${API_ENDPOINTS.USER.PROFILE}`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${credentials.password}`,
-          // Note: Content-Type is omitted so fetch automatically adds boundary
-        },
-        body: formData,
-      });
-
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(responseData.message || `Server Error ${response.status}`);
-      }
-
-      return responseData;
+      const response = await apiClient.post(API_ENDPOINTS.USER.PROFILE, formData);
+      return response.data;
     } catch (error) {
-      console.error('Error updating profile:', error);
+      Logger.error('Error updating profile:', error);
+      throw error;
+    }
+  },
+
+  uploadProfilePhoto: async (imageUri: string) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', {
+        uri: imageUri,
+        type: 'image/jpeg',
+        name: 'profile_image.jpg',
+      } as unknown as Blob);
+
+      const response = await apiClient.post(API_ENDPOINTS.USER.PROFILE, formData);
+      return response.data;
+    } catch (error) {
+      Logger.error('Error uploading profile photo:', error);
+      throw error;
+    }
+  },
+
+  deleteProfilePhoto: async () => {
+    try {
+      const response = await apiClient.delete(API_ENDPOINTS.USER.DELETE_PHOTO);
+      return response.data;
+    } catch (error) {
+      Logger.error('Error deleting profile photo:', error);
       throw error;
     }
   },
 };
+

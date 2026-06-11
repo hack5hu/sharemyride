@@ -38,16 +38,20 @@ export const ProfileSetupScreen: React.FC = () => {
       values={formik.values}
       setFieldValue={handleFieldChange}
       errors={formik.errors}
+      touched={formik.touched}
+      setFieldTouched={formik.setFieldTouched}
       submitCount={formik.submitCount}
+      disabled={formik.isSubmitting}
     />
-  ), [formik.values, handleFieldChange, formik.errors, formik.submitCount]);
+  ), [formik.values, handleFieldChange, formik.errors, formik.touched, formik.setFieldTouched, formik.submitCount, formik.isSubmitting]);
 
   const preferences = useMemo(() => (
     <PreferencesSection
       values={formik.values}
       setFieldValue={handleFieldChange}
+      disabled={formik.isSubmitting}
     />
-  ), [formik.values, handleFieldChange]);
+  ), [formik.values, handleFieldChange, formik.isSubmitting]);
 
   const infoBar = useMemo(() => 
     formik.isValid && formik.values.fullName && formik.values.dob ? (

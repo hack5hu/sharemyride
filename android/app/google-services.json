@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "464997505927",
+    "project_id": "zyncride",
+    "storage_bucket": "zyncride.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:464997505927:android:8f84012de075d468a99122",
+        "android_client_info": {
+          "package_name": "com.sharemyride"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG8KXcs2EBTB34rpZmIocI0GgFq7Oz2Dk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

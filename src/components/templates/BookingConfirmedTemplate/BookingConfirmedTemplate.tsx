@@ -18,7 +18,7 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
   const theme = useTheme();
 
   return (
-    <ScreenShell title="Ride Pool Company">
+    <ScreenShell>
       <S.MainContent showsVerticalScrollIndicator={false}>
         {/* Success Header */}
         <S.SuccessArea>
@@ -27,7 +27,7 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
-            <MaterialIcons name="check-circle" size={moderateScale(48)} color="#fff" />
+            <MaterialIcons name="check-circle" size={moderateScale(48)} color={theme.colors.on_primary} />
           </S.SuccessIconContainer>
           <S.SuccessTitle>{t.successTitle}</S.SuccessTitle>
           <S.SuccessSubtitle>{t.successSubtitle}</S.SuccessSubtitle>
@@ -63,6 +63,11 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
               </S.DetailCardHeader>
               <S.ValueWrapper>
                 <Typography variant="title" size="md" weight="bold">{rideData.pickupTime}</Typography>
+                {rideData.departureDate ? (
+                  <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>
+                    {rideData.departureDate}
+                  </Typography>
+                ) : null}
               </S.ValueWrapper>
             </S.DetailCard>
 
@@ -76,7 +81,16 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
                 </Typography>
               </S.DetailCardHeader>
               <S.ValueWrapper>
-                <Typography variant="title" size="md" weight="bold">{rideData.seatNumber}</Typography>
+                <Typography 
+                  variant="title" 
+                  size="md" 
+                  weight="bold"
+                  numberOfLines={1}
+                  adjustsFontSizeToFit={true}
+                  minimumFontScale={0.7}
+                >
+                  {rideData.seatNumber}
+                </Typography>
                 <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>
                   {rideData.seatPreference}
                 </Typography>
@@ -108,10 +122,10 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
             >
-              <Typography variant="body" size="md" weight="bold" color="#fff">
+              <Typography variant="body" size="md" weight="bold" color={theme.colors.on_primary}>
                 {t.primaryCTA}
               </Typography>
-              <MaterialIcons name="arrow-forward" size={20} color="#fff" />
+              <MaterialIcons name="arrow-forward" size={20} color={theme.colors.on_primary} />
             </S.PrimaryButton>
           </S.PrimaryButtonWrapper>
 
@@ -131,7 +145,7 @@ export const BookingConfirmedTemplate: React.FC<BookingConfirmedTemplateProps> =
             <MaterialIcons name="electric-car" size={16} />
           </S.TrustIconsRow>
           <S.TrustText variant="label" size="xxs" weight="bold">
-            Ride Pool Company Carbon Neutral Transit
+            {t.carbonNeutralTransit}
           </S.TrustText>
         </S.TrustSection>
       </S.MainContent>

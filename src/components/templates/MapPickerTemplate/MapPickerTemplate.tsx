@@ -3,23 +3,19 @@ import { Animated, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
-import { TransformRequestManager, Camera, UserLocation } from '@maplibre/maplibre-react-native';
-import { getOlaStyleUrl, OLA_API_KEY } from '@/constants/OlaStyle';
+import { OlaMap, Camera, UserLocation } from '@/components/organisms/OlaMap';
 import {
   PinContainer,
+  PinWrapper,
   TooltipBubble,
   TooltipText,
   PinShadow,
   SelectButtonContainer,
-  SelectButton,
-  SelectGradient,
-  SelectButtonText,
   GradientOverlay,
   LocationPreviewContainer,
   LocationPreviewTitle,
   LocationPreviewText
 } from './MapPickerTemplate.styles';
-import { OlaMap } from '@/components/organisms/OlaMap';
 import { MapSearchOverlayProps, MapSearchOverlay } from '@/components/organisms/MapSearchOverlay';
 import { LocationDetailsCardProps } from '@/components/molecules/LocationDetailsCard';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
@@ -27,6 +23,15 @@ import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import { moderateScale, scale, verticalScale } from '@/styles';
 
 import { UserLocationMarker } from '@/components/atoms/UserLocationMarker';
+import { Button } from '@/components/atoms/Button';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+interface ExtendedUserLocationProps extends React.ComponentProps<typeof UserLocation> {
+  onUpdate?: (location: any) => void;
+  showsUserHeadingIndicator?: boolean;
+}
+
+const MapLibreUserLocation = UserLocation as React.ComponentType<ExtendedUserLocationProps>;
 
 export interface MapPickerTemplateProps {
   pickerType: 'start' | 'destination' | 'middleStop';
@@ -41,7 +46,7 @@ export interface MapPickerTemplateProps {
   onLocateMe?: () => void;
   heading?: number;
   hasPermission?: boolean;
-  searchOverlayProps: MapSearchOverlayProps;
+  searchOverlayProps: Omit<MapSearchOverlayProps, 'isCondensed'>;
   locationDetailsProps: LocationDetailsCardProps;
   mapRef?: React.RefObject<any>;
   cameraRef?: React.RefObject<any>;
@@ -52,6 +57,7 @@ export interface MapPickerTemplateProps {
   onZoomOut?: () => void;
   zoom?: number;
   setIsMapVisible: (val: boolean) => void;
+  isMapMounted: boolean;
 }
 
 export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
@@ -75,9 +81,11 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
   onZoomOut,
   zoom,
   setIsMapVisible,
+  isMapMounted,
 }) => {
   const theme = useTheme();
   const { mapPicker } = useLocale();
+  const insets = useSafeAreaInsets();
   const pinAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -116,95 +124,96 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
   });
 
   return (
-    <ScreenShell title='Select Location' onBack={true}>
-      <MapSearchOverlay 
-        {...searchOverlayProps} 
-        isCondensed={isMapVisible} 
-        setIsCondensed={setIsMapVisible}
+    <ScreenShell title={mapPicker.title} onBack={searchOverlayProps.onBackPress}>
+      <MapSearchOverlay
+        {...searchOverlayProps}
+        isCondensed={isMapVisible}
       />
 
       {/* Map Layer - Warm Mounted */}
-      <OlaMap
-        ref={mapRef}
-        onRegionWillChange={onRegionWillChange}
-        onRegionDidChange={onRegionChangeComplete}
-        style={{ 
-          flex: 1,
-          width: '100%',
-          height: '100%',
-          opacity: isMapVisible ? 1 : 0,
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 0
-        }}
-        pointerEvents={isMapVisible ? 'auto' : 'none'}
-      >
-        <Camera
-          ref={cameraRef}
-          center={[region.longitude, region.latitude]}
-          zoom={zoom ?? 14}
-        />
-        {hasPermission && (
-          <UserLocation 
-            onUpdate={onUserLocationUpdate} 
-            showsUserHeadingIndicator={true}
-          >
-            <UserLocationMarker heading={heading} />
-          </UserLocation>
-        )}
-      </OlaMap>
+      {isMapMounted && (
+        <OlaMap
+          ref={mapRef}
+          onRegionWillChange={onRegionWillChange}
+          onRegionDidChange={onRegionChangeComplete}
+          style={{
+            flex: 1,
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 0,
+            opacity: isMapVisible ? 1 : 0
+          }}
+          pointerEvents={isMapVisible ? 'auto' : 'none'}
+        >
+          <Camera
+            ref={cameraRef}
+            center={[region.longitude, region.latitude]}
+            zoom={zoom ?? 14}
+          />
+          {hasPermission && (
+            <MapLibreUserLocation
+              onUpdate={onUserLocationUpdate}
+              showsUserHeadingIndicator={true}
+            >
+              <UserLocationMarker heading={heading} />
+            </MapLibreUserLocation>
+          )}
+        </OlaMap>
+      )}
 
       {isMapVisible && (
         <>
           <GradientOverlay colors={['transparent', 'rgba(0,0,0,0.05)']} />
 
-          <PinContainer 
-            pointerEvents="none" 
-            as={Animated.View}
-            style={{
-              transform: [
-                { translateX: -moderateScale(24) },
-                { translateY: Animated.add(-moderateScale(48), pinTranslateY) },
-                { scale: pinScale }
-              ]
-            }}
-          >
-            <TooltipBubble 
-              as={Animated.View} 
-              style={{ 
-                opacity: pinAnim.interpolate({
-                  inputRange: [0, 0.2, 1],
-                  outputRange: [1, 0, 0]
-                }) 
+          <PinContainer pointerEvents="none">
+            <PinWrapper
+              as={Animated.View}
+              style={{
+                transform: [
+                  { translateY: pinTranslateY },
+                  { scale: pinScale }
+                ]
               }}
             >
-              <TooltipText>
-                {pickerType === 'start' 
-                  ? mapPicker.setPickup 
-                  : pickerType === 'destination' 
-                    ? mapPicker.setDestination 
-                    : mapPicker.setStop}
-              </TooltipText>
-            </TooltipBubble>
+              <TooltipBubble
+                as={Animated.View}
+                style={{
+                  opacity: pinAnim.interpolate({
+                    inputRange: [0, 0.2, 1],
+                    outputRange: [1, 0, 0]
+                  })
+                }}
+              >
+                <TooltipText>
+                  {pickerType === 'start'
+                    ? mapPicker.setPickup
+                    : pickerType === 'destination'
+                      ? mapPicker.setDestination
+                      : mapPicker.setStop}
+                </TooltipText>
+              </TooltipBubble>
 
-            <Ionicons
-              name="pin-sharp" 
-              size={moderateScale(28)} 
-              color={theme.colors.primary_container} 
-            />
-            <PinShadow 
-              as={Animated.View} 
-              style={{ 
-                opacity: shadowOpacity,
-                transform: [{ scale: shadowScale }]
-              }} 
-            />
+              <Ionicons
+                name="pin-sharp"
+                size={moderateScale(28)}
+                color={theme.colors.primary_container}
+              />
+              <PinShadow
+                as={Animated.View}
+                style={{
+                  opacity: shadowOpacity,
+                  transform: [{ scale: shadowScale }]
+                }}
+              />
+            </PinWrapper>
           </PinContainer>
 
-          <SelectButtonContainer>
+          <SelectButtonContainer style={{ paddingBottom: Math.max(insets.bottom, verticalScale(12)) }}>
             <LocationPreviewContainer>
               <Ionicons
                 name="locate-sharp"
@@ -224,23 +233,17 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
               </View>
             </LocationPreviewContainer>
 
-            <SelectButton
+            <Button
               onPress={locationDetailsProps.onSelect}
               disabled={locationDetailsProps.disabled || !locationDetailsProps.locationName}
-              activeOpacity={0.9}
             >
-              <SelectGradient
-                colors={[theme.colors.primary, theme.colors.primary]}
-                style={{ opacity: (locationDetailsProps.disabled || !locationDetailsProps.locationName) ? 0.6 : 1 }}
-              >
-                <SelectButtonText>{mapPicker.selectLocation}</SelectButtonText>
-              </SelectGradient>
-            </SelectButton>
+              {mapPicker.selectLocation}
+            </Button>
           </SelectButtonContainer>
 
-          <MapControlsFABs 
-            onZoomIn={onZoomIn} 
-            onZoomOut={onZoomOut} 
+          <MapControlsFABs
+            onZoomIn={onZoomIn}
+            onZoomOut={onZoomOut}
             onLocateMe={onLocateMe}
           />
         </>

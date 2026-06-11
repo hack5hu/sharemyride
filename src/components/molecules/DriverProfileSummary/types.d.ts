@@ -7,4 +7,6 @@ export interface DriverProfileSummaryProps {
   isVerified?: boolean;
   price?: string;
   variant?: 'bento' | 'upcoming';
+  isDriver?: boolean;
+  iconName?: string;
 }

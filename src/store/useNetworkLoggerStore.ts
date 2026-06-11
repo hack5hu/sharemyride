@@ -4,11 +4,11 @@ export interface NetworkLog {
   id: string;
   method: string;
   url: string;
-  requestHeaders: any;
-  requestBody: any;
+  requestHeaders: Record<string, unknown>;
+  requestBody: unknown;
   responseStatus: number | null;
-  responseHeaders: any;
-  responseBody: any;
+  responseHeaders: Record<string, unknown> | null;
+  responseBody: unknown;
   startTime: number;
   endTime: number | null;
   duration: number | null;

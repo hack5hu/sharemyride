@@ -42,12 +42,12 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
   );
 
   const TIME_SLOTS = [
-    { id: 'time_0_4', label: '12-4 AM', icon: 'nights-stay' },
-    { id: 'time_4_8', label: '4-8 AM', icon: 'wb-twilight' },
-    { id: 'time_8_12', label: '8-12 AM', icon: 'wb-sunny' },
-    { id: 'time_12_16', label: '12-4 PM', icon: 'light-mode' },
-    { id: 'time_16_20', label: '4-8 PM', icon: 'wb-cloudy' },
-    { id: 'time_20_24', label: '8-12 PM', icon: 'bedtime' },
+    { id: 'time_0_4', label: t.timeSlot04 || '12-4 AM', icon: 'nights-stay' },
+    { id: 'time_4_8', label: t.timeSlot48 || '4-8 AM', icon: 'wb-twilight' },
+    { id: 'time_8_12', label: t.timeSlot812 || '8-12 AM', icon: 'wb-sunny' },
+    { id: 'time_12_16', label: t.timeSlot1216 || '12-4 PM', icon: 'light-mode' },
+    { id: 'time_16_20', label: t.timeSlot1620 || '4-8 PM', icon: 'wb-cloudy' },
+    { id: 'time_20_24', label: t.timeSlot2024 || '8-12 PM', icon: 'bedtime' },
   ];
 
   const toggleTimeSlot = (id: string) => {
@@ -141,35 +141,35 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
               <S.PreferenceItem onPress={() => togglePreference('noSmoking')}>
                 <S.PreferenceLeft>
                   <Icon name="smoke-free" size={moderateScale(20)} color={theme.colors.secondary} />
-                  <Typography variant="label" size="md" weight="bold">No Smoking</Typography>
+                  <Typography variant="label" size="md" weight="bold">{t.noSmoking}</Typography>
                 </S.PreferenceLeft>
                 <Checkbox checked={preferences.noSmoking} onToggle={() => togglePreference('noSmoking')} />
               </S.PreferenceItem>
               <S.PreferenceItem onPress={() => togglePreference('ladiesOnly')}>
                 <S.PreferenceLeft>
                   <Icon name="female" size={moderateScale(20)} color={theme.colors.tertiary} />
-                  <Typography variant="label" size="md" weight="bold">Ladies Only</Typography>
+                  <Typography variant="label" size="md" weight="bold">{t.ladiesOnly}</Typography>
                 </S.PreferenceLeft>
                 <Checkbox checked={preferences.ladiesOnly} onToggle={() => togglePreference('ladiesOnly')} />
               </S.PreferenceItem>
               <S.PreferenceItem onPress={() => togglePreference('verifiedOnly')}>
                 <S.PreferenceLeft>
                   <Icon name="verified-user" size={moderateScale(20)} color={theme.colors.primary} />
-                  <Typography variant="label" size="md" weight="bold">Verified Drivers</Typography>
+                  <Typography variant="label" size="md" weight="bold">{t.verifiedDrivers}</Typography>
                 </S.PreferenceLeft>
                 <Checkbox checked={preferences.verifiedOnly} onToggle={() => togglePreference('verifiedOnly')} />
               </S.PreferenceItem>
               <S.PreferenceItem onPress={() => togglePreference('petFriendly')}>
                 <S.PreferenceLeft>
-                  <Icon name="pets" size={moderateScale(20)} color="#8D6E63" />
-                  <Typography variant="label" size="md" weight="bold">Pet Friendly</Typography>
+                  <Icon name="pets" size={moderateScale(20)} color={theme.colors.secondary} />
+                  <Typography variant="label" size="md" weight="bold">{t.petFriendly}</Typography>
                 </S.PreferenceLeft>
                 <Checkbox checked={preferences.petFriendly} onToggle={() => togglePreference('petFriendly')} />
               </S.PreferenceItem>
               <S.PreferenceItem onPress={() => togglePreference('luggageAllowed')}>
                 <S.PreferenceLeft>
-                  <Icon name="luggage" size={moderateScale(20)} color="#546E7A" />
-                  <Typography variant="label" size="md" weight="bold">Luggage Allowed</Typography>
+                  <Icon name="luggage" size={moderateScale(20)} color={theme.colors.outline} />
+                  <Typography variant="label" size="md" weight="bold">{t.luggageAllowed}</Typography>
                 </S.PreferenceLeft>
                 <Checkbox checked={preferences.luggageAllowed} onToggle={() => togglePreference('luggageAllowed')} />
               </S.PreferenceItem>

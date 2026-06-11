@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { StyledInfoBar, Content, IconContainer, TextContainer } from './InfoBar.styles';
+import { StyledInfoBar, IconContainer, TextContainer } from './InfoBar.styles';
 import { InfoBarProps } from './types';
 import { Typography } from '../../atoms/Typography';
 

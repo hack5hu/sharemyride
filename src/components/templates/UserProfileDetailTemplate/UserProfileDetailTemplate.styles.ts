@@ -89,7 +89,7 @@ export const BentoCard = styled(Box)`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   padding: ${moderateScale(16)}px;
   border-radius: ${moderateScale(12)}px;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 2px;
   shadow-opacity: 0.05;
   shadow-radius: 4px;

@@ -1,9 +1,10 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Avatar } from '../../atoms/Avatar';
 import { Typography } from '../../atoms/Typography';
+import { Loader } from '../../atoms/Loader';
 import { Badge } from '../../atoms/Badge';
 import { StatItem } from '../../molecules/StatItem';
 import { IconButton } from '../../atoms/IconButton';
@@ -24,8 +25,10 @@ export interface ProfileHeaderProps {
   memberSince: string | number;
   isVerified?: boolean;
   avatarUri?: string;
+  isUpdatingAvatar?: boolean;
   onEditPress?: () => void;
   onSettingsPress?: () => void;
+  onAvatarEditPress?: () => void;
 }
 
 export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
@@ -35,8 +38,10 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   memberSince,
   isVerified = true,
   avatarUri,
+  isUpdatingAvatar = false,
   onEditPress,
   onSettingsPress,
+  onAvatarEditPress,
 }) => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -45,19 +50,35 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
     <HeaderCard>
       <IconButton icon="settings" variant="surface" onPress={onSettingsPress} style={{ position: 'absolute', top: 10, right: 10 }} />
       <IdentitySection>
-        <View style={{ position: 'relative' }}>
-          <Avatar 
-            source={avatarUri ? { uri: avatarUri } : undefined} 
-            size="xl" 
-            border 
-          />
-          {/* <IconButton
-            icon="edit"
-            size="sm"
-            variant="primary"
-            style={{ position: 'absolute', bottom: -4, right: -4, borderRadius: 20 }}
-            onPress={onEditPress}
-          /> */}
+        <View style={{ alignItems: 'center' }}>
+          <View>
+            <Avatar 
+              source={avatarUri ? { uri: avatarUri } : undefined} 
+              size="xl" 
+              border
+              placeholder={name}
+            />
+            {isUpdatingAvatar && (
+              <View style={{
+                position: 'absolute',
+                top: 0, left: 0, right: 0, bottom: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'rgba(0,0,0,0.4)',
+                borderRadius: 100,
+              }}>
+                <Loader transparent />
+              </View>
+            )}
+          </View>
+          {onAvatarEditPress && (
+            <TouchableOpacity onPress={onAvatarEditPress} disabled={isUpdatingAvatar} style={{ marginTop: 8, opacity: isUpdatingAvatar ? 0.5 : 1 }}>
+              <Typography variant="label" size="lg" color="primary" weight="bold">
+                {t('profileHub.editProfilePic') || 'Edit'}
+              </Typography>
+            </TouchableOpacity>
+          )}
+          
         </View>
         <InfoSection>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>

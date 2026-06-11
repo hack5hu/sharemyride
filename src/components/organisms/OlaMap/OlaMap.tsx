@@ -1,5 +1,5 @@
 import React, { useEffect, forwardRef } from 'react';
-import { Map as MapView, TransformRequestManager } from '@maplibre/maplibre-react-native';
+import { Map as MapView, TransformRequestManager, OfflineManager } from '@maplibre/maplibre-react-native';
 import { OLA_API_KEY } from '@/constants/OlaStyle';
 import { OlaMapProps } from './types.d';
 
@@ -15,6 +15,9 @@ export const OlaMap = React.memo(forwardRef<any, OlaMapProps>(({
 }, ref) => {
   useEffect(() => {
     if (!isTransformRequestSetup) {
+      // Set 100MB ambient tile cache to ensure repeat location views are cached
+      OfflineManager.setMaximumAmbientCacheSize(100 * 1024 * 1024);
+
       TransformRequestManager.addUrlSearchParam({
         id: "ola-api-key",
         match: /api\.olamaps\.io/,
@@ -37,9 +40,6 @@ export const OlaMap = React.memo(forwardRef<any, OlaMapProps>(({
     <MapView
       ref={ref}
       mapStyle={mapStyle}
-      logoEnabled={false}
-      attributionEnabled={false}
-      styleURL={mapStyle} // redundant but safe
       {...rest}
     >
       {children}

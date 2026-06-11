@@ -1,17 +1,20 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useMemo } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/navigation/types';
 import { ProfileUpdateData, profileService } from '@/serviceManager/profileService';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const useEditProfile = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation = useAppNavigation();
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const { user, fetchProfile } = useAuthStore();
@@ -56,11 +59,43 @@ export const useEditProfile = () => {
     onSubmit: async (values) => {
       setLoading(true);
       try {
-        await profileService.updateProfile({
-          ...values,
-          name: values.fullName, // Adjust keys if backend expects different names
-          date: typeof values.dob === 'object' ? values.dob.toISOString() : values.dob,
-        } as any);
+        const updatePayload: any = {};
+        
+        if (values.fullName !== formik.initialValues.fullName) {
+          updatePayload.fullName = values.fullName;
+        }
+        
+        const initialDobStr = formik.initialValues.dob instanceof Date 
+          ? formik.initialValues.dob.toISOString().split('T')[0] 
+          : String(formik.initialValues.dob);
+        const currentDobStr = values.dob instanceof Date 
+          ? values.dob.toISOString().split('T')[0] 
+          : String(values.dob);
+        if (initialDobStr !== currentDobStr) {
+          updatePayload.dob = currentDobStr;
+        }
+
+        if (values.gender !== formik.initialValues.gender) {
+          updatePayload.gender = values.gender;
+        }
+
+        if (values.bio !== formik.initialValues.bio) {
+          updatePayload.bio = values.bio;
+        }
+
+        if (Object.keys(updatePayload).length === 0) {
+          showNotification(
+            NotificationType.SUCCESS,
+            t('notification.defaultSuccessTitle') || 'Success',
+            t('editProfile.successMessage')
+          );
+          setTimeout(() => {
+            navigation.goBack();
+          }, 1000);
+          return;
+        }
+
+        await profileService.updateProfile(updatePayload);
         
         await fetchProfile();
         setShowSuccess(true);
@@ -69,6 +104,11 @@ export const useEditProfile = () => {
         }, 1500);
       } catch (err: any) {
         console.error('Profile update error:', err);
+        showNotification(
+          NotificationType.ERROR,
+          t('notification.defaultErrorTitle'),
+          getErrorMessage(err, t('notification.defaultErrorMessage'))
+        );
       } finally {
         setLoading(false);
       }

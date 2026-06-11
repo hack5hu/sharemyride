@@ -9,9 +9,13 @@ const getMonthsData = (): MonthData[] => {
   const currentYear = today.getFullYear();
   const currentMonth = today.getMonth();
 
+  const maxDate = new Date();
+  maxDate.setDate(maxDate.getDate() + 60);
+  const monthCount = (maxDate.getFullYear() - currentYear) * 12 + (maxDate.getMonth() - currentMonth) + 1;
+
   const months: MonthData[] = [];
 
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < monthCount; i++) {
     const date = new Date(currentYear, currentMonth + i, 1);
     months.push({
       year: date.getFullYear(),

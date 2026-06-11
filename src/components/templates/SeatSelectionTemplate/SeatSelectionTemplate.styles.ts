@@ -27,7 +27,7 @@ export const BriefingCard = styled.View`
   justify-content: space-between;
   align-items: center;
   elevation: 2;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.04;
   shadow-radius: 20px;
@@ -43,17 +43,20 @@ export const IconCircle = styled.View`
 `;
 
 
-export const BarWrapper = styled.View`
+export const FixedFooter = styled.View`
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   padding-horizontal: ${scale(24)}px;
-  padding-bottom: ${verticalScale(40)}px;
-  padding-top: ${verticalScale(24)}px;
-  background-color: ${({ theme }) => theme.colors.surface}E6;
-  border-top-width: 1px;
-  border-color: ${({ theme }) => theme.colors.surface_container_highest};
+  padding-top: ${verticalScale(16)}px;
+  padding-bottom: ${verticalScale(34)}px;
+  background-color: ${({ theme }) => theme.colors.surface};
+  elevation: 8;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
+  shadow-offset: 0px -4px;
+  shadow-opacity: 0.08;
+  shadow-radius: 12px;
 `;
 
 export const TitleContainer = styled.View`

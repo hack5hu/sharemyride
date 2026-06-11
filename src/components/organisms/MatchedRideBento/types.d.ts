@@ -8,8 +8,8 @@ export interface MatchedRideBentoProps {
   price?: string;
   seatCount?: number | string;
   date?: string;
-  onAccept: () => void;
   onReject?: () => void;
   onPress?: () => void;
+  disabled?: boolean;
 }
 

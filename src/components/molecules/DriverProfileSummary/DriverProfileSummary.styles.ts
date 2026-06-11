@@ -23,8 +23,8 @@ export const InfoSection = styled.View`
 
 export const Name = styled.Text<{ variant: string }>`
   font-family: 'Plus Jakarta Sans';
-  font-size: ${moderateScale(16)}px;
-  font-weight: 800;
+  font-size: ${moderateScale(15)}px;
+  font-weight: 700;
   color: ${({ theme, variant }) => 
     variant === 'bento' ? theme.colors.on_primary_fixed_variant : theme.colors.on_surface};
 `;
@@ -52,3 +52,13 @@ export const PriceText = styled.Text`
   font-weight: 800;
   color: ${({ theme }) => theme.colors.primary};
 `;
+
+export const VehicleSubtitle = styled.Text<{ variant: string }>`
+  font-family: 'Plus Jakarta Sans';
+  font-size: ${moderateScale(11)}px;
+  font-weight: 600;
+  color: ${({ theme, variant }) => 
+    variant === 'bento' ? theme.colors.on_primary_fixed_variant : theme.colors.on_surface_variant};
+  opacity: ${({ variant }) => (variant === 'bento' ? 0.8 : 1)};
+`;
+

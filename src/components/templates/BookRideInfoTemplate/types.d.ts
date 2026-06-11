@@ -6,9 +6,11 @@ export interface BookRideInfoTemplateProps {
   travelDate: Date | null;
   peopleCount: number;
   isSearching: boolean;
+  isSwapped: boolean;
   recentSearches: RecentSearch[];
   onPressPickup: () => void;
   onPressDestination: () => void;
+  onSwapLocations: () => void;
   onOpenDatePicker: () => void;
   onIncrementPeople: () => void;
   onDecrementPeople: () => void;

@@ -6,6 +6,7 @@ import { IconButton } from '@/components/atoms/IconButton';
 import { ModalBackdrop } from '@/components/atoms/ModalBackdrop';
 import { CategoryButton } from '@/components/molecules/CategoryButton';
 import { TrustInfoBar } from '@/components/molecules/TrustInfoBar';
+import { useLocale } from '@/constants/localization';
 import { 
   ModalContainer, 
   Header, 
@@ -23,14 +24,6 @@ import {
 import { ReportIssueModalProps } from './types.d';
 import { CategoryIconVariant } from '@/components/atoms/CategoryIcon';
 
-const CATEGORIES: { id: string; label: string; icon: string; variant: CategoryIconVariant }[] = [
-  { id: 'safety', label: 'Safety Concern', icon: 'shield', variant: 'tertiary' },
-  { id: 'behavior', label: 'Inappropriate Behavior', icon: 'person-alert', variant: 'secondary' },
-  { id: 'vehicle', label: 'Vehicle Issue', icon: 'car-repair', variant: 'primary' },
-  { id: 'payment', label: 'Payment/Price Issue', icon: 'payments', variant: 'emerald' },
-  { id: 'other', label: 'Other', icon: 'more-horiz', variant: 'surface' },
-];
-
 export const ReportIssueModal: React.FC<ReportIssueModalProps> = ({
   isVisible,
   onClose,
@@ -38,8 +31,17 @@ export const ReportIssueModal: React.FC<ReportIssueModalProps> = ({
   bookingId,
 }) => {
   const theme = useTheme();
+  const { reportIssue: t } = useLocale();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [description, setDescription] = useState('');
+
+  const CATEGORIES: { id: string; label: string; icon: string; variant: CategoryIconVariant }[] = [
+    { id: 'safety', label: t.categorySafety, icon: 'shield', variant: 'tertiary' },
+    { id: 'behavior', label: t.categoryBehavior, icon: 'person-alert', variant: 'secondary' },
+    { id: 'vehicle', label: t.categoryVehicle, icon: 'car-repair', variant: 'primary' },
+    { id: 'payment', label: t.categoryPayment, icon: 'payments', variant: 'emerald' },
+    { id: 'other', label: t.categoryOther, icon: 'more-horiz', variant: 'surface' },
+  ];
 
   const handleResetAndClose = () => {
     setSelectedCategory(null);
@@ -61,7 +63,7 @@ export const ReportIssueModal: React.FC<ReportIssueModalProps> = ({
           <Header>
           <HeaderLeft>
             <IconButton icon="close" onPress={handleResetAndClose} variant="surface" size="sm" />
-            <Typography variant="title" size="md" weight="bold">Report Issue</Typography>
+            <Typography variant="title" size="md" weight="bold">{t.title}</Typography>
           </HeaderLeft>
           <BookingBadge>
             <Typography variant="label" size="xxs" weight="bold" color="secondary">
@@ -72,9 +74,9 @@ export const ReportIssueModal: React.FC<ReportIssueModalProps> = ({
 
         <Content keyboardShouldPersistTaps="handled">
           <Section>
-            <Typography variant="headline" size="sm" weight="bold">What happened?</Typography>
+            <Typography variant="headline" size="sm" weight="bold">{t.whatHappenedTitle}</Typography>
             <Typography variant="body" size="sm" color="on_surface_variant">
-              Select the category that best describes your concern.
+              {t.whatHappenedSubtitle}
             </Typography>
             <CategoryGrid>
               {CATEGORIES.map((cat) => (
@@ -92,21 +94,21 @@ export const ReportIssueModal: React.FC<ReportIssueModalProps> = ({
           </Section>
 
           <Section>
-            <Typography variant="headline" size="sm" weight="bold">Tell us more</Typography>
+            <Typography variant="headline" size="sm" weight="bold">{t.tellUsMoreTitle}</Typography>
             <Typography variant="body" size="sm" color="on_surface_variant">
-              Your privacy is our priority. Shared details help us investigate faster.
+              {t.tellUsMoreSubtitle}
             </Typography>
             <DescriptionInput 
               multiline
               numberOfLines={4}
-              placeholder="Describe the incident in detail..."
+              placeholder={t.placeholder}
               value={description}
               onChangeText={setDescription}
               textAlignVertical="top"
             />
           </Section>
 
-          <TrustInfoBar message="This report will be handled by our 24/7 Safety Excellence Team." />
+          <TrustInfoBar message={t.safetyExcellentTeam} />
         </Content>
 
         <Footer>
@@ -122,13 +124,13 @@ export const ReportIssueModal: React.FC<ReportIssueModalProps> = ({
               style={{ opacity: selectedCategory ? 1 : 0.5 }}
             >
               <Typography variant="title" size="sm" weight="bold" color="on_primary">
-                Submit Report
+                {t.submitReport}
               </Typography>
             </GradientBtn>
           </SubmitButton>
           <CancelButton onPress={handleResetAndClose} activeOpacity={0.7}>
             <Typography variant="title" size="sm" weight="bold" color="on_surface_variant">
-              Cancel
+              {t.cancel}
             </Typography>
           </CancelButton>
         </Footer>

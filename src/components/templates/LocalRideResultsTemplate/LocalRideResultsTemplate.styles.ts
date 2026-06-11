@@ -29,7 +29,7 @@ export const BackButtonContainer = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.colors.surface_container_highest};
   padding: ${moderateScale(12)}px;
   border-radius: ${moderateScale(30)}px;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.1;
   shadow-radius: 8px;
@@ -44,7 +44,7 @@ export const InfoCard = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   border-radius: ${moderateScale(24)}px;
   padding: ${moderateScale(24)}px;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 8px;
   shadow-opacity: 0.12;
   shadow-radius: 16px;

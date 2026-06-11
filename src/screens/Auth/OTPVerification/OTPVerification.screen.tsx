@@ -1,7 +1,7 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { useNavigation } from '@react-navigation/native';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { OtpInput } from '../../../components/molecules/OtpInput';
 import { Toast } from '../../../components/molecules/Toast';
@@ -31,7 +31,7 @@ export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
   phoneNumber: propPhoneNumber,
 }) => {
   const theme = useTheme();
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const [toastConfig, setToastConfig] = React.useState<{
     isVisible: boolean;
     type: 'success' | 'error' | 'info';
@@ -90,6 +90,7 @@ export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
             onTextChange={handleTextChange}
             onFilled={handleVerify}
             error={false}
+            disabled={loading}
           />
 
           <VerifyButton

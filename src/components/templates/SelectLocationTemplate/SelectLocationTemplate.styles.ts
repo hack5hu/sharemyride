@@ -146,3 +146,46 @@ export const SelectButtonText = styled.Text`
   font-size: ${moderateScale(18)}px;
   color: ${({ theme }) => theme.colors.on_primary};
 `;
+
+export const GpsWarningBanner = styled.View`
+  flex-direction: row;
+  align-items: center;
+  background-color: ${({ theme }) => theme.colors.error_container};
+  padding: ${moderateScale(10)}px ${moderateScale(12)}px;
+  border-radius: ${moderateScale(10)}px;
+  margin-top: ${verticalScale(12)}px;
+`;
+
+export const GpsWarningText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-size: ${moderateScale(13)}px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.on_error_container};
+`;
+
+export const GpsWarningPath = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-size: ${moderateScale(11)}px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.error};
+  margin-top: ${verticalScale(2)}px;
+`;
+
+export const GpsEnableButton = styled.TouchableOpacity`
+  background-color: ${({ theme }) => theme.colors.error};
+  padding-vertical: ${verticalScale(6)}px;
+  padding-horizontal: ${scale(10)}px;
+  border-radius: ${moderateScale(6)}px;
+  margin-horizontal: ${scale(8)}px;
+`;
+
+export const GpsEnableText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-size: ${moderateScale(12)}px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.on_primary};
+`;
+
+export const GpsCloseButton = styled.TouchableOpacity`
+  padding: ${moderateScale(4)}px;
+`;

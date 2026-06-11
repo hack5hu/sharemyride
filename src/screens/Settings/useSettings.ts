@@ -1,13 +1,16 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { useSettingsStore } from '@/store/settings';
 import { useAuthStore } from '@/store';
 import { useLocale } from '@/constants/localization';
 import { storage } from '@/utils/storage';
 import { authService } from '@/serviceManager/authService';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const useSettings = () => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const t = useLocale();
 
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
@@ -53,8 +56,13 @@ export const useSettings = () => {
         index: 0,
         routes: [{ name: 'Login' as never }],
       });
-    } catch (e) {
+    } catch (e: any) {
       console.error('Logout failed in settings:', e);
+      showNotification(
+        NotificationType.ERROR,
+        t.notification.defaultErrorTitle,
+        getErrorMessage(e, t.notification.defaultErrorMessage)
+      );
     } finally {
       setIsLoggingOut(false);
       setIsLogoutModalVisible(false);

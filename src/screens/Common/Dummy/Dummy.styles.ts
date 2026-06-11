@@ -67,3 +67,8 @@ export const EmptySubtitle = styled(Typography).attrs({
 })`
   margin-top: ${verticalScale(16)}px;
 `;
+
+export const ActionContainer = styled.View`
+  margin-top: ${verticalScale(24)}px;
+  align-items: center;
+`;

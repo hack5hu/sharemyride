@@ -11,6 +11,8 @@ export const LocationSelectionScreen: React.FC = () => {
     handlePressDestination,
     handleContinue,
     canContinue,
+    recentRides,
+    handleSelectRecentRide,
   } = useLocationSelection();
 
 
@@ -23,6 +25,8 @@ export const LocationSelectionScreen: React.FC = () => {
       onPressDestination={handlePressDestination}
       onPressContinue={handleContinue}
       canContinue={canContinue}
+      recentRides={recentRides}
+      onSelectRecentRide={handleSelectRecentRide}
       navBar={
         <BottomNav activeTab={ 'PUBLISH'} />
       }

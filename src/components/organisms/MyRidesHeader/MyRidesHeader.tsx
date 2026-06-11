@@ -18,12 +18,14 @@ export const MyRidesHeader: React.FC<MyRidesHeaderProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const TABS: { label: string; value: MyRidesTab }[] = [
+  const rawTabs: { label: string; value: MyRidesTab }[] = [
     { label: t('myRides.requestsTab'), value: 'requests' },
     { label: t('myRides.upcomingTab'), value: 'upcoming' },
     { label: t('myRides.draftsTab'), value: 'drafts' },
     { label: t('myRides.archiveTab'), value: 'archive' },
-  ].filter(tab => tab.value !== 'requests' || hasRequests);
+  ];
+
+  const TABS = rawTabs.filter(tab => tab.value !== 'requests' || hasRequests);
 
   return (
     <Container>

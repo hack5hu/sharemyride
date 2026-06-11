@@ -1,12 +1,22 @@
 import { StateStorage } from 'zustand/middleware';
 import { createMMKV } from 'react-native-mmkv';
+import { MMKV_ENCRYPTION_KEY } from '@env';
 
-// SECURITY NOTE: Replace this static key with a device-unique value in production.
-// Options: derive from react-native-keychain, generate once on first install,
-// or use react-native-sensitive-info. Never commit production keys to source control.
+const getEncryptionKey = (): string => {
+  if (MMKV_ENCRYPTION_KEY) {
+    return MMKV_ENCRYPTION_KEY;
+  }
+
+  if (__DEV__) {
+    return 'development-only-mmkv-key';
+  }
+
+  throw new Error('MMKV_ENCRYPTION_KEY must be configured for production builds.');
+};
+
 export const storage = createMMKV({
   id: 'tuktuk-auth-storage',
-  encryptionKey: 'hunter2',
+  encryptionKey: getEncryptionKey(),
 });
 
 export const mmkvStorage: StateStorage = {

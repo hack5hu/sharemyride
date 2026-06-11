@@ -12,6 +12,10 @@ interface ChatState {
   setMyUserId: (userId: string | null) => void;
   addMessage: (conversationId: string, message: ChatMessage) => void;
   updateMessageStatus: (conversationId: string, messageId: string, status: MessageStatus) => void;
+  updateMultipleMessageStatuses: (
+    conversationId: string,
+    updates: { messageId: string; status: MessageStatus }[]
+  ) => void;
   linkPendingMessage: (conversationId: string, tempId: string, realId: string, status: MessageStatus) => void;
   setConversations: (conversations: ChatConversation[]) => void;
   setConnectionStatus: (status: ConnectionStatus) => void;
@@ -25,6 +29,24 @@ interface ChatState {
 }
 
 const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
+
+// A simple in-memory lookup table for messageId -> conversationId to avoid O(N) searches
+const messageToConvMap = new Map<string, string>();
+
+export const getConversationIdForMessage = (messageId: string): string => {
+  if (messageToConvMap.has(messageId)) {
+    return messageToConvMap.get(messageId)!;
+  }
+  const { messages } = useChatStore.getState();
+  for (const convId of Object.keys(messages)) {
+    const found = messages[convId].some(m => m.messageId === messageId);
+    if (found) {
+      messageToConvMap.set(messageId, convId);
+      return convId;
+    }
+  }
+  return '';
+};
 
 export const useChatStore = create<ChatState>()(
   persist(
@@ -48,6 +70,7 @@ export const useChatStore = create<ChatState>()(
           
           // Check if message ID already exists
           if (chatMessages.some(m => m.messageId === message.messageId)) return state;
+          messageToConvMap.set(message.messageId, conversationId);
 
           // Deduplication Logic: If this is a real message arriving via socket,
           // check if we have a PENDING message with the same content/sender that we should replace.
@@ -116,19 +139,66 @@ export const useChatStore = create<ChatState>()(
       },
 
       updateMessageStatus: (conversationId, messageId, status) => {
+        get().updateMultipleMessageStatuses(conversationId, [{ messageId, status }]);
+      },
+
+      updateMultipleMessageStatuses: (conversationId, updates) => {
         set((state) => {
           const chatMessages = state.messages[conversationId] || [];
-          const updatedMessages = chatMessages.map((m) =>
-            m.messageId === messageId ? { ...m, status } : m
-          );
+          
+          const updateMap = new Map<string, MessageStatus>();
+          updates.forEach(u => updateMap.set(u.messageId, u.status));
 
-          // Also update the status in the conversation summary if it's the last message
+          // Find the latest timestamp among messages being marked as READ
+          let maxReadTimestamp = 0;
+          chatMessages.forEach(m => {
+            const newStatus = updateMap.get(m.messageId);
+            if (newStatus === MessageStatus.READ) {
+              if (m.timestamp > maxReadTimestamp) {
+                maxReadTimestamp = m.timestamp;
+              }
+            }
+          });
+
+          const updatedMessages = chatMessages.map((m) => {
+            // Cascade Read: if a later message in the conversation was read, any older completed message is also read
+            const isCascadeRead = maxReadTimestamp > 0 && 
+              m.timestamp <= maxReadTimestamp &&
+              m.status !== MessageStatus.PENDING &&
+              m.status !== MessageStatus.FAILED;
+
+            if (updateMap.has(m.messageId)) {
+              return { ...m, status: updateMap.get(m.messageId)! };
+            } else if (isCascadeRead) {
+              return { ...m, status: MessageStatus.READ };
+            }
+            return m;
+          });
+
           const updatedConversations = state.conversations.map((c) => {
-            if (c.conversationId === conversationId && c.lastMessage?.messageId === messageId) {
-              return {
-                ...c,
-                lastMessage: { ...c.lastMessage, status },
-              };
+            if (c.conversationId === conversationId && c.lastMessage) {
+              const isLastMsgCascaded = maxReadTimestamp > 0 && 
+                c.lastMessage.timestamp <= maxReadTimestamp &&
+                c.lastMessage.status !== MessageStatus.PENDING &&
+                c.lastMessage.status !== MessageStatus.FAILED;
+
+              if (updateMap.has(c.lastMessage.messageId)) {
+                return {
+                  ...c,
+                  lastMessage: { 
+                    ...c.lastMessage, 
+                    status: updateMap.get(c.lastMessage.messageId)! 
+                  },
+                };
+              } else if (isLastMsgCascaded) {
+                return {
+                  ...c,
+                  lastMessage: {
+                    ...c.lastMessage,
+                    status: MessageStatus.READ
+                  }
+                };
+              }
             }
             return c;
           });
@@ -149,6 +219,8 @@ export const useChatStore = create<ChatState>()(
           const updatedMessages = chatMessages.map((m) =>
             m.messageId === tempId ? { ...m, messageId: realId, status } : m
           );
+          messageToConvMap.set(realId, conversationId);
+          messageToConvMap.delete(tempId);
 
           // Also update the conversation summary
           const updatedConversations = state.conversations.map((c) => {
@@ -256,6 +328,7 @@ export const useChatStore = create<ChatState>()(
 
           // Combine them and sort chronologically so layout renders in correct sequence
           const allMerged = [...localOnlyMessages, ...mergedHistory].sort((a, b) => a.timestamp - b.timestamp);
+          allMerged.forEach(m => messageToConvMap.set(m.messageId, conversationId));
 
           return {
             messages: {
@@ -314,6 +387,12 @@ export const useChatStore = create<ChatState>()(
     {
       name: 'tuktuk-chat-storage',
       storage: createJSONStorage(() => mmkvStorage),
+      partialize: (state) => ({
+        messages: state.messages,
+        conversations: state.conversations,
+        myUserId: state.myUserId,
+        users: state.users,
+      }),
     }
   )
 );

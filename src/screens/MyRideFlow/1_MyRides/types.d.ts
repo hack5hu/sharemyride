@@ -6,7 +6,7 @@ export interface RideListItem {
   subtitle: string;
   price: string;
   icon?: string;
-  type: 'upcoming' | 'draft' | 'completed';
+  type: 'upcoming' | 'draft' | 'completed' | 'archive' | 'requests';
   rawDate?: Date;
   // For UpcomingRideCard
   timerLabel?: string;
@@ -18,6 +18,8 @@ export interface RideListItem {
   pickupLocation?: string;
   dropoffTime?: string;
   dropoffLocation?: string;
+  role?: 'DRIVER' | 'PASSENGER';
+  statusTag?: string;
 }
 
 export interface MyRidesHookData {
@@ -26,7 +28,7 @@ export interface MyRidesHookData {
   isRefreshing: boolean;
   isActionLoading: boolean;
   onTabChange: (tab: MyRidesTab) => void;
-  onRidePress: (id: string) => void;
+  onRidePress: (params: { id: string; rideId?: string; sourceStopId?: number; destinationStopId?: number }) => void;
   onRemoveDraft: (id: string) => void;
   onCancelRide: (id: string | number) => void;
   onClearDrafts: () => void;
@@ -34,10 +36,22 @@ export interface MyRidesHookData {
   onRefresh: () => void;
   onLoadMore: () => void;
   hasMore: boolean;
-  currentRides: RideListItem[];
+  getTabData: (tab: MyRidesTab) => RideListItem[];
   drafts: any[];
+  mappedRequests: any[];
+  hasRequests: boolean;
   onMenuPress: () => void;
   onProfilePress: () => void;
   onAcceptRide: (id: string) => void;
   onRejectRide: (id: string) => void;
+  confirmModalConfig: {
+    isVisible: boolean;
+    title: string;
+    message: string;
+    confirmLabel?: string;
+    cancelLabel?: string;
+    onConfirm: () => void;
+    type?: 'info' | 'danger' | 'warning';
+  };
+  hideConfirmModal: () => void;
 }

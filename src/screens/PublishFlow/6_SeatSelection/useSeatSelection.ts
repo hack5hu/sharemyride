@@ -1,12 +1,13 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { useNavigation, useRoute, RouteProp, useIsFocused } from '@react-navigation/native';
+import { useRoute, RouteProp, useIsFocused } from '@react-navigation/native';
 import { useLocale } from '@/constants/localization';
 import { RootStackParamList } from '@/navigation/types.d';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useVehicleStore } from '@/store/useVehicleStore';
 
 export const useSeatSelection = () => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const route = useRoute<RouteProp<RootStackParamList, 'SeatSelection'>>();
   const isFocused = useIsFocused();
   const { selectSeat: tSelect, seatSelection: tPublish } = useLocale();
@@ -40,7 +41,6 @@ export const useSeatSelection = () => {
         model: vehicle.model,
         numberPlate: vehicle.numberPlate,
         type: vehicle.type,
-        year: (vehicle as any).year,
         color: vehicle.color,
         seater: vehicle.seater,
       });
@@ -50,7 +50,9 @@ export const useSeatSelection = () => {
 
   useEffect(() => {
     if (isFocused && vehicles.length > 0) {
-      if (selectedVehicleId) {
+      if (!selectedVehicleId) {
+        handleVehicleSelect(vehicles[0].id);
+      } else {
         // If one is selected, ensure publish store is synced with it
         const vehicle = vehicles.find(v => v.id === selectedVehicleId);
         if (vehicle && (publishVehicleType !== vehicle.seater || vehicleId !== vehicle.id)) {
@@ -61,14 +63,13 @@ export const useSeatSelection = () => {
             model: vehicle.model,
             numberPlate: vehicle.numberPlate,
             type: vehicle.type,
-            year: (vehicle as any).year,
             color: vehicle.color,
             seater: vehicle.seater,
           });
         }
       }
     }
-  }, [isFocused, vehicles, selectedVehicleId, publishVehicleType, vehicleId, setVehicleId, setPublishVehicleType, setVehicleDetails]);
+  }, [isFocused, vehicles, selectedVehicleId, handleVehicleSelect, publishVehicleType, vehicleId, setVehicleId, setPublishVehicleType, setVehicleDetails]);
 
   const onSeatPress = useCallback((id: string | number) => {
     setSelectedSeats((prev) => {
@@ -102,7 +103,9 @@ export const useSeatSelection = () => {
         setPublishVehicleType(publishVehicleType);
         
         if (returnTo) {
-          (navigation.navigate as any)(returnTo);
+          (navigation.navigate as any)(returnTo, {
+            returnTo: (route.params as any)?.nextReturnTo,
+          });
         } else {
           (navigation.navigate as any)('PriceSelection');
         }

@@ -18,17 +18,18 @@ interface PreferenceListProps {
   preferences: any[] | null;
   onEdit: () => void;
   t: any;
+  disabled?: boolean;
 }
 
-export const PreferenceList: React.FC<PreferenceListProps> = ({ preferences, onEdit, t }) => {
+export const PreferenceList: React.FC<PreferenceListProps> = ({ preferences, onEdit, t, disabled }) => {
   const theme = useTheme();
 
   return (
     <GlassCard>
       <SectionHeader>
         <SectionLabel>{t.ridePreferencesLabel}</SectionLabel>
-        <EditButton onPress={onEdit} activeOpacity={0.7}>
-          <Icon name="edit" size={moderateScale(16)} color={theme.colors.primary} />
+        <EditButton onPress={onEdit} activeOpacity={0.7} disabled={disabled}>
+          <Icon name="edit" size={moderateScale(16)} color={theme.colors.primary} style={{ opacity: disabled ? 0.4 : 1 }} />
         </EditButton>
       </SectionHeader>
       

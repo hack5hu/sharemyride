@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScreenHeader } from '@/components/molecules/ScreenHeader';
 import { Shell } from './ScreenShell.styles';
-import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export interface ScreenShellProps {
   /** Screen title shown in the header. Pass undefined to hide the header entirely. */
@@ -12,6 +12,8 @@ export interface ScreenShellProps {
   rightElement?: React.ReactNode;
   /** Whether the shell should have a transparent background (e.g. for modals) */
   transparent?: boolean;
+  /** Disable top safe area padding to draw content directly behind the status bar */
+  noPaddingTop?: boolean;
   children: React.ReactNode;
 }
 
@@ -26,11 +28,13 @@ export const ScreenShell: React.FC<ScreenShellProps> = ({
   onBack,
   rightElement,
   transparent,
+  noPaddingTop,
   children,
 }) => {
- 
+  const insets = useSafeAreaInsets();
+  
   return (
-    <Shell transparent={transparent}>
+    <Shell transparent={transparent} style={{ paddingTop: noPaddingTop ? 0 : insets.top }}>
       {title != null && (
         <ScreenHeader
           title={title}

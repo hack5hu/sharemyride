@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
 import { Typography } from '@/components/atoms/Typography';
 
@@ -20,7 +21,7 @@ export const FloatingButton = styled.TouchableOpacity`
   z-index: 9999;
 `;
 
-export const ModalWrapper = styled.SafeAreaView`
+export const ModalWrapper = styled(SafeAreaView)`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.surface};
   margin-top: ${verticalScale(40)}px;
@@ -141,7 +142,7 @@ export const EmptyState = styled.View`
   padding: ${moderateScale(24)}px;
 `;
 
-export const DetailModalContainer = styled.SafeAreaView`
+export const DetailModalContainer = styled(SafeAreaView)`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.surface};
 `;

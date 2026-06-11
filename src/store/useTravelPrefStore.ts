@@ -24,7 +24,7 @@ const DEFAULT_PREFERENCES: TravelPreferenceData = {
 
 export const useTravelPrefStore = create<TravelPrefStore>()(
   persist(
-    (set, _get) => ({
+    (set, get) => ({
       preferences: DEFAULT_PREFERENCES,
       isLoading: false,
 
@@ -35,16 +35,35 @@ export const useTravelPrefStore = create<TravelPrefStore>()(
       },
 
       syncPreferences: async () => {
-        set({ isLoading: true });
+        const currentPrefs = get().preferences;
+        // Determine initial load by checking if it's identical to default or uninitialized
+        const isInitialLoad = !currentPrefs || Object.keys(currentPrefs).length === 0;
+        if (isInitialLoad) {
+          set({ isLoading: true });
+        }
         try {
           const data = await rideService.getPreferences();
           if (data) {
-            set({ preferences: data });
+            const isIdentical = 
+              currentPrefs.nonSmoking === data.nonSmoking &&
+              currentPrefs.womenOnly === data.womenOnly &&
+              currentPrefs.manualApproval === data.manualApproval &&
+              currentPrefs.musicPreference === data.musicPreference &&
+              currentPrefs.luggageAllowed === data.luggageAllowed &&
+              currentPrefs.petFriendly === data.petFriendly &&
+              currentPrefs.maxBackSeats === data.maxBackSeats &&
+              currentPrefs.waitingTime === data.waitingTime;
+
+            if (!isIdentical) {
+              set({ preferences: data });
+            }
           }
         } catch (error) {
           console.error('Failed to sync preferences:', error);
         } finally {
-          set({ isLoading: false });
+          if (isInitialLoad) {
+            set({ isLoading: false });
+          }
         }
       },
 

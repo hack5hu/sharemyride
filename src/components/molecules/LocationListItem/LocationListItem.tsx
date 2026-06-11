@@ -27,7 +27,6 @@ export const LocationListItem: React.FC<LocationListItemProps> = ({
           name={icon} 
           size={moderateScale(20)} 
           color={isCurrentLocation ? theme.colors.on_secondary_container : theme.colors.on_surface_variant} 
-          style={isCurrentLocation ? { fontVariationSettings: "'FILL' 1" } : {}}
         />
       </IconBox>
       <TextContent>

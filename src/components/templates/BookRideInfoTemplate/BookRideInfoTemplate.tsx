@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Animated } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
@@ -18,9 +18,11 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> = React.m
   travelDate,
   peopleCount,
   isSearching,
+  isSwapped,
   recentSearches,
   onPressPickup,
   onPressDestination,
+  onSwapLocations,
   onOpenDatePicker,
   onIncrementPeople,
   onDecrementPeople,
@@ -33,6 +35,21 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> = React.m
 }) => {
   const theme = useTheme();
 
+  const spinValue = React.useRef(new Animated.Value(0)).current;
+
+  React.useEffect(() => {
+    Animated.timing(spinValue, {
+      toValue: isSwapped ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [isSwapped, spinValue]);
+
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '180deg'],
+  });
+
   return (
     <ScreenShell>
       <FlashList
@@ -42,12 +59,11 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> = React.m
         contentContainerStyle={{
           paddingBottom: verticalScale(120),
         }}
-        estimatedItemSize={80}
         renderItem={({ item }: { item: RecentSearch }) => (
           <S.RecentItemContainer>
             <S.RecentItem 
-              activeOpacity={0.7} 
-              onPress={() => onSelectRecentSearch(item)}
+              activeOpacity={isSearching ? 1 : 0.7} 
+              onPress={isSearching ? undefined : () => onSelectRecentSearch(item)}
             >
               <S.RecentLeft>
                 <S.RecentIconBox>
@@ -77,29 +93,55 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> = React.m
               <S.HeroSubtitle>{t.heroSubtitle}</S.HeroSubtitle>
             </S.HeroSection>
 
-            <S.ToggleWrapper>
+            {/* <S.ToggleWrapper>
               <RideTypeToggle
                 selected={rideType}
                 onSelect={onSetRideType}
                 localLabel={t.local}
                 intercityLabel={t.intercity}
               />
-            </S.ToggleWrapper>
+            </S.ToggleWrapper> */}
 
             <S.BookingCard>
               <S.DecorativeAccent />
 
               <S.RouteContainer>
                 <S.RouteIndicator>
-                  <MaterialIcons name="my-location" size={moderateScale(20)} color={theme.colors.primary} />
-                  <S.IndicatorLine />
-                  <MaterialIcons name="location-on" size={moderateScale(20)} color={theme.colors.tertiary} />
+                  <S.VisualLine />
+                  
+                  <S.SwapButtonWrapper>
+                    <S.SwapButton 
+                      activeOpacity={isSearching ? 1 : 0.7} 
+                      onPress={isSearching ? undefined : onSwapLocations}
+                    >
+                      <Animated.View style={{ transform: [{ rotate: spin }] }}>
+                        <MaterialIcons name="swap-vert" size={moderateScale(20)} color={theme.colors.primary} />
+                      </Animated.View>
+                    </S.SwapButton>
+                  </S.SwapButtonWrapper>
+
+                  <S.IndicatorGroup>
+                    <S.LabelSpacer />
+                    <S.IndicatorIconBox>
+                      <MaterialIcons name="my-location" size={moderateScale(20)} color={theme.colors.primary} />
+                    </S.IndicatorIconBox>
+                  </S.IndicatorGroup>
+
+                  <S.IndicatorGroup>
+                    <S.LabelSpacer />
+                    <S.IndicatorIconBox>
+                      <MaterialIcons name="location-on" size={moderateScale(20)} color={theme.colors.tertiary} />
+                    </S.IndicatorIconBox>
+                  </S.IndicatorGroup>
                 </S.RouteIndicator>
 
                 <S.InputColumn>
                   <S.InputGroup>
                     <S.InputLabel>{t.pickupLabel}</S.InputLabel>
-                    <S.LocationBox activeOpacity={0.7} onPress={onPressPickup}>
+                    <S.LocationBox 
+                      activeOpacity={isSearching ? 1 : 0.7} 
+                      onPress={isSearching ? undefined : onPressPickup}
+                    >
                       <S.LocationValueText hasValue={!!pickup} numberOfLines={1} ellipsizeMode='tail'>
                         {pickup || t.pickupPlaceholder}
                       </S.LocationValueText>
@@ -108,7 +150,10 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> = React.m
 
                   <S.InputGroup>
                     <S.InputLabel>{t.destinationLabel}</S.InputLabel>
-                    <S.LocationBox activeOpacity={0.7} onPress={onPressDestination}>
+                    <S.LocationBox 
+                      activeOpacity={isSearching ? 1 : 0.7} 
+                      onPress={isSearching ? undefined : onPressDestination}
+                    >
                       <S.LocationValueText hasValue={!!destination} numberOfLines={1} ellipsizeMode='tail'>
                         {destination || t.destinationPlaceholder}
                       </S.LocationValueText>
@@ -118,7 +163,10 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> = React.m
               </S.RouteContainer>
 
               <S.GridContainer>
-                <S.GridItem activeOpacity={0.7} onPress={onOpenDatePicker}>
+                <S.GridItem 
+                  activeOpacity={isSearching ? 1 : 0.7} 
+                  onPress={isSearching ? undefined : onOpenDatePicker}
+                >
                   <S.GridLabel>{t.travelDateLabel}</S.GridLabel>
                   <S.GridValueRow>
                     <MaterialIcons name="calendar-today" size={moderateScale(14)} color={theme.colors.primary} />
@@ -136,12 +184,21 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> = React.m
                 </S.StepperLabelGroup>
 
                 <S.StepperControls>
-                  <S.StepperButton activeOpacity={0.7} onPress={onDecrementPeople}>
-                    <MaterialIcons name="remove" size={moderateScale(18)} color={theme.colors.primary} />
+                  <S.StepperButton 
+                    activeOpacity={isSearching || peopleCount <= 1 ? 1 : 0.7} 
+                    onPress={isSearching ? undefined : onDecrementPeople} 
+                    disabled={isSearching || peopleCount <= 1}
+                  >
+                    <MaterialIcons name="remove" size={moderateScale(18)} color={isSearching || peopleCount <= 1 ? theme.colors.outline : theme.colors.primary} />
                   </S.StepperButton>
                   <S.StepperValue>{peopleCount}</S.StepperValue>
-                  <S.StepperButton primary activeOpacity={0.7} onPress={onIncrementPeople}>
-                    <MaterialIcons name="add" size={moderateScale(18)} color={theme.colors.on_primary} />
+                  <S.StepperButton 
+                    primary 
+                    activeOpacity={isSearching || peopleCount >= 6 ? 1 : 0.7} 
+                    onPress={isSearching ? undefined : onIncrementPeople} 
+                    disabled={isSearching || peopleCount >= 6}
+                  >
+                    <MaterialIcons name="add" size={moderateScale(18)} color={isSearching || peopleCount >= 6 ? theme.colors.outline : theme.colors.on_primary} />
                   </S.StepperButton>
                 </S.StepperControls>
               </S.StepperContainer>
@@ -176,7 +233,7 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> = React.m
               <S.SectionContainer>
                 <S.RecentSearchesHeader>
                   <S.SectionTitle>{t.recentSearchesTitle}</S.SectionTitle>
-                  <S.ClearButtonText onPress={onClearRecentSearches}>{t.clearAll}</S.ClearButtonText>
+                  <S.ClearButtonText onPress={isSearching ? undefined : onClearRecentSearches}>{t.clearAll}</S.ClearButtonText>
                 </S.RecentSearchesHeader>
               </S.SectionContainer>
             )}

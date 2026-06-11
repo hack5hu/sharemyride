@@ -1,7 +1,12 @@
 export type RootStackParamList = {
+  Splash: undefined;
   Login: undefined;
   OTPVerification: {
     phoneNumber: string;
+    /** 'truecaller' = finalize a non-Truecaller-user verification via the native
+     *  SDK instead of the SMS OTP backend call. Defaults to SMS. */
+    mode?: 'sms' | 'truecaller';
+    ttl?: string;
   };
   ProfileSetup: undefined;
   ProfileHub: undefined;
@@ -13,6 +18,9 @@ export type RootStackParamList = {
     contentKey?: 'about' | 'help' | 'terms';
   };
 
+  TermsAndConditions: undefined;
+  AboutUs: undefined;
+  HelpAndSupport: undefined;
   EditProfile: undefined;
   TravelPreferences: undefined;
   VehicleList: undefined;
@@ -50,6 +58,7 @@ export type RootStackParamList = {
     | {
         updatedLocation?: { id: string; name: string; address: string };
         type?: string;
+        returnTo?: keyof RootStackParamList;
       }
     | undefined;
   MiddleStopMap: undefined;
@@ -85,17 +94,30 @@ export type RootStackParamList = {
   RideRouteMap: {
     routePath?: string;
     stops?: Array<{
+      id?: number | string;
       lat: number;
       lon: number;
       name: string;
       sequence: number;
     }>;
     initialStopIndex?: number;
+    sourceStopId?: number | string;
+    destinationStopId?: number | string;
     destination?: {
       latitude: number;
       longitude: number;
       name: string;
       address?: string;
+    };
+    userSearchedPickup?: {
+      latitude: number;
+      longitude: number;
+      name: string;
+    };
+    userSearchedDropoff?: {
+      latitude: number;
+      longitude: number;
+      name: string;
     };
   };
   BookSeatSelection: {
@@ -108,7 +130,13 @@ export type RootStackParamList = {
     departureDate?: string;
     departureTime?: string;
   };
-  BookingConfirmed: { rideId: string; bookedSeats?: string[] };
+  BookingConfirmed: { 
+    rideId: string; 
+    bookedSeats?: string[]; 
+    pickupTime?: string;
+    vehicleType?: string;
+    departureDate?: string;
+  };
   Settings: undefined;
   UserProfileDetail: {
     userId: string;

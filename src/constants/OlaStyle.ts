@@ -1,6 +1,7 @@
 /**
  * Ola Maps Configuration Constants
  */
+import { OLA_API_KEY as ENV_OLA_API_KEY } from '@env';
 
 export const OLA_API_KEY = 'LqlaA77D09ngpTaBVVAnHAEsvBycEoGmb76reivs';
 
@@ -21,21 +22,21 @@ export const getOlaStyleUrl = {
   sources: {
     openmaptiles: {
       type: 'vector',
-      url: 'https://api.olamaps.io/tiles/vector/v1/data/planet.json?api_key=LqlaA77D09ngpTaBVVAnHAEsvBycEoGmb76reivs',
+      url: `https://api.olamaps.io/tiles/vector/v1/data/planet.json?api_key=${OLA_API_KEY}`,
     },
     vectordata: {
       type: 'vector',
-      url: 'https://api.olamaps.io/tiles/vector/v1/data/vectordata.json?api_key=LqlaA77D09ngpTaBVVAnHAEsvBycEoGmb76reivs',
+      url: `https://api.olamaps.io/tiles/vector/v1/data/vectordata.json?api_key=${OLA_API_KEY}`,
     },
     street: {
       type: 'vector',
-      url: 'https://api.olamaps.io/tiles/vector/v1/data/street.json?api_key=LqlaA77D09ngpTaBVVAnHAEsvBycEoGmb76reivs',
+      url: `https://api.olamaps.io/tiles/vector/v1/data/street.json?api_key=${OLA_API_KEY}`,
     },
   },
   sprite:
-    'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/sprite?api_key=LqlaA77D09ngpTaBVVAnHAEsvBycEoGmb76reivs',
+    `https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/sprite?api_key=${OLA_API_KEY}`,
   glyphs:
-    'https://api.olamaps.io/tiles/vector/v1/fonts/{fontstack}/{range}.pbf?api_key=LqlaA77D09ngpTaBVVAnHAEsvBycEoGmb76reivs',
+    `https://api.olamaps.io/tiles/vector/v1/fonts/{fontstack}/{range}.pbf?api_key=${OLA_API_KEY}`,
   layers: [
     {
       id: 'background',

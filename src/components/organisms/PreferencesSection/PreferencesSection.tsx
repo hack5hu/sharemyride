@@ -13,11 +13,13 @@ import { useTranslation } from '@/hooks/useTranslation';
 export interface PreferencesSectionProps {
   values: any;
   setFieldValue: (field: string, value: any) => void;
+  disabled?: boolean;
 }
 
 export const PreferencesSection: React.FC<PreferencesSectionProps> = React.memo(({
   values,
   setFieldValue,
+  disabled,
 }) => {
   const { t } = useTranslation();
 
@@ -33,13 +35,14 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = React.memo(
           >
             {t('profileSetup.newsletter')}
           </NewsletterLabel>
-          <ToggleRow>
+          <ToggleRow style={{ opacity: disabled ? 0.6 : 1 }}>
             <Typography variant="body" size="sm" weight="bold">
               {t('profileSetup.personalizedSuggestions')}
             </Typography>
             <Toggle
               value={values.newsletter}
               onValueChange={(val) => setFieldValue('newsletter', val)}
+              disabled={disabled}
             />
           </ToggleRow>
         </NewsletterSurface>

@@ -8,6 +8,10 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
+install! 'cocoapods', :disable_input_output_paths => true
+
+use_modular_headers!
+
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
@@ -23,6 +27,9 @@ target 'shareMyRide' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  # Truecaller native SDK
+  pod 'TrueSDK'
+
   post_install do |installer|
     react_native_post_install(
       installer,
@@ -30,5 +37,24 @@ target 'shareMyRide' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+    
+    # MapLibre React Native post-install hook
+    $MLRN.post_install(installer)
+
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+      end
+    end
+
+    # Workaround for "Multiple commands produce Assets.car"
+    installer.aggregate_targets.each do |target|
+      copy_resources_path = "Pods/Target Support Files/#{target.name}/#{target.name}-resources.sh"
+      if File.exist?(copy_resources_path)
+        content = File.read(copy_resources_path)
+        content = content.gsub(/.*Assets\.xcassets.*/, "")
+        File.write(copy_resources_path, content)
+      end
+    end
   end
 end

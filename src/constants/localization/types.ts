@@ -43,6 +43,28 @@ export interface LoginTranslations {
   noAccount: string;
   signUp: string;
   orContinueWith: string;
+  truecallerPrefix: string;
+  truecallerSuffix: string;
+  truecallerErrorTitle: string;
+  truecallerInitFailed: string;
+  truecallerLoginFailed: string;
+  truecallerUnavailableTitle: string;
+  truecallerUnavailableMessage: string;
+  truecallerStartError: string;
+  truecallerInvalidCredentials: string;
+  continueButton: string;
+  orDivider: string;
+  termsOfService: string;
+  privacyPolicy: string;
+  termsPrefix: string;
+  termsAnd: string;
+  termsSuffix: string;
+  needHelp: string;
+  english: string;
+  hindi: string;
+  trustVerified: string;
+  trustSecure: string;
+  trustCommunity: string;
 }
 
 export interface OtpVerificationTranslations {
@@ -93,6 +115,8 @@ export interface ProfileSetupTranslations {
   identityVerified: string;
   completeSetup: string;
   footerVersion: string;
+  addPhoto: string;
+  under18Error: string;
 }
 
 export interface ProfileHubTranslations {
@@ -106,8 +130,11 @@ export interface ProfileHubTranslations {
   trustScoreDescr: string;
   accountManagement: string;
   supportLegal: string;
+  chooseFromGallery: string;
+  removePhoto: string;
   editProfile: string;
   editProfileDescr: string;
+  editProfilePic: string;
   identityVerification: string;
   identityVerificationDescr: string;
   travelPreferences: string;
@@ -164,6 +191,7 @@ export interface DummyContentTranslations {
   helpBody: string;
   termsTitle: string;
   termsBody: string;
+  emailUs: string;
 }
 
 export interface TravelPreferencesTranslations {
@@ -180,6 +208,7 @@ export interface TravelPreferencesTranslations {
   jazz: string;
   podcast: string;
   silence: string;
+  any: string;
   luggageAllowed: string;
   petFriendly: string;
   manualApproval: string;
@@ -218,6 +247,8 @@ export interface VehicleDetailsTranslations {
   seaterCount: string;
   seater5: string;
   seater7: string;
+  deleteVehicleTitle: string;
+  deleteVehicleConfirmMsg: string;
 }
 
 export interface ChatTranslations {
@@ -233,10 +264,16 @@ export interface ChatTranslations {
   safetmsg: string;
   emptyTitle: string;
   emptyDescription: string;
+  sendFailedTitle: string;
+  sendFailedMessage: string;
+  connecting: string;
+  offline: string;
+  tapToReconnect: string;
 }
 
 export interface RideDetailsTranslations {
   headerTitle: string;
+  cancellationReasonTitle: string;
   liveTracking: string;
   pickupLabel: string;
   stopLabel: string;
@@ -288,6 +325,14 @@ export interface RideDetailsTranslations {
   premiumSuv: string;
   swiftBike: string;
   standardVehicle: string;
+  passengerDetailsTitle: string;
+  fellowTravelersTitle: string;
+  noPassengersBooked: string;
+  noCoRidersYet: string;
+  seatLabelSingular: string;
+  seatsLabelPlural: string;
+  reportSuccessTitle: string;
+  reportSuccessMessage: string;
 }
 
 export interface CancelRideTranslations {
@@ -320,6 +365,7 @@ export interface LocationSelectionTranslations {
   destinationPlaceholder: string;
   continueJourney: string;
   contextualInfo: string;
+  recentRidesTitle: string;
 }
 
 export interface MapPickerTranslations {
@@ -331,6 +377,8 @@ export interface MapPickerTranslations {
   selectedArea: string;
   selectLocation: string;
   recentSearches: string;
+  locating: string;
+  pleaseWait: string;
 }
 
 export interface RouteSelectionTranslations {
@@ -355,6 +403,8 @@ export interface MiddleStopsTranslations {
   destinationLabel: string;
   optimizedRoute: string;
   continue: string;
+  duplicateStopTitle: string;
+  duplicateStopMsg: string;
 }
 
 export interface MiddleStopMapTranslations {
@@ -371,6 +421,11 @@ export interface MiddleStopMapTranslations {
   selectedStop: string;
   addedStops: string;
   continue: string;
+  distanceFromRoute: string;
+  tooFarFromRoute: string;
+  tooFarFromRouteMsg: string;
+  selectOnMap: string;
+  confirmStop: string;
 }
 
 export interface DateSelectionTranslations {
@@ -430,6 +485,14 @@ export interface SummaryPublishTranslations {
   departureScheduleLabel: string;
   addVehicleLabel: string;
   addPreferencesLabel: string;
+  approvalRequired: string;
+  instantBooking: string;
+}
+
+export interface SplashTranslations {
+  appName: string;
+  subtitle: string;
+  loadingText: string;
 }
 
 export interface Translations {
@@ -469,6 +532,28 @@ export interface Translations {
   chatLocation: ChatLocationTranslations;
   developer: DeveloperTranslations;
   rideRoute: RideRouteTranslations;
+  notification: NotificationTranslations;
+  reportIssue: ReportIssueTranslations;
+  splash: SplashTranslations;
+}
+
+
+export interface NotificationTranslations {
+  defaultSuccessTitle: string;
+  defaultSuccessMessage: string;
+  defaultErrorTitle: string;
+  defaultErrorMessage: string;
+  defaultInfoTitle: string;
+  defaultWarningTitle: string;
+  welcomeSuccessTitle: string;
+  welcomeBack: string;
+  profilePhotoUpdated: string;
+  bookingAccepted: string;
+  bookingRejected: string;
+  vehicleRemoved: string;
+  vehicleRemoveError: string;
+  mapOpenError: string;
+  activeBookingOverlap: string;
 }
 
 export interface RideRouteTranslations {
@@ -486,6 +571,8 @@ export interface UserProfileDetailTranslations {
   viewRatings: string;
   recentReviews: string;
   reportUser: string;
+  bioTitle: string;
+  defaultBio: string;
 }
 
 export interface MyRidesTranslations {
@@ -580,6 +667,19 @@ export interface BookingConfirmedTranslations {
   primaryCTA: string;
   secondaryCTA: string;
   plateLabel: string;
+  carbonNeutralTransit: string;
+  brandTitle: string;
+  seatPositions: {
+    driver: string;
+    frontPassenger: string;
+    middleLeft: string;
+    middleCenter: string;
+    middleRight: string;
+    backLeft: string;
+    backCenter: string;
+    backRight: string;
+    defaultSeat: string;
+  };
 }
 
 export interface BookRideInfoTranslations {
@@ -620,6 +720,12 @@ export interface AvailableRidesTranslations {
   stopLabel: string;
   searchSummaryDate: string;
   searchSummarySeats: string;
+  driverRides: string;
+  kmFromPickup: string;
+  durationValue: string;
+  fetchingRides: string;
+  noRidesFoundTitle: string;
+  noRidesFoundDesc: string;
 }
 
 export interface RideFiltersTranslations {
@@ -633,6 +739,17 @@ export interface RideFiltersTranslations {
   seatsRequiredLabel: string;
   applyFilters: string;
   clearAll: string;
+  noSmoking: string;
+  ladiesOnly: string;
+  verifiedDrivers: string;
+  petFriendly: string;
+  luggageAllowed: string;
+  timeSlot04: string;
+  timeSlot48: string;
+  timeSlot812: string;
+  timeSlot1216: string;
+  timeSlot1620: string;
+  timeSlot2024: string;
 }
 
 export interface RideInformationTranslations {
@@ -755,7 +872,26 @@ export interface DeveloperTranslations {
   pending: string;
   noBody: string;
   noHeaders: string;
+  copyCurl: string;
 }
+
+export interface ReportIssueTranslations {
+  title: string;
+  whatHappenedTitle: string;
+  whatHappenedSubtitle: string;
+  categorySafety: string;
+  categoryBehavior: string;
+  categoryVehicle: string;
+  categoryPayment: string;
+  categoryOther: string;
+  tellUsMoreTitle: string;
+  tellUsMoreSubtitle: string;
+  placeholder: string;
+  safetyExcellentTeam: string;
+  submitReport: string;
+  cancel: string;
+}
+
 
 export interface ChatLocationTranslations {
   headerTitle: string;
@@ -765,5 +901,12 @@ export interface ChatLocationTranslations {
   sendCurrentLocationDesc: string;
   nearbyPlaces: string;
   searchPlaceholder: string;
+  gpsModalTitle: string;
+  gpsModalMessage: string;
+  enableGps: string;
+  gpsBannerMessage: string;
+  gpsSettingsPathAndroid: string;
+  gpsSettingsPathIos: string;
+  loadingCurrentLocation: string;
 }
 

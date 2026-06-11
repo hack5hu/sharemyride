@@ -1,9 +1,21 @@
-import { Client, IMessage } from '@stomp/stompjs';
+import { Client } from '@stomp/stompjs';
+import * as Keychain from 'react-native-keychain';
 import { BASE_URL } from '@/constants/apiEndpoints';
 import { useChatStore } from '@/store/useChatStore';
-import { ChatMessage, SendMessagePayload, UpdateStatusPayload } from '@/types/chat';
-import { MessageStatus, MessageType, ConnectionStatus } from '@/constants/enums';
+import { ChatMessage, SendMessagePayload } from '@/types/chat';
+import { MessageStatus, MessageType, ConnectionStatus, NotificationType } from '@/constants/enums';
 import apiClient from './apiClient';
+import { Logger } from '@/utils/logger';
+import { registerChatSubscriptions } from './chatSubscriptions';
+import { fetchChatUserProfile } from './chatProfile';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { useSettingsStore } from '@/store/settings';
+import { en } from '@/constants/localization/en';
+import { hi } from '@/constants/localization/hi';
+
+import { parseChatTimestamp } from '@/utils/date';
+
+const translations = { en, hi };
 
 // STOMP requires TextEncoder/TextDecoder in some environments
 import 'fast-text-encoding';
@@ -14,60 +26,49 @@ if (typeof TextDecoder === 'undefined') {
   global.TextDecoder = require('fast-text-encoding').TextDecoder;
 }
 
-import { userService } from './userService';
+interface HistoryMessage extends ChatMessage {
+  messageStatus?: MessageStatus;
+  createdAt?: string;
+}
 
 class ChatService {
   async fetchUserProfile(userId: string) {
-    if (!userId || userId === 'Unknown') return;
-    
-    const { users, upsertUser } = useChatStore.getState();
-    
-    // Return early if already in cache
-    if (users[userId]) return users[userId];
-    
-    try {
-      const profile = await userService.getUserProfile(userId);
-      if (profile) {
-        const userData = {
-          userId: userId,
-          name: profile.name || profile.fullName || `User ${userId.slice(0, 8)}`,
-          avatarUri: profile.profileImage?.uri || profile.avatarUri,
-          rating: profile.rating,
-          isVerified: profile.isVerified,
-        };
-        upsertUser(userData);
-        return userData;
-      }
-    } catch (error) {
-      console.error(`Failed to fetch profile for user ${userId}:`, error);
-    }
+    return fetchChatUserProfile(userId);
   }
 
   private client: Client | null = null;
   private currentUserId: string | null = null;
 
-  connect(userId: string) {
+  async connect(userId: string) {
     if (this.client?.active && this.currentUserId === userId) {
-      if (__DEV__) console.log('🔄 [Socket] Already active for user:', userId);
+      Logger.log('[Socket] Already active for user:', userId);
       return;
     }
     
     this.currentUserId = userId;
-    const { setConnectionStatus, addMessage, updateMessageStatus } = useChatStore.getState();
+    const { setConnectionStatus, setMyUserId } = useChatStore.getState();
     
+    setMyUserId(userId);
     setConnectionStatus(ConnectionStatus.CONNECTING);
     
     const brokerUrl = BASE_URL.replace('http', 'ws') + '/ws/websocket';
-    if (__DEV__) console.log('🔌 [Socket] Initializing connection to:', brokerUrl);
+    const authCreds = await Keychain.getGenericPassword({ service: 'auth_token' });
+
+    if (!authCreds) {
+      Logger.warn('[Socket] Missing auth token');
+      setConnectionStatus(ConnectionStatus.DISCONNECTED);
+      return;
+    }
 
     try {
       this.client = new Client({
         webSocketFactory: () => new WebSocket(brokerUrl),
         connectHeaders: {
           userId: userId,
+          Authorization: `Bearer ${authCreds.password}`,
         },
         debug: (msg) => {
-          if (__DEV__) console.log('STOMP:', msg);
+          Logger.log('STOMP:', msg);
         },
         reconnectDelay: 5000,
         heartbeatIncoming: 4000,
@@ -77,117 +78,36 @@ class ChatService {
       });
 
       this.client.onWebSocketError = (event) => {
-        console.error('❌ [Socket] WebSocket Error:', event);
+        Logger.error('[Socket] WebSocket Error:', event);
       };
 
       this.client.onWebSocketClose = (event) => {
-        if (__DEV__) console.log('🔌 [Socket] WebSocket Closed:', event);
+        Logger.log('[Socket] WebSocket Closed:', event);
       };
 
       this.client.onConnect = () => {
-        if (__DEV__) console.log('✅ [Socket] Connected!');
+        Logger.log('[Socket] Connected');
         setConnectionStatus(ConnectionStatus.CONNECTED);
-      
-      // Subscribe to private messages
-      this.client?.subscribe('/user/queue/messages', (msg: IMessage) => {
-        const data = JSON.parse(msg.body);
-        if (__DEV__) console.log('📥 [Incoming Message]', data);
-
-        const conversationId = this.getConversationId(data.senderId, data.receiverId);
-        
-        const { activeConversationId } = useChatStore.getState();
-        const isFromOther = data.senderId !== userId;
-        const isRead = isFromOther && activeConversationId === conversationId;
-        
-        const message: ChatMessage = {
-          messageId: data.messageId,
-          senderId: data.senderId,
-          receiverId: data.receiverId,
-          content: data.content,
-          timestamp: data.timestamp || Date.now(),
-          status: isRead ? MessageStatus.READ : MessageStatus.DELIVERED,
-          type: data.type || MessageType.TEXT,
-          metadata: data.metadata,
-        };
-        
-        addMessage(conversationId, message);
-        
-        // Auto-ack status (only for messages received from others)
-        if (isFromOther) {
-          const finalStatus = isRead ? MessageStatus.READ : MessageStatus.DELIVERED;
-          this.updateStatus(data.messageId, finalStatus, userId);
-
-          // If user is actively in the chat, also notify backend to clear unread counts
-          if (isRead) {
-            this.markAsRead(userId, data.senderId);
-          }
-        }
-      });
-
-      // Subscribe to status updates
-      this.client?.subscribe('/user/queue/status', (msg: IMessage) => {
-        const data = JSON.parse(msg.body);
-        if (__DEV__) console.log('📨 [Status Update]', data);
-        
-        const { messages, updateMessageStatus, linkPendingMessage, activeConversationId } = useChatStore.getState();
-        
-        // 1. Try to find the message by its ID
-        let foundConvId = '';
-        Object.keys(messages).forEach(convId => {
-          if (messages[convId].some(m => m.messageId === data.messageId)) {
-            foundConvId = convId;
-          }
+        registerChatSubscriptions(this.client as Client, userId, {
+          getConversationId: this.getConversationId,
+          updateStatus: this.updateStatus.bind(this),
+          markAsRead: this.markAsRead.bind(this),
+          fetchHistory: this.fetchHistory.bind(this),
         });
-
-        if (foundConvId) {
-          if (__DEV__) console.log(`✅ [Status Update] Updating existing message ${data.messageId} to ${data.status}`);
-          updateMessageStatus(foundConvId, data.messageId, data.status);
-        } else {
-          // 2. If not found, it might be a status update for a 'PENDING' message we just sent
-          if (__DEV__) console.log(`🔍 [Status Update] ID ${data.messageId} not found, searching for PENDING message...`);
-          
-          let linked = false;
-          Object.keys(messages).forEach(convId => {
-            if (linked) return;
-            
-            const pendingMessage = [...messages[convId]]
-              .reverse()
-              .find(m => m.messageId.startsWith('temp-') && m.status === MessageStatus.PENDING);
-            
-            if (pendingMessage) {
-              if (__DEV__) console.log(`🔗 [Status Update] Linking ${pendingMessage.messageId} -> ${data.messageId} (${data.status})`);
-              linkPendingMessage(convId, pendingMessage.messageId, data.messageId, data.status);
-              linked = true;
-            }
-          });
-          
-          if (!linked) {
-            if (__DEV__) console.warn(`⚠️ [Status Update] Could not find any pending message to link with ${data.messageId}`);
-            
-            if (activeConversationId) {
-              const [u1, u2] = activeConversationId.split('_');
-              const otherUser = u1 === userId ? u2 : u1;
-              if (otherUser) {
-                this.fetchHistory(userId, otherUser);
-              }
-            }
-          }
-        }
-      });
-    };
+      };
 
     this.client.onDisconnect = () => {
       setConnectionStatus(ConnectionStatus.DISCONNECTED);
     };
 
     this.client.onStompError = (frame) => {
-      console.error('STOMP Error:', frame.headers['message']);
+      Logger.error('STOMP Error:', frame.headers.message);
       setConnectionStatus(ConnectionStatus.DISCONNECTED);
     };
 
       this.client.activate();
     } catch (error) {
-      console.error('❌ [Socket] Initialization failed:', error);
+      Logger.error('[Socket] Initialization failed:', error);
       setConnectionStatus(ConnectionStatus.DISCONNECTED);
     }
   }
@@ -201,29 +121,66 @@ class ChatService {
   }
 
   sendMessage(payload: SendMessagePayload) {
-    if (!this.client?.connected) {
-      console.warn('Cannot send message: STOMP not connected');
-      return;
-    }
-
     const conversationId = this.getConversationId(payload.senderId, payload.receiverId);
     const tempId = `temp-${Date.now()}`;
-    
-    // Local-first: add pending message to store
+    const isConnected = !!this.client?.connected;
+
+    // Local-first: add message to store
     const tempMessage: ChatMessage = {
       messageId: tempId,
       senderId: payload.senderId,
       receiverId: payload.receiverId,
       content: payload.content,
       timestamp: Date.now(),
-      status: MessageStatus.PENDING,
-      type: (payload.type as any) || MessageType.TEXT,
+      status: isConnected ? MessageStatus.PENDING : MessageStatus.FAILED,
+      type: payload.type || MessageType.TEXT,
       metadata: payload.metadata,
     };
     
     useChatStore.getState().addMessage(conversationId, tempMessage);
 
-    this.client.publish({
+    if (!isConnected) {
+      Logger.warn('Cannot send message: STOMP not connected');
+      const lang = useSettingsStore.getState().language || 'en';
+      const t = translations[lang] || en;
+      showNotification(NotificationType.ERROR, t.chat.sendFailedTitle, t.chat.sendFailedMessage);
+      return;
+    }
+
+    this.client!.publish({
+      destination: '/app/chat.sendMessage',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  resendMessage(conversationId: string, messageId: string) {
+    const { messages, updateMessageStatus } = useChatStore.getState();
+    const chatMessages = messages[conversationId] || [];
+    const localMsg = chatMessages.find(m => m.messageId === messageId);
+
+    if (!localMsg) return;
+
+    const isConnected = !!this.client?.connected;
+    if (!isConnected) {
+      Logger.warn('Cannot resend message: STOMP not connected');
+      const lang = useSettingsStore.getState().language || 'en';
+      const t = translations[lang] || en;
+      showNotification(NotificationType.ERROR, t.chat.sendFailedTitle, t.chat.sendFailedMessage);
+      return;
+    }
+
+    // Update status to pending
+    updateMessageStatus(conversationId, messageId, MessageStatus.PENDING);
+
+    const payload: SendMessagePayload = {
+      senderId: localMsg.senderId,
+      receiverId: localMsg.receiverId,
+      content: localMsg.content,
+      type: localMsg.type,
+      metadata: localMsg.metadata,
+    };
+
+    this.client!.publish({
       destination: '/app/chat.sendMessage',
       body: JSON.stringify(payload),
     });
@@ -246,15 +203,15 @@ class ChatService {
     const conversationId = this.getConversationId(myUserId, otherUserId);
     try {
       const response = await apiClient.get(`/api/v1/chat/history/${myUserId}/${otherUserId}`);
-      const history = response.data.map((m: any) => ({
+      const history = (response.data as HistoryMessage[]).map(m => ({
         ...m,
         status: (m.status || m.messageStatus || MessageStatus.SENT).toUpperCase() as MessageStatus,
-        timestamp: m.timestamp || Date.now(),
+        timestamp: parseChatTimestamp(m),
       }));
       useChatStore.getState().setHistory(conversationId, history);
       return history;
     } catch (error) {
-      console.error('Failed to fetch chat history:', error);
+      Logger.error('Failed to fetch chat history:', error);
       return [];
     }
   }
@@ -263,20 +220,21 @@ class ChatService {
     const conversationId = this.getConversationId(myUserId, otherUserId);
     try {
       // Local-first: reset count immediately
-      const { markConversationAsRead, messages, updateMessageStatus } = useChatStore.getState();
+      const { markConversationAsRead, messages, updateMultipleMessageStatuses } = useChatStore.getState();
       markConversationAsRead(conversationId);
       
       // Refresh local status of all messages immediately (Optimistic Update)
       const chatMessages = messages[conversationId] || [];
-      chatMessages.forEach(m => {
-        if (m.receiverId === myUserId && m.status !== MessageStatus.READ) {
-          updateMessageStatus(conversationId, m.messageId, MessageStatus.READ);
-        }
-      });
+      const updates = chatMessages
+        .filter(m => m.receiverId === myUserId && m.status !== MessageStatus.READ)
+        .map(m => ({ messageId: m.messageId, status: MessageStatus.READ }));
 
-      await apiClient.post(`/api/v1/chat/read/${conversationId}/${myUserId}`);
+      if (updates.length > 0) {
+        updateMultipleMessageStatuses(conversationId, updates);
+        await apiClient.post(`/api/v1/chat/read/${conversationId}/${myUserId}`);
+      }
     } catch (error) {
-      console.error('Failed to mark messages as read:', error);
+      Logger.error('Failed to mark messages as read:', error);
     }
   }
 

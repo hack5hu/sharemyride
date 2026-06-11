@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
 import { RideData } from '@/screens/BookFlow/3_AvailableRides/types';
 import { calculateDistance } from '@/utils/location';
+import { formatTimeSafely, formatDateSafely } from '@/utils/date';
 
 export const mapBackendRideToUI = (
-  rideRaw: any, 
-  startLocation?: any, 
-  destinationLocation?: any, 
-  sourceStopId?: number, 
+  rideRaw: any,
+  startLocation?: any,
+  destinationLocation?: any,
+  sourceStopId?: number,
   destinationStopId?: number
 ) => {
   if (!rideRaw) return null;
@@ -16,20 +17,22 @@ export const mapBackendRideToUI = (
   if (rideRaw.preferences?.womenOnly) features.push('ladiesOnly');
   if (rideRaw.preferences?.petFriendly) features.push('petFriendly');
   if (rideRaw.preferences?.luggageAllowed) features.push('luggageAllowed');
-  if (rideRaw.preferences?.manualApproval) {
+  
+  if (rideRaw.requestType === 'review' || rideRaw.preferences?.manualApproval === true) {
     features.push('manualApproval');
-  } else if (rideRaw.preferences?.manualApproval === false) {
+  } else if (rideRaw.requestType === 'instant' || rideRaw.preferences?.manualApproval === false) {
     features.push('autoApproval');
   }
+
   if (rideRaw.preferences?.musicPreference) features.push(`music:${rideRaw.preferences.musicPreference}`);
 
   const firstStop = rideRaw.stops?.[0];
   const lastStop = rideRaw.stops?.[rideRaw.stops.length - 1];
 
-  const pickupDistance = (startLocation && firstStop) 
+  const pickupDistance = (startLocation && firstStop)
     ? calculateDistance(startLocation.latitude, startLocation.longitude, firstStop.lat, firstStop.lon)
     : undefined;
-  
+
   const dropoffDistance = (destinationLocation && lastStop)
     ? calculateDistance(destinationLocation.latitude, destinationLocation.longitude, lastStop.lat, lastStop.lon)
     : undefined;
@@ -44,16 +47,18 @@ export const mapBackendRideToUI = (
     const address = stop.stopName || stop.name || 'Unknown';
     let displayLocation = address;
     const isBetweenOrAt = idx >= startIdx && idx <= endIdx && startIdx !== -1 && endIdx !== -1;
-    
+
     const isDriverRole = rideRaw.userRole === 'DRIVER';
-    
+
     // Only truncate if NOT highlighted AND NOT driver
     if (!isHighlighted && !isDriverRole) {
-      const parts = address.split(', ');
-      if (parts.length >= 3) {
+      const parts = address.split(',').map((p: string) => p.trim());
+      if (parts.length >= 4) {
+        displayLocation = parts[parts.length - 4];
+      } else if (parts.length >= 3) {
         displayLocation = parts[parts.length - 3];
       } else {
-        displayLocation = parts[0];
+        displayLocation = parts[0] || '';
       }
     }
 
@@ -70,7 +75,7 @@ export const mapBackendRideToUI = (
 
     return {
       id: stop.id,
-      time: stop.arrivalTime ? new Date(stop.arrivalTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'TBD',
+      time: formatTimeSafely(stop.arrivalTime),
       durationSincePrevious,
       location: displayLocation,
       type: idx === 0 ? 'pickup' : (idx === arr.length - 1 ? 'destination' : 'stop'),
@@ -90,14 +95,14 @@ export const mapBackendRideToUI = (
   return {
     id: rideRaw.id,
     driver: {
-      id: rideRaw.driver?.id,
-      name: rideRaw.driver?.name || 'Unknown Driver',
-      rating: rideRaw.driver?.rating || 4.8,
+      id: (rideRaw.user || rideRaw.driver)?.id,
+      name: (rideRaw.user || rideRaw.driver)?.name || 'Unknown Driver',
+      rating: (rideRaw.user || rideRaw.driver)?.rating || 4.8,
       rideCount: 15,
-      avatar: rideRaw.driver?.photoUrl || 'https://ui-avatars.com/api/?name=' + (rideRaw.driver?.name || 'U'),
-      driverPhotoUrl: rideRaw.driver?.photoUrl,
-      isVerified: !!rideRaw.driver?.verified,
-      bio: rideRaw.driver?.bio,
+      avatar: (rideRaw.user || rideRaw.driver)?.photoUrl || 'https://ui-avatars.com/api/?name=' + ((rideRaw.user || rideRaw.driver)?.name || 'U'),
+      driverPhotoUrl: (rideRaw.user || rideRaw.driver)?.photoUrl,
+      isVerified: !!(rideRaw.user || rideRaw.driver)?.verified,
+      bio: (rideRaw.user || rideRaw.driver)?.bio,
     },
     price: rideRaw.price || 0,
     timeline,
@@ -114,25 +119,35 @@ export const mapBackendRideToUI = (
       type: rideRaw.vehicle?.type,
       company: rideRaw.vehicle?.company,
     },
-    totalDistance: rideRaw.stops?.reduce((acc: number, stop: any) => acc + (stop.distanceFromPreviousStop || 0), 0) || 0,
+    totalDistance: rideRaw.stops?.reduce((acc: number, stop: any, idx: number, arr: any[]) => {
+      if (stop.distanceFromPreviousStop !== undefined) {
+        return acc + stop.distanceFromPreviousStop;
+      }
+      if (idx > 0) {
+        const prev = arr[idx - 1];
+        return acc + calculateDistance(prev.lat, prev.lon, stop.lat, stop.lon);
+      }
+      return acc;
+    }, 0) || 0,
     totalDuration: totalDurationMins,
     routePath: rideRaw.routePath,
     seats: rideRaw.seats || [],
-    passengers: rideRaw.passengers || [],
-    departureDate: firstStop?.arrivalTime
-      ? new Date(firstStop.arrivalTime).toLocaleDateString('en-IN', {
-          weekday: 'short',
-          day: 'numeric',
-          month: 'short',
-        })
-      : 'Today',
-    departureTime: firstStop?.arrivalTime
-      ? new Date(firstStop.arrivalTime).toLocaleTimeString('en-US', {
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true,
-        })
-      : '--:--',
+    passengers: (rideRaw.passengers || []).map((p: any) => ({
+      ...p,
+      id: p.passengerId,
+      name: p.name,
+      photoUrl: p.photoUrl,
+    })),
+    departureDate: formatDateSafely(firstStop?.arrivalTime, {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+    }, 'Today'),
+    departureTime: formatTimeSafely(firstStop?.arrivalTime, {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    }, '--:--'),
     rawStops: stops.map((s: any) => ({
       lat: s.lat,
       lon: s.lon,
@@ -153,13 +168,13 @@ export const mapBackendRideToUI = (
 };
 
 export const useRideDataMapper = (
-  rideRaw: any, 
-  startLocation: any, 
-  destinationLocation: any, 
-  sourceStopId?: number, 
+  rideRaw: any,
+  startLocation: any,
+  destinationLocation: any,
+  sourceStopId?: number,
   destinationStopId?: number
 ) => {
-  return useMemo(() => 
+  return useMemo(() =>
     mapBackendRideToUI(rideRaw, startLocation, destinationLocation, sourceStopId, destinationStopId),
     [rideRaw, startLocation, destinationLocation, sourceStopId, destinationStopId]
   );

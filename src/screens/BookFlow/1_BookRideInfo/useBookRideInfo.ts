@@ -1,16 +1,48 @@
 import { useState, useCallback, useEffect } from 'react';
+import { BackHandler, ToastAndroid } from 'react-native';
 import { format, isBefore, startOfDay } from 'date-fns';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useFocusEffect } from '@react-navigation/native';
 import { useLocale } from '@/constants/localization';
 import { useBookRideStore, RecentSearch } from '@/store/useBookRideStore';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import rideService, { SearchRidePayload } from '@/serviceManager/rideService';
+import { useTranslation } from '@/hooks/useTranslation';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const useBookRideInfo = () => {
   const { navigation, navigate } = useAppNavigation();
-  const route = useRoute();
   const { bookRideInfo: t } = useLocale();
+  const { t: translate } = useTranslation();
   const [isSearching, setIsSearching] = useState(false);
+  const [isSwapped, setIsSwapped] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsSearching(false);
+      let backPressCount = 0;
+      const onBackPress = () => {
+        if (backPressCount === 0) {
+          backPressCount++;
+          ToastAndroid.show('Press back again to exit the app', ToastAndroid.SHORT);
+          setTimeout(() => {
+            backPressCount = 0;
+          }, 2000);
+          return true;
+        } else {
+          BackHandler.exitApp();
+          return true;
+        }
+      };
+
+      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => {
+        subscription.remove();
+      };
+    }, [])
+  );
 
   const {
     startLocation,
@@ -37,22 +69,15 @@ export const useBookRideInfo = () => {
     });
   }, [navigate]);
 
-  useEffect(() => {
-    const params = route.params as any;
-    if (params?.updatedLocation && params?.type) {
-      const store = useBookRideStore.getState();
-      if (params.type === 'start') {
-        store.setStartLocation(params.updatedLocation);
-      } else if (params.type === 'destination') {
-        store.setDestinationLocation(params.updatedLocation);
-      }
-      // Reset params so they aren't processed again on re-focus
-      navigation.setParams({
-        updatedLocation: undefined,
-        type: undefined,
-      } as any);
-    }
-  }, [route.params, navigation]);
+  const handleSwapLocations = useCallback(() => {
+    setIsSwapped(prev => !prev);
+    const store = useBookRideStore.getState();
+    const currentStart = store.startLocation;
+    const currentDest = store.destinationLocation;
+    
+    store.setStartLocation(currentDest);
+    store.setDestinationLocation(currentStart);
+  }, []);
 
   const handleOpenDatePicker = useCallback(() => {
     navigate('BookDateSelection');
@@ -102,16 +127,21 @@ export const useBookRideInfo = () => {
         });
 
         const results = await rideService.searchRides(payload);
-        setSearchResults(results.rides || results.data || results);
+        const ridesList = results?.rides || results?.data || (Array.isArray(results) ? results : []);
+        setSearchResults(ridesList);
         
         if (curType === 'local') {
           navigate('LocalRideResults');
         } else {
           navigate('AvailableRides');
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to search rides:', error);
-      } finally {
+        showNotification(
+          NotificationType.ERROR,
+          translate('notification.defaultErrorTitle'),
+          getErrorMessage(error, translate('notification.defaultErrorMessage'))
+        );
         setIsSearching(false);
       }
     }
@@ -144,16 +174,21 @@ export const useBookRideInfo = () => {
         };
 
         const results = await rideService.searchRides(payload);
-        store.setSearchResults(results.rides || results.data || results);
+        const ridesList = results?.rides || results?.data || (Array.isArray(results) ? results : []);
+        store.setSearchResults(ridesList);
         
         if (store.rideType === 'local') {
           navigate('LocalRideResults');
         } else {
           navigate('AvailableRides');
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to search rides from recent search:', error);
-      } finally {
+        showNotification(
+          NotificationType.ERROR,
+          translate('notification.defaultErrorTitle'),
+          getErrorMessage(error, translate('notification.defaultErrorMessage'))
+        );
         setIsSearching(false);
       }
     }
@@ -169,13 +204,15 @@ export const useBookRideInfo = () => {
 
   return {
     pickup: startLocation?.address || '',
-    destination: destinationLocation?.address || '',
-    travelDate: travelDate ? new Date(travelDate) : null,
+    destination:  destinationLocation?.address || '',
+    travelDate: travelDate ? new Date(travelDate) : new Date(),
     peopleCount: seatCount,
     isSearching,
+    isSwapped,
     recentSearches,
     handlePressPickup,
     handlePressDestination,
+    handleSwapLocations,
     handleOpenDatePicker,
     incrementPeople,
     decrementPeople,

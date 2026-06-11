@@ -66,7 +66,7 @@ export const NetworkLogsTemplate: React.FC<NetworkLogsTemplateProps> = React.mem
     <ScreenShell
       title={t.networkLogsTitle}
       onBack={onBack}
-      rightComponent={
+      rightElement={
         <S.ClearButton onPress={onClear}>
           <Typography variant="label" size="sm" color={theme.colors.primary} weight="bold">
             {t.clear}
@@ -79,7 +79,6 @@ export const NetworkLogsTemplate: React.FC<NetworkLogsTemplateProps> = React.mem
           data={logs}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
-          estimatedItemSize={100}
           ListEmptyComponent={renderEmpty}
         />
       </S.Container>

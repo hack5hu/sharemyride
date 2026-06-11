@@ -34,46 +34,37 @@ export const MetaItem = styled.View`
   gap: ${verticalScale(2)}px;
 `;
 
-/* ── Fixed Bottom Summary ───────────────────────────────────────── */
-export const FixedBottom = styled.View`
+/* ── Fixed Footer ────────────────────────────────────────────────── */
+export const FixedFooter = styled.View`
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
+  padding-horizontal: ${scale(24)}px;
+  padding-top: ${verticalScale(16)}px;
+  padding-bottom: ${verticalScale(34)}px;
   background-color: ${({ theme }) => theme.colors.surface};
-  padding: ${moderateScale(20)}px ${scale(24)}px;
-  padding-bottom: ${verticalScale(32)}px;
-  gap: ${verticalScale(16)}px;
-  elevation: 10;
-  border-top-left-radius: ${moderateScale(24)}px;
-  border-top-right-radius: ${moderateScale(24)}px;
-  shadow-color: #000;
+  elevation: 8;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px -4px;
-  shadow-opacity: 0.1;
-  shadow-radius: 8px;
+  shadow-opacity: 0.08;
+  shadow-radius: 12px;
+  z-index: 50;
+  gap: ${verticalScale(12)}px;
+  align-items: stretch;
 `;
 
 export const SummaryRow = styled.View`
+  width: 100%;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${verticalScale(4)}px;
 `;
 
 export const PillBadge = styled.View`
   background-color: ${({ theme }) => theme.colors.primary + '15'};
   border-radius: ${moderateScale(12)}px;
   padding: ${verticalScale(6)}px ${scale(12)}px;
-`;
-
-export const ConfirmButton = styled.TouchableOpacity<{ disabled: boolean }>`
-  background-color: ${({ theme, disabled }) => (disabled ? theme.colors.outline_variant : theme.colors.primary)};
-  border-radius: ${moderateScale(16)}px;
-  padding-vertical: ${verticalScale(16)}px;
-  align-items: center;
-  justify-content: center;
-  elevation: ${({ disabled }) => (disabled ? 0 : 8)};
-  opacity: ${({ disabled }) => (disabled ? 0.7 : 1)};
 `;
 
 export const CoRiderList = styled.View`
@@ -86,8 +77,11 @@ export const CoRiderCard = styled.View`
   padding: ${moderateScale(12)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   border-radius: ${moderateScale(12)}px;
-  border-width: 1px;
-  border-color: ${({ theme }) => theme.colors.outline_variant}40;
+  elevation: 1;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
+  shadow-offset: 0px 1px;
+  shadow-opacity: 0.02;
+  shadow-radius: 4px;
 `;
 
 export const PassengerAvatar = styled.Image`

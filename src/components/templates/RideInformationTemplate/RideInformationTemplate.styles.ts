@@ -29,7 +29,7 @@ export const ContentPadding = styled.View`
 // ── Driver Card (flat, simple) ──────────────────────────────────────────────
 
 export const DriverCard = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
+  background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${moderateScale(20)}px;
   padding: ${moderateScale(14)}px;
   flex-direction: row;
@@ -232,10 +232,15 @@ export const FixedFooter = styled.View`
   bottom: 0;
   left: 0;
   right: 0;
-  padding-horizontal: ${scale(20)}px;
-  padding-bottom: ${verticalScale(36)}px;
+  padding-horizontal: ${scale(24)}px;
   padding-top: ${verticalScale(16)}px;
+  padding-bottom: ${verticalScale(34)}px;
   background-color: ${({ theme }) => theme.colors.surface};
+  elevation: 8;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
+  shadow-offset: 0px -4px;
+  shadow-opacity: 0.08;
+  shadow-radius: 12px;
 `;
 
 export const AmenityRow = styled.View`
@@ -290,7 +295,7 @@ export const FareSummaryRow = styled.View`
   padding: ${moderateScale(16)}px;
   align-items: center;
   elevation: 1;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 1px;
   shadow-opacity: 0.05;
   shadow-radius: 4px;

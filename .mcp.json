@@ -6,6 +6,7 @@
         "-y",
         "@modelcontextprotocol/server-filesystem",
         "/tmp",
+        "http://localhost:6007/mcp",
         "http://localhost:6006/mcp"
       ],
       "type": "stdio"

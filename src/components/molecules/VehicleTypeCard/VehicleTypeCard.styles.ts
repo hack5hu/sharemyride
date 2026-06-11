@@ -11,7 +11,7 @@ export const Container = styled.TouchableOpacity<{ selected: boolean }>`
 
   background-color: ${({ theme, selected }) => 
     selected ? theme.colors.secondary_fixed : theme.colors.surface_container_lowest};
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 2px;
   shadow-opacity: ${({ selected }) => (selected ? 0.1 : 0.02)};
   shadow-radius: 4px;

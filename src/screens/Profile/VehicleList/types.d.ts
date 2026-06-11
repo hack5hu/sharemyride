@@ -12,4 +12,7 @@ export interface UseVehicleListReturn {
   onDelete: (id: string) => void;
   onAdd: () => void;
   onBack: () => void;
+  isDeleteModalVisible: boolean;
+  setIsDeleteModalVisible: (visible: boolean) => void;
+  handleConfirmDelete: () => Promise<void>;
 }

@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
-import DatePicker from 'react-native-date-picker';
+import { DobInput } from '../../molecules/DobInput';
 import { Surface } from '../../atoms/Surface';
 import { Typography } from '../../atoms/Typography';
 import { Input } from '../../atoms/Input';
@@ -8,45 +8,39 @@ import { AvatarPicker } from '../../molecules/AvatarPicker';
 import { GenderSelector } from '../../molecules/GenderSelector';
 import { HeaderRow, InfoContainer, FormContainer } from './IdentityProfileCard.styles';
 import { useTranslation } from '@/hooks/useTranslation';
-import { formatDateToDDMMYYYY, parseDateFromDDMMYYYY } from '@/utils/date';
+// Date utilities removed as they are no longer needed by DatePicker
 
 export interface IdentityProfileCardProps {
   values: any;
   setFieldValue: (field: string, value: any) => void;
   errors?: any;
+  touched?: any;
+  setFieldTouched?: (field: string, touched?: boolean) => void;
   submitCount?: number;
   maxDate?: Date;
+  disabled?: boolean;
 }
 
 export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = React.memo(({
   values,
   setFieldValue,
   errors,
+  touched = {},
+  setFieldTouched,
   submitCount = 0,
+  disabled,
 }) => {
   const { t } = useTranslation();
-  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-
   const showError = submitCount > 0;
-
-  const handleDateConfirm = (date: Date) => {
-    setIsDatePickerOpen(false);
-    setFieldValue('dob', formatDateToDDMMYYYY(date));
-  };
-
-  const eighteenYearsAgo = useMemo(() => {
-    const date = new Date();
-    date.setFullYear(date.getFullYear() - 18);
-    return date;
-  }, []);
 
   return (
     <Surface elevation="lowest" rounded="md" padding="lg" >
-      <HeaderRow>
+      <HeaderRow style={{ opacity: disabled ? 0.6 : 1 }}>
         <AvatarPicker
-          dob={values.dob}
           onImageSelected={(asset) => setFieldValue('profileImage', asset)}
           uri={values.profileImage?.uri}
+          disabled={disabled}
+          showAddText={true}
         />
         <InfoContainer>
           <Typography variant="title" size="lg" weight="bold">
@@ -69,45 +63,34 @@ export const IdentityProfileCard: React.FC<IdentityProfileCardProps> = React.mem
           label={t('profileSetup.fullNameLabel')}
           value={values.fullName}
           onChangeText={(text) => setFieldValue('fullName', text)}
+          onBlur={() => setFieldTouched?.('fullName', true)}
           placeholder={t('profileSetup.fullNamePlaceholder')}
-          error={showError ? errors?.fullName : undefined}
+          error={(submitCount > 0 || touched.fullName) ? errors?.fullName : undefined}
           required
+          editable={!disabled}
         />
 
-        <View style={{ flexDirection: 'row', gap: 16 }}>
-          <View style={{ flex: 1 }}>
-            <Pressable onPress={() => setIsDatePickerOpen(true)}>
-              <View pointerEvents="none">
-                <Input
-                  label={t('profileSetup.dobLabel')}
-                  value={values.dob}
-                  placeholder="DD/MM/YYYY"
-                  rightIcon="calendar-today"
-                  error={showError ? errors?.dob : undefined}
-                  editable={false}
-                  required
-                />
-              </View>
-            </Pressable>
-          </View>
-        </View>
+        <DobInput
+          label={t('profileSetup.dobLabel')}
+          value={values.dob}
+          onValueChange={(val) => setFieldValue('dob', val)}
+          onBlur={() => setFieldTouched?.('dob', true)}
+          error={(submitCount > 0 || touched.dob) ? errors?.dob : undefined}
+          required
+          disabled={disabled}
+        />
 
         <GenderSelector
           label={t('profileSetup.genderLabel')}
           value={values.gender}
-          onValueChange={(val) => setFieldValue('gender', val)}
+          onValueChange={(val) => {
+            setFieldValue('gender', val);
+            setFieldTouched?.('gender', true);
+          }}
+          error={(submitCount > 0 || touched.gender) ? errors?.gender : undefined}
+          disabled={disabled}
         />
       </FormContainer>
-
-      <DatePicker
-        modal
-        open={isDatePickerOpen}
-        date={values.dob ? parseDateFromDDMMYYYY(values.dob) : eighteenYearsAgo}
-        mode="date"
-        maximumDate={eighteenYearsAgo}
-        onConfirm={handleDateConfirm}
-        onCancel={() => setIsDatePickerOpen(false)}
-      />
     </Surface>
   );
 });

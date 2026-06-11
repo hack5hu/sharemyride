@@ -48,7 +48,7 @@ export const RideListHeader: React.FC<RideListHeaderProps> = React.memo(({
           onActionPress={onClearDrafts}
         />
       )}
-      {activeTab === 'completed' && (
+      {activeTab === 'archive' && (
         <SectionHeader title={t('myRides.completedTitle')} />
       )}
     </View>

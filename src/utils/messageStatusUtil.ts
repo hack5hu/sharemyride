@@ -1,9 +1,11 @@
 import { MessageStatus } from '@/types/chat';
-import { useTheme } from 'styled-components/native';
+import { DefaultTheme } from 'styled-components/native';
 
-export const getMessageStatusIcon = (status: MessageStatus, isMe: boolean) => {
-  const theme = useTheme();
-
+export const getMessageStatusIcon = (
+  status: MessageStatus,
+  isMe: boolean,
+  theme: DefaultTheme
+) => {
   if (!isMe) {
     return null; // No status icon for incoming messages
   }
@@ -19,3 +21,4 @@ export const getMessageStatusIcon = (status: MessageStatus, isMe: boolean) => {
 
   return statusMap[normalizedStatus] || statusMap.SENT;
 };
+

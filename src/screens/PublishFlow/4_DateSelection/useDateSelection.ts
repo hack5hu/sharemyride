@@ -1,5 +1,6 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useMemo } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { MonthData } from '@/components/templates/DateSelectionTemplate';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 
@@ -8,9 +9,13 @@ const getMonthsData = (): MonthData[] => {
   const currentYear = today.getFullYear();
   const currentMonth = today.getMonth();
 
+  const maxDate = new Date();
+  maxDate.setDate(maxDate.getDate() + 60);
+  const monthCount = (maxDate.getFullYear() - currentYear) * 12 + (maxDate.getMonth() - currentMonth) + 1;
+
   const months: MonthData[] = [];
 
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < monthCount; i++) {
     const date = new Date(currentYear, currentMonth + i, 1);
     months.push({
       year: date.getFullYear(),
@@ -23,14 +28,14 @@ const getMonthsData = (): MonthData[] => {
 };
 
 export const useDateSelection = () => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const route = useRoute();
   const params = route.params as any;
   const { departureDate, setDepartureDate } = useRidePublishStore();
 
   // Pre-fill with previously selected date from store
   const [selectedDate, setSelectedDate] = useState<Date | null>(
-    departureDate ? new Date(departureDate) : null
+    departureDate ? new Date(departureDate) : new Date()
   );
 
   const months = useMemo(() => getMonthsData(), []);

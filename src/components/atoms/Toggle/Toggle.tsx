@@ -8,6 +8,7 @@ export const Toggle: React.FC<ToggleProps> = ({
   value,
   onValueChange,
   style,
+  disabled,
 }) => {
   const theme = useTheme();
   const animatedValue = useRef(new Animated.Value(value ? 1 : 0)).current;
@@ -21,12 +22,16 @@ export const Toggle: React.FC<ToggleProps> = ({
   }, [value, animatedValue]);
 
   const handlePress = () => {
+    if (disabled) return;
     onValueChange?.(!value);
   };
 
   const backgroundColor = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [theme.colors.outline_variant, theme.colors.primary],
+    outputRange: [
+      disabled ? theme.colors.surface_container_highest : theme.colors.outline_variant, 
+      disabled ? theme.colors.outline : theme.colors.primary
+    ],
   });
 
   const translateX = animatedValue.interpolate({
@@ -35,8 +40,8 @@ export const Toggle: React.FC<ToggleProps> = ({
   });
 
   return (
-    <TouchableWithoutFeedback onPress={handlePress}>
-      <Container style={[style, { backgroundColor }]}>
+    <TouchableWithoutFeedback onPress={handlePress} disabled={disabled}>
+      <Container style={[style, { backgroundColor, opacity: disabled ? 0.6 : 1 }]}>
         <Knob style={{ transform: [{ translateX }] }} />
       </Container>
     </TouchableWithoutFeedback>

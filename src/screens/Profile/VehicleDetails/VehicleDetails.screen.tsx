@@ -10,7 +10,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useVehicleDetails } from './useVehicleDetails';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import * as S from './VehicleDetails.styles';
-import { LabelText } from '@/components/atoms/Input/Input.styles';
+import { LabelText, RequiredAsterisk } from '@/components/atoms/Input/Input.styles';
 
 export const VehicleDetailsScreen: React.FC = () => {
   const theme = useTheme();
@@ -59,6 +59,8 @@ export const VehicleDetailsScreen: React.FC = () => {
                 value={formik.values.company}
                 onChangeText={formik.handleChange('company')}
                 error={formik.touched.company ? formik.errors.company : undefined}
+                required={true}
+                editable={!isLoading}
               />
               <Input
                 label={t('vehicleDetails.carModel')}
@@ -66,6 +68,8 @@ export const VehicleDetailsScreen: React.FC = () => {
                 value={formik.values.model}
                 onChangeText={formik.handleChange('model')}
                 error={formik.touched.model ? formik.errors.model : undefined}
+                required={true}
+                editable={!isLoading}
               />
             </S.InputGroup>
           </S.CardSection>
@@ -83,11 +87,13 @@ export const VehicleDetailsScreen: React.FC = () => {
               value={formik.values.numberPlate}
               onChangeText={(text) => formik.setFieldValue('numberPlate', text.toUpperCase())}
               error={formik.touched.numberPlate ? formik.errors.numberPlate : undefined}
+              editable={!isLoading}
             />
 
-            <S.ColorGroup>
+            <S.ColorGroup style={{ opacity: isLoading ? 0.6 : 1 }}>
               <LabelText>
                 {t('vehicleDetails.color')}
+                <RequiredAsterisk> *</RequiredAsterisk>
               </LabelText>
               <S.ColorScroll horizontal showsHorizontalScrollIndicator={false}>
                 <S.ColorRow>
@@ -96,7 +102,7 @@ export const VehicleDetailsScreen: React.FC = () => {
                       key={color.value}
                       color={color.value}
                       selected={formik.values.color === color.value}
-                      onPress={() => setColor(color.value)}
+                      onPress={isLoading ? undefined : () => setColor(color.value)}
                       label={color.label}
                     />
                   ))}
@@ -119,19 +125,20 @@ export const VehicleDetailsScreen: React.FC = () => {
             </S.SectionHeader>
             <LabelText>
               {t('vehicleDetails.seaterCount')}
+              <RequiredAsterisk> *</RequiredAsterisk>
             </LabelText>
-            <S.CapacityRow>
+            <S.CapacityRow style={{ opacity: isLoading ? 0.6 : 1 }}>
               <VehicleTypeCard
                 icon="person"
                 label={t('vehicleDetails.seater5')}
                 selected={formik.values.seater === '5'}
-                onPress={() => setSeater('5')}
+                onPress={isLoading ? undefined : () => setSeater('5')}
               />
               <VehicleTypeCard
                 icon="groups"
                 label={t('vehicleDetails.seater7')}
                 selected={formik.values.seater === '7'}
-                onPress={() => setSeater('7')}
+                onPress={isLoading ? undefined : () => setSeater('7')}
               />
             </S.CapacityRow>
             {formik.touched.seater && formik.errors.seater && (

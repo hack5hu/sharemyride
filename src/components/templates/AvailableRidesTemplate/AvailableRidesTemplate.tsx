@@ -1,5 +1,6 @@
 import React from 'react';
 import { format } from 'date-fns';
+import { formatDateSafely } from '@/utils/date';
 import { useTheme } from 'styled-components/native';
 import { View, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -54,13 +55,13 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
   const theme = useTheme();
 
   const filters = [
-    { id: 'nearPickup', label: 'Near Pickup', icon: 'my-location' },
-    { id: 'nearDropoff', label: 'Near Dropoff', icon: 'location-on' },
-    { id: 'luggageAllowed', label: 'Luggage', icon: 'luggage' },
-    { id: 'noSmoking', label: t.noSmokingFilterLabel || 'No Smoking', icon: 'smoke-free' },
-    { id: 'ladiesOnly', label: t.ladiesOnlyFilterLabel || 'Ladies Only', icon: 'pregnant-woman' },
+    { id: 'nearPickup', label: ft.nearPickup || 'Near Pickup', icon: 'my-location' },
+    { id: 'nearDropoff', label: ft.nearDropoff || 'Near Dropoff', icon: 'location-on' },
+    { id: 'luggageAllowed', label: ft.luggageAllowed || 'Luggage', icon: 'luggage' },
+    { id: 'noSmoking', label: ft.noSmoking || t.noSmokingFilterLabel || 'No Smoking', icon: 'smoke-free' },
+    { id: 'ladiesOnly', label: ft.ladiesOnly || t.ladiesOnlyFilterLabel || 'Ladies Only', icon: 'pregnant-woman' },
     { id: 'topRated', label: t.topRatedFilterLabel || 'Top Rated', icon: 'star' },
-    { id: 'petFriendly', label: 'Pets', icon: 'pets' },
+    { id: 'petFriendly', label: ft.petFriendly || 'Pets', icon: 'pets' },
   ];
 
   const { startLocation, destinationLocation, seatCount, travelDate } = useBookRideStore();
@@ -69,7 +70,6 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
       <SafeFlashList
         data={rides}
         keyExtractor={(item: any) => item.id}
-        estimatedItemSize={200}
         showsVerticalScrollIndicator={false}
         onEndReached={onLoadMore}
         onEndReachedThreshold={0.5}
@@ -86,9 +86,9 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
               <S.SummaryRow>
                 <S.RouteInfo>
                   <S.LocationVertical>
-                    <Icon name="circle" size={moderateScale(14)} color={theme.colors.primary} style={{ fontVariationSettings: "'FILL' 1" }} />
+                    <Icon name="circle" size={moderateScale(14)} color={theme.colors.primary} />
                     <S.Line />
-                    <Icon name="location-on" size={moderateScale(14)} color={theme.colors.tertiary} style={{ fontVariationSettings: "'FILL' 1" }} />
+                    <Icon name="location-on" size={moderateScale(14)} color={theme.colors.tertiary} />
                   </S.LocationVertical>
                   <View style={{ flex: 1, gap: verticalScale(32) }}>
                     <Typography variant="title" size="sm" weight="bold" numberOfLines={1} ellipsizeMode="tail">
@@ -108,7 +108,7 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
                 <S.FooterItem>
                   <Icon name="calendar-today" size={moderateScale(20)} color={theme.colors.on_surface_variant} />
                   <Typography variant="label" size="md" weight="bold" color={theme.colors.on_surface_variant}>
-                    {travelDate ? format(new Date(travelDate), 'EEE, dd MMM') : t.searchSummaryDate}
+                    {travelDate ? formatDateSafely(travelDate, { weekday: 'short', day: '2-digit', month: 'short' }, t.searchSummaryDate) : t.searchSummaryDate}
                   </Typography>
                 </S.FooterItem>
                 <S.FooterItem>
@@ -127,14 +127,14 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
             <View style={{ paddingVertical: verticalScale(60), alignItems: 'center', justifyContent: 'center' }}>
               <ActivityIndicator color={theme.colors.primary} size="large" />
               <Typography variant="body" size="md" color={theme.colors.on_surface_variant} weight="medium" style={{ marginTop: verticalScale(16) }}>
-                We are currently fetching best rides for you...
+                {t.fetchingRides}
               </Typography>
             </View>
           ) : (
             <EmptyState 
               icon="search-off"
-              title="No Rides Found"
-              description="We couldn't find any rides for this route and date. Try adjusting your filters or checking a different time."
+              title={t.noRidesFoundTitle}
+              description={t.noRidesFoundDesc}
             />
           )
         }

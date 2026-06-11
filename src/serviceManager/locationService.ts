@@ -1,4 +1,5 @@
 import olaClient from './olaClient';
+import { Logger } from '@/utils/logger';
 
 export interface OlaPrediction {
   description: string;
@@ -64,7 +65,7 @@ export const locationService = {
       
       return response.data.predictions || [];
     } catch (error) {
-      console.error('Ola Maps Autocomplete Error:', error);
+      Logger.error('Ola Maps Autocomplete Error:', error);
       return [];
     }
   },
@@ -94,7 +95,7 @@ export const locationService = {
       }
       return { name: 'Picked Location', address: '' };
     } catch (error) {
-      console.error('Ola Maps Reverse Geocode Error:', error);
+      Logger.error('Ola Maps Reverse Geocode Error:', error);
       return { name: 'Picked Location', address: '' };
     }
   },
@@ -131,7 +132,7 @@ export const locationService = {
       }
       return [];
     } catch (error) {
-      console.error('Ola Maps Directions Error:', error);
+      Logger.error('Ola Maps Directions Error:', error);
       return [];
     }
   },

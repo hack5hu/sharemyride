@@ -65,8 +65,6 @@ export const useVehicleStore = create<VehicleState>()(
             }],
             isLoading: false
           }));
-
-          get().syncVehicles();
         } catch (error) {
           console.error('Failed to add vehicle to backend:', error);
           set({ isLoading: false });
@@ -75,7 +73,10 @@ export const useVehicleStore = create<VehicleState>()(
       },
 
       syncVehicles: async () => {
-        set({ isLoading: true });
+        const isInitialLoad = get().vehicles.length === 0;
+        if (isInitialLoad) {
+          set({ isLoading: true });
+        }
         try {
           const { userService } = require('@/serviceManager/userService');
           const data = await userService.getVehicles();
@@ -101,7 +102,25 @@ export const useVehicleStore = create<VehicleState>()(
               };
             });
 
-            set({ vehicles: mappedVehicles, isLoading: false });
+            const currentVehicles = get().vehicles;
+            const isIdentical = currentVehicles.length === mappedVehicles.length &&
+              currentVehicles.every((v, i) => 
+                v.id === mappedVehicles[i].id &&
+                v.company === mappedVehicles[i].company &&
+                v.model === mappedVehicles[i].model &&
+                v.numberPlate === mappedVehicles[i].numberPlate &&
+                v.color === mappedVehicles[i].color &&
+                v.seater === mappedVehicles[i].seater &&
+                v.type === mappedVehicles[i].type
+              );
+
+            if (!isIdentical) {
+              set({ vehicles: mappedVehicles });
+            }
+            
+            if (isInitialLoad) {
+              set({ isLoading: false });
+            }
             
             if (mappedVehicles.length > 0 && !get().selectedVehicleId) {
               set({ selectedVehicleId: mappedVehicles[0].id });
@@ -133,28 +152,33 @@ export const useVehicleStore = create<VehicleState>()(
 
       setSelectedVehicle: (id) => set({ selectedVehicleId: id }),
 
-      updateVehicle: async (id, vehicle) => {
+      updateVehicle: async (id, updates) => {
         set({ isLoading: true });
         try {
           const { userService } = require('@/serviceManager/userService');
           
+          const existing = get().vehicles.find((v) => v.id === id);
+          if (!existing) {
+            throw new Error('Vehicle not found');
+          }
+
+          const merged = { ...existing, ...updates };
+          
           // Map to backend schema
           const payload = {
-            vehicleNumber: vehicle.numberPlate.toUpperCase(),
-            vehicleTypeId: SEATER_TO_TYPE_ID[vehicle.seater] || 1,
-            company: vehicle.company,
-            model: vehicle.model,
-            color: vehicle.color,
+            vehicleNumber: merged.numberPlate.toUpperCase(),
+            vehicleTypeId: SEATER_TO_TYPE_ID[merged.seater] || 1,
+            company: merged.company,
+            model: merged.model,
+            color: merged.color,
           };
 
           await userService.updateVehicle(id, payload);
           
           set((state) => ({
-            vehicles: state.vehicles.map((v) => (v.id === id ? { ...v, ...vehicle, numberPlate: vehicle.numberPlate.toUpperCase() } : v)),
+            vehicles: state.vehicles.map((v) => (v.id === id ? { ...v, ...updates, numberPlate: (updates.numberPlate || v.numberPlate).toUpperCase() } : v)),
             isLoading: false
           }));
-          
-          get().syncVehicles();
         } catch (error) {
           console.error('Failed to update vehicle:', error);
           set({ isLoading: false });

@@ -1,5 +1,6 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useCallback, useMemo } from 'react';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { useRoute, RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '@/navigation/types.d';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useVehicleStore } from '@/store/useVehicleStore';
@@ -7,20 +8,25 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { VehicleDetailsState, VehicleType } from './types';
 import { VEHICLE_TYPES, CAR_COLORS } from '@/constants/ride';
+import { useTranslation } from '@/hooks/useTranslation';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 const validationSchema = Yup.object().shape({
   company: Yup.string().required('Vehicle company is required'),
   model: Yup.string().required('Car model is required'),
-  numberPlate: Yup.string().required('Number plate is required'),
+  numberPlate: Yup.string(),
   type: Yup.string().required('Vehicle type is required'),
   color: Yup.string().required('Color is required'),
   seater: Yup.string().oneOf(['5', '7']).required('Seater count is required'),
 });
 
 export const useVehicleDetails = () => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const route = useRoute<RouteProp<RootStackParamList, 'VehicleDetails'>>();
   const vehicleId = route.params?.vehicleId;
+  const { t } = useTranslation();
 
   const { addVehicle, updateVehicle, vehicles, isLoading } = useVehicleStore();
   const { setVehicleDetails, setPublishVehicleType } = useRidePublishStore();
@@ -68,11 +74,13 @@ export const useVehicleDetails = () => {
         setVehicleDetails(values);
         setPublishVehicleType(values.seater);
 
-        console.log('Vehicle details saved successfully');
         navigation.goBack();
       } catch (error: any) {
-        const { Alert } = require('react-native');
-        Alert.alert('Save Failed', error.message || 'Could not save vehicle. Please try again.');
+        showNotification(
+          NotificationType.ERROR,
+          t('notification.defaultErrorTitle'),
+          getErrorMessage(error, t('notification.defaultErrorMessage'))
+        );
       }
     },
   });
@@ -100,5 +108,4 @@ export const useVehicleDetails = () => {
     goBack: () => navigation.goBack(),
   };
 };
-
 

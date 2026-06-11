@@ -6,4 +6,5 @@ export interface ChatAppHeaderProps {
   isVerified?: boolean;
   onBackPress?: () => void;
   onReportPress?: () => void;
+  onProfilePress?: () => void;
 }

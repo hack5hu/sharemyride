@@ -42,9 +42,9 @@ export const LocationBottomSheet: React.FC<LocationBottomSheetProps> = ({
               {searchResults.map((item) => (
                 <LocationListItem 
                   key={item.id}
-                  title={item.name || item.title}
+                  title={item.name}
                   address={item.address}
-                  icon={item.icon || 'place'}
+                  icon="place"
                   onPress={() => onLocationSelect(item)}
                 />
               ))}

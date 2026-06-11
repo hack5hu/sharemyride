@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { BackHandler } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
@@ -25,7 +27,21 @@ import {
 export const PublishSuccessScreen: React.FC = () => {
   const theme = useTheme();
   const { navigate } = useAppNavigation();
+  const navigation = useAppNavigation();
   const { publishSuccess: t } = useLocale();
+
+  // Disable header back button
+  useEffect(() => {
+    navigation.setOptions({ headerLeft: () => null });
+  }, [navigation]);
+
+  // Disable hardware back button (Android)
+  useFocusEffect(
+    React.useCallback(() => {
+      const sub = BackHandler.addEventListener('hardwareBackPress', () => true);
+      return () => sub.remove();
+    }, [])
+  );
 
   const handleGoToMyRides = () => {
     navigate('MyRides');
@@ -36,9 +52,7 @@ export const PublishSuccessScreen: React.FC = () => {
   };
 
   return (
-    <ScreenShell
-      title={t.headerTitle}
-    >
+    <ScreenShell >
       <MainContent>
         <SuccessIconWrapper>
           <MaterialIcons name="check" size={moderateScale(56)} color={theme.colors.on_primary} />

@@ -1,8 +1,8 @@
-# Design System Strategy: The Ride Pool Company
+# Design System Strategy: The ZyncRide
 
 ## 1. Overview & Creative North Star
 
-The "Ride Pool Company" is the creative North Star of this design system. For a cab and bike-pooling application, we must balance the high-energy, "on-the-move" lifestyle of a GenZ demographic with the unwavering safety required for shared transit.
+The "ZyncRide" is the creative North Star of this design system. For a cab and bike-pooling application, we must balance the high-energy, "on-the-move" lifestyle of a GenZ demographic with the unwavering safety required for shared transit.
 
 We move away from the "utility-first" look of legacy ride-sharing apps. Instead, we embrace **Editorial Fluidity**. This means using intentional asymmetry, generous white space, and a "layered paper" aesthetic. By avoiding harsh borders and rigid grids, we create an interface that feels like a premium concierge service—organic, breathing, and sophisticated.
 

@@ -1,11 +1,11 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { userService } from '@/serviceManager/userService';
 import { useLocale } from '@/constants/localization';
 import { UserProfile } from './types';
 
 export const useUserProfileDetail = (userId: string) => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const { userProfileDetail: t } = useLocale();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,6 +23,7 @@ export const useUserProfileDetail = (userId: string) => {
         id: data.id || userId,
         name: data.name || 'Unknown User',
         profileImage: data.profileImage,
+        bio: data.bio || t.defaultBio,
         isVerified: data.isVerified ?? true,
         rating: data.rating ?? 4.9,
         ratingCount: data.ratingCount ?? 124,
@@ -81,15 +82,9 @@ export const useUserProfileDetail = (userId: string) => {
     navigation.goBack();
   }, [navigation]);
 
-  const handleReport = useCallback(() => {
-    // Implement report logic or navigate to report screen
-    console.log('Reporting user:', userId);
-  }, [userId]);
+  const handleReport = useCallback(() => {}, []);
 
-  const handleViewRatings = useCallback(() => {
-    // Navigate to detailed ratings screen
-    console.log('Viewing ratings for:', userId);
-  }, [userId]);
+  const handleViewRatings = useCallback(() => {}, []);
 
   return {
     profile,

@@ -3,6 +3,7 @@ import React from 'react';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styled from 'styled-components/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Typography } from '@/components/atoms/Typography';
 import { scale, verticalScale, moderateScale } from '@/styles';
 
@@ -16,7 +17,7 @@ export interface CommonHeaderProps {
   onSearchPress?: () => void;
 }
 
-const HeaderContainer = styled.SafeAreaView`
+const HeaderContainer = styled(SafeAreaView)`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;

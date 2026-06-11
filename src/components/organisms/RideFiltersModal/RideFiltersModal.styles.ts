@@ -18,7 +18,7 @@ export const SheetContent = styled.View`
   border-top-right-radius: ${moderateScale(32)}px;
   width: 100%;
   max-height: 85%;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px -4px;
   shadow-opacity: 0.1;
   shadow-radius: 12px;

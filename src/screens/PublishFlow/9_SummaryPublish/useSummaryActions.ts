@@ -1,12 +1,18 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { addSeconds, format } from 'date-fns';
 import rideService, { PublishRidePayload, RouteStop } from '@/serviceManager/rideService';
 import { roundToNearest } from '@/utils/pricing';
 import { useMyRidesStore } from '@/store/useMyRidesStore';
+import { useTranslation } from '@/hooks/useTranslation';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
+import { storage } from '@/utils/storage';
 
 export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolean) => void) => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
+  const { t } = useTranslation();
   const { addDraft, removeDraft } = useMyRidesStore();
 
   const {
@@ -36,7 +42,6 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
 
   const handlePublish = useCallback(async () => {
     if (!startLocation || !destinationLocation || !departureDate || !departureTime || !vehicleId) return;
-    console.log('hello')
     setIsPublishing(true);
     try {
       const dateObj = new Date(departureDate);
@@ -58,7 +63,9 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
 
       const routeStops: RouteStop[] = allStops.map((stop, index) => {
         const segmentId = index > 0 ? `seg-${index - 1}` : '';
-        const segmentPrice = index > 0 ? (Number(segmentPrices[segmentId]) || Math.round(price / (allStops.length - 1))) : 0;
+        const segmentPrice = index > 0 
+          ? roundToNearest(Number(segmentPrices[segmentId]) || (price / (allStops.length - 1)), 10) 
+          : 0;
         const frontSeatSegmentPrice = premiumEnabled ? roundToNearest(segmentPrice * (1 + (premiumPercentage || 0) / 100), 10) : segmentPrice;
 
         cumulativePrice += segmentPrice;
@@ -99,20 +106,66 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
       };
       await rideService.publishRide(payload);
       
+      try {
+        const existingRidesRaw = storage.getString('recent_published_rides');
+        let recentRides = existingRidesRaw ? JSON.parse(existingRidesRaw) : [];
+        
+        const currentRide = {
+          startLocation,
+          destinationLocation,
+          middleStops,
+          routeDetails,
+          selectedRoute,
+          seatCount,
+          selectedSeatIds,
+          vehicleId,
+          publishVehicleType,
+          vehicleDetails,
+          preferences,
+          price,
+          fullJourneyPrice,
+          frontSeatPrice,
+          premiumEnabled,
+          premiumPercentage,
+          segmentPrices,
+          requestType,
+          departureDate,
+          departureTime,
+        };
+        
+        recentRides.unshift(currentRide);
+        recentRides = recentRides.slice(0, 5);
+        
+        storage.set('recent_published_rides', JSON.stringify(recentRides));
+      } catch (err) {
+        console.error('[MMKV] Failed to save recent ride:', err);
+      }
+      
       if (editingDraftId) {
         removeDraft(editingDraftId);
       }
 
-      (navigation.navigate as any)('PublishSuccess');
+      navigation.reset({
+        index: 1,
+        routes: [
+          { name: 'BookRideInfo' },
+          { name: 'PublishSuccess' },
+        ],
+      } as any);
       clearPublishState();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Publish failed:', error);
+      showNotification(
+        NotificationType.ERROR,
+        t('notification.defaultErrorTitle'),
+        getErrorMessage(error, t('notification.defaultErrorMessage'))
+      );
     } finally {
       setIsPublishing(false);
     }
   }, [
     navigation, startLocation, destinationLocation, middleStops, departureDate, departureTime, 
-    publishVehicleType, selectedSeatIds, routeDetails, segmentPrices, price, clearPublishState,
+    selectedSeatIds, routeDetails, segmentPrices, price, clearPublishState,
     selectedRoute, removeDraft, editingDraftId, premiumEnabled, premiumPercentage, fullJourneyPrice, 
     frontSeatPrice, vehicleId, setIsPublishing
   ]);
@@ -128,8 +181,13 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
       selectedSeatIds,
       publishVehicleType,
       vehicleDetails,
+      vehicleId,
       preferences,
       price,
+      fullJourneyPrice,
+      frontSeatPrice,
+      premiumEnabled,
+      premiumPercentage,
       routeDetails,
       segmentPrices,
       selectedRoute,
@@ -138,7 +196,7 @@ export const useSummaryActions = (publishStore: any, setIsPublishing: (v: boolea
 
     addDraft(currentState, editingDraftId);
     clearPublishState();
-    (navigation.navigate as any)('MyRides');
+    (navigation.navigate as any)('MyRides', { tab: 'drafts' });
   }, [
     addDraft, editingDraftId, navigation, startLocation, destinationLocation, middleStops, 
     departureDate, departureTime, seatCount, selectedSeatIds, publishVehicleType, vehicleDetails, 

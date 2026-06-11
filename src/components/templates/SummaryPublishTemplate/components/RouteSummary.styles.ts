@@ -28,13 +28,19 @@ export const SectionLabel = styled.Text`
 `;
 
 export const RouteLayout = styled.View`
-  flex-direction: row;
-  gap: ${scale(12)}px;
+  flex-direction: column;
 `;
 
-export const TimelineLine = styled.View`
+export const RouteRow = styled.View<{ $isLast?: boolean }>`
+  flex-direction: row;
+  gap: ${scale(12)}px;
+  padding-bottom: ${({ $isLast }) => $isLast ? '0px' : `${verticalScale(20)}px`};
+`;
+
+export const IndicatorColumn = styled.View`
+  width: ${moderateScale(24)}px;
   align-items: center;
-  padding-top: ${verticalScale(4)}px;
+  position: relative;
 `;
 
 export const TimelineDotOutline = styled.View`
@@ -44,6 +50,8 @@ export const TimelineDotOutline = styled.View`
   background-color: ${({ theme }) => theme.colors.primary};
   border-width: 3px;
   border-color: ${({ theme }) => `${theme.colors.primary_container}4D`};
+  margin-top: ${verticalScale(4)}px;
+  z-index: 2;
 `;
 
 export const TimelineDotMiddle = styled.View`
@@ -51,12 +59,19 @@ export const TimelineDotMiddle = styled.View`
   height: ${moderateScale(8)}px;
   border-radius: 4px;
   background-color: ${({ theme }) => theme.colors.outline};
+  margin-top: ${verticalScale(6)}px;
+  z-index: 2;
 `;
 
-export const TimelineTrack = styled(LinearGradient)`
+export const TimelineTrack = styled(LinearGradient)<{ isFirst?: boolean; isLast?: boolean }>`
+  position: absolute;
   width: 2px;
-  height: ${verticalScale(40)}px;
-  margin-vertical: ${verticalScale(4)}px;
+  left: 50%;
+  margin-left: -1px;
+  top: ${({ isFirst }) => isFirst ? `${verticalScale(10)}px` : '0px'};
+  bottom: ${({ isLast }) => isLast ? 'auto' : '0px'};
+  height: ${({ isLast }) => isLast ? `${verticalScale(10)}px` : 'auto'};
+  z-index: 1;
 `;
 
 export const TimelineDotEnd = styled.View`
@@ -66,14 +81,13 @@ export const TimelineDotEnd = styled.View`
   border-width: 2px;
   border-color: ${({ theme }) => theme.colors.primary};
   background-color: ${({ theme }) => theme.colors.on_primary};
+  margin-top: ${verticalScale(4)}px;
+  z-index: 2;
 `;
 
-export const RouteDetailsStack = styled.View`
-  gap: ${verticalScale(24)}px;
+export const RouteStop = styled.View`
   flex: 1;
 `;
-
-export const RouteStop = styled.View``;
 
 export const StopLabel = styled.Text`
   font-family: 'Plus Jakarta Sans';

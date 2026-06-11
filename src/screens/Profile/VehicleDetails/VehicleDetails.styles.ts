@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { verticalScale, moderateScale } from '@/styles';
 import { Input } from '@/components/atoms/Input';
 import { Typography } from '@/components/atoms/Typography';
@@ -20,7 +21,7 @@ export const HeaderContainer = styled.View`
   padding-horizontal: ${moderateScale(16)}px;
 `;
 
-export const ScrollContainer = styled.ScrollView.attrs(() => ({
+export const ScrollContainer = styled(KeyboardAwareScrollView).attrs(() => ({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: { paddingBottom: verticalScale(40) }
 }))`
@@ -105,7 +106,7 @@ export const CardSection = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_low};
   padding: ${moderateScale(20)}px;
   border-radius: ${moderateScale(24)}px;
-  shadow-color: #000;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.03;
   shadow-radius: 12px;

@@ -6,7 +6,7 @@ export const FareCard = styled(LinearGradient)`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: ${moderateScale(24)}px;
+  padding: ${moderateScale(16)}px;
   border-radius: ${({ theme }) => theme.roundness.md}px;
   margin-top: ${verticalScale(8)}px;
 `;

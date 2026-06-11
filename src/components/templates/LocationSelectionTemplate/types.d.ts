@@ -5,5 +5,7 @@ export interface LocationSelectionTemplateProps {
   onPressDestination: () => void;
   onPressContinue: () => void;
   canContinue: boolean;
+  recentRides?: any[];
+  onSelectRecentRide?: (ride: any) => void;
   navBar?: React.ReactNode;
 }

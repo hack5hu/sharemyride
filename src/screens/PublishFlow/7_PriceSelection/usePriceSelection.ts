@@ -1,5 +1,6 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useEffect, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { locationService } from '@/serviceManager/locationService';
 import { calculateBasePrice, calculateFrontSeatPrice, PRICING_MULTIPLIERS, roundToNearest } from '@/utils/pricing';
@@ -7,8 +8,9 @@ import { SegmentPrice } from '@/components/molecules/SegmentPricingCard';
 import { StopSegment } from '@/components/organisms/SegmentPricingSheet/utils';
 
 export const usePriceSelection = () => {
-  const navigation = useNavigation();
-// removed unused route
+  const navigation = useAppNavigation();
+  const route = useRoute();
+  const params = route.params as any;
 
   const { 
     startLocation, 
@@ -18,7 +20,6 @@ export const usePriceSelection = () => {
     setRouteDetails,
     publishVehicleType,
     setPricing,
-    selectedSeatIds,
     price: storePrice,
     premiumEnabled: storePremiumEnabled,
     premiumPercentage: storePremiumPercentage,
@@ -37,15 +38,11 @@ export const usePriceSelection = () => {
     return 0;
   }, [totalDistanceKm, divisor]);
 
-  const showPremium = useMemo(() => {
-    console.log("Selected seat IDs", selectedSeatIds);
-    return (
-      selectedSeatIds.includes(2)
-    );
-  }, [selectedSeatIds]);
+  const showPremium = true;
 
   const [price, setPrice] = useState<number>(storePrice || initialPrice);
   const [premiumEnabled, setPremiumEnabled] = useState(storePremiumEnabled ?? false);
+
   const [premiumPercentage, setPremiumPercentage] = useState(storePremiumPercentage || 10);
   const [sheetVisible, setSheetVisible] = useState(false);
   
@@ -62,14 +59,20 @@ export const usePriceSelection = () => {
       
       // If we have route details and price is already in store or set correctly, skip
       if (routeDetails && (storePrice > 0 || price > 0)) {
-        // Just sync segment prices if store is empty but we have legs
-        if (Object.keys(segmentPricesState).length === 0 && routeDetails.legs.length > 0) {
-           const initialSegmentPrices: Record<string, number> = {};
-           routeDetails.legs.forEach((leg, i) => {
-             const segId = `seg-${i}`;
-             initialSegmentPrices[segId] = calculateBasePrice(leg.distanceMeters / 1000, PRICING_MULTIPLIERS.MID, divisor);
-           });
-           setSegmentPricesState(initialSegmentPrices);
+        // Just sync segment prices if we have legs and some are missing (e.g. after adding middle stops)
+        if (routeDetails.legs.length > 0) {
+          let updated = false;
+          const newSegmentPrices = { ...segmentPricesState };
+          routeDetails.legs.forEach((leg, i) => {
+            const segId = `seg-${i}`;
+            if (newSegmentPrices[segId] === undefined) {
+              newSegmentPrices[segId] = calculateBasePrice(leg.distanceMeters / 1000, PRICING_MULTIPLIERS.MID, divisor);
+              updated = true;
+            }
+          });
+          if (updated || Object.keys(segmentPricesState).length !== routeDetails.legs.length) {
+            setSegmentPricesState(newSegmentPrices);
+          }
         }
         return;
       }
@@ -214,8 +217,12 @@ export const usePriceSelection = () => {
       segmentPrices: segmentPricesState,
     });
 
-    (navigation.navigate as any)('SummaryPublish');
-  }, [navigation, setPricing, price, premiumEnabled, premiumPercentage, segmentPricesState, showPremium]);
+    if (params?.returnTo) {
+      (navigation.navigate as any)(params.returnTo);
+    } else {
+      (navigation.navigate as any)('SummaryPublish');
+    }
+  }, [navigation, setPricing, price, premiumEnabled, premiumPercentage, segmentPricesState, showPremium, params]);
 
   const handleCustomizePricing = useCallback(() => {
     setSheetVisible(true);

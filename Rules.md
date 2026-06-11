@@ -1,4 +1,4 @@
-# Agent Rule Guide: ShareMyRide
+# Agent Rule Guide: ZyncRide
 
 ⸻
 
@@ -76,7 +76,7 @@ index.ts
 ## 🎯 6. Design Fidelity
 
 - DO NOT change provided designs.
-- Maintain exact **"Ride Pool Company" aesthetics**.
+- Maintain exact **"ZyncRide" aesthetics**.
 - Follow:
 - spacing
 - typography

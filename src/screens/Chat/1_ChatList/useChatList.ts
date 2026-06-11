@@ -48,10 +48,12 @@ export const useChatList = () => {
 
         return {
           id: otherParticipantId,
-          name: cachedUser?.name || metadata.userName || metadata.name || `User ${otherParticipantId.slice(0, 8)}`,
-          lastMessage: (lastMsg.type === 'location' || lastMsg.content.startsWith('[LOCATION_DATA]:')) 
-            ? t('chat.locationShared') 
-            : lastMsg.content,
+          name: String(cachedUser?.name || metadata.userName || metadata.name || `User ${otherParticipantId.slice(0, 8)}`),
+          lastMessage: String(
+            (lastMsg.type === 'location' || lastMsg.content.startsWith('[LOCATION_DATA]:')) 
+              ? t('chat.locationShared') 
+              : lastMsg.content
+          ),
           time: new Date(lastMsg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           unreadCount: conv.unreadCount,
           isLastMessageFromMe: lastMsg.senderId === myUserId,

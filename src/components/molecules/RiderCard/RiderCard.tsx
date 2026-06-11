@@ -4,7 +4,7 @@ import { useTheme } from 'styled-components/native';
 import { RiderCardProps } from './types';
 import * as S from './RiderCard.styles';
 
-export const RiderCard: React.FC<RiderCardProps> = ({ name, info, avatarUrl, onPress }) => {
+export const RiderCard: React.FC<RiderCardProps> = ({ name, info, avatarUrl, onPress, onCancel }) => {
   const theme = useTheme();
 
   return (

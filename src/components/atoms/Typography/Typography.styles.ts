@@ -35,11 +35,20 @@ const getFontWeight = (variant: TypographyVariant, weight?: TypographyWeight) =>
   return defaults[variant];
 };
 
-export const StyledText = styled.Text<TypographyProps>`
+interface StyledTextProps extends Omit<TypographyProps, 'color'> {
+  $color?: string;
+}
+
+export const StyledText = styled.Text<StyledTextProps>`
   font-family: 'Plus Jakarta Sans';
   font-size: ${({ variant = 'body', size = 'md' }) => getFontSize(variant, size)}px;
   font-weight: ${({ variant = 'body', weight }) => getFontWeight(variant, weight)};
-  color: ${({ theme, color }) => color || theme.colors.on_surface};
+  color: ${({ theme, $color }) => {
+    if ($color && $color in theme.colors) {
+      return theme.colors[$color as keyof typeof theme.colors];
+    }
+    return $color || theme.colors.on_surface;
+  }};
   text-align: ${({ align = 'left' }) => align};
   include-font-padding: false;
   text-align-vertical: center;

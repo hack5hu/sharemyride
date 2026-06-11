@@ -8,6 +8,7 @@ import { ProfileMenuItem } from '@/components/molecules/ProfileMenuItem';
 import { BottomNav } from '@/components/organisms/BottomNav';
 import { useProfileHub } from './useProfileHub';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { ActionSheetModal } from '@/components/organisms/ActionSheetModal';
 import {
   Container,
   Content,
@@ -23,11 +24,20 @@ export const ProfileHubScreen: React.FC = () => {
   const {
     t,
     user,
+    isUpdatingAvatar,
+    handleAvatarEdit,
     navigateToEditProfile,
     navigateToVehicleDetails,
     navigateToTravelPreferences,
     navigateToSettings,
     navigateToDummy,
+    navigateToTermsAndConditions,
+    navigateToAboutUs,
+    navigateToHelpAndSupport,
+    isAvatarModalVisible,
+    setAvatarModalVisible,
+    handleOpenGallery,
+    handleRemoveAvatar,
   } = useProfileHub();
   const theme = useTheme();
 
@@ -44,8 +54,10 @@ export const ProfileHubScreen: React.FC = () => {
               avatarUri={user?.profilePhotoUrl}
               onEditPress={navigateToEditProfile}
               onSettingsPress={navigateToSettings}
+              onAvatarEditPress={handleAvatarEdit}
+              isUpdatingAvatar={isUpdatingAvatar}
             />
-            <TrustScoreCard score={98} />
+            {/* <TrustScoreCard score={98} /> */}
           </BentoGrid>
 
           <Section>
@@ -95,19 +107,19 @@ export const ProfileHubScreen: React.FC = () => {
                 icon="help-outline"
                 title={t('profileHub.helpSupport')}
                 showChevron={false}
-                onPress={() => navigateToDummy(t('profileHub.helpSupport'), { contentKey: 'help' })}
+                onPress={navigateToHelpAndSupport}
               />
               <ProfileMenuItem
                 icon="info"
                 title={t('profileHub.aboutUs')}
                 showChevron={false}
-                onPress={() => navigateToDummy(t('profileHub.aboutUs'), { contentKey: 'about' })}
+                onPress={navigateToAboutUs}
               />
               <ProfileMenuItem
                 icon="policy"
                 title={t('profileHub.termsPrivacy')}
                 showChevron={false}
-                onPress={() => navigateToDummy(t('profileHub.termsPrivacy'), { contentKey: 'terms' })}
+                onPress={navigateToTermsAndConditions}
               />
             </ActionGrid>
           </Section>
@@ -115,6 +127,31 @@ export const ProfileHubScreen: React.FC = () => {
       </Container>
 
       <BottomNav activeTab="PROFILE" />
+
+      <ActionSheetModal
+        isVisible={isAvatarModalVisible}
+        onClose={() => setAvatarModalVisible(false)}
+        title={t('profileHub.editProfilePic') || 'Edit Profile Picture'}
+        options={[
+          {
+            id: 'gallery',
+            label: t('profileHub.chooseFromGallery'),
+            icon: 'photo-library',
+            onPress: handleOpenGallery,
+          },
+          ...(user?.profilePhotoUrl
+            ? [
+                {
+                  id: 'remove',
+                  label: t('profileHub.removePhoto'),
+                  icon: 'delete-outline',
+                  isDestructive: true,
+                  onPress: handleRemoveAvatar,
+                },
+              ]
+            : []),
+        ]}
+      />
     </ScreenShell>
   );
 };

@@ -3,12 +3,16 @@ import { useBookRideStore } from '@/store/useBookRideStore';
 import { FIVE_SEATER_ROWS, SEVEN_SEATER_ROWS } from '@/components/organisms/CarFloorPlan/seatConfig';
 import rideService, { RouteStop } from '@/serviceManager/rideService';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useTranslation } from '@/hooks/useTranslation';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 import { BookSeat, Passenger } from './types';
 
 export const useBookSeatSelection = (
-  rideId: string, 
-  sourceStopId?: number, 
+  rideId: string,
+  sourceStopId?: number,
   destinationStopId?: number,
   passedSeats?: BookSeat[],
   passedPassengers?: Passenger[],
@@ -17,6 +21,7 @@ export const useBookSeatSelection = (
   passedTime?: string
 ) => {
   const { navigate, goBack } = useAppNavigation();
+  const { t: translate } = useTranslation();
   const searchResults = useBookRideStore(state => state.searchResults);
   const [selectedSeats, setSelectedSeats] = useState<Set<string | number>>(new Set());
   const [isBooking, setIsBooking] = useState(false);
@@ -31,30 +36,22 @@ export const useBookSeatSelection = (
     return t.includes('7') ? '7' : '5';
   }, [passedVehicleType, rideRaw]);
 
-  const seatNameIdMap = useMemo(() => {
-    const map: Record<string, number> = {};
-    (passedSeats || []).forEach((s: BookSeat) => {
-      map[s.seatName] = s.id;
-    });
-    return map;
-  }, [passedSeats]);
-
   const occupiedSeats = useMemo(() => {
-    const occupied = new Set<string | number>();
-    const availableIds = new Set((passedSeats || []).map((s: BookSeat) => s.id));
+    const occupied = new Set<string>();
+    const availableIds = new Set((passedSeats || []).map((s: BookSeat) => String(s.seatId)));
 
     // 1. Any standard seat ID that is not in the backend's returned seats list is unavailable/occupied
     const allIds = vehicleType === '7' ? [2, 3, 4, 5, 6, 7] : [2, 3, 4, 5];
     allIds.forEach(id => {
-      if (!availableIds.has(id)) {
-        occupied.add(id);
+      if (!availableIds.has(String(id))) {
+        occupied.add(String(id));
       }
     });
 
     // 2. Any seat in the backend returned seats list that is explicitly marked as not available is occupied
     (passedSeats || []).forEach((s: BookSeat) => {
       if (!s.available) {
-        occupied.add(s.id);
+        occupied.add(String(s.seatId));
       }
     });
 
@@ -66,9 +63,9 @@ export const useBookSeatSelection = (
     const firstStop = rideRaw?.stops?.[0];
     return firstStop?.arrivalTime
       ? new Date(firstStop.arrivalTime).toLocaleDateString('en-IN', {
-          day: 'numeric',
-          month: 'short',
-        })
+        day: 'numeric',
+        month: 'short',
+      })
       : '-- ---';
   }, [rideRaw, passedDate]);
 
@@ -87,7 +84,7 @@ export const useBookSeatSelection = (
   const prices = useMemo(() => {
     const priceMap: Record<string | number, number> = {};
     (passedSeats || []).forEach((s: BookSeat) => {
-      priceMap[s.id] = s.price;
+      priceMap[s.seatId] = s.price;
     });
     return priceMap;
   }, [passedSeats]);
@@ -101,7 +98,7 @@ export const useBookSeatSelection = (
   }, [selectedSeats, prices]);
 
   const toggleSeat = useCallback((id: string | number) => {
-    if (id === 'driver' || occupiedSeats.has(id)) return;
+    if (id === 'driver' || occupiedSeats.has(String(id))) return;
     setSelectedSeats(prev => {
       const next = new Set(prev);
       if (next.has(id)) {
@@ -117,7 +114,7 @@ export const useBookSeatSelection = (
 
   const handleConfirm = useCallback(async () => {
     if (selectedSeats.size === 0 || isBooking) return;
-    
+
     setIsBooking(true);
     try {
       const payload = {
@@ -127,16 +124,24 @@ export const useBookSeatSelection = (
       };
 
       await rideService.bookRide(rideId, payload);
-      navigate('BookingConfirmed', { 
+      navigate('BookingConfirmed', {
         rideId,
-        bookedSeats: Array.from(selectedSeats).map(String)
+        bookedSeats: Array.from(selectedSeats).map(String),
+        pickupTime: departureTime,
+        vehicleType: passedVehicleType || rideRaw?.vehicleType || (vehicleType === '7' ? 'CAR_7_SEATER' : 'CAR_5_SEATER'),
+        departureDate,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Booking confirmation failed:', error);
+      showNotification(
+        NotificationType.ERROR,
+        translate('notification.defaultErrorTitle'),
+        getErrorMessage(error, translate('notification.defaultErrorMessage'))
+      );
     } finally {
       setIsBooking(false);
     }
-  }, [navigate, selectedSeats, rideId, seatNameIdMap, isBooking, sourceStopId, destinationStopId]);
+  }, [navigate, selectedSeats, rideId, isBooking, sourceStopId, destinationStopId]);
 
   return {
     rows: vehicleType === '7' ? SEVEN_SEATER_ROWS : FIVE_SEATER_ROWS,

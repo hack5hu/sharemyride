@@ -17,6 +17,12 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
 
   const { logs, clearLogs, isModalVisible, setModalVisible } = useNetworkLoggerStore();
   const [selectedLog, setSelectedLog] = useState<NetworkLog | null>(null);
+  const [activeTab, setActiveTab] = useState<'api' | 'ola'>('api');
+
+  const filteredLogs = logs.filter(log => {
+    const url = log?.url || '';
+    return activeTab === 'ola' ? url.includes('olamaps.io') : !url.includes('olamaps.io');
+  });
 
   const handleCopy = (text: string, label: string) => {
     Clipboard.setString(text);
@@ -85,9 +91,9 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
     </S.EmptyState>
   );
 
-  if (ENABLE_NETWORK_LOGGER !== 'true') {
-    return null;
-  }
+  // if (ENABLE_NETWORK_LOGGER !== 'true') {
+  //   return null;
+  // }
 
   return (
     <>
@@ -97,43 +103,15 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
 
       <Modal visible={isModalVisible} animationType="slide" transparent>
         <S.ModalWrapper>
-          <S.ModalHeader>
-            <Typography variant="title" size="md">{t.networkLogsTitle}</Typography>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <S.ClearButton onPress={clearLogs}>
-                <Typography variant="label" size="sm" color={theme.colors.primary} weight="bold">
-                  {t.clear}
-                </Typography>
-              </S.ClearButton>
-              <S.CloseButton onPress={() => setModalVisible(false)}>
-                <Icon name="close" size={24} color={theme.colors.on_surface} />
-              </S.CloseButton>
-            </View>
-          </S.ModalHeader>
-
-          <S.Container>
-            <FlashList
-              data={logs}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id}
-              estimatedItemSize={100}
-              ListEmptyComponent={renderEmpty}
-            />
-          </S.Container>
-        </S.ModalWrapper>
-      </Modal>
-
-      <Modal visible={!!selectedLog} animationType="fade" transparent>
-        <S.DetailModalContainer>
-          <S.DetailModalHeader>
-            <Typography variant="title" size="sm">{t.requestDetails}</Typography>
-            <TouchableOpacity onPress={() => setSelectedLog(null)} style={{ padding: 8 }}>
-              <Typography variant="label" size="sm" color={theme.colors.primary} weight="bold">{t.close}</Typography>
-            </TouchableOpacity>
-          </S.DetailModalHeader>
-          <S.ScrollContent>
-            {selectedLog && (
-              <>
+          {selectedLog ? (
+            <>
+              <S.DetailModalHeader>
+                <Typography variant="title" size="sm">{t.requestDetails}</Typography>
+                <TouchableOpacity onPress={() => setSelectedLog(null)} style={{ padding: 8 }}>
+                  <Typography variant="label" size="sm" color={theme.colors.primary} weight="bold">{t.close}</Typography>
+                </TouchableOpacity>
+              </S.DetailModalHeader>
+              <S.ScrollContent>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 16, marginBottom: 8 }}>
                   <S.SectionTitle variant="label" size="xs" color={theme.colors.on_surface_variant} weight="bold" style={{ marginTop: 0, marginBottom: 0 }}>
                     {t.overview}
@@ -141,7 +119,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                   <S.CopyButton onPress={() => handleCopy(generateCurl(selectedLog), 'cURL Command')}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Icon name="content-copy" size={14} color={theme.colors.on_surface_variant} style={{ marginRight: 4 }} />
-                      <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>Copy cURL</Typography>
+                      <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>{t.copyCurl}</Typography>
                     </View>
                   </S.CopyButton>
                 </View>
@@ -173,18 +151,63 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                   <S.CodeText>{selectedLog.responseHeaders ? JSON.stringify(selectedLog.responseHeaders, null, 2) : t.noHeaders}</S.CodeText>
                 </S.CodeBlock>
 
-                <S.SectionTitle variant="label" size="xs" color={theme.colors.on_surface_variant} weight="bold">
-                  {t.responseBody}
-                </S.SectionTitle>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <S.SectionTitle variant="label" size="xs" color={theme.colors.on_surface_variant} weight="bold">
+                    {t.responseBody}
+                  </S.SectionTitle>
+                  {!!selectedLog.responseBody && (
+                    <S.CopyButton onPress={() => handleCopy(JSON.stringify(selectedLog.responseBody, null, 2), 'Response Body')}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Icon name="content-copy" size={14} color={theme.colors.on_surface_variant} style={{ marginRight: 4 }} />
+                        <Typography variant="label" size="xs" color={theme.colors.on_surface_variant}>Copy Response</Typography>
+                      </View>
+                    </S.CopyButton>
+                  )}
+                </View>
                 <S.CodeBlock>
                   <S.CodeText>{selectedLog.responseBody ? JSON.stringify(selectedLog.responseBody, null, 2) : t.noBody}</S.CodeText>
                 </S.CodeBlock>
 
                 <S.SectionTitle variant="label" size="xs" color={theme.colors.on_surface_variant} weight="bold" />
-              </>
-            )}
-          </S.ScrollContent>
-        </S.DetailModalContainer>
+              </S.ScrollContent>
+            </>
+          ) : (
+            <>
+              <S.ModalHeader>
+                <Typography variant="title" size="md">{t.networkLogsTitle}</Typography>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <S.ClearButton onPress={clearLogs}>
+                    <Typography variant="label" size="sm" color={theme.colors.primary} weight="bold">
+                      {t.clear}
+                    </Typography>
+                  </S.ClearButton>
+                  <S.CloseButton onPress={() => setModalVisible(false)}>
+                    <Icon name="close" size={24} color={theme.colors.on_surface} />
+                  </S.CloseButton>
+                </View>
+              </S.ModalHeader>
+
+              <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderColor: theme.colors.outline_variant }}>
+                <TouchableOpacity onPress={() => setActiveTab('api')} style={{ flex: 1, paddingVertical: 12, borderBottomWidth: 2, borderColor: activeTab === 'api' ? theme.colors.primary : 'transparent', alignItems: 'center' }}>
+                  <Typography variant="label" size="sm" weight={activeTab === 'api' ? 'bold' : 'regular'} color={activeTab === 'api' ? theme.colors.primary : theme.colors.on_surface_variant}>Normal API</Typography>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setActiveTab('ola')} style={{ flex: 1, paddingVertical: 12, borderBottomWidth: 2, borderColor: activeTab === 'ola' ? theme.colors.primary : 'transparent', alignItems: 'center' }}>
+                  <Typography variant="label" size="sm" weight={activeTab === 'ola' ? 'bold' : 'regular'} color={activeTab === 'ola' ? theme.colors.primary : theme.colors.on_surface_variant}>Ola Maps</Typography>
+                </TouchableOpacity>
+              </View>
+
+              <S.Container>
+                <FlashList
+                  data={filteredLogs}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => item.id}
+                  ListEmptyComponent={renderEmpty}
+                  estimatedItemSize={100}
+                />
+              </S.Container>
+            </>
+          )}
+        </S.ModalWrapper>
       </Modal>
     </>
   );

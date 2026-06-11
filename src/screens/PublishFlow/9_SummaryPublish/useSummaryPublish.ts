@@ -1,11 +1,11 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useMemo, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useSummaryMappers } from './useSummaryMappers';
 import { useSummaryActions } from './useSummaryActions';
 
 export const useSummaryPublish = () => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const publishStore = useRidePublishStore();
   const [isPublishing, setIsPublishing] = useState(false);
 
@@ -70,8 +70,7 @@ export const useSummaryPublish = () => {
     handleSave,
     handlePublish,
     handleEditRoute: () =>
-      (navigation.navigate as any)('LocationSelection', {
-        flow: 'publish',
+      (navigation.navigate as any)('MiddleStops', {
         returnTo: 'SummaryPublish',
       }),
     handleEditSchedule: () =>
@@ -80,12 +79,15 @@ export const useSummaryPublish = () => {
       }),
     handleEditVehicle: () =>
       (navigation.navigate as any)('SeatSelection', {
-        returnTo: 'SummaryPublish',
+        flow: 'publish',
+        returnTo: 'PriceSelection',
+        nextReturnTo: 'SummaryPublish',
       }),
     handleEditSeats: () =>
-      (navigation.navigate as any)('PriceSelection', {
+      (navigation.navigate as any)('SeatSelection', {
         flow: 'publish',
-        returnTo: 'SummaryPublish',
+        returnTo: 'PriceSelection',
+        nextReturnTo: 'SummaryPublish',
       }),
     handleEditPreferences: () =>
       (navigation.navigate as any)('TravelPreferences', {

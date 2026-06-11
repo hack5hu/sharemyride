@@ -1,5 +1,5 @@
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useTheme } from 'styled-components/native';
@@ -33,7 +33,7 @@ import {
 
 export const RequestTypeScreen: React.FC = () => {
   const theme = useTheme();
-  const navigation = useNavigation();
+  const navigation = useAppNavigation();
   const { requestType: t } = useLocale();
 
   // State for booking type: 'instant' or 'review'

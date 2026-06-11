@@ -199,39 +199,19 @@ export const TrustBadgeText = styled.Text`
 `;
 
 /* Footer */
-export const FooterGradient = styled(LinearGradient)`
+export const FixedFooter = styled.View`
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   padding-horizontal: ${scale(24)}px;
-  padding-bottom: ${verticalScale(24)}px;
-  padding-top: ${verticalScale(32)}px;
-  z-index: 50;
-`;
-
-export const ContinueGradient = styled(LinearGradient)`
-  width: 100%;
-  padding-vertical: ${verticalScale(16)}px;
-  border-radius: ${moderateScale(12)}px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: ${scale(8)}px;
-  shadow-color: ${({ theme }) => theme.colors.primary};
-  shadow-offset: 0px 8px;
-  shadow-opacity: 0.25;
-  shadow-radius: 32px;
+  padding-top: ${verticalScale(16)}px;
+  padding-bottom: ${verticalScale(34)}px;
+  background-color: ${({ theme }) => theme.colors.surface};
   elevation: 8;
-`;
-
-export const ContinueButton = styled.TouchableOpacity`
-  width: 100%;
-`;
-
-export const ContinueButtonText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(18)}px;
-  color: ${({ theme }) => theme.colors.on_primary};
+  shadow-color: ${({ theme }) => theme.colors.shadow};
+  shadow-offset: 0px -4px;
+  shadow-opacity: 0.08;
+  shadow-radius: 12px;
+  z-index: 50;
 `;

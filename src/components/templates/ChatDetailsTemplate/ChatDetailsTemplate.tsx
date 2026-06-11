@@ -32,14 +32,20 @@ export const ChatDetailsTemplate: React.FC<ChatDetailsTemplateProps> = ({
     paddingBottom: -height.value,
   }));
 
-  // Scroll to newest message (index 0 in inverted list) whenever messages change
+  // Scroll to newest message (index 0 in inverted list) whenever messages change or get confirmed
   useEffect(() => {
     if (data.length > 0) {
-      requestAnimationFrame(() => {
+      // Scroll immediately
+      listRef.current?.scrollToOffset({ offset: 0, animated: true });
+
+      // Fallback scroll after 100ms to handle async layout shifts and keyboard adjustments
+      const timer = setTimeout(() => {
         listRef.current?.scrollToOffset({ offset: 0, animated: true });
-      });
+      }, 100);
+
+      return () => clearTimeout(timer);
     }
-  }, [data.length]);
+  }, [data.length, data[0]?.id]);
 
   return (
     <ScreenShell>
@@ -54,7 +60,6 @@ export const ChatDetailsTemplate: React.FC<ChatDetailsTemplateProps> = ({
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
               inverted
-              estimatedItemSize={moderateScale(80)}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
               keyboardDismissMode="on-drag"

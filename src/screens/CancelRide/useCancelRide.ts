@@ -26,14 +26,10 @@ export const useCancelRide = () => {
   }, []);
 
   const onConfirm = useCallback(() => {
-    // Dispatch cancellation logic to API/Store here
-    const finalReason = selectedReasonId === 'other' ? otherReasonText : selectedReasonId;
-    console.log('Cancelling ride with reason:', finalReason);
-    
     // Once cancelled, pop screen and navigate appropriately
     navigation.goBack();
     // navigation.navigate('Home') or similar depending on flow.
-  }, [selectedReasonId, otherReasonText, navigation]);
+  }, [navigation]);
 
   const onDismiss = useCallback(() => {
     navigation.goBack();

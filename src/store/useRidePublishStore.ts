@@ -19,7 +19,6 @@ export interface VehicleDetails {
   model: string;
   numberPlate: string;
   type: string;
-  year: string;
   color: string;
   seater: '5' | '7';
 }
@@ -157,7 +156,9 @@ export const useRidePublishStore = create<RidePublishState>((set) => ({
     departureDate: null,
     departureTime: null,
     seatCount: 1,
+    selectedSeatIds: [],
     vehicleId: null,
+    publishVehicleType: '5',
     vehicleDetails: null,
     preferences: {
       nonSmoking: true,

@@ -5,11 +5,15 @@ import rideService from '@/serviceManager/rideService';
 import { useAuthStore } from '@/store/useAuthStore';
 import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
 import { Logger } from '@/utils/logger';
+import { useTranslation } from '@/hooks/useTranslation';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const TAB_TO_FILTER: Record<string, RideCategory | null> = {
-  requests: 'REQUESTS',
-  upcoming: 'UPCOMING',
-  archive: 'ARCHIVE',
+  upcoming: 1,
+  archive: 2,
+  requests: 3,
   drafts: null,
 };
 
@@ -17,6 +21,7 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
   const isFocused = useIsFocused();
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const { t } = useTranslation();
   
   const { rides, setRides, appendRides, setPage } = useMyRidesStore();
   const { user } = useAuthStore();
@@ -26,6 +31,7 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
     if (response?.rides && Array.isArray(response.rides)) return response.rides;
     if (response?.data && Array.isArray(response.data)) return response.data;
     if (response?.content && Array.isArray(response.content)) return response.content;
+    if (response?.requests && Array.isArray(response.requests)) return response.requests;
     return [];
   };
 
@@ -33,7 +39,7 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
     // Caching check: if not refreshing and we already have data for this page (and it's full), skip
     const { rides: currentRides } = useMyRidesStore.getState();
     const currentCategoryData = currentRides[category];
-    if (!isRefreshing && append && currentCategoryData.data.length >= (page + 1) * 10) {
+    if (!isRefreshing && append && currentCategoryData?.data?.length >= (page + 1) * 10) {
       Logger.log(`[MyRidesData] Using cached data for ${category} page ${page}`);
       return;
     }
@@ -44,43 +50,30 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
       let rideList: any[] = [];
       let hasMore = false;
 
-      if (category === 'REQUESTS') {
-        const response = await rideService.getPendingBookings();
-        rideList = parseRideResponse(response);
-      } else if (category === 'ARCHIVE') {
-        // Fetch 5 COMPLETED and 5 CANCELLED for Archive (Top 10 total)
-        const [compRes, cancRes] = await Promise.all([
-          rideService.getMyRides('COMPLETED', page, 5),
-          rideService.getMyRides('CANCELLED', page, 5)
-        ]);
-        
-        const compList = parseRideResponse(compRes);
-        const cancList = parseRideResponse(cancRes);
-        
-        // Merge and sort by date (descending)
-        rideList = [...compList, ...cancList].sort((a, b) => {
+      let response: any;
+      if (category === 3) {
+        response = await rideService.getDriverPendingRequests();
+      } else {
+        response = await rideService.getMyRides(category, page, 10);
+      }
+      
+      rideList = parseRideResponse(response);
+      
+      if (category === 3) {
+        hasMore = false; // Assuming driver pending requests API doesn't paginate
+      } else if (response?.totalPages !== undefined && response?.currentPage !== undefined) {
+        hasMore = response.currentPage < response.totalPages - 1;
+      } else {
+        hasMore = rideList.length >= 10;
+      }
+
+      // Special sort for archive (filter 2)
+      if (category === 2) {
+        rideList = rideList.sort((a, b) => {
           const dateA = new Date(a.startTime || a.createdAt || 0).getTime();
           const dateB = new Date(b.startTime || b.createdAt || 0).getTime();
           return dateB - dateA;
         });
-
-        const compHasMore = (compRes?.totalPages !== undefined && compRes?.currentPage !== undefined)
-          ? compRes.currentPage < compRes.totalPages - 1
-          : compList.length >= 5;
-          
-        const cancHasMore = (cancRes?.totalPages !== undefined && cancRes?.currentPage !== undefined)
-          ? cancRes.currentPage < cancRes.totalPages - 1
-          : cancList.length >= 5;
-          
-        hasMore = compHasMore || cancHasMore;
-      } else {
-        const response = await rideService.getMyRides(category as any, page, 10);
-        rideList = parseRideResponse(response);
-        if (response?.totalPages !== undefined && response?.currentPage !== undefined) {
-          hasMore = response.currentPage < response.totalPages - 1;
-        } else {
-          hasMore = rideList.length >= 10;
-        }
       }
       
       if (append) {
@@ -90,6 +83,11 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
       }
     } catch (error) {
       Logger.error(`[MyRidesData] Failed to fetch ${category} rides:`, error);
+      showNotification(
+        NotificationType.ERROR,
+        t('notification.defaultErrorTitle'),
+        getErrorMessage(error, t('notification.defaultErrorMessage'))
+      );
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);
@@ -99,10 +97,10 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
   const fetchInitialRides = useCallback(() => {
     const filter = TAB_TO_FILTER[activeTab];
     
-    // Always fetch requests to know if we should show the tab/bento
-    fetchCategoryRides('REQUESTS', 0, false);
+    // Always fetch requests to know if we should show the tab
+    fetchCategoryRides(3, 0, false);
     
-    if (filter && filter !== 'REQUESTS') {
+    if (filter !== null && filter !== undefined && filter !== 3) {
       fetchCategoryRides(filter, 0, false);
     }
   }, [activeTab, fetchCategoryRides]);

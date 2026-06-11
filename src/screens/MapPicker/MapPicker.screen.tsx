@@ -31,6 +31,7 @@ export const MapPickerScreen: React.FC = () => {
     isMoving,
     handleRegionWillChange,
     hasPermission,
+    isMapMounted,
   } = useMapPicker();
 
   return (
@@ -49,6 +50,7 @@ export const MapPickerScreen: React.FC = () => {
       isMapVisible={isMapVisible}
       setIsMapVisible={setIsMapVisible}
       zoom={currentZoom}
+      isMapMounted={isMapMounted}
       isInitiallyCentered={isInitiallyCentered}
       setIsInitiallyCentered={setIsInitiallyCentered}
       onZoomIn={handleZoomIn}

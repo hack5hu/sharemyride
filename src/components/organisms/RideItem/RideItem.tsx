@@ -11,7 +11,7 @@ export interface RideListItem {
   subtitle: string;
   price: string;
   icon?: string;
-  type: 'upcoming' | 'draft' | 'completed';
+  type: 'upcoming' | 'draft' | 'completed' | 'archive' | 'requests';
   rawDate?: Date;
   timerLabel?: string;
   driverName?: string;
@@ -24,6 +24,7 @@ export interface RideListItem {
   dropoffLocation?: string;
   statusTag?: string;
   showActions?: boolean;
+  role?: 'DRIVER' | 'PASSENGER';
 }
 
 interface RideItemProps {
@@ -35,6 +36,7 @@ interface RideItemProps {
   onChatPress?: (item: any) => void;
   onAcceptRide?: (id: string) => void;
   onRejectRide?: (id: string) => void;
+  isActionLoading?: boolean;
 }
 
 export const RideItem: React.FC<RideItemProps> = React.memo(({
@@ -46,6 +48,7 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
   onChatPress,
   onAcceptRide,
   onRejectRide,
+  isActionLoading,
 }) => {
   if (activeTab === 'requests') {
     return (
@@ -62,6 +65,7 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
           onAccept={() => onAcceptRide?.(item.id)}
           onReject={() => onRejectRide?.(item.id)}
           onPress={() => onRidePress(item)}
+          disabled={isActionLoading}
         />
     );
   }
@@ -72,7 +76,7 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
         timerLabel={item.timerLabel || ''}
         driverName={item.driverName || ''}
         carModel={item.carModel || ''}
-        rating={item.rating}
+        rating={item.rating ?? 0}
         price={item.price}
         avatarUri={item.avatarUri || ''}
         pickupTime={item.pickupTime || ''}
@@ -83,6 +87,7 @@ export const RideItem: React.FC<RideItemProps> = React.memo(({
         onPress={() => onRidePress(item)}
         onMorePress={() => onCancelRide(item.id)}
         onChatPress={() => onChatPress?.(item)}
+        isDriver={item.role === 'DRIVER'}
       />
     );
   }

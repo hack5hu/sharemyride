@@ -1,18 +1,24 @@
 import { useState, useEffect } from 'react';
-import { Alert } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { Keyboard } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import { authService } from '@/serviceManager/authService';
 import { useAuthStore } from '@/store/useAuthStore';
+import { getDeviceId } from '@/utils/deviceId';
+import { getFcmToken } from '@/utils/fcm';
+import { useTranslation } from '@/hooks/useTranslation';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const useOTPVerification = () => {
   const [timer, setTimer] = useState(45);
   const [loading, setLoading] = useState(false);
   const [otpValue, setOtpValue] = useState('');
-  const navigation = useNavigation<any>();
   const route = useRoute<any>();
-  const { phoneNumber } = route.params || {};
-  
+  const { phoneNumber, mode } = route.params || {};
+  const { t } = useTranslation();
   const { setAuth } = useAuthStore();
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -26,58 +32,88 @@ export const useOTPVerification = () => {
   };
 
   const handleVerify = async (code: string) => {
+    Keyboard.dismiss();
     if (!phoneNumber) {
-      Alert.alert('Error', 'Phone number missing');
+      showNotification(
+        NotificationType.ERROR,
+        t('notification.defaultErrorTitle'),
+        t('notification.defaultErrorMessage')
+      );
       return;
     }
-    
+
+
+
     setLoading(true);
     try {
-      const response = await authService.verifyOtp(phoneNumber, code);
-      
+      const [deviceId, fcmToken] = await Promise.all([
+        getDeviceId(),
+        getFcmToken(),
+      ]);
+
+      const response = await authService.verifyOtp(
+        phoneNumber,
+        code,
+        deviceId,
+        fcmToken,
+      );
+
       if (response.data.status === 'success' || response.status === 200) {
-        console.log('we are here')
         const { token, userId, userProfileCompleted } = response.data;
-        
+
         // Store auth state in Zustand
         await setAuth(
           { id: userId, phone: phoneNumber },
           token,
-          userProfileCompleted
+          userProfileCompleted,
         );
 
-        // Background sync Profile, Vehicles, and Preferences immediately
-        const { fetchProfile } = useAuthStore.getState();
-        const { useVehicleStore } = require('@/store/useVehicleStore');
-        const { useTravelPrefStore } = require('@/store/useTravelPrefStore');
-        const { syncVehicles } = useVehicleStore.getState();
-        const { syncPreferences } = useTravelPrefStore.getState();
-        
-        fetchProfile();
-        syncVehicles();
-        syncPreferences();
+        // Background sync Profile, Vehicles, and Preferences immediately only if the profile is completed
+        if (userProfileCompleted) {
+          const { fetchProfile } = useAuthStore.getState();
+          fetchProfile();
+        }
 
         setLoading(false);
-        
+
+        showNotification(
+          NotificationType.SUCCESS,
+          t('notification.welcomeSuccessTitle'),
+          t('notification.welcomeBack')
+        );
+
         // Navigation is handled by RootNavigator reacting to store changes
-        // but we can also trigger it here if needed. 
+        // but we can also trigger it here if needed.
         // For now, let's let the RootNavigator handle the switch.
       } else {
-        Alert.alert('Verification Failed', response.data.message || 'Invalid OTP');
+        showNotification(
+          NotificationType.ERROR,
+          t('notification.defaultErrorTitle'),
+          response.data.message || t('notification.defaultErrorMessage')
+        );
         setLoading(false);
       }
     } catch (error: any) {
-      Alert.alert('Error', error.message || 'Verification failed');
+      showNotification(
+        NotificationType.ERROR,
+        t('notification.defaultErrorTitle'),
+        getErrorMessage(error, t('notification.defaultErrorMessage'))
+      );
       setLoading(false);
     }
   };
 
   const handleResend = async () => {
     setTimer(45);
+
     try {
       await authService.resendOtp(phoneNumber);
     } catch (error: any) {
-      Alert.alert('Error', error.message || 'Failed to resend OTP');
+      showNotification(
+        NotificationType.ERROR,
+        t('notification.defaultErrorTitle'),
+        getErrorMessage(error, t('notification.defaultErrorMessage'))
+      );
     }
   };
 

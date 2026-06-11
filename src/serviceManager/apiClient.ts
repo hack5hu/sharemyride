@@ -1,26 +1,38 @@
-import axios, { InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import * as Keychain from 'react-native-keychain';
 import { API_ENDPOINTS, BASE_URL } from '@/constants/apiEndpoints';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useNetworkLoggerStore } from '@/store/useNetworkLoggerStore';
+import {
+  isNetworkLoggerEnabled,
+  redactSensitiveData,
+  sanitizeHeaders,
+} from '@/utils/networkSecurity';
+import { Logger } from '@/utils/logger';
+import { logApiError, logApiRequest, logApiResponse } from './apiConsoleLogger';
 
-// Polyfill/Utility for UUID-like ID
-const generateId = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
-
+interface TrackedRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+  _logId?: string;
+  _startTime?: number;
+}
+interface FailedRequest {
+  resolve: (token: string | null) => void;
+  reject: (error: unknown) => void;
+}
+const generateId = () =>
+  `${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 12)}`;
 const apiClient = axios.create({
   baseURL: BASE_URL,
-  timeout: 100000,
+  timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
   },
 });
-
-// Flag to prevent multiple refresh calls simultaneously
 let isRefreshing = false;
-let failedQueue: any[] = [];
-
-const processQueue = (error: any, token: string | null = null) => {
+let failedQueue: FailedRequest[] = [];
+const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue.forEach(prom => {
     if (error) {
       prom.reject(error);
@@ -30,10 +42,9 @@ const processQueue = (error: any, token: string | null = null) => {
   });
   failedQueue = [];
 };
-
 apiClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    // 1. Attach auth token from Keychain
+    const trackedConfig = config as TrackedRequestConfig;
     try {
       const authCreds = await Keychain.getGenericPassword({
         service: 'auth_token',
@@ -42,120 +53,88 @@ apiClient.interceptors.request.use(
         config.headers.Authorization = `Bearer ${authCreds.password}`;
       }
     } catch (error) {
-      console.error('[Keychain] Failed to read auth token:', error);
+      Logger.error('[Keychain] Failed to read auth token:', error);
     }
+    // Detect FormData using duck-typing because `instanceof FormData` fails
+    // in React Native's Hermes engine (the RN FormData polyfill doesn't match
+    // the global FormData reference that Axios checks against).
+    const isFormDataPayload = config.data &&
+      (config.data instanceof FormData ||
+       (typeof config.data === 'object' && typeof config.data.append === 'function' && Array.isArray(config.data._parts)));
 
-    // 2. Request logging
-    console.log('\n---------------------------------------------------------');
-    console.log(
-      `🚀 [API Request] ${config.method?.toUpperCase()} ${config.url}`,
-    );
-
-    if (config.headers.Authorization) {
-      console.log(`${config.headers.Authorization}`);
-    } else {
-      console.log('🔑 [Token] No Authorization token attached');
-    }
-
-    if (config.data) {
-      if (config.data instanceof FormData) {
-        console.log(
-          `📦 [Request FormData]`,
-          (config.data as any).getParts
-            ? (config.data as any).getParts()
-            : 'FormData Instance',
-        );
-        // Remove Content-Type to let the browser set the correct multipart boundary
-        if (config.headers) {
-          delete config.headers['Content-Type'];
-          delete config.headers['content-type'];
-        }
-      } else {
-        console.log(`📦 [Request Data]`, JSON.stringify(config.data, null, 2));
+    if (isFormDataPayload) {
+      // 1. Bypass Axios's default transformRequest which would JSON.stringify
+      //    the FormData object (producing {"_parts": [...]}) since it can't
+      //    detect RN's FormData polyfill either.
+      config.transformRequest = [(data: unknown) => data];
+      // 2. Set Content-Type to multipart/form-data so the RN XMLHttpRequest
+      //    adapter knows to encode FormData properly with boundaries.
+      //    The adapter will auto-append the boundary parameter.
+      if (config.headers) {
+        config.headers.set('Content-Type', 'multipart/form-data');
       }
     }
-    console.log('---------------------------------------------------------\n');
-
-    // Network Logger
     const logId = generateId();
-    (config as any)._logId = logId;
-    (config as any)._startTime = Date.now();
-
-    useNetworkLoggerStore.getState().addLog({
-      id: logId,
-      method: config.method?.toUpperCase() || 'GET',
-      url: config.url || '',
-      requestHeaders: config.headers,
-      requestBody: config.data,
-      responseStatus: null,
-      responseHeaders: null,
-      responseBody: null,
-      startTime: (config as any)._startTime,
-      endTime: null,
-      duration: null,
-      isError: false,
-    });
-
+    trackedConfig._logId = logId;
+    trackedConfig._startTime = Date.now();
+    logApiRequest(config);
+    if (isNetworkLoggerEnabled()) {
+      useNetworkLoggerStore.getState().addLog({
+        id: logId,
+        method: config.method?.toUpperCase() || 'GET',
+        url: config.url || '',
+        requestHeaders: sanitizeHeaders(config.headers),
+        requestBody: redactSensitiveData(config.data),
+        responseStatus: null,
+        responseHeaders: null,
+        responseBody: null,
+        startTime: trackedConfig._startTime,
+        endTime: null,
+        duration: null,
+        isError: false,
+      });
+    }
     return config;
   },
   error => Promise.reject(error),
 );
-
 apiClient.interceptors.response.use(
   response => {
-    console.log(
-      `\n✅ [API Response Success] ${response.status} ${response.config.url}`,
-    );
-    console.log(`[API Response Data]`, JSON.stringify(response.data, null, 2));
-
-    // Network Logger
-    const logId = (response.config as any)._logId;
-    const startTime = (response.config as any)._startTime;
-    if (logId && startTime) {
+    const trackedConfig = response.config as TrackedRequestConfig;
+    logApiResponse(response);
+    if (isNetworkLoggerEnabled() && trackedConfig._logId && trackedConfig._startTime) {
       const endTime = Date.now();
-      useNetworkLoggerStore.getState().updateLog(logId, {
+      useNetworkLoggerStore.getState().updateLog(trackedConfig._logId, {
         responseStatus: response.status,
-        responseHeaders: response.headers,
-        responseBody: response.data,
+        responseHeaders: sanitizeHeaders(response.headers),
+        responseBody: redactSensitiveData(response.data),
         endTime,
-        duration: endTime - startTime,
+        duration: endTime - trackedConfig._startTime,
       });
     }
-
     return response;
   },
   async error => {
-    const originalRequest = error.config;
-
-    console.log(
-      `\n❌ [API Error] ${error.response?.status} ${originalRequest?.url}`,
-    );
-    if (error.response?.data) {
-      console.log(
-        `[API Error Response]`,
-        JSON.stringify(error.response.data, null, 2),
-      );
+    const axiosError = error as AxiosError;
+    const originalRequest = axiosError.config as TrackedRequestConfig | undefined;
+    if (!originalRequest) {
+      return Promise.reject(error);
     }
-
-    // Network Logger
-    const logId = (originalRequest as any)?._logId;
-    const startTime = (originalRequest as any)?._startTime;
-    if (logId && startTime) {
+    logApiError(axiosError);
+    if (isNetworkLoggerEnabled() && originalRequest._logId && originalRequest._startTime) {
       const endTime = Date.now();
-      useNetworkLoggerStore.getState().updateLog(logId, {
-        responseStatus: error.response?.status || 0,
-        responseHeaders: error.response?.headers,
-        responseBody: error.response?.data || error.message,
+      useNetworkLoggerStore.getState().updateLog(originalRequest._logId, {
+        responseStatus: axiosError.response?.status || 0,
+        responseHeaders: sanitizeHeaders(axiosError.response?.headers),
+        responseBody: redactSensitiveData(axiosError.response?.data || axiosError.message),
         endTime,
-        duration: endTime - startTime,
+        duration: endTime - originalRequest._startTime,
         isError: true,
       });
     }
-
-    // Handle 401 Unauthorized errors (Expired Token)
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (axiosError.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
-        return new Promise((resolve, reject) => {
+        return new Promise<string | null>((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         })
           .then(token => {
@@ -164,10 +143,8 @@ apiClient.interceptors.response.use(
           })
           .catch(err => Promise.reject(err));
       }
-
       originalRequest._retry = true;
       isRefreshing = true;
-
       try {
         const refreshCreds = await Keychain.getGenericPassword({
           service: 'refresh_token',
@@ -175,60 +152,41 @@ apiClient.interceptors.response.use(
         if (!refreshCreds) {
           throw new Error('No refresh token available');
         }
-
-        // Use core axios instance to avoid interceptor loop
         const response = await axios.post(
           `${apiClient.defaults.baseURL}${API_ENDPOINTS.AUTH.REFRESH_TOKEN}`,
           {
             refreshToken: refreshCreds.password,
           },
         );
-
         const payload = response.data.data || response.data;
         const { token, refreshToken: newRefreshToken } = payload;
-
         if (!token) {
           throw new Error('Refresh response did not contain a valid token');
         }
-
-        // Save new token to Keychain (Single source of truth)
         await Keychain.setGenericPassword('auth_token', token, {
           service: 'auth_token',
         });
-
         if (newRefreshToken) {
           await Keychain.setGenericPassword('refresh_token', newRefreshToken, {
             service: 'refresh_token',
           });
         }
-
         apiClient.defaults.headers.common.Authorization = `Bearer ${token}`;
         originalRequest.headers.Authorization = `Bearer ${token}`;
-
         processQueue(null, token);
         return apiClient(originalRequest);
-      } catch (refreshError: any) {
+      } catch (refreshError) {
         processQueue(refreshError, null);
-        console.error(
-          `❌ [Token Refresh Error]`,
-          refreshError?.response?.data || refreshError?.message,
-        );
-
-        // Clear tokens on refresh failure to prevent infinite loops
+        Logger.error('Token refresh failed');
         await Keychain.resetGenericPassword({ service: 'auth_token' });
         await Keychain.resetGenericPassword({ service: 'refresh_token' });
-
-        // Trigger global logout in Zustand store
         useAuthStore.getState().logout();
-
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
       }
     }
-
     return Promise.reject(error);
   },
 );
-
 export default apiClient;

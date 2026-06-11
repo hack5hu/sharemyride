@@ -5,12 +5,31 @@ import { useBookRideStore } from '@/store/useBookRideStore';
 import rideService from '@/serviceManager/rideService';
 import { useRideDataMapper } from './useRideDataMapper';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
+import { getErrorMessage } from '@/utils/error';
 
 export const useRideInformation = (rideId: string, sourceStopId?: number, destinationStopId?: number) => {
   const { navigate, goBack } = useAppNavigation();
   const { rideInformation: t } = useLocale();
+  const locale = useLocale();
   const [rideRaw, setRideRaw] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [isReportModalVisible, setIsReportModalVisible] = useState(false);
+
+  const handleReportRide = useCallback(() => {
+    setIsReportModalVisible(true);
+  }, []);
+
+  const handleReportSubmit = useCallback((_data: { categoryId: string; description: string }) => {
+    setIsReportModalVisible(false);
+    showNotification(
+      NotificationType.SUCCESS,
+      locale.rideDetails.reportSuccessTitle,
+      locale.rideDetails.reportSuccessMessage
+    );
+  }, [locale]);
 
   const startLocation = useBookRideStore(state => state.startLocation);
   const destinationLocation = useBookRideStore(state => state.destinationLocation);
@@ -21,8 +40,13 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
         setIsLoading(true);
         const data = await rideService.getRideDetail(rideId, sourceStopId, destinationStopId);
         setRideRaw(data);
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to fetch ride detail:', error);
+        showNotification(
+          NotificationType.ERROR,
+          locale.notification.defaultErrorTitle,
+          getErrorMessage(error, locale.notification.defaultErrorMessage)
+        );
       } finally {
         setTimeout(() => setIsLoading(false), 300);
       }
@@ -77,8 +101,20 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
       routePath: ride?.routePath ?? '',
       stops,
       initialStopIndex: index,
+      sourceStopId,
+      destinationStopId,
+      userSearchedPickup: startLocation ? {
+        latitude: startLocation.latitude,
+        longitude: startLocation.longitude,
+        name: startLocation.name || startLocation.address || 'Pickup Point',
+      } : undefined,
+      userSearchedDropoff: destinationLocation ? {
+        latitude: destinationLocation.latitude,
+        longitude: destinationLocation.longitude,
+        name: destinationLocation.name || destinationLocation.address || 'Dropoff Point',
+      } : undefined,
     });
-  }, [navigate, ride]);
+  }, [navigate, ride, sourceStopId, destinationStopId, startLocation, destinationLocation]);
 
   const handleCopyAddress = useCallback((address: string) => {
     Clipboard.setString(address);
@@ -92,9 +128,13 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
     }) || `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
     
     Linking.openURL(url).catch(() => {
-      Alert.alert('Error', 'Could not open map application');
+      showNotification(
+        NotificationType.ERROR,
+        locale.notification.defaultErrorTitle,
+        locale.notification.mapOpenError
+      );
     });
-  }, []);
+  }, [locale]);
 
   const handleDriverProfile = useCallback(() => {
     if (ride?.driver?.id) {
@@ -102,16 +142,25 @@ export const useRideInformation = (rideId: string, sourceStopId?: number, destin
     }
   }, [navigate, ride]);
 
+  const handlePassengerProfile = useCallback((id: string) => {
+    navigate('UserProfileDetail', { userId: id });
+  }, [navigate]);
+
   return {
     t,
     handleBack,
     handleBook,
     handleChat,
     handleDriverProfile,
+    handlePassengerProfile,
     handleViewRoute,
     handleCopyAddress,
     handleExternalMapOpen,
     ride,
     isLoading,
+    isReportModalVisible,
+    setIsReportModalVisible,
+    handleReportRide,
+    handleReportSubmit,
   };
 };

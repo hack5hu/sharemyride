@@ -8,9 +8,7 @@ import styled, { useTheme } from 'styled-components/native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 import { SegmentPricingCard, SegmentPrice } from '@/components/molecules/SegmentPricingCard';
 import { StopSegment } from './utils';
-
-/* ──── Styles ──── */
-import { PricingTier } from '@/constants/pricing';
+import { Button } from '@/components/atoms/Button';
 
 /* ──── Styles ──── */
 const Overlay = styled.View`
@@ -68,46 +66,6 @@ const ButtonRow = styled.View`
   padding-horizontal: ${scale(28)}px;
   padding-vertical: ${verticalScale(20)}px;
   background-color: ${({ theme }) => theme.colors.surface};
-`;
-
-const CancelButton = styled.TouchableOpacity`
-  flex: 1;
-  padding-vertical: ${verticalScale(16)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_high};
-  border-radius: ${moderateScale(12)}px;
-  align-items: center;
-  justify-content: center;
-`;
-
-const CancelText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(15)}px;
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
-const SaveButton = styled.TouchableOpacity`
-  flex: 2;
-  border-radius: ${moderateScale(12)}px;
-  overflow: hidden;
-`;
-
-const SaveGradient = styled(LinearGradient)`
-  padding-vertical: ${verticalScale(16)}px;
-  align-items: center;
-  justify-content: center;
-  shadow-color: ${({ theme }) => theme.colors.primary};
-  shadow-offset: 0px 8px;
-  shadow-opacity: 0.2;
-  shadow-radius: 16px;
-  elevation: 4;
-`;
-
-const SaveText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(15)}px;
-  color: ${({ theme }) => theme.colors.on_primary};
 `;
 
 /* ──── Component ──── */
@@ -170,7 +128,6 @@ export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
   }, [localPrices, onSave, onClose]);
 
   if (!visible) return null;
-  console.log(segments)
   return (
     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 999, elevation: 999 }}>
       <Overlay>
@@ -216,18 +173,16 @@ export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
           </View>
 
           <ButtonRow>
-            <CancelButton onPress={onClose} activeOpacity={0.8}>
-              <CancelText>{t.cancelButton}</CancelText>
-            </CancelButton>
-            <SaveButton onPress={handleSave} activeOpacity={0.9}>
-              <SaveGradient
-                colors={[theme.colors.primary, theme.colors.primary_container]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              >
-                <SaveText>{t.saveButton}</SaveText>
-              </SaveGradient>
-            </SaveButton>
+            <View style={{ flex: 1 }}>
+              <Button variant="outline" onPress={onClose}>
+                {t.cancelButton}
+              </Button>
+            </View>
+            <View style={{ flex: 2 }}>
+              <Button variant="primary" onPress={handleSave}>
+                {t.saveButton}
+              </Button>
+            </View>
           </ButtonRow>
         </Sheet>
       </Overlay>
