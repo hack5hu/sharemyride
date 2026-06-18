@@ -260,7 +260,7 @@ export const hi: Translations = {
     yesterday: 'कल',
     activeDrivers: 'एक्टिव होस्ट',
     locationShared: '📍 लोकेशन शेयर की गई',
-    safetmsg:
+    safetyMsg:
       'अपनी सुरक्षा के लिए कभी भी अपना फोन नंबर या निजी जानकारी चैट में शेयर न करें। बातें ऐप के अंदर ही रखें।',
     emptyTitle: 'कोई बातचीत नहीं',
     emptyDescription: 'सफर तय करने के लिए अपने को-राइडर्स से बात शुरू करें।',

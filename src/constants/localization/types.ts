@@ -263,7 +263,7 @@ export interface ChatTranslations {
   yesterday: string;
   activeDrivers: string;
   locationShared: string;
-  safetmsg: string;
+  safetyMsg: string;
   emptyTitle: string;
   emptyDescription: string;
   sendFailedTitle: string;

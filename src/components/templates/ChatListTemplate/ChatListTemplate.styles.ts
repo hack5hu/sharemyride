@@ -7,6 +7,11 @@ export const SafeAreaContainer = styled.View`
   background-color: ${({ theme }) => theme.colors.background};
 `;
 
+export const HeaderWrapper = styled.View`
+  margin-top: ${verticalScale(8)}px;
+  margin-bottom: ${verticalScale(8)}px;
+  padding-horizontal: ${scale(4)}px;
+`;
 export const ScrollContainer = styled.ScrollView.attrs({
   contentContainerStyle: {
     paddingBottom: verticalScale(120), // Height for BottomNav + FAB

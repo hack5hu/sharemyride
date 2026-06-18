@@ -120,7 +120,7 @@ export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({
         onChangeText={setMessage}
         onSendPress={handleSend}
         onLocationPress={handleLocationShare}
-        safetyMessage={isSafetyVisible ? t('chat.safetmsg') : undefined}
+        safetyMessage={isSafetyVisible ? t('chat.safetyMsg') : undefined}
         onSafetyClose={handleSafetyClose}
         isSendDisabled={!message.trim()}
       />

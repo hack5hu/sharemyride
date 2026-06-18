@@ -264,8 +264,8 @@ export const en: Translations = {
     rideLabel: 'Ride',
     yesterday: 'Yesterday',
     activeDrivers: 'Active Ride Hosts',
-    safetmsg:
-      'NEVER SHARE YOUR PHONE NUMBER OR PERSONAL DETAILS IN CHAT. KEEP CONVERSATIONS WITHIN THE APP FOR YOUR SAFETY.',
+    safetyMsg:
+      'For your safety, never share your phone number or personal details. Keep conversations within the app.',
     emptyTitle: 'No conversations yet',
     emptyDescription:
       'Start a conversation with your co-riders to coordinate your journey.',
