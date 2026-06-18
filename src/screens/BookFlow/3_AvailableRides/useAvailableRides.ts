@@ -133,7 +133,7 @@ export const useAvailableRides = () => {
     } finally {
       setIsFetchingMore(false);
     }
-  }, [isFetchingMore, selectedFilters, mapFiltersToPayload]);
+  }, [isFetchingMore, selectedFilters, mapFiltersToPayload, translate]);
 
   const mappedRides: RideData[] = useMemo(() => {
     if (
@@ -187,7 +187,7 @@ export const useAvailableRides = () => {
 
       const timeline = hasStops
         ? ride.stops.map((stop: any, idx: number, arr: any[]) => ({
-            time: formatTimeSafely(stop.arrivalTime),
+            time: formatTimeSafely(stop.arrivalTime, { hour: '2-digit', minute: '2-digit' }, 'TBD', false),
             location: stop.name || stop.address || 'Unknown Location',
             type:
               idx === 0
@@ -198,12 +198,12 @@ export const useAvailableRides = () => {
           }))
         : [
             {
-              time: formatTimeSafely(ride.startTime),
+              time: formatTimeSafely(ride.startTime, { hour: '2-digit', minute: '2-digit' }, 'TBD', false),
               location: ride.sourceStopName || ride.sourceAddress || 'Pickup',
               type: 'pickup',
             },
             {
-              time: formatTimeSafely(ride.endTime),
+              time: formatTimeSafely(ride.endTime, { hour: '2-digit', minute: '2-digit' }, 'TBD', false),
               location:
                 ride.destinationStopName ||
                 ride.destinationAddress ||
@@ -235,14 +235,14 @@ export const useAvailableRides = () => {
         pickupDistance,
         dropoffDistance,
         totalDuration: (() => {
-          const start = safeParseDate(sTime);
-          const end = safeParseDate(eTime);
+          const start = safeParseDate(sTime, false);
+          const end = safeParseDate(eTime, false);
           return start && end
             ? Math.round((end.getTime() - start.getTime()) / (1000 * 60))
             : 0;
         })(),
         departureHour: sTime
-          ? safeParseDate(sTime)?.getHours() ?? undefined
+          ? safeParseDate(sTime, false)?.getHours() ?? undefined
           : undefined,
         sourceStopId: ride.sourceStopId,
         destinationStopId: ride.destinationStopId,
@@ -376,7 +376,7 @@ export const useAvailableRides = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [translate]);
 
   const handleApplyFilters = useCallback(
     async (filters: string[]) => {
@@ -433,7 +433,7 @@ export const useAvailableRides = () => {
         setIsLoading(false);
       }
     },
-    [mapFiltersToPayload, selectedFilters],
+    [mapFiltersToPayload, selectedFilters, translate],
   );
 
   const handleViewDetails = useCallback((rideId: string) => {

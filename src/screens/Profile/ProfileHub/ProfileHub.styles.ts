@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { moderateScale, verticalScale } from '@/styles';
+import { Typography } from '@/components/atoms/Typography';
 
 export const ScreenWrapper = styled.View`
   flex: 1;
@@ -24,6 +25,15 @@ export const Section = styled.View`
 
 export const SectionTitle = styled.View`
   padding-horizontal: ${moderateScale(8)}px;
+`;
+
+export const SectionTitleText = styled(Typography).attrs({
+  variant: 'label',
+  size: 'sm',
+  weight: 'bold',
+  color: 'on_surface_variant',
+})`
+  letter-spacing: 2px;
 `;
 
 export const BentoGrid = styled.View`

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Typography } from '@/components/atoms/Typography';
 import { ProfileHeader } from '@/components/organisms/ProfileHeader';
 import { ProfileMenuItem } from '@/components/molecules/ProfileMenuItem';
 import { BottomNav } from '@/components/organisms/BottomNav';
@@ -11,6 +10,7 @@ import {
   Content,
   Section,
   SectionTitle,
+  SectionTitleText,
   BentoGrid,
   ActionGrid,
 } from './ProfileHub.styles';
@@ -25,7 +25,6 @@ export const ProfileHubScreen: React.FC = () => {
     navigateToVehicleDetails,
     navigateToTravelPreferences,
     navigateToSettings,
-    navigateToDummy,
     navigateToTermsAndConditions,
     navigateToAboutUs,
     navigateToHelpAndSupport,
@@ -34,6 +33,10 @@ export const ProfileHubScreen: React.FC = () => {
     setAvatarModalVisible,
     handleOpenGallery,
     handleRemoveAvatar,
+    rating,
+    rides,
+    memberSince,
+    isVerified,
   } = useProfileHub();
 
   return (
@@ -43,9 +46,10 @@ export const ProfileHubScreen: React.FC = () => {
           <BentoGrid>
             <ProfileHeader
               name={user?.name || 'User'}
-              rating={4.9}
-              rides={128}
-              memberSince={2024}
+              rating={rating}
+              rides={rides}
+              memberSince={memberSince}
+              isVerified={isVerified}
               avatarUri={user?.profilePhotoUrl}
               onEditPress={navigateToEditProfile}
               onSettingsPress={navigateToSettings}
@@ -57,15 +61,9 @@ export const ProfileHubScreen: React.FC = () => {
 
           <Section>
             <SectionTitle>
-              <Typography
-                variant="label"
-                size="sm"
-                weight="bold"
-                color="on_surface_variant"
-                style={{ letterSpacing: 2 }}
-              >
+              <SectionTitleText>
                 {t('profileHub.accountManagement')}
-              </Typography>
+              </SectionTitleText>
             </SectionTitle>
             <ActionGrid>
               <ProfileMenuItem
@@ -74,8 +72,8 @@ export const ProfileHubScreen: React.FC = () => {
                 subtitle={t('profileHub.editProfileDescr')}
                 onPress={navigateToEditProfile}
               />
-
-              <ProfileMenuItem
+              {/* TODO: IMPLEMENTE THIS LATER */}
+              {/* <ProfileMenuItem
                 icon="verified-user"
                 title={t('profileHub.identityVerification')}
                 subtitle={t('profileHub.identityVerificationDescr')}
@@ -84,7 +82,7 @@ export const ProfileHubScreen: React.FC = () => {
                     showBack: true,
                   })
                 }
-              />
+              /> */}
               <ProfileMenuItem
                 icon="directions-car"
                 title={t('vehicleDetails.headerTitle')}
@@ -103,15 +101,9 @@ export const ProfileHubScreen: React.FC = () => {
 
           <Section>
             <SectionTitle>
-              <Typography
-                variant="label"
-                size="sm"
-                weight="bold"
-                color="on_surface_variant"
-                style={{ letterSpacing: 2 }}
-              >
+              <SectionTitleText>
                 {t('profileHub.supportLegal')}
-              </Typography>
+              </SectionTitleText>
             </SectionTitle>
             <ActionGrid>
               <ProfileMenuItem

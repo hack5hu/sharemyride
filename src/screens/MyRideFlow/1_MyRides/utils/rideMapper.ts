@@ -1,8 +1,6 @@
-import { RideCategory } from '@/store/useMyRidesStore';
 import {
   safeParseDate,
   formatTimeSafely,
-  formatDateSafely,
 } from '@/utils/date';
 
 export const mapBackendRideToUI = (
@@ -13,14 +11,13 @@ export const mapBackendRideToUI = (
   const startName = ride.sourceStopName || 'Unknown';
   const endName = ride.destinationStopName || 'Unknown';
   const startTime =
-    safeParseDate(ride.startTime || ride.requestedAt) || new Date();
+    safeParseDate(ride.startTime || ride.requestedAt, !ride.startTime) || new Date();
 
   const now = new Date();
   const diffMs = startTime.getTime() - now.getTime();
   const diffMins = Math.floor(diffMs / 60000);
   const diffHours = Math.floor(diffMins / 60);
   const isDriver = ride.role === 'DRIVER';
-  const isPassenger = ride.role === 'PASSENGER';
   const isRequest = type === 'requests';
 
   let weekday = 'Today';
@@ -31,8 +28,13 @@ export const mapBackendRideToUI = (
       day: 'numeric',
       month: 'short',
     });
-  } catch (e) {}
-  const timeStr = formatTimeSafely(ride.startTime || ride.requestedAt);
+  } catch {}
+  const timeStr = formatTimeSafely(
+    ride.startTime || ride.requestedAt,
+    { hour: '2-digit', minute: '2-digit' },
+    'TBD',
+    !ride.startTime,
+  );
 
   let timerLabel = '';
   let statusTag = '';
@@ -120,7 +122,13 @@ export const mapBackendRideToUI = (
     dropoffTime: formatTimeSafely(
       ride.endTime,
       { hour: '2-digit', minute: '2-digit' },
-      formatTimeSafely(new Date(startTime.getTime() + 3600000)),
+      formatTimeSafely(
+        new Date(startTime.getTime() + 3600000),
+        { hour: '2-digit', minute: '2-digit' },
+        'TBD',
+        !ride.startTime,
+      ),
+      !ride.startTime,
     ),
     pickupLocation: isRequest ? startName : startName.split(',')[0],
     dropoffLocation: isRequest ? endName : endName.split(',')[0],

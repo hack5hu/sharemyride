@@ -368,6 +368,8 @@ export interface LocationSelectionTranslations {
   continueJourney: string;
   contextualInfo: string;
   recentRidesTitle: string;
+  minDistanceError: string;
+  minDistanceErrorTitle: string;
 }
 
 export interface MapPickerTranslations {

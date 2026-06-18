@@ -370,6 +370,8 @@ export const en: Translations = {
     continueJourney: 'Continue Journey',
     contextualInfo: 'Ride with verified partners.',
     recentRidesTitle: 'Recent Rides',
+    minDistanceError: 'Pickup and drop locations must be at least 5 km apart.',
+    minDistanceErrorTitle: 'Route Too Short',
   },
   mapPicker: {
     title: 'Select Location',

@@ -5,6 +5,10 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/navigation/types';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { storage } from '@/utils/storage';
+import { calculateDistance } from '@/utils/location';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
+import { useLocale } from '@/constants/localization';
 
 type NavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -13,6 +17,7 @@ type NavigationProp = StackNavigationProp<
 
 export const useLocationSelection = () => {
   const navigation = useAppNavigation();
+  const { locationSelection: t } = useLocale();
 
   const { startLocation, destinationLocation, clearPublishState } =
     useRidePublishStore();
@@ -58,8 +63,24 @@ export const useLocationSelection = () => {
 
   const handleContinue = useCallback(() => {
     Keyboard.dismiss();
+    if (startLocation && destinationLocation) {
+      const distance = calculateDistance(
+        startLocation.latitude,
+        startLocation.longitude,
+        destinationLocation.latitude,
+        destinationLocation.longitude,
+      );
+      if (distance < 5) {
+        showNotification(
+          NotificationType.ERROR,
+          t.minDistanceErrorTitle,
+          t.minDistanceError,
+        );
+        return;
+      }
+    }
     navigation.navigate('RouteSelection');
-  }, [navigation]);
+  }, [navigation, startLocation, destinationLocation, t]);
 
   const handleSelectRecentRide = useCallback(
     (ride: any) => {

@@ -49,7 +49,7 @@ export const parseDateFromDDMMYYYY = (text: string): Date => {
  * Safely parses any date string and returns a valid Date object.
  * If the date is invalid, it returns null instead of crashing.
  */
-export const safeParseDate = (dateStr: any): Date | null => {
+export const safeParseDate = (dateStr: any, isUtc = true): Date | null => {
   if (!dateStr) return null;
   if (dateStr instanceof Date) {
     return isValid(dateStr) ? dateStr : null;
@@ -63,6 +63,7 @@ export const safeParseDate = (dateStr: any): Date | null => {
       const timePart = parts[1];
       // Check if timePart does not contain timezone indicator Z or offset (+/-)
       if (
+        isUtc &&
         timePart &&
         !timePart.includes('Z') &&
         !timePart.includes('+') &&
@@ -86,12 +87,13 @@ export const formatTimeSafely = (
   dateStr: any,
   options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' },
   fallback = 'TBD',
+  isUtc = true,
 ): string => {
-  const parsed = safeParseDate(dateStr);
+  const parsed = safeParseDate(dateStr, isUtc);
   if (!parsed) return fallback;
   try {
     return parsed.toLocaleTimeString([], options);
-  } catch (e) {
+  } catch {
     return fallback;
   }
 };
@@ -107,12 +109,13 @@ export const formatDateSafely = (
     month: 'short',
   },
   fallback = 'TBD',
+  isUtc = true,
 ): string => {
-  const parsed = safeParseDate(dateStr);
+  const parsed = safeParseDate(dateStr, isUtc);
   if (!parsed) return fallback;
   try {
     return parsed.toLocaleDateString([], options);
-  } catch (e) {
+  } catch {
     return fallback;
   }
 };

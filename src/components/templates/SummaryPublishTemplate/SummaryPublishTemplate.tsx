@@ -40,7 +40,7 @@ export interface SummaryPublishTemplateProps {
   onBack: () => void;
   onSave: () => void;
   onPublish: () => void;
-  onEditRoute: () => void;
+  onEditRoute?: () => void;
   onEditSchedule: () => void;
   onEditVehicle: () => void;
   onEditSeats: () => void;

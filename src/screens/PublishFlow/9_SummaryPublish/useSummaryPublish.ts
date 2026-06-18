@@ -77,10 +77,6 @@ export const useSummaryPublish = () => {
     handleBack: () => navigation.goBack(),
     handleSave,
     handlePublish,
-    handleEditRoute: () =>
-      (navigation.navigate as any)('MiddleStops', {
-        returnTo: 'SummaryPublish',
-      }),
     handleEditSchedule: () =>
       (navigation.navigate as any)('DateSelection', {
         returnTo: 'SummaryPublish',

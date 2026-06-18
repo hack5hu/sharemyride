@@ -14,6 +14,10 @@ export const resetAllStores = () => {
   // Clear all MMKV persistent storage
   try {
     storage.clearAll();
+    // Explicitly delete custom keys just in case clearAll() didn't fully purge them
+    storage.remove('recent_published_rides');
+    storage.remove('rated_rides');
+    storage.remove('location_backlog');
   } catch (error) {
     console.error('[Storage] Failed to clear MMKV storage on logout:', error);
   }

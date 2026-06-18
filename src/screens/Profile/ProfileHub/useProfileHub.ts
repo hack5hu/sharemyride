@@ -1,6 +1,6 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useTranslation } from '@/hooks/useTranslation';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect, useMemo } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { userService } from '@/serviceManager/userService';
@@ -13,6 +13,10 @@ export const useProfileHub = () => {
   const { user, fetchProfile } = useAuthStore();
   const [isUpdatingAvatar, setIsUpdatingAvatar] = useState(false);
   const [isAvatarModalVisible, setAvatarModalVisible] = useState(false);
+
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
 
   const handleAvatarEdit = useCallback(() => {
     if (isUpdatingAvatar) return;
@@ -131,6 +135,28 @@ export const useProfileHub = () => {
     navigation.navigate('Suggestions');
   }, [navigation]);
 
+  const rating = useMemo(() => {
+    return user?.rating !== undefined ? Number(user.rating) : 0;
+  }, [user?.rating]);
+
+  const rides = useMemo(() => {
+    return user?.rideCompleted !== undefined ? Number(user.rideCompleted) : 0;
+  }, [user?.rideCompleted]);
+
+  const memberSince = useMemo(() => {
+    if (user?.createdAt) {
+      const date = new Date(String(user.createdAt));
+      if (!isNaN(date.getTime())) {
+        return date.getFullYear();
+      }
+    }
+    return 2026;
+  }, [user?.createdAt]);
+
+  const isVerified = useMemo(() => {
+    return !!(user?.emailVerified || user?.phoneVerified);
+  }, [user?.emailVerified, user?.phoneVerified]);
+
   return {
     t,
     user,
@@ -149,5 +175,9 @@ export const useProfileHub = () => {
     navigateToAboutUs,
     navigateToHelpAndSupport,
     navigateToSuggestions,
+    rating,
+    rides,
+    memberSince,
+    isVerified,
   };
 };

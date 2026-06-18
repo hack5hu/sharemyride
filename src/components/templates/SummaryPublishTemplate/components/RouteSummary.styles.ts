@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 
 export const GlassCard = styled.View<{ hasError?: boolean }>`
@@ -117,4 +118,10 @@ export const EditButton = styled.TouchableOpacity`
   padding: ${moderateScale(6)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_low};
   border-radius: 9999px;
+`;
+
+export const EditIcon = styled(Icon).attrs(({ theme }) => ({
+  color: theme.colors.primary,
+}))<{ $disabled?: boolean }>`
+  opacity: ${({ $disabled }) => ($disabled ? 0.4 : 1)};
 `;

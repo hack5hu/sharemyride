@@ -12,7 +12,6 @@ export const SummaryPublishScreen: React.FC = () => {
     handleBack,
     handleSave,
     handlePublish,
-    handleEditRoute,
     handleEditSchedule,
     handleEditVehicle,
     handleEditSeats,
@@ -35,7 +34,6 @@ export const SummaryPublishScreen: React.FC = () => {
       onBack={handleBack}
       onSave={handleSave}
       onPublish={handlePublish}
-      onEditRoute={handleEditRoute}
       onEditSchedule={handleEditSchedule}
       onEditVehicle={handleEditVehicle}
       onEditSeats={handleEditSeats}

@@ -37,7 +37,7 @@ export const useBookingConfirmed = () => {
   );
 
   const rideId = route.params?.rideId;
-  const bookedSeats = route.params?.bookedSeats || [];
+  const bookedSeats = route.params?.bookedSeats;
 
   const rideRaw = useMemo(
     () =>
@@ -58,11 +58,16 @@ export const useBookingConfirmed = () => {
     const firstStop = rideRaw?.stops?.[0];
     const pickupTime =
       route.params?.pickupTime ||
-      formatTimeSafely(firstStop?.arrivalTime, {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-      });
+      formatTimeSafely(
+        firstStop?.arrivalTime,
+        {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+        },
+        'TBD',
+        false,
+      );
 
     const vehicleType = route.params?.vehicleType || rideRaw?.vehicleType;
     const departureDate =
@@ -113,9 +118,10 @@ export const useBookingConfirmed = () => {
       return t.seatPositions.defaultSeat.replace('{id}', id);
     };
 
+    const seatsList = bookedSeats || [];
     const formattedSeats =
-      bookedSeats.length > 0
-        ? bookedSeats
+      seatsList.length > 0
+        ? seatsList
             .map(seatId => getSeatDescription(seatId, vehicleType))
             .join(', ')
         : 'TBD';

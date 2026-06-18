@@ -58,6 +58,12 @@ export const useAuthStore = create<AuthState>()(
           isAuthenticated: false,
           isProfileCompleted: false,
         });
+        try {
+          const { resetAllStores } = require('./resetAllStores');
+          resetAllStores();
+        } catch (error) {
+          Logger.error('Failed to reset all stores in auth logout:', error);
+        }
       },
 
       initialize: async () => {

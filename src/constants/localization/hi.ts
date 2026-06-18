@@ -363,6 +363,9 @@ export const hi: Translations = {
     continueJourney: 'आगे बढ़ें',
     contextualInfo: 'वेरीफाइड लोगों के साथ सफर करें।',
     recentRidesTitle: 'हाल ही की राइड्स',
+    minDistanceError:
+      'पिकअप और ड्रॉप लोकेशन के बीच की दूरी कम से कम 5 किमी होनी चाहिए।',
+    minDistanceErrorTitle: 'दूरी बहुत कम है',
   },
   mapPicker: {
     title: 'लोकेशन चुनें',

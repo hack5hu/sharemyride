@@ -81,8 +81,13 @@ export const usePriceSelection = () => {
     const fetchFinalRoute = async () => {
       if (!startLocation || !destinationLocation) return;
 
-      // If we have route details and price is already in store or set correctly, skip
-      if (routeDetails && (storePrice > 0 || price > 0)) {
+      // If we have route details, skip fetching directions again
+      if (routeDetails) {
+        // Update price if it was 0 but we have details (redundancy fix)
+        if (price === 0 && initialPrice > 0) {
+          setPrice(initialPrice);
+        }
+
         // Just sync segment prices if we have legs and some are missing (e.g. after adding middle stops)
         if (routeDetails.legs.length > 0) {
           let updated = false;
@@ -106,11 +111,6 @@ export const usePriceSelection = () => {
           }
         }
         return;
-      }
-
-      // Update price if it was 0 but we have details (redundancy fix)
-      if (routeDetails && price === 0 && initialPrice > 0) {
-        setPrice(initialPrice);
       }
 
       setIsLoading(true);

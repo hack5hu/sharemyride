@@ -1,27 +1,20 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { useTheme } from 'styled-components/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useEditProfile } from './useEditProfile';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { Typography } from '@/components/atoms/Typography';
-import { IconButton } from '@/components/atoms/IconButton';
-import { Avatar } from '@/components/atoms/Avatar';
 import { Input } from '@/components/atoms/Input';
-import { DatePickerInput } from '@/components/molecules/DatePickerInput';
+import { DobInput } from '@/components/molecules/DobInput';
 import { GenderSelector } from '@/components/molecules/GenderSelector';
 import { Toast } from '@/components/molecules/Toast';
 import * as S from './EditProfile.styles';
 import { Button } from '@/components/atoms/Button';
 
 export const EditProfileScreen: React.FC = () => {
-  const theme = useTheme();
   const {
     formik,
     loading,
     showSuccess,
     handleCloseSuccess,
-    handleUpdateAvatar,
     navigation,
     t,
   } = useEditProfile();
@@ -61,16 +54,6 @@ export const EditProfileScreen: React.FC = () => {
               />
 
               <Input
-                label={t('editProfile.emailLabel')}
-                placeholder={t('editProfile.emailPlaceholder')}
-                value={formik.values.email}
-                editable={false}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                error={formik.touched.email ? formik.errors.email : undefined}
-              />
-
-              <Input
                 label={t('editProfile.phoneLabel')}
                 placeholder={t('editProfile.phonePlaceholder')}
                 value={formik.values.phone}
@@ -79,20 +62,17 @@ export const EditProfileScreen: React.FC = () => {
                 error={formik.touched.phone ? formik.errors.phone : undefined}
               />
 
-              <S.Row>
-                <S.Column>
-                  <DatePickerInput
-                    label={t('editProfile.dobLabel')}
-                    value={formik.values.dob}
-                    onDateChange={date => formik.setFieldValue('dob', date)}
-                    error={
-                      formik.touched.dob
-                        ? (formik.errors.dob as string)
-                        : undefined
-                    }
-                  />
-                </S.Column>
-              </S.Row>
+              <DobInput
+                label={t('editProfile.dobLabel')}
+                value={formik.values.dob}
+                onValueChange={val => formik.setFieldValue('dob', val)}
+                onBlur={() => formik.setFieldTouched('dob', true)}
+                error={
+                  formik.touched.dob
+                    ? (formik.errors.dob as string)
+                    : undefined
+                }
+              />
 
               <GenderSelector
                 label={t('editProfile.genderLabel')}

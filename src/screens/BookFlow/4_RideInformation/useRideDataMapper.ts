@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { RideData } from '@/screens/BookFlow/3_AvailableRides/types';
 import { calculateDistance } from '@/utils/location';
 import { formatTimeSafely, formatDateSafely } from '@/utils/date';
 
@@ -57,18 +56,12 @@ export const mapBackendRideToUI = (
       : undefined;
 
   const stops = rideRaw.stops || [];
-  const sourceIdx = stops.findIndex((s: any) => s.id === sourceStopId);
-  const destIdx = stops.findIndex((s: any) => s.id === destinationStopId);
-  const [startIdx, endIdx] = [sourceIdx, destIdx].sort((a, b) => a - b);
 
   const timeline = stops.map((stop: any, idx: number, arr: any[]) => {
     const isHighlighted =
       stop.id === sourceStopId || stop.id === destinationStopId;
     const address = stop.stopName || stop.name || 'Unknown';
     let displayLocation = address;
-    const isBetweenOrAt =
-      idx >= startIdx && idx <= endIdx && startIdx !== -1 && endIdx !== -1;
-
     const isDriverRole = rideRaw.userRole === 'DRIVER';
 
     // Only truncate if NOT highlighted AND NOT driver
@@ -100,7 +93,7 @@ export const mapBackendRideToUI = (
 
     return {
       id: stop.id,
-      time: formatTimeSafely(stop.arrivalTime),
+      time: formatTimeSafely(stop.arrivalTime, { hour: '2-digit', minute: '2-digit' }, 'TBD', false),
       durationSincePrevious,
       location: displayLocation,
       type:
@@ -120,8 +113,8 @@ export const mapBackendRideToUI = (
   if (rideRaw.duration) {
     const hMatch = rideRaw.duration.match(/(\d+)h/);
     const mMatch = rideRaw.duration.match(/(\d+)m/);
-    if (hMatch) totalDurationMins += parseInt(hMatch[1]) * 60;
-    if (mMatch) totalDurationMins += parseInt(mMatch[1]);
+    if (hMatch) totalDurationMins += parseInt(hMatch[1], 10) * 60;
+    if (mMatch) totalDurationMins += parseInt(mMatch[1], 10);
   }
 
   return {
@@ -189,6 +182,7 @@ export const mapBackendRideToUI = (
         month: 'short',
       },
       'Today',
+      false,
     ),
     departureTime: formatTimeSafely(
       firstStop?.arrivalTime,
@@ -198,6 +192,7 @@ export const mapBackendRideToUI = (
         hour12: true,
       },
       '--:--',
+      false,
     ),
     rawStops: stops.map((s: any) => ({
       lat: s.lat,
