@@ -673,7 +673,7 @@ export const en: Translations = {
     primaryCTA: 'Go to My Rides',
     secondaryCTA: 'Share Details',
     plateLabel: 'Plate',
-    carbonNeutralTransit: 'Ride Pool Company Carbon Neutral Transit',
+    carbonNeutralTransit: 'ZYNC RIDE CARBON NEUTRAL TRANSIT',
     brandTitle: 'ZyncRide',
     seatPositions: {
       driver: 'Host Seat',

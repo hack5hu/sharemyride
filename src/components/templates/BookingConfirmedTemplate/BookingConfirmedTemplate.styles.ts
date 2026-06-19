@@ -167,6 +167,8 @@ export const SecondaryButton = styled.TouchableOpacity`
   justify-content: center;
   flex-direction: row;
   gap: ${scale(8)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_highest};
+  border-radius: ${moderateScale(16)}px;
 `;
 export const PlateBadge = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container};

@@ -19,39 +19,6 @@ export const useBookRideInfo = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [isSwapped, setIsSwapped] = useState(false);
 
-  useFocusEffect(
-    useCallback(() => {
-      setIsSearching(false);
-      checkUnratedRides();
-      let backPressCount = 0;
-      const onBackPress = () => {
-        if (backPressCount === 0) {
-          backPressCount++;
-          ToastAndroid.show(
-            'Press back again to exit the app',
-            ToastAndroid.SHORT,
-          );
-          setTimeout(() => {
-            backPressCount = 0;
-          }, 2000);
-          return true;
-        } else {
-          BackHandler.exitApp();
-          return true;
-        }
-      };
-
-      const subscription = BackHandler.addEventListener(
-        'hardwareBackPress',
-        onBackPress,
-      );
-
-      return () => {
-        subscription.remove();
-      };
-    }, [checkUnratedRides]),
-  );
-
   const {
     startLocation,
     destinationLocation,
@@ -134,6 +101,10 @@ export const useBookRideInfo = () => {
           page: 0,
           size: 15,
         };
+
+        if (!curDate) {
+          store.setTravelDate(format(selectedDate, "yyyy-MM-dd'T'HH:mm:ss"));
+        }
 
         addRecentSearch({
           startLocation: curStart,
@@ -267,6 +238,39 @@ export const useBookRideInfo = () => {
       console.error('[RatingCheck] Failed to check unrated rides:', error);
     }
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsSearching(false);
+      checkUnratedRides();
+      let backPressCount = 0;
+      const onBackPress = () => {
+        if (backPressCount === 0) {
+          backPressCount++;
+          ToastAndroid.show(
+            'Press back again to exit the app',
+            ToastAndroid.SHORT,
+          );
+          setTimeout(() => {
+            backPressCount = 0;
+          }, 2000);
+          return true;
+        } else {
+          BackHandler.exitApp();
+          return true;
+        }
+      };
+
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress,
+      );
+
+      return () => {
+        subscription.remove();
+      };
+    }, [checkUnratedRides]),
+  );
 
   const handleConfirmRating = useCallback(() => {
     if (!ratingPromptRide) return;

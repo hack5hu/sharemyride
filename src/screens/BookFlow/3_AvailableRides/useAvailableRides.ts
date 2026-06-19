@@ -244,6 +244,7 @@ export const useAvailableRides = () => {
         departureHour: sTime
           ? safeParseDate(sTime, false)?.getHours() ?? undefined
           : undefined,
+        rawStartTime: sTime,
         sourceStopId: ride.sourceStopId,
         destinationStopId: ride.destinationStopId,
       } as any;
@@ -267,11 +268,15 @@ export const useAvailableRides = () => {
       }
     }
 
-    if (selectedFilters.includes('time')) {
+    // Always sort by time by default unless distance sort is applied
+    const hasDistanceSort = selectedFilters.includes('nearPickup') || selectedFilters.includes('nearDropoff');
+    
+    if (!hasDistanceSort || selectedFilters.includes('time')) {
       result.sort((a, b) => {
-        const timeA = a.timeline[0]?.time || 'TBD';
-        const timeB = b.timeline[0]?.time || 'TBD';
-        return timeA.localeCompare(timeB);
+        if (!a.rawStartTime && !b.rawStartTime) return 0;
+        if (!a.rawStartTime) return 1;
+        if (!b.rawStartTime) return -1;
+        return new Date(a.rawStartTime).getTime() - new Date(b.rawStartTime).getTime();
       });
     }
 

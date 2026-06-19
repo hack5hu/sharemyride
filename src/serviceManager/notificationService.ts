@@ -69,9 +69,14 @@ class NotificationService {
    * Also marks all messages from that sender as read (Optimistic UX).
    */
   public static handleNotificationTap(notification: any) {
-    const data = notification.data || {};
+    console.log('====== NOTIFICATION TAPPED ======');
+    console.log(JSON.stringify(notification, null, 2));
+    Logger.log('[NotificationService] Tapped full payload:', notification);
 
-    if (data.type === 'chat' && data.userId && data.name) {
+    const data = notification.data || {};
+    const typeStr = String(data.type || '').toLowerCase();
+
+    if (typeStr === 'chat' && data.userId && data.name) {
       Logger.log(
         '[NotificationService] Navigating to ChatDetails from tap',
         data,
@@ -93,6 +98,25 @@ class NotificationService {
         name: String(data.name),
         rideId: data.rideId ? String(data.rideId) : undefined,
       });
+    } else if (typeStr === 'ride_request' || typeStr.includes('request')) {
+      Logger.log(
+        '[NotificationService] Navigating to MyRides (requests) from tap',
+        data,
+      );
+      navigate('MyRides');
+    } else if (data.rideId) {
+      Logger.log(
+        '[NotificationService] Navigating to RideDetails from tap',
+        data,
+      );
+      navigate('RideDetails', {
+        rideId: String(data.rideId),
+      });
+    } else {
+      Logger.log(
+        '[NotificationService] Notification tapped, but no specific routing matched',
+        data,
+      );
     }
   }
 
@@ -147,6 +171,8 @@ class NotificationService {
     const messagingInstance = getMessaging();
     // Foreground messages
     onMessage(messagingInstance, async remoteMessage => {
+      console.log('====== FOREGROUND NOTIFICATION RECEIVED ======');
+      console.log(JSON.stringify(remoteMessage, null, 2));
       Logger.log('[FCM] Foreground message arrived:', remoteMessage);
 
       const data = remoteMessage.data || {};

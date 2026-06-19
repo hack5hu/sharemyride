@@ -32,6 +32,7 @@ export interface RideData {
   pickupDistance?: number;
   dropoffDistance?: number;
   departureHour?: number;
+  rawStartTime?: string;
   vehicle?: {
     registration: string;
     type: string;

@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { formatDateSafely } from '@/utils/date';
+import { safeParseDate } from '@/utils/date';
+import { format } from 'date-fns';
 import { useTheme } from 'styled-components/native';
 import { View, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -132,11 +133,7 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
                     color={theme.colors.on_surface_variant}
                   >
                     {travelDate
-                      ? formatDateSafely(
-                          travelDate,
-                          { weekday: 'short', day: '2-digit', month: 'short' },
-                          t.searchSummaryDate,
-                        )
+                      ? (safeParseDate(travelDate) ? format(safeParseDate(travelDate)!, 'EEE, dd MMM') : t.searchSummaryDate)
                       : t.searchSummaryDate}
                   </Typography>
                 </S.FooterItem>

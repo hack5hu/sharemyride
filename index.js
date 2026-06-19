@@ -10,6 +10,8 @@ import NotificationService from './src/serviceManager/notificationService';
 
 // Register background handler
 setBackgroundMessageHandler(getMessaging(), async remoteMessage => {
+  console.log('====== BACKGROUND NOTIFICATION RECEIVED ======');
+  console.log(JSON.stringify(remoteMessage, null, 2));
   console.log('Message handled in the background!', remoteMessage);
   
   if (remoteMessage.notification) {
