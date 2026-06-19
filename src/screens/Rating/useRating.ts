@@ -3,7 +3,7 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useLocale } from '@/constants/localization';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
-import rideService from '@/serviceManager/rideService';
+import { RideService } from '@/serviceManager/RideService';
 import { getErrorMessage } from '@/utils/error';
 
 export const useRating = (params: {
@@ -81,7 +81,7 @@ export const useRating = (params: {
       const averageRating = totalScore / categories.length;
 
       // Submit using rideService
-      await rideService.submitRating(
+      await RideService.submitRating(
         rideId,
         targetUserId,
         averageRating,

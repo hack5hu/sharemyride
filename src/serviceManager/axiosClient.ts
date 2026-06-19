@@ -22,7 +22,7 @@ interface FailedRequest {
 }
 const generateId = () =>
   `${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 12)}`;
-const apiClient = axios.create({
+const axiosClient = axios.create({
   baseURL: BASE_URL,
   timeout: 30000,
   headers: {
@@ -42,7 +42,7 @@ const processQueue = (error: unknown, token: string | null = null) => {
   });
   failedQueue = [];
 };
-apiClient.interceptors.request.use(
+axiosClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     const trackedConfig = config as TrackedRequestConfig;
     try {
@@ -101,7 +101,7 @@ apiClient.interceptors.request.use(
   },
   error => Promise.reject(error),
 );
-apiClient.interceptors.response.use(
+axiosClient.interceptors.response.use(
   response => {
     const trackedConfig = response.config as TrackedRequestConfig;
     logApiResponse(response);
@@ -154,7 +154,7 @@ apiClient.interceptors.response.use(
         })
           .then(token => {
             originalRequest.headers.Authorization = `Bearer ${token}`;
-            return apiClient(originalRequest);
+            return axiosClient(originalRequest);
           })
           .catch(err => Promise.reject(err));
       }
@@ -168,7 +168,7 @@ apiClient.interceptors.response.use(
           throw new Error('No refresh token available');
         }
         const response = await axios.post(
-          `${apiClient.defaults.baseURL}${API_ENDPOINTS.AUTH.REFRESH_TOKEN}`,
+          `${axiosClient.defaults.baseURL}${API_ENDPOINTS.AUTH.REFRESH_TOKEN}`,
           {
             refreshToken: refreshCreds.password,
           },
@@ -186,10 +186,10 @@ apiClient.interceptors.response.use(
             service: 'refresh_token',
           });
         }
-        apiClient.defaults.headers.common.Authorization = `Bearer ${token}`;
+        axiosClient.defaults.headers.common.Authorization = `Bearer ${token}`;
         originalRequest.headers.Authorization = `Bearer ${token}`;
         processQueue(null, token);
-        return apiClient(originalRequest);
+        return axiosClient(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError, null);
         Logger.error('Token refresh failed');
@@ -204,4 +204,4 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-export default apiClient;
+export default axiosClient;

@@ -4,7 +4,7 @@ import {
   FIVE_SEATER_ROWS,
   SEVEN_SEATER_ROWS,
 } from '@/components/organisms/CarFloorPlan/seatConfig';
-import rideService, { RouteStop } from '@/serviceManager/rideService';
+import { RideService, RouteStop } from '@/serviceManager/RideService';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
@@ -142,7 +142,7 @@ export const useBookSeatSelection = (
         destinationStopId: Number(destinationStopId),
       };
 
-      await rideService.bookRide(rideId, payload);
+      await RideService.bookRide(rideId, payload);
       navigate('BookingConfirmed', {
         rideId,
         bookedSeats: Array.from(selectedSeats).map(String),

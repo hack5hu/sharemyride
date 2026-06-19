@@ -2,7 +2,7 @@ import BackgroundService from 'react-native-background-actions';
 import Geolocation, {
   GeolocationResponse,
 } from '@react-native-community/geolocation';
-import rideService from '@/serviceManager/rideService';
+import { RideService } from '@/serviceManager/RideService';
 import { Logger } from '@/utils/logger';
 import { Platform } from 'react-native';
 import { locationQueue } from './locationQueue';
@@ -105,7 +105,7 @@ const locationTrackingTask = async (
 
           try {
             // Dispatch validated payload downstream to server
-            await rideService.updateLocation(rideId, latitude, longitude);
+            await RideService.updateLocation(rideId, latitude, longitude);
             Logger.log(
               `[BackgroundLocation] Dispatched location to service Manager: ${latitude}, ${longitude}`,
             );
@@ -124,7 +124,7 @@ const locationTrackingTask = async (
               const backlog = locationQueue.get();
 
               // Upload the complete sequence to the backend in a compressed payload
-              await rideService.syncLocationBacklog(rideId, backlog);
+              await RideService.syncLocationBacklog(rideId, backlog);
 
               // Clean out the cache upon success
               locationQueue.flush();

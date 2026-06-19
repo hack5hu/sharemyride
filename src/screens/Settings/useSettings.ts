@@ -4,7 +4,7 @@ import { useSettingsStore } from '@/store/settings';
 import { useAuthStore } from '@/store';
 import { useLocale } from '@/constants/localization';
 import { storage } from '@/utils/storage';
-import { authService } from '@/serviceManager/authService';
+import { AuthService } from '@/serviceManager/AuthService';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
@@ -52,8 +52,8 @@ export const useSettings = () => {
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
-      // 2. Call authService to notify backend and wipe Keychain + Zustand
-      await authService.logout();
+      // 2. Call AuthService to notify backend and wipe Keychain + Zustand
+      await AuthService.logout();
 
       // 3. Reset Navigation (if Zustand doesn't already catch it)
       navigation.reset({

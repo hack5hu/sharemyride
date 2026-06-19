@@ -4,8 +4,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
   ProfileUpdateData,
-  profileService,
-} from '@/serviceManager/profileService';
+  UserService,
+} from '@/serviceManager/UserService';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
@@ -137,7 +137,7 @@ export const useEditProfile = () => {
           return;
         }
 
-        await profileService.updateProfile(updatePayload);
+        await UserService.updateProfile(updatePayload);
 
         await fetchProfile();
         setShowSuccess(true);

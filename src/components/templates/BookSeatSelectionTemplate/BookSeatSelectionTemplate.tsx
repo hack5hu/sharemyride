@@ -67,7 +67,7 @@ export const BookSeatSelectionTemplate: React.FC<
                 selectedSeats={selectedSeats}
                 occupiedSeats={occupiedSeats}
                 prices={prices}
-                onSeatPress={isBooking ? undefined : toggleSeat}
+                onSeatPress={isBooking ? () => {} : toggleSeat}
                 driverLabel={st.driverLabel}
               />
             </S.CarPlanWrapper>

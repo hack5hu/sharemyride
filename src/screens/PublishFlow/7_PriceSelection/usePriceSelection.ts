@@ -2,7 +2,7 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
-import { locationService } from '@/serviceManager/locationService';
+import { LocationService } from '@/serviceManager/LocationService';
 import {
   calculateBasePrice,
   calculateFrontSeatPrice,
@@ -121,7 +121,7 @@ export const usePriceSelection = () => {
             ? middleStops.map(s => `${s.latitude},${s.longitude}`).join('|')
             : undefined;
 
-        const results = await locationService.getDirections(
+        const results = await LocationService.getDirections(
           startLocation.latitude,
           startLocation.longitude,
           destinationLocation.latitude,

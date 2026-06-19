@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useMyRidesStore } from '@/store/useMyRidesStore';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
-import rideService from '@/serviceManager/rideService';
+import { RideService } from '@/serviceManager/RideService';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
@@ -113,7 +113,7 @@ export const useMyRidesActions = (
           type: 'danger',
           onConfirm: async () => {
             try {
-              await rideService.cancelRide(id, 'Cancelled from my rides tab');
+              await RideService.cancelRide(id, 'Cancelled from my rides tab');
               fetchInitialRides();
             } catch (error: any) {
               showNotification(

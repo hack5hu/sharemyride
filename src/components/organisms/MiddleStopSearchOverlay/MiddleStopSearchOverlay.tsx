@@ -54,7 +54,7 @@ export const MiddleStopSearchOverlay: React.FC<MiddleStopSearchOverlayProps> =
       recentHistory,
       onSelectLocation,
       onSelectHistory,
-      _isLoading,
+      isLoading,
     }) => {
       const theme = useTheme();
       const { middleStopMap: t } = useLocale();

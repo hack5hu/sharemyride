@@ -4,9 +4,9 @@ import { BackHandler } from 'react-native';
 import { RootStackParamList } from '@/navigation/types';
 import { Location, useLocationStore } from '@/store/useLocationStore';
 import {
-  locationService,
+  LocationService,
   OlaPrediction,
-} from '@/serviceManager/locationService';
+} from '@/serviceManager/LocationService';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useBookRideStore } from '@/store/useBookRideStore';
@@ -134,7 +134,7 @@ export const useMapPicker = () => {
     debounce(async (query: string) => {
       if (query.trim().length > 2) {
         try {
-          const predictions = await locationService.autocomplete(query);
+          const predictions = await LocationService.autocomplete(query);
           const mappedResults: Location[] = predictions
             .filter(
               (p: OlaPrediction) =>
@@ -241,7 +241,7 @@ export const useMapPicker = () => {
   const debouncedReverseGeocode = useCallback(
     debounce(async (lat: number, lng: number) => {
       try {
-        const geoData = await locationService.reverseGeocode(lat, lng);
+        const geoData = await LocationService.reverseGeocode(lat, lng);
         setSelectedLocation(prev => ({
           id: `drag-${Date.now()}`,
           latitude: lat,

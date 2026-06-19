@@ -6,7 +6,7 @@ import { useMyRidesActions } from './useMyRidesActions';
 import { mapBackendRideToUI } from './utils/rideMapper';
 import { MyRidesHookData, RideListItem } from './types.d';
 import { useTranslation } from '@/hooks/useTranslation';
-import rideService from '@/serviceManager/rideService';
+import { RideService } from '@/serviceManager/RideService';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
@@ -158,7 +158,7 @@ export const useMyRides = (): MyRidesHookData => {
     async (id: string) => {
       setIsActionLoading(true);
       try {
-        await rideService.acceptBooking(id);
+        await RideService.acceptBooking(id);
         showNotification(
           NotificationType.SUCCESS,
           t('notification.defaultSuccessTitle'),
@@ -183,7 +183,7 @@ export const useMyRides = (): MyRidesHookData => {
     async (id: string) => {
       setIsActionLoading(true);
       try {
-        await rideService.rejectBooking(id);
+        await RideService.rejectBooking(id);
         showNotification(
           NotificationType.SUCCESS,
           t('notification.defaultSuccessTitle'),

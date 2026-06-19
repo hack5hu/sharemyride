@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { mmkvStorage } from '@/utils/storage';
-import rideService, {
+import { RideService,
   TravelPreferenceData,
-} from '@/serviceManager/rideService';
+} from '@/serviceManager/RideService';
 
 interface TravelPrefStore {
   preferences: TravelPreferenceData;
@@ -45,7 +45,7 @@ export const useTravelPrefStore = create<TravelPrefStore>()(
           set({ isLoading: true });
         }
         try {
-          const data = await rideService.getPreferences();
+          const data = await RideService.getPreferences();
           if (data) {
             const isIdentical =
               currentPrefs.nonSmoking === data.nonSmoking &&
@@ -73,7 +73,7 @@ export const useTravelPrefStore = create<TravelPrefStore>()(
       savePreferences: async prefs => {
         set({ isLoading: true });
         try {
-          await rideService.savePreferences(prefs);
+          await RideService.savePreferences(prefs);
           set({ preferences: prefs });
         } catch (error) {
           console.error('Failed to save preferences:', error);

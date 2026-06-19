@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
-import { locationService } from '@/serviceManager/locationService';
+import { LocationService } from '@/serviceManager/LocationService';
 import { useAppNavigation } from '@/hooks/useAppNavigation'; // ensure custom navigation hook is used
 import { decodePolyline, getBoundingBox } from '@/utils/polyline';
 
@@ -56,7 +56,7 @@ export const useMiddleStops = () => {
           ? middleStops.map(s => `${s.latitude},${s.longitude}`).join('|')
           : undefined;
 
-      const results = await locationService.getDirections(
+      const results = await LocationService.getDirections(
         startLocation.latitude,
         startLocation.longitude,
         destinationLocation.latitude,
@@ -154,7 +154,7 @@ export const useMiddleStops = () => {
           middleStops.length > 0
             ? middleStops.map(s => `${s.latitude},${s.longitude}`).join('|')
             : undefined;
-        const res = await locationService.getDirections(
+        const res = await LocationService.getDirections(
           startLocation.latitude,
           startLocation.longitude,
           destinationLocation.latitude,

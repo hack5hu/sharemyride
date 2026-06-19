@@ -1,6 +1,6 @@
 import * as Keychain from 'react-native-keychain';
 import { Platform } from 'react-native';
-import apiClient from './apiClient';
+import axiosClient from './axiosClient';
 import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 import { useAuthStore } from '@/store/useAuthStore';
 import { getDeviceId } from '@/utils/deviceId';
@@ -20,93 +20,43 @@ export interface VerifyOtpResponse {
   status: string; // "success"
 }
 
-export const authService = {
-  /**
-   * Send OTP to the provided phone number for login.
-   * @param phoneNumber 10-digit phone number
-   * @param termandconditionSelected boolean flag for T&C acceptance
-   */
+export const AuthService = {
   login: async (
     phoneNumber: string,
     termandconditionSelected: boolean = true,
-  ): Promise<{ status: number; data: LoginResponse }> => {
-    try {
-      const response = await apiClient.post<LoginResponse>(
-        API_ENDPOINTS.AUTH.LOGIN,
-        { phoneNumber, termandconditionSelected },
-      );
-
-      return {
-        status: response.status,
-        data: response.data,
-      };
-    } catch (error: any) {
-      if (error.response) {
-        throw new Error(error.response.data.message || 'Login failed');
-      }
-      throw new Error('Network error. Please try again.');
-    }
+  ) => {
+    const response = await axiosClient.post<LoginResponse>(
+      API_ENDPOINTS.AUTH.LOGIN,
+      { phoneNumber, termandconditionSelected },
+    );
+    return { status: response.status, data: response.data };
   },
 
-  /**
-   * Verify the OTP provided by the user.
-   * @param phoneNumber 10-digit phone number
-   * @param otp 6-digit verification code
-   * @param deviceId persistent unique device identifier
-   * @param fcmToken FCM messaging token for push notifications
-   */
   verifyOtp: async (
     phoneNumber: string,
     otp: string,
     deviceId?: string | null,
     fcmToken?: string | null,
-  ): Promise<{ status: number; data: VerifyOtpResponse }> => {
-    try {
-      const payload: any = {
-        phoneNumber: Number(phoneNumber),
-        otp: Number(otp),
-      };
+  ) => {
+    const payload: any = {
+      phoneNumber: Number(phoneNumber),
+      otp: Number(otp),
+      platform: Platform.OS.toUpperCase(),
+    };
+    if (deviceId) payload.deviceId = deviceId;
+    if (fcmToken) payload.fcmToken = fcmToken;
 
-      if (deviceId) {
-        payload.deviceId = deviceId;
-      }
-      if (fcmToken) {
-        payload.fcmToken = fcmToken;
-      }
-      payload.platform = Platform.OS.toUpperCase();
-
-      const response = await apiClient.post<VerifyOtpResponse>(
-        API_ENDPOINTS.AUTH.VERIFY_OTP,
-        payload,
-      );
-      if (response.data.status === 'success' || response.status === 200) {
-        // Store tokens securely
-        await Promise.all([
-          Keychain.setGenericPassword('auth_token', response.data.token, {
-            service: 'auth_token',
-          }),
-          Keychain.setGenericPassword(
-            'refresh_token',
-            response.data.refreshToken,
-            {
-              service: 'refresh_token',
-            },
-          ),
-        ]);
-      }
-
-      return {
-        status: response.status,
-        data: response.data,
-      };
-    } catch (error: any) {
-      if (error.response) {
-        throw new Error(
-          error.response.data.message || 'OTP Verification failed',
-        );
-      }
-      throw new Error('Network error. Please try again.');
+    const response = await axiosClient.post<VerifyOtpResponse>(
+      API_ENDPOINTS.AUTH.VERIFY_OTP,
+      payload,
+    );
+    if (response.data.status === 'success' || response.status === 200) {
+      await Promise.all([
+        Keychain.setGenericPassword('auth_token', response.data.token, { service: 'auth_token' }),
+        Keychain.setGenericPassword('refresh_token', response.data.refreshToken, { service: 'refresh_token' }),
+      ]);
     }
+    return { status: response.status, data: response.data };
   },
 
   truecallerLogin: async (
@@ -114,74 +64,44 @@ export const authService = {
     deviceId?: string | null,
     fcmToken?: string | null,
     codeVerifier?: string,
-  ): Promise<{ status: number; data: VerifyOtpResponse }> => {
-    try {
-      const payload: any = {
-        authorizationCode,
-        platform: Platform.OS.toUpperCase(),
-      };
-      if (codeVerifier) payload.codeVerifier = codeVerifier;
-      if (deviceId) payload.deviceId = deviceId;
-      if (fcmToken) payload.fcmToken = fcmToken;
+  ) => {
+    const payload: any = { authorizationCode, platform: Platform.OS.toUpperCase() };
+    if (codeVerifier) payload.codeVerifier = codeVerifier;
+    if (deviceId) payload.deviceId = deviceId;
+    if (fcmToken) payload.fcmToken = fcmToken;
 
-      const response = await apiClient.post<VerifyOtpResponse>(
-        API_ENDPOINTS.AUTH.TRUECALLER_LOGIN,
-        payload,
-      );
+    const response = await axiosClient.post<VerifyOtpResponse>(
+      API_ENDPOINTS.AUTH.TRUECALLER_LOGIN,
+      payload,
+    );
 
-      if (response.data.status === 'success' || response.status === 200) {
-        await Promise.all([
-          Keychain.setGenericPassword('auth_token', response.data.token, {
-            service: 'auth_token',
-          }),
-          Keychain.setGenericPassword(
-            'refresh_token',
-            response.data.refreshToken,
-            {
-              service: 'refresh_token',
-            },
-          ),
-        ]);
-      }
-
-      return { status: response.status, data: response.data };
-    } catch (error: any) {
-      if (error.response) {
-        throw new Error(
-          error.response.data.message || 'Truecaller verification failed',
-        );
-      }
-      throw new Error('Network error. Please try again.');
+    if (response.data.status === 'success' || response.status === 200) {
+      await Promise.all([
+        Keychain.setGenericPassword('auth_token', response.data.token, { service: 'auth_token' }),
+        Keychain.setGenericPassword('refresh_token', response.data.refreshToken, { service: 'refresh_token' }),
+      ]);
     }
+    return { status: response.status, data: response.data };
   },
 
-  logout: async (): Promise<void> => {
+  logout: async () => {
     try {
-      const refreshCreds = await Keychain.getGenericPassword({
-        service: 'refresh_token',
-      });
-
+      const refreshCreds = await Keychain.getGenericPassword({ service: 'refresh_token' });
       if (refreshCreds) {
         const deviceId = await getDeviceId().catch(() => null);
-        const payload: any = {
-          refreshToken: refreshCreds.password,
-        };
-        if (deviceId) {
-          payload.deviceId = deviceId;
-        }
+        const payload: any = { refreshToken: refreshCreds.password };
+        if (deviceId) payload.deviceId = deviceId;
 
-        // Call logout API with refreshToken in body
-        await apiClient.post(API_ENDPOINTS.AUTH.LOGOUT, payload);
+        await axiosClient.post(API_ENDPOINTS.AUTH.LOGOUT, payload);
       }
     } catch (error) {
       console.error('Logout API error', error);
     } finally {
-      // Always clear local session
-      await authService.clearLocalSession();
+      await AuthService.clearLocalSession();
     }
   },
 
-  clearLocalSession: async (): Promise<void> => {
+  clearLocalSession: async () => {
     try {
       await Promise.all([
         Keychain.resetGenericPassword({ service: 'auth_token' }),
@@ -190,28 +110,15 @@ export const authService = {
     } catch (e) {
       console.error('Failed to reset keychain', e);
     }
-    // Reset Zustand store
     const { resetAllStores } = require('@/store/resetAllStores');
     resetAllStores();
   },
 
-  resendOtp: async (
-    phoneNumber: string,
-  ): Promise<{ status: number; data: LoginResponse }> => {
-    try {
-      const response = await apiClient.post<LoginResponse>(
-        API_ENDPOINTS.AUTH.RESEND_OTP,
-        { phoneNumber },
-      );
-      return {
-        status: response.status,
-        data: response.data,
-      };
-    } catch (error: any) {
-      if (error.response) {
-        throw new Error(error.response.data.message || 'Resend OTP failed');
-      }
-      throw new Error('Network error. Please try again.');
-    }
+  resendOtp: async (phoneNumber: string) => {
+    const response = await axiosClient.post<LoginResponse>(
+      API_ENDPOINTS.AUTH.RESEND_OTP,
+      { phoneNumber },
+    );
+    return { status: response.status, data: response.data };
   },
 };

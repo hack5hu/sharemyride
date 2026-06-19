@@ -2,7 +2,7 @@ import { useCallback, useState, useEffect } from 'react';
 import { Alert, Clipboard, Linking, Platform } from 'react-native';
 import { useLocale } from '@/constants/localization';
 import { useBookRideStore } from '@/store/useBookRideStore';
-import rideService from '@/serviceManager/rideService';
+import { RideService } from '@/serviceManager/RideService';
 import { useRideDataMapper } from './useRideDataMapper';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
@@ -47,7 +47,7 @@ export const useRideInformation = (
     const fetchDetail = async () => {
       try {
         setIsLoading(true);
-        const data = await rideService.getRideDetail(
+        const data = await RideService.getRideDetail(
           rideId,
           sourceStopId,
           destinationStopId,

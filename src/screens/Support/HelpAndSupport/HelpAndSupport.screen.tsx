@@ -20,7 +20,7 @@ export const HelpAndSupportScreen: React.FC = () => {
       onBack={() => navigation.goBack()}
       actionButton={
         <Button
-          title={t('dummyContent.emailUs') || 'Email Support'}
+          children={t('dummyContent.emailUs') || 'Email Support'}
           onPress={handleEmailSupport}
           variant="primary"
         />

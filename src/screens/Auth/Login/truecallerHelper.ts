@@ -1,4 +1,4 @@
-import { authService } from '@/serviceManager/authService';
+import { AuthService } from '@/serviceManager/AuthService';
 import { useAuthStore } from '@/store/useAuthStore';
 import { getDeviceId } from '@/utils/deviceId';
 import { getFcmToken } from '@/utils/fcm';
@@ -20,7 +20,7 @@ export const executeTruecallerAuth = async (
     getFcmToken().catch(() => null),
   ]);
 
-  return authService.truecallerLogin(
+  return AuthService.truecallerLogin(
     authorizationCode,
     deviceId,
     fcmToken,

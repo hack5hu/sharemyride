@@ -1,10 +1,11 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useCallback } from 'react';
 import { addSeconds, format } from 'date-fns';
-import rideService, {
+import {
+  RideService,
   PublishRidePayload,
   RouteStop,
-} from '@/serviceManager/rideService';
+} from '@/serviceManager/RideService';
 import { roundToNearest } from '@/utils/pricing';
 import { useMyRidesStore } from '@/store/useMyRidesStore';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -134,7 +135,7 @@ export const useSummaryActions = (
         fullJourneyPrice: String(fullJourneyPrice),
         frontSeatPrice: String(frontSeatPrice),
       };
-      await rideService.publishRide(payload);
+      await RideService.publishRide(payload);
 
       try {
         const existingRidesRaw = storage.getString('recent_published_rides');

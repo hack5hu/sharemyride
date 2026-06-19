@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
-import { userService } from '@/serviceManager/userService';
+import { UserService } from '@/serviceManager/UserService';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
@@ -62,7 +62,7 @@ export const useProfileSetup = () => {
     validationSchema,
     onSubmit: async values => {
       try {
-        await userService.updateProfile({
+        await UserService.updateProfile({
           fullName: values.fullName,
           dob: values.dob,
           gender: values.gender,

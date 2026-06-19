@@ -2,7 +2,7 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useEffect } from 'react';
 import { RouteOption } from '@/components/organisms/RouteCard';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
-import { locationService } from '@/serviceManager/locationService';
+import { LocationService } from '@/serviceManager/LocationService';
 import { decodePolyline, getBoundingBox } from '@/utils/polyline';
 
 import { useVehicleStore } from '@/store/useVehicleStore';
@@ -34,7 +34,7 @@ export const useRouteSelection = () => {
       if (!startLocation || !destinationLocation) return;
 
       setIsLoading(true);
-      const routesResponse = await locationService.getDirections(
+      const routesResponse = await LocationService.getDirections(
         startLocation.latitude,
         startLocation.longitude,
         destinationLocation.latitude,

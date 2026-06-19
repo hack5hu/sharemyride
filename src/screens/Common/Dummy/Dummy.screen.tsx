@@ -64,10 +64,11 @@ export const DummyScreen: React.FC = () => {
                 {contentKey === 'help' && (
                   <S.ActionContainer>
                     <Button
-                      title={t('dummyContent.emailUs') || 'Email Support'}
+                      children={t('dummyContent.emailUs') || 'Email Support'}
                       onPress={handleEmailSupport}
                       variant="primary"
                     />
+                    <Button children="Go Back" onPress={navigation.goBack} variant="primary" />
                   </S.ActionContainer>
                 )}
               </S.Card>

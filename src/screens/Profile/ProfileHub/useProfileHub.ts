@@ -3,7 +3,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useCallback, useState, useEffect, useMemo } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { userService } from '@/serviceManager/userService';
+import { UserService } from '@/serviceManager/UserService';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 
@@ -39,7 +39,7 @@ export const useProfileHub = () => {
       setIsUpdatingAvatar(true);
       const selectedImage = result.assets[0];
 
-      await userService.uploadProfilePhoto(selectedImage.uri!);
+      await UserService.uploadProfilePhoto(selectedImage.uri!);
 
       await fetchProfile();
       showNotification(
@@ -70,7 +70,7 @@ export const useProfileHub = () => {
     setAvatarModalVisible(false);
     try {
       setIsUpdatingAvatar(true);
-      await userService.deleteProfilePhoto();
+      await UserService.deleteProfilePhoto();
 
       await fetchProfile();
       showNotification(

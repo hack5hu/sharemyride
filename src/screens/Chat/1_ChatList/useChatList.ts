@@ -3,7 +3,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useChatStore } from '@/store/useChatStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useChatSocket } from '@/hooks/useChatSocket';
-import { chatService } from '@/serviceManager/chatService';
+import { ChatService } from '@/serviceManager/ChatService';
 
 export const useChatList = () => {
   const { t } = useTranslation();
@@ -41,7 +41,7 @@ export const useChatList = () => {
 
         // Trigger profile fetch if not in cache
         if (!users[otherParticipantId]) {
-          chatService.fetchUserProfile(otherParticipantId);
+          ChatService.fetchUserProfile(otherParticipantId);
         }
 
         const cachedUser = users[otherParticipantId];

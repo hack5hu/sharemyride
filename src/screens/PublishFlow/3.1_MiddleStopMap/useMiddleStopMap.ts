@@ -3,9 +3,9 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useLocationStore, Location } from '@/store/useLocationStore';
 import {
-  locationService,
+  LocationService,
   OlaPrediction,
-} from '@/serviceManager/locationService';
+} from '@/serviceManager/LocationService';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import Toast from 'react-native-toast-message';
 import { NotificationType } from '@/constants/enums';
@@ -121,7 +121,7 @@ export const useMiddleStopMap = () => {
       }
       setIsLoading(true);
       try {
-        const predictions = await locationService.autocomplete(query);
+        const predictions = await LocationService.autocomplete(query);
         const mapped: MiddleStopMapLocation[] = predictions.map(
           (p: OlaPrediction) => {
             const loc: MiddleStopMapLocation = {
@@ -167,7 +167,7 @@ export const useMiddleStopMap = () => {
         const [longitude, latitude] = initialCenter;
         setIsReverseGeocoding(true);
         try {
-          const locationData = await locationService.reverseGeocode(
+          const locationData = await LocationService.reverseGeocode(
             latitude,
             longitude,
           );
@@ -339,7 +339,7 @@ export const useMiddleStopMap = () => {
     let stopWithDistance: Location & { distanceFromStart?: number } =
       locationForStore;
     try {
-      const results = await locationService.getDirections(
+      const results = await LocationService.getDirections(
         startLocation.latitude,
         startLocation.longitude,
         locationForStore.latitude,
@@ -470,7 +470,7 @@ export const useMiddleStopMap = () => {
 
       setIsReverseGeocoding(true);
       try {
-        const locationData = await locationService.reverseGeocode(
+        const locationData = await LocationService.reverseGeocode(
           latitude,
           longitude,
         );
@@ -536,7 +536,7 @@ export const useMiddleStopMap = () => {
 
       setIsReverseGeocoding(true);
       try {
-        const locationData = await locationService.reverseGeocode(
+        const locationData = await LocationService.reverseGeocode(
           latitude,
           longitude,
         );

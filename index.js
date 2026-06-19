@@ -6,7 +6,7 @@ import { AppRegistry } from 'react-native';
 import { getMessaging, setBackgroundMessageHandler } from '@react-native-firebase/messaging';
 import App from './App';
 import { name as appName } from './app.json';
-import NotificationService from './src/serviceManager/notificationService';
+import { NotificationService } from './src/serviceManager/NotificationService';
 
 // Register background handler
 setBackgroundMessageHandler(getMessaging(), async remoteMessage => {

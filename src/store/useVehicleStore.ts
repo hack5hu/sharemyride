@@ -44,7 +44,7 @@ export const useVehicleStore = create<VehicleState>()(
       addVehicle: async vehicle => {
         set({ isLoading: true });
         try {
-          const { userService } = require('@/serviceManager/userService');
+          const { UserService } = require('@/serviceManager/UserService');
 
           // Map to backend schema (Capitalized number plate)
           const payload = {
@@ -55,7 +55,7 @@ export const useVehicleStore = create<VehicleState>()(
             color: vehicle.color,
           };
 
-          const response = await userService.saveVehicle(payload);
+          const response = await UserService.saveVehicle(payload);
 
           // Normalized ID from backend
           const newId = response.id?.toString() || `vehicle-${Date.now()}`;
@@ -84,8 +84,8 @@ export const useVehicleStore = create<VehicleState>()(
           set({ isLoading: true });
         }
         try {
-          const { userService } = require('@/serviceManager/userService');
-          const data = await userService.getVehicles();
+          const { UserService } = require('@/serviceManager/UserService');
+          const data = await UserService.getVehicles();
 
           if (Array.isArray(data)) {
             const mappedVehicles: Vehicle[] = data.map((v: any) => {
@@ -146,8 +146,8 @@ export const useVehicleStore = create<VehicleState>()(
       removeVehicle: async id => {
         set({ isLoading: true });
         try {
-          const { userService } = require('@/serviceManager/userService');
-          await userService.deleteVehicle(id);
+          const { UserService } = require('@/serviceManager/UserService');
+          await UserService.deleteVehicle(id);
 
           set(state => ({
             vehicles: state.vehicles.filter(v => v.id !== id),
@@ -167,7 +167,7 @@ export const useVehicleStore = create<VehicleState>()(
       updateVehicle: async (id, updates) => {
         set({ isLoading: true });
         try {
-          const { userService } = require('@/serviceManager/userService');
+          const { UserService } = require('@/serviceManager/UserService');
 
           const existing = get().vehicles.find(v => v.id === id);
           if (!existing) {
@@ -185,7 +185,7 @@ export const useVehicleStore = create<VehicleState>()(
             color: merged.color,
           };
 
-          await userService.updateVehicle(id, payload);
+          await UserService.updateVehicle(id, payload);
 
           set(state => ({
             vehicles: state.vehicles.map(v =>

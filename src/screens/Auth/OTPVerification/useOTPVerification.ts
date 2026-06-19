@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Keyboard } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { authService } from '@/serviceManager/authService';
+import { AuthService } from '@/serviceManager/AuthService';
 import { useAuthStore } from '@/store/useAuthStore';
 import { getDeviceId } from '@/utils/deviceId';
 import { getFcmToken } from '@/utils/fcm';
@@ -48,7 +48,7 @@ export const useOTPVerification = () => {
         getFcmToken(),
       ]);
 
-      const response = await authService.verifyOtp(
+      const response = await AuthService.verifyOtp(
         phoneNumber,
         code,
         deviceId,
@@ -104,7 +104,7 @@ export const useOTPVerification = () => {
     setTimer(45);
 
     try {
-      await authService.resendOtp(phoneNumber);
+      await AuthService.resendOtp(phoneNumber);
     } catch (error: any) {
       showNotification(
         NotificationType.ERROR,

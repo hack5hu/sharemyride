@@ -125,7 +125,7 @@ export const VehicleDetailsScreen: React.FC = () => {
                       color={color.value}
                       selected={formik.values.color === color.value}
                       onPress={
-                        isLoading ? undefined : () => setColor(color.value)
+                        isLoading ? () => {} : () => setColor(color.value)
                       }
                       label={color.label}
                     />
@@ -160,13 +160,13 @@ export const VehicleDetailsScreen: React.FC = () => {
                 icon="person"
                 label={t('vehicleDetails.seater5')}
                 selected={formik.values.seater === '5'}
-                onPress={isLoading ? undefined : () => setSeater('5')}
+                onPress={isLoading ? () => {} : () => setSeater('5')}
               />
               <VehicleTypeCard
                 icon="groups"
                 label={t('vehicleDetails.seater7')}
                 selected={formik.values.seater === '7'}
-                onPress={isLoading ? undefined : () => setSeater('7')}
+                onPress={isLoading ? () => {} : () => setSeater('7')}
               />
             </S.CapacityRow>
             {formik.touched.seater && formik.errors.seater && (

@@ -1,4 +1,4 @@
-import apiClient from './apiClient';
+import axiosClient from './axiosClient';
 import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 
 export interface RouteStop {
@@ -62,214 +62,156 @@ export interface SearchRidePayload {
   luggageAllowed?: boolean;
 }
 
-const rideService = {
+export const RideService = {
   searchRides: async (payload: SearchRidePayload) => {
-    try {
-      const response = await apiClient.post(API_ENDPOINTS.RIDE.SEARCH, payload);
-      return response.data;
-    } catch (error) {
-      console.error('Ride search failed:', error);
-      throw error;
-    }
+    const response = await axiosClient.post(API_ENDPOINTS.RIDE.SEARCH, payload);
+    return response.data;
   },
+
   publishRide: async (payload: PublishRidePayload) => {
-    try {
-      const response = await apiClient.post(
-        API_ENDPOINTS.RIDE.PUBLISH,
-        payload,
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Ride publication failed:', error);
-      throw error;
-    }
+    const response = await axiosClient.post(
+      API_ENDPOINTS.RIDE.PUBLISH,
+      payload,
+    );
+    return response.data;
   },
+
   getMyRides: async (
     filter: 1 | 2 | 3,
     page: number = 0,
     size: number = 15,
   ) => {
-    try {
-      const response = await apiClient.get(
-        `${API_ENDPOINTS.RIDE.GET_MY_RIDES}?filter=${filter}&page=${page}&size=${size}`,
-      );
-      return response.data;
-    } catch (error) {
-      console.error(`Fetching rides (filter ${filter}) failed:`, error);
-      throw error;
-    }
+    const response = await axiosClient.get(
+      `${API_ENDPOINTS.RIDE.GET_MY_RIDES}?filter=${filter}&page=${page}&size=${size}`,
+    );
+    return response.data;
   },
+
   cancelRide: async (rideId: string | number, reason: string) => {
-    try {
-      const url = `${API_ENDPOINTS.RIDE.CANCEL_RIDE(
-        rideId,
-      )}?reason=${encodeURIComponent(reason)}`;
-      const response = await apiClient.put(url);
-      return response.data;
-    } catch (error) {
-      console.error('Ride cancellation failed:', error);
-      throw error;
-    }
+    const url = `${API_ENDPOINTS.RIDE.CANCEL_RIDE(
+      rideId,
+    )}?reason=${encodeURIComponent(reason)}`;
+    const response = await axiosClient.put(url);
+    return response.data;
   },
+
   cancelBooking: async (bookingId: string | number, reason: string) => {
-    try {
-      const url = `${API_ENDPOINTS.RIDE.CANCEL_BOOKING(
-        bookingId,
-      )}?reason=${encodeURIComponent(reason)}`;
-      const response = await apiClient.put(url);
-      return response.data;
-    } catch (error) {
-      console.error('Booking cancellation failed:', error);
-      throw error;
-    }
+    const url = `${API_ENDPOINTS.RIDE.CANCEL_BOOKING(
+      bookingId,
+    )}?reason=${encodeURIComponent(reason)}`;
+    const response = await axiosClient.put(url);
+    return response.data;
   },
+
   savePreferences: async (payload: TravelPreferenceData) => {
-    try {
-      const response = await apiClient.post(
-        API_ENDPOINTS.RIDE.PREFERENCES,
-        payload,
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Saving preferences failed:', error);
-      throw error;
-    }
+    const response = await axiosClient.post(
+      API_ENDPOINTS.RIDE.PREFERENCES,
+      payload,
+    );
+    return response.data;
   },
+
   getPreferences: async () => {
-    try {
-      const response = await apiClient.get(API_ENDPOINTS.RIDE.PREFERENCES);
-      return response.data;
-    } catch (error) {
-      console.error('Fetching preferences failed:', error);
-      throw error;
-    }
+    const response = await axiosClient.get(API_ENDPOINTS.RIDE.PREFERENCES);
+    return response.data;
   },
+
   bookRide: async (rideId: string | number, payload: BookingPayload) => {
-    try {
-      const response = await apiClient.post(
-        API_ENDPOINTS.RIDE.BOOK_RIDE(rideId),
-        payload,
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Ride booking failed:', error);
-      throw error;
-    }
+    const response = await axiosClient.post(
+      API_ENDPOINTS.RIDE.BOOK_RIDE(rideId),
+      payload,
+    );
+    return response.data;
   },
+
   getPendingBookings: async () => {
-    try {
-      const response = await apiClient.get(API_ENDPOINTS.RIDE.PENDING_BOOKINGS);
-      return response.data;
-    } catch (error) {
-      console.error('Fetching pending bookings failed:', error);
-      throw error;
-    }
+    const response = await axiosClient.get(API_ENDPOINTS.RIDE.PENDING_BOOKINGS);
+    return response.data;
   },
+
   getDriverPendingRequests: async () => {
-    try {
-      const response = await apiClient.get(
-        API_ENDPOINTS.RIDE.DRIVER_PENDING_REQUESTS,
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Fetching driver pending requests failed:', error);
-      throw error;
-    }
+    const response = await axiosClient.get(
+      API_ENDPOINTS.RIDE.DRIVER_PENDING_REQUESTS,
+    );
+    return response.data;
   },
+
   acceptBooking: async (bookingId: string | number) => {
-    return rideService.updateBookingStatus(bookingId, 'CONFIRMED');
+    return RideService.updateBookingStatus(bookingId, 'CONFIRMED');
   },
+
   rejectBooking: async (bookingId: string | number) => {
-    return rideService.updateBookingStatus(bookingId, 'REJECTED');
+    return RideService.updateBookingStatus(bookingId, 'REJECTED');
   },
+
   getRideDetail: async (
     rideId: string | number,
     sourceStopId?: number,
     destinationStopId?: number,
   ) => {
-    try {
-      let url = API_ENDPOINTS.RIDE.GET_RIDE_DETAIL(rideId);
-      const queryParams: string[] = [];
-      if (sourceStopId) queryParams.push(`sourceStopId=${sourceStopId}`);
-      if (destinationStopId)
-        queryParams.push(`destinationStopId=${destinationStopId}`);
+    let url = API_ENDPOINTS.RIDE.GET_RIDE_DETAIL(rideId);
+    const queryParams: string[] = [];
+    if (sourceStopId) queryParams.push(`sourceStopId=${sourceStopId}`);
+    if (destinationStopId)
+      queryParams.push(`destinationStopId=${destinationStopId}`);
 
-      if (queryParams.length > 0) {
-        url += `?${queryParams.join('&')}`;
-      }
-
-      const response = await apiClient.get(url);
-      return response.data;
-    } catch (error) {
-      console.error('Fetching ride details failed:', error);
-      throw error;
+    if (queryParams.length > 0) {
+      url += `?${queryParams.join('&')}`;
     }
+
+    const response = await axiosClient.get(url);
+    return response.data;
   },
+
   getMyRideDetail: async (
     rideId: string | number,
     sourceStopId?: number,
     destinationStopId?: number,
   ) => {
-    try {
-      let url = API_ENDPOINTS.RIDE.GET_MY_RIDE_DETAIL(rideId);
-      const queryParams: string[] = [];
-      if (sourceStopId) queryParams.push(`sourceStopId=${sourceStopId}`);
-      if (destinationStopId)
-        queryParams.push(`destinationStopId=${destinationStopId}`);
+    let url = API_ENDPOINTS.RIDE.GET_MY_RIDE_DETAIL(rideId);
+    const queryParams: string[] = [];
+    if (sourceStopId) queryParams.push(`sourceStopId=${sourceStopId}`);
+    if (destinationStopId)
+      queryParams.push(`destinationStopId=${destinationStopId}`);
 
-      if (queryParams.length > 0) {
-        url += `?${queryParams.join('&')}`;
-      }
-
-      const response = await apiClient.get(url);
-      return response.data;
-    } catch (error) {
-      console.error('Fetching my ride details failed:', error);
-      throw error;
+    if (queryParams.length > 0) {
+      url += `?${queryParams.join('&')}`;
     }
+
+    const response = await axiosClient.get(url);
+    return response.data;
   },
+
   updateBookingStatus: async (
     bookingId: string | number,
     status: 'CONFIRMED' | 'REJECTED',
   ) => {
-    try {
-      const url = `${API_ENDPOINTS.RIDE.UPDATE_BOOKING_STATUS(
-        bookingId,
-      )}?status=${status}`;
-      const response = await apiClient.put(url);
-      return response.data;
-    } catch (error) {
-      console.error('Updating booking status failed:', error);
-      throw error;
-    }
+    const url = `${API_ENDPOINTS.RIDE.UPDATE_BOOKING_STATUS(
+      bookingId,
+    )}?status=${status}`;
+    const response = await axiosClient.put(url);
+    return response.data;
   },
+
   updateLocation: async (rideId: string | number, lat: number, lon: number) => {
-    try {
-      const response = await apiClient.post(
-        API_ENDPOINTS.RIDE.UPDATE_LOCATION(rideId),
-        { lat, lon },
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Updating location failed:', error);
-      throw error;
-    }
+    const response = await axiosClient.post(
+      API_ENDPOINTS.RIDE.UPDATE_LOCATION(rideId),
+      { lat, lon },
+    );
+    return response.data;
   },
+
   syncLocationBacklog: async (
     rideId: string | number,
     backlog: Array<{ latitude: number; longitude: number; timestamp: number }>,
   ) => {
-    try {
-      const response = await apiClient.post(
-        API_ENDPOINTS.RIDE.SYNC_BACKLOG(rideId),
-        { backlog },
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Syncing location backlog failed:', error);
-      throw error;
-    }
+    const response = await axiosClient.post(
+      API_ENDPOINTS.RIDE.SYNC_BACKLOG(rideId),
+      { backlog },
+    );
+    return response.data;
   },
+
   submitRating: async (
     rideId: string | number,
     targetUserId: string,
@@ -278,7 +220,7 @@ const rideService = {
     review?: string,
   ) => {
     try {
-      const response = await apiClient.post(`/ride/${rideId}/rating`, {
+      const response = await axiosClient.post(`/ride/${rideId}/rating`, {
         targetUserId,
         rating,
         ratings,
@@ -295,5 +237,3 @@ const rideService = {
     }
   },
 };
-
-export default rideService;

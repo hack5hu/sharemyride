@@ -54,7 +54,7 @@ export interface OlaRoutingResponse {
 const directionsCache = new Map<string, OlaRoutingRoute[]>();
 const geocodeCache = new Map<string, { name: string; address: string }>();
 
-export const locationService = {
+export const LocationService = {
   autocomplete: async (input: string): Promise<OlaPrediction[]> => {
     try {
       if (!input.trim()) return [];

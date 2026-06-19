@@ -4,8 +4,8 @@ import { useRoute } from '@react-navigation/native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useChatStore } from '@/store/useChatStore';
 import { useAuthStore } from '@/store/useAuthStore';
-import { chatService } from '@/serviceManager/chatService';
-import rideService from '@/serviceManager/rideService';
+import { ChatService } from '@/serviceManager/ChatService';
+import { RideService } from '@/serviceManager/RideService';
 import { useChatSocket } from '@/hooks/useChatSocket';
 import { ChatMessage } from '@/types/chat';
 import { ConnectionStatus, MessageStatus } from '@/constants/enums';
@@ -91,8 +91,8 @@ export const useChatDetails = () => {
     if (myUserId && receiverId && conversationId) {
       setActiveConversation(conversationId);
       historyFetchStartedRef.current = true;
-      chatService.fetchHistory(myUserId, receiverId);
-      chatService.markAsRead(myUserId, receiverId);
+      ChatService.fetchHistory(myUserId, receiverId);
+      ChatService.markAsRead(myUserId, receiverId);
     }
 
     return () => {
@@ -104,7 +104,7 @@ export const useChatDetails = () => {
   // Fetch profile if not in cache
   useEffect(() => {
     if (receiverId && receiverId !== 'Unknown' && !cachedUser) {
-      chatService.fetchUserProfile(receiverId);
+      ChatService.fetchUserProfile(receiverId);
     }
   }, [receiverId, cachedUser]);
 
@@ -114,7 +114,7 @@ export const useChatDetails = () => {
       const rideId = route.params?.rideId;
       if (rideId && !route.params?.rideInfo) {
         try {
-          const ride = await rideService.getRideDetail(rideId);
+          const ride = await RideService.getRideDetail(rideId);
           if (ride) {
             setDynamicRideInfo({
               pickup:
@@ -230,7 +230,7 @@ export const useChatDetails = () => {
         loc.longitude
       }|${loc.name}|${loc.address || ''}`;
 
-      chatService.sendMessage({
+      ChatService.sendMessage({
         senderId: myUserId,
         receiverId,
         content: locationString,
@@ -272,7 +272,7 @@ export const useChatDetails = () => {
     if (!message.trim() || !myUserId || !receiverId || receiverId === 'Unknown')
       return;
 
-    chatService.sendMessage({
+    ChatService.sendMessage({
       senderId: myUserId,
       receiverId,
       content: message,
@@ -303,7 +303,7 @@ export const useChatDetails = () => {
     try {
       // In a real app, you'd pass this timestamp to fetch older messages
       // For now, we'll call fetchHistory which should ideally handle pagination
-      await chatService.fetchHistory(myUserId, receiverId);
+      await ChatService.fetchHistory(myUserId, receiverId);
     } finally {
       setIsLoadingMore(false);
     }
@@ -344,7 +344,7 @@ export const useChatDetails = () => {
   const handleRetry = useCallback(
     (messageId: string) => {
       if (conversationId) {
-        chatService.resendMessage(conversationId, messageId);
+        ChatService.resendMessage(conversationId, messageId);
       }
     },
     [conversationId],
@@ -352,7 +352,7 @@ export const useChatDetails = () => {
 
   const handleReconnect = useCallback(() => {
     if (myUserId) {
-      chatService.connect(myUserId).catch(() => undefined);
+      ChatService.connect(myUserId).catch(() => undefined);
     }
   }, [myUserId]);
 
@@ -370,9 +370,9 @@ export const useChatDetails = () => {
       // or if it's a reconnection (i.e. prevStatus was DISCONNECTED) to sync missed messages while offline.
       if (!historyFetchStartedRef.current) {
         historyFetchStartedRef.current = true;
-        chatService.fetchHistory(myUserId, receiverId).catch(() => undefined);
+        ChatService.fetchHistory(myUserId, receiverId).catch(() => undefined);
       } else if (prevStatusRef.current === ConnectionStatus.DISCONNECTED) {
-        chatService.fetchHistory(myUserId, receiverId).catch(() => undefined);
+        ChatService.fetchHistory(myUserId, receiverId).catch(() => undefined);
       }
 
       const rawMessages =
@@ -383,7 +383,7 @@ export const useChatDetails = () => {
       );
 
       failedMessages.forEach((m: ChatMessage) => {
-        chatService.resendMessage(conversationId, m.messageId);
+        ChatService.resendMessage(conversationId, m.messageId);
       });
     }
     prevStatusRef.current = connectionStatus;

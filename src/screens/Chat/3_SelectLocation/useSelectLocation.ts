@@ -3,9 +3,9 @@ import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/navigation/types.d';
 import {
-  locationService,
+  LocationService,
   OlaPrediction,
-} from '@/serviceManager/locationService';
+} from '@/serviceManager/LocationService';
 import { Location } from '@/store/useLocationStore';
 import debounce from 'lodash/debounce';
 import { AppState, AppStateStatus } from 'react-native';
@@ -75,7 +75,7 @@ export const useSelectLocation = () => {
           });
 
           // 3. Reverse geocode in the background
-          locationService
+          LocationService
             .reverseGeocode(latitude, longitude)
             .then(locData => {
               setCurrentUserLocation({
@@ -218,7 +218,7 @@ export const useSelectLocation = () => {
         });
 
         // 3. Reverse geocode in the background
-        locationService
+        LocationService
           .reverseGeocode(latitude, longitude)
           .then(locData => {
             setCurrentUserLocation({
@@ -298,7 +298,7 @@ export const useSelectLocation = () => {
     setRegion({ latitude, longitude });
     setIsReverseGeocoding(true);
 
-    const locationData = await locationService.reverseGeocode(
+    const locationData = await LocationService.reverseGeocode(
       latitude,
       longitude,
     );

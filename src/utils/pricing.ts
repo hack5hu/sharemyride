@@ -23,7 +23,7 @@ export const calculateFrontSeatPrice = (
   return roundToNearest(basePrice * (1 + premiumPercentage / 100), 10);
 };
 
-import { RouteStop } from '@/serviceManager/rideService';
+import { RouteStop } from '@/serviceManager/RideService';
 
 /**
  * Calculates the segment price using the prefix algorithm (last stop cumulative - first stop cumulative).

@@ -1,6 +1,6 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useEffect, useCallback } from 'react';
-import { userService } from '@/serviceManager/userService';
+import { UserService } from '@/serviceManager/UserService';
 import { useLocale } from '@/constants/localization';
 import { UserProfile } from './types';
 
@@ -15,7 +15,7 @@ export const useUserProfileDetail = (userId: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await userService.getUserProfile(userId);
+      const data = await UserService.getUserProfile(userId);
 
       // Basic mapping from API response to our UI interface
       // Note: In a real app, this mapping logic might be more complex

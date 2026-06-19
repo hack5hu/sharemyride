@@ -5,7 +5,7 @@ import { useRoute } from '@react-navigation/native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { RideDetailsScreenProps } from './types';
-import rideService from '@/serviceManager/rideService';
+import { RideService } from '@/serviceManager/RideService';
 import { useMyRidesStore } from '@/store/useMyRidesStore';
 import { Logger } from '@/utils/logger';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
@@ -27,7 +27,7 @@ export const useRideDetails = () => {
   const fetchDetails = useCallback(async () => {
     setIsLoading(true);
     try {
-      const data = await rideService.getMyRideDetail(
+      const data = await RideService.getMyRideDetail(
         rideId,
         sourceStopId,
         destinationStopId,
@@ -141,12 +141,12 @@ export const useRideDetails = () => {
       setIsCancelling(true);
       try {
         if (cancelTarget.type === 'RIDE') {
-          await rideService.cancelRide(bookingId, reason);
+          await RideService.cancelRide(bookingId, reason);
           const { removeRide } = useMyRidesStore.getState();
           removeRide(1, rideId);
           navigation.goBack();
         } else {
-          await rideService.cancelBooking(bookingId, reason);
+          await RideService.cancelBooking(bookingId, reason);
           if (cancelTarget.isSelf) {
             const { removeRide } = useMyRidesStore.getState();
             removeRide(1, bookingId);

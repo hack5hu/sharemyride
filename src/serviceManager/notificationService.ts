@@ -13,7 +13,7 @@ import { Logger } from '@/utils/logger';
 import { navigate } from '@/navigation/navigationService';
 import { useChatStore } from '@/store/useChatStore';
 
-class NotificationService {
+export class NotificationService {
   /**
    * Initialize Notifee and Firebase Messaging
    */
@@ -243,4 +243,4 @@ class NotificationService {
   }
 }
 
-export default NotificationService;
+

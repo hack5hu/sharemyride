@@ -9,7 +9,7 @@ import {
   ConnectionStatus,
   NotificationType,
 } from '@/constants/enums';
-import apiClient from './apiClient';
+import axiosClient from './axiosClient';
 import { Logger } from '@/utils/logger';
 import { registerChatSubscriptions } from './chatSubscriptions';
 import { fetchChatUserProfile } from './chatProfile';
@@ -36,7 +36,7 @@ interface HistoryMessage extends ChatMessage {
   createdAt?: string;
 }
 
-class ChatService {
+class ChatServiceClass {
   async fetchUserProfile(userId: string) {
     return fetchChatUserProfile(userId);
   }
@@ -222,7 +222,7 @@ class ChatService {
   async fetchHistory(myUserId: string, otherUserId: string) {
     const conversationId = this.getConversationId(myUserId, otherUserId);
     try {
-      const response = await apiClient.get(
+      const response = await axiosClient.get(
         `/api/v1/chat/history/${myUserId}/${otherUserId}`,
       );
       const history = (response.data as HistoryMessage[]).map(m => ({
@@ -263,7 +263,7 @@ class ChatService {
 
       if (updates.length > 0) {
         updateMultipleMessageStatuses(conversationId, updates);
-        await apiClient.post(`/api/v1/chat/read/${conversationId}/${myUserId}`);
+        await axiosClient.post(`/api/v1/chat/read/${conversationId}/${myUserId}`);
       }
     } catch (error) {
       Logger.error('Failed to mark messages as read:', error);
@@ -275,4 +275,4 @@ class ChatService {
   }
 }
 
-export const chatService = new ChatService();
+export const ChatService = new ChatServiceClass();

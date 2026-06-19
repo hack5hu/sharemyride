@@ -5,7 +5,7 @@ import { useRoute, useFocusEffect } from '@react-navigation/native';
 import { useLocale } from '@/constants/localization';
 import { useBookRideStore, RecentSearch } from '@/store/useBookRideStore';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import rideService, { SearchRidePayload } from '@/serviceManager/rideService';
+import { RideService, SearchRidePayload } from '@/serviceManager/RideService';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
@@ -113,7 +113,7 @@ export const useBookRideInfo = () => {
           seatCount: curSeats,
         });
 
-        const results = await rideService.searchRides(payload);
+        const results = await RideService.searchRides(payload);
         const ridesList =
           results?.rides ||
           results?.data ||
@@ -164,7 +164,7 @@ export const useBookRideInfo = () => {
             size: 15,
           };
 
-          const results = await rideService.searchRides(payload);
+          const results = await RideService.searchRides(payload);
           const ridesList =
             results?.rides ||
             results?.data ||
@@ -207,7 +207,7 @@ export const useBookRideInfo = () => {
   const checkUnratedRides = useCallback(async () => {
     try {
       // Fetch archived/past rides
-      const response = await rideService.getMyRides(2, 0, 10);
+      const response = await RideService.getMyRides(2, 0, 10);
       let rideList: any[] = [];
       if (Array.isArray(response)) rideList = response;
       else if (response?.rides && Array.isArray(response.rides))

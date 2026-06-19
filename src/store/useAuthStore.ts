@@ -110,8 +110,8 @@ export const useAuthStore = create<AuthState>()(
 
       fetchProfile: async () => {
         try {
-          const { userService } = require('@/serviceManager/userService');
-          const profile = await userService.getProfile();
+          const { UserService } = require('@/serviceManager/UserService');
+          const profile = await UserService.getProfile();
           if (profile) {
             const currentUser = useAuthStore.getState().user;
             const isProfileCompleted =

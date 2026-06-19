@@ -5,7 +5,7 @@ import { useLocale } from '@/constants/localization';
 import { RootStackParamList } from '@/navigation/types';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { RouteStop } from '@/serviceManager/rideService';
+import { RouteStop } from '@/serviceManager/RideService';
 import { formatTimeSafely } from '@/utils/date';
 
 export const useBookingConfirmed = () => {

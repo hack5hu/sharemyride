@@ -2,7 +2,7 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useFocusEffect } from '@react-navigation/native';
-import { authService } from '@/serviceManager/authService';
+import { AuthService } from '@/serviceManager/AuthService';
 import { Keyboard, Platform } from 'react-native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
@@ -50,7 +50,7 @@ export const useLogin = () => {
     async (phone: string) => {
       setLoading(true);
       try {
-        const response = await authService.login(phone, true);
+        const response = await AuthService.login(phone, true);
         if (response.data.status === 'success' || response.status === 200) {
           navigation.navigate('OTPVerification', {
             phoneNumber: phone,

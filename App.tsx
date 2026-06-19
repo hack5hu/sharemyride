@@ -14,7 +14,7 @@ import { useSettingsStore } from '@/store/settings';
 import { NetworkLoggerModal } from '@/components/organisms/NetworkLoggerModal';
 import { GlobalNotification } from '@/components/organisms/GlobalNotification';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
-import NotificationService from '@/serviceManager/notificationService';
+import { NotificationService } from '@/serviceManager/NotificationService';
 
 import { navigationRef } from '@/navigation/navigationService';
 

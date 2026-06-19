@@ -3,7 +3,7 @@ import { Linking } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { CameraRef } from '@maplibre/maplibre-react-native';
 import { decodePolyline, getBoundingBox } from '@/utils/polyline';
-import { locationService } from '@/serviceManager/locationService';
+import { LocationService } from '@/serviceManager/LocationService';
 
 const findClosestCoordinateIndex = (
   pt: [number, number],
@@ -63,7 +63,7 @@ export const useRideRouteMap = (
       // 1. Fetch Pickup Connection Route (Searched Pickup -> Ride Pickup)
       if (userSearchedPickup && ridePickup) {
         try {
-          const routes = await locationService.getDirections(
+          const routes = await LocationService.getDirections(
             userSearchedPickup.latitude,
             userSearchedPickup.longitude,
             ridePickup.lat,
@@ -101,7 +101,7 @@ export const useRideRouteMap = (
       // 2. Fetch Dropoff Connection Route (Ride Dropoff -> Searched Dropoff)
       if (userSearchedDropoff && rideDropoff) {
         try {
-          const routes = await locationService.getDirections(
+          const routes = await LocationService.getDirections(
             rideDropoff.lat,
             rideDropoff.lon,
             userSearchedDropoff.latitude,

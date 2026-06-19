@@ -4,7 +4,7 @@ import { RideData } from './types';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import { calculateDistance } from '@/utils/location';
 import { calculateSegmentPrice } from '@/utils/pricing';
-import rideService from '@/serviceManager/rideService';
+import { RideService } from '@/serviceManager/RideService';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
@@ -113,7 +113,7 @@ export const useAvailableRides = () => {
         ...mapFiltersToPayload(selectedFilters),
       };
 
-      const response = await rideService.searchRides(payload);
+      const response = await RideService.searchRides(payload);
       const newRides =
         response?.rides ||
         response?.data ||
@@ -385,7 +385,7 @@ export const useAvailableRides = () => {
         page: 0,
         size: 10,
       };
-      const response = await rideService.searchRides(payload);
+      const response = await RideService.searchRides(payload);
       const ridesList =
         response?.rides ||
         response?.data ||
@@ -441,7 +441,7 @@ export const useAvailableRides = () => {
           ...filterPayload,
         };
 
-        const response = await rideService.searchRides(payload);
+        const response = await RideService.searchRides(payload);
         const ridesList =
           response?.rides ||
           response?.data ||

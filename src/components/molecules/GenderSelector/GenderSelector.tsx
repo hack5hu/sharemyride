@@ -17,6 +17,7 @@ export interface GenderSelectorProps {
   onValueChange: (value: string) => void;
   required?: boolean;
   disabled?: boolean;
+  error?: string;
 }
 
 export const GenderSelector: React.FC<GenderSelectorProps> = ({

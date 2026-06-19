@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 import { useMyRidesStore, RideCategory } from '@/store/useMyRidesStore';
-import rideService from '@/serviceManager/rideService';
+import { RideService } from '@/serviceManager/RideService';
 import { useAuthStore } from '@/store/useAuthStore';
 import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
 import { Logger } from '@/utils/logger';
@@ -65,9 +65,9 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
 
         let response: any;
         if (category === 3) {
-          response = await rideService.getDriverPendingRequests();
+          response = await RideService.getDriverPendingRequests();
         } else {
-          response = await rideService.getMyRides(category, page, 10);
+          response = await RideService.getMyRides(category, page, 10);
         }
 
         rideList = parseRideResponse(response);

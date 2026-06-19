@@ -368,6 +368,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                   renderItem={renderItem}
                   keyExtractor={item => item.id}
                   ListEmptyComponent={renderEmpty}
+                  // @ts-ignore
                   estimatedItemSize={100}
                 />
               </S.Container>
