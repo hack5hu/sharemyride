@@ -1,19 +1,6 @@
 import React from 'react';
-import { ProfileHeader } from '@/components/organisms/ProfileHeader';
-import { ProfileMenuItem } from '@/components/molecules/ProfileMenuItem';
-import { BottomNav } from '@/components/organisms/BottomNav';
+import { ProfileHubTemplate } from '@/components/templates/ProfileHubTemplate';
 import { useProfileHub } from './useProfileHub';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { ActionSheetModal } from '@/components/organisms/ActionSheetModal';
-import {
-  Container,
-  Content,
-  Section,
-  SectionTitle,
-  SectionTitleText,
-  BentoGrid,
-  ActionGrid,
-} from './ProfileHub.styles';
 
 export const ProfileHubScreen: React.FC = () => {
   const {
@@ -40,127 +27,27 @@ export const ProfileHubScreen: React.FC = () => {
   } = useProfileHub();
 
   return (
-    <ScreenShell>
-      <Container showsVerticalScrollIndicator={false}>
-        <Content>
-          <BentoGrid>
-            <ProfileHeader
-              name={user?.name || 'User'}
-              rating={rating}
-              rides={rides}
-              memberSince={memberSince}
-              isVerified={isVerified}
-              avatarUri={user?.profilePhotoUrl}
-              onEditPress={navigateToEditProfile}
-              onSettingsPress={navigateToSettings}
-              onAvatarEditPress={handleAvatarEdit}
-              isUpdatingAvatar={isUpdatingAvatar}
-            />
-            {/* <TrustScoreCard score={98} /> */}
-          </BentoGrid>
-
-          <Section>
-            <SectionTitle>
-              <SectionTitleText>
-                {t('profileHub.accountManagement')}
-              </SectionTitleText>
-            </SectionTitle>
-            <ActionGrid>
-              <ProfileMenuItem
-                icon="person-outline"
-                title={t('profileHub.editProfile')}
-                subtitle={t('profileHub.editProfileDescr')}
-                onPress={navigateToEditProfile}
-              />
-              {/* TODO: IMPLEMENTE THIS LATER */}
-              {/* <ProfileMenuItem
-                icon="verified-user"
-                title={t('profileHub.identityVerification')}
-                subtitle={t('profileHub.identityVerificationDescr')}
-                onPress={() =>
-                  navigateToDummy(t('profileHub.identityVerification'), {
-                    showBack: true,
-                  })
-                }
-              /> */}
-              <ProfileMenuItem
-                icon="directions-car"
-                title={t('vehicleDetails.headerTitle')}
-                subtitle={t('vehicleDetails.heroSubtitle')}
-                onPress={navigateToVehicleDetails}
-              />
-
-              <ProfileMenuItem
-                icon="tune"
-                title={t('profileHub.travelPreferences')}
-                subtitle={t('profileHub.travelPreferencesDescr')}
-                onPress={navigateToTravelPreferences}
-              />
-            </ActionGrid>
-          </Section>
-
-          <Section>
-            <SectionTitle>
-              <SectionTitleText>
-                {t('profileHub.supportLegal')}
-              </SectionTitleText>
-            </SectionTitle>
-            <ActionGrid>
-              <ProfileMenuItem
-                icon="help-outline"
-                title={t('profileHub.helpSupport')}
-                showChevron={false}
-                onPress={navigateToHelpAndSupport}
-              />
-              <ProfileMenuItem
-                icon="feedback"
-                title={t('profileHub.suggestionsFeedback')}
-                subtitle={t('profileHub.suggestionsFeedbackDescr')}
-                onPress={navigateToSuggestions}
-              />
-              <ProfileMenuItem
-                icon="info"
-                title={t('profileHub.aboutUs')}
-                showChevron={false}
-                onPress={navigateToAboutUs}
-              />
-              <ProfileMenuItem
-                icon="policy"
-                title={t('profileHub.termsPrivacy')}
-                showChevron={false}
-                onPress={navigateToTermsAndConditions}
-              />
-            </ActionGrid>
-          </Section>
-        </Content>
-      </Container>
-
-      <BottomNav activeTab="PROFILE" />
-
-      <ActionSheetModal
-        isVisible={isAvatarModalVisible}
-        onClose={() => setAvatarModalVisible(false)}
-        title={t('profileHub.editProfilePic') || 'Edit Profile Picture'}
-        options={[
-          {
-            id: 'gallery',
-            label: t('profileHub.chooseFromGallery'),
-            icon: 'photo-library',
-            onPress: handleOpenGallery,
-          },
-          ...(user?.profilePhotoUrl
-            ? [
-                {
-                  id: 'remove',
-                  label: t('profileHub.removePhoto'),
-                  icon: 'delete-outline',
-                  isDestructive: true,
-                  onPress: handleRemoveAvatar,
-                },
-              ]
-            : []),
-        ]}
-      />
-    </ScreenShell>
+    <ProfileHubTemplate
+      t={t}
+      user={user}
+      isUpdatingAvatar={isUpdatingAvatar}
+      handleAvatarEdit={handleAvatarEdit}
+      navigateToEditProfile={navigateToEditProfile}
+      navigateToVehicleDetails={navigateToVehicleDetails}
+      navigateToTravelPreferences={navigateToTravelPreferences}
+      navigateToSettings={navigateToSettings}
+      navigateToTermsAndConditions={navigateToTermsAndConditions}
+      navigateToAboutUs={navigateToAboutUs}
+      navigateToHelpAndSupport={navigateToHelpAndSupport}
+      navigateToSuggestions={navigateToSuggestions}
+      isAvatarModalVisible={isAvatarModalVisible}
+      setAvatarModalVisible={setAvatarModalVisible}
+      handleOpenGallery={handleOpenGallery}
+      handleRemoveAvatar={handleRemoveAvatar}
+      rating={rating}
+      rides={rides}
+      memberSince={memberSince}
+      isVerified={isVerified}
+    />
   );
 };

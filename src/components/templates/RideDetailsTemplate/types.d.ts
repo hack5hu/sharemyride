@@ -1,15 +1,27 @@
-import { RouteJourneyProps } from '@/components/organisms/RouteJourney';
-import { ETAInfoProps } from '@/components/molecules/ETAInfo';
-import { FareCardProps } from '@/components/molecules/FareCard';
-import { DriverSectionProps } from '@/components/organisms/DriverSection';
-import { RidersHorizontalListProps } from '@/components/organisms/RidersHorizontalList';
-
 export interface RideDetailsTemplateProps {
-  onBackPress: () => void;
-  onCancelPress: () => void;
-  routeJourney: RouteJourneyProps;
-  etaInfo: ETAInfoProps;
-  fareCard: FareCardProps;
-  driverSection: DriverSectionProps;
-  ridersList: RidersHorizontalListProps;
+  ride: any;
+  isLoading: boolean;
+  isDriver: boolean;
+  t: any;
+  handleBack: () => void;
+  handleViewRoute: () => void;
+  handleCopyAddress: (address: string) => void;
+  handleChat: () => void;
+  handleDriverProfile: () => void;
+  handlePassengerProfile: (passengerId: string) => void;
+  handleCancelRide: () => void;
+  handleCancelPassenger: (passengerId: string) => void;
+  handleCancelOwnBooking: () => void;
+  isCancelModalVisible: boolean;
+  setIsCancelModalVisible: (visible: boolean) => void;
+  cancellationReasons: any;
+  handleConfirmCancel: (data: { categoryId: string; description: string }) => void;
+  isCancelling: boolean;
+  cancelTarget: any;
+  handleReportRide: () => void;
+  isReportModalVisible: boolean;
+  setIsReportModalVisible: (visible: boolean) => void;
+  handleReportSubmit: (data: { categoryId: string; description: string }) => void;
+  handleRateDriver: () => void;
+  handleRatePassenger: (passengerId: string, name: string) => void;
 }
