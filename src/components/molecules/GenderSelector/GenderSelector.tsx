@@ -1,9 +1,14 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Button } from '../../atoms/Button';
-import { Typography } from '../../atoms/Typography';
+import { Box } from '@/components/atoms/Box';
+import { Button } from '@/components/atoms/Button';
+import { Typography } from '@/components/atoms/Typography';
 import { useTheme } from 'styled-components/native';
-import { Container, ButtonRow } from './GenderSelector.styles';
+import {
+  Container,
+  ButtonRow,
+  OptionWrapper,
+  StyledLabel,
+} from './GenderSelector.styles';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export interface GenderSelectorProps {
@@ -31,12 +36,11 @@ export const GenderSelector: React.FC<GenderSelectorProps> = ({
 
   return (
     <Container>
-      <Typography
+      <StyledLabel
         variant="label"
         size="sm"
         weight="bold"
         color="on_surface_variant"
-        style={{ marginBottom: 8, textTransform: 'uppercase' }}
       >
         {label}
         {required && (
@@ -45,19 +49,18 @@ export const GenderSelector: React.FC<GenderSelectorProps> = ({
             *
           </Typography>
         )}
-      </Typography>
-      <ButtonRow style={{ opacity: disabled ? 0.6 : 1 }}>
+      </StyledLabel>
+      <ButtonRow disabled={disabled}>
         {options.map(option => (
-          <View key={option.value} style={{ flex: 1, marginHorizontal: 4 }}>
+          <OptionWrapper key={option.value}>
             <Button
               variant={value === option.value ? 'primary' : 'secondary'}
               onPress={disabled ? undefined : () => onValueChange(option.value)}
-              style={{ height: 48 }}
               disabled={disabled}
             >
               {option.label}
             </Button>
-          </View>
+          </OptionWrapper>
         ))}
       </ButtonRow>
     </Container>

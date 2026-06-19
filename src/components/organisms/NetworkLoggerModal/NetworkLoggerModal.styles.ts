@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
 import { Typography } from '@/components/atoms/Typography';
+import { Box } from '@/components/atoms/Box';
 
 export const FloatingButton = styled.TouchableOpacity`
   position: absolute;
@@ -35,7 +36,7 @@ export const ModalWrapper = styled(SafeAreaView)`
   elevation: 10;
 `;
 
-export const ModalHeader = styled.View`
+export const ModalHeader = styled(Box)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -54,8 +55,7 @@ export const ClearButton = styled.TouchableOpacity`
   padding: ${moderateScale(4)}px;
 `;
 
-// Reuse list styles from template
-export const Container = styled.View`
+export const Container = styled(Box)`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.surface};
 `;
@@ -68,14 +68,14 @@ export const LogItem = styled.TouchableOpacity<{ isError: boolean }>`
     isError ? theme.colors.error_container : theme.colors.surface};
 `;
 
-export const LogHeader = styled.View`
+export const LogHeader = styled(Box)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   margin-bottom: ${verticalScale(8)}px;
 `;
 
-export const MethodBadge = styled.View<{ method: string }>`
+export const MethodBadge = styled(Box)<{ method: string }>`
   padding-horizontal: ${scale(8)}px;
   padding-vertical: ${verticalScale(4)}px;
   border-radius: ${moderateScale(4)}px;
@@ -115,7 +115,7 @@ export const MethodText = styled(Typography as any)<{ method: string }>`
   font-weight: bold;
 `;
 
-export const StatusBadge = styled.View<{ status: number | null }>`
+export const StatusBadge = styled(Box)<{ status: number | null }>`
   padding-horizontal: ${scale(8)}px;
   padding-vertical: ${verticalScale(4)}px;
   border-radius: ${moderateScale(4)}px;
@@ -141,12 +141,12 @@ export const UrlText = styled(Typography as any)`
   margin-bottom: ${verticalScale(8)}px;
 `;
 
-export const MetaRow = styled.View`
+export const MetaRow = styled(Box)`
   flex-direction: row;
   justify-content: space-between;
 `;
 
-export const EmptyState = styled.View`
+export const EmptyState = styled(Box)`
   flex: 1;
   justify-content: center;
   align-items: center;
@@ -158,7 +158,7 @@ export const DetailModalContainer = styled(SafeAreaView)`
   background-color: ${({ theme }) => theme.colors.surface};
 `;
 
-export const DetailModalHeader = styled.View`
+export const DetailModalHeader = styled(Box)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -180,13 +180,13 @@ export const SectionTitle = styled(Typography as any)`
   letter-spacing: 1px;
 `;
 
-export const CodeBlock = styled.View`
+export const CodeBlock = styled(Box)`
   background-color: ${({ theme }) => theme.colors.surface_container};
   padding: ${moderateScale(12)}px;
   border-radius: ${moderateScale(8)}px;
 `;
 
-export const CodeText = styled.Text`
+export const CodeText = styled(Typography)`
   font-family: 'Courier';
   font-size: ${responsiveFont(12)}px;
   color: ${({ theme }) => theme.colors.on_surface};
@@ -196,4 +196,48 @@ export const CopyButton = styled.TouchableOpacity`
   padding: ${moderateScale(4)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_high};
   border-radius: ${moderateScale(4)}px;
+`;
+
+export const HeaderRow = styled(Box)`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const CopyRow = styled(Box)`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  margin-bottom: 8px;
+`;
+
+export const CopyInnerRow = styled(Box)`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const TabRow = styled(Box)`
+  flex-direction: row;
+  border-bottom-width: 1px;
+  border-color: ${({ theme }) => theme.colors.outline_variant};
+`;
+
+export const TabButton = styled.TouchableOpacity<{ active: boolean }>`
+  flex: 1;
+  padding-vertical: 12px;
+  border-bottom-width: 2px;
+  border-color: ${({ theme, active }) =>
+    active ? theme.colors.primary : 'transparent'};
+  align-items: center;
+`;
+
+export const UrlRow = styled(Box)`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+`;
+
+export const CloseDetailButton = styled.TouchableOpacity`
+  padding: 8px;
 `;

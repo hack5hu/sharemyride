@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, TouchableOpacity } from 'react-native';
+import { Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
@@ -79,7 +79,7 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
             <Typography variant="title" size="md" weight="bold">
               {t.title}
             </Typography>
-            <TouchableOpacity onPress={onClear}>
+            <S.ClearButton onPress={onClear}>
               <Typography
                 variant="label"
                 size="md"
@@ -88,7 +88,7 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
               >
                 {t.clearAll}
               </Typography>
-            </TouchableOpacity>
+            </S.ClearButton>
           </S.Header>
 
           <S.ScrollBody showsVerticalScrollIndicator={false}>

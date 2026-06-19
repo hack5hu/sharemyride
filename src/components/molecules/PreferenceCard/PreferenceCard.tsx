@@ -1,8 +1,8 @@
 import React from 'react';
-import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { useTheme } from 'styled-components/native';
+import { Box } from '@/components/atoms/Box';
 import { Typography } from '@/components/atoms/Typography';
 import { useTranslation } from '@/hooks/useTranslation';
 import {
@@ -10,6 +10,7 @@ import {
   IconWrapper,
   StatusRow,
   Indicator,
+  StyledStatusText,
 } from './PreferenceCard.styles';
 import { PreferenceCardProps } from './types';
 
@@ -32,7 +33,7 @@ export const PreferenceCard: React.FC<PreferenceCardProps> = ({
         />
       </IconWrapper>
 
-      <View>
+      <Box>
         <Typography
           variant="label"
           size="lg"
@@ -43,20 +44,19 @@ export const PreferenceCard: React.FC<PreferenceCardProps> = ({
         </Typography>
 
         <StatusRow>
-          <Typography
+          <StyledStatusText
             variant="label"
             size="sm"
             weight="bold"
             color={enabled ? 'primary' : 'on_surface_variant'}
-            style={{ letterSpacing: 0.5 }}
           >
             {enabled
               ? t('travelPreferences.enabled').toUpperCase()
               : t('travelPreferences.disabled').toUpperCase()}
-          </Typography>
+          </StyledStatusText>
           <Indicator active={enabled} />
         </StatusRow>
-      </View>
+      </Box>
     </CardContainer>
   );
 };

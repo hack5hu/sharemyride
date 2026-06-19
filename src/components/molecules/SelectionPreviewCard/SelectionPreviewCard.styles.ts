@@ -1,7 +1,9 @@
 import styled from 'styled-components/native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+import { Box } from '@/components/atoms/Box';
+import { Typography } from '@/components/atoms/Typography';
 
-export const CardContainer = styled.View`
+export const CardContainer = styled(Box)`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -19,13 +21,13 @@ export const CardContainer = styled.View`
   margin-bottom: ${verticalScale(12)}px;
 `;
 
-export const LeftSection = styled.View`
+export const LeftSection = styled(Box)`
   flex-direction: row;
   align-items: center;
   gap: ${scale(12)}px;
 `;
 
-export const IconCircle = styled.View`
+export const IconCircle = styled(Box)`
   width: ${moderateScale(40)}px;
   height: ${moderateScale(40)}px;
   border-radius: 9999px;
@@ -34,7 +36,7 @@ export const IconCircle = styled.View`
   justify-content: center;
 `;
 
-export const LabelText = styled.Text`
+export const LabelText = styled(Typography)`
   font-family: 'Plus Jakarta Sans';
   font-weight: 700;
   font-size: ${responsiveFont(10)}px;
@@ -43,7 +45,7 @@ export const LabelText = styled.Text`
   color: ${({ theme }) => theme.colors.outline};
 `;
 
-export const ValueText = styled.Text`
+export const ValueText = styled(Typography)`
   font-family: 'Plus Jakarta Sans';
   font-weight: 700;
   font-size: ${responsiveFont(14)}px;

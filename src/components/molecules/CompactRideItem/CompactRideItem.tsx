@@ -11,10 +11,11 @@ import {
   StatusBadge,
   StatusText,
   ReportButton,
+  StatusRow,
+  ActionIconButton,
 } from './CompactRideItem.styles';
 import { CompactRideItemProps } from './types.d';
-import { moderateScale, scale } from '@/styles';
-import { TouchableOpacity, View } from 'react-native';
+import { moderateScale } from '@/styles';
 
 export const CompactRideItem: React.FC<CompactRideItemProps> = ({
   title,
@@ -71,9 +72,7 @@ export const CompactRideItem: React.FC<CompactRideItemProps> = ({
       <TextContent>
         <Title numberOfLines={1}>{title}</Title>
         <SubAddress numberOfLines={1}>{subtitle}</SubAddress>
-        <View
-          style={{ flexDirection: 'row', gap: scale(8), alignItems: 'center' }}
-        >
+        <StatusRow>
           {statusTag && (
             <StatusBadge isCancelled={isCancelled}>
               <StatusText isCancelled={isCancelled}>{statusTag}</StatusText>
@@ -93,25 +92,24 @@ export const CompactRideItem: React.FC<CompactRideItemProps> = ({
               />
             </ReportButton>
           )}
-        </View>
+        </StatusRow>
       </TextContent>
       {price && <PriceText>{price}</PriceText>}
 
       {actionIcon && onActionPress ? (
-        <TouchableOpacity
+        <ActionIconButton
           onPress={e => {
             e.stopPropagation();
             onActionPress();
           }}
           activeOpacity={0.6}
-          style={{ padding: moderateScale(8) }}
         >
           <Icon
             name={actionIcon}
             size={moderateScale(20)}
             color={theme.colors.error}
           />
-        </TouchableOpacity>
+        </ActionIconButton>
       ) : (
         isDraft && (
           <Icon

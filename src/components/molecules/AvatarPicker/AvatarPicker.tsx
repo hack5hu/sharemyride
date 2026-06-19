@@ -1,16 +1,15 @@
 import React from 'react';
 import { ViewStyle, PermissionsAndroid, Platform } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { Avatar } from '../../atoms/Avatar';
+import { Avatar } from '@/components/atoms/Avatar';
 
 import {
   Container,
   AvatarWrapper,
   TouchableAvatar,
+  AddPhotoText,
 } from './AvatarPicker.styles';
-import { Typography } from '../../atoms/Typography';
 import { useTranslation } from '@/hooks/useTranslation';
-import { moderateScale } from '@/styles';
 
 export interface AvatarPickerProps {
   uri?: string;
@@ -81,7 +80,7 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({
         disabled={disabled}
         activeOpacity={0.7}
       >
-        <AvatarWrapper style={{ opacity: disabled ? 0.6 : 1 }}>
+        <AvatarWrapper disabled={disabled}>
           <Avatar
             source={uri ? { uri } : undefined}
             size="lg"
@@ -90,15 +89,9 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({
         </AvatarWrapper>
 
         {!uri && showAddText && (
-          <Typography
-            variant="label"
-            size="lg"
-            weight="bold"
-            color="primary"
-            style={{ marginTop: moderateScale(8) }}
-          >
+          <AddPhotoText variant="label" size="lg" weight="bold" color="primary">
             {t('profileSetup.addPhoto')}
-          </Typography>
+          </AddPhotoText>
         )}
       </TouchableAvatar>
     </Container>

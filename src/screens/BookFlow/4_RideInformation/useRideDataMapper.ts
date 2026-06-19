@@ -93,7 +93,12 @@ export const mapBackendRideToUI = (
 
     return {
       id: stop.id,
-      time: formatTimeSafely(stop.arrivalTime, { hour: '2-digit', minute: '2-digit' }, 'TBD', false),
+      time: formatTimeSafely(
+        stop.arrivalTime,
+        { hour: '2-digit', minute: '2-digit' },
+        'TBD',
+        false,
+      ),
       durationSincePrevious,
       location: displayLocation,
       type:

@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale } from '@/styles';
+import { Box } from '@/components/atoms/Box';
+import { Typography } from '@/components/atoms/Typography';
 
 export const Container = styled.TouchableOpacity<{ isDraft: boolean }>`
   flex-direction: row;
@@ -30,7 +32,7 @@ export const Container = styled.TouchableOpacity<{ isDraft: boolean }>`
   `}
 `;
 
-export const IconBox = styled.View<{ bgColor?: string }>`
+export const IconBox = styled(Box)<{ bgColor?: string }>`
   width: ${moderateScale(40)}px;
   height: ${moderateScale(40)}px;
   border-radius: ${moderateScale(20)}px;
@@ -40,26 +42,32 @@ export const IconBox = styled.View<{ bgColor?: string }>`
   justify-content: center;
 `;
 
-export const TextContent = styled.View`
+export const TextContent = styled(Box)`
   flex: 1;
   gap: ${verticalScale(2)}px;
 `;
 
-export const Title = styled.Text`
+export const Title = styled(Typography)`
   font-family: 'Plus Jakarta Sans';
   font-size: ${moderateScale(14)}px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.on_surface};
 `;
 
-export const SubAddress = styled.Text`
+export const SubAddress = styled(Typography)`
   font-family: 'Plus Jakarta Sans';
   font-size: ${moderateScale(12)}px;
   font-weight: 500;
   color: ${({ theme }) => theme.colors.on_surface_variant};
 `;
 
-export const StatusBadge = styled.View<{ isCancelled: boolean }>`
+export const StatusRow = styled(Box)`
+  flex-direction: row;
+  gap: ${scale(8)}px;
+  align-items: center;
+`;
+
+export const StatusBadge = styled(Box)<{ isCancelled: boolean }>`
   padding-horizontal: ${scale(8)}px;
   padding-vertical: ${verticalScale(4)}px;
   border-radius: ${moderateScale(8)}px;
@@ -69,7 +77,7 @@ export const StatusBadge = styled.View<{ isCancelled: boolean }>`
   margin-top: ${verticalScale(4)}px;
 `;
 
-export const StatusText = styled.Text<{ isCancelled: boolean }>`
+export const StatusText = styled(Typography)<{ isCancelled: boolean }>`
   font-family: 'Plus Jakarta Sans';
   font-size: ${moderateScale(10)}px;
   font-weight: 700;
@@ -78,7 +86,7 @@ export const StatusText = styled.Text<{ isCancelled: boolean }>`
     isCancelled ? theme.colors.error : theme.colors.primary};
 `;
 
-export const PriceText = styled.Text`
+export const PriceText = styled(Typography)`
   font-family: 'Plus Jakarta Sans';
   font-size: ${moderateScale(14)}px;
   font-weight: 800;
@@ -87,4 +95,8 @@ export const PriceText = styled.Text`
 
 export const ReportButton = styled.TouchableOpacity`
   padding: ${moderateScale(4)}px;
+`;
+
+export const ActionIconButton = styled.TouchableOpacity`
+  padding: ${moderateScale(8)}px;
 `;

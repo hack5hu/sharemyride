@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, TouchableOpacity, View } from 'react-native';
+import { Modal } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { FlashList } from '@shopify/flash-list';
 import { useTheme } from 'styled-components/native';
@@ -70,14 +70,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
         </S.StatusBadge>
       </S.LogHeader>
 
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 8,
-        }}
-      >
+      <S.UrlRow>
         <S.UrlText
           variant="body"
           size="sm"
@@ -96,7 +89,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
             color={theme.colors.on_surface_variant}
           />
         </S.CopyButton>
-      </View>
+      </S.UrlRow>
 
       <S.MetaRow>
         <Typography
@@ -151,10 +144,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                 <Typography variant="title" size="sm">
                   {t.requestDetails}
                 </Typography>
-                <TouchableOpacity
-                  onPress={() => setSelectedLog(null)}
-                  style={{ padding: 8 }}
-                >
+                <S.CloseDetailButton onPress={() => setSelectedLog(null)}>
                   <Typography
                     variant="label"
                     size="sm"
@@ -163,18 +153,10 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                   >
                     {t.close}
                   </Typography>
-                </TouchableOpacity>
+                </S.CloseDetailButton>
               </S.DetailModalHeader>
               <S.ScrollContent>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginTop: 16,
-                    marginBottom: 8,
-                  }}
-                >
+                <S.CopyRow>
                   <S.SectionTitle
                     variant="label"
                     size="xs"
@@ -189,9 +171,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                       handleCopy(generateCurl(selectedLog), 'cURL Command')
                     }
                   >
-                    <View
-                      style={{ flexDirection: 'row', alignItems: 'center' }}
-                    >
+                    <S.CopyInnerRow>
                       <Icon
                         name="content-copy"
                         size={14}
@@ -205,9 +185,9 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                       >
                         {t.copyCurl}
                       </Typography>
-                    </View>
+                    </S.CopyInnerRow>
                   </S.CopyButton>
-                </View>
+                </S.CopyRow>
                 <S.CodeBlock>
                   <S.CodeText>URL: {selectedLog.url}</S.CodeText>
                   <S.CodeText>Method: {selectedLog.method}</S.CodeText>
@@ -266,13 +246,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                   </S.CodeText>
                 </S.CodeBlock>
 
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                  }}
-                >
+                <S.CopyRow style={{ marginTop: 0 }}>
                   <S.SectionTitle
                     variant="label"
                     size="xs"
@@ -290,9 +264,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                         )
                       }
                     >
-                      <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}
-                      >
+                      <S.CopyInnerRow>
                         <Icon
                           name="content-copy"
                           size={14}
@@ -306,10 +278,10 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                         >
                           Copy Response
                         </Typography>
-                      </View>
+                      </S.CopyInnerRow>
                     </S.CopyButton>
                   )}
-                </View>
+                </S.CopyRow>
                 <S.CodeBlock>
                   <S.CodeText>
                     {selectedLog.responseBody
@@ -332,7 +304,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                 <Typography variant="title" size="md">
                   {t.networkLogsTitle}
                 </Typography>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <S.HeaderRow>
                   <S.ClearButton onPress={clearLogs}>
                     <Typography
                       variant="label"
@@ -350,28 +322,13 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                       color={theme.colors.on_surface}
                     />
                   </S.CloseButton>
-                </View>
+                </S.HeaderRow>
               </S.ModalHeader>
 
-              <View
-                style={{
-                  flexDirection: 'row',
-                  borderBottomWidth: 1,
-                  borderColor: theme.colors.outline_variant,
-                }}
-              >
-                <TouchableOpacity
+              <S.TabRow>
+                <S.TabButton
+                  active={activeTab === 'api'}
                   onPress={() => setActiveTab('api')}
-                  style={{
-                    flex: 1,
-                    paddingVertical: 12,
-                    borderBottomWidth: 2,
-                    borderColor:
-                      activeTab === 'api'
-                        ? theme.colors.primary
-                        : 'transparent',
-                    alignItems: 'center',
-                  }}
                 >
                   <Typography
                     variant="label"
@@ -385,19 +342,10 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                   >
                     Normal API
                   </Typography>
-                </TouchableOpacity>
-                <TouchableOpacity
+                </S.TabButton>
+                <S.TabButton
+                  active={activeTab === 'ola'}
                   onPress={() => setActiveTab('ola')}
-                  style={{
-                    flex: 1,
-                    paddingVertical: 12,
-                    borderBottomWidth: 2,
-                    borderColor:
-                      activeTab === 'ola'
-                        ? theme.colors.primary
-                        : 'transparent',
-                    alignItems: 'center',
-                  }}
                 >
                   <Typography
                     variant="label"
@@ -411,8 +359,8 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                   >
                     Ola Maps
                   </Typography>
-                </TouchableOpacity>
-              </View>
+                </S.TabButton>
+              </S.TabRow>
 
               <S.Container>
                 <FlashList

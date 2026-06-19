@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { TouchableOpacity } from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import { Input } from '../../atoms/Input';
+import { Input } from '@/components/atoms/Input';
 import { format } from 'date-fns';
+import { StyledTouchable } from './DatePickerInput.styles';
 
 export interface DatePickerInputProps {
   label: string;
@@ -26,7 +26,7 @@ export const DatePickerInput: React.FC<DatePickerInputProps> = ({
 
   return (
     <>
-      <TouchableOpacity onPress={() => setOpen(true)} activeOpacity={0.7}>
+      <StyledTouchable onPress={() => setOpen(true)} activeOpacity={0.7}>
         <Input
           label={label}
           value={displayValue}
@@ -36,7 +36,7 @@ export const DatePickerInput: React.FC<DatePickerInputProps> = ({
           pointerEvents="none"
           rightIcon="calendar-today"
         />
-      </TouchableOpacity>
+      </StyledTouchable>
       <DatePicker
         modal
         open={open}

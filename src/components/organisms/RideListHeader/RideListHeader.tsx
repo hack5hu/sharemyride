@@ -1,10 +1,9 @@
 import React from 'react';
-import { View } from 'react-native';
 import { SectionHeader } from '@/components/atoms/SectionHeader';
 import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
 import { useTranslation } from '@/hooks/useTranslation';
-import { verticalScale } from '@/styles';
 import { RideListItem } from '@/screens/MyRideFlow/1_MyRides/types.d';
+import { Container } from './RideListHeader.styles';
 
 interface RideListHeaderProps {
   activeTab: MyRidesTab;
@@ -18,7 +17,7 @@ export const RideListHeader: React.FC<RideListHeaderProps> = React.memo(
     const { t } = useTranslation();
 
     return (
-      <View style={{ gap: verticalScale(20), marginBottom: verticalScale(16) }}>
+      <Container>
         {activeTab === 'requests' && (
           <>
             {requests.length > 0 && (
@@ -49,7 +48,7 @@ export const RideListHeader: React.FC<RideListHeaderProps> = React.memo(
         {activeTab === 'archive' && (
           <SectionHeader title={t('myRides.completedTitle')} />
         )}
-      </View>
+      </Container>
     );
   },
 );

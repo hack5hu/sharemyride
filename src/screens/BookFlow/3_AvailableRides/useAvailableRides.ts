@@ -187,7 +187,12 @@ export const useAvailableRides = () => {
 
       const timeline = hasStops
         ? ride.stops.map((stop: any, idx: number, arr: any[]) => ({
-            time: formatTimeSafely(stop.arrivalTime, { hour: '2-digit', minute: '2-digit' }, 'TBD', false),
+            time: formatTimeSafely(
+              stop.arrivalTime,
+              { hour: '2-digit', minute: '2-digit' },
+              'TBD',
+              false,
+            ),
             location: stop.name || stop.address || 'Unknown Location',
             type:
               idx === 0
@@ -198,12 +203,22 @@ export const useAvailableRides = () => {
           }))
         : [
             {
-              time: formatTimeSafely(ride.startTime, { hour: '2-digit', minute: '2-digit' }, 'TBD', false),
+              time: formatTimeSafely(
+                ride.startTime,
+                { hour: '2-digit', minute: '2-digit' },
+                'TBD',
+                false,
+              ),
               location: ride.sourceStopName || ride.sourceAddress || 'Pickup',
               type: 'pickup',
             },
             {
-              time: formatTimeSafely(ride.endTime, { hour: '2-digit', minute: '2-digit' }, 'TBD', false),
+              time: formatTimeSafely(
+                ride.endTime,
+                { hour: '2-digit', minute: '2-digit' },
+                'TBD',
+                false,
+              ),
               location:
                 ride.destinationStopName ||
                 ride.destinationAddress ||
@@ -269,14 +284,19 @@ export const useAvailableRides = () => {
     }
 
     // Always sort by time by default unless distance sort is applied
-    const hasDistanceSort = selectedFilters.includes('nearPickup') || selectedFilters.includes('nearDropoff');
-    
+    const hasDistanceSort =
+      selectedFilters.includes('nearPickup') ||
+      selectedFilters.includes('nearDropoff');
+
     if (!hasDistanceSort || selectedFilters.includes('time')) {
       result.sort((a, b) => {
         if (!a.rawStartTime && !b.rawStartTime) return 0;
         if (!a.rawStartTime) return 1;
         if (!b.rawStartTime) return -1;
-        return new Date(a.rawStartTime).getTime() - new Date(b.rawStartTime).getTime();
+        return (
+          new Date(a.rawStartTime).getTime() -
+          new Date(b.rawStartTime).getTime()
+        );
       });
     }
 

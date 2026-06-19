@@ -1,7 +1,4 @@
-import {
-  safeParseDate,
-  formatTimeSafely,
-} from '@/utils/date';
+import { safeParseDate, formatTimeSafely } from '@/utils/date';
 
 export const mapBackendRideToUI = (
   ride: any,
@@ -11,7 +8,8 @@ export const mapBackendRideToUI = (
   const startName = ride.sourceStopName || 'Unknown';
   const endName = ride.destinationStopName || 'Unknown';
   const startTime =
-    safeParseDate(ride.startTime || ride.requestedAt, !ride.startTime) || new Date();
+    safeParseDate(ride.startTime || ride.requestedAt, !ride.startTime) ||
+    new Date();
 
   const now = new Date();
   const diffMs = startTime.getTime() - now.getTime();

@@ -26,7 +26,7 @@ export const ChatListTemplate: React.FC<ChatListTemplateProps> = ({
             {chat.headerTitle}
           </Typography>
         </HeaderWrapper>
-        
+
         <SearchWrapper>{searchBar}</SearchWrapper>
 
         {content}

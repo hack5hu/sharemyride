@@ -133,7 +133,9 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
                     color={theme.colors.on_surface_variant}
                   >
                     {travelDate
-                      ? (safeParseDate(travelDate) ? format(safeParseDate(travelDate)!, 'EEE, dd MMM') : t.searchSummaryDate)
+                      ? safeParseDate(travelDate)
+                        ? format(safeParseDate(travelDate)!, 'EEE, dd MMM')
+                        : t.searchSummaryDate
                       : t.searchSummaryDate}
                   </Typography>
                 </S.FooterItem>

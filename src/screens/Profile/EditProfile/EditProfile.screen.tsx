@@ -10,14 +10,8 @@ import * as S from './EditProfile.styles';
 import { Button } from '@/components/atoms/Button';
 
 export const EditProfileScreen: React.FC = () => {
-  const {
-    formik,
-    loading,
-    showSuccess,
-    handleCloseSuccess,
-    navigation,
-    t,
-  } = useEditProfile();
+  const { formik, loading, showSuccess, handleCloseSuccess, navigation, t } =
+    useEditProfile();
 
   return (
     <ScreenShell
@@ -68,9 +62,7 @@ export const EditProfileScreen: React.FC = () => {
                 onValueChange={val => formik.setFieldValue('dob', val)}
                 onBlur={() => formik.setFieldTouched('dob', true)}
                 error={
-                  formik.touched.dob
-                    ? (formik.errors.dob as string)
-                    : undefined
+                  formik.touched.dob ? (formik.errors.dob as string) : undefined
                 }
               />
 

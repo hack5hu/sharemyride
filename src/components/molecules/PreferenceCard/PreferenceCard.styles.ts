@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { moderateScale } from '@/styles';
+import { Typography } from '@/components/atoms/Typography';
 
 export const CardContainer = styled.TouchableOpacity<{ active?: boolean }>`
   flex: 1;
@@ -41,4 +42,8 @@ export const Indicator = styled.View<{ active?: boolean }>`
   border-radius: ${moderateScale(3)}px;
   background-color: ${({ theme, active }) =>
     active ? theme.colors.primary : theme.colors.outline_variant};
+`;
+
+export const StyledStatusText = styled(Typography)`
+  letter-spacing: 0.5px;
 `;

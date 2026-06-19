@@ -23,4 +23,3 @@ export const ModalBackdrop: React.FC<ModalBackdropProps> = ({
     </Modal>
   );
 };
-
