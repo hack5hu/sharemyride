@@ -11,6 +11,7 @@ import { showNotification } from '@/components/organisms/GlobalNotification/Glob
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
 import { storage } from '@/utils/storage';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 
 export const useBookRideInfo = () => {
   const { navigation, navigate } = useAppNavigation();
@@ -111,6 +112,12 @@ export const useBookRideInfo = () => {
           destinationLocation: curDest,
           travelDate: format(selectedDate, "yyyy-MM-dd'T'HH:mm:ss"),
           seatCount: curSeats,
+        });
+
+        AnalyticsService.logEvent(AnalyticsEvent.SEARCH_RIDE, {
+          source: curStart.address,
+          destination: curDest.address,
+          seat_count: curSeats,
         });
 
         const results = await RideService.searchRides(payload);

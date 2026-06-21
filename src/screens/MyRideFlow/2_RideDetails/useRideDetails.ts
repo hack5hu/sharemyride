@@ -13,6 +13,7 @@ import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import { navigate } from '@/navigation/navigationService';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 
 export const useRideDetails = () => {
   const navigation = useAppNavigation();
@@ -142,11 +143,21 @@ export const useRideDetails = () => {
       try {
         if (cancelTarget.type === 'RIDE') {
           await RideService.cancelRide(bookingId, reason);
+          AnalyticsService.logEvent(AnalyticsEvent.RIDE_CANCELLED, {
+            type: 'ride',
+            id: bookingId,
+            reason: categoryId,
+          });
           const { removeRide } = useMyRidesStore.getState();
           removeRide(1, rideId);
           navigation.goBack();
         } else {
           await RideService.cancelBooking(bookingId, reason);
+          AnalyticsService.logEvent(AnalyticsEvent.RIDE_CANCELLED, {
+            type: 'booking',
+            id: bookingId,
+            reason: categoryId,
+          });
           if (cancelTarget.isSelf) {
             const { removeRide } = useMyRidesStore.getState();
             removeRide(1, bookingId);

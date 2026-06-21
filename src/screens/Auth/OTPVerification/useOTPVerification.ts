@@ -9,6 +9,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 
 export const useOTPVerification = () => {
   const [timer, setTimer] = useState(45);
@@ -70,6 +71,11 @@ export const useOTPVerification = () => {
           const { fetchProfile } = useAuthStore.getState();
           fetchProfile();
         }
+
+        AnalyticsService.logEvent(AnalyticsEvent.USER_LOGIN, {
+          user_id: userId,
+          phone_number: phoneNumber,
+        });
 
         setLoading(false);
 

@@ -9,6 +9,7 @@ import { RideService } from '@/serviceManager/RideService';
 import { useChatSocket } from '@/hooks/useChatSocket';
 import { ChatMessage } from '@/types/chat';
 import { ConnectionStatus, MessageStatus } from '@/constants/enums';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 
 const getFormatDate = (timestamp: number, t: any) => {
   const date = new Date(timestamp);
@@ -250,6 +251,11 @@ export const useChatDetails = () => {
         },
       });
 
+      AnalyticsService.logEvent(AnalyticsEvent.CHAT_MESSAGE_SENT, {
+        type: 'location',
+        receiver_id: receiverId,
+      });
+
       navigation.setParams({ selectedLocation: undefined } as any);
     }
   }, [
@@ -284,6 +290,11 @@ export const useChatDetails = () => {
         rideId: route.params?.rideId,
         rideInfo: dynamicRideInfo,
       },
+    });
+
+    AnalyticsService.logEvent(AnalyticsEvent.CHAT_MESSAGE_SENT, {
+      type: 'text',
+      receiver_id: receiverId,
     });
 
     setMessage('');

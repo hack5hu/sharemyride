@@ -13,6 +13,7 @@ import { showNotification } from '@/components/organisms/GlobalNotification/Glob
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
 import { storage } from '@/utils/storage';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 
 export const useSummaryActions = (
   publishStore: any,
@@ -180,6 +181,13 @@ export const useSummaryActions = (
         index: 1,
         routes: [{ name: 'BookRideInfo' }, { name: 'PublishSuccess' }],
       } as any);
+      AnalyticsService.logEvent(AnalyticsEvent.RIDE_PUBLISHED, {
+        vehicle_id: vehicleId,
+        seat_count: seatCount,
+        price,
+        full_journey_price: fullJourneyPrice,
+      });
+
       clearPublishState();
     } catch (error: any) {
       console.error('Publish failed:', error);

@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import * as Keychain from 'react-native-keychain';
 import { mmkvStorage } from '../utils/storage';
 import { Logger } from '@/utils/logger';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 
 interface AuthUser {
   id?: string;
@@ -45,6 +46,9 @@ export const useAuthStore = create<AuthState>()(
 
       setAuth: (user, token, isProfileCompleted = false) => {
         set({ user, token, isAuthenticated: true, isProfileCompleted });
+        if (user?.userId || user?.id) {
+          AnalyticsService.setUser((user.userId || user.id) as string);
+        }
       },
 
       setProfileCompleted: value => {
@@ -58,6 +62,8 @@ export const useAuthStore = create<AuthState>()(
           isAuthenticated: false,
           isProfileCompleted: false,
         });
+        AnalyticsService.clearUser();
+        AnalyticsService.logEvent(AnalyticsEvent.USER_LOGOUT);
         try {
           const { resetAllStores } = require('./resetAllStores');
           resetAllStores();
@@ -77,9 +83,12 @@ export const useAuthStore = create<AuthState>()(
               token: credentials.password,
               isAuthenticated: true,
             });
-            // Background fetch profile after token is loaded only if profile is completed
             if (useAuthStore.getState().isProfileCompleted) {
               useAuthStore.getState().fetchProfile();
+            }
+            if (useAuthStore.getState().user) {
+              const u = useAuthStore.getState().user;
+              if (u?.userId || u?.id) AnalyticsService.setUser((u.userId || u.id) as string);
             }
           } else {
             // No valid token in keychain — clear any stale persisted state

@@ -17,8 +17,10 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { NotificationService } from '@/serviceManager/NotificationService';
 
 import { navigationRef } from '@/navigation/navigationService';
+import { AnalyticsService } from '@/serviceManager/AnalyticsService';
 
 const App = () => {
+  const routeNameRef = React.useRef<string | undefined>(undefined);
   const initialize = useAuthStore(state => state.initialize);
   const initialiseDeviceId = useDeviceIdStore(state => state.initialise);
   const themeMode = useSettingsStore(state => state.themeMode);
@@ -40,7 +42,21 @@ const App = () => {
             backgroundColor="transparent"
             translucent
           />
-          <NavigationContainer ref={navigationRef}>
+          <NavigationContainer
+            ref={navigationRef}
+            onReady={() => {
+              routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
+            }}
+            onStateChange={async () => {
+              const previousRouteName = routeNameRef.current;
+              const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
+
+              if (previousRouteName !== currentRouteName && currentRouteName) {
+                await AnalyticsService.logScreenView(currentRouteName);
+              }
+              routeNameRef.current = currentRouteName;
+            }}
+          >
             <RootNavigator />
           </NavigationContainer>
           <NetworkLoggerModal />

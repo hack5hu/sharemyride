@@ -7,6 +7,7 @@ import { showNotification } from '@/components/organisms/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { useTranslation } from '@/hooks/useTranslation';
 import { getErrorMessage } from '@/utils/error';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 
 export const useTravelPreferences = () => {
   const navigation = useAppNavigation();
@@ -105,6 +106,13 @@ export const useTravelPreferences = () => {
         maxBackSeats: storedPrefs?.maxBackSeats ?? 2,
         waitingTime: preferences.waitingTime,
       });
+
+      AnalyticsService.logEvent(AnalyticsEvent.PREFERENCES_UPDATED, {
+        nonSmoking: preferences.nonSmoking,
+        womenOnly: preferences.womenOnly,
+        manualApproval: preferences.manualApproval,
+      });
+
       showNotification(
         NotificationType.SUCCESS,
         t('notification.defaultSuccessTitle'),

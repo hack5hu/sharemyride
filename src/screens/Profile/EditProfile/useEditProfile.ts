@@ -12,6 +12,7 @@ import { showNotification } from '@/components/organisms/GlobalNotification/Glob
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
 import { Logger } from '@/utils/logger';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 
 export interface EditProfileFormValues {
   fullName: string;
@@ -140,6 +141,11 @@ export const useEditProfile = () => {
         await UserService.updateProfile(updatePayload);
 
         await fetchProfile();
+
+        AnalyticsService.logEvent(AnalyticsEvent.PROFILE_UPDATED, {
+          fields_updated: Object.keys(updatePayload),
+        });
+
         setShowSuccess(true);
         setTimeout(() => {
           navigation.goBack();

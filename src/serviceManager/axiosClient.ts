@@ -10,6 +10,7 @@ import {
 } from '@/utils/networkSecurity';
 import { Logger } from '@/utils/logger';
 import { logApiError, logApiRequest, logApiResponse } from './apiConsoleLogger';
+import { AnalyticsService, AnalyticsEvent } from './AnalyticsService';
 
 interface TrackedRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -111,12 +112,20 @@ axiosClient.interceptors.response.use(
       trackedConfig._startTime
     ) {
       const endTime = Date.now();
+      const duration = endTime - trackedConfig._startTime;
       useNetworkLoggerStore.getState().updateLog(trackedConfig._logId, {
         responseStatus: response.status,
         responseHeaders: sanitizeHeaders(response.headers),
         responseBody: redactSensitiveData(response.data),
         endTime,
-        duration: endTime - trackedConfig._startTime,
+        duration,
+      });
+
+      AnalyticsService.logEvent(AnalyticsEvent.API_SUCCESS, {
+        method: trackedConfig.method?.toUpperCase(),
+        url: trackedConfig.url,
+        status: response.status,
+        duration,
       });
     }
     return response;
@@ -136,6 +145,7 @@ axiosClient.interceptors.response.use(
       originalRequest._startTime
     ) {
       const endTime = Date.now();
+      const duration = endTime - originalRequest._startTime;
       useNetworkLoggerStore.getState().updateLog(originalRequest._logId, {
         responseStatus: axiosError.response?.status || 0,
         responseHeaders: sanitizeHeaders(axiosError.response?.headers),
@@ -143,8 +153,16 @@ axiosClient.interceptors.response.use(
           axiosError.response?.data || axiosError.message,
         ),
         endTime,
-        duration: endTime - originalRequest._startTime,
+        duration,
         isError: true,
+      });
+
+      AnalyticsService.logEvent(AnalyticsEvent.API_ERROR, {
+        method: originalRequest.method?.toUpperCase(),
+        url: originalRequest.url,
+        status: axiosError.response?.status || 0,
+        duration,
+        error_message: axiosError.message,
       });
     }
     if (axiosError.response?.status === 401 && !originalRequest._retry) {

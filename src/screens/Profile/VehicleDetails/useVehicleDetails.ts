@@ -12,6 +12,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 
 const validationSchema = Yup.object().shape({
   company: Yup.string().required('Vehicle company is required'),
@@ -68,6 +69,11 @@ export const useVehicleDetails = () => {
           await updateVehicle(vehicleId, values);
         } else {
           await addVehicle(values);
+          AnalyticsService.logEvent(AnalyticsEvent.VEHICLE_ADDED, {
+            type: values.type,
+            company: values.company,
+            seater: values.seater,
+          });
         }
 
         // Update current publish state if we're in the publish flow

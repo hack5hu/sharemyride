@@ -10,6 +10,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 
 import { BookSeat, Passenger } from './types';
 
@@ -143,6 +144,12 @@ export const useBookSeatSelection = (
       };
 
       await RideService.bookRide(rideId, payload);
+      AnalyticsService.logEvent(AnalyticsEvent.RIDE_BOOKED, {
+        ride_id: rideId,
+        seat_count: selectedSeats.size,
+        total_price: totalPrice,
+      });
+
       navigate('BookingConfirmed', {
         rideId,
         bookedSeats: Array.from(selectedSeats).map(String),
