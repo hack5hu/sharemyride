@@ -16,6 +16,10 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
+	<key>StallionProjectId</key>
+	<string>6a528caf7af37d42f935d9da</string>
+	<key>StallionAppToken</key>
+	<string>spb_ap_V1nP4TNd6UJdcl1HCT5aei5V8J50DmsYCRVZgk-Dh5</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

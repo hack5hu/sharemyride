@@ -4,6 +4,7 @@ import React_RCTAppDelegate
 import ReactAppDependencyProvider
 import Firebase
 import FirebaseMessaging
+import react_native_stallion
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -62,7 +63,7 @@ class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
 #if DEBUG
     RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
 #else
-    Bundle.main.url(forResource: "main", withExtension: "jsbundle")
+    StallionModule.getBundleURL()
 #endif
   }
 }

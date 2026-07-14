@@ -18,6 +18,8 @@ import { NotificationService } from '@/serviceManager/NotificationService';
 
 import { navigationRef } from '@/navigation/navigationService';
 import { AnalyticsService } from '@/serviceManager/AnalyticsService';
+import { withStallion } from 'react-native-stallion';
+
 
 const App = () => {
   const routeNameRef = React.useRef<string | undefined>(undefined);
@@ -67,4 +69,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default withStallion(App);
