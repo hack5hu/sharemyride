@@ -50,6 +50,7 @@ import RideRouteMapScreen from '@/screens/BookFlow/5_RideRouteMap';
 import { BookSeatSelectionScreen } from '@/screens/BookFlow/6_BookSeatSelection';
 import { RatingScreen } from '@/screens/Rating';
 import { SuggestionsScreen } from '@/screens/Support/Suggestions';
+import { useInAppUpdate } from '@/hooks/useInAppUpdate';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -88,6 +89,9 @@ export const RootNavigator = () => {
   const { isAuthenticated, isProfileCompleted, isInitializing } =
     useAuthStore();
   const theme = useTheme();
+
+  // Check for Play Store / App Store updates on launch
+  useInAppUpdate();
 
   const screenOptions = useMemo(
     () => ({
