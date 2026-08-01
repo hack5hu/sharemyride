@@ -117,23 +117,49 @@ export const useRidePublishStore = create<RidePublishState>(set => ({
   price: 0,
   fullJourneyPrice: 0,
   frontSeatPrice: 0,
-  premiumEnabled: true,
+  premiumEnabled: false,
   premiumPercentage: 10,
   segmentPrices: {},
   requestType: 'instant',
   editingDraftId: null,
 
-  setStartLocation: location => set({ startLocation: location }),
-  setDestinationLocation: location => set({ destinationLocation: location }),
+  setStartLocation: location =>
+    set({
+      startLocation: location,
+      routeDetails: null,
+      selectedRoute: null,
+      price: 0,
+      segmentPrices: {},
+    }),
+  setDestinationLocation: location =>
+    set({
+      destinationLocation: location,
+      routeDetails: null,
+      selectedRoute: null,
+      price: 0,
+      segmentPrices: {},
+    }),
   addMiddleStop: location =>
     set(state => ({
       middleStops: [...state.middleStops, location],
+      routeDetails: null,
+      price: 0,
+      segmentPrices: {},
     })),
   removeMiddleStop: id =>
     set(state => ({
       middleStops: state.middleStops.filter(stop => stop.id !== id),
+      routeDetails: null,
+      price: 0,
+      segmentPrices: {},
     })),
-  setMiddleStops: locations => set({ middleStops: locations }),
+  setMiddleStops: locations =>
+    set({
+      middleStops: locations,
+      routeDetails: null,
+      price: 0,
+      segmentPrices: {},
+    }),
   setRouteDetails: details => set({ routeDetails: details }),
   setSelectedRoute: route => set({ selectedRoute: route }),
   setDepartureDate: date => set({ departureDate: date }),
@@ -172,7 +198,7 @@ export const useRidePublishStore = create<RidePublishState>(set => ({
       price: 0,
       fullJourneyPrice: 0,
       frontSeatPrice: 0,
-      premiumEnabled: true,
+      premiumEnabled: false,
       premiumPercentage: 10,
       segmentPrices: {},
       requestType: 'instant',

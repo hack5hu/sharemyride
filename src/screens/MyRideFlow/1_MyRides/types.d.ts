@@ -45,6 +45,8 @@ export interface MyRidesHookData {
   drafts: any[];
   mappedRequests: any[];
   hasRequests: boolean;
+  pendingReview?: any;
+  onRateReview?: (review: any) => void;
   onMenuPress: () => void;
   onProfilePress: () => void;
   onAcceptRide: (id: string) => void;

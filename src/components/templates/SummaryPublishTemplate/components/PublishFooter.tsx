@@ -1,7 +1,7 @@
 import React from 'react';
-import { useTheme } from 'styled-components/native';
 import { Button } from '@/components/atoms/Button';
-import { FixedFooter, ErrorText } from './PublishFooter.styles';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
+import { ErrorText } from './PublishFooter.styles';
 
 interface PublishFooterProps {
   isPublishing?: boolean;

@@ -47,7 +47,7 @@ export const LocationSelectionTemplate: React.FC<
   const { locationSelection, common } = useLocale();
 
   return (
-    <ScreenShell>
+    <ScreenShell noPaddingBottom={Boolean(navBar)}>
       <MainContent>
         <HeaderSection>
           <TitleContainer>

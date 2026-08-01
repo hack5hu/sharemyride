@@ -1,9 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
-import { moderateScale } from '@/styles';
+import { moderateScale, verticalScale } from '@/styles';
 import { RouteOption, RouteCard } from '@/components/organisms/RouteCard';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import {
@@ -16,6 +17,7 @@ import { OlaMap } from '@/components/organisms/OlaMap';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import { Button } from '@/components/atoms/Button';
 import LinearGradient from 'react-native-linear-gradient';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
 import * as S from './RouteSelectionTemplate.styles';
 import { RouteData } from '@/screens/PublishFlow/2_RouteSelection/useRouteSelection';
 
@@ -40,6 +42,7 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
 }) => {
   const theme = useTheme();
   const { routeSelection } = useLocale();
+  const insets = useSafeAreaInsets();
   const cameraRef = useRef<CameraRef>(null);
 
   const [isMapLoaded, setIsMapLoaded] = React.useState(false);
@@ -277,7 +280,7 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
         </S.ContentLayer>
       </View>
 
-      <S.FixedFooter>
+      <FixedFooter>
         <Button
           variant="primary"
           icon="arrow-forward"
@@ -287,7 +290,7 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
         >
           {routeSelection.continue}
         </Button>
-      </S.FixedFooter>
+      </FixedFooter>
     </ScreenShell>
   );
 };

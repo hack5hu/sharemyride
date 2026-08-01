@@ -10,6 +10,8 @@ import { RideService } from '@/serviceManager/RideService';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
+import { storage } from '@/utils/storage';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 
 export const useMyRides = (): MyRidesHookData => {
   const { t } = useTranslation();
@@ -204,6 +206,66 @@ export const useMyRides = (): MyRidesHookData => {
     [onRefresh, t],
   );
 
+  const navigation = useAppNavigation();
+
+  const pendingReview = useMemo(() => {
+    const archiveData = rides?.[2]?.data || [];
+    const ratedStr = storage.getString('rated_rides') || '[]';
+    const ratedIds: string[] = JSON.parse(ratedStr);
+
+    const completed = archiveData.filter(
+      (r: any) => r.status === 'COMPLETED' || r.rideStatus === 'COMPLETED',
+    );
+
+    const unrated = completed.find((r: any) => {
+      const id = r.rideId || r.bookingId || r.id || r._id;
+      return id && !ratedIds.includes(String(id));
+    });
+
+    if (!unrated) return null;
+
+    const targetRideId = String(
+      unrated.rideId || unrated.bookingId || unrated.id || unrated._id,
+    );
+    const isDriver = unrated.role === 'DRIVER';
+
+    return {
+      rideId: targetRideId,
+      isDriver,
+      title: isDriver
+        ? `Rate your co-riders for ${unrated.sourceStopName?.split(',')[0] || 'your trip'}`
+        : `Rate your trip with ${unrated.driver?.name || unrated.name || 'Driver'}`,
+      targetUserId: isDriver
+        ? undefined
+        : unrated.driver?.driverId ||
+          unrated.driver?.userId ||
+          unrated.driverId ||
+          unrated.userId ||
+          'driver-1',
+      targetUserName: unrated.driver?.name || unrated.name || 'Driver',
+    };
+  }, [rides?.[2]?.data]);
+
+  const onRateReview = useCallback(
+    (review: any) => {
+      if (!review) return;
+      if (review.isDriver) {
+        (navigation.navigate as any)('RideDetails', {
+          rideId: review.rideId,
+          status: 'COMPLETED',
+        });
+      } else {
+        (navigation.navigate as any)('Rating', {
+          rideId: review.rideId,
+          targetUserId: review.targetUserId,
+          targetUserName: review.targetUserName,
+          targetUserRole: 'DRIVER',
+        });
+      }
+    },
+    [navigation],
+  );
+
   return {
     activeTab,
     isLoading,
@@ -224,6 +286,8 @@ export const useMyRides = (): MyRidesHookData => {
     drafts,
     mappedRequests,
     hasRequests,
+    pendingReview,
+    onRateReview,
     onMenuPress: () => {},
     onProfilePress: () => {},
     onAcceptRide: onAcceptBooking,

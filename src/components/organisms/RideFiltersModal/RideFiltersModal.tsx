@@ -5,6 +5,7 @@ import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { moderateScale } from '@/styles';
 import { Checkbox } from '@/components/atoms/Checkbox';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as S from './RideFiltersModal.styles';
 
 export interface RideFiltersModalProps {
@@ -25,6 +26,7 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
   t,
 }) => {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
   const [proximity, setProximity] = useState<'pickup' | 'dropoff'>(
     selectedFilters.includes('nearDropoff') ? 'dropoff' : 'pickup',
   );
@@ -312,7 +314,11 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
             </S.Section>
           </S.ScrollBody>
 
-          <S.Footer>
+          <S.Footer
+            style={{
+              paddingBottom: Math.max(insets.bottom, 16) + 16,
+            }}
+          >
             <S.ApplyButton
               onPress={() => {
                 const activeFilters = [];

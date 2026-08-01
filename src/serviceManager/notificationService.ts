@@ -12,6 +12,7 @@ import { Platform } from 'react-native';
 import { Logger } from '@/utils/logger';
 import { navigate } from '@/navigation/navigationService';
 import { useChatStore } from '@/store/useChatStore';
+import { requestNotificationPermission } from '@/utils/permissionUtils';
 
 export class NotificationService {
   /**
@@ -125,6 +126,7 @@ export class NotificationService {
    */
   public static async requestPermission() {
     try {
+      await requestNotificationPermission();
       const settings = await notifee.requestPermission();
 
       if (settings.authorizationStatus >= 1) {

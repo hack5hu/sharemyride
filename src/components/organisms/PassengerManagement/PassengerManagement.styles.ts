@@ -75,9 +75,16 @@ export const RemoveButton = styled(IconButton)`
   background-color: ${({ theme }) => `${theme.colors.error}08`};
 `;
 
-export const RateButton = styled(IconButton)`
+export const RateButton = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(4)}px;
+  border-width: 1px;
   border-color: ${({ theme }) => theme.colors.warning};
   background-color: ${({ theme }) => `${theme.colors.warning}1A`};
+  padding-horizontal: ${scale(10)}px;
+  padding-vertical: ${verticalScale(6)}px;
+  border-radius: ${moderateScale(12)}px;
 `;
 
 // Empty State Styles

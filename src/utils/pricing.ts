@@ -4,8 +4,57 @@ export const PRICING_MULTIPLIERS = {
   MAX: 12,
 };
 
+/**
+ * Configurable pricing parameters for BlaBlaCar-style carpool pricing model in India.
+ * Modify these rates to tweak recommended, minimum, or maximum pricing rules in the future.
+ */
+export const BLABLACAR_PRICING_CONFIG = {
+  /** Recommended rate in INR per km per seat */
+  RECOMMENDED_RATE_PER_KM: 2.25,
+  /** Minimum rate in INR per km per seat */
+  MIN_RATE_PER_KM: 1.80,
+  /** Maximum rate in INR per km per seat */
+  MAX_RATE_PER_KM: 2.80,
+  /** Minimum base fare per seat in INR */
+  MIN_FARE: 50,
+  /** Seater multiplier adjustment */
+  SEATER_MULTIPLIER: {
+    '5': 1.0,
+    '7': 1.1,
+  },
+};
+
 export const roundToNearest = (value: number, nearest: number = 10) => {
   return Math.round(value / nearest) * nearest;
+};
+
+/**
+ * Calculates BlaBlaCar-style seat pricing based on distance in kilometers.
+ *
+ * @param distanceKm Distance in km
+ * @param type 'MID' (Recommended), 'MIN' (Minimum bound), or 'MAX' (Maximum bound)
+ * @param seater Vehicle seating capacity ('5' or '7')
+ * @returns Fare in INR rounded to nearest 10
+ */
+export const calculateBlaBlaCarPrice = (
+  distanceKm: number,
+  type: 'MID' | 'MIN' | 'MAX' = 'MID',
+  seater: '5' | '7' = '5',
+): number => {
+  if (!distanceKm || distanceKm <= 0) return 0;
+
+  const seaterMult = BLABLACAR_PRICING_CONFIG.SEATER_MULTIPLIER[seater] || 1.0;
+
+  let ratePerKm = BLABLACAR_PRICING_CONFIG.RECOMMENDED_RATE_PER_KM;
+  if (type === 'MIN') {
+    ratePerKm = BLABLACAR_PRICING_CONFIG.MIN_RATE_PER_KM;
+  } else if (type === 'MAX') {
+    ratePerKm = BLABLACAR_PRICING_CONFIG.MAX_RATE_PER_KM;
+  }
+
+  const calculated = distanceKm * ratePerKm * seaterMult;
+  const clamped = Math.max(calculated, BLABLACAR_PRICING_CONFIG.MIN_FARE);
+  return roundToNearest(clamped, 10);
 };
 
 export const calculateBasePrice = (
@@ -13,7 +62,14 @@ export const calculateBasePrice = (
   multiplier: number,
   divisor: number = 1,
 ) => {
-  return roundToNearest((distanceKm * multiplier) / divisor, 10);
+  let type: 'MID' | 'MIN' | 'MAX' = 'MID';
+  if (multiplier <= PRICING_MULTIPLIERS.MIN) {
+    type = 'MIN';
+  } else if (multiplier >= PRICING_MULTIPLIERS.MAX) {
+    type = 'MAX';
+  }
+  const seater = divisor >= 6 ? '7' : '5';
+  return calculateBlaBlaCarPrice(distanceKm, type, seater);
 };
 
 export const calculateFrontSeatPrice = (

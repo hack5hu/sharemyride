@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as S from './NetworkLoggerModal.styles';
 
 import { BASE_URL } from '@/constants/apiEndpoints';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export const NetworkLoggerModal: React.FC = React.memo(() => {
   const theme = useTheme();
@@ -126,9 +127,17 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
     </S.EmptyState>
   );
 
-  // if (ENABLE_NETWORK_LOGGER !== 'true') {
-  //   return null;
-  // }
+  const user = useAuthStore(state => state.user);
+  const isSuperAdmin =
+    user?.role === 'SUPER_ADMIN' ||
+    user?.isSuperAdmin === true ||
+    (user as any)?.superAdmin === true;
+
+  const showDebugger = __DEV__ || isSuperAdmin;
+
+  if (!showDebugger) {
+    return null;
+  }
 
   return (
     <>

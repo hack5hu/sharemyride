@@ -38,7 +38,7 @@ export const ProfileHubTemplate: React.FC<ProfileHubTemplateProps> = ({
   isVerified,
 }) => {
   return (
-    <ScreenShell>
+    <ScreenShell noPaddingBottom>
       <Container showsVerticalScrollIndicator={false}>
         <Content>
           <BentoGrid>

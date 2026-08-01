@@ -9,7 +9,7 @@ export const MyRidesTemplate: React.FC<
   }
 > = memo(({ header, bottomNav, children }) => {
   return (
-    <ScreenShell>
+    <ScreenShell noPaddingBottom={Boolean(bottomNav)}>
       {header}
 
       <Box flex={1}>{children}</Box>

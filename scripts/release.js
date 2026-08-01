@@ -84,6 +84,9 @@ const autoBumpVersion = async (preReleaseId = null) => {
 };
 
 const main = async () => {
+  process.env.NODE_ENV = 'production';
+  process.env.BABEL_ENV = 'production';
+
   const target = process.argv[2];
 
   if (!target) {
@@ -134,7 +137,7 @@ const main = async () => {
       run('cd ios && pod install');
       console.log('✅ iOS version bumped.');
       console.log(
-        '⚠️  To generate the final .ipa, open ios/maharajJI.xcworkspace in Xcode and click Product -> Archive.',
+        '⚠️  To generate the final .ipa, open ios/shareMyRide.xcworkspace in Xcode and click Product -> Archive.',
       );
     } else {
       console.error('❌ Unknown command.');

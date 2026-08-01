@@ -13,7 +13,7 @@ import { useBookRideStore } from '@/store/useBookRideStore';
 import debounce from 'lodash/debounce';
 import { Logger } from '@/utils/logger';
 
-import { requestLocationPermission } from '@/utils/permissionUtils';
+import { requestLocationPermission, checkGpsAndPrompt } from '@/utils/permissionUtils';
 
 const DEFAULT_REGION = {
   latitude: 12.9716, // Bengaluru
@@ -106,13 +106,15 @@ export const useMapPicker = () => {
     }
   }, []);
 
-  const handleLocateMe = useCallback(() => {
+  const handleLocateMe = useCallback(async () => {
     if (userLocation) {
       cameraRef.current?.setStop({
         center: userLocation,
         zoom: 17,
         duration: 1000,
       });
+    } else {
+      await checkGpsAndPrompt();
     }
   }, [userLocation]);
 

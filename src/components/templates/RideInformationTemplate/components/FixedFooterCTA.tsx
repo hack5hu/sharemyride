@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/atoms/Button';
 import { useLocale } from '@/constants/localization';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
 import * as S from '../RideInformationTemplate.styles';
 
 export interface FixedFooterCTAProps {
@@ -22,7 +23,7 @@ export const FixedFooterCTA: React.FC<FixedFooterCTAProps> = React.memo(
     const translations = useLocale();
 
     return (
-      <S.FixedFooter>
+      <FixedFooter>
         {isDriver ? (
           <Button
             variant="outline"
@@ -51,7 +52,7 @@ export const FixedFooterCTA: React.FC<FixedFooterCTAProps> = React.memo(
             {translations.rideDetails.cancelBooking}
           </Button>
         )}
-      </S.FixedFooter>
+      </FixedFooter>
     );
   },
 );

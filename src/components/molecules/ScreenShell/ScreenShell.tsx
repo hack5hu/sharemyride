@@ -14,13 +14,15 @@ export interface ScreenShellProps {
   transparent?: boolean;
   /** Disable top safe area padding to draw content directly behind the status bar */
   noPaddingTop?: boolean;
+  /** Disable bottom safe area padding (e.g. for screens with custom bottom navigation or full-screen maps) */
+  noPaddingBottom?: boolean;
   children: React.ReactNode;
 }
 
 /**
  * ScreenShell
  *
- * The single source of truth for top safe-area inset.
+ * The single source of truth for top and bottom safe-area insets across the whole app.
  * Every screen must be wrapped in this instead of using SafeAreaView directly.
  */
 export const ScreenShell: React.FC<ScreenShellProps> = ({
@@ -29,6 +31,7 @@ export const ScreenShell: React.FC<ScreenShellProps> = ({
   rightElement,
   transparent,
   noPaddingTop,
+  noPaddingBottom,
   children,
 }) => {
   const insets = useSafeAreaInsets();
@@ -36,7 +39,10 @@ export const ScreenShell: React.FC<ScreenShellProps> = ({
   return (
     <Shell
       transparent={transparent}
-      style={{ paddingTop: noPaddingTop ? 0 : insets.top }}
+      style={{
+        paddingTop: noPaddingTop ? 0 : insets.top,
+        paddingBottom: noPaddingBottom ? 0 : insets.bottom,
+      }}
     >
       {title != null && (
         <ScreenHeader

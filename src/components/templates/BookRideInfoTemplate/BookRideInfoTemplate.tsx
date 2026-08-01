@@ -51,7 +51,7 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
       });
 
       return (
-        <ScreenShell>
+        <ScreenShell noPaddingTop noPaddingBottom>
           <FlashList
             data={recentSearches}
             keyExtractor={(item: RecentSearch) => item.id}

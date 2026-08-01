@@ -8,7 +8,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
-import { useTruecallerLogin } from './useTruecallerLogin';
+// import { useTruecallerLogin } from './useTruecallerLogin';
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
@@ -32,12 +32,18 @@ export const useLogin = () => {
     };
   }, []);
 
-  const {
-    isTruecallerSupported,
-    hasDismissedTruecaller,
-    handleTruecallerLogin,
-    handleInputFocus,
-  } = useTruecallerLogin({ setLoading });
+  // Truecaller is disabled for now for both iOS and Android
+  // const {
+  //   isTruecallerSupported,
+  //   hasDismissedTruecaller,
+  //   handleTruecallerLogin,
+  //   handleInputFocus,
+  // } = useTruecallerLogin({ setLoading });
+
+  const isTruecallerSupported = false;
+  const hasDismissedTruecaller = true;
+  const handleTruecallerLogin = useCallback(() => {}, []);
+  const handleInputFocus = useCallback(() => {}, []);
 
   useFocusEffect(
     useCallback(() => {

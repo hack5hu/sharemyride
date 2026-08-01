@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated } from 'react-native';
+import { Animated, Keyboard } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
@@ -161,16 +161,28 @@ export const MiddleStopMapTemplate: React.FC<MiddleStopMapTemplateProps> =
       });
 
       return (
-        <ScreenShell title={t.headerTitle} onBack={onBackPress}>
+        <ScreenShell title={t.headerTitle} onBack={onBackPress} noPaddingBottom>
           <S.ContentArea>
             {/* Map Layer - Always mounted to prevent camera race conditions */}
-            <S.MapLayer pointerEvents={isSearching ? 'none' : 'auto'}>
+            <S.MapLayer
+              pointerEvents={isSearching ? 'none' : 'auto'}
+              onTouchStart={() => Keyboard.dismiss()}
+            >
               {isMapMounted && (
                 <OlaMap
                   ref={mapRef}
-                  onPress={onMapPress}
-                  onRegionWillChange={onRegionWillChange}
-                  onRegionIsChanging={onRegionIsChanging}
+                  onPress={(feature: any) => {
+                    Keyboard.dismiss();
+                    onMapPress?.(feature);
+                  }}
+                  onRegionWillChange={() => {
+                    Keyboard.dismiss();
+                    onRegionWillChange?.();
+                  }}
+                  onRegionIsChanging={(e: any) => {
+                    Keyboard.dismiss();
+                    onRegionIsChanging?.(e);
+                  }}
                   onRegionDidChange={onRegionChangeComplete}
                   style={{ flex: 1, width: '100%', height: '100%' }}
                 >
@@ -339,12 +351,21 @@ export const MiddleStopMapTemplate: React.FC<MiddleStopMapTemplateProps> =
                 )}
 
                 {/* Map controls */}
-                <MapControlsFABs onZoomIn={onZoomIn} onZoomOut={onZoomOut} />
+                <MapControlsFABs
+                  onZoomIn={() => {
+                    Keyboard.dismiss();
+                    onZoomIn?.();
+                  }}
+                  onZoomOut={() => {
+                    Keyboard.dismiss();
+                    onZoomOut?.();
+                  }}
+                />
 
                 {/* Bottom card with stop info + confirm */}
                 {selectedLocation && (
                   <S.BottomCard
-                    style={{ paddingBottom: Math.max(insets.bottom + 16, 32) }}
+                    style={{ paddingBottom: insets.bottom + verticalScale(20) }}
                   >
                     <S.BottomGradient />
 

@@ -52,7 +52,37 @@ export const usePriceSelection = () => {
 
   const showPremium = true;
 
-  const [price, setPrice] = useState<number>(storePrice || initialPrice);
+  // Pricing Boundaries
+  const minPrice = useMemo(
+    () => calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MIN, divisor),
+    [totalDistanceKm, divisor],
+  );
+  const maxPrice = useMemo(
+    () => calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MAX, divisor),
+    [totalDistanceKm, divisor],
+  );
+
+  // Validate storePrice against current route distance bounds. If stale or out of bounds, use initialPrice.
+  const validPrice = useMemo(() => {
+    if (
+      storePrice &&
+      minPrice > 0 &&
+      storePrice >= minPrice &&
+      storePrice <= maxPrice
+    ) {
+      return storePrice;
+    }
+    return initialPrice;
+  }, [storePrice, minPrice, maxPrice, initialPrice]);
+
+  const [price, setPrice] = useState<number>(validPrice || initialPrice);
+
+  useEffect(() => {
+    if (validPrice > 0 && (price === 0 || (price !== validPrice && !storePrice))) {
+      setPrice(validPrice);
+    }
+  }, [validPrice]);
+
   const [premiumEnabled, setPremiumEnabled] = useState(
     storePremiumEnabled ?? false,
   );
@@ -66,26 +96,20 @@ export const usePriceSelection = () => {
     Record<string, number>
   >(storeSegmentPrices || {});
 
-  // Pricing Boundaries (7x to 12x) - Adjusted for Vehicle Capacity
-  const minPrice = useMemo(
-    () => calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MIN, divisor),
-    [totalDistanceKm, divisor],
-  );
-  const maxPrice = useMemo(
-    () => calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MAX, divisor),
-    [totalDistanceKm, divisor],
-  );
-
   // 1. Fetch Finalized Route on Mount
   useEffect(() => {
     const fetchFinalRoute = async () => {
       if (!startLocation || !destinationLocation) return;
 
-      // If we have route details, skip fetching directions again
+      // If we have route details, ensure price matches the route's recommended price if storePrice is unassigned
       if (routeDetails) {
-        // Update price if it was 0 but we have details (redundancy fix)
-        if (price === 0 && initialPrice > 0) {
-          setPrice(initialPrice);
+        const calculatedRec = calculateBasePrice(
+          totalDistanceKm,
+          PRICING_MULTIPLIERS.MID,
+          divisor,
+        );
+        if (price === 0 || !storePrice) {
+          setPrice(calculatedRec);
         }
 
         // Just sync segment prices if we have legs and some are missing (e.g. after adding middle stops)

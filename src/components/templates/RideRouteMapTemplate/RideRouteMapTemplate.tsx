@@ -7,6 +7,7 @@ import {
   Layer,
   UserLocation,
 } from '@/components/organisms/OlaMap';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import { UserLocationMarker } from '@/components/atoms/UserLocationMarker';
@@ -44,9 +45,10 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> =
     }) => {
       const theme = useTheme();
       const { rideRoute } = useLocale();
+      const insets = useSafeAreaInsets();
 
       return (
-        <ScreenShell title={title} onBack={onBack}>
+        <ScreenShell title={title} onBack={onBack} noPaddingBottom>
           <S.Container>
             <S.MapWrapper>
               {isMapMounted && (
@@ -242,7 +244,7 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> =
               <MapControlsFABs onZoomIn={onZoomIn} onZoomOut={onZoomOut} />
             </S.ControlsWrapper>
 
-            <S.Footer>
+            <S.Footer style={{ paddingBottom: Math.max(insets.bottom, 12) }}>
               <Button
                 onPress={() =>
                   onOpenExternalMap(

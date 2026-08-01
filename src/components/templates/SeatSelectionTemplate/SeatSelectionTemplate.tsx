@@ -1,4 +1,6 @@
 import React from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { verticalScale } from '@/styles';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import {
@@ -8,6 +10,7 @@ import {
 } from '@/components/organisms/CarFloorPlan';
 import { SeatLegend } from '@/components/molecules/SeatLegend/SeatLegend';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
 import { Button } from '@/components/atoms/Button';
 import { VehicleHorizontalList } from '@/components/molecules/VehicleHorizontalList/VehicleHorizontalList';
 import * as S from './SeatSelectionTemplate.styles';
@@ -28,6 +31,7 @@ export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> =
       t,
     }) => {
       const theme = useTheme();
+      const insets = useSafeAreaInsets();
       const rows = vehicleType === '7' ? SEVEN_SEATER_ROWS : FIVE_SEATER_ROWS;
 
       const renderSeatSelection = () => {
@@ -99,7 +103,7 @@ export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> =
             {renderSeatSelection()}
           </S.ContentScroll>
 
-          <S.FixedFooter>
+          <FixedFooter>
             <Button
               onPress={onContinue}
               disabled={selectedSeats.size === 0 || !selectedVehicleId}
@@ -109,7 +113,7 @@ export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> =
                 selectedSeats.size === 1 ? t.seatSelected : t.seatsSelected
               }`}
             </Button>
-          </S.FixedFooter>
+          </FixedFooter>
         </ScreenShell>
       );
     },

@@ -8,6 +8,14 @@ import App from './App';
 import { name as appName } from './app.json';
 import { NotificationService } from './src/serviceManager/NotificationService';
 
+// Disable console outputs in production release builds
+if (!__DEV__) {
+  console.log = () => {};
+  console.info = () => {};
+  console.warn = () => {};
+  console.debug = () => {};
+}
+
 // Register background handler
 setBackgroundMessageHandler(getMessaging(), async remoteMessage => {
   console.log('====== BACKGROUND NOTIFICATION RECEIVED ======');

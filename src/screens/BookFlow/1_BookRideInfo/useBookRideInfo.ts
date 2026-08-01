@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { BackHandler, ToastAndroid } from 'react-native';
 import { format, isBefore, startOfDay } from 'date-fns';
 import { useRoute, useFocusEffect } from '@react-navigation/native';
@@ -210,8 +210,12 @@ export const useBookRideInfo = () => {
 
   const [ratingPromptRide, setRatingPromptRide] = useState<any>(null);
   const [isRatingPromptVisible, setIsRatingPromptVisible] = useState(false);
+  const sessionPromptedRef = useRef(false);
 
   const checkUnratedRides = useCallback(async () => {
+    // Only prompt once per app session to avoid annoying popup on tab switching
+    if (sessionPromptedRef.current) return;
+
     try {
       // Fetch archived/past rides
       const response = await RideService.getMyRides(2, 0, 10);
@@ -233,11 +237,16 @@ export const useBookRideInfo = () => {
 
       // Get already rated/dismissed ride IDs from MMKV
       const ratedStr = storage.getString('rated_rides') || '[]';
-      const ratedIds = JSON.parse(ratedStr);
+      const ratedIds: string[] = JSON.parse(ratedStr);
 
-      // Find first unrated completed ride
-      const unrated = completedRides.find((r: any) => !ratedIds.includes(r.id));
+      // Find first unrated completed ride with valid ID
+      const unrated = completedRides.find((r: any) => {
+        const id = r.rideId || r.bookingId || r.id || r._id;
+        return id && !ratedIds.includes(String(id));
+      });
+
       if (unrated) {
+        sessionPromptedRef.current = true;
         setRatingPromptRide(unrated);
         setIsRatingPromptVisible(true);
       }
@@ -282,11 +291,21 @@ export const useBookRideInfo = () => {
   const handleConfirmRating = useCallback(() => {
     if (!ratingPromptRide) return;
 
-    // Save as rated/dismissed so we don't prompt again
-    const ratedStr = storage.getString('rated_rides') || '[]';
-    const ratedIds = JSON.parse(ratedStr);
-    ratedIds.push(ratingPromptRide.id);
-    storage.set('rated_rides', JSON.stringify(ratedIds));
+    const targetRideId =
+      ratingPromptRide.rideId ||
+      ratingPromptRide.bookingId ||
+      ratingPromptRide.id ||
+      ratingPromptRide._id;
+
+    if (targetRideId) {
+      const ratedStr = storage.getString('rated_rides') || '[]';
+      const ratedIds: string[] = JSON.parse(ratedStr);
+      if (!ratedIds.includes(String(targetRideId))) {
+        ratedIds.push(String(targetRideId));
+        storage.set('rated_rides', JSON.stringify(ratedIds));
+      }
+    }
+
     setIsRatingPromptVisible(false);
 
     // Navigate based on role
@@ -294,16 +313,18 @@ export const useBookRideInfo = () => {
     if (isUserDriver) {
       // Driver rates passenger(s) on RideDetails
       (navigation.navigate as any)('RideDetails', {
-        rideId: ratingPromptRide.id,
+        rideId: String(targetRideId),
         status: 'COMPLETED',
       });
     } else {
       // Passenger rates driver on RatingScreen
       (navigation.navigate as any)('Rating', {
-        rideId: ratingPromptRide.id,
+        rideId: String(targetRideId),
         targetUserId:
           ratingPromptRide.driver?.driverId ||
           ratingPromptRide.driver?.userId ||
+          ratingPromptRide.driverId ||
+          ratingPromptRide.userId ||
           'driver-1',
         targetUserName: ratingPromptRide.driver?.name || 'Driver',
         targetUserRole: 'DRIVER',
@@ -313,10 +334,20 @@ export const useBookRideInfo = () => {
 
   const handleDismissRating = useCallback(() => {
     if (!ratingPromptRide) return;
-    const ratedStr = storage.getString('rated_rides') || '[]';
-    const ratedIds = JSON.parse(ratedStr);
-    ratedIds.push(ratingPromptRide.id);
-    storage.set('rated_rides', JSON.stringify(ratedIds));
+    const targetRideId =
+      ratingPromptRide.rideId ||
+      ratingPromptRide.bookingId ||
+      ratingPromptRide.id ||
+      ratingPromptRide._id;
+
+    if (targetRideId) {
+      const ratedStr = storage.getString('rated_rides') || '[]';
+      const ratedIds: string[] = JSON.parse(ratedStr);
+      if (!ratedIds.includes(String(targetRideId))) {
+        ratedIds.push(String(targetRideId));
+        storage.set('rated_rides', JSON.stringify(ratedIds));
+      }
+    }
     setIsRatingPromptVisible(false);
   }, [ratingPromptRide]);
 

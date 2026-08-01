@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
@@ -8,6 +9,7 @@ import { PriceCounter } from '@/components/molecules/PriceCounter';
 import { FrontSeatPremium } from '@/components/molecules/FrontSeatPremium';
 import { SegmentPricingSheet } from '@/components/organisms/SegmentPricingSheet';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
 import { Button } from '@/components/atoms/Button';
 
 import { SegmentPrice } from '@/components/molecules/SegmentPricingCard';
@@ -61,6 +63,7 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
 }) => {
   const theme = useTheme();
   const { priceSelection: t } = useLocale();
+  const insets = useSafeAreaInsets();
 
   return (
     <ScreenShell title={t.headerTitle} onBack={onBackPress}>
@@ -133,17 +136,16 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
       </ScrollView>
 
       {/* Floating CTA */}
-      <S.FixedFooter>
+      <FixedFooter>
         <Button
           variant="primary"
           icon="chevron-right"
           iconPosition="right"
-          disabled={isLoading}
           onPress={onContinue}
         >
           {t.continueButton}
         </Button>
-      </S.FixedFooter>
+      </FixedFooter>
 
       {/* ──── Modals (Rendered at root for Modal reliability) ──── */}
       <SegmentPricingSheet

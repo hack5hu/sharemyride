@@ -66,18 +66,21 @@ export const useMapViewer = (
           headers.Authorization = `Bearer ${authCreds.password}`;
         }
 
+        let mapRetryCount = 0;
+
         client = new Client({
           webSocketFactory: () => new WebSocket(brokerUrl),
           connectHeaders: headers,
-          reconnectDelay: 5000,
-          heartbeatIncoming: 4000,
-          heartbeatOutgoing: 4000,
+          reconnectDelay: 15000,
+          heartbeatIncoming: 10000,
+          heartbeatOutgoing: 10000,
           forceBinaryWSFrames: true,
           appendMissingNULLonIncoming: true,
-          debug: msg => Logger.log('[MapWS-Debug]', msg),
+          debug: () => {},
         });
 
         client.onConnect = () => {
+          mapRetryCount = 0;
           Logger.log(
             `[MapWS] Connected to channel: /topic/ride/${rideDetails.id}/location`,
           );
@@ -108,14 +111,25 @@ export const useMapViewer = (
           Logger.log('[MapWS] Disconnected');
         };
 
-        client.onStompError = frame => {
-          Logger.error('[MapWS] STOMP Protocol Error:', frame.headers.message);
+        const handleMapWSFailure = () => {
+          mapRetryCount++;
           setIsConnected(false);
+          if (mapRetryCount >= 3) {
+            Logger.log(
+              '[MapWS] Maximum connection retries reached. Deactivating client.',
+            );
+            try {
+              client.deactivate();
+            } catch {}
+          }
         };
 
-        client.onWebSocketError = event => {
-          Logger.error('[MapWS] WebSocket Transport Error:', event);
-          setIsConnected(false);
+        client.onStompError = () => {
+          handleMapWSFailure();
+        };
+
+        client.onWebSocketError = () => {
+          handleMapWSFailure();
         };
 
         stompClientRef.current = client;

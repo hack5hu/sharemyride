@@ -1,11 +1,4 @@
-import { Platform } from 'react-native';
-import { API_BASE_URL } from '@env';
-
-const PRODUCTION_BASE_URL = 'https://user-service-08yu.onrender.com';
-const DEV_BASE_URL =
-  Platform.OS === 'android' ? 'http://10.0.2.2:8080' : 'http://localhost:8080';
-
-export const BASE_URL = PRODUCTION_BASE_URL;
+export const BASE_URL = 'https://api.zyncride.com';
 
 export const API_ENDPOINTS = {
   AUTH: {

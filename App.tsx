@@ -37,7 +37,7 @@ const App = () => {
 
   return (
     <SafeAreaProvider>
-      <KeyboardProvider>
+      <KeyboardProvider statusBarTranslucent navigationBarTranslucent>
         <ThemeProvider theme={activeTheme}>
           <StatusBar
             barStyle={themeMode === 'dark' ? 'light-content' : 'dark-content'}
@@ -61,7 +61,7 @@ const App = () => {
           >
             <RootNavigator />
           </NavigationContainer>
-          <NetworkLoggerModal />
+          {/* <NetworkLoggerModal /> */}
           <GlobalNotification />
         </ThemeProvider>
       </KeyboardProvider>

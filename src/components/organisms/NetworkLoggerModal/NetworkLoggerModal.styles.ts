@@ -6,7 +6,7 @@ import { Box } from '@/components/atoms/Box';
 
 export const FloatingButton = styled.TouchableOpacity`
   position: absolute;
-  bottom: ${verticalScale(100)}px;
+  bottom: ${verticalScale(160)}px;
   right: ${scale(24)}px;
   width: ${moderateScale(56)}px;
   height: ${moderateScale(56)}px;

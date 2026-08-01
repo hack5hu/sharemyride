@@ -1,7 +1,8 @@
 import React from 'react';
-import { ViewStyle, PermissionsAndroid, Platform } from 'react-native';
+import { ViewStyle, Platform } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { Avatar } from '@/components/atoms/Avatar';
+import { requestPhotoPermission } from '@/utils/permissionUtils';
 
 import {
   Container,
@@ -34,25 +35,7 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({
 
   const handlePicker = async () => {
     if (disabled) return;
-    if (Platform.OS === 'android') {
-      try {
-        const apiLevel = parseInt(Platform.Version.toString(), 10);
-
-        if (apiLevel >= 33) {
-          // Android 13+ requires specific media permissions
-          await PermissionsAndroid.request(
-            (PermissionsAndroid.PERMISSIONS as any).READ_MEDIA_IMAGES,
-          );
-        } else {
-          // Older Android versions use broader storage permission
-          await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-          );
-        }
-      } catch (err) {
-        console.warn('Permission request failed', err);
-      }
-    }
+    await requestPhotoPermission();
 
     // Launch the picker regardless of the permission result.
     // Modern Android system photo pickers often don't require app-level permissions.

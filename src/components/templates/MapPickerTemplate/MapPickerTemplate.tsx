@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Animated, View } from 'react-native';
+import { Animated, View, Keyboard } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
@@ -131,6 +131,7 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
     <ScreenShell
       title={mapPicker.title}
       onBack={searchOverlayProps.onBackPress}
+      noPaddingBottom
     >
       <MapSearchOverlay {...searchOverlayProps} isCondensed={isMapVisible} />
 
@@ -138,7 +139,10 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
       {isMapMounted && (
         <OlaMap
           ref={mapRef}
-          onRegionWillChange={onRegionWillChange}
+          onRegionWillChange={() => {
+            Keyboard.dismiss();
+            onRegionWillChange?.();
+          }}
           onRegionDidChange={onRegionChangeComplete}
           style={{
             flex: 1,

@@ -138,7 +138,9 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                 color="on_surface_variant"
                 align="center"
               >
-                {isDriver
+                {isCompleted
+                  ? 'This completed ride had no booked passengers, so there are no co-riders to rate.'
+                  : isDriver
                   ? 'Your seat inventory is wide open. Once passengers book, their details will display here.'
                   : 'Be the first one to book a seat and give the host company on this journey!'}
               </Typography>
@@ -194,12 +196,25 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                   )}
                   {isCompleted && onRatePassenger && (
                     <S.RateButton
-                      icon="star"
-                      variant="surface"
+                      activeOpacity={0.8}
                       onPress={() =>
                         onRatePassenger?.(p.id || p.bookingId || '', p.name)
                       }
-                    />
+                    >
+                      <Icon
+                        name="star"
+                        size={moderateScale(16)}
+                        color={theme.colors.warning}
+                      />
+                      <Typography
+                        variant="label"
+                        size="xs"
+                        weight="bold"
+                        color={theme.colors.warning}
+                      >
+                        Rate
+                      </Typography>
+                    </S.RateButton>
                   )}
                 </S.PassengerCard>
               ))}

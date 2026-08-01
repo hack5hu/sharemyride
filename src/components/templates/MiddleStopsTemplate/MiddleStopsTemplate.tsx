@@ -1,4 +1,6 @@
 import React from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { verticalScale } from '@/styles';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { Location } from '@/store/useLocationStore';
@@ -8,6 +10,7 @@ import {
 } from '@/components/organisms/MiddleStopsList';
 
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
 import { Button } from '@/components/atoms/Button';
 import * as S from './MiddleStopsTemplate.styles';
 
@@ -39,6 +42,7 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
   destinationDistanceText,
 }) => {
   const { middleStops: t } = useLocale();
+  const insets = useSafeAreaInsets();
   console.log('startDistanceText', startDistanceText);
   console.log('destinationDistanceText', destinationDistanceText);
   return (
@@ -70,7 +74,7 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
       </S.ContentLayer>
 
       {/* Floating Footer */}
-      <S.FixedFooter>
+      <FixedFooter>
         <Button
           variant="primary"
           icon="arrow-forward"
@@ -79,7 +83,7 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
         >
           {t.continue}
         </Button>
-      </S.FixedFooter>
+      </FixedFooter>
     </ScreenShell>
   );
 };

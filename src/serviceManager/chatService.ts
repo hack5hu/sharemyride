@@ -43,6 +43,8 @@ class ChatServiceClass {
 
   private client: Client | null = null;
   private currentUserId: string | null = null;
+  private retryCount: number = 0;
+  private maxRetries: number = 3;
 
   async connect(userId: string) {
     if (this.client?.active && this.currentUserId === userId) {
@@ -50,6 +52,8 @@ class ChatServiceClass {
       return;
     }
 
+    // Reset retry count on explicit new connection request
+    this.retryCount = 0;
     this.currentUserId = userId;
     const { setConnectionStatus, setMyUserId } = useChatStore.getState();
 
@@ -68,32 +72,37 @@ class ChatServiceClass {
     }
 
     try {
+      if (this.client) {
+        try {
+          this.client.deactivate();
+        } catch {}
+      }
+
       this.client = new Client({
         webSocketFactory: () => new WebSocket(brokerUrl),
         connectHeaders: {
           userId: userId,
           Authorization: `Bearer ${authCreds.password}`,
         },
-        debug: msg => {
-          Logger.log('STOMP:', msg);
-        },
-        reconnectDelay: 5000,
-        heartbeatIncoming: 4000,
-        heartbeatOutgoing: 4000,
+        debug: () => {}, // Disable raw STOMP debug spam on failed reconnects
+        reconnectDelay: 15000, // 15s gentle interval instead of aggressive 5s polling
+        heartbeatIncoming: 10000,
+        heartbeatOutgoing: 10000,
         forceBinaryWSFrames: true,
         appendMissingNULLonIncoming: true,
       });
 
-      this.client.onWebSocketError = event => {
-        Logger.error('[Socket] WebSocket Error:', event);
+      this.client.onWebSocketError = () => {
+        this.handleConnectionFailure();
       };
 
-      this.client.onWebSocketClose = event => {
-        Logger.log('[Socket] WebSocket Closed:', event);
+      this.client.onWebSocketClose = () => {
+        this.handleConnectionFailure();
       };
 
       this.client.onConnect = () => {
-        Logger.log('[Socket] Connected');
+        Logger.log('[Socket] WebSocket connected successfully');
+        this.retryCount = 0; // Reset retry counter on clean connection
         setConnectionStatus(ConnectionStatus.CONNECTED);
         registerChatSubscriptions(this.client as Client, userId, {
           getConversationId: this.getConversationId,
@@ -108,20 +117,42 @@ class ChatServiceClass {
       };
 
       this.client.onStompError = frame => {
-        Logger.error('STOMP Error:', frame.headers.message);
-        setConnectionStatus(ConnectionStatus.DISCONNECTED);
+        Logger.warn('[Socket] STOMP Error:', frame.headers.message);
+        this.handleConnectionFailure();
       };
 
       this.client.activate();
     } catch (error) {
-      Logger.error('[Socket] Initialization failed:', error);
+      Logger.warn('[Socket] Initialization failed:', error);
       setConnectionStatus(ConnectionStatus.DISCONNECTED);
     }
   }
 
+  private handleConnectionFailure() {
+    this.retryCount++;
+    const { setConnectionStatus } = useChatStore.getState();
+
+    if (this.retryCount >= this.maxRetries) {
+      Logger.log(
+        `[Socket] Circuit breaker triggered after ${this.retryCount} failed connection attempts. Pausing auto-reconnect to protect server & device battery.`,
+      );
+      if (this.client) {
+        try {
+          this.client.deactivate();
+        } catch {}
+      }
+      setConnectionStatus(ConnectionStatus.DISCONNECTED);
+    } else {
+      setConnectionStatus(ConnectionStatus.CONNECTING);
+    }
+  }
+
   disconnect() {
+    this.retryCount = 0;
     if (this.client) {
-      this.client.deactivate();
+      try {
+        this.client.deactivate();
+      } catch {}
       this.client = null;
       useChatStore
         .getState()

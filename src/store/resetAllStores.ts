@@ -81,7 +81,7 @@ export const resetAllStores = () => {
     price: 0,
     fullJourneyPrice: 0,
     frontSeatPrice: 0,
-    premiumEnabled: true,
+    premiumEnabled: false,
     premiumPercentage: 10,
     segmentPrices: {},
     requestType: 'instant',

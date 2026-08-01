@@ -109,9 +109,9 @@ export const CounterControls = styled(Box)`
 `;
 
 export const Footer = styled(Box)`
-  padding: ${moderateScale(24)}px;
-  padding-bottom: ${verticalScale(32)}px;
-  background-color: ${({ theme }) => theme.colors.surface}CC;
+  padding: ${scale(24)}px;
+  padding-bottom: ${verticalScale(16)}px;
+  background-color: ${({ theme }) => theme.colors.surface};
 `;
 
 export const ApplyButton = styled.TouchableOpacity`

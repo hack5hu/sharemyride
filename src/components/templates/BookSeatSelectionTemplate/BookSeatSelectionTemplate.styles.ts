@@ -59,6 +59,7 @@ export const SummaryRow = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: ${verticalScale(16)}px;
 `;
 
 export const PillBadge = styled.View`

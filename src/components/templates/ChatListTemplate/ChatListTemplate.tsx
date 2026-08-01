@@ -19,7 +19,7 @@ export const ChatListTemplate: React.FC<ChatListTemplateProps> = ({
   const { chat } = useLocale();
 
   return (
-    <ScreenShell>
+    <ScreenShell noPaddingBottom={Boolean(bottomNav)}>
       <ScrollContainer showsVerticalScrollIndicator={false}>
         <HeaderWrapper>
           <Typography variant="display" size="sm" weight="bold">

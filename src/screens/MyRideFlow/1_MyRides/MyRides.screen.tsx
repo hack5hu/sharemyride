@@ -46,6 +46,8 @@ export const MyRidesScreen: React.FC = memo(() => {
     drafts,
     hasRequests,
     mappedRequests,
+    pendingReview,
+    onRateReview,
     confirmModalConfig,
     hideConfirmModal,
   } = useMyRides();
@@ -130,6 +132,8 @@ export const MyRidesScreen: React.FC = memo(() => {
           draftsCount={drafts?.length || 0}
           onClearDrafts={onClearDrafts}
           requests={mappedRequests}
+          pendingReview={pendingReview}
+          onRatePress={onRateReview}
         />
       );
 

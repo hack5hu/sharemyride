@@ -5,6 +5,7 @@ import { Typography } from '@/components/atoms/Typography';
 import { RideTimeline } from '@/components/molecules/RideTimeline/RideTimeline';
 import { MyRideDetailsTemplateProps } from './types.d';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
 import * as S from './MyRideDetailsTemplate.styles';
 import { moderateScale, verticalScale } from '@/styles';
 import { Loader } from '@/components/atoms/Loader';
@@ -497,7 +498,7 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
 
             {/* Footer Actions */}
             {showFooter && (
-              <S.FixedFooter>
+              <FixedFooter>
                 <Button
                   variant="outline"
                   icon={isDriver ? 'cancel' : 'person-remove'}
@@ -510,7 +511,7 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
                     ? translations.rideDetails.cancelRide
                     : translations.rideDetails.cancelBooking}
                 </Button>
-              </S.FixedFooter>
+              </FixedFooter>
             )}
           </ScreenShell>
         </S.Root>

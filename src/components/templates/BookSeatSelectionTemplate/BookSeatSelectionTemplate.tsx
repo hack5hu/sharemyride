@@ -3,6 +3,7 @@ import React from 'react';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
 import { Button } from '@/components/atoms/Button';
 import { CarFloorPlan } from '@/components/organisms/CarFloorPlan/CarFloorPlan';
 import { SeatLegend } from '@/components/molecules/SeatLegend/SeatLegend';
@@ -75,7 +76,7 @@ export const BookSeatSelectionTemplate: React.FC<
         </S.ScrollContent>
 
         {/* ── Fixed Bottom ── */}
-        <S.FixedFooter>
+        <FixedFooter>
           <S.SummaryRow>
             <S.PillBadge>
               <Typography
@@ -108,7 +109,7 @@ export const BookSeatSelectionTemplate: React.FC<
           >
             {isDisabled ? st.pickSeatToContinue : st.bookMySeat}
           </Button>
-        </S.FixedFooter>
+        </FixedFooter>
       </ScreenShell>
     </S.Root>
   );
