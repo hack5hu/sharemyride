@@ -10,6 +10,7 @@ export const RatingScreen: React.FC<RatingScreenProps> = React.memo(
       t,
       targetUserName,
       targetUserRole,
+      targetUserAvatar,
       categories,
       ratings,
       onRatingChange,
@@ -26,6 +27,7 @@ export const RatingScreen: React.FC<RatingScreenProps> = React.memo(
           t={t}
           targetUserName={targetUserName}
           targetUserRole={targetUserRole}
+          targetUserAvatar={targetUserAvatar}
           categories={categories}
           ratings={ratings}
           onRatingChange={onRatingChange}

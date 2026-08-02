@@ -37,7 +37,7 @@ export const BookingConfirmedTemplate: React.FC<
         <S.RideSummaryGrid>
           {/* Driver Info */}
           <S.DriverCard>
-            <Avatar size="lg" source={{ uri: rideData.driver.avatar }} />
+            <Avatar size="lg" source={{ uri: rideData.driver.avatar }} placeholder={rideData.driver.name} />
             <S.DriverMeta>
               <S.DriverNameText variant="title" size="md" weight="bold">
                 {rideData.driver.name}
@@ -45,14 +45,16 @@ export const BookingConfirmedTemplate: React.FC<
               <S.RatingRow>
                 <MaterialIcons
                   name="star"
-                  size={14}
+                  size={moderateScale(16)}
                   color={theme.colors.primary}
                 />
-                <Typography variant="body" size="sm" weight="bold">
-                  {rideData.driver.rating}
+                <Typography variant="label" size="sm" weight="bold">
+                  {typeof rideData.driver.rating === 'number'
+                    ? rideData.driver.rating.toFixed(1)
+                    : rideData.driver.rating}
                 </Typography>
                 <Typography
-                  variant="body"
+                  variant="label"
                   size="sm"
                   color={theme.colors.on_surface_variant}
                 >
@@ -121,9 +123,6 @@ export const BookingConfirmedTemplate: React.FC<
                   variant="title"
                   size="md"
                   weight="bold"
-                  numberOfLines={1}
-                  adjustsFontSizeToFit={true}
-                  minimumFontScale={0.7}
                 >
                   {rideData.seatNumber}
                 </Typography>

@@ -10,6 +10,7 @@ import { OTPVerificationScreen } from '@/screens/Auth/OTPVerification/OTPVerific
 import { ProfileSetupScreen } from '@/screens/Profile/ProfileSetup';
 import { ProfileHubScreen } from '@/screens/Profile/ProfileHub';
 import { UserProfileDetailScreen } from '@/screens/Common/UserProfileDetail';
+import { UserRatingsScreen } from '@/screens/Common/UserRatings';
 import { DummyScreen } from '@/screens/Common/Dummy';
 import { TermsAndConditionsScreen } from '@/screens/Support/TermsAndConditions';
 import { AboutUsScreen } from '@/screens/Support/AboutUs';
@@ -255,6 +256,10 @@ export const RootNavigator = () => {
           <Stack.Screen
             name="UserProfileDetail"
             component={UserProfileDetailScreen as any}
+          />
+          <Stack.Screen
+            name="UserRatings"
+            component={UserRatingsScreen as any}
           />
           <Stack.Screen name="Rating" component={RatingScreen as any} />
           <Stack.Screen

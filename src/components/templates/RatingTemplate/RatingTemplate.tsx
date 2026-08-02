@@ -17,6 +17,7 @@ export const RatingTemplate: React.FC<RatingTemplateProps> = React.memo(
     t,
     targetUserName,
     targetUserRole,
+    targetUserAvatar,
     categories,
     ratings,
     onRatingChange,
@@ -46,7 +47,7 @@ export const RatingTemplate: React.FC<RatingTemplateProps> = React.memo(
               <S.ContentPadding>
                 {/* Intro Card */}
                 <S.UserCard>
-                  <Avatar placeholder={targetUserName} size="lg" />
+                  <Avatar source={{ uri: targetUserAvatar }} placeholder={targetUserName} size="lg" />
                   <Typography
                     variant="title"
                     size="lg"

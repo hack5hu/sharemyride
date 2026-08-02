@@ -219,21 +219,29 @@ export const RideService = {
     ratings: Record<string, number>,
     review?: string,
   ) => {
+    const response = await axiosClient.post(API_ENDPOINTS.RIDE.SUBMIT_RATING, {
+      rideId: Number(rideId),
+      ratedUserId: targetUserId,
+      score: rating,
+      comment: review,
+    });
+    return response.data;
+  },
+
+  reportRide: async (payload: {
+    rideId: number | string;
+    reason: string;
+    description: string;
+  }) => {
     try {
-      const response = await axiosClient.post(`/ride/${rideId}/rating`, {
-        targetUserId,
-        rating,
-        ratings,
-        review,
+      const response = await axiosClient.post(API_ENDPOINTS.RIDE.REPORT, {
+        ...payload,
+        rideId: Number(payload.rideId),
       });
       return response.data;
     } catch (error) {
-      console.error(
-        'Submitting rating failed, falling back to mock success:',
-        error,
-      );
-      // Fallback for demo/mock server compatibility
-      return { success: true };
+      console.warn('Report Ride API error:', error);
+      throw error;
     }
   },
 };

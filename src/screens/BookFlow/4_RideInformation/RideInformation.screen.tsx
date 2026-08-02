@@ -49,6 +49,7 @@ export const RideInformationScreen: React.FC<RideInformationProps> = memo(
             onClose={() => setIsReportModalVisible(false)}
             onSubmit={handleReportSubmit}
             bookingId={ride?.id || 'Ride'}
+            reportType="RIDE"
           />
         )}
       </>

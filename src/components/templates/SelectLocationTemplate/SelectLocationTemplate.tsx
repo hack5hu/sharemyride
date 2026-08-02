@@ -16,7 +16,6 @@ import {
   HeaderTitle,
   CenterPinWrapper,
   BottomContainer,
-  ZoomControlsWrapper,
   LocationPreviewContainer,
   LocationPreviewTitle,
   LocationPreviewText,
@@ -141,13 +140,11 @@ export const SelectLocationTemplate: React.FC<
       {/* Layer 2 — Center pin (pointer-events none so map stays interactive) */}
       <CenterPinWrapper pointerEvents="none">{centerPin}</CenterPinWrapper>
 
-      <ZoomControlsWrapper>
-        <MapControlsFABs
-          onZoomIn={onZoomIn}
-          onZoomOut={onZoomOut}
-          onLocateMe={onMyLocationPress}
-        />
-      </ZoomControlsWrapper>
+      <MapControlsFABs
+        onZoomIn={onZoomIn}
+        onZoomOut={onZoomOut}
+        onLocateMe={onMyLocationPress}
+      />
 
       {/* Layer 3 — Stacked bottom elements */}
       <BottomContainer pointerEvents="box-none">

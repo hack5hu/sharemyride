@@ -88,15 +88,34 @@ export const useRideDetails = () => {
   }, []);
 
   const handleReportSubmit = useCallback(
-    (_data: { categoryId: string; description: string }) => {
+    async (data: {
+      categoryId: string;
+      reason?: string;
+      description: string;
+    }) => {
       setIsReportModalVisible(false);
-      showNotification(
-        NotificationType.SUCCESS,
-        t('rideDetails.reportSuccessTitle'),
-        t('rideDetails.reportSuccessMessage'),
-      );
+      try {
+        await RideService.reportRide({
+          rideId,
+          reason: data.reason || data.categoryId.toUpperCase(),
+          description: data.description,
+        });
+        showNotification(
+          NotificationType.SUCCESS,
+          t('rideDetails.reportSuccessTitle') || 'Report Submitted',
+          t('rideDetails.reportSuccessMessage') ||
+            'Thank you for reporting this ride.',
+        );
+      } catch (error: any) {
+        console.error('Ride report error:', error);
+        showNotification(
+          NotificationType.ERROR,
+          'Submission Failed',
+          getErrorMessage(error, 'Failed to report ride. Please try again.'),
+        );
+      }
     },
-    [t],
+    [rideId, t],
   );
 
   const cancellationReasons = useMemo(
@@ -234,7 +253,9 @@ export const useRideDetails = () => {
     (navigation.navigate as any)('ChatDetails', {
       userId: isDriver
         ? rideData?.passengers?.[0]?.passengerId
-        : rideData?.driver?.driverId || rideData?.driver?.userId,
+        : rideData?.driver?.id ||
+          rideData?.driver?.driverId ||
+          rideData?.driver?.userId,
       rideId: rideId,
       name: targetName,
       avatarUri: isDriver ? undefined : rideData?.driver?.photoUrl,
@@ -251,20 +272,25 @@ export const useRideDetails = () => {
     if (rideData?.driver) {
       navigation.navigate('Rating', {
         rideId,
-        targetUserId: rideData.driver.driverId || rideData.driver.userId,
+        targetUserId:
+          rideData.driver.id ||
+          rideData.driver.driverId ||
+          rideData.driver.userId,
         targetUserName: rideData.driver.name,
         targetUserRole: 'DRIVER',
+        targetUserAvatar: rideData.driver.photoUrl || rideData.driver.avatar,
       });
     }
   }, [navigation, rideId, rideData]);
 
   const handleRatePassenger = useCallback(
-    (passengerId: string, name: string) => {
+    (passengerId: string, name: string, avatarUri?: string) => {
       navigation.navigate('Rating', {
         rideId,
         targetUserId: passengerId,
         targetUserName: name,
         targetUserRole: 'PASSENGER',
+        targetUserAvatar: avatarUri,
       });
     },
     [navigation, rideId],

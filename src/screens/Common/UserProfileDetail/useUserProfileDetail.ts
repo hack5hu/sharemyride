@@ -1,8 +1,11 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useEffect, useCallback } from 'react';
 import { UserService } from '@/serviceManager/UserService';
+import { computeTotalRides } from '@/utils/user';
 import { useLocale } from '@/constants/localization';
 import { UserProfile } from './types';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
 
 export const useUserProfileDetail = (userId: string) => {
   const navigation = useAppNavigation();
@@ -10,63 +13,86 @@ export const useUserProfileDetail = (userId: string) => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isReportVisible, setIsReportVisible] = useState(false);
 
   const fetchProfile = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await UserService.getUserProfile(userId);
+      
+      const [profileData, ratingsData] = await Promise.all([
+        UserService.getUserProfile(userId),
+        UserService.getUserRatings(userId).catch(() => []), // fallback to empty array if ratings API fails
+      ]);
 
-      // Basic mapping from API response to our UI interface
-      // Note: In a real app, this mapping logic might be more complex
-      const mappedProfile: UserProfile = {
-        id: data.id || userId,
-        name: data.name || 'Unknown User',
-        profileImage: data.profileImage,
-        bio: data.bio || t.defaultBio,
-        isVerified: data.isVerified ?? true,
-        rating: data.rating ?? 4.9,
-        ratingCount: data.ratingCount ?? 124,
-        preferences: data.preferences || [
-          { icon: 'smoke_free', label: 'Non-smoking' },
+      // Map preferences dynamically
+      const preferences: { icon: string; label: string }[] = [];
+      if (profileData.preference) {
+        const pref = profileData.preference;
+        if (pref.nonSmoking) {
+          preferences.push({ icon: 'smoke-free', label: 'Non-smoking' });
+        }
+        if (pref.petFriendly) {
+          preferences.push({ icon: 'pets', label: 'Pets allowed' });
+        } else {
+          preferences.push({ icon: 'block', label: 'No pets' });
+        }
+        if (pref.luggageAllowed) {
+          preferences.push({ icon: 'business-center', label: 'Luggage allowed' });
+        }
+        if (pref.musicPreference && pref.musicPreference !== 'None') {
+          preferences.push({
+            icon: 'music-note',
+            label: `${pref.musicPreference} music`,
+          });
+        }
+        if (pref.womenOnly) {
+          preferences.push({ icon: 'face', label: 'Ladies only' });
+        }
+      } else {
+        preferences.push(
+          { icon: 'smoke-free', label: 'Non-smoking' },
           { icon: 'pets', label: 'Pets allowed' },
-          { icon: 'music_note', label: 'Lo-fi only' },
-        ],
-        vehicle: data.vehicle
+          { icon: 'music-note', label: 'Lo-fi only' },
+        );
+      }
+
+      // Map reviews
+      const mappedReviews = (ratingsData || []).map((r: any) => ({
+        id: String(r.ratingId),
+        reviewerName: r.raterName || 'Anonymous',
+        reviewerImage: r.raterPhotoUrl || undefined,
+        rating: r.score,
+        date: r.createdAt
+          ? new Date(r.createdAt).toLocaleDateString([], {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
+            })
+          : 'Recent',
+        tripInfo: r.raterRole === 'DRIVER' ? 'Rode with them' : 'Passenger',
+        comment: r.comment || '',
+      }));
+
+      const mappedProfile: UserProfile = {
+        id: profileData.userId || userId,
+        name: profileData.name || 'Unknown User',
+        profileImage: profileData.profilePhotoUrl,
+        bio: profileData.bio || t.defaultBio,
+        isVerified: profileData.phoneVerified || profileData.emailVerified || false,
+        rating: profileData.rating ?? 5,
+        ratingCount: computeTotalRides(profileData) || ratingsData.length || 0,
+        preferences,
+        vehicle: profileData.vehicle
           ? {
-              model: data.vehicle.model,
-              color: data.vehicle.color,
-              plateNumber: data.vehicle.plateNumber,
-              type: data.vehicle.type || 'electric',
-              tag: data.vehicle.tag || 'EV Eco-Friendly',
+              model: profileData.vehicle.model,
+              color: profileData.vehicle.color,
+              plateNumber: profileData.vehicle.plateNumber,
+              type: profileData.vehicle.type || 'electric',
+              tag: profileData.vehicle.tag || 'EV Eco-Friendly',
             }
-          : {
-              model: 'Tesla Model 3',
-              color: 'Forest Green',
-              plateNumber: 'ABC-1234',
-              type: 'electric',
-              tag: 'EV Eco-Friendly',
-            },
-        reviews: data.reviews || [
-          {
-            id: '1',
-            reviewerName: 'Sarah Miller',
-            rating: 5,
-            date: '2 days ago',
-            tripInfo: 'Trip to Downtown',
-            comment:
-              'Alex was a great driver! The car was immaculate and the music selection was perfect for a Monday morning. Very professional.',
-          },
-          {
-            id: '2',
-            reviewerName: 'Michael Chen',
-            rating: 4,
-            date: '1 week ago',
-            tripInfo: 'Late night commute',
-            comment:
-              'Smooth ride and arrived exactly on time. Alex is quiet but very polite. Highly recommend for airport runs.',
-          },
-        ],
+          : undefined,
+        reviews: mappedReviews,
       };
 
       setProfile(mappedProfile);
@@ -76,7 +102,7 @@ export const useUserProfileDetail = (userId: string) => {
     } finally {
       setIsLoading(false);
     }
-  }, [userId]);
+  }, [userId, t.defaultBio]);
 
   useEffect(() => {
     fetchProfile();
@@ -86,9 +112,60 @@ export const useUserProfileDetail = (userId: string) => {
     navigation.goBack();
   }, [navigation]);
 
-  const handleReport = useCallback(() => {}, []);
+  const handleReport = useCallback(() => {
+    setIsReportVisible(true);
+  }, []);
 
-  const handleViewRatings = useCallback(() => {}, []);
+  const onReportClose = useCallback(() => {
+    setIsReportVisible(false);
+  }, []);
+
+  const onReportSubmit = useCallback(
+    async (data: { categoryId: string; reason?: string; description: string }) => {
+      setIsReportVisible(false);
+      try {
+        await UserService.reportUser({
+          reportedUserId: userId,
+          reason: data.reason || data.categoryId.toUpperCase(),
+          description: data.description,
+        });
+        showNotification(
+          NotificationType.SUCCESS,
+          'Report Submitted',
+          'Thank you for reporting. Our team will review this user.',
+        );
+      } catch (e: any) {
+        console.error('Report submission error:', e);
+        showNotification(
+          NotificationType.ERROR,
+          'Submission Failed',
+          e?.response?.data?.message ||
+            e?.message ||
+            'Failed to submit report. Please try again.',
+        );
+      }
+    },
+    [userId],
+  );
+
+  const handleViewRatings = useCallback(() => {
+    if (profile) {
+      navigation.navigate('UserRatings', {
+        userId: profile.id,
+        userName: profile.name,
+      });
+    }
+  }, [navigation, profile]);
+
+  const handleChat = useCallback(() => {
+    if (profile) {
+      navigation.navigate('ChatDetails', {
+        userId: profile.id,
+        name: profile.name,
+        avatarUri: profile.profileImage,
+      });
+    }
+  }, [navigation, profile]);
 
   return {
     profile,
@@ -97,6 +174,10 @@ export const useUserProfileDetail = (userId: string) => {
     handleBack,
     handleReport,
     handleViewRatings,
+    handleChat,
+    isReportVisible,
+    onReportClose,
+    onReportSubmit,
     t,
   };
 };

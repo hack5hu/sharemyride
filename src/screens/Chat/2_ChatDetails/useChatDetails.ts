@@ -8,8 +8,10 @@ import { ChatService } from '@/serviceManager/ChatService';
 import { RideService } from '@/serviceManager/RideService';
 import { useChatSocket } from '@/hooks/useChatSocket';
 import { ChatMessage } from '@/types/chat';
-import { ConnectionStatus, MessageStatus } from '@/constants/enums';
+import { ConnectionStatus, MessageStatus, NotificationType } from '@/constants/enums';
 import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
+import { UserService } from '@/serviceManager/UserService';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 
 const getFormatDate = (timestamp: number, t: any) => {
   const date = new Date(timestamp);
@@ -346,10 +348,39 @@ export const useChatDetails = () => {
   );
 
   const handleReportSubmit = useCallback(
-    (_data: { categoryId: string; description: string }) => {
+    async (data: {
+      categoryId: string;
+      reason?: string;
+      description: string;
+    }) => {
       setIsReportModalVisible(false);
+      const targetUserId = receiverId;
+      if (!targetUserId || targetUserId === 'Unknown') return;
+
+      try {
+        await UserService.reportUser({
+          reportedUserId: targetUserId,
+          reason: data.reason || data.categoryId.toUpperCase(),
+          description: data.description,
+        });
+        showNotification(
+          NotificationType.SUCCESS,
+          t('chat.reportSuccessTitle') || 'Report Submitted',
+          t('chat.reportSuccessMessage') ||
+            'Thank you for reporting. Our team will review this user.',
+        );
+      } catch (e: any) {
+        console.error('Chat report submission error:', e);
+        showNotification(
+          NotificationType.ERROR,
+          'Submission Failed',
+          e?.response?.data?.message ||
+            e?.message ||
+            'Failed to submit report. Please try again.',
+        );
+      }
     },
-    [],
+    [receiverId, t],
   );
 
   const handleRetry = useCallback(

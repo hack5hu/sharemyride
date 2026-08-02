@@ -108,7 +108,7 @@ export const usePriceSelection = () => {
           PRICING_MULTIPLIERS.MID,
           divisor,
         );
-        if (price === 0 || !storePrice) {
+        if (price === 0) {
           setPrice(calculatedRec);
         }
 

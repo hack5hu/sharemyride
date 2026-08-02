@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { View, Pressable } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { IconButton } from '@/components/atoms/IconButton';
@@ -23,55 +22,137 @@ import {
 } from './ReportIssueModal.styles';
 import { ReportIssueModalProps } from './types.d';
 import { CategoryIconVariant } from '@/components/atoms/CategoryIcon';
+import { Box } from '@/components/atoms/Box';
 
 export const ReportIssueModal: React.FC<ReportIssueModalProps> = ({
   isVisible,
   onClose,
   onSubmit,
   bookingId,
+  reportType = 'USER',
 }) => {
   const theme = useTheme();
   const { reportIssue: t } = useLocale();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [description, setDescription] = useState('');
 
-  const CATEGORIES: {
+  const USER_CATEGORIES: {
     id: string;
+    reason: string;
     label: string;
     icon: string;
     variant: CategoryIconVariant;
   }[] = [
     {
-      id: 'safety',
-      label: t.categorySafety,
-      icon: 'shield',
-      variant: 'tertiary',
-    },
-    {
-      id: 'behavior',
-      label: t.categoryBehavior,
-      icon: 'person-alert',
+      id: 'inappropriate_behaviour',
+      reason: 'INAPPROPRIATE_BEHAVIOUR',
+      label: t.categoryInappropriateBehaviour,
+      icon: 'report-problem',
       variant: 'secondary',
     },
     {
-      id: 'vehicle',
-      label: t.categoryVehicle,
-      icon: 'car-repair',
+      id: 'harassment',
+      reason: 'HARASSMENT',
+      label: t.categoryHarassment,
+      icon: 'warning',
+      variant: 'tertiary',
+    },
+    {
+      id: 'fake_profile',
+      reason: 'FAKE_PROFILE',
+      label: t.categoryFakeProfile,
+      icon: 'account-box',
       variant: 'primary',
     },
     {
-      id: 'payment',
-      label: t.categoryPayment,
-      icon: 'payments',
+      id: 'unsafe_driving',
+      reason: 'UNSAFE_DRIVING',
+      label: t.categoryUnsafeDriving,
+      icon: 'speed',
       variant: 'emerald',
     },
     {
+      id: 'no_show',
+      reason: 'NO_SHOW',
+      label: t.categoryNoShow,
+      icon: 'event-busy',
+      variant: 'secondary',
+    },
+    {
+      id: 'spam',
+      reason: 'SPAM',
+      label: t.categorySpam,
+      icon: 'report',
+      variant: 'tertiary',
+    },
+    {
       id: 'other',
+      reason: 'OTHER',
       label: t.categoryOther,
       icon: 'more-horiz',
       variant: 'surface',
     },
   ];
+
+  const RIDE_CATEGORIES: {
+    id: string;
+    reason: string;
+    label: string;
+    icon: string;
+    variant: CategoryIconVariant;
+  }[] = [
+    {
+      id: 'unsafe_driving',
+      reason: 'UNSAFE_DRIVING',
+      label: t.categoryUnsafeDriving,
+      icon: 'speed',
+      variant: 'emerald',
+    },
+    {
+      id: 'wrong_route',
+      reason: 'WRONG_ROUTE',
+      label: t.categoryWrongRoute,
+      icon: 'alt-route',
+      variant: 'secondary',
+    },
+    {
+      id: 'overcharging',
+      reason: 'OVERCHARGING',
+      label: t.categoryOvercharging,
+      icon: 'payments',
+      variant: 'primary',
+    },
+    {
+      id: 'driver_no_show',
+      reason: 'DRIVER_NO_SHOW',
+      label: t.categoryDriverNoShow,
+      icon: 'event-busy',
+      variant: 'tertiary',
+    },
+    {
+      id: 'vehicle_condition',
+      reason: 'VEHICLE_CONDITION',
+      label: t.categoryVehicleCondition,
+      icon: 'car-repair',
+      variant: 'emerald',
+    },
+    {
+      id: 'harassment',
+      reason: 'HARASSMENT',
+      label: t.categoryHarassment,
+      icon: 'warning',
+      variant: 'secondary',
+    },
+    {
+      id: 'other',
+      reason: 'OTHER',
+      label: t.categoryOther,
+      icon: 'more-horiz',
+      variant: 'surface',
+    },
+  ];
+
+  const CATEGORIES = reportType === 'RIDE' ? RIDE_CATEGORIES : USER_CATEGORIES;
 
   const handleResetAndClose = () => {
     setSelectedCategory(null);
@@ -81,16 +162,22 @@ export const ReportIssueModal: React.FC<ReportIssueModalProps> = ({
 
   const handleSubmit = () => {
     if (selectedCategory) {
-      onSubmit({ categoryId: selectedCategory, description });
+      const catObj = CATEGORIES.find(c => c.id === selectedCategory);
+      onSubmit({
+        categoryId: selectedCategory,
+        reason: catObj?.reason || selectedCategory.toUpperCase(),
+        description,
+      });
       handleResetAndClose();
     }
   };
 
   return (
     <ModalBackdrop isVisible={isVisible} onPress={handleResetAndClose}>
-      <Pressable
-        onPress={e => e.stopPropagation()}
-        style={{ width: '100%', alignItems: 'center' }}
+      <Box
+        flexDirection="column"
+        alignItems="center"
+        width="100%"
       >
         <ModalContainer>
           <Header>
@@ -127,7 +214,7 @@ export const ReportIssueModal: React.FC<ReportIssueModalProps> = ({
               </Typography>
               <CategoryGrid>
                 {CATEGORIES.map(cat => (
-                  <View key={cat.id} style={{ width: '100%' }}>
+                  <Box key={cat.id} width="100%">
                     <CategoryButton
                       label={cat.label}
                       icon={cat.icon}
@@ -135,7 +222,7 @@ export const ReportIssueModal: React.FC<ReportIssueModalProps> = ({
                       isSelected={selectedCategory === cat.id}
                       onPress={() => setSelectedCategory(cat.id)}
                     />
-                  </View>
+                  </Box>
                 ))}
               </CategoryGrid>
             </Section>
@@ -194,7 +281,7 @@ export const ReportIssueModal: React.FC<ReportIssueModalProps> = ({
             </CancelButton>
           </Footer>
         </ModalContainer>
-      </Pressable>
+      </Box>
     </ModalBackdrop>
   );
 };

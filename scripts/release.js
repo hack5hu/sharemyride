@@ -1,6 +1,8 @@
 const { execSync } = require('child_process');
 const readline = require('readline');
 const releaseIt = require('release-it').default;
+const fs = require('fs');
+const path = require('path');
 
 // ==========================================
 // 🛠️ CONFIGURATION
@@ -20,6 +22,11 @@ const gradlew = isWin ? 'gradlew.bat' : './gradlew';
 const run = cmd => {
   console.log(`\n> Running: ${cmd}`);
   execSync(cmd, { stdio: 'inherit' });
+};
+
+const setBuildEnv = isApk => {
+  const envPath = path.join(__dirname, '../src/constants/buildEnv.json');
+  fs.writeFileSync(envPath, JSON.stringify({ isApkBuild: isApk }, null, 2));
 };
 
 // Deep-clean Android build caches + stop stale Gradle daemons.
@@ -95,6 +102,8 @@ const main = async () => {
   }
 
   try {
+    setBuildEnv(false); // Default to false
+
     if (target === 'ota') {
       console.log('\n🚀 --- Stallion OTA Release ---');
       const platform = await ask(
@@ -125,6 +134,7 @@ const main = async () => {
       console.log('\n📱 --- UAT APK Build ---');
       await autoBumpVersion('uat');
       cleanAndroid();
+      setBuildEnv(true);
       run(
         `cd android && ${gradlew} assembleRelease --no-daemon -PreactNativeArchitectures=armeabi-v7a,arm64-v8a && cd ..`,
       );
@@ -145,6 +155,7 @@ const main = async () => {
   } catch (error) {
     console.error('\n❌ Script failed!', error.message);
   } finally {
+    setBuildEnv(false);
     rl.close();
   }
 };

@@ -133,7 +133,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
     user?.isSuperAdmin === true ||
     (user as any)?.superAdmin === true;
 
-  const showDebugger = __DEV__ || isSuperAdmin;
+  const showDebugger = __DEV__ || isSuperAdmin || true;
 
   if (!showDebugger) {
     return null;

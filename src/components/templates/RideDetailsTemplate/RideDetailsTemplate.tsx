@@ -90,6 +90,7 @@ export const RideDetailsTemplate: React.FC<RideDetailsTemplateProps> = ({
           onClose={() => setIsReportModalVisible(false)}
           onSubmit={handleReportSubmit}
           bookingId={ride.myBookingId || ride.id || 'Ride'}
+          reportType="RIDE"
         />
       )}
     </S.Container>

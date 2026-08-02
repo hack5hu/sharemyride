@@ -40,6 +40,9 @@ export const SelectLocationScreen: React.FC<SelectLocationScreenProps> = memo(
       handleCloseGpsModal,
       handleCloseGpsBanner,
       isLocating,
+      isDisclosureVisible,
+      handleConfirmDisclosure,
+      handleCloseDisclosure,
     } = useSelectLocation();
 
     return (
@@ -100,6 +103,16 @@ export const SelectLocationScreen: React.FC<SelectLocationScreenProps> = memo(
           confirmLabel={t('chatLocation.enableGps')}
           cancelLabel={t('common.cancel')}
           type="warning"
+        />
+        <ConfirmationModal
+          isVisible={isDisclosureVisible}
+          onClose={handleCloseDisclosure}
+          onConfirm={handleConfirmDisclosure}
+          title={t('chatLocation.locationDisclosureTitle')}
+          message={t('chatLocation.locationDisclosureMessage')}
+          confirmLabel={t('chatLocation.agree')}
+          cancelLabel={t('common.cancel')}
+          type="info"
         />
       </>
     );

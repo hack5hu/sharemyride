@@ -4,6 +4,7 @@ import { useCallback, useState, useEffect, useMemo } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { UserService } from '@/serviceManager/UserService';
+import { computeTotalRides } from '@/utils/user';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 
@@ -140,8 +141,8 @@ export const useProfileHub = () => {
   }, [user?.rating]);
 
   const rides = useMemo(() => {
-    return user?.rideCompleted !== undefined ? Number(user.rideCompleted) : 0;
-  }, [user?.rideCompleted]);
+    return computeTotalRides(user);
+  }, [user]);
 
   const memberSince = useMemo(() => {
     if (user?.createdAt) {

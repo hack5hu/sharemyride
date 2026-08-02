@@ -208,7 +208,6 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
           name: ride.driver.name,
           avatar: ride.driver.photoUrl,
           rating: ride.driver.rating || 5,
-          rideCount: 0, // Fallback if missing
         };
       }, [ride?.driver]);
 
@@ -289,9 +288,17 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
                 {/* Rating Invitation for Passenger */}
                 {isCompleted && !isDriver && onRateDriver && (
                   <S.SectionCard
-                    style={{ backgroundColor: theme.colors.warning + '1A' }}
+                    style={{
+                      backgroundColor: theme.colors.surface_container_low,
+                      elevation: 0,
+                      shadowOpacity: 0,
+                      borderWidth: 1,
+                      borderColor: theme.colors.outline_variant + '40',
+                    }}
                   >
-                    <S.SectionLabelRow>
+                    <S.SectionLabelRow
+                      style={{ marginBottom: verticalScale(12) }}
+                    >
                       <S.SectionDot color={theme.colors.warning} />
                       <Typography
                         variant="label"
@@ -306,7 +313,7 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
                       variant="body"
                       size="sm"
                       color="on_surface_variant"
-                      style={{ marginBottom: verticalScale(12) }}
+                      style={{ marginBottom: verticalScale(16) }}
                     >
                       {translations.rating.ratingCardSubtitle.replace(
                         '{{name}}',

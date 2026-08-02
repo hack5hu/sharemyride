@@ -13,6 +13,7 @@ export const API_ENDPOINTS = {
     PROFILE: '/user/profile',
     DELETE_PHOTO: '/user/profile/photo',
     VEHICLES: '/user/vehicle',
+    REPORT: '/user/report',
   },
   RIDE: {
     PUBLISH: '/ride',
@@ -32,5 +33,8 @@ export const API_ENDPOINTS = {
     DRIVER_PENDING_REQUESTS: '/ride/driver/pending-requests',
     UPDATE_LOCATION: (id: string | number) => `/ride/${id}/location`,
     SYNC_BACKLOG: (id: string | number) => `/ride/${id}/location/backlog`,
+    SUBMIT_RATING: '/rating',
+    GET_USER_RATINGS: (userId: string) => `/rating/user/${userId}`,
+    REPORT: '/ride/report',
   },
 } as const;

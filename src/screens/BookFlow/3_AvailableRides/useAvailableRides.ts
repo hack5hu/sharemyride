@@ -235,7 +235,6 @@ export const useAvailableRides = () => {
         driver: {
           name: ride.driverName || 'Unknown Host',
           rating: ride.driverRating || 4.8,
-          rideCount: ride.driverRideCount || 15,
           avatar:
             ride.driverPhotoUrl ||
             'https://ui-avatars.com/api/?name=' + (ride.driverName || 'U'),

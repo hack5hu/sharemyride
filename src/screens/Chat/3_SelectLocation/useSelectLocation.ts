@@ -8,13 +8,17 @@ import {
 } from '@/serviceManager/LocationService';
 import { Location } from '@/store/useLocationStore';
 import debounce from 'lodash/debounce';
-import { AppState, AppStateStatus } from 'react-native';
+import { AppState, AppStateStatus, Platform, PermissionsAndroid } from 'react-native';
 
 import Geolocation from '@react-native-community/geolocation';
 import {
   requestLocationPermission,
   checkLocationServices,
 } from '@/utils/permissionUtils';
+import {
+  startLiveLocationFetchNotification,
+  stopLiveLocationFetchNotification,
+} from '@/utils/backgroundLocation';
 
 const DEFAULT_REGION = {
   latitude: 12.9716, // Bengaluru
@@ -31,11 +35,13 @@ export const useSelectLocation = () => {
   const [isReverseGeocoding, setIsReverseGeocoding] = useState(false);
   const [isInitiallyCentered, setIsInitiallyCentered] = useState(false);
   const [zoom, setZoom] = useState(15);
+  const zoomRef = useRef(15);
   const [isGpsModalVisible, setIsGpsModalVisible] = useState(false);
   const [isGpsBannerVisible, setIsGpsBannerVisible] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [currentUserLocation, setCurrentUserLocation] =
     useState<Location | null>(null);
+  const [isDisclosureVisible, setIsDisclosureVisible] = useState(false);
 
   const mapRef = useRef<any>(null);
   const cameraRef = useRef<any>(null);
@@ -46,6 +52,9 @@ export const useSelectLocation = () => {
       if (!hasPermission) return;
 
       setIsLocating(true);
+      if (Platform.OS === 'android') {
+        startLiveLocationFetchNotification();
+      }
 
       Geolocation.getCurrentPosition(
         position => {
@@ -158,10 +167,27 @@ export const useSelectLocation = () => {
   useEffect(() => {
     const initLocation = async () => {
       await getFastCachedLocation();
-      checkGpsAndGetLocation(true);
+      if (Platform.OS === 'android') {
+        const hasPermission = await PermissionsAndroid.check(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        );
+        if (hasPermission) {
+          checkGpsAndGetLocation(true);
+        } else {
+          setIsDisclosureVisible(true);
+        }
+      } else {
+        checkGpsAndGetLocation(true);
+      }
     };
     initLocation();
   }, [getFastCachedLocation, checkGpsAndGetLocation]);
+
+  useEffect(() => {
+    return () => {
+      stopLiveLocationFetchNotification();
+    };
+  }, []);
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
@@ -257,17 +283,16 @@ export const useSelectLocation = () => {
 
   const handleZoom = useCallback(
     (increment: number) => {
-      const newZoom = Math.min(Math.max(zoom + increment, 3), 20);
+      const newZoom = Math.min(Math.max(zoomRef.current + increment, 3), 20);
+      zoomRef.current = newZoom;
       setZoom(newZoom);
-      if (region.latitude == null || region.longitude == null) return;
 
       cameraRef.current?.setStop({
-        center: [region.longitude, region.latitude],
         zoom: newZoom,
         duration: 300,
       });
     },
-    [region, zoom],
+    [],
   );
 
   const handleZoomIn = useCallback(() => handleZoom(1), [handleZoom]);
@@ -292,6 +317,7 @@ export const useSelectLocation = () => {
     const currentZoom = viewState.zoom;
 
     if (currentZoom !== undefined) {
+      zoomRef.current = currentZoom;
       setZoom(currentZoom);
     }
 
@@ -357,6 +383,16 @@ export const useSelectLocation = () => {
     ],
   );
 
+  const handleConfirmDisclosure = useCallback(async () => {
+    setIsDisclosureVisible(false);
+    await checkGpsAndGetLocation(true);
+  }, [checkGpsAndGetLocation]);
+
+  const handleCloseDisclosure = useCallback(() => {
+    setIsDisclosureVisible(false);
+    navigation.goBack();
+  }, [navigation]);
+
   return {
     region,
     selectedLocation,
@@ -378,5 +414,8 @@ export const useSelectLocation = () => {
     handleCloseGpsModal,
     handleCloseGpsBanner,
     isLocating,
+    isDisclosureVisible,
+    handleConfirmDisclosure,
+    handleCloseDisclosure,
   };
 };

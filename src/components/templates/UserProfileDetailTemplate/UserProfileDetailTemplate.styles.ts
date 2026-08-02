@@ -64,6 +64,23 @@ export const RatingBadge = styled(Box)`
   gap: ${scale(4)}px;
 `;
 
+export const ChatButton = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: ${scale(8)}px;
+  background-color: ${({ theme }) => theme.colors.primary};
+  padding-horizontal: ${scale(24)}px;
+  padding-vertical: ${verticalScale(10)}px;
+  border-radius: ${moderateScale(100)}px;
+  margin-top: ${verticalScale(16)}px;
+  shadow-color: ${({ theme }) => theme.colors.primary};
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.2;
+  shadow-radius: 8px;
+  elevation: 4;
+`;
+
 export const Section = styled(Box)`
   padding-horizontal: ${scale(24)}px;
   margin-bottom: ${verticalScale(24)}px;

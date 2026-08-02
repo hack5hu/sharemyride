@@ -146,6 +146,11 @@ export type RootStackParamList = {
     targetUserId: string;
     targetUserName: string;
     targetUserRole: 'DRIVER' | 'PASSENGER';
+    targetUserAvatar?: string;
+  };
+  UserRatings: {
+    userId: string;
+    userName: string;
   };
   Suggestions: undefined;
 };

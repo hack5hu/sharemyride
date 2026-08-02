@@ -27,7 +27,7 @@ interface PassengerManagementProps {
   onPassengerPress?: (id: string) => void;
   hideActions?: boolean;
   vehicleType?: string;
-  onRatePassenger?: (id: string, name: string) => void;
+  onRatePassenger?: (id: string, name: string, avatarUrl?: string) => void;
   isCompleted?: boolean;
 }
 
@@ -198,7 +198,7 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                     <S.RateButton
                       activeOpacity={0.8}
                       onPress={() =>
-                        onRatePassenger?.(p.id || p.bookingId || '', p.name)
+                        onRatePassenger?.(p.id || p.bookingId || '', p.name, p.photoUrl)
                       }
                     >
                       <Icon

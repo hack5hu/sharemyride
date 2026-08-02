@@ -765,13 +765,14 @@ export const en: Translations = {
     vehicleDetails: 'Vehicle Details',
   },
   userProfileDetail: {
-    headerTitle: 'RideConnect',
+    headerTitle: 'User Profile',
     verifiedMember: 'Verified Member',
     preferences: 'Preferences',
     vehicleInfo: 'Vehicle Info',
     viewRatings: 'View breakdown of {{count}} ratings',
     recentReviews: 'Recent Reviews',
     reportUser: 'Report {{name}}',
+    rideCountLabel: '{{count}} ride(s) completed',
     bioTitle: 'About Me',
     defaultBio:
       'Verified community partner ready to share rides and reduce carbon footprint! Enjoys meeting new people, listening to soft instrumental music, and promoting safe eco-friendly travels.',
@@ -809,6 +810,10 @@ export const en: Translations = {
     gpsSettingsPathAndroid: 'Settings > Location',
     gpsSettingsPathIos: 'Settings > Privacy > Location Services',
     loadingCurrentLocation: 'Loading your current location...',
+    locationDisclosureTitle: 'Location Access Notice',
+    locationDisclosureMessage:
+      'ZyncRide collects location data to display your current position on the map, help you select pickup/drop-off points, and support live location sharing with your co-riders, even when the app is closed or not in use.',
+    agree: 'Agree & Continue',
   },
   rideRoute: {
     title: 'Ride Route',
@@ -839,11 +844,17 @@ export const en: Translations = {
     whatHappenedTitle: 'What happened?',
     whatHappenedSubtitle:
       'Select the category that best describes your concern.',
-    categorySafety: 'Safety Concern',
-    categoryBehavior: 'Inappropriate Behavior',
-    categoryVehicle: 'Vehicle Issue',
-    categoryPayment: 'Payment/Price Issue',
+    categoryInappropriateBehaviour: 'Inappropriate Behaviour',
+    categoryHarassment: 'Harassment',
+    categoryFakeProfile: 'Fake Profile',
+    categoryUnsafeDriving: 'Unsafe Driving',
+    categoryNoShow: 'No Show',
+    categorySpam: 'Spam',
     categoryOther: 'Other',
+    categoryWrongRoute: 'Wrong Route',
+    categoryOvercharging: 'Overcharging',
+    categoryDriverNoShow: 'Driver No Show',
+    categoryVehicleCondition: 'Poor Vehicle Condition',
     tellUsMoreTitle: 'Tell us more',
     tellUsMoreSubtitle:
       'Your privacy is our priority. Shared details help us investigate faster.',
@@ -914,5 +925,10 @@ export const en: Translations = {
     noTicketsTitle: 'No Tickets Found',
     noTicketsMessage:
       'You have not submitted any feedback yet. Use the Submit Feedback tab to get started!',
+  },
+  otaUpdate: {
+    title: 'Update Available',
+    message: 'A new version of the app is available. Please restart the app to apply the update.',
+    confirmBtn: 'Restart App',
   },
 };

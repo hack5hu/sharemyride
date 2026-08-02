@@ -34,6 +34,7 @@ export const DriverCard: React.FC<DriverCardProps> = React.memo(
           <S.AvatarWrapper>
             <Avatar
               source={{ uri: driver.driverPhotoUrl || driver.avatar }}
+              placeholder={driver.name}
               size="md"
               border
             />
@@ -60,8 +61,7 @@ export const DriverCard: React.FC<DriverCardProps> = React.memo(
                 weight="bold"
                 color="on_surface_variant"
               >
-                {driver.rating} · {driver.rideCount}{' '}
-                {translations.rideDetails.ridesLabel}
+                {driver.rating}
               </Typography>
             </S.VerifiedRow>
           </S.DriverTextGroup>

@@ -8,4 +8,8 @@ export interface UserProfileDetailTemplateProps {
   handleBack: () => void;
   handleReport: () => void;
   handleViewRatings: () => void;
+  handleChat?: () => void;
+  isReportVisible?: boolean;
+  onReportClose?: () => void;
+  onReportSubmit?: (data: { categoryId: string; description: string }) => void;
 }

@@ -25,6 +25,8 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   cancelLabel = 'Cancel',
   isLoading = false,
   type = 'info',
+  hideCancel = false,
+  dismissible = true,
 }) => {
   const theme = useTheme();
 
@@ -53,7 +55,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   return (
     <ModalBackdrop
       isVisible={isVisible}
-      onPress={isLoading ? undefined : onClose}
+      onPress={!dismissible || isLoading ? undefined : onClose}
     >
       <Pressable
         onPress={e => e.stopPropagation()}
@@ -85,16 +87,18 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           </TextContainer>
 
           <ButtonContainer>
-            <SecondaryButton onPress={onClose} disabled={isLoading}>
-              <Typography
-                variant="title"
-                size="sm"
-                weight="bold"
-                color="on_surface_variant"
-              >
-                {cancelLabel}
-              </Typography>
-            </SecondaryButton>
+            {!hideCancel && (
+              <SecondaryButton onPress={onClose} disabled={isLoading}>
+                <Typography
+                  variant="title"
+                  size="sm"
+                  weight="bold"
+                  color="on_surface_variant"
+                >
+                  {cancelLabel}
+                </Typography>
+              </SecondaryButton>
+            )}
 
             <PrimaryButton onPress={onConfirm} disabled={isLoading}>
               <GradientBtn

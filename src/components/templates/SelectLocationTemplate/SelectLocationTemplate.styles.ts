@@ -80,14 +80,6 @@ export const ActionFABWrapper = styled.View`
   align-items: center;
 `;
 
-export const ZoomControlsWrapper = styled.View`
-  position: absolute;
-  right: ${scale(16)}px;
-  top: 50%;
-  transform: translateY(${verticalScale(-60)}px);
-  z-index: 60;
-`;
-
 export const LocationPreviewContainer = styled.View`
   flex-direction: row;
   align-items: center;

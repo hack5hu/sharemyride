@@ -13,6 +13,7 @@ import { useDeviceIdStore } from '@/store/useDeviceIdStore';
 import { useSettingsStore } from '@/store/settings';
 import { NetworkLoggerModal } from '@/components/organisms/NetworkLoggerModal';
 import { GlobalNotification } from '@/components/organisms/GlobalNotification';
+import { StallionUpdateModal } from '@/components/organisms/StallionUpdateModal';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { NotificationService } from '@/serviceManager/NotificationService';
 
@@ -61,8 +62,9 @@ const App = () => {
           >
             <RootNavigator />
           </NavigationContainer>
-          {/* <NetworkLoggerModal /> */}
+         <NetworkLoggerModal /> 
           <GlobalNotification />
+          <StallionUpdateModal />
         </ThemeProvider>
       </KeyboardProvider>
     </SafeAreaProvider>

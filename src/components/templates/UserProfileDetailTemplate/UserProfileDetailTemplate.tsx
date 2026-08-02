@@ -12,7 +12,17 @@ import { ScreenShell } from '@/components/molecules/ScreenShell';
 
 export const UserProfileDetailTemplate: React.FC<
   UserProfileDetailTemplateProps
-> = ({ profile, isLoading, t, handleReport, handleViewRatings }) => {
+> = ({
+  profile,
+  isLoading,
+  t,
+  handleReport,
+  handleViewRatings,
+  handleChat,
+  isReportVisible,
+  onReportClose,
+  onReportSubmit,
+}) => {
   const theme = useTheme();
 
   if (isLoading || !profile) {
@@ -23,7 +33,6 @@ export const UserProfileDetailTemplate: React.FC<
     <ScreenShell
       title={t.headerTitle}
       onBack
-      rightElement={<IconButton icon="more-vert" variant="surface" />}
     >
       <S.ScrollContent showsVerticalScrollIndicator={false}>
         <S.ProfileHero>
@@ -68,10 +77,31 @@ export const UserProfileDetailTemplate: React.FC<
             <S.RatingBadge>
               <Icon name="star" size={14} color={theme.colors.primary} />
               <Typography variant="label" size="sm" weight="bold">
-                {profile.rating} ({profile.ratingCount})
+                {profile.rating} · {t.rideCountLabel.replace(
+                  '{{count}}',
+                  String(profile.ratingCount),
+                )}
               </Typography>
             </S.RatingBadge>
           </S.StatsRow>
+
+          {handleChat && (
+            <S.ChatButton onPress={handleChat} activeOpacity={0.8}>
+              <Icon
+                name="chat-bubble-outline"
+                size={18}
+                color={theme.colors.on_primary}
+              />
+              <Typography
+                variant="label"
+                size="md"
+                weight="bold"
+                color="on_primary"
+              >
+                Chat with {profile.name.split(' ')[0]}
+              </Typography>
+            </S.ChatButton>
+          )}
         </S.ProfileHero>
 
         <S.Section>
@@ -172,20 +202,30 @@ export const UserProfileDetailTemplate: React.FC<
         <S.Section>
           <S.RatingsBreakdown onPress={handleViewRatings}>
             <S.Row>
-              <S.ReviewersAvatars>
-                {profile.reviews.slice(0, 3).map((review, index) => (
-                  <S.ReviewerAvatar
-                    key={index}
-                    source={{ uri: `https://i.pravatar.cc/100?u=${review.id}` }}
-                  />
-                ))}
-              </S.ReviewersAvatars>
+              {profile.reviews.filter(r => Boolean(r.reviewerImage)).length > 0 && (
+                <S.ReviewersAvatars>
+                  {profile.reviews
+                    .filter(r => Boolean(r.reviewerImage))
+                    .slice(0, 3)
+                    .map((review, index) => (
+                      <S.ReviewerAvatar
+                        key={index}
+                        source={{ uri: review.reviewerImage! }}
+                      />
+                    ))}
+                </S.ReviewersAvatars>
+              )}
               <Typography
                 variant="label"
                 size="md"
                 weight="bold"
                 color="on_secondary_container"
-                style={{ marginLeft: 12 }}
+                style={{
+                  marginLeft:
+                    profile.reviews.filter(r => Boolean(r.reviewerImage)).length > 0
+                      ? 12
+                      : 0,
+                }}
               >
                 {t.viewRatings.replace(
                   '{{count}}',
@@ -215,12 +255,13 @@ export const UserProfileDetailTemplate: React.FC<
           >
             {t.recentReviews}
           </Typography>
-          {profile.reviews.map(review => (
+          {profile.reviews.slice(0, 2).map(review => (
             <S.ReviewCard key={review.id}>
               <S.ReviewHeader>
                 <S.ReviewerInfo>
                   <Avatar
-                    source={{ uri: `https://i.pravatar.cc/100?u=${review.id}` }}
+                    source={review.reviewerImage ? { uri: review.reviewerImage } : undefined}
+                    placeholder={review.reviewerName}
                     size="sm"
                   />
                   <Box>

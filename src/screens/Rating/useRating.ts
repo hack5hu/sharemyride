@@ -11,12 +11,14 @@ export const useRating = (params: {
   targetUserId: string;
   targetUserName: string;
   targetUserRole: 'DRIVER' | 'PASSENGER';
+  targetUserAvatar?: string;
 }) => {
   const {
     rideId = '',
     targetUserId = 'user-123',
     targetUserName = 'Julianne Reed',
     targetUserRole = 'PASSENGER',
+    targetUserAvatar,
   } = params || {};
   const navigation = useAppNavigation();
   const { rating: t } = useLocale();
@@ -84,7 +86,7 @@ export const useRating = (params: {
       await RideService.submitRating(
         rideId,
         targetUserId,
-        averageRating,
+        Math.round(averageRating),
         ratings,
         reviewText,
       );
@@ -115,6 +117,7 @@ export const useRating = (params: {
     t,
     targetUserName,
     targetUserRole,
+    targetUserAvatar,
     categories,
     ratings,
     onRatingChange,

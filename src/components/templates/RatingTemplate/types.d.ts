@@ -4,6 +4,7 @@ export interface RatingTemplateProps {
   t: RatingTranslations;
   targetUserName: string;
   targetUserRole: 'DRIVER' | 'PASSENGER';
+  targetUserAvatar?: string;
   categories: Array<{ key: string; label: string }>;
   ratings: Record<string, number>;
   onRatingChange: (categoryKey: string, rating: number) => void;

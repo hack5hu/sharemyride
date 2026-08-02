@@ -27,15 +27,34 @@ export const useRideInformation = (
   }, []);
 
   const handleReportSubmit = useCallback(
-    (_data: { categoryId: string; description: string }) => {
+    async (data: {
+      categoryId: string;
+      reason?: string;
+      description: string;
+    }) => {
       setIsReportModalVisible(false);
-      showNotification(
-        NotificationType.SUCCESS,
-        locale.rideDetails.reportSuccessTitle,
-        locale.rideDetails.reportSuccessMessage,
-      );
+      try {
+        await RideService.reportRide({
+          rideId,
+          reason: data.reason || data.categoryId.toUpperCase(),
+          description: data.description,
+        });
+        showNotification(
+          NotificationType.SUCCESS,
+          locale.rideDetails.reportSuccessTitle || 'Report Submitted',
+          locale.rideDetails.reportSuccessMessage ||
+            'Thank you for reporting this ride.',
+        );
+      } catch (error: any) {
+        console.error('Ride report error:', error);
+        showNotification(
+          NotificationType.ERROR,
+          'Submission Failed',
+          getErrorMessage(error, 'Failed to report ride. Please try again.'),
+        );
+      }
     },
-    [locale],
+    [rideId, locale],
   );
 
   const startLocation = useBookRideStore(state => state.startLocation);

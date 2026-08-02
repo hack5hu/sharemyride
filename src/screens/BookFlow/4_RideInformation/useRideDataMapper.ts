@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { calculateDistance } from '@/utils/location';
 import { formatTimeSafely, formatDateSafely } from '@/utils/date';
+import { computeTotalRides } from '@/utils/user';
 
 export const mapBackendRideToUI = (
   rideRaw: any,
@@ -128,7 +129,13 @@ export const mapBackendRideToUI = (
       id: (rideRaw.user || rideRaw.driver)?.id,
       name: (rideRaw.user || rideRaw.driver)?.name || 'Unknown Driver',
       rating: (rideRaw.user || rideRaw.driver)?.rating || 4.8,
-      rideCount: 15,
+      rideCount: computeTotalRides({
+        ...(rideRaw.user || rideRaw.driver),
+        totalRidesAsDriver: (rideRaw.user || rideRaw.driver)?.totalRidesAsDriver ?? rideRaw.totalRidesAsDriver,
+        totalRidesAsPassenger: (rideRaw.user || rideRaw.driver)?.totalRidesAsPassenger ?? rideRaw.totalRidesAsPassenger,
+        totalRides: (rideRaw.user || rideRaw.driver)?.totalRides ?? rideRaw.totalRides,
+        rideCount: (rideRaw.user || rideRaw.driver)?.rideCount ?? rideRaw.driverRideCount,
+      }),
       avatar:
         (rideRaw.user || rideRaw.driver)?.photoUrl ||
         'https://ui-avatars.com/api/?name=' +

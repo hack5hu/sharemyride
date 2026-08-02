@@ -39,7 +39,10 @@ export const Avatar: React.FC<AvatarProps> = ({
 
   const renderContent = () => {
     const hasSource =
-      source && (typeof source === 'number' || (source as any).uri);
+      source &&
+      (typeof source === 'number' ||
+        ((source as any).uri &&
+          !(source as any).uri.includes('ui-avatars.com')));
 
     if (hasSource) {
       return <AvatarImage source={source} size={size} />;

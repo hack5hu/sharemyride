@@ -113,7 +113,11 @@ export const RideCard: React.FC<{
 
       <Header>
         <DriverInfo>
-          <Avatar source={{ uri: ride.driver.driverPhotoUrl }} size="md" />
+          <Avatar
+            source={{ uri: ride.driver.driverPhotoUrl }}
+            placeholder={ride.driver.name}
+            size="md"
+          />
           <DriverTextGroup>
             <Typography variant="title" size="sm" weight="bold">
               {ride.driver.name}
@@ -133,17 +137,6 @@ export const RideCard: React.FC<{
                 color={theme.colors.primary}
               >
                 {ride.driver.rating}
-              </Typography>
-              <Typography
-                variant="label"
-                size="sm"
-                color={theme.colors.on_surface_variant}
-              >
-                (
-                {t('availableRides.driverRides', {
-                  count: ride.driver.rideCount,
-                })}
-                )
               </Typography>
             </View>
             {ride.pickupDistance !== undefined && ride.pickupDistance < 50 && (

@@ -755,13 +755,14 @@ export const hi: Translations = {
     vehicleDetails: 'गाड़ी की डिटेल्स',
   },
   userProfileDetail: {
-    headerTitle: 'राइड कनेक्ट',
+    headerTitle: 'यूज़र प्रोफ़ाइल',
     verifiedMember: 'वेरीफाइड मेंबर',
     preferences: 'पसंद',
     vehicleInfo: 'गाड़ी की जानकारी',
     viewRatings: '{{count}} रेटिंग्स देखें',
     recentReviews: 'हाल के रिव्यू',
     reportUser: '{{name}} को रिपोर्ट करें',
+    rideCountLabel: '{{count}} राइड पूर्ण',
     bioTitle: 'मेरे बारे में',
     defaultBio:
       'मैं एक वेरीफाइड पार्टनर हूँ! मुझे नए लोगों से मिलना और सेफ ड्राइविंग करना पसंद है।',
@@ -799,6 +800,10 @@ export const hi: Translations = {
     gpsSettingsPathAndroid: 'सेटिंग्स > लोकेशन',
     gpsSettingsPathIos: 'सेटिंग्स > प्राइवेसी > लोकेशन सर्विसेज़',
     loadingCurrentLocation: 'आपकी वर्तमान लोकेशन खोजी जा रही है...',
+    locationDisclosureTitle: 'लोकेशन एक्सेस सूचना',
+    locationDisclosureMessage:
+      'ZyncRide आपकी वर्तमान स्थिति को मानचित्र पर दिखाने, पिकअप/ड्रॉप-ऑफ पॉइंट्स चुनने में मदद करने, और आपके सह-यात्रियों के साथ लाइव लोकेशन साझा करने के लिए लोकेशन डेटा एकत्र करता है, भले ही ऐप बंद हो या उपयोग में न हो।',
+    agree: 'स्वीकार करें और जारी रखें',
   },
   rideRoute: {
     title: 'राइड का रास्ता',
@@ -829,11 +834,17 @@ export const hi: Translations = {
     whatHappenedTitle: 'क्या हुआ था?',
     whatHappenedSubtitle:
       'वह कैटेगरी चुनें जो आपकी परेशानी को सबसे अच्छे से बताती है।',
-    categorySafety: 'सुरक्षा (Safety) की चिंता',
-    categoryBehavior: 'खराब बर्ताव',
-    categoryVehicle: 'गाड़ी से जुड़ी परेशानी',
-    categoryPayment: 'पेमेंट/किराये की परेशानी',
+    categoryInappropriateBehaviour: 'अनुचित व्यवहार',
+    categoryHarassment: 'उत्पीड़न (Harassment)',
+    categoryFakeProfile: 'नकली प्रोफ़ाइल',
+    categoryUnsafeDriving: 'खतरनाक ड्राइविंग',
+    categoryNoShow: 'नो-शो (नहीं आए)',
+    categorySpam: 'स्पैम',
     categoryOther: 'अन्य कारण',
+    categoryWrongRoute: 'गलत रास्ता',
+    categoryOvercharging: 'ज़्यादा पैसे वसूलना',
+    categoryDriverNoShow: 'ड्राइवर नहीं आया',
+    categoryVehicleCondition: 'गाड़ी की खराब हालत',
     tellUsMoreTitle: 'विस्तार से बताएं',
     tellUsMoreSubtitle:
       'आपकी प्राइवेसी हमारी जिम्मेदारी है। सही जानकारी देने से हमें जल्दी एक्शन लेने में मदद मिलेगी।',
@@ -904,5 +915,10 @@ export const hi: Translations = {
     noTicketsTitle: 'कोई टिकट नहीं मिला',
     noTicketsMessage:
       'आपने अभी तक कोई प्रतिक्रिया सबमिट नहीं की है। शुरू करने के लिए फीडबैक सबमिट करें टैब का उपयोग करें!',
+  },
+  otaUpdate: {
+    title: 'अपडेट उपलब्ध है',
+    message: 'ऐप का एक नया संस्करण उपलब्ध है। अपडेट लागू करने के लिए कृपया ऐप को फिर से प्रारंभ करें।',
+    confirmBtn: 'ऐप रीस्टार्ट करें',
   },
 };

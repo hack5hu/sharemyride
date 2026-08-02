@@ -540,6 +540,7 @@ export interface Translations {
   reportIssue: ReportIssueTranslations;
   splash: SplashTranslations;
   rating: RatingTranslations;
+  otaUpdate: OtaUpdateTranslations;
   suggestions: SuggestionsTranslations;
 }
 
@@ -576,6 +577,7 @@ export interface UserProfileDetailTranslations {
   viewRatings: string;
   recentReviews: string;
   reportUser: string;
+  rideCountLabel: string;
   bioTitle: string;
   defaultBio: string;
 }
@@ -884,11 +886,17 @@ export interface ReportIssueTranslations {
   title: string;
   whatHappenedTitle: string;
   whatHappenedSubtitle: string;
-  categorySafety: string;
-  categoryBehavior: string;
-  categoryVehicle: string;
-  categoryPayment: string;
+  categoryInappropriateBehaviour: string;
+  categoryHarassment: string;
+  categoryFakeProfile: string;
+  categoryUnsafeDriving: string;
+  categoryNoShow: string;
+  categorySpam: string;
   categoryOther: string;
+  categoryWrongRoute: string;
+  categoryOvercharging: string;
+  categoryDriverNoShow: string;
+  categoryVehicleCondition: string;
   tellUsMoreTitle: string;
   tellUsMoreSubtitle: string;
   placeholder: string;
@@ -912,6 +920,9 @@ export interface ChatLocationTranslations {
   gpsSettingsPathAndroid: string;
   gpsSettingsPathIos: string;
   loadingCurrentLocation: string;
+  locationDisclosureTitle: string;
+  locationDisclosureMessage: string;
+  agree: string;
 }
 
 export interface RatingTranslations {
@@ -967,4 +978,10 @@ export interface SuggestionsTranslations {
   updatesLabel: string;
   noTicketsTitle: string;
   noTicketsMessage: string;
+}
+
+export interface OtaUpdateTranslations {
+  title: string;
+  message: string;
+  confirmBtn: string;
 }

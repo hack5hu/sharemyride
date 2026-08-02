@@ -134,4 +134,25 @@ export const UserService = {
     const response = await axiosClient.delete(API_ENDPOINTS.USER.DELETE_PHOTO);
     return response.data;
   },
+
+  getUserRatings: async (userId: string) => {
+    const response = await axiosClient.get(
+      API_ENDPOINTS.RIDE.GET_USER_RATINGS(userId),
+    );
+    return response.data;
+  },
+
+  reportUser: async (payload: {
+    reportedUserId: string;
+    reason: string;
+    description: string;
+  }) => {
+    try {
+      const response = await axiosClient.post(API_ENDPOINTS.USER.REPORT, payload);
+      return response.data;
+    } catch (error) {
+      console.warn('Report API error:', error);
+      throw error;
+    }
+  },
 };
