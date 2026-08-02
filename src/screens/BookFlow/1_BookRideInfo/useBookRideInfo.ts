@@ -228,26 +228,42 @@ export const useBookRideInfo = () => {
       else if (response?.content && Array.isArray(response.content))
         rideList = response.content;
 
-      // Find completed rides
+      // Find completed rides (sorted by most recent)
       const completedRides = rideList.filter(
         (r: any) => r.rideStatus === 'COMPLETED' || r.status === 'COMPLETED',
       );
 
       if (completedRides.length === 0) return;
 
+      // Only evaluate the MOST RECENT completed ride
+      const latestRide = completedRides[0];
+      const targetRideId =
+        latestRide.rideId ||
+        latestRide.bookingId ||
+        latestRide.id ||
+        latestRide._id;
+
+      if (!targetRideId) return;
+
       // Get already rated/dismissed ride IDs from MMKV
-      const ratedStr = storage.getString('rated_rides') || '[]';
-      const ratedIds: string[] = JSON.parse(ratedStr);
+      const dismissedStr = storage.getString('dismissed_ratings') || '[]';
+      const dismissedIds: string[] = JSON.parse(dismissedStr);
 
-      // Find first unrated completed ride with valid ID
-      const unrated = completedRides.find((r: any) => {
-        const id = r.rideId || r.bookingId || r.id || r._id;
-        return id && !ratedIds.includes(String(id));
-      });
+      // If the latest completed ride has already been dismissed or rated, do not prompt for older rides
+      if (dismissedIds.includes(String(targetRideId))) {
+        return;
+      }
 
-      if (unrated) {
+      // Check if API response indicates the latest ride is already rated
+      const isRated = 
+        latestRide.hasRated === true || 
+        latestRide.isRated === true ||
+        latestRide.driver?.hasRated === true || 
+        latestRide.myBooking?.hasRatedDriver === true;
+
+      if (!isRated) {
         sessionPromptedRef.current = true;
-        setRatingPromptRide(unrated);
+        setRatingPromptRide(latestRide);
         setIsRatingPromptVisible(true);
       }
     } catch (error) {
@@ -298,11 +314,11 @@ export const useBookRideInfo = () => {
       ratingPromptRide._id;
 
     if (targetRideId) {
-      const ratedStr = storage.getString('rated_rides') || '[]';
-      const ratedIds: string[] = JSON.parse(ratedStr);
-      if (!ratedIds.includes(String(targetRideId))) {
-        ratedIds.push(String(targetRideId));
-        storage.set('rated_rides', JSON.stringify(ratedIds));
+      const dismissedStr = storage.getString('dismissed_ratings') || '[]';
+      const dismissedIds: string[] = JSON.parse(dismissedStr);
+      if (!dismissedIds.includes(String(targetRideId))) {
+        dismissedIds.push(String(targetRideId));
+        storage.set('dismissed_ratings', JSON.stringify(dismissedIds));
       }
     }
 
@@ -341,11 +357,11 @@ export const useBookRideInfo = () => {
       ratingPromptRide._id;
 
     if (targetRideId) {
-      const ratedStr = storage.getString('rated_rides') || '[]';
-      const ratedIds: string[] = JSON.parse(ratedStr);
-      if (!ratedIds.includes(String(targetRideId))) {
-        ratedIds.push(String(targetRideId));
-        storage.set('rated_rides', JSON.stringify(ratedIds));
+      const dismissedStr = storage.getString('dismissed_ratings') || '[]';
+      const dismissedIds: string[] = JSON.parse(dismissedStr);
+      if (!dismissedIds.includes(String(targetRideId))) {
+        dismissedIds.push(String(targetRideId));
+        storage.set('dismissed_ratings', JSON.stringify(dismissedIds));
       }
     }
     setIsRatingPromptVisible(false);

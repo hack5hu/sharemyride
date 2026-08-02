@@ -1,5 +1,6 @@
 import { createNavigationContainerRef } from '@react-navigation/native';
 import { RootStackParamList } from './types';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
@@ -12,14 +13,21 @@ export const navigate = (name: keyof RootStackParamList, params?: any) => {
   if (now - lastNavigationTime < THROTTLE_MS) return;
   lastNavigationTime = now;
 
-  if (navigationRef.isReady()) {
-    navigationRef.navigate(name as any, params as any);
-  } else {
-    // Retry for cold starts where the UI hasn't fully booted
-    setTimeout(() => {
-      if (navigationRef.isReady()) {
-        navigationRef.navigate(name as any, params as any);
-      }
-    }, 500);
-  }
+  const tryNavigate = (attempts = 0) => {
+    const { isAuthenticated, isProfileCompleted, isInitializing } = useAuthStore.getState();
+    const publicScreens: Array<keyof RootStackParamList> = ['Splash', 'Login', 'OTPVerification', 'ProfileSetup'];
+    const isTargetAuthenticated = !publicScreens.includes(name);
+
+    const isReadyToNavigate =
+      navigationRef.isReady() &&
+      (!isTargetAuthenticated || (isAuthenticated && isProfileCompleted && !isInitializing));
+
+    if (isReadyToNavigate) {
+      navigationRef.navigate(name as any, params as any);
+    } else if (attempts < 15) { // Try for up to 7.5 seconds
+      setTimeout(() => tryNavigate(attempts + 1), 500);
+    }
+  };
+
+  tryNavigate();
 };

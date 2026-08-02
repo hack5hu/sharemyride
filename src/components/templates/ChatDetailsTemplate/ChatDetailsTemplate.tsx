@@ -48,7 +48,7 @@ export const ChatDetailsTemplate: React.FC<ChatDetailsTemplateProps> = ({
   }, [data.length, data[0]?.id]);
 
   return (
-    <ScreenShell>
+    <ScreenShell noPaddingBottom>
       <Animated.View style={[{ flex: 1 }, animatedStyle]}>
         <ScreenContainer>
           {header}

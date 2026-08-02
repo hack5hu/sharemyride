@@ -7,6 +7,8 @@ import {
 import { ChatMessage } from '@/types/chat';
 import { Logger } from '@/utils/logger';
 import { parseChatTimestamp } from '@/utils/date';
+import { fetchChatUserProfile } from './chatProfile';
+import { NotificationService } from './NotificationService';
 
 interface IncomingMessage {
   messageId: string;
@@ -157,6 +159,22 @@ export const registerChatSubscriptions = (
       callbacks.updateStatus(data.messageId, status, userId);
       if (isRead) {
         callbacks.markAsRead(userId, data.senderId);
+      } else {
+        // Trigger in-app notification for socket messages when user is not viewing the chat
+        fetchChatUserProfile(data.senderId).then(profile => {
+          NotificationService.displayLocalNotification(
+            `💬 ${profile?.name || 'New message'}`,
+            data.content,
+            {
+              type: 'chat',
+              userId: data.senderId,
+              name: profile?.name || 'User',
+              message: data.content,
+              messageId: data.messageId,
+              timestamp: String(message.timestamp),
+            }
+          ).catch(() => undefined);
+        }).catch(() => undefined);
       }
     }
   });

@@ -47,7 +47,7 @@ export const ChatInputSection: React.FC<ChatInputSectionProps> = ({
 
   return (
     <Container
-      style={{ paddingBottom: Math.max(bottomInset, verticalScale(4)) }}
+      style={{ paddingBottom: Math.max(bottomInset, verticalScale(12)) }}
     >
       {safetyMessage && (
         <SafetyBanner message={safetyMessage} onClose={onSafetyClose} />

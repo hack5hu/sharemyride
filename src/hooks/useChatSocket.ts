@@ -21,9 +21,7 @@ export const useChatSocket = (isActive: boolean = true) => {
     }
 
     return () => {
-      // We might not want to disconnect immediately if just navigating between chat screens
-      // But for this requirement, we ensure it's handled.
-      // ChatService.disconnect();
+      ChatService.disconnect();
     };
   }, [isActive, user?.userId, flushOldMessages]);
 

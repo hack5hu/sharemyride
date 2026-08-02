@@ -45,8 +45,16 @@ class ChatServiceClass {
   private currentUserId: string | null = null;
   private retryCount: number = 0;
   private maxRetries: number = 3;
+  private activeListeners: number = 0;
+  private disconnectTimeout: any = null;
 
   async connect(userId: string) {
+    this.activeListeners++;
+    if (this.disconnectTimeout) {
+      clearTimeout(this.disconnectTimeout);
+      this.disconnectTimeout = null;
+    }
+
     if (this.client?.active && this.currentUserId === userId) {
       Logger.log('[Socket] Already active for user:', userId);
       return;
@@ -64,7 +72,6 @@ class ChatServiceClass {
     const authCreds = await Keychain.getGenericPassword({
       service: 'auth_token',
     });
-
     if (!authCreds) {
       Logger.warn('[Socket] Missing auth token');
       setConnectionStatus(ConnectionStatus.DISCONNECTED);
@@ -84,7 +91,7 @@ class ChatServiceClass {
           userId: userId,
           Authorization: `Bearer ${authCreds.password}`,
         },
-        debug: () => {}, // Disable raw STOMP debug spam on failed reconnects
+        debug: (str) => { Logger.log('[STOMP Debug]:', str); },
         reconnectDelay: 15000, // 15s gentle interval instead of aggressive 5s polling
         heartbeatIncoming: 10000,
         heartbeatOutgoing: 10000,
@@ -92,11 +99,13 @@ class ChatServiceClass {
         appendMissingNULLonIncoming: true,
       });
 
-      this.client.onWebSocketError = () => {
+      this.client.onWebSocketError = (evt) => {
+        Logger.error('[Socket] WebSocket Error:', evt);
         this.handleConnectionFailure();
       };
 
-      this.client.onWebSocketClose = () => {
+      this.client.onWebSocketClose = (evt) => {
+        Logger.warn('[Socket] WebSocket Closed:', evt);
         this.handleConnectionFailure();
       };
 
@@ -121,6 +130,7 @@ class ChatServiceClass {
         this.handleConnectionFailure();
       };
 
+      Logger.log('[Socket] Activating STOMP client with URL:', brokerUrl);
       this.client.activate();
     } catch (error) {
       Logger.warn('[Socket] Initialization failed:', error);
@@ -148,6 +158,20 @@ class ChatServiceClass {
   }
 
   disconnect() {
+    this.activeListeners = Math.max(0, this.activeListeners - 1);
+    if (this.activeListeners === 0) {
+      if (this.disconnectTimeout) {
+        clearTimeout(this.disconnectTimeout);
+      }
+      this.disconnectTimeout = setTimeout(() => {
+        if (this.activeListeners === 0) {
+          this.performDisconnect();
+        }
+      }, 500); // 500ms delay before actually tearing down
+    }
+  }
+
+  private performDisconnect() {
     this.retryCount = 0;
     if (this.client) {
       try {

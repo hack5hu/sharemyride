@@ -1,7 +1,7 @@
 import { useChatStore } from '@/store/useChatStore';
 import { UserProfile } from '@/types/chat';
 import { Logger } from '@/utils/logger';
-import { UserService } from './userService';
+import { UserService } from './UserService';
 
 interface RemoteUserProfile {
   name?: string;
