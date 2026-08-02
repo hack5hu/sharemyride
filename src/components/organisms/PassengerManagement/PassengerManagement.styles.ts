@@ -87,6 +87,16 @@ export const RateButton = styled.TouchableOpacity`
   border-radius: ${moderateScale(12)}px;
 `;
 
+export const RatedBadge = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(4)}px;
+  background-color: ${({ theme }) => `${theme.colors.on_surface_variant}12`};
+  padding-horizontal: ${scale(10)}px;
+  padding-vertical: ${verticalScale(6)}px;
+  border-radius: ${moderateScale(12)}px;
+`;
+
 // Empty State Styles
 export const EmptyStateContainer = styled.View`
   align-items: center;

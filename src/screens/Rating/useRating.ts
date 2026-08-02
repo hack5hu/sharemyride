@@ -6,6 +6,7 @@ import { NotificationType } from '@/constants/enums';
 import { RideService } from '@/serviceManager/RideService';
 import { getErrorMessage } from '@/utils/error';
 
+
 export const useRating = (params: {
   rideId: string;
   targetUserId: string;
@@ -96,6 +97,8 @@ export const useRating = (params: {
         t.successTitle,
         t.successMessage,
       );
+
+
 
       navigation.goBack();
     } catch (error) {

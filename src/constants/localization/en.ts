@@ -888,6 +888,7 @@ export const en: Translations = {
     ratingCardTitle: 'Rate Your Journey',
     ratingCardSubtitle: 'How was your experience with {{name}}?',
     rateButtonText: 'Rate Now',
+    ratedStatus: 'Rated',
   },
   suggestions: {
     title: 'Suggestions & Feedback',

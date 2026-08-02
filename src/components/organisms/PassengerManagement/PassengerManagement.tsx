@@ -17,6 +17,7 @@ export interface Passenger {
   seatNames?: string[];
   seatId?: string[];
   seatIds?: (string | number)[];
+  hasRated?: boolean;
 }
 
 interface PassengerManagementProps {
@@ -147,77 +148,100 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
             </S.EmptyStateContainer>
           ) : isDriver ? (
             <S.PassengerList>
-              {passengers.map((p, i) => (
-                <S.PassengerCard
-                  key={p.bookingId || p.id || i}
-                  onPress={() => onPassengerPress?.(p.id || p.bookingId || '')}
-                  disabled={!onPassengerPress}
-                >
-                  <Avatar
-                    source={{ uri: p.photoUrl }}
-                    placeholder={p.name}
-                    size="sm"
-                  />
-                  <S.PassengerInfo>
-                    <Typography variant="body" size="sm" weight="bold">
-                      {p.name}
-                    </Typography>
-                    <Typography
-                      variant="label"
-                      size="xs"
-                      color="on_surface_variant"
-                      numberOfLines={1}
-                    >
-                      {formatSegment(p.segment)}
-                    </Typography>
-                    <S.SeatBadge>
-                      <Typography
-                        variant="label"
-                        size="xs"
-                        weight="bold"
-                        color="primary"
-                      >
-                        {p.seatsBooked}{' '}
-                        {p.seatsBooked === 1
-                          ? t.seatLabelSingular || 'seat'
-                          : t.seatsLabelPlural || 'seats'}
-                        : {getFormattedSeats(p)}
-                      </Typography>
-                    </S.SeatBadge>
-                  </S.PassengerInfo>
-                  {!hideActions && (
-                    <S.RemoveButton
-                      icon="person-remove"
-                      variant="surface"
-                      onPress={() =>
-                        onCancelPassenger?.(p.bookingId || p.id || '')
-                      }
+              {passengers.map((p, i) => {
+                const passengerId = p.id || p.bookingId || '';
+                const hasBeenRated = p.hasRated;
+
+                return (
+                  <S.PassengerCard
+                    key={p.bookingId || p.id || i}
+                    onPress={() => onPassengerPress?.(passengerId)}
+                    disabled={!onPassengerPress}
+                  >
+                    <Avatar
+                      source={{ uri: p.photoUrl }}
+                      placeholder={p.name}
+                      size="sm"
                     />
-                  )}
-                  {isCompleted && onRatePassenger && (
-                    <S.RateButton
-                      activeOpacity={0.8}
-                      onPress={() =>
-                        onRatePassenger?.(p.id || p.bookingId || '', p.name, p.photoUrl)
-                      }
-                    >
-                      <Icon
-                        name="star"
-                        size={moderateScale(16)}
-                        color={theme.colors.warning}
-                      />
+                    <S.PassengerInfo>
+                      <Typography variant="body" size="sm" weight="bold">
+                        {p.name}
+                      </Typography>
                       <Typography
                         variant="label"
                         size="xs"
-                        weight="bold"
-                        color={theme.colors.warning}
+                        color="on_surface_variant"
+                        numberOfLines={1}
                       >
-                        Rate
+                        {formatSegment(p.segment)}
                       </Typography>
-                    </S.RateButton>
-                  )}
-                </S.PassengerCard>
-              ))}
+                      <S.SeatBadge>
+                        <Typography
+                          variant="label"
+                          size="xs"
+                          weight="bold"
+                          color="primary"
+                        >
+                          {p.seatsBooked}{' '}
+                          {p.seatsBooked === 1
+                            ? t.seatLabelSingular || 'seat'
+                            : t.seatsLabelPlural || 'seats'}
+                          : {getFormattedSeats(p)}
+                        </Typography>
+                      </S.SeatBadge>
+                    </S.PassengerInfo>
+                    {!hideActions && (
+                      <S.RemoveButton
+                        icon="person-remove"
+                        variant="surface"
+                        onPress={() =>
+                          onCancelPassenger?.(passengerId)
+                        }
+                      />
+                    )}
+                    {isCompleted && onRatePassenger && (
+                      hasBeenRated ? (
+                        <S.RatedBadge>
+                          <Icon
+                            name="check-circle"
+                            size={moderateScale(16)}
+                            color={theme.colors.on_surface_variant}
+                          />
+                          <Typography
+                            variant="label"
+                            size="xs"
+                            weight="bold"
+                            color="on_surface_variant"
+                          >
+                            {locale.rating.ratedStatus || 'Rated'}
+                          </Typography>
+                        </S.RatedBadge>
+                      ) : (
+                        <S.RateButton
+                          activeOpacity={0.8}
+                          onPress={() =>
+                            onRatePassenger?.(passengerId, p.name, p.photoUrl)
+                          }
+                        >
+                          <Icon
+                            name="star"
+                            size={moderateScale(16)}
+                            color={theme.colors.warning}
+                          />
+                          <Typography
+                            variant="label"
+                            size="xs"
+                            weight="bold"
+                            color={theme.colors.warning}
+                          >
+                            Rate
+                          </Typography>
+                        </S.RateButton>
+                      )
+                    )}
+                  </S.PassengerCard>
+                );
+              })}
             </S.PassengerList>
           ) : (
             <S.PassengerList>

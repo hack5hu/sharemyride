@@ -135,6 +135,12 @@ export const useAuthStore = create<AuthState>()(
               currentUser.profilePhotoUrl === profile.profilePhotoUrl &&
               currentUser.gender === profile.gender &&
               currentUser.bio === profile.bio &&
+              currentUser.rating === profile.rating &&
+              currentUser.totalRidesAsDriver === profile.totalRidesAsDriver &&
+              currentUser.totalRidesAsPassenger === profile.totalRidesAsPassenger &&
+              currentUser.createdAt === profile.createdAt &&
+              currentUser.emailVerified === profile.emailVerified &&
+              currentUser.phoneVerified === profile.phoneVerified &&
               useAuthStore.getState().isProfileCompleted === isProfileCompleted;
 
             if (!isIdentical) {
@@ -146,6 +152,12 @@ export const useAuthStore = create<AuthState>()(
                   dateOfBirth: profile.date || profile.dateOfBirth,
                   phoneNumber: profile.phoneNumber,
                   profilePhotoUrl: profile.profilePhotoUrl,
+                  rating: profile.rating,
+                  totalRidesAsDriver: profile.totalRidesAsDriver,
+                  totalRidesAsPassenger: profile.totalRidesAsPassenger,
+                  createdAt: profile.createdAt,
+                  emailVerified: profile.emailVerified,
+                  phoneVerified: profile.phoneVerified,
                 },
                 isProfileCompleted,
               }));

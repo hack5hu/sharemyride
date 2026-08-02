@@ -878,6 +878,7 @@ export const hi: Translations = {
     ratingCardTitle: 'अपने सफर को रेट करें',
     ratingCardSubtitle: '{{name}} के साथ आपका अनुभव कैसा रहा?',
     rateButtonText: 'अभी रेट करें',
+    ratedStatus: 'रेट किया गया',
   },
   suggestions: {
     title: 'सुझाव और प्रतिक्रिया',

@@ -944,6 +944,7 @@ export interface RatingTranslations {
   ratingCardTitle: string;
   ratingCardSubtitle: string;
   rateButtonText: string;
+  ratedStatus: string;
 }
 
 export interface SuggestionsTranslations {

@@ -166,7 +166,7 @@ export const useBookRideInfo = () => {
             destLon: search.destinationLocation.longitude,
             travelDate: format(selectedDate, "yyyy-MM-dd'T'HH:mm:ss"),
             requestedSeats: search.seatCount,
-            radiusInMeters: 10000,
+            radiusInMeters: 25000,
             page: 0,
             size: 15,
           };

@@ -1,7 +1,7 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 import { Alert, Clipboard } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { RideDetailsScreenProps } from './types';
@@ -11,6 +11,7 @@ import { Logger } from '@/utils/logger';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
+import { storage } from '@/utils/storage';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import { navigate } from '@/navigation/navigationService';
 import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
@@ -57,9 +58,11 @@ export const useRideDetails = () => {
     }
   }, [rideId, sourceStopId, destinationStopId, route.params]);
 
-  useEffect(() => {
-    fetchDetails();
-  }, [fetchDetails]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchDetails();
+    }, [fetchDetails])
+  );
 
   const handleBack = useCallback(() => {
     navigation.goBack();
@@ -255,7 +258,9 @@ export const useRideDetails = () => {
         ? rideData?.passengers?.[0]?.passengerId
         : rideData?.driver?.id ||
           rideData?.driver?.driverId ||
-          rideData?.driver?.userId,
+          rideData?.driver?.userId ||
+          rideData?.driverId ||
+          rideData?.userId,
       rideId: rideId,
       name: targetName,
       avatarUri: isDriver ? undefined : rideData?.driver?.photoUrl,
@@ -268,17 +273,25 @@ export const useRideDetails = () => {
     });
   }, [navigation, rideId, rideData, isDriver, t]);
 
+
+
   const handleRateDriver = useCallback(() => {
-    if (rideData?.driver) {
+    if (rideData) {
+      const driverId =
+        rideData.driver?.id ||
+        rideData.driver?.driverId ||
+        rideData.driver?.userId ||
+        rideData.driverId ||
+        rideData.userId;
+
+
+
       navigation.navigate('Rating', {
         rideId,
-        targetUserId:
-          rideData.driver.id ||
-          rideData.driver.driverId ||
-          rideData.driver.userId,
-        targetUserName: rideData.driver.name,
+        targetUserId: driverId,
+        targetUserName: rideData.driver?.name || rideData.name || 'Driver',
         targetUserRole: 'DRIVER',
-        targetUserAvatar: rideData.driver.photoUrl || rideData.driver.avatar,
+        targetUserAvatar: rideData.driver?.photoUrl || rideData.driver?.avatar,
       });
     }
   }, [navigation, rideId, rideData]);

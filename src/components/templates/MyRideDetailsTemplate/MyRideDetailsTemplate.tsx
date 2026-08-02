@@ -204,12 +204,21 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
       const driverData = useMemo(() => {
         if (!ride?.driver) return null;
         return {
-          id: ride.driver.driverId || ride.driver.userId || 'driver-1',
+          id:
+            ride.driver.id ||
+            ride.driver.driverId ||
+            ride.driver.userId ||
+            ride.driverId ||
+            ride.userId ||
+            'driver-1',
           name: ride.driver.name,
           avatar: ride.driver.photoUrl,
           rating: ride.driver.rating || 5,
+          rideCount: ride.driver.rideCount || 0,
+          isVerified: ride.driver.isVerified || false,
+          hasRated: ride.driver.hasRated || ride.myBooking?.hasRatedDriver || false,
         };
-      }, [ride?.driver]);
+      }, [ride]);
 
       const passengerData = useMemo(() => {
         if (!ride?.passengers) return [];
@@ -225,6 +234,7 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
             }`,
           seatsBooked: p.seatCount || p.seatsBooked || 1,
           seatId: (p.seatIds || p.seatId || []).map(String),
+          hasRated: p.hasRated || false,
         }));
       }, [ride?.passengers]);
 
@@ -286,16 +296,19 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
                 )}
 
                 {/* Rating Invitation for Passenger */}
-                {isCompleted && !isDriver && onRateDriver && (
-                  <S.SectionCard
-                    style={{
-                      backgroundColor: theme.colors.surface_container_low,
-                      elevation: 0,
-                      shadowOpacity: 0,
-                      borderWidth: 1,
-                      borderColor: theme.colors.outline_variant + '40',
-                    }}
-                  >
+                {isCompleted &&
+                  !isDriver &&
+                  onRateDriver &&
+                  driverData && (
+                    <S.SectionCard
+                      style={{
+                        backgroundColor: theme.colors.surface_container_low,
+                        elevation: 0,
+                        shadowOpacity: 0,
+                        borderWidth: 1,
+                        borderColor: theme.colors.outline_variant + '40',
+                      }}
+                    >
                     <S.SectionLabelRow
                       style={{ marginBottom: verticalScale(12) }}
                     >
@@ -309,20 +322,34 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
                         {translations.rating.ratingCardTitle.toUpperCase()}
                       </Typography>
                     </S.SectionLabelRow>
-                    <Typography
-                      variant="body"
-                      size="sm"
-                      color="on_surface_variant"
-                      style={{ marginBottom: verticalScale(16) }}
-                    >
-                      {translations.rating.ratingCardSubtitle.replace(
-                        '{{name}}',
-                        ride.driver?.name || 'Driver',
-                      )}
-                    </Typography>
-                    <Button variant="primary" onPress={onRateDriver}>
-                      {translations.rating.rateButtonText}
-                    </Button>
+                    
+                    {driverData.hasRated ? (
+                      <Typography
+                        variant="body"
+                        size="sm"
+                        color="on_surface_variant"
+                        style={{ marginBottom: verticalScale(16) }}
+                      >
+                        You have given rating to this driver.
+                      </Typography>
+                    ) : (
+                      <>
+                        <Typography
+                          variant="body"
+                          size="sm"
+                          color="on_surface_variant"
+                          style={{ marginBottom: verticalScale(16) }}
+                        >
+                          {translations.rating.ratingCardSubtitle.replace(
+                            '{{name}}',
+                            ride.driver?.name || 'Driver',
+                          )}
+                        </Typography>
+                        <Button variant="primary" onPress={onRateDriver}>
+                          {translations.rating.rateButtonText}
+                        </Button>
+                      </>
+                    )}
                   </S.SectionCard>
                 )}
 

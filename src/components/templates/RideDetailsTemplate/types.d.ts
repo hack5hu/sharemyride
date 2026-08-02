@@ -22,6 +22,7 @@ export interface RideDetailsTemplateProps {
   isReportModalVisible: boolean;
   setIsReportModalVisible: (visible: boolean) => void;
   handleReportSubmit: (data: { categoryId: string; reason?: string; description: string }) => void;
-  handleRateDriver: () => void;
-  handleRatePassenger: (passengerId: string, name: string) => void;
+  handleRateDriver: (() => void) | undefined;
+  handleRatePassenger: ((passengerId: string, name: string) => void) | undefined;
+
 }
