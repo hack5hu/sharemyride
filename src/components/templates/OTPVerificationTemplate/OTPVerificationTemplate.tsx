@@ -2,7 +2,6 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { OtpInput } from '@/components/molecules/OtpInput';
-import { Toast } from '@/components/molecules/Toast';
 import { OTPVerificationTemplateProps } from './types.d';
 import {
   KeyboardContainer,
@@ -32,8 +31,6 @@ export const OTPVerificationTemplate: React.FC<OTPVerificationTemplateProps> = (
   handleTextChange,
   handleVerify,
   handleResend,
-  toastConfig,
-  hideToast,
   t,
   theme,
 }) => {
@@ -42,12 +39,6 @@ export const OTPVerificationTemplate: React.FC<OTPVerificationTemplateProps> = (
 
   return (
     <ScreenShell title={t.screenName} onBack={true}>
-      <Toast
-        type={toastConfig.type}
-        message={toastConfig.message}
-        isVisible={toastConfig.isVisible}
-        onHide={hideToast}
-      />
       <KeyboardContainer>
         <ScrollContainer>
           <BackgroundBlob />

@@ -5,7 +5,7 @@ import {
   getMonthName,
   isSameDate,
   isDatePast,
-} from '@/utils/dateUtils';
+} from '@/utils/date';
 import {
   MonthContainer,
   MonthHeader,

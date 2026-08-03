@@ -9,11 +9,6 @@ export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
   phoneNumber: propPhoneNumber,
 }) => {
   const theme = useTheme();
-  const [toastConfig, setToastConfig] = useState<{
-    isVisible: boolean;
-    type: 'success' | 'error' | 'info';
-    message: string;
-  }>({ isVisible: false, type: 'info', message: '' });
 
   const {
     timer,
@@ -25,7 +20,7 @@ export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
     phoneNumber: dynamicPhoneNumber,
   } = useOTPVerification();
 
-  const hideToast = () => setToastConfig({ ...toastConfig, isVisible: false });
+
 
   const { otpVerification: t } = useLocale();
 
@@ -39,8 +34,7 @@ export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
       handleTextChange={handleTextChange}
       handleVerify={handleVerify}
       handleResend={handleResend}
-      toastConfig={toastConfig}
-      hideToast={hideToast}
+
       t={t}
       theme={theme}
     />

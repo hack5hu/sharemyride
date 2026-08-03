@@ -3,7 +3,7 @@ import { useRoute } from '@react-navigation/native';
 import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
 import { useMyRidesData, TAB_TO_FILTER } from './useMyRidesData';
 import { useMyRidesActions } from './useMyRidesActions';
-import { mapBackendRideToUI } from './utils/rideMapper';
+import { mapBackendRideToUI } from '@/utils/rideMapper';
 import { MyRidesHookData, RideListItem } from './types.d';
 import { useTranslation } from '@/hooks/useTranslation';
 import { RideService } from '@/serviceManager/RideService';

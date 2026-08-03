@@ -1,0 +1,5229 @@
+{
+  "duplicates": [
+    {
+      "firstFile": {
+        "end": 22,
+        "endLoc": {
+          "column": 52,
+          "line": 22,
+          "position": 678
+        },
+        "name": "components/atoms/Input/Input.styles.ts",
+        "start": 16,
+        "startLoc": {
+          "column": 37,
+          "line": 16,
+          "position": 375
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 7,
+      "secondFile": {
+        "end": 38,
+        "endLoc": {
+          "column": 52,
+          "line": 38,
+          "position": 891
+        },
+        "name": "components/molecules/DobInput/DobInput.styles.ts",
+        "start": 32,
+        "startLoc": {
+          "column": 12,
+          "line": 32,
+          "position": 588
+        }
+      },
+      "tokens": 58
+    },
+    {
+      "firstFile": {
+        "end": 36,
+        "endLoc": {
+          "column": 12,
+          "line": 36,
+          "position": 1314
+        },
+        "name": "components/atoms/Input/Input.styles.ts",
+        "start": 29,
+        "startLoc": {
+          "column": 15,
+          "line": 29,
+          "position": 994
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 8,
+      "secondFile": {
+        "end": 51,
+        "endLoc": {
+          "column": 12,
+          "line": 51,
+          "position": 1350
+        },
+        "name": "components/molecules/DobInput/DobInput.styles.ts",
+        "start": 44,
+        "startLoc": {
+          "column": 15,
+          "line": 44,
+          "position": 1030
+        }
+      },
+      "tokens": 71
+    },
+    {
+      "firstFile": {
+        "end": 84,
+        "endLoc": {
+          "column": 22,
+          "line": 84,
+          "position": 2428
+        },
+        "name": "components/molecules/LocationDetailsCard/LocationDetailsCard.styles.ts",
+        "start": 78,
+        "startLoc": {
+          "column": 28,
+          "line": 78,
+          "position": 2223
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 7,
+      "secondFile": {
+        "end": 88,
+        "endLoc": {
+          "column": 22,
+          "line": 88,
+          "position": 2535
+        },
+        "name": "components/organisms/ReportIssueModal/ReportIssueModal.styles.ts",
+        "start": 83,
+        "startLoc": {
+          "column": 25,
+          "line": 83,
+          "position": 2344
+        }
+      },
+      "tokens": 59
+    },
+    {
+      "firstFile": {
+        "end": 27,
+        "endLoc": {
+          "column": 12,
+          "line": 27,
+          "position": 970
+        },
+        "name": "components/molecules/MessageBubble/MessageBubble.styles.ts",
+        "start": 12,
+        "startLoc": {
+          "column": 61,
+          "line": 12,
+          "position": 472
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 16,
+      "secondFile": {
+        "end": 44,
+        "endLoc": {
+          "column": 12,
+          "line": 44,
+          "position": 1541
+        },
+        "name": "components/molecules/MessageBubble/MessageBubble.styles.ts",
+        "start": 29,
+        "startLoc": {
+          "column": 0,
+          "line": 29,
+          "position": 1043
+        }
+      },
+      "tokens": 78
+    },
+    {
+      "firstFile": {
+        "end": 51,
+        "endLoc": {
+          "column": 39,
+          "line": 51,
+          "position": 1291
+        },
+        "name": "components/molecules/VehicleHorizontalList/VehicleHorizontalList.tsx",
+        "start": 43,
+        "startLoc": {
+          "column": 8,
+          "line": 43,
+          "position": 999
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 9,
+      "secondFile": {
+        "end": 54,
+        "endLoc": {
+          "column": 47,
+          "line": 54,
+          "position": 1891
+        },
+        "name": "components/templates/VehicleListTemplate/VehicleListTemplate.tsx",
+        "start": 46,
+        "startLoc": {
+          "column": 16,
+          "line": 46,
+          "position": 1535
+        }
+      },
+      "tokens": 59
+    },
+    {
+      "firstFile": {
+        "end": 24,
+        "endLoc": {
+          "column": 50,
+          "line": 24,
+          "position": 804
+        },
+        "name": "components/organisms/CancelRideModal/CancelRideModal.styles.ts",
+        "start": 1,
+        "startLoc": {
+          "column": 0,
+          "line": 1,
+          "position": 0
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 24,
+      "secondFile": {
+        "end": 24,
+        "endLoc": {
+          "column": 50,
+          "line": 24,
+          "position": 804
+        },
+        "name": "components/organisms/ReportIssueModal/ReportIssueModal.styles.ts",
+        "start": 1,
+        "startLoc": {
+          "column": 0,
+          "line": 1,
+          "position": 0
+        }
+      },
+      "tokens": 94
+    },
+    {
+      "firstFile": {
+        "end": 64,
+        "endLoc": {
+          "column": 30,
+          "line": 64,
+          "position": 1851
+        },
+        "name": "components/organisms/CancelRideModal/CancelRideModal.styles.ts",
+        "start": 34,
+        "startLoc": {
+          "column": 66,
+          "line": 34,
+          "position": 1052
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 31,
+      "secondFile": {
+        "end": 64,
+        "endLoc": {
+          "column": 30,
+          "line": 64,
+          "position": 1859
+        },
+        "name": "components/organisms/ReportIssueModal/ReportIssueModal.styles.ts",
+        "start": 34,
+        "startLoc": {
+          "column": 70,
+          "line": 34,
+          "position": 1060
+        }
+      },
+      "tokens": 139
+    },
+    {
+      "firstFile": {
+        "end": 84,
+        "endLoc": {
+          "column": 24,
+          "line": 84,
+          "position": 2405
+        },
+        "name": "components/organisms/CancelRideModal/CancelRideModal.styles.ts",
+        "start": 65,
+        "startLoc": {
+          "column": 12,
+          "line": 65,
+          "position": 1868
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 20,
+      "secondFile": {
+        "end": 84,
+        "endLoc": {
+          "column": 24,
+          "line": 84,
+          "position": 2417
+        },
+        "name": "components/organisms/ReportIssueModal/ReportIssueModal.styles.ts",
+        "start": 65,
+        "startLoc": {
+          "column": 16,
+          "line": 65,
+          "position": 1880
+        }
+      },
+      "tokens": 87
+    },
+    {
+      "firstFile": {
+        "end": 10,
+        "endLoc": {
+          "column": 8,
+          "line": 10,
+          "position": 530
+        },
+        "name": "components/organisms/CancelRideModal/CancelRideModal.tsx",
+        "start": 2,
+        "startLoc": {
+          "column": 46,
+          "line": 2,
+          "position": 87
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 9,
+      "secondFile": {
+        "end": 9,
+        "endLoc": {
+          "column": 8,
+          "line": 9,
+          "position": 482
+        },
+        "name": "components/organisms/ReportIssueModal/ReportIssueModal.tsx",
+        "start": 1,
+        "startLoc": {
+          "column": 39,
+          "line": 1,
+          "position": 39
+        }
+      },
+      "tokens": 52
+    },
+    {
+      "firstFile": {
+        "end": 202,
+        "endLoc": {
+          "column": 20,
+          "line": 202,
+          "position": 5868
+        },
+        "name": "components/organisms/CancelRideModal/CancelRideModal.tsx",
+        "start": 194,
+        "startLoc": {
+          "column": 62,
+          "line": 194,
+          "position": 5536
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 9,
+      "secondFile": {
+        "end": 225,
+        "endLoc": {
+          "column": 20,
+          "line": 225,
+          "position": 5884
+        },
+        "name": "components/organisms/ReportIssueModal/ReportIssueModal.tsx",
+        "start": 217,
+        "startLoc": {
+          "column": 48,
+          "line": 217,
+          "position": 5552
+        }
+      },
+      "tokens": 52
+    },
+    {
+      "firstFile": {
+        "end": 71,
+        "endLoc": {
+          "column": 31,
+          "line": 71,
+          "position": 2256
+        },
+        "name": "components/organisms/NetworkLoggerModal/NetworkLoggerModal.styles.ts",
+        "start": 58,
+        "startLoc": {
+          "column": 36,
+          "line": 58,
+          "position": 1826
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 14,
+      "secondFile": {
+        "end": 18,
+        "endLoc": {
+          "column": 31,
+          "line": 18,
+          "position": 654
+        },
+        "name": "components/templates/NetworkLogsTemplate/NetworkLogsTemplate.styles.ts",
+        "start": 5,
+        "startLoc": {
+          "column": 36,
+          "line": 5,
+          "position": 224
+        }
+      },
+      "tokens": 74
+    },
+    {
+      "firstFile": {
+        "end": 118,
+        "endLoc": {
+          "column": 33,
+          "line": 118,
+          "position": 3494
+        },
+        "name": "components/organisms/NetworkLoggerModal/NetworkLoggerModal.styles.ts",
+        "start": 78,
+        "startLoc": {
+          "column": 38,
+          "line": 78,
+          "position": 2425
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 41,
+      "secondFile": {
+        "end": 65,
+        "endLoc": {
+          "column": 33,
+          "line": 65,
+          "position": 1892
+        },
+        "name": "components/templates/NetworkLogsTemplate/NetworkLogsTemplate.styles.ts",
+        "start": 25,
+        "startLoc": {
+          "column": 38,
+          "line": 25,
+          "position": 823
+        }
+      },
+      "tokens": 170
+    },
+    {
+      "firstFile": {
+        "end": 144,
+        "endLoc": {
+          "column": 29,
+          "line": 144,
+          "position": 4408
+        },
+        "name": "components/organisms/NetworkLoggerModal/NetworkLoggerModal.styles.ts",
+        "start": 118,
+        "startLoc": {
+          "column": 38,
+          "line": 118,
+          "position": 3499
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 27,
+      "secondFile": {
+        "end": 91,
+        "endLoc": {
+          "column": 29,
+          "line": 91,
+          "position": 2806
+        },
+        "name": "components/templates/NetworkLogsTemplate/NetworkLogsTemplate.styles.ts",
+        "start": 65,
+        "startLoc": {
+          "column": 38,
+          "line": 65,
+          "position": 1897
+        }
+      },
+      "tokens": 181
+    },
+    {
+      "firstFile": {
+        "end": 183,
+        "endLoc": {
+          "column": 31,
+          "line": 183,
+          "position": 5407
+        },
+        "name": "components/organisms/NetworkLoggerModal/NetworkLoggerModal.styles.ts",
+        "start": 161,
+        "startLoc": {
+          "column": 44,
+          "line": 161,
+          "position": 4792
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 23,
+      "secondFile": {
+        "end": 135,
+        "endLoc": {
+          "column": 31,
+          "line": 135,
+          "position": 3966
+        },
+        "name": "components/templates/NetworkLogsTemplate/NetworkLogsTemplate.styles.ts",
+        "start": 113,
+        "startLoc": {
+          "column": 38,
+          "line": 113,
+          "position": 3351
+        }
+      },
+      "tokens": 72
+    },
+    {
+      "firstFile": {
+        "end": 31,
+        "endLoc": {
+          "column": 12,
+          "line": 31,
+          "position": 976
+        },
+        "name": "components/organisms/PassengerManagement/PassengerManagement.styles.ts",
+        "start": 17,
+        "startLoc": {
+          "column": 29,
+          "line": 17,
+          "position": 583
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 15,
+      "secondFile": {
+        "end": 30,
+        "endLoc": {
+          "column": 12,
+          "line": 30,
+          "position": 899
+        },
+        "name": "components/organisms/RideVehicleCard/RideVehicleCard.styles.ts",
+        "start": 16,
+        "startLoc": {
+          "column": 29,
+          "line": 16,
+          "position": 506
+        }
+      },
+      "tokens": 66
+    },
+    {
+      "firstFile": {
+        "end": 27,
+        "endLoc": {
+          "column": 73,
+          "line": 27,
+          "position": 926
+        },
+        "name": "components/organisms/PassengerManagement/PassengerManagement.styles.ts",
+        "start": 20,
+        "startLoc": {
+          "column": 19,
+          "line": 20,
+          "position": 663
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 8,
+      "secondFile": {
+        "end": 44,
+        "endLoc": {
+          "column": 73,
+          "line": 44,
+          "position": 1278
+        },
+        "name": "components/templates/MyRideDetailsTemplate/MyRideDetailsTemplate.styles.ts",
+        "start": 37,
+        "startLoc": {
+          "column": 19,
+          "line": 37,
+          "position": 1015
+        }
+      },
+      "tokens": 52
+    },
+    {
+      "firstFile": {
+        "end": 35,
+        "endLoc": {
+          "column": 46,
+          "line": 35,
+          "position": 971
+        },
+        "name": "components/templates/DateSelectionTemplate/DateSelectionTemplate.styles.ts",
+        "start": 16,
+        "startLoc": {
+          "column": 38,
+          "line": 16,
+          "position": 495
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 20,
+      "secondFile": {
+        "end": 34,
+        "endLoc": {
+          "column": 46,
+          "line": 34,
+          "position": 911
+        },
+        "name": "components/templates/TimeSelectionTemplate/TimeSelectionTemplate.styles.ts",
+        "start": 15,
+        "startLoc": {
+          "column": 37,
+          "line": 15,
+          "position": 435
+        }
+      },
+      "tokens": 67
+    },
+    {
+      "firstFile": {
+        "end": 39,
+        "endLoc": {
+          "column": 12,
+          "line": 39,
+          "position": 1016
+        },
+        "name": "components/templates/DateSelectionTemplate/DateSelectionTemplate.styles.ts",
+        "start": 18,
+        "startLoc": {
+          "column": 1,
+          "line": 18,
+          "position": 562
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 22,
+      "secondFile": {
+        "end": 38,
+        "endLoc": {
+          "column": 12,
+          "line": 38,
+          "position": 1003
+        },
+        "name": "components/templates/MiddleStopsTemplate/MiddleStopsTemplate.styles.ts",
+        "start": 17,
+        "startLoc": {
+          "column": 1,
+          "line": 17,
+          "position": 549
+        }
+      },
+      "tokens": 57
+    },
+    {
+      "firstFile": {
+        "end": 39,
+        "endLoc": {
+          "column": 12,
+          "line": 39,
+          "position": 1016
+        },
+        "name": "components/templates/DateSelectionTemplate/DateSelectionTemplate.styles.ts",
+        "start": 18,
+        "startLoc": {
+          "column": 1,
+          "line": 18,
+          "position": 562
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 22,
+      "secondFile": {
+        "end": 50,
+        "endLoc": {
+          "column": 12,
+          "line": 50,
+          "position": 1280
+        },
+        "name": "components/templates/RouteSelectionTemplate/RouteSelectionTemplate.styles.ts",
+        "start": 29,
+        "startLoc": {
+          "column": 1,
+          "line": 29,
+          "position": 826
+        }
+      },
+      "tokens": 57
+    },
+    {
+      "firstFile": {
+        "end": 22,
+        "endLoc": {
+          "column": 12,
+          "line": 22,
+          "position": 602
+        },
+        "name": "components/templates/DummyTemplate/DummyTemplate.styles.ts",
+        "start": 1,
+        "startLoc": {
+          "column": 0,
+          "line": 1,
+          "position": 0
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 22,
+      "secondFile": {
+        "end": 22,
+        "endLoc": {
+          "column": 12,
+          "line": 22,
+          "position": 602
+        },
+        "name": "components/templates/SupportTemplate/SupportTemplate.styles.ts",
+        "start": 1,
+        "startLoc": {
+          "column": 0,
+          "line": 1,
+          "position": 0
+        }
+      },
+      "tokens": 92
+    },
+    {
+      "firstFile": {
+        "end": 64,
+        "endLoc": {
+          "column": 6,
+          "line": 64,
+          "position": 1692
+        },
+        "name": "components/templates/LocationSelectionTemplate/LocationSelectionTemplate.styles.ts",
+        "start": 45,
+        "startLoc": {
+          "column": 33,
+          "line": 45,
+          "position": 1250
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 20,
+      "secondFile": {
+        "end": 121,
+        "endLoc": {
+          "column": 6,
+          "line": 121,
+          "position": 3181
+        },
+        "name": "components/templates/TimeSelectionTemplate/TimeSelectionTemplate.styles.ts",
+        "start": 101,
+        "startLoc": {
+          "column": 34,
+          "line": 101,
+          "position": 2726
+        }
+      },
+      "tokens": 51
+    },
+    {
+      "firstFile": {
+        "end": 64,
+        "endLoc": {
+          "column": 12,
+          "line": 64,
+          "position": 1698
+        },
+        "name": "components/templates/LocationSelectionTemplate/LocationSelectionTemplate.styles.ts",
+        "start": 46,
+        "startLoc": {
+          "column": 1,
+          "line": 46,
+          "position": 1257
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 19,
+      "secondFile": {
+        "end": 80,
+        "endLoc": {
+          "column": 12,
+          "line": 80,
+          "position": 2221
+        },
+        "name": "components/templates/MyRideDetailsTemplate/MyRideDetailsTemplate.styles.ts",
+        "start": 62,
+        "startLoc": {
+          "column": 1,
+          "line": 62,
+          "position": 1780
+        }
+      },
+      "tokens": 51
+    },
+    {
+      "firstFile": {
+        "end": 64,
+        "endLoc": {
+          "column": 12,
+          "line": 64,
+          "position": 1698
+        },
+        "name": "components/templates/LocationSelectionTemplate/LocationSelectionTemplate.styles.ts",
+        "start": 46,
+        "startLoc": {
+          "column": 1,
+          "line": 46,
+          "position": 1257
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 19,
+      "secondFile": {
+        "end": 246,
+        "endLoc": {
+          "column": 12,
+          "line": 246,
+          "position": 7883
+        },
+        "name": "components/templates/RideInformationTemplate/RideInformationTemplate.styles.ts",
+        "start": 226,
+        "startLoc": {
+          "column": 1,
+          "line": 226,
+          "position": 7231
+        }
+      },
+      "tokens": 51
+    },
+    {
+      "firstFile": {
+        "end": 64,
+        "endLoc": {
+          "column": 12,
+          "line": 64,
+          "position": 1698
+        },
+        "name": "components/templates/LocationSelectionTemplate/LocationSelectionTemplate.styles.ts",
+        "start": 46,
+        "startLoc": {
+          "column": 1,
+          "line": 46,
+          "position": 1257
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 19,
+      "secondFile": {
+        "end": 61,
+        "endLoc": {
+          "column": 12,
+          "line": 61,
+          "position": 1609
+        },
+        "name": "components/templates/SeatSelectionTemplate/SeatSelectionTemplate.styles.ts",
+        "start": 43,
+        "startLoc": {
+          "column": 1,
+          "line": 43,
+          "position": 1168
+        }
+      },
+      "tokens": 51
+    },
+    {
+      "firstFile": {
+        "end": 64,
+        "endLoc": {
+          "column": 12,
+          "line": 64,
+          "position": 1698
+        },
+        "name": "components/templates/LocationSelectionTemplate/LocationSelectionTemplate.styles.ts",
+        "start": 46,
+        "startLoc": {
+          "column": 1,
+          "line": 46,
+          "position": 1257
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 19,
+      "secondFile": {
+        "end": 21,
+        "endLoc": {
+          "column": 12,
+          "line": 21,
+          "position": 552
+        },
+        "name": "components/templates/SummaryPublishTemplate/components/PublishFooter.styles.ts",
+        "start": 3,
+        "startLoc": {
+          "column": 63,
+          "line": 3,
+          "position": 111
+        }
+      },
+      "tokens": 51
+    },
+    {
+      "firstFile": {
+        "end": 74,
+        "endLoc": {
+          "column": 12,
+          "line": 74,
+          "position": 1685
+        },
+        "name": "components/templates/MapPickerTemplate/MapPickerTemplate.styles.ts",
+        "start": 24,
+        "startLoc": {
+          "column": 1,
+          "line": 24,
+          "position": 614
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 51,
+      "secondFile": {
+        "end": 321,
+        "endLoc": {
+          "column": 12,
+          "line": 321,
+          "position": 8523
+        },
+        "name": "components/templates/MiddleStopMapTemplate/MiddleStopMapTemplate.styles.ts",
+        "start": 272,
+        "startLoc": {
+          "column": 1,
+          "line": 272,
+          "position": 7433
+        }
+      },
+      "tokens": 102
+    },
+    {
+      "firstFile": {
+        "end": 132,
+        "endLoc": {
+          "column": 13,
+          "line": 132,
+          "position": 3650
+        },
+        "name": "components/templates/MapPickerTemplate/MapPickerTemplate.tsx",
+        "start": 99,
+        "startLoc": {
+          "column": 51,
+          "line": 99,
+          "position": 2987
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 34,
+      "secondFile": {
+        "end": 164,
+        "endLoc": {
+          "column": 28,
+          "line": 164,
+          "position": 4342
+        },
+        "name": "components/templates/MiddleStopMapTemplate/MiddleStopMapTemplate.tsx",
+        "start": 132,
+        "startLoc": {
+          "column": 59,
+          "line": 132,
+          "position": 3581
+        }
+      },
+      "tokens": 169
+    },
+    {
+      "firstFile": {
+        "end": 98,
+        "endLoc": {
+          "column": 2,
+          "line": 98,
+          "position": 2634
+        },
+        "name": "components/templates/MiddleStopsTemplate/MiddleStopsTemplate.styles.ts",
+        "start": 79,
+        "startLoc": {
+          "column": 34,
+          "line": 79,
+          "position": 2172
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 20,
+      "secondFile": {
+        "end": 219,
+        "endLoc": {
+          "column": 2,
+          "line": 219,
+          "position": 5972
+        },
+        "name": "components/templates/RouteSelectionTemplate/RouteSelectionTemplate.styles.ts",
+        "start": 200,
+        "startLoc": {
+          "column": 34,
+          "line": 200,
+          "position": 5510
+        }
+      },
+      "tokens": 51
+    },
+    {
+      "firstFile": {
+        "end": 26,
+        "endLoc": {
+          "column": 12,
+          "line": 26,
+          "position": 683
+        },
+        "name": "components/templates/MyRideDetailsTemplate/MyRideDetailsTemplate.styles.ts",
+        "start": 3,
+        "startLoc": {
+          "column": 71,
+          "line": 3,
+          "position": 182
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 24,
+      "secondFile": {
+        "end": 31,
+        "endLoc": {
+          "column": 12,
+          "line": 31,
+          "position": 1145
+        },
+        "name": "components/templates/RideInformationTemplate/RideInformationTemplate.styles.ts",
+        "start": 4,
+        "startLoc": {
+          "column": 57,
+          "line": 4,
+          "position": 257
+        }
+      },
+      "tokens": 81
+    },
+    {
+      "firstFile": {
+        "end": 47,
+        "endLoc": {
+          "column": 12,
+          "line": 47,
+          "position": 1297
+        },
+        "name": "components/templates/MyRideDetailsTemplate/MyRideDetailsTemplate.styles.ts",
+        "start": 24,
+        "startLoc": {
+          "column": 1,
+          "line": 24,
+          "position": 668
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 24,
+      "secondFile": {
+        "end": 130,
+        "endLoc": {
+          "column": 12,
+          "line": 130,
+          "position": 4134
+        },
+        "name": "components/templates/RideInformationTemplate/RideInformationTemplate.styles.ts",
+        "start": 103,
+        "startLoc": {
+          "column": 1,
+          "line": 103,
+          "position": 3080
+        }
+      },
+      "tokens": 101
+    },
+    {
+      "firstFile": {
+        "end": 64,
+        "endLoc": {
+          "column": 12,
+          "line": 64,
+          "position": 1795
+        },
+        "name": "components/templates/MyRideDetailsTemplate/MyRideDetailsTemplate.styles.ts",
+        "start": 45,
+        "startLoc": {
+          "column": 1,
+          "line": 45,
+          "position": 1282
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 20,
+      "secondFile": {
+        "end": 192,
+        "endLoc": {
+          "column": 12,
+          "line": 192,
+          "position": 6308
+        },
+        "name": "components/templates/RideInformationTemplate/RideInformationTemplate.styles.ts",
+        "start": 169,
+        "startLoc": {
+          "column": 1,
+          "line": 169,
+          "position": 5415
+        }
+      },
+      "tokens": 78
+    },
+    {
+      "firstFile": {
+        "end": 121,
+        "endLoc": {
+          "column": 10,
+          "line": 121,
+          "position": 4550
+        },
+        "name": "components/templates/MyRideDetailsTemplate/MyRideDetailsTemplate.tsx",
+        "start": 82,
+        "startLoc": {
+          "column": 62,
+          "line": 82,
+          "position": 3290
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 40,
+      "secondFile": {
+        "end": 62,
+        "endLoc": {
+          "column": 6,
+          "line": 62,
+          "position": 1916
+        },
+        "name": "components/templates/RideInformationTemplate/components/FareSummaryRow.tsx",
+        "start": 22,
+        "startLoc": {
+          "column": 66,
+          "line": 22,
+          "position": 795
+        }
+      },
+      "tokens": 190
+    },
+    {
+      "firstFile": {
+        "end": 270,
+        "endLoc": {
+          "column": 36,
+          "line": 270,
+          "position": 9433
+        },
+        "name": "components/templates/MyRideDetailsTemplate/MyRideDetailsTemplate.tsx",
+        "start": 254,
+        "startLoc": {
+          "column": 46,
+          "line": 254,
+          "position": 9062
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 17,
+      "secondFile": {
+        "end": 97,
+        "endLoc": {
+          "column": 19,
+          "line": 97,
+          "position": 3305
+        },
+        "name": "components/templates/RideInformationTemplate/RideInformationTemplate.tsx",
+        "start": 80,
+        "startLoc": {
+          "column": 9,
+          "line": 80,
+          "position": 2926
+        }
+      },
+      "tokens": 67
+    },
+    {
+      "firstFile": {
+        "end": 299,
+        "endLoc": {
+          "column": 16,
+          "line": 299,
+          "position": 10409
+        },
+        "name": "components/templates/MyRideDetailsTemplate/MyRideDetailsTemplate.tsx",
+        "start": 270,
+        "startLoc": {
+          "column": 36,
+          "line": 270,
+          "position": 9433
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 30,
+      "secondFile": {
+        "end": 126,
+        "endLoc": {
+          "column": 16,
+          "line": 126,
+          "position": 4369
+        },
+        "name": "components/templates/RideInformationTemplate/RideInformationTemplate.tsx",
+        "start": 97,
+        "startLoc": {
+          "column": 70,
+          "line": 97,
+          "position": 3356
+        }
+      },
+      "tokens": 132
+    },
+    {
+      "firstFile": {
+        "end": 370,
+        "endLoc": {
+          "column": 28,
+          "line": 370,
+          "position": 13277
+        },
+        "name": "components/templates/MyRideDetailsTemplate/MyRideDetailsTemplate.tsx",
+        "start": 353,
+        "startLoc": {
+          "column": 33,
+          "line": 353,
+          "position": 12690
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 18,
+      "secondFile": {
+        "end": 139,
+        "endLoc": {
+          "column": 28,
+          "line": 139,
+          "position": 4879
+        },
+        "name": "components/templates/RideInformationTemplate/RideInformationTemplate.tsx",
+        "start": 122,
+        "startLoc": {
+          "column": 19,
+          "line": 122,
+          "position": 4278
+        }
+      },
+      "tokens": 71
+    },
+    {
+      "firstFile": {
+        "end": 36,
+        "endLoc": {
+          "column": 49,
+          "line": 36,
+          "position": 964
+        },
+        "name": "components/templates/RequestTypeTemplate/RequestTypeTemplate.styles.ts",
+        "start": 8,
+        "startLoc": {
+          "column": 57,
+          "line": 8,
+          "position": 316
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 29,
+      "secondFile": {
+        "end": 66,
+        "endLoc": {
+          "column": 49,
+          "line": 66,
+          "position": 1643
+        },
+        "name": "screens/PublishFlow/9_SummaryPublish/SummaryPublish.styles.ts",
+        "start": 38,
+        "startLoc": {
+          "column": 76,
+          "line": 38,
+          "position": 995
+        }
+      },
+      "tokens": 82
+    },
+    {
+      "firstFile": {
+        "end": 76,
+        "endLoc": {
+          "column": 2,
+          "line": 76,
+          "position": 1998
+        },
+        "name": "components/templates/RequestTypeTemplate/RequestTypeTemplate.styles.ts",
+        "start": 37,
+        "startLoc": {
+          "column": 28,
+          "line": 37,
+          "position": 994
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 40,
+      "secondFile": {
+        "end": 107,
+        "endLoc": {
+          "column": 2,
+          "line": 107,
+          "position": 2704
+        },
+        "name": "screens/PublishFlow/9_SummaryPublish/SummaryPublish.styles.ts",
+        "start": 67,
+        "startLoc": {
+          "column": 35,
+          "line": 67,
+          "position": 1680
+        }
+      },
+      "tokens": 148
+    },
+    {
+      "firstFile": {
+        "end": 59,
+        "endLoc": {
+          "column": 33,
+          "line": 59,
+          "position": 1515
+        },
+        "name": "components/templates/RequestTypeTemplate/RequestTypeTemplate.styles.ts",
+        "start": 44,
+        "startLoc": {
+          "column": 26,
+          "line": 44,
+          "position": 1161
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 16,
+      "secondFile": {
+        "end": 52,
+        "endLoc": {
+          "column": 33,
+          "line": 52,
+          "position": 1500
+        },
+        "name": "components/templates/SummaryPublishTemplate/SummaryPublishTemplate.styles.ts",
+        "start": 37,
+        "startLoc": {
+          "column": 49,
+          "line": 37,
+          "position": 1146
+        }
+      },
+      "tokens": 60
+    },
+    {
+      "firstFile": {
+        "end": 36,
+        "endLoc": {
+          "column": 1,
+          "line": 36,
+          "position": 1053
+        },
+        "name": "components/templates/RideDetailsTemplate/RideDetailsTemplate.tsx",
+        "start": 10,
+        "startLoc": {
+          "column": 72,
+          "line": 10,
+          "position": 559
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 27,
+      "secondFile": {
+        "end": 33,
+        "endLoc": {
+          "column": 3,
+          "line": 33,
+          "position": 855
+        },
+        "name": "screens/MyRideFlow/2_RideDetails/RideDetails.screen.tsx",
+        "start": 7,
+        "startLoc": {
+          "column": 8,
+          "line": 7,
+          "position": 309
+        }
+      },
+      "tokens": 52
+    },
+    {
+      "firstFile": {
+        "end": 146,
+        "endLoc": {
+          "column": 70,
+          "line": 146,
+          "position": 4639
+        },
+        "name": "components/templates/RideInformationTemplate/RideInformationTemplate.styles.ts",
+        "start": 140,
+        "startLoc": {
+          "column": 41,
+          "line": 140,
+          "position": 4343
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 7,
+      "secondFile": {
+        "end": 155,
+        "endLoc": {
+          "column": 70,
+          "line": 155,
+          "position": 4989
+        },
+        "name": "components/templates/RideInformationTemplate/RideInformationTemplate.styles.ts",
+        "start": 149,
+        "startLoc": {
+          "column": 45,
+          "line": 149,
+          "position": 4693
+        }
+      },
+      "tokens": 54
+    },
+    {
+      "firstFile": {
+        "end": 27,
+        "endLoc": {
+          "column": 28,
+          "line": 27,
+          "position": 578
+        },
+        "name": "components/templates/RideRouteMapTemplate/RideRouteMapTemplate.styles.ts",
+        "start": 2,
+        "startLoc": {
+          "column": 40,
+          "line": 2,
+          "position": 87
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 26,
+      "secondFile": {
+        "end": 28,
+        "endLoc": {
+          "column": 28,
+          "line": 28,
+          "position": 659
+        },
+        "name": "screens/BookFlow/5_RideRouteMap/RideRouteMap.styles.ts",
+        "start": 3,
+        "startLoc": {
+          "column": 57,
+          "line": 3,
+          "position": 168
+        }
+      },
+      "tokens": 72
+    },
+    {
+      "firstFile": {
+        "end": 172,
+        "endLoc": {
+          "column": 20,
+          "line": 172,
+          "position": 6082
+        },
+        "name": "components/templates/RideRouteMapTemplate/RideRouteMapTemplate.tsx",
+        "start": 160,
+        "startLoc": {
+          "column": 20,
+          "line": 160,
+          "position": 5606
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 13,
+      "secondFile": {
+        "end": 205,
+        "endLoc": {
+          "column": 16,
+          "line": 205,
+          "position": 6423
+        },
+        "name": "components/templates/RouteSelectionTemplate/RouteSelectionTemplate.tsx",
+        "start": 193,
+        "startLoc": {
+          "column": 16,
+          "line": 193,
+          "position": 5986
+        }
+      },
+      "tokens": 59
+    },
+    {
+      "firstFile": {
+        "end": 188,
+        "endLoc": {
+          "column": 20,
+          "line": 188,
+          "position": 6694
+        },
+        "name": "components/templates/RideRouteMapTemplate/RideRouteMapTemplate.tsx",
+        "start": 176,
+        "startLoc": {
+          "column": 20,
+          "line": 176,
+          "position": 6211
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 13,
+      "secondFile": {
+        "end": 222,
+        "endLoc": {
+          "column": 16,
+          "line": 222,
+          "position": 6975
+        },
+        "name": "components/templates/RouteSelectionTemplate/RouteSelectionTemplate.tsx",
+        "start": 210,
+        "startLoc": {
+          "column": 16,
+          "line": 210,
+          "position": 6533
+        }
+      },
+      "tokens": 63
+    },
+    {
+      "firstFile": {
+        "end": 25,
+        "endLoc": {
+          "column": 50,
+          "line": 25,
+          "position": 685
+        },
+        "name": "components/templates/SplashTemplate/SplashTemplate.styles.ts",
+        "start": 14,
+        "startLoc": {
+          "column": 25,
+          "line": 14,
+          "position": 389
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 12,
+      "secondFile": {
+        "end": 45,
+        "endLoc": {
+          "column": 50,
+          "line": 45,
+          "position": 1353
+        },
+        "name": "components/templates/SplashTemplate/SplashTemplate.styles.ts",
+        "start": 34,
+        "startLoc": {
+          "column": 23,
+          "line": 34,
+          "position": 1057
+        }
+      },
+      "tokens": 68
+    },
+    {
+      "firstFile": {
+        "end": 34,
+        "endLoc": {
+          "column": 12,
+          "line": 34,
+          "position": 1046
+        },
+        "name": "components/templates/SplashTemplate/SplashTemplate.styles.ts",
+        "start": 27,
+        "startLoc": {
+          "column": 4,
+          "line": 27,
+          "position": 716
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 8,
+      "secondFile": {
+        "end": 56,
+        "endLoc": {
+          "column": 12,
+          "line": 56,
+          "position": 1768
+        },
+        "name": "components/templates/SplashTemplate/SplashTemplate.styles.ts",
+        "start": 47,
+        "startLoc": {
+          "column": 4,
+          "line": 47,
+          "position": 1393
+        }
+      },
+      "tokens": 85
+    },
+    {
+      "firstFile": {
+        "end": 70,
+        "endLoc": {
+          "column": 2,
+          "line": 70,
+          "position": 2003
+        },
+        "name": "components/templates/SummaryPublishTemplate/SummaryPublishTemplate.styles.ts",
+        "start": 40,
+        "startLoc": {
+          "column": 23,
+          "line": 40,
+          "position": 1199
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 31,
+      "secondFile": {
+        "end": 110,
+        "endLoc": {
+          "column": 6,
+          "line": 110,
+          "position": 2724
+        },
+        "name": "screens/PublishFlow/9_SummaryPublish/SummaryPublish.styles.ts",
+        "start": 77,
+        "startLoc": {
+          "column": 23,
+          "line": 77,
+          "position": 1900
+        }
+      },
+      "tokens": 115
+    },
+    {
+      "firstFile": {
+        "end": 20,
+        "endLoc": {
+          "column": 12,
+          "line": 20,
+          "position": 570
+        },
+        "name": "components/templates/SummaryPublishTemplate/components/GridInfo.styles.ts",
+        "start": 2,
+        "startLoc": {
+          "column": 78,
+          "line": 2,
+          "position": 125
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 19,
+      "secondFile": {
+        "end": 217,
+        "endLoc": {
+          "column": 12,
+          "line": 217,
+          "position": 5601
+        },
+        "name": "screens/PublishFlow/9_SummaryPublish/SummaryPublish.styles.ts",
+        "start": 198,
+        "startLoc": {
+          "column": 1,
+          "line": 198,
+          "position": 5141
+        }
+      },
+      "tokens": 69
+    },
+    {
+      "firstFile": {
+        "end": 42,
+        "endLoc": {
+          "column": 12,
+          "line": 42,
+          "position": 1176
+        },
+        "name": "components/templates/SummaryPublishTemplate/components/GridInfo.styles.ts",
+        "start": 18,
+        "startLoc": {
+          "column": 1,
+          "line": 18,
+          "position": 555
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 25,
+      "secondFile": {
+        "end": 37,
+        "endLoc": {
+          "column": 12,
+          "line": 37,
+          "position": 1150
+        },
+        "name": "components/templates/SummaryPublishTemplate/components/PreferenceList.styles.ts",
+        "start": 13,
+        "startLoc": {
+          "column": 1,
+          "line": 13,
+          "position": 529
+        }
+      },
+      "tokens": 69
+    },
+    {
+      "firstFile": {
+        "end": 58,
+        "endLoc": {
+          "column": 25,
+          "line": 58,
+          "position": 1280
+        },
+        "name": "components/templates/SummaryPublishTemplate/components/GridInfo.tsx",
+        "start": 46,
+        "startLoc": {
+          "column": 34,
+          "line": 46,
+          "position": 933
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 13,
+      "secondFile": {
+        "end": 92,
+        "endLoc": {
+          "column": 25,
+          "line": 92,
+          "position": 2355
+        },
+        "name": "components/templates/SummaryPublishTemplate/components/GridInfo.tsx",
+        "start": 80,
+        "startLoc": {
+          "column": 32,
+          "line": 80,
+          "position": 2008
+        }
+      },
+      "tokens": 67
+    },
+    {
+      "firstFile": {
+        "end": 31,
+        "endLoc": {
+          "column": 12,
+          "line": 31,
+          "position": 962
+        },
+        "name": "components/templates/SummaryPublishTemplate/components/PreferenceList.styles.ts",
+        "start": 1,
+        "startLoc": {
+          "column": 45,
+          "line": 1,
+          "position": 45
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 31,
+      "secondFile": {
+        "end": 33,
+        "endLoc": {
+          "column": 12,
+          "line": 33,
+          "position": 1081
+        },
+        "name": "components/templates/SummaryPublishTemplate/components/RouteSummary.styles.ts",
+        "start": 3,
+        "startLoc": {
+          "column": 58,
+          "line": 3,
+          "position": 164
+        }
+      },
+      "tokens": 126
+    },
+    {
+      "firstFile": {
+        "end": 37,
+        "endLoc": {
+          "column": 12,
+          "line": 37,
+          "position": 1150
+        },
+        "name": "components/templates/SummaryPublishTemplate/components/PreferenceList.styles.ts",
+        "start": 2,
+        "startLoc": {
+          "column": 29,
+          "line": 2,
+          "position": 76
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 36,
+      "secondFile": {
+        "end": 37,
+        "endLoc": {
+          "column": 12,
+          "line": 37,
+          "position": 1143
+        },
+        "name": "components/templates/SummaryPublishTemplate/components/ScheduleCard.styles.ts",
+        "start": 2,
+        "startLoc": {
+          "column": 22,
+          "line": 2,
+          "position": 69
+        }
+      },
+      "tokens": 146
+    },
+    {
+      "firstFile": {
+        "end": 62,
+        "endLoc": {
+          "column": 12,
+          "line": 62,
+          "position": 1832
+        },
+        "name": "components/templates/SummaryPublishTemplate/components/PreferenceList.styles.ts",
+        "start": 35,
+        "startLoc": {
+          "column": 1,
+          "line": 35,
+          "position": 1135
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 28,
+      "secondFile": {
+        "end": 293,
+        "endLoc": {
+          "column": 12,
+          "line": 293,
+          "position": 7630
+        },
+        "name": "screens/PublishFlow/9_SummaryPublish/SummaryPublish.styles.ts",
+        "start": 265,
+        "startLoc": {
+          "column": 1,
+          "line": 265,
+          "position": 6911
+        }
+      },
+      "tokens": 93
+    },
+    {
+      "firstFile": {
+        "end": 44,
+        "endLoc": {
+          "column": 22,
+          "line": 44,
+          "position": 1044
+        },
+        "name": "components/templates/SummaryPublishTemplate/components/PreferenceList.tsx",
+        "start": 35,
+        "startLoc": {
+          "column": 45,
+          "line": 35,
+          "position": 722
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 10,
+      "secondFile": {
+        "end": 45,
+        "endLoc": {
+          "column": 22,
+          "line": 45,
+          "position": 1094
+        },
+        "name": "components/templates/SummaryPublishTemplate/components/ScheduleCard.tsx",
+        "start": 36,
+        "startLoc": {
+          "column": 47,
+          "line": 36,
+          "position": 772
+        }
+      },
+      "tokens": 72
+    },
+    {
+      "firstFile": {
+        "end": 43,
+        "endLoc": {
+          "column": 2,
+          "line": 43,
+          "position": 1259
+        },
+        "name": "components/templates/SummaryPublishTemplate/components/PublishFooter.styles.ts",
+        "start": 29,
+        "startLoc": {
+          "column": 1,
+          "line": 29,
+          "position": 821
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 15,
+      "secondFile": {
+        "end": 346,
+        "endLoc": {
+          "column": 2,
+          "line": 346,
+          "position": 8993
+        },
+        "name": "screens/PublishFlow/9_SummaryPublish/SummaryPublish.styles.ts",
+        "start": 332,
+        "startLoc": {
+          "column": 1,
+          "line": 332,
+          "position": 8555
+        }
+      },
+      "tokens": 65
+    },
+    {
+      "firstFile": {
+        "end": 117,
+        "endLoc": {
+          "column": 12,
+          "line": 117,
+          "position": 3321
+        },
+        "name": "components/templates/SummaryPublishTemplate/components/RouteSummary.styles.ts",
+        "start": 97,
+        "startLoc": {
+          "column": 1,
+          "line": 97,
+          "position": 2822
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 21,
+      "secondFile": {
+        "end": 187,
+        "endLoc": {
+          "column": 12,
+          "line": 187,
+          "position": 4756
+        },
+        "name": "screens/PublishFlow/9_SummaryPublish/SummaryPublish.styles.ts",
+        "start": 167,
+        "startLoc": {
+          "column": 38,
+          "line": 167,
+          "position": 4257
+        }
+      },
+      "tokens": 60
+    },
+    {
+      "firstFile": {
+        "end": 201,
+        "endLoc": {
+          "column": 2,
+          "line": 201,
+          "position": 5333
+        },
+        "name": "components/templates/UserProfileDetailTemplate/UserProfileDetailTemplate.styles.ts",
+        "start": 175,
+        "startLoc": {
+          "column": 27,
+          "line": 175,
+          "position": 4721
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 27,
+      "secondFile": {
+        "end": 39,
+        "endLoc": {
+          "column": 2,
+          "line": 39,
+          "position": 1010
+        },
+        "name": "components/templates/UserRatingsTemplate/UserRatingsTemplate.styles.ts",
+        "start": 13,
+        "startLoc": {
+          "column": 33,
+          "line": 13,
+          "position": 398
+        }
+      },
+      "tokens": 85
+    },
+    {
+      "firstFile": {
+        "end": 10,
+        "endLoc": {
+          "column": 28,
+          "line": 10,
+          "position": 310
+        },
+        "name": "components/templates/VehicleListTemplate/types.d.ts",
+        "start": 2,
+        "startLoc": {
+          "column": 15,
+          "line": 2,
+          "position": 59
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 9,
+      "secondFile": {
+        "end": 17,
+        "endLoc": {
+          "column": 28,
+          "line": 17,
+          "position": 446
+        },
+        "name": "screens/Profile/VehicleList/types.d.ts",
+        "start": 9,
+        "startLoc": {
+          "column": 19,
+          "line": 9,
+          "position": 195
+        }
+      },
+      "tokens": 60
+    },
+    {
+      "firstFile": {
+        "end": 440,
+        "endLoc": {
+          "column": 28,
+          "line": 440,
+          "position": 11270
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 429,
+        "startLoc": {
+          "column": 39,
+          "line": 429,
+          "position": 10990
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 12,
+      "secondFile": {
+        "end": 679,
+        "endLoc": {
+          "column": 28,
+          "line": 679,
+          "position": 16907
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 668,
+        "startLoc": {
+          "column": 32,
+          "line": 668,
+          "position": 16627
+        }
+      },
+      "tokens": 53
+    },
+    {
+      "firstFile": {
+        "end": 456,
+        "endLoc": {
+          "column": 10,
+          "line": 456,
+          "position": 11665
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 443,
+        "startLoc": {
+          "column": 32,
+          "line": 443,
+          "position": 11400
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 14,
+      "secondFile": {
+        "end": 599,
+        "endLoc": {
+          "column": 10,
+          "line": 599,
+          "position": 15065
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 586,
+        "startLoc": {
+          "column": 46,
+          "line": 586,
+          "position": 14800
+        }
+      },
+      "tokens": 63
+    },
+    {
+      "firstFile": {
+        "end": 456,
+        "endLoc": {
+          "column": 10,
+          "line": 456,
+          "position": 11665
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 443,
+        "startLoc": {
+          "column": 31,
+          "line": 443,
+          "position": 11399
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 14,
+      "secondFile": {
+        "end": 632,
+        "endLoc": {
+          "column": 10,
+          "line": 632,
+          "position": 15849
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 619,
+        "startLoc": {
+          "column": 28,
+          "line": 619,
+          "position": 15583
+        }
+      },
+      "tokens": 64
+    },
+    {
+      "firstFile": {
+        "end": 485,
+        "endLoc": {
+          "column": 10,
+          "line": 485,
+          "position": 12365
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 473,
+        "startLoc": {
+          "column": 37,
+          "line": 473,
+          "position": 12123
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 13,
+      "secondFile": {
+        "end": 1864,
+        "endLoc": {
+          "column": 10,
+          "line": 1864,
+          "position": 44824
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1852,
+        "startLoc": {
+          "column": 46,
+          "line": 1852,
+          "position": 44582
+        }
+      },
+      "tokens": 57
+    },
+    {
+      "firstFile": {
+        "end": 498,
+        "endLoc": {
+          "column": 21,
+          "line": 498,
+          "position": 12703
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 490,
+        "startLoc": {
+          "column": 30,
+          "line": 490,
+          "position": 12445
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 9,
+      "secondFile": {
+        "end": 733,
+        "endLoc": {
+          "column": 21,
+          "line": 733,
+          "position": 18163
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 725,
+        "startLoc": {
+          "column": 23,
+          "line": 725,
+          "position": 17905
+        }
+      },
+      "tokens": 52
+    },
+    {
+      "firstFile": {
+        "end": 568,
+        "endLoc": {
+          "column": 10,
+          "line": 568,
+          "position": 14323
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 553,
+        "startLoc": {
+          "column": 37,
+          "line": 553,
+          "position": 13995
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 16,
+      "secondFile": {
+        "end": 1202,
+        "endLoc": {
+          "column": 10,
+          "line": 1202,
+          "position": 29364
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1187,
+        "startLoc": {
+          "column": 6,
+          "line": 1187,
+          "position": 29036
+        }
+      },
+      "tokens": 71
+    },
+    {
+      "firstFile": {
+        "end": 571,
+        "endLoc": {
+          "column": 7,
+          "line": 571,
+          "position": 14389
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 553,
+        "startLoc": {
+          "column": 37,
+          "line": 553,
+          "position": 13995
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 19,
+      "secondFile": {
+        "end": 1977,
+        "endLoc": {
+          "column": 9,
+          "line": 1977,
+          "position": 47482
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1957,
+        "startLoc": {
+          "column": 60,
+          "line": 1957,
+          "position": 47095
+        }
+      },
+      "tokens": 82
+    },
+    {
+      "firstFile": {
+        "end": 599,
+        "endLoc": {
+          "column": 10,
+          "line": 599,
+          "position": 15065
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 581,
+        "startLoc": {
+          "column": 34,
+          "line": 581,
+          "position": 14619
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 19,
+      "secondFile": {
+        "end": 2003,
+        "endLoc": {
+          "column": 10,
+          "line": 2003,
+          "position": 48153
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1985,
+        "startLoc": {
+          "column": 34,
+          "line": 1985,
+          "position": 47707
+        }
+      },
+      "tokens": 95
+    },
+    {
+      "firstFile": {
+        "end": 599,
+        "endLoc": {
+          "column": 10,
+          "line": 599,
+          "position": 15065
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 582,
+        "startLoc": {
+          "column": 42,
+          "line": 582,
+          "position": 14664
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 18,
+      "secondFile": {
+        "end": 2036,
+        "endLoc": {
+          "column": 10,
+          "line": 2036,
+          "position": 48942
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2019,
+        "startLoc": {
+          "column": 34,
+          "line": 2019,
+          "position": 48541
+        }
+      },
+      "tokens": 85
+    },
+    {
+      "firstFile": {
+        "end": 601,
+        "endLoc": {
+          "column": 22,
+          "line": 601,
+          "position": 15119
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 584,
+        "startLoc": {
+          "column": 60,
+          "line": 584,
+          "position": 14736
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 18,
+      "secondFile": {
+        "end": 1839,
+        "endLoc": {
+          "column": 9,
+          "line": 1839,
+          "position": 44199
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1820,
+        "startLoc": {
+          "column": 37,
+          "line": 1820,
+          "position": 43838
+        }
+      },
+      "tokens": 78
+    },
+    {
+      "firstFile": {
+        "end": 668,
+        "endLoc": {
+          "column": 9,
+          "line": 668,
+          "position": 16604
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 652,
+        "startLoc": {
+          "column": 34,
+          "line": 652,
+          "position": 16287
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 17,
+      "secondFile": {
+        "end": 2066,
+        "endLoc": {
+          "column": 9,
+          "line": 2066,
+          "position": 49577
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2050,
+        "startLoc": {
+          "column": 34,
+          "line": 2050,
+          "position": 49260
+        }
+      },
+      "tokens": 62
+    },
+    {
+      "firstFile": {
+        "end": 694,
+        "endLoc": {
+          "column": 9,
+          "line": 694,
+          "position": 17188
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 677,
+        "startLoc": {
+          "column": 34,
+          "line": 677,
+          "position": 16867
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 18,
+      "secondFile": {
+        "end": 823,
+        "endLoc": {
+          "column": 9,
+          "line": 823,
+          "position": 20157
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 806,
+        "startLoc": {
+          "column": 42,
+          "line": 806,
+          "position": 19836
+        }
+      },
+      "tokens": 64
+    },
+    {
+      "firstFile": {
+        "end": 694,
+        "endLoc": {
+          "column": 9,
+          "line": 694,
+          "position": 17188
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 677,
+        "startLoc": {
+          "column": 34,
+          "line": 677,
+          "position": 16867
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 18,
+      "secondFile": {
+        "end": 2093,
+        "endLoc": {
+          "column": 9,
+          "line": 2093,
+          "position": 50179
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2076,
+        "startLoc": {
+          "column": 34,
+          "line": 2076,
+          "position": 49858
+        }
+      },
+      "tokens": 64
+    },
+    {
+      "firstFile": {
+        "end": 694,
+        "endLoc": {
+          "column": 9,
+          "line": 694,
+          "position": 17188
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 679,
+        "startLoc": {
+          "column": 37,
+          "line": 679,
+          "position": 16916
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 16,
+      "secondFile": {
+        "end": 849,
+        "endLoc": {
+          "column": 9,
+          "line": 849,
+          "position": 20758
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 834,
+        "startLoc": {
+          "column": 60,
+          "line": 834,
+          "position": 20486
+        }
+      },
+      "tokens": 54
+    },
+    {
+      "firstFile": {
+        "end": 694,
+        "endLoc": {
+          "column": 9,
+          "line": 694,
+          "position": 17188
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 679,
+        "startLoc": {
+          "column": 37,
+          "line": 679,
+          "position": 16916
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 16,
+      "secondFile": {
+        "end": 1415,
+        "endLoc": {
+          "column": 9,
+          "line": 1415,
+          "position": 34498
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1400,
+        "startLoc": {
+          "column": 6,
+          "line": 1400,
+          "position": 34226
+        }
+      },
+      "tokens": 54
+    },
+    {
+      "firstFile": {
+        "end": 694,
+        "endLoc": {
+          "column": 9,
+          "line": 694,
+          "position": 17188
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 679,
+        "startLoc": {
+          "column": 37,
+          "line": 679,
+          "position": 16916
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 16,
+      "secondFile": {
+        "end": 2227,
+        "endLoc": {
+          "column": 9,
+          "line": 2227,
+          "position": 53269
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2212,
+        "startLoc": {
+          "column": 57,
+          "line": 2212,
+          "position": 52997
+        }
+      },
+      "tokens": 54
+    },
+    {
+      "firstFile": {
+        "end": 716,
+        "endLoc": {
+          "column": 16,
+          "line": 716,
+          "position": 17759
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 701,
+        "startLoc": {
+          "column": 34,
+          "line": 701,
+          "position": 17387
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 16,
+      "secondFile": {
+        "end": 2116,
+        "endLoc": {
+          "column": 16,
+          "line": 2116,
+          "position": 50769
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2101,
+        "startLoc": {
+          "column": 34,
+          "line": 2101,
+          "position": 50397
+        }
+      },
+      "tokens": 66
+    },
+    {
+      "firstFile": {
+        "end": 725,
+        "endLoc": {
+          "column": 9,
+          "line": 725,
+          "position": 17891
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 704,
+        "startLoc": {
+          "column": 37,
+          "line": 704,
+          "position": 17481
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 22,
+      "secondFile": {
+        "end": 1450,
+        "endLoc": {
+          "column": 9,
+          "line": 1450,
+          "position": 35285
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1429,
+        "startLoc": {
+          "column": 6,
+          "line": 1429,
+          "position": 34875
+        }
+      },
+      "tokens": 76
+    },
+    {
+      "firstFile": {
+        "end": 773,
+        "endLoc": {
+          "column": 9,
+          "line": 773,
+          "position": 19026
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 751,
+        "startLoc": {
+          "column": 48,
+          "line": 751,
+          "position": 18574
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 23,
+      "secondFile": {
+        "end": 2175,
+        "endLoc": {
+          "column": 9,
+          "line": 2175,
+          "position": 52080
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2153,
+        "startLoc": {
+          "column": 48,
+          "line": 2153,
+          "position": 51628
+        }
+      },
+      "tokens": 93
+    },
+    {
+      "firstFile": {
+        "end": 773,
+        "endLoc": {
+          "column": 9,
+          "line": 773,
+          "position": 19026
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 754,
+        "startLoc": {
+          "column": 46,
+          "line": 754,
+          "position": 18705
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 20,
+      "secondFile": {
+        "end": 1516,
+        "endLoc": {
+          "column": 9,
+          "line": 1516,
+          "position": 36769
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1497,
+        "startLoc": {
+          "column": 40,
+          "line": 1497,
+          "position": 36448
+        }
+      },
+      "tokens": 68
+    },
+    {
+      "firstFile": {
+        "end": 798,
+        "endLoc": {
+          "column": 9,
+          "line": 798,
+          "position": 19593
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 780,
+        "startLoc": {
+          "column": 34,
+          "line": 780,
+          "position": 19229
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 19,
+      "secondFile": {
+        "end": 2201,
+        "endLoc": {
+          "column": 9,
+          "line": 2201,
+          "position": 52666
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2183,
+        "startLoc": {
+          "column": 34,
+          "line": 2183,
+          "position": 52302
+        }
+      },
+      "tokens": 74
+    },
+    {
+      "firstFile": {
+        "end": 902,
+        "endLoc": {
+          "column": 10,
+          "line": 902,
+          "position": 22087
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 890,
+        "startLoc": {
+          "column": 35,
+          "line": 890,
+          "position": 21813
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 13,
+      "secondFile": {
+        "end": 1680,
+        "endLoc": {
+          "column": 10,
+          "line": 1680,
+          "position": 40495
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1668,
+        "startLoc": {
+          "column": 6,
+          "line": 1668,
+          "position": 40221
+        }
+      },
+      "tokens": 55
+    },
+    {
+      "firstFile": {
+        "end": 905,
+        "endLoc": {
+          "column": 5,
+          "line": 905,
+          "position": 22131
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 890,
+        "startLoc": {
+          "column": 35,
+          "line": 890,
+          "position": 21813
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 16,
+      "secondFile": {
+        "end": 2307,
+        "endLoc": {
+          "column": 9,
+          "line": 2307,
+          "position": 55159
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2291,
+        "startLoc": {
+          "column": 38,
+          "line": 2291,
+          "position": 54853
+        }
+      },
+      "tokens": 62
+    },
+    {
+      "firstFile": {
+        "end": 929,
+        "endLoc": {
+          "column": 9,
+          "line": 929,
+          "position": 22716
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 912,
+        "startLoc": {
+          "column": 76,
+          "line": 912,
+          "position": 22357
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 18,
+      "secondFile": {
+        "end": 2330,
+        "endLoc": {
+          "column": 9,
+          "line": 2330,
+          "position": 55745
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2313,
+        "startLoc": {
+          "column": 76,
+          "line": 2313,
+          "position": 55386
+        }
+      },
+      "tokens": 69
+    },
+    {
+      "firstFile": {
+        "end": 946,
+        "endLoc": {
+          "column": 10,
+          "line": 946,
+          "position": 23230
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 934,
+        "startLoc": {
+          "column": 76,
+          "line": 934,
+          "position": 22934
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 13,
+      "secondFile": {
+        "end": 2348,
+        "endLoc": {
+          "column": 10,
+          "line": 2348,
+          "position": 56277
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2336,
+        "startLoc": {
+          "column": 76,
+          "line": 2336,
+          "position": 55981
+        }
+      },
+      "tokens": 58
+    },
+    {
+      "firstFile": {
+        "end": 977,
+        "endLoc": {
+          "column": 19,
+          "line": 977,
+          "position": 24073
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 964,
+        "startLoc": {
+          "column": 54,
+          "line": 964,
+          "position": 23698
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 14,
+      "secondFile": {
+        "end": 1289,
+        "endLoc": {
+          "column": 19,
+          "line": 1289,
+          "position": 31417
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1276,
+        "startLoc": {
+          "column": 48,
+          "line": 1276,
+          "position": 31042
+        }
+      },
+      "tokens": 61
+    },
+    {
+      "firstFile": {
+        "end": 997,
+        "endLoc": {
+          "column": 9,
+          "line": 997,
+          "position": 24483
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 974,
+        "startLoc": {
+          "column": 44,
+          "line": 974,
+          "position": 24026
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 24,
+      "secondFile": {
+        "end": 1032,
+        "endLoc": {
+          "column": 9,
+          "line": 1032,
+          "position": 25413
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1009,
+        "startLoc": {
+          "column": 46,
+          "line": 1009,
+          "position": 24956
+        }
+      },
+      "tokens": 81
+    },
+    {
+      "firstFile": {
+        "end": 1012,
+        "endLoc": {
+          "column": 19,
+          "line": 1012,
+          "position": 25003
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 997,
+        "startLoc": {
+          "column": 47,
+          "line": 997,
+          "position": 24521
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 16,
+      "secondFile": {
+        "end": 1329,
+        "endLoc": {
+          "column": 19,
+          "line": 1329,
+          "position": 32505
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1314,
+        "startLoc": {
+          "column": 46,
+          "line": 1314,
+          "position": 32023
+        }
+      },
+      "tokens": 77
+    },
+    {
+      "firstFile": {
+        "end": 1049,
+        "endLoc": {
+          "column": 21,
+          "line": 1049,
+          "position": 25855
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1036,
+        "startLoc": {
+          "column": 17,
+          "line": 1036,
+          "position": 25550
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 14,
+      "secondFile": {
+        "end": 1402,
+        "endLoc": {
+          "column": 21,
+          "line": 1402,
+          "position": 34265
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1389,
+        "startLoc": {
+          "column": 16,
+          "line": 1389,
+          "position": 33960
+        }
+      },
+      "tokens": 56
+    },
+    {
+      "firstFile": {
+        "end": 1067,
+        "endLoc": {
+          "column": 9,
+          "line": 1067,
+          "position": 26206
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1041,
+        "startLoc": {
+          "column": 13,
+          "line": 1041,
+          "position": 25681
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 27,
+      "secondFile": {
+        "end": 1276,
+        "endLoc": {
+          "column": 9,
+          "line": 1276,
+          "position": 31003
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1250,
+        "startLoc": {
+          "column": 13,
+          "line": 1250,
+          "position": 30478
+        }
+      },
+      "tokens": 105
+    },
+    {
+      "firstFile": {
+        "end": 1062,
+        "endLoc": {
+          "column": 10,
+          "line": 1062,
+          "position": 26145
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1052,
+        "startLoc": {
+          "column": 10,
+          "line": 1052,
+          "position": 25937
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 11,
+      "secondFile": {
+        "end": 1235,
+        "endLoc": {
+          "column": 10,
+          "line": 1235,
+          "position": 30114
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1225,
+        "startLoc": {
+          "column": 10,
+          "line": 1225,
+          "position": 29906
+        }
+      },
+      "tokens": 55
+    },
+    {
+      "firstFile": {
+        "end": 1083,
+        "endLoc": {
+          "column": 21,
+          "line": 1083,
+          "position": 26629
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1067,
+        "startLoc": {
+          "column": 37,
+          "line": 1067,
+          "position": 26234
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 17,
+      "secondFile": {
+        "end": 1431,
+        "endLoc": {
+          "column": 21,
+          "line": 1431,
+          "position": 34914
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1415,
+        "startLoc": {
+          "column": 30,
+          "line": 1415,
+          "position": 34519
+        }
+      },
+      "tokens": 66
+    },
+    {
+      "firstFile": {
+        "end": 1415,
+        "endLoc": {
+          "column": 9,
+          "line": 1415,
+          "position": 34498
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1398,
+        "startLoc": {
+          "column": 28,
+          "line": 1398,
+          "position": 34187
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 18,
+      "secondFile": {
+        "end": 1619,
+        "endLoc": {
+          "column": 9,
+          "line": 1619,
+          "position": 39057
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1602,
+        "startLoc": {
+          "column": 9,
+          "line": 1602,
+          "position": 38746
+        }
+      },
+      "tokens": 59
+    },
+    {
+      "firstFile": {
+        "end": 1480,
+        "endLoc": {
+          "column": 9,
+          "line": 1480,
+          "position": 35993
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1465,
+        "startLoc": {
+          "column": 6,
+          "line": 1465,
+          "position": 35715
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 16,
+      "secondFile": {
+        "end": 2147,
+        "endLoc": {
+          "column": 9,
+          "line": 2147,
+          "position": 51434
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2132,
+        "startLoc": {
+          "column": 37,
+          "line": 2132,
+          "position": 51156
+        }
+      },
+      "tokens": 54
+    },
+    {
+      "firstFile": {
+        "end": 1630,
+        "endLoc": {
+          "column": 57,
+          "line": 1630,
+          "position": 39383
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1619,
+        "startLoc": {
+          "column": 27,
+          "line": 1619,
+          "position": 39075
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 12,
+      "secondFile": {
+        "end": 1666,
+        "endLoc": {
+          "column": 26,
+          "line": 1666,
+          "position": 40183
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1653,
+        "startLoc": {
+          "column": 36,
+          "line": 1653,
+          "position": 39859
+        }
+      },
+      "tokens": 56
+    },
+    {
+      "firstFile": {
+        "end": 1653,
+        "endLoc": {
+          "column": 9,
+          "line": 1653,
+          "position": 39832
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1630,
+        "startLoc": {
+          "column": 58,
+          "line": 1630,
+          "position": 39384
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 24,
+      "secondFile": {
+        "end": 2284,
+        "endLoc": {
+          "column": 9,
+          "line": 2284,
+          "position": 54579
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2261,
+        "startLoc": {
+          "column": 38,
+          "line": 2261,
+          "position": 54131
+        }
+      },
+      "tokens": 90
+    },
+    {
+      "firstFile": {
+        "end": 1697,
+        "endLoc": {
+          "column": 21,
+          "line": 1697,
+          "position": 40874
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1684,
+        "startLoc": {
+          "column": 29,
+          "line": 1684,
+          "position": 40547
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 14,
+      "secondFile": {
+        "end": 1724,
+        "endLoc": {
+          "column": 21,
+          "line": 1724,
+          "position": 41509
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1711,
+        "startLoc": {
+          "column": 38,
+          "line": 1711,
+          "position": 41182
+        }
+      },
+      "tokens": 59
+    },
+    {
+      "firstFile": {
+        "end": 1852,
+        "endLoc": {
+          "column": 21,
+          "line": 1852,
+          "position": 44557
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1839,
+        "startLoc": {
+          "column": 39,
+          "line": 1839,
+          "position": 44229
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 14,
+      "secondFile": {
+        "end": 2106,
+        "endLoc": {
+          "column": 21,
+          "line": 2106,
+          "position": 50530
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2093,
+        "startLoc": {
+          "column": 32,
+          "line": 2093,
+          "position": 50202
+        }
+      },
+      "tokens": 59
+    },
+    {
+      "firstFile": {
+        "end": 1931,
+        "endLoc": {
+          "column": 8,
+          "line": 1931,
+          "position": 46423
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 1920,
+        "startLoc": {
+          "column": 41,
+          "line": 1920,
+          "position": 46131
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 12,
+      "secondFile": {
+        "end": 2052,
+        "endLoc": {
+          "column": 8,
+          "line": 2052,
+          "position": 49318
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2041,
+        "startLoc": {
+          "column": 34,
+          "line": 2041,
+          "position": 49026
+        }
+      },
+      "tokens": 54
+    },
+    {
+      "firstFile": {
+        "end": 2093,
+        "endLoc": {
+          "column": 9,
+          "line": 2093,
+          "position": 50179
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2075,
+        "startLoc": {
+          "column": 13,
+          "line": 2075,
+          "position": 49810
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 19,
+      "secondFile": {
+        "end": 2254,
+        "endLoc": {
+          "column": 9,
+          "line": 2254,
+          "position": 53866
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2236,
+        "startLoc": {
+          "column": 13,
+          "line": 2236,
+          "position": 53497
+        }
+      },
+      "tokens": 76
+    },
+    {
+      "firstFile": {
+        "end": 2263,
+        "endLoc": {
+          "column": 47,
+          "line": 2263,
+          "position": 54196
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2254,
+        "startLoc": {
+          "column": 29,
+          "line": 2254,
+          "position": 53886
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 10,
+      "secondFile": {
+        "end": 2293,
+        "endLoc": {
+          "column": 47,
+          "line": 2293,
+          "position": 54918
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2284,
+        "startLoc": {
+          "column": 38,
+          "line": 2284,
+          "position": 54608
+        }
+      },
+      "tokens": 58
+    },
+    {
+      "firstFile": {
+        "end": 2316,
+        "endLoc": {
+          "column": 47,
+          "line": 2316,
+          "position": 55490
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2307,
+        "startLoc": {
+          "column": 31,
+          "line": 2307,
+          "position": 55181
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 10,
+      "secondFile": {
+        "end": 2339,
+        "endLoc": {
+          "column": 47,
+          "line": 2339,
+          "position": 56085
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2330,
+        "startLoc": {
+          "column": 40,
+          "line": 2330,
+          "position": 55776
+        }
+      },
+      "tokens": 58
+    },
+    {
+      "firstFile": {
+        "end": 2688,
+        "endLoc": {
+          "column": 9,
+          "line": 2688,
+          "position": 64784
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2652,
+        "startLoc": {
+          "column": 6,
+          "line": 2652,
+          "position": 63896
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 37,
+      "secondFile": {
+        "end": 2729,
+        "endLoc": {
+          "column": 9,
+          "line": 2729,
+          "position": 65855
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2693,
+        "startLoc": {
+          "column": 46,
+          "line": 2693,
+          "position": 64967
+        }
+      },
+      "tokens": 139
+    },
+    {
+      "firstFile": {
+        "end": 2714,
+        "endLoc": {
+          "column": 16,
+          "line": 2714,
+          "position": 65491
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2693,
+        "startLoc": {
+          "column": 45,
+          "line": 2693,
+          "position": 64966
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 22,
+      "secondFile": {
+        "end": 2755,
+        "endLoc": {
+          "column": 16,
+          "line": 2755,
+          "position": 66568
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2734,
+        "startLoc": {
+          "column": 48,
+          "line": 2734,
+          "position": 66043
+        }
+      },
+      "tokens": 93
+    },
+    {
+      "firstFile": {
+        "end": 2729,
+        "endLoc": {
+          "column": 9,
+          "line": 2729,
+          "position": 65855
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2693,
+        "startLoc": {
+          "column": 45,
+          "line": 2693,
+          "position": 64966
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 37,
+      "secondFile": {
+        "end": 2811,
+        "endLoc": {
+          "column": 9,
+          "line": 2811,
+          "position": 68011
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2775,
+        "startLoc": {
+          "column": 49,
+          "line": 2775,
+          "position": 67122
+        }
+      },
+      "tokens": 140
+    },
+    {
+      "firstFile": {
+        "end": 2891,
+        "endLoc": {
+          "column": 29,
+          "line": 2891,
+          "position": 70301
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2881,
+        "startLoc": {
+          "column": 9,
+          "line": 2881,
+          "position": 69947
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 11,
+      "secondFile": {
+        "end": 2925,
+        "endLoc": {
+          "column": 29,
+          "line": 2925,
+          "position": 71264
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2915,
+        "startLoc": {
+          "column": 25,
+          "line": 2915,
+          "position": 70910
+        }
+      },
+      "tokens": 52
+    },
+    {
+      "firstFile": {
+        "end": 2892,
+        "endLoc": {
+          "column": 23,
+          "line": 2892,
+          "position": 70325
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2881,
+        "startLoc": {
+          "column": 9,
+          "line": 2881,
+          "position": 69947
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 12,
+      "secondFile": {
+        "end": 3010,
+        "endLoc": {
+          "column": 23,
+          "line": 3010,
+          "position": 73923
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2999,
+        "startLoc": {
+          "column": 78,
+          "line": 2999,
+          "position": 73545
+        }
+      },
+      "tokens": 54
+    },
+    {
+      "firstFile": {
+        "end": 2945,
+        "endLoc": {
+          "column": 21,
+          "line": 2945,
+          "position": 71842
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2935,
+        "startLoc": {
+          "column": 28,
+          "line": 2935,
+          "position": 71466
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 11,
+      "secondFile": {
+        "end": 2971,
+        "endLoc": {
+          "column": 21,
+          "line": 2971,
+          "position": 72678
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2961,
+        "startLoc": {
+          "column": 71,
+          "line": 2961,
+          "position": 72302
+        }
+      },
+      "tokens": 71
+    },
+    {
+      "firstFile": {
+        "end": 2998,
+        "endLoc": {
+          "column": 21,
+          "line": 2998,
+          "position": 73449
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 2990,
+        "startLoc": {
+          "column": 6,
+          "line": 2990,
+          "position": 73151
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 9,
+      "secondFile": {
+        "end": 3027,
+        "endLoc": {
+          "column": 21,
+          "line": 3027,
+          "position": 74422
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 3019,
+        "startLoc": {
+          "column": 45,
+          "line": 3019,
+          "position": 74124
+        }
+      },
+      "tokens": 63
+    },
+    {
+      "firstFile": {
+        "end": 3065,
+        "endLoc": {
+          "column": 19,
+          "line": 3065,
+          "position": 75565
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 3054,
+        "startLoc": {
+          "column": 12,
+          "line": 3054,
+          "position": 75198
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 12,
+      "secondFile": {
+        "end": 3166,
+        "endLoc": {
+          "column": 19,
+          "line": 3166,
+          "position": 78410
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 3155,
+        "startLoc": {
+          "column": 12,
+          "line": 3155,
+          "position": 78043
+        }
+      },
+      "tokens": 67
+    },
+    {
+      "firstFile": {
+        "end": 3681,
+        "endLoc": {
+          "column": 9,
+          "line": 3681,
+          "position": 92315
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 3650,
+        "startLoc": {
+          "column": 74,
+          "line": 3650,
+          "position": 91532
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 32,
+      "secondFile": {
+        "end": 3718,
+        "endLoc": {
+          "column": 9,
+          "line": 3718,
+          "position": 93315
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 3687,
+        "startLoc": {
+          "column": 74,
+          "line": 3687,
+          "position": 92532
+        }
+      },
+      "tokens": 118
+    },
+    {
+      "firstFile": {
+        "end": 3681,
+        "endLoc": {
+          "column": 9,
+          "line": 3681,
+          "position": 92315
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 3650,
+        "startLoc": {
+          "column": 74,
+          "line": 3650,
+          "position": 91532
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 32,
+      "secondFile": {
+        "end": 3755,
+        "endLoc": {
+          "column": 9,
+          "line": 3755,
+          "position": 94315
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 3724,
+        "startLoc": {
+          "column": 74,
+          "line": 3724,
+          "position": 93532
+        }
+      },
+      "tokens": 118
+    },
+    {
+      "firstFile": {
+        "end": 3842,
+        "endLoc": {
+          "column": 25,
+          "line": 3842,
+          "position": 96581
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 3828,
+        "startLoc": {
+          "column": 42,
+          "line": 3828,
+          "position": 96247
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 15,
+      "secondFile": {
+        "end": 3900,
+        "endLoc": {
+          "column": 25,
+          "line": 3900,
+          "position": 98046
+        },
+        "name": "constants/OlaStyle.ts",
+        "start": 3886,
+        "startLoc": {
+          "column": 36,
+          "line": 3886,
+          "position": 97712
+        }
+      },
+      "tokens": 51
+    },
+    {
+      "firstFile": {
+        "end": 122,
+        "endLoc": {
+          "column": 3,
+          "line": 122,
+          "position": 2954
+        },
+        "name": "navigation/types.d.ts",
+        "start": 94,
+        "startLoc": {
+          "column": 16,
+          "line": 94,
+          "position": 2352
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 29,
+      "secondFile": {
+        "end": 29,
+        "endLoc": {
+          "column": 1,
+          "line": 29,
+          "position": 582
+        },
+        "name": "screens/BookFlow/5_RideRouteMap/types.ts",
+        "start": 1,
+        "startLoc": {
+          "column": 36,
+          "line": 1,
+          "position": 36
+        }
+      },
+      "tokens": 117
+    },
+    {
+      "firstFile": {
+        "end": 81,
+        "endLoc": {
+          "column": 5,
+          "line": 81,
+          "position": 2818
+        },
+        "name": "screens/Auth/Login/useLogin.ts",
+        "start": 64,
+        "startLoc": {
+          "column": 11,
+          "line": 64,
+          "position": 2297
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 18,
+      "secondFile": {
+        "end": 107,
+        "endLoc": {
+          "column": 3,
+          "line": 107,
+          "position": 3402
+        },
+        "name": "screens/Auth/OTPVerification/useOTPVerification.ts",
+        "start": 86,
+        "startLoc": {
+          "column": 8,
+          "line": 86,
+          "position": 2717
+        }
+      },
+      "tokens": 73
+    },
+    {
+      "firstFile": {
+        "end": 342,
+        "endLoc": {
+          "column": 36,
+          "line": 342,
+          "position": 11070
+        },
+        "name": "screens/BookFlow/1_BookRideInfo/useBookRideInfo.ts",
+        "start": 324,
+        "startLoc": {
+          "column": 4,
+          "line": 324,
+          "position": 10470
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 19,
+      "secondFile": {
+        "end": 391,
+        "endLoc": {
+          "column": 36,
+          "line": 391,
+          "position": 12655
+        },
+        "name": "screens/BookFlow/1_BookRideInfo/useBookRideInfo.ts",
+        "start": 374,
+        "startLoc": {
+          "column": 4,
+          "line": 374,
+          "position": 12056
+        }
+      },
+      "tokens": 108
+    },
+    {
+      "firstFile": {
+        "end": 33,
+        "endLoc": {
+          "column": 12,
+          "line": 33,
+          "position": 931
+        },
+        "name": "screens/BookFlow/2_BookDateSelection/useBookDateSelection.ts",
+        "start": 5,
+        "startLoc": {
+          "column": 59,
+          "line": 5,
+          "position": 285
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 29,
+      "secondFile": {
+        "end": 33,
+        "endLoc": {
+          "column": 12,
+          "line": 33,
+          "position": 955
+        },
+        "name": "screens/PublishFlow/4_DateSelection/useDateSelection.ts",
+        "start": 5,
+        "startLoc": {
+          "column": 65,
+          "line": 5,
+          "position": 309
+        }
+      },
+      "tokens": 164
+    },
+    {
+      "firstFile": {
+        "end": 61,
+        "endLoc": {
+          "column": 16,
+          "line": 61,
+          "position": 2697
+        },
+        "name": "screens/BookFlow/3_AvailableRides/useAvailableRides.ts",
+        "start": 56,
+        "startLoc": {
+          "column": 10,
+          "line": 56,
+          "position": 2473
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 6,
+      "secondFile": {
+        "end": 74,
+        "endLoc": {
+          "column": 27,
+          "line": 74,
+          "position": 3040
+        },
+        "name": "screens/BookFlow/3_AvailableRides/useAvailableRides.ts",
+        "start": 66,
+        "startLoc": {
+          "column": 6,
+          "line": 66,
+          "position": 2797
+        }
+      },
+      "tokens": 52
+    },
+    {
+      "firstFile": {
+        "end": 376,
+        "endLoc": {
+          "column": 11,
+          "line": 376,
+          "position": 12344
+        },
+        "name": "screens/BookFlow/3_AvailableRides/useAvailableRides.ts",
+        "start": 362,
+        "startLoc": {
+          "column": 30,
+          "line": 362,
+          "position": 12055
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 15,
+      "secondFile": {
+        "end": 429,
+        "endLoc": {
+          "column": 13,
+          "line": 429,
+          "position": 13876
+        },
+        "name": "screens/BookFlow/3_AvailableRides/useAvailableRides.ts",
+        "start": 416,
+        "startLoc": {
+          "column": 46,
+          "line": 416,
+          "position": 13564
+        }
+      },
+      "tokens": 51
+    },
+    {
+      "firstFile": {
+        "end": 394,
+        "endLoc": {
+          "column": 20,
+          "line": 394,
+          "position": 12917
+        },
+        "name": "screens/BookFlow/3_AvailableRides/useAvailableRides.ts",
+        "start": 385,
+        "startLoc": {
+          "column": 16,
+          "line": 385,
+          "position": 12633
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 10,
+      "secondFile": {
+        "end": 450,
+        "endLoc": {
+          "column": 22,
+          "line": 450,
+          "position": 14574
+        },
+        "name": "screens/BookFlow/3_AvailableRides/useAvailableRides.ts",
+        "start": 440,
+        "startLoc": {
+          "column": 26,
+          "line": 440,
+          "position": 14271
+        }
+      },
+      "tokens": 56
+    },
+    {
+      "firstFile": {
+        "end": 43,
+        "endLoc": {
+          "column": 35,
+          "line": 43,
+          "position": 1572
+        },
+        "name": "screens/BookFlow/4_RideInformation/useRideInformation.ts",
+        "start": 21,
+        "startLoc": {
+          "column": 49,
+          "line": 21,
+          "position": 965
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 23,
+      "secondFile": {
+        "end": 107,
+        "endLoc": {
+          "column": 35,
+          "line": 107,
+          "position": 3639
+        },
+        "name": "screens/MyRideFlow/2_RideDetails/useRideDetails.ts",
+        "start": 85,
+        "startLoc": {
+          "column": 56,
+          "line": 85,
+          "position": 3032
+        }
+      },
+      "tokens": 105
+    },
+    {
+      "firstFile": {
+        "end": 76,
+        "endLoc": {
+          "column": 46,
+          "line": 76,
+          "position": 2630
+        },
+        "name": "screens/BookFlow/5_RideRouteMap/useRideRouteMap.ts",
+        "start": 70,
+        "startLoc": {
+          "column": 26,
+          "line": 70,
+          "position": 2356
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 7,
+      "secondFile": {
+        "end": 114,
+        "endLoc": {
+          "column": 46,
+          "line": 114,
+          "position": 4058
+        },
+        "name": "screens/BookFlow/5_RideRouteMap/useRideRouteMap.ts",
+        "start": 108,
+        "startLoc": {
+          "column": 41,
+          "line": 108,
+          "position": 3784
+        }
+      },
+      "tokens": 56
+    },
+    {
+      "firstFile": {
+        "end": 195,
+        "endLoc": {
+          "column": 61,
+          "line": 195,
+          "position": 6640
+        },
+        "name": "screens/BookFlow/5_RideRouteMap/useRideRouteMap.ts",
+        "start": 190,
+        "startLoc": {
+          "column": 6,
+          "line": 190,
+          "position": 6409
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 6,
+      "secondFile": {
+        "end": 127,
+        "endLoc": {
+          "column": 19,
+          "line": 127,
+          "position": 4429
+        },
+        "name": "screens/MapPicker/useMapPicker.ts",
+        "start": 119,
+        "startLoc": {
+          "column": 18,
+          "line": 119,
+          "position": 4185
+        }
+      },
+      "tokens": 58
+    },
+    {
+      "firstFile": {
+        "end": 130,
+        "endLoc": {
+          "column": 5,
+          "line": 130,
+          "position": 4091
+        },
+        "name": "screens/BookFlow/6_BookSeatSelection/useBookSeatSelection.ts",
+        "start": 120,
+        "startLoc": {
+          "column": 6,
+          "line": 120,
+          "position": 3879
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 11,
+      "secondFile": {
+        "end": 108,
+        "endLoc": {
+          "column": 6,
+          "line": 108,
+          "position": 3195
+        },
+        "name": "screens/PublishFlow/6_SeatSelection/useSeatSelection.ts",
+        "start": 99,
+        "startLoc": {
+          "column": 4,
+          "line": 99,
+          "position": 3005
+        }
+      },
+      "tokens": 51
+    },
+    {
+      "firstFile": {
+        "end": 102,
+        "endLoc": {
+          "column": 27,
+          "line": 102,
+          "position": 3623
+        },
+        "name": "screens/Chat/3_SelectLocation/useSelectLocation.ts",
+        "start": 72,
+        "startLoc": {
+          "column": 39,
+          "line": 72,
+          "position": 2694
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 31,
+      "secondFile": {
+        "end": 257,
+        "endLoc": {
+          "column": 25,
+          "line": 257,
+          "position": 7855
+        },
+        "name": "screens/Chat/3_SelectLocation/useSelectLocation.ts",
+        "start": 226,
+        "startLoc": {
+          "column": 43,
+          "line": 226,
+          "position": 6981
+        }
+      },
+      "tokens": 107
+    },
+    {
+      "firstFile": {
+        "end": 75,
+        "endLoc": {
+          "column": 10,
+          "line": 75,
+          "position": 2944
+        },
+        "name": "screens/Common/UserProfileDetail/useUserProfileDetail.ts",
+        "start": 61,
+        "startLoc": {
+          "column": 6,
+          "line": 61,
+          "position": 2389
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 15,
+      "secondFile": {
+        "end": 30,
+        "endLoc": {
+          "column": 10,
+          "line": 30,
+          "position": 1196
+        },
+        "name": "screens/Common/UserRatings/useUserRatings.ts",
+        "start": 16,
+        "startLoc": {
+          "column": 6,
+          "line": 16,
+          "position": 641
+        }
+      },
+      "tokens": 112
+    },
+    {
+      "firstFile": {
+        "end": 135,
+        "endLoc": {
+          "column": 7,
+          "line": 135,
+          "position": 4694
+        },
+        "name": "screens/MapPicker/useMapPicker.ts",
+        "start": 122,
+        "startLoc": {
+          "column": 68,
+          "line": 122,
+          "position": 4316
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 14,
+      "secondFile": {
+        "end": 400,
+        "endLoc": {
+          "column": 7,
+          "line": 400,
+          "position": 12660
+        },
+        "name": "screens/PublishFlow/3.1_MiddleStopMap/useMiddleStopMap.ts",
+        "start": 389,
+        "startLoc": {
+          "column": 68,
+          "line": 389,
+          "position": 12375
+        }
+      },
+      "tokens": 73
+    },
+    {
+      "firstFile": {
+        "end": 76,
+        "endLoc": {
+          "column": 40,
+          "line": 76,
+          "position": 2592
+        },
+        "name": "screens/Profile/EditProfile/useEditProfile.ts",
+        "start": 52,
+        "startLoc": {
+          "column": 47,
+          "line": 52,
+          "position": 1738
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 25,
+      "secondFile": {
+        "end": 44,
+        "endLoc": {
+          "column": 40,
+          "line": 44,
+          "position": 1705
+        },
+        "name": "screens/Profile/ProfileSetup/useProfileSetup.ts",
+        "start": 20,
+        "startLoc": {
+          "column": 53,
+          "line": 20,
+          "position": 851
+        }
+      },
+      "tokens": 190
+    },
+    {
+      "firstFile": {
+        "end": 116,
+        "endLoc": {
+          "column": 11,
+          "line": 116,
+          "position": 3944
+        },
+        "name": "screens/Profile/EditProfile/useEditProfile.ts",
+        "start": 111,
+        "startLoc": {
+          "column": 10,
+          "line": 111,
+          "position": 3708
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 6,
+      "secondFile": {
+        "end": 91,
+        "endLoc": {
+          "column": 7,
+          "line": 91,
+          "position": 2443
+        },
+        "name": "serviceManager/UserService.ts",
+        "start": 86,
+        "startLoc": {
+          "column": 13,
+          "line": 86,
+          "position": 2227
+        }
+      },
+      "tokens": 52
+    },
+    {
+      "firstFile": {
+        "end": 183,
+        "endLoc": {
+          "column": 38,
+          "line": 183,
+          "position": 6305
+        },
+        "name": "screens/PublishFlow/3.1_MiddleStopMap/useMiddleStopMap.ts",
+        "start": 168,
+        "startLoc": {
+          "column": 8,
+          "line": 168,
+          "position": 5749
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 16,
+      "secondFile": {
+        "end": 552,
+        "endLoc": {
+          "column": 36,
+          "line": 552,
+          "position": 17112
+        },
+        "name": "screens/PublishFlow/3.1_MiddleStopMap/useMiddleStopMap.ts",
+        "start": 537,
+        "startLoc": {
+          "column": 6,
+          "line": 537,
+          "position": 16610
+        }
+      },
+      "tokens": 82
+    },
+    {
+      "firstFile": {
+        "end": 187,
+        "endLoc": {
+          "column": 34,
+          "line": 187,
+          "position": 6468
+        },
+        "name": "screens/PublishFlow/3.1_MiddleStopMap/useMiddleStopMap.ts",
+        "start": 175,
+        "startLoc": {
+          "column": 12,
+          "line": 175,
+          "position": 5981
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 13,
+      "secondFile": {
+        "end": 495,
+        "endLoc": {
+          "column": 32,
+          "line": 495,
+          "position": 15499
+        },
+        "name": "screens/PublishFlow/3.1_MiddleStopMap/useMiddleStopMap.ts",
+        "start": 481,
+        "startLoc": {
+          "column": 33,
+          "line": 481,
+          "position": 15006
+        }
+      },
+      "tokens": 83
+    },
+    {
+      "firstFile": {
+        "end": 479,
+        "endLoc": {
+          "column": 13,
+          "line": 479,
+          "position": 14894
+        },
+        "name": "screens/PublishFlow/3.1_MiddleStopMap/useMiddleStopMap.ts",
+        "start": 463,
+        "startLoc": {
+          "column": 29,
+          "line": 463,
+          "position": 14441
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 17,
+      "secondFile": {
+        "end": 545,
+        "endLoc": {
+          "column": 13,
+          "line": 545,
+          "position": 16832
+        },
+        "name": "screens/PublishFlow/3.1_MiddleStopMap/useMiddleStopMap.ts",
+        "start": 529,
+        "startLoc": {
+          "column": 18,
+          "line": 529,
+          "position": 16379
+        }
+      },
+      "tokens": 59
+    },
+    {
+      "firstFile": {
+        "end": 506,
+        "endLoc": {
+          "column": 9,
+          "line": 506,
+          "position": 15764
+        },
+        "name": "screens/PublishFlow/3.1_MiddleStopMap/useMiddleStopMap.ts",
+        "start": 491,
+        "startLoc": {
+          "column": 34,
+          "line": 491,
+          "position": 15340
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 16,
+      "secondFile": {
+        "end": 568,
+        "endLoc": {
+          "column": 9,
+          "line": 568,
+          "position": 17565
+        },
+        "name": "screens/PublishFlow/3.1_MiddleStopMap/useMiddleStopMap.ts",
+        "start": 553,
+        "startLoc": {
+          "column": 28,
+          "line": 553,
+          "position": 17141
+        }
+      },
+      "tokens": 65
+    },
+    {
+      "firstFile": {
+        "end": 74,
+        "endLoc": {
+          "column": 63,
+          "line": 74,
+          "position": 2306
+        },
+        "name": "screens/PublishFlow/3_MiddleStops/useMiddleStops.ts",
+        "start": 52,
+        "startLoc": {
+          "column": 16,
+          "line": 52,
+          "position": 1583
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 23,
+      "secondFile": {
+        "end": 163,
+        "endLoc": {
+          "column": 65,
+          "line": 163,
+          "position": 5099
+        },
+        "name": "screens/PublishFlow/7_PriceSelection/usePriceSelection.ts",
+        "start": 140,
+        "startLoc": {
+          "column": 18,
+          "line": 140,
+          "position": 4287
+        }
+      },
+      "tokens": 131
+    },
+    {
+      "firstFile": {
+        "end": 300,
+        "endLoc": {
+          "column": 20,
+          "line": 300,
+          "position": 9270
+        },
+        "name": "screens/PublishFlow/7_PriceSelection/usePriceSelection.ts",
+        "start": 290,
+        "startLoc": {
+          "column": 24,
+          "line": 290,
+          "position": 8909
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 11,
+      "secondFile": {
+        "end": 326,
+        "endLoc": {
+          "column": 20,
+          "line": 326,
+          "position": 9971
+        },
+        "name": "screens/PublishFlow/7_PriceSelection/usePriceSelection.ts",
+        "start": 316,
+        "startLoc": {
+          "column": 23,
+          "line": 316,
+          "position": 9610
+        }
+      },
+      "tokens": 61
+    },
+    {
+      "firstFile": {
+        "end": 69,
+        "endLoc": {
+          "column": 11,
+          "line": 69,
+          "position": 1987
+        },
+        "name": "screens/PublishFlow/9_SummaryPublish/useSummaryActions.ts",
+        "start": 64,
+        "startLoc": {
+          "column": 35,
+          "line": 64,
+          "position": 1798
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 6,
+      "secondFile": {
+        "end": 39,
+        "endLoc": {
+          "column": 6,
+          "line": 39,
+          "position": 1227
+        },
+        "name": "screens/PublishFlow/9_SummaryPublish/useSummaryPublish.ts",
+        "start": 33,
+        "startLoc": {
+          "column": 36,
+          "line": 33,
+          "position": 1050
+        }
+      },
+      "tokens": 57
+    },
+    {
+      "firstFile": {
+        "end": 43,
+        "endLoc": {
+          "column": 5,
+          "line": 43,
+          "position": 1578
+        },
+        "name": "screens/Rating/useRating.ts",
+        "start": 37,
+        "startLoc": {
+          "column": 61,
+          "line": 37,
+          "position": 1347
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 7,
+      "secondFile": {
+        "end": 51,
+        "endLoc": {
+          "column": 5,
+          "line": 51,
+          "position": 1881
+        },
+        "name": "screens/Rating/useRating.ts",
+        "start": 45,
+        "startLoc": {
+          "column": 49,
+          "line": 45,
+          "position": 1650
+        }
+      },
+      "tokens": 53
+    },
+    {
+      "firstFile": {
+        "end": 60,
+        "endLoc": {
+          "column": 4,
+          "line": 60,
+          "position": 1796
+        },
+        "name": "serviceManager/AuthService.ts",
+        "start": 50,
+        "startLoc": {
+          "column": 35,
+          "line": 50,
+          "position": 1381
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 11,
+      "secondFile": {
+        "end": 85,
+        "endLoc": {
+          "column": 4,
+          "line": 85,
+          "position": 2712
+        },
+        "name": "serviceManager/AuthService.ts",
+        "start": 74,
+        "startLoc": {
+          "column": 41,
+          "line": 74,
+          "position": 2296
+        }
+      },
+      "tokens": 87
+    },
+    {
+      "firstFile": {
+        "end": 164,
+        "endLoc": {
+          "column": 4,
+          "line": 164,
+          "position": 4334
+        },
+        "name": "serviceManager/RideService.ts",
+        "start": 152,
+        "startLoc": {
+          "column": 48,
+          "line": 152,
+          "position": 3958
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 13,
+      "secondFile": {
+        "end": 183,
+        "endLoc": {
+          "column": 4,
+          "line": 183,
+          "position": 4887
+        },
+        "name": "serviceManager/RideService.ts",
+        "start": 171,
+        "startLoc": {
+          "column": 51,
+          "line": 171,
+          "position": 4511
+        }
+      },
+      "tokens": 79
+    },
+    {
+      "firstFile": {
+        "end": 104,
+        "endLoc": {
+          "column": 2,
+          "line": 104,
+          "position": 3688
+        },
+        "name": "serviceManager/axiosClient.ts",
+        "start": 91,
+        "startLoc": {
+          "column": 52,
+          "line": 91,
+          "position": 3404
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 14,
+      "secondFile": {
+        "end": 139,
+        "endLoc": {
+          "column": 2,
+          "line": 139,
+          "position": 4040
+        },
+        "name": "serviceManager/olaClient.ts",
+        "start": 125,
+        "startLoc": {
+          "column": 69,
+          "line": 125,
+          "position": 3755
+        }
+      },
+      "tokens": 52
+    },
+    {
+      "firstFile": {
+        "end": 156,
+        "endLoc": {
+          "column": 16,
+          "line": 156,
+          "position": 5385
+        },
+        "name": "serviceManager/axiosClient.ts",
+        "start": 148,
+        "startLoc": {
+          "column": 59,
+          "line": 148,
+          "position": 5032
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 9,
+      "secondFile": {
+        "end": 200,
+        "endLoc": {
+          "column": 16,
+          "line": 200,
+          "position": 5992
+        },
+        "name": "serviceManager/olaClient.ts",
+        "start": 192,
+        "startLoc": {
+          "column": 32,
+          "line": 192,
+          "position": 5639
+        }
+      },
+      "tokens": 54
+    },
+    {
+      "firstFile": {
+        "end": 57,
+        "endLoc": {
+          "column": 6,
+          "line": 57,
+          "position": 1782
+        },
+        "name": "store/resetAllStores.ts",
+        "start": 51,
+        "startLoc": {
+          "column": 26,
+          "line": 51,
+          "position": 1603
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 7,
+      "secondFile": {
+        "end": 42,
+        "endLoc": {
+          "column": 8,
+          "line": 42,
+          "position": 1229
+        },
+        "name": "store/useMyRidesStore.ts",
+        "start": 36,
+        "startLoc": {
+          "column": 11,
+          "line": 36,
+          "position": 1038
+        }
+      },
+      "tokens": 63
+    },
+    {
+      "firstFile": {
+        "end": 88,
+        "endLoc": {
+          "column": 25,
+          "line": 88,
+          "position": 2504
+        },
+        "name": "store/resetAllStores.ts",
+        "start": 61,
+        "startLoc": {
+          "column": 30,
+          "line": 61,
+          "position": 1879
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 28,
+      "secondFile": {
+        "end": 124,
+        "endLoc": {
+          "column": 23,
+          "line": 124,
+          "position": 3229
+        },
+        "name": "store/useRidePublishStore.ts",
+        "start": 97,
+        "startLoc": {
+          "column": 67,
+          "line": 97,
+          "position": 2658
+        }
+      },
+      "tokens": 110
+    },
+    {
+      "firstFile": {
+        "end": 89,
+        "endLoc": {
+          "column": 4,
+          "line": 89,
+          "position": 2509
+        },
+        "name": "store/resetAllStores.ts",
+        "start": 61,
+        "startLoc": {
+          "column": 30,
+          "line": 61,
+          "position": 1879
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 29,
+      "secondFile": {
+        "end": 206,
+        "endLoc": {
+          "column": 6,
+          "line": 206,
+          "position": 5579
+        },
+        "name": "store/useRidePublishStore.ts",
+        "start": 178,
+        "startLoc": {
+          "column": 7,
+          "line": 178,
+          "position": 4893
+        }
+      },
+      "tokens": 112
+    },
+    {
+      "firstFile": {
+        "end": 86,
+        "endLoc": {
+          "column": 24,
+          "line": 86,
+          "position": 2453
+        },
+        "name": "store/useMyRidesStore.ts",
+        "start": 76,
+        "startLoc": {
+          "column": 30,
+          "line": 76,
+          "position": 2137
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 11,
+      "secondFile": {
+        "end": 116,
+        "endLoc": {
+          "column": 24,
+          "line": 116,
+          "position": 3302
+        },
+        "name": "store/useMyRidesStore.ts",
+        "start": 104,
+        "startLoc": {
+          "column": 55,
+          "line": 104,
+          "position": 2984
+        }
+      },
+      "tokens": 55
+    },
+    {
+      "firstFile": {
+        "end": 86,
+        "endLoc": {
+          "column": 2,
+          "line": 86,
+          "position": 1878
+        },
+        "name": "theme/dark.ts",
+        "start": 47,
+        "startLoc": {
+          "column": 33,
+          "line": 47,
+          "position": 1132
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 40,
+      "secondFile": {
+        "end": 86,
+        "endLoc": {
+          "column": 2,
+          "line": 86,
+          "position": 1941
+        },
+        "name": "theme/greenLight.ts",
+        "start": 47,
+        "startLoc": {
+          "column": 33,
+          "line": 47,
+          "position": 1173
+        }
+      },
+      "tokens": 131
+    },
+    {
+      "firstFile": {
+        "end": 86,
+        "endLoc": {
+          "column": 2,
+          "line": 86,
+          "position": 1878
+        },
+        "name": "theme/dark.ts",
+        "start": 65,
+        "startLoc": {
+          "column": 22,
+          "line": 65,
+          "position": 1646
+        }
+      },
+      "format": "typescript",
+      "fragment": "",
+      "lines": 22,
+      "secondFile": {
+        "end": 87,
+        "endLoc": {
+          "column": 2,
+          "line": 87,
+          "position": 1903
+        },
+        "name": "theme/light.ts",
+        "start": 66,
+        "startLoc": {
+          "column": 22,
+          "line": 66,
+          "position": 1649
+        }
+      },
+      "tokens": 71
+    }
+  ],
+  "statistics": {
+    "detectionDate": "2026-08-03T14:23:26.075Z",
+    "formats": {
+      "tsx": {
+        "clones": 13,
+        "duplicatedLines": 229,
+        "duplicatedTokens": 1105,
+        "lines": 24023,
+        "newClones": 0,
+        "newDuplicatedLines": 0,
+        "percentage": 0.9532531324147692,
+        "percentageTokens": 0.9549488821480733,
+        "sources": 349,
+        "tokens": 115713
+      },
+      "typescript": {
+        "clones": 131,
+        "duplicatedLines": 2283,
+        "duplicatedTokens": 10192,
+        "lines": 37669,
+        "newClones": 0,
+        "newDuplicatedLines": 0,
+        "percentage": 6.060686506145637,
+        "percentageTokens": 6.081327008562308,
+        "sources": 340,
+        "tokens": 167595
+      }
+    },
+    "total": {
+      "clones": 144,
+      "duplicatedLines": 2512,
+      "duplicatedTokens": 11297,
+      "lines": 61692,
+      "newClones": 0,
+      "newDuplicatedLines": 0,
+      "percentage": 4.07184075731051,
+      "percentageTokens": 3.987533002950852,
+      "sources": 689,
+      "tokens": 283308
+    }
+  }
+}

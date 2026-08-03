@@ -7,12 +7,7 @@ export interface OTPVerificationTemplateProps {
   handleTextChange: (text: string) => void;
   handleVerify: (code: string) => void;
   handleResend: () => void;
-  toastConfig: {
-    isVisible: boolean;
-    type: 'success' | 'error' | 'info';
-    message: string;
-  };
-  hideToast: () => void;
+
   t: any;
   theme: any;
 }

@@ -27,7 +27,6 @@ export const useEditProfile = () => {
   const { t } = useTranslation();
   const navigation = useAppNavigation();
   const [loading, setLoading] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
   const { user, fetchProfile } = useAuthStore();
 
   const formattedDob = useMemo(() => {
@@ -146,7 +145,11 @@ export const useEditProfile = () => {
           fields_updated: Object.keys(updatePayload),
         });
 
-        setShowSuccess(true);
+        showNotification(
+          NotificationType.SUCCESS,
+          t('notification.defaultSuccessTitle') || 'Success',
+          t('editProfile.successMessage'),
+        );
         setTimeout(() => {
           navigation.goBack();
         }, 1500);
@@ -163,13 +166,9 @@ export const useEditProfile = () => {
     },
   });
 
-  const handleCloseSuccess = () => setShowSuccess(false);
-
   return {
     formik,
     loading,
-    showSuccess,
-    handleCloseSuccess,
     navigation,
     t,
   };

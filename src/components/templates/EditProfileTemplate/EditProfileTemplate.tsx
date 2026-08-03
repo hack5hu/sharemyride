@@ -4,7 +4,7 @@ import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Input } from '@/components/atoms/Input';
 import { DobInput } from '@/components/molecules/DobInput';
 import { GenderSelector } from '@/components/molecules/GenderSelector';
-import { Toast } from '@/components/molecules/Toast';
+
 import { Button } from '@/components/atoms/Button';
 import { EditProfileTemplateProps } from './types.d';
 import * as S from './EditProfileTemplate.styles';
@@ -12,8 +12,6 @@ import * as S from './EditProfileTemplate.styles';
 export const EditProfileTemplate: React.FC<EditProfileTemplateProps> = ({
   formik,
   loading,
-  showSuccess,
-  handleCloseSuccess,
   navigation,
   t,
 }) => {
@@ -31,15 +29,6 @@ export const EditProfileTemplate: React.FC<EditProfileTemplateProps> = ({
           keyboardShouldPersistTaps="handled"
         >
           <S.Content>
-            {showSuccess && (
-              <Toast
-                message={t('editProfile.successMessage')}
-                type="success"
-                isVisible={showSuccess}
-                onHide={handleCloseSuccess}
-              />
-            )}
-
             <S.FormFields>
               <Input
                 label={t('editProfile.fullNameLabel')}
