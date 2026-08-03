@@ -3,6 +3,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useCallback, useState, useEffect, useMemo } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { Linking } from 'react-native';
 import { UserService } from '@/serviceManager/UserService';
 import { computeTotalRides } from '@/utils/user';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
@@ -120,17 +121,29 @@ export const useProfileHub = () => {
     navigation.navigate('Settings');
   }, [navigation]);
 
+  const navigateToHelpAndSupport = useCallback(() => {
+    Linking.openURL('https://www.zyncride.com/contact').catch(err =>
+      console.error('Failed to open support URL', err),
+    );
+  }, []);
+
   const navigateToTermsAndConditions = useCallback(() => {
-    navigation.navigate('TermsAndConditions');
-  }, [navigation]);
+    Linking.openURL('https://www.zyncride.com/terms-and-conditions').catch(err =>
+      console.error('Failed to open terms URL', err),
+    );
+  }, []);
+
+  const navigateToPrivacyPolicy = useCallback(() => {
+    Linking.openURL('https://www.zyncride.com/privacy-policy').catch(err =>
+      console.error('Failed to open privacy policy URL', err),
+    );
+  }, []);
 
   const navigateToAboutUs = useCallback(() => {
-    navigation.navigate('AboutUs');
-  }, [navigation]);
-
-  const navigateToHelpAndSupport = useCallback(() => {
-    navigation.navigate('HelpAndSupport');
-  }, [navigation]);
+    Linking.openURL('https://www.zyncride.com').catch(err =>
+      console.error('Failed to open about us URL', err),
+    );
+  }, []);
 
   const navigateToSuggestions = useCallback(() => {
     navigation.navigate('Suggestions');
@@ -173,6 +186,7 @@ export const useProfileHub = () => {
     navigateToSettings,
     navigateToDummy,
     navigateToTermsAndConditions,
+    navigateToPrivacyPolicy,
     navigateToAboutUs,
     navigateToHelpAndSupport,
     navigateToSuggestions,

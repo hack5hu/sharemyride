@@ -86,15 +86,34 @@ export const useChatDetails = () => {
     route.params?.rideInfo,
   );
 
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
   // Connect socket and handle lifecycle
   useChatSocket(true);
+
+  const handleLoadMore = useCallback(async () => {
+    if (isLoadingMore || !hasMore || !myUserId || !receiverId) return;
+
+    setIsLoadingMore(true);
+    try {
+      const { isLast } = await ChatService.fetchHistory(myUserId, receiverId, page, 30);
+      setHasMore(!isLast);
+      if (!isLast) {
+        setPage(prev => prev + 1);
+      }
+    } finally {
+      setIsLoadingMore(false);
+    }
+  }, [isLoadingMore, hasMore, myUserId, receiverId, page]);
 
   // Initial load: Fetch history, mark as read, and set active conversation
   useEffect(() => {
     if (myUserId && receiverId && conversationId) {
       setActiveConversation(conversationId);
       historyFetchStartedRef.current = true;
-      ChatService.fetchHistory(myUserId, receiverId);
+      handleLoadMore();
       ChatService.markAsRead(myUserId, receiverId);
     }
 
@@ -102,6 +121,7 @@ export const useChatDetails = () => {
       setActiveConversation(null);
       historyFetchStartedRef.current = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myUserId, receiverId, conversationId, setActiveConversation]);
 
   // Fetch profile if not in cache
@@ -220,57 +240,7 @@ export const useChatDetails = () => {
   }, [storeMessages, conversationId, myUserId, t]);
 
   // Handle incoming location from MapPicker
-  useEffect(() => {
-    if (
-      route.params?.selectedLocation &&
-      myUserId &&
-      receiverId &&
-      receiverId !== 'Unknown'
-    ) {
-      const loc = route.params.selectedLocation;
 
-      const locationString = `[LOCATION_DATA]:${loc.latitude},${
-        loc.longitude
-      }|${loc.name}|${loc.address || ''}`;
-
-      ChatService.sendMessage({
-        senderId: myUserId,
-        receiverId,
-        content: locationString,
-        type: 'location',
-        metadata: {
-          userName: route.params?.name,
-          userAvatar: route.params?.avatarUri,
-          userRating: route.params?.rating,
-          rideId: route.params?.rideId,
-          rideInfo: dynamicRideInfo,
-          location: {
-            latitude: loc.latitude,
-            longitude: loc.longitude,
-            locationName: loc.name,
-            address: loc.address,
-          },
-        },
-      });
-
-      AnalyticsService.logEvent(AnalyticsEvent.CHAT_MESSAGE_SENT, {
-        type: 'location',
-        receiver_id: receiverId,
-      });
-
-      navigation.setParams({ selectedLocation: undefined } as any);
-    }
-  }, [
-    route.params?.avatarUri,
-    route.params?.name,
-    route.params?.rating,
-    route.params?.rideId,
-    route.params?.selectedLocation,
-    navigation,
-    myUserId,
-    receiverId,
-    dynamicRideInfo,
-  ]);
 
   const handleSafetyClose = useCallback(() => {
     setIsSafetyVisible(false);
@@ -302,25 +272,7 @@ export const useChatDetails = () => {
     setMessage('');
   }, [message, myUserId, receiverId, route.params, dynamicRideInfo]);
 
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  // ... previous effects ...
-
-  const handleLoadMore = useCallback(async () => {
-    if (isLoadingMore || !myUserId || !receiverId) return;
-
-    const rawMessages = storeMessages[conversationId] || [];
-    if (rawMessages.length < 20) return; // Don't try to load more if we have very few messages
-
-    setIsLoadingMore(true);
-    try {
-      // In a real app, you'd pass this timestamp to fetch older messages
-      // For now, we'll call fetchHistory which should ideally handle pagination
-      await ChatService.fetchHistory(myUserId, receiverId);
-    } finally {
-      setIsLoadingMore(false);
-    }
-  }, [isLoadingMore, myUserId, receiverId, conversationId, storeMessages]);
 
   const handleLocationShare = useCallback(() => {
     navigation.navigate('SelectLocation' as any, {

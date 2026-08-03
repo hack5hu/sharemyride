@@ -6,8 +6,11 @@ import { Logger } from '@/utils/logger';
 
 export const useInAppUpdate = () => {
   useEffect(() => {
-    // Pass false to disable verbose debugging logs in production
-    const inAppUpdates = new SpInAppUpdates(__DEV__);
+    // In-App Updates via Google Play only work on production builds installed directly from Play Store.
+    // Skip in development/emulator builds to prevent Play Store service binding errors.
+    if (__DEV__) return;
+
+    const inAppUpdates = new SpInAppUpdates(false);
 
     const checkUpdates = async () => {
       try {
@@ -24,8 +27,12 @@ export const useInAppUpdate = () => {
           }
           await inAppUpdates.startUpdate(updateOptions);
         }
-      } catch (error) {
-        Logger.error('[InAppUpdate] Error checking/starting update:', error);
+      } catch (error: any) {
+        const errorStr = String(error?.message || error || '');
+        // Ignore expected Play Store service binding failures on sideloaded/non-Play Store builds
+        if (!errorStr.includes('Failed to bind') && !errorStr.includes('zzy')) {
+          Logger.warn('[InAppUpdate] Error checking/starting update:', error);
+        }
       }
     };
 

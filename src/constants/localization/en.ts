@@ -149,8 +149,14 @@ export const en: Translations = {
     changePassword: 'Change Password',
     changePasswordDescr: 'Security and authentication',
     helpSupport: 'Help & Support',
+    helpSupportDescr: 'FAQs, guides, and contact support',
     aboutUs: 'About Us',
+    aboutUsDescr: 'Learn more about ZyncRide and our team',
     termsPrivacy: 'Terms & Privacy',
+    termsConditions: 'Terms & Conditions',
+    termsConditionsDescr: 'Our terms of service and user rules',
+    privacyPolicy: 'Privacy Policy',
+    privacyPolicyDescr: 'How we protect and manage your data',
     logout: 'Logout',
     deleteAccount: 'Delete Account',
     navBook: 'BOOK',
@@ -713,7 +719,13 @@ export const en: Translations = {
       'Are you sure you want to logout? You will need to login again to access your account.',
     logoutConfirmButton: 'Logout',
     logoutConfirmCancel: 'Stay logged in',
-    version: 'App Version 4.12.0-Verdant',
+    deleteAccount: 'Delete Account',
+    deleteAccountConfirmTitle: 'Delete Account',
+    deleteAccountConfirmMessage:
+      'Are you sure you want to delete your account? This action is permanent and cannot be undone.',
+    deleteAccountConfirmButton: 'Delete Account',
+    deleteAccountConfirmCancel: 'Cancel',
+    version: 'App Version',
   },
   myRides: {
     headerTitle: 'My Rides',
@@ -812,7 +824,7 @@ export const en: Translations = {
     loadingCurrentLocation: 'Loading your current location...',
     locationDisclosureTitle: 'Location Access Notice',
     locationDisclosureMessage:
-      'ZyncRide collects location data to display your current position on the map, help you select pickup/drop-off points, and support live location sharing with your co-riders, even when the app is closed or not in use.',
+      'ZyncRide collects location data on this screen to display your current position on the map, help you select pickup/drop-off points, and support live location sharing so your driver or co-riders can find and pick you up easily.',
     agree: 'Agree & Continue',
   },
   rideRoute: {

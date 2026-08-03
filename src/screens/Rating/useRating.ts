@@ -5,6 +5,7 @@ import { showNotification } from '@/components/organisms/GlobalNotification/Glob
 import { NotificationType } from '@/constants/enums';
 import { RideService } from '@/serviceManager/RideService';
 import { getErrorMessage } from '@/utils/error';
+import { storage } from '@/utils/storage';
 
 
 export const useRating = (params: {
@@ -92,13 +93,22 @@ export const useRating = (params: {
         reviewText,
       );
 
+      try {
+        const dismissedStr = storage.getString('dismissed_ratings') || '[]';
+        const dismissedIds = JSON.parse(dismissedStr) as string[];
+        if (!dismissedIds.includes(String(rideId))) {
+          dismissedIds.push(String(rideId));
+          storage.set('dismissed_ratings', JSON.stringify(dismissedIds));
+        }
+      } catch (e) {
+        console.error('[Rating] Failed to update dismissed_ratings:', e);
+      }
+
       showNotification(
         NotificationType.SUCCESS,
         t.successTitle,
         t.successMessage,
       );
-
-
 
       navigation.goBack();
     } catch (error) {

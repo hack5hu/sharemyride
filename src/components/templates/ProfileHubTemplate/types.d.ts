@@ -8,6 +8,7 @@ export interface ProfileHubTemplateProps {
   navigateToTravelPreferences: () => void;
   navigateToSettings: () => void;
   navigateToTermsAndConditions: () => void;
+  navigateToPrivacyPolicy: () => void;
   navigateToAboutUs: () => void;
   navigateToHelpAndSupport: () => void;
   navigateToSuggestions: () => void;

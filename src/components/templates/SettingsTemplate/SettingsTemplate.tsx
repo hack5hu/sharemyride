@@ -7,6 +7,7 @@ import { Checkbox } from '@/components/atoms/Checkbox';
 import { ConfirmationModal } from '@/components/organisms/ConfirmationModal';
 import { SettingsTemplateProps } from './types.d';
 import * as S from './SettingsTemplate.styles';
+import DeviceInfo from 'react-native-device-info';
 
 export const SettingsTemplate: React.FC<SettingsTemplateProps> = ({
   t,
@@ -173,7 +174,7 @@ export const SettingsTemplate: React.FC<SettingsTemplateProps> = ({
             </S.OptionsList>
           </S.Section>
 
-          {/* Email Settings */}
+          {/* Email Settings (Commented out as APIs/BE integration are pending)
           <S.Section>
             <S.SectionTitle>{t.emailSettings}</S.SectionTitle>
 
@@ -211,6 +212,7 @@ export const SettingsTemplate: React.FC<SettingsTemplateProps> = ({
               <Checkbox checked={accountSecurity} onToggle={() => {}} />
             </S.DisabledEmailCard>
           </S.Section>
+          */}
 
           {/* Account Section */}
           <S.AccountSection>
@@ -228,7 +230,7 @@ export const SettingsTemplate: React.FC<SettingsTemplateProps> = ({
 
             <S.FooterVersion>
               <S.VersionText color={theme.colors.on_surface_variant}>
-                {t.version}
+                {t.version} {DeviceInfo.getVersion()}
               </S.VersionText>
             </S.FooterVersion>
           </S.AccountSection>

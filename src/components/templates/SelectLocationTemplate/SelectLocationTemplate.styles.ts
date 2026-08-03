@@ -65,12 +65,13 @@ export const CenterPinWrapper = styled.View`
   z-index: 10;
 `;
 
-export const BottomContainer = styled.View`
+export const BottomContainer = styled.View<{ bottomInset: number }>`
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 30;
+  padding-bottom: ${({ bottomInset }) => bottomInset}px;
 `;
 
 // FAB anchored just above the bottom sheet

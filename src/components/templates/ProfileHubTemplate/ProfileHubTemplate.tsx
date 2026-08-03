@@ -25,6 +25,7 @@ export const ProfileHubTemplate: React.FC<ProfileHubTemplateProps> = ({
   navigateToTravelPreferences,
   navigateToSettings,
   navigateToTermsAndConditions,
+  navigateToPrivacyPolicy,
   navigateToAboutUs,
   navigateToHelpAndSupport,
   navigateToSuggestions,
@@ -92,28 +93,34 @@ export const ProfileHubTemplate: React.FC<ProfileHubTemplateProps> = ({
             </SectionTitle>
             <ActionGrid>
               <ProfileMenuItem
-                icon="help-outline"
-                title={t('profileHub.helpSupport')}
-                showChevron={false}
-                onPress={navigateToHelpAndSupport}
-              />
-              <ProfileMenuItem
                 icon="feedback"
                 title={t('profileHub.suggestionsFeedback')}
                 subtitle={t('profileHub.suggestionsFeedbackDescr')}
                 onPress={navigateToSuggestions}
               />
               <ProfileMenuItem
+                icon="help-outline"
+                title={t('profileHub.helpSupport')}
+                subtitle={t('profileHub.helpSupportDescr')}
+                onPress={navigateToHelpAndSupport}
+              />
+              <ProfileMenuItem
                 icon="info"
                 title={t('profileHub.aboutUs')}
-                showChevron={false}
+                subtitle={t('profileHub.aboutUsDescr')}
                 onPress={navigateToAboutUs}
               />
               <ProfileMenuItem
-                icon="policy"
-                title={t('profileHub.termsPrivacy')}
-                showChevron={false}
+                icon="gavel"
+                title={t('profileHub.termsConditions') || 'Terms & Conditions'}
+                subtitle={t('profileHub.termsConditionsDescr')}
                 onPress={navigateToTermsAndConditions}
+              />
+              <ProfileMenuItem
+                icon="policy"
+                title={t('profileHub.privacyPolicy') || 'Privacy Policy'}
+                subtitle={t('profileHub.privacyPolicyDescr')}
+                onPress={navigateToPrivacyPolicy}
               />
             </ActionGrid>
           </Section>

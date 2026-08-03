@@ -10,7 +10,7 @@ import { ChatListScreenProps } from './types';
 export const ChatListScreen: React.FC<ChatListScreenProps> = ({
   navigation,
 }) => {
-  const { searchQuery, setSearchQuery, filteredMessages, t } = useChatList();
+  const { searchQuery, setSearchQuery, filteredMessages, t, loadMore, isLoading } = useChatList();
 
   return (
     <ChatListTemplate
@@ -24,6 +24,8 @@ export const ChatListScreen: React.FC<ChatListScreenProps> = ({
       content={
         <RecentMessagesSection
           messages={filteredMessages as any}
+          onLoadMore={loadMore}
+          isLoading={isLoading}
           onMessagePress={id => {
             const chat = (filteredMessages as any[]).find(m => m.id === id);
             navigation.navigate('ChatDetails', {

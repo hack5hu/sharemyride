@@ -15,6 +15,8 @@ export const useSettings = () => {
 
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Appearance
   const themeMode = useSettingsStore(state => state.themeMode);
@@ -73,6 +75,30 @@ export const useSettings = () => {
     }
   };
 
+  const showDeleteConfirmation = () => setIsDeleteModalVisible(true);
+  const hideDeleteConfirmation = () => setIsDeleteModalVisible(false);
+
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    try {
+      await AuthService.deleteAccount();
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login' as never }],
+      });
+    } catch (e: any) {
+      console.error('Delete account failed in settings:', e);
+      showNotification(
+        NotificationType.ERROR,
+        t.notification.defaultErrorTitle,
+        getErrorMessage(e, t.notification.defaultErrorMessage),
+      );
+    } finally {
+      setIsDeleting(false);
+      setIsDeleteModalVisible(false);
+    }
+  };
+
   const handleToggleLanguage = () => {
     setLanguage(language === 'en' ? 'hi' : 'en');
   };
@@ -97,5 +123,10 @@ export const useSettings = () => {
     isLoggingOut,
     showLogoutConfirmation,
     hideLogoutConfirmation,
+    isDeleteModalVisible,
+    isDeleting,
+    showDeleteConfirmation,
+    hideDeleteConfirmation,
+    handleDeleteAccount,
   };
 };

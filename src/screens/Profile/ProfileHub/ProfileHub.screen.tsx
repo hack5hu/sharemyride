@@ -13,6 +13,7 @@ export const ProfileHubScreen: React.FC = () => {
     navigateToTravelPreferences,
     navigateToSettings,
     navigateToTermsAndConditions,
+    navigateToPrivacyPolicy,
     navigateToAboutUs,
     navigateToHelpAndSupport,
     navigateToSuggestions,
@@ -37,6 +38,7 @@ export const ProfileHubScreen: React.FC = () => {
       navigateToTravelPreferences={navigateToTravelPreferences}
       navigateToSettings={navigateToSettings}
       navigateToTermsAndConditions={navigateToTermsAndConditions}
+      navigateToPrivacyPolicy={navigateToPrivacyPolicy}
       navigateToAboutUs={navigateToAboutUs}
       navigateToHelpAndSupport={navigateToHelpAndSupport}
       navigateToSuggestions={navigateToSuggestions}

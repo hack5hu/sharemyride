@@ -16,7 +16,7 @@ import { verticalScale } from '@/styles';
 import { EmptyState } from '@/components/molecules/EmptyState';
 
 export const RecentMessagesSection: React.FC<RecentMessagesSectionProps> =
-  React.memo(({ messages, onMessagePress }) => {
+  React.memo(({ messages, onMessagePress, onLoadMore, isLoading }) => {
     const { t } = useTranslation();
 
     const renderItem = useCallback(
@@ -45,9 +45,12 @@ export const RecentMessagesSection: React.FC<RecentMessagesSectionProps> =
           renderItem={renderItem}
           keyExtractor={item => item.id}
           showsVerticalScrollIndicator={false}
+          onEndReached={onLoadMore}
+          onEndReachedThreshold={0.5}
           contentContainerStyle={{
             paddingBottom: verticalScale(32),
           }}
+          ListFooterComponent={isLoading ? <EmptyState icon="hourglass-empty" title={t('common.loading')} description="" /> : null}
           ListEmptyComponent={
             <EmptyState
               icon="forum"

@@ -1,5 +1,19 @@
 # Changelog
 
+# [1.3.0](https://github.com/hack5hu/sharemyride/compare/v1.1.1...v1.3.0) (2026-08-03)
+
+### Features
+
+* add Stallion OTA update modal, implement UserRatings screen, and refactor ride data mapping to include comprehensive user ride statistics. ([df235e3](https://github.com/hack5hu/sharemyride/commit/df235e376137f1a799910d2e5b9ef62755af4a59))
+* sync user profile fields in store, update passenger rating UI with status, and adjust search radius to 25km ([f83435c](https://github.com/hack5hu/sharemyride/commit/f83435cf718b8ba5faa3202c406d9a48567e51cd))
+
+# [1.2.0](https://github.com/hack5hu/sharemyride/compare/v1.1.1...v1.2.0) (2026-08-03)
+
+### Features
+
+* add Stallion OTA update modal, implement UserRatings screen, and refactor ride data mapping to include comprehensive user ride statistics. ([df235e3](https://github.com/hack5hu/sharemyride/commit/df235e376137f1a799910d2e5b9ef62755af4a59))
+* sync user profile fields in store, update passenger rating UI with status, and adjust search radius to 25km ([f83435c](https://github.com/hack5hu/sharemyride/commit/f83435cf718b8ba5faa3202c406d9a48567e51cd))
+
 ## [1.1.1](https://github.com/hack5hu/sharemyride/compare/v1.1.0...v1.1.1) (2026-08-01)
 
 # 1.1.0 (2026-08-01)

@@ -124,13 +124,6 @@ export const SelectLocationTemplate: React.FC<
                 >
                   <GpsEnableText>{chatLocation.enableGps}</GpsEnableText>
                 </GpsEnableButton>
-                <GpsCloseButton onPress={onCloseGpsBanner} activeOpacity={0.7}>
-                  <Icon
-                    name="close"
-                    size={moderateScale(16)}
-                    color={theme.colors.on_error_container}
-                  />
-                </GpsCloseButton>
               </>
             )}
           </GpsWarningBanner>
@@ -147,7 +140,7 @@ export const SelectLocationTemplate: React.FC<
       />
 
       {/* Layer 3 — Stacked bottom elements */}
-      <BottomContainer pointerEvents="box-none">
+      <BottomContainer pointerEvents="box-none" bottomInset={Math.max(insets.bottom, 16)}>
         <SelectButtonContainer>
           {(locationName || locationAddress) && (
             <LocationPreviewContainer>

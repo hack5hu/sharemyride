@@ -146,8 +146,14 @@ export interface ProfileHubTranslations {
   changePassword: string;
   changePasswordDescr: string;
   helpSupport: string;
+  helpSupportDescr: string;
   aboutUs: string;
+  aboutUsDescr: string;
   termsPrivacy: string;
+  termsConditions: string;
+  termsConditionsDescr: string;
+  privacyPolicy: string;
+  privacyPolicyDescr: string;
   logout: string;
   deleteAccount: string;
   navBook: string;
@@ -657,6 +663,11 @@ export interface SettingsTranslations {
   logoutConfirmMessage: string;
   logoutConfirmButton: string;
   logoutConfirmCancel: string;
+  deleteAccount: string;
+  deleteAccountConfirmTitle: string;
+  deleteAccountConfirmMessage: string;
+  deleteAccountConfirmButton: string;
+  deleteAccountConfirmCancel: string;
   version: string;
 }
 

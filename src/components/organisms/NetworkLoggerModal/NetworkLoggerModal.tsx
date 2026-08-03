@@ -14,6 +14,7 @@ import * as S from './NetworkLoggerModal.styles';
 
 import { BASE_URL } from '@/constants/apiEndpoints';
 import { useAuthStore } from '@/store/useAuthStore';
+import buildEnv from '@/constants/buildEnv.json';
 
 export const NetworkLoggerModal: React.FC = React.memo(() => {
   const theme = useTheme();
@@ -133,7 +134,8 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
     user?.isSuperAdmin === true ||
     (user as any)?.superAdmin === true;
 
-  const showDebugger = __DEV__ || isSuperAdmin || true;
+  const isApkBuild = Boolean(buildEnv?.isApkBuild);
+  const showDebugger = __DEV__ || isSuperAdmin || isApkBuild;
 
   if (!showDebugger) {
     return null;

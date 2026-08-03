@@ -278,14 +278,21 @@ export const useChatStore = create<ChatState>()(
             if (index > -1) {
               // Merge: Only update if new one is newer or has more data
               const existing = merged[index];
+              const updatedMetadata = {
+                ...(existing.metadata || {}),
+                ...(newConv.metadata || {}),
+              };
+              
               if (newConv.updatedAt >= (existing.updatedAt || 0)) {
                 merged[index] = {
                   ...existing,
                   ...newConv,
-                  metadata: {
-                    ...(existing.metadata || {}),
-                    ...(newConv.metadata || {}),
-                  },
+                  metadata: updatedMetadata,
+                };
+              } else {
+                merged[index] = {
+                  ...existing,
+                  metadata: updatedMetadata,
                 };
               }
             } else {

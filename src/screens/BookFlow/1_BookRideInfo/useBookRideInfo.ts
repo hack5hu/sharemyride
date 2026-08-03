@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { BackHandler, ToastAndroid } from 'react-native';
 import { format, isBefore, startOfDay } from 'date-fns';
-import { useRoute, useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useLocale } from '@/constants/localization';
 import { useBookRideStore, RecentSearch } from '@/store/useBookRideStore';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
@@ -12,6 +12,8 @@ import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
 import { storage } from '@/utils/storage';
 import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
+
+let globalSessionPrompted = false;
 
 export const useBookRideInfo = () => {
   const { navigation, navigate } = useAppNavigation();
@@ -210,11 +212,10 @@ export const useBookRideInfo = () => {
 
   const [ratingPromptRide, setRatingPromptRide] = useState<any>(null);
   const [isRatingPromptVisible, setIsRatingPromptVisible] = useState(false);
-  const sessionPromptedRef = useRef(false);
 
   const checkUnratedRides = useCallback(async () => {
-    // Only prompt once per app session to avoid annoying popup on tab switching
-    if (sessionPromptedRef.current) return;
+    // Only prompt once per app runtime session
+    if (globalSessionPrompted) return;
 
     try {
       // Fetch archived/past rides
@@ -247,22 +248,34 @@ export const useBookRideInfo = () => {
 
       // Get already rated/dismissed ride IDs from MMKV
       const dismissedStr = storage.getString('dismissed_ratings') || '[]';
-      const dismissedIds: string[] = JSON.parse(dismissedStr);
+      const dismissedIds: any[] = JSON.parse(dismissedStr);
 
-      // If the latest completed ride has already been dismissed or rated, do not prompt for older rides
-      if (dismissedIds.includes(String(targetRideId))) {
+      // If the latest completed ride has already been dismissed or rated, do not prompt
+      const isLocallyDismissed = dismissedIds.some(
+        id => String(id) === String(targetRideId),
+      );
+      if (isLocallyDismissed) {
+        globalSessionPrompted = true;
         return;
       }
 
       // Check if API response indicates the latest ride is already rated
-      const isRated = 
-        latestRide.hasRated === true || 
+      const isDriver = latestRide.role === 'DRIVER';
+      const passengersAllRated =
+        Array.isArray(latestRide.passengers) &&
+        (latestRide.passengers.length === 0 ||
+          latestRide.passengers.every((p: any) => p.hasRated === true));
+
+      const isRated =
+        latestRide.hasRated === true ||
         latestRide.isRated === true ||
-        latestRide.driver?.hasRated === true || 
-        latestRide.myBooking?.hasRatedDriver === true;
+        (isDriver
+          ? passengersAllRated
+          : latestRide.driver?.hasRated === true ||
+            latestRide.myBooking?.hasRatedDriver === true);
 
       if (!isRated) {
-        sessionPromptedRef.current = true;
+        globalSessionPrompted = true;
         setRatingPromptRide(latestRide);
         setIsRatingPromptVisible(true);
       }
@@ -305,6 +318,7 @@ export const useBookRideInfo = () => {
   );
 
   const handleConfirmRating = useCallback(() => {
+    globalSessionPrompted = true;
     if (!ratingPromptRide) return;
 
     const targetRideId =
@@ -315,8 +329,11 @@ export const useBookRideInfo = () => {
 
     if (targetRideId) {
       const dismissedStr = storage.getString('dismissed_ratings') || '[]';
-      const dismissedIds: string[] = JSON.parse(dismissedStr);
-      if (!dismissedIds.includes(String(targetRideId))) {
+      const dismissedIds: any[] = JSON.parse(dismissedStr);
+      const exists = dismissedIds.some(
+        id => String(id) === String(targetRideId),
+      );
+      if (!exists) {
         dismissedIds.push(String(targetRideId));
         storage.set('dismissed_ratings', JSON.stringify(dismissedIds));
       }
@@ -349,7 +366,11 @@ export const useBookRideInfo = () => {
   }, [navigation, ratingPromptRide]);
 
   const handleDismissRating = useCallback(() => {
-    if (!ratingPromptRide) return;
+    globalSessionPrompted = true;
+    if (!ratingPromptRide) {
+      setIsRatingPromptVisible(false);
+      return;
+    }
     const targetRideId =
       ratingPromptRide.rideId ||
       ratingPromptRide.bookingId ||
@@ -358,8 +379,11 @@ export const useBookRideInfo = () => {
 
     if (targetRideId) {
       const dismissedStr = storage.getString('dismissed_ratings') || '[]';
-      const dismissedIds: string[] = JSON.parse(dismissedStr);
-      if (!dismissedIds.includes(String(targetRideId))) {
+      const dismissedIds: any[] = JSON.parse(dismissedStr);
+      const exists = dismissedIds.some(
+        id => String(id) === String(targetRideId),
+      );
+      if (!exists) {
         dismissedIds.push(String(targetRideId));
         storage.set('dismissed_ratings', JSON.stringify(dismissedIds));
       }

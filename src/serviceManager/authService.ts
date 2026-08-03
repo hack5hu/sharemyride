@@ -101,6 +101,16 @@ export const AuthService = {
     }
   },
 
+  deleteAccount: async () => {
+    try {
+      // Placeholder for backend API if needed in the future
+      await AuthService.clearLocalSession();
+    } catch (error) {
+      console.error('Delete account API error', error);
+      await AuthService.clearLocalSession();
+    }
+  },
+
   clearLocalSession: async () => {
     try {
       await Promise.all([

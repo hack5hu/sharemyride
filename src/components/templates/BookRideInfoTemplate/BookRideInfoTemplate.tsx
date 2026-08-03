@@ -4,6 +4,7 @@ import { FlashList } from '@shopify/flash-list';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { format } from 'date-fns';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { moderateScale, verticalScale } from '@/styles';
 import { BottomNav } from '@/components/organisms/BottomNav';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
@@ -34,6 +35,7 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
       t,
     }) => {
       const theme = useTheme();
+      const insets = useSafeAreaInsets();
 
       const spinValue = React.useRef(new Animated.Value(0)).current;
 
@@ -97,7 +99,7 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
             )}
             ListHeaderComponent={
               <>
-                <S.Header>
+                <S.Header style={{ paddingTop: insets.top + verticalScale(12) }}>
                   <S.HeaderTitle>{t.brandName}</S.HeaderTitle>
                 </S.Header>
 

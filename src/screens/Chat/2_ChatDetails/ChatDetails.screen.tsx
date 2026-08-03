@@ -95,7 +95,7 @@ export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({
         name={cachedUser?.name || name || `User ${userId?.slice(0, 8)}`}
         rating={cachedUser?.rating || rating}
         isTyping={false}
-        avatarUri={cachedUser?.avatarUri || avatarUri || undefined}
+        avatarUri={avatarUri || cachedUser?.avatarUri || undefined}
         onBackPress={() => navigation.goBack()}
         onReportPress={() => setIsReportModalVisible(true)}
         onProfilePress={handleProfilePress}

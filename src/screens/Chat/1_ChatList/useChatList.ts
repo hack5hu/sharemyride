@@ -15,8 +15,12 @@ export const useChatList = () => {
     users,
   } = useChatStore();
   const [searchQuery, setSearchQuery] = useState('');
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const { setConversations } = useChatStore();
 
-  // Activate socket and fetch conversations
+  // Activate socket
   useChatSocket(true);
 
   useEffect(() => {
@@ -24,6 +28,62 @@ export const useChatList = () => {
       setMyUserId(user.userId);
     }
   }, [user?.userId, setMyUserId]);
+
+  const loadMore = async () => {
+    if (isLoading || !hasMore) return;
+    setIsLoading(true);
+    const data = await ChatService.fetchConversations(page, 20);
+    
+    if (data) {
+      let content = [];
+      let isLast = false;
+
+      // Handle Spring Data Page or raw array
+      if (Array.isArray(data)) {
+        content = data;
+        isLast = data.length < 20;
+      } else if (data.content && Array.isArray(data.content)) {
+        content = data.content;
+        isLast = data.last ?? (data.content.length < 20);
+      }
+
+      if (content.length > 0 && user?.userId) {
+        const mappedConversations = content.map((item: any) => ({
+          conversationId: item.conversationId || item.id,
+          participants: [user.userId, item.otherUserId || item.id],
+          unreadCount: item.unreadCount || 0,
+          updatedAt: item.lastMessageTime ? new Date(item.lastMessageTime).getTime() : Date.now(),
+          metadata: {
+            name: item.otherUserName || item.name,
+            avatarUri: item.otherUserPhoto || item.photo,
+          },
+          lastMessage: {
+            messageId: `preview-${item.conversationId || item.id}`,
+            senderId: item.otherUserId || item.id, // Just to satisfy UI
+            receiverId: user.userId,
+            content: item.lastMessagePreview || item.lastMessage?.content || '',
+            timestamp: item.lastMessageTime ? new Date(item.lastMessageTime).getTime() : Date.now(),
+            status: item.lastMessageStatus || 'SENT',
+            type: 'text',
+          },
+        }));
+        setConversations(mappedConversations);
+      }
+
+      setHasMore(!isLast);
+      if (!isLast) {
+        setPage(prev => prev + 1);
+      }
+    } else {
+      setHasMore(false);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    loadMore();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const messages = useMemo(() => {
     const myUserId = user?.userId;
@@ -73,12 +133,12 @@ export const useChatList = () => {
           isOnline: true,
           isVerified: cachedUser?.isVerified ?? metadata.isVerified ?? true,
           avatarSource:
-            cachedUser?.avatarUri || metadata.userAvatar || metadata.avatarUri
+            metadata.avatarUri || metadata.userAvatar || cachedUser?.avatarUri
               ? {
                   uri:
-                    cachedUser?.avatarUri ||
+                    metadata.avatarUri ||
                     metadata.userAvatar ||
-                    metadata.avatarUri,
+                    cachedUser?.avatarUri,
                 }
               : undefined,
           // Pass extra data for navigation
@@ -104,5 +164,7 @@ export const useChatList = () => {
     setSearchQuery,
     filteredMessages,
     t,
+    loadMore,
+    isLoading,
   };
 };

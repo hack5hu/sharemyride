@@ -274,13 +274,38 @@ class ChatServiceClass {
     }
   }
 
-  async fetchHistory(myUserId: string, otherUserId: string) {
+  async fetchConversations(page: number = 0, size: number = 20) {
+    try {
+      const response = await axiosClient.get(
+        `/api/v1/chat/conversations?page=${page}&size=${size}`,
+      );
+      return response.data;
+    } catch (error) {
+      Logger.error('Failed to fetch conversations:', error);
+      return null;
+    }
+  }
+
+  async fetchHistory(myUserId: string, otherUserId: string, page: number = 0, size: number = 30) {
     const conversationId = this.getConversationId(myUserId, otherUserId);
     try {
       const response = await axiosClient.get(
-        `/api/v1/chat/history/${myUserId}/${otherUserId}`,
+        `/api/v1/chat/messages/${otherUserId}?page=${page}&size=${size}`,
       );
-      const history = (response.data as HistoryMessage[]).map(m => ({
+      
+      let content = [];
+      let isLast = false;
+      const data = response.data;
+      
+      if (Array.isArray(data)) {
+        content = data;
+        isLast = data.length < size;
+      } else if (data.content && Array.isArray(data.content)) {
+        content = data.content;
+        isLast = data.last ?? (content.length < size);
+      }
+
+      const history = content.map((m: any) => ({
         ...m,
         status: (
           m.status ||
@@ -289,11 +314,12 @@ class ChatServiceClass {
         ).toUpperCase() as MessageStatus,
         timestamp: parseChatTimestamp(m),
       }));
+      
       useChatStore.getState().setHistory(conversationId, history);
-      return history;
+      return { history, isLast };
     } catch (error) {
       Logger.error('Failed to fetch chat history:', error);
-      return [];
+      return { history: [], isLast: true };
     }
   }
 

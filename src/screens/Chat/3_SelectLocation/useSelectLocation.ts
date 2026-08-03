@@ -8,6 +8,9 @@ import {
 } from '@/serviceManager/LocationService';
 import { Location } from '@/store/useLocationStore';
 import debounce from 'lodash/debounce';
+import { ChatService } from '@/serviceManager/ChatService';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
+import { useAuthStore } from '@/store/useAuthStore';
 import { AppState, AppStateStatus, Platform, PermissionsAndroid } from 'react-native';
 
 import Geolocation from '@react-native-community/geolocation';
@@ -102,8 +105,12 @@ export const useSelectLocation = () => {
         error => {
           setIsLocating(false);
           console.warn('[useSelectLocation] Geolocation error:', error);
-          if (error.code === 2 && showModalOnError) {
-            setIsGpsModalVisible(true);
+          if (error.code === 2) {
+            if (showModalOnError) {
+              setIsGpsModalVisible(true);
+            } else {
+              setIsGpsBannerVisible(true);
+            }
           }
         },
         {
@@ -205,16 +212,7 @@ export const useSelectLocation = () => {
     };
   }, [checkGpsAndGetLocation]);
 
-  useEffect(() => {
-    if (cameraRef.current && region && !isInitiallyCentered) {
-      setIsInitiallyCentered(true);
-      cameraRef.current.setStop({
-        center: [region.longitude, region.latitude],
-        zoom: 15,
-        duration: 1000,
-      });
-    }
-  }, [region, isInitiallyCentered]);
+
 
   const handleUserLocationUpdate = useCallback(
     (location: any) => {
@@ -367,11 +365,40 @@ export const useSelectLocation = () => {
         locationToConfirm.latitude != null &&
         locationToConfirm.longitude != null
       ) {
-        navigation.navigate('ChatDetails', {
-          ...params,
-          selectedLocation: locationToConfirm,
-          timestamp: Date.now(),
-        });
+        const myUserId = useAuthStore.getState().user?.userId || useAuthStore.getState().user?.id;
+        const receiverId = params?.userId;
+
+        if (myUserId && receiverId && receiverId !== 'Unknown') {
+          const loc = locationToConfirm;
+          const locationString = `[LOCATION_DATA]:${loc.latitude},${loc.longitude}|${loc.name}|${loc.address || ''}`;
+
+          ChatService.sendMessage({
+            senderId: myUserId,
+            receiverId,
+            content: locationString,
+            type: 'location',
+            metadata: {
+              userName: params?.name,
+              userAvatar: params?.avatarUri,
+              userRating: params?.rating,
+              rideId: params?.rideId,
+              rideInfo: params?.rideInfo,
+              location: {
+                latitude: loc.latitude,
+                longitude: loc.longitude,
+                locationName: loc.name,
+                address: loc.address,
+              },
+            },
+          });
+
+          AnalyticsService.logEvent(AnalyticsEvent.CHAT_MESSAGE_SENT, {
+            type: 'location',
+            receiver_id: receiverId,
+          });
+        }
+
+        navigation.goBack();
       }
     },
     [

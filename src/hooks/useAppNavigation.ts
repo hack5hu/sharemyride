@@ -23,11 +23,16 @@ export const useAppNavigation = () => {
 
   const navigate = useCallback(
     <RouteName extends keyof RootStackParamList>(
-      name: RouteName,
-      params?: RootStackParamList[RouteName],
+      ...args:
+        | [name: RouteName, params?: RootStackParamList[RouteName]]
+        | [{ name: RouteName; params?: RootStackParamList[RouteName]; merge?: boolean }]
     ) => {
       if (!canNavigate()) return;
-      (navigation.navigate as any)(name, params);
+      if (typeof args[0] === 'string') {
+        (navigation.navigate as any)(args[0], args[1]);
+      } else {
+        (navigation.navigate as any)(args[0]);
+      }
     },
     [navigation],
   );
