@@ -28,7 +28,7 @@ export const PathLine = styled(LinearGradient).attrs(({ theme }) => ({
    Actually icons are horizontal positioned at padding + half-width. 
 */
 
-export const LocationItemArea = styled.View`
+export const LocationItemArea = styled.View<{ $isLast?: boolean }>`
   z-index: 10;
   flex-direction: row;
   align-items: center;
@@ -36,7 +36,8 @@ export const LocationItemArea = styled.View`
   padding: ${moderateScale(16)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_low};
   border-radius: ${moderateScale(12)}px;
-  margin-bottom: ${verticalScale(12)}px;
+  margin-bottom: ${({ $isLast }) =>
+    $isLast ? 0 : verticalScale(12)}px;
   /* Premium Shadow */
   shadow-color: ${({ theme }) => theme.colors.primary};
   shadow-offset: 0px 4px;
@@ -146,6 +147,7 @@ export const AddSubtitleText = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-size: ${responsiveFont(12)}px;
   color: ${({ theme }) => theme.colors.on_surface_variant};
+  margin-top: ${verticalScale(2)}px;
 `;
 
 export const RemoveButton = styled.TouchableOpacity`

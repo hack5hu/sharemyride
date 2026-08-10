@@ -108,8 +108,9 @@ export const InfoText = styled.Text`
   opacity: 0.8;
 `;
 
-export const ActionButtonRow = styled.View`
+export const ActionButtonRow = styled.View<{ disabledOpacity?: number }>`
   flex-direction: row;
   gap: ${scale(12)}px;
   margin-top: ${verticalScale(4)}px;
+  opacity: ${(props) => props.disabledOpacity ?? 1};
 `;

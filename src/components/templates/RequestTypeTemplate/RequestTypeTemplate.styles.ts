@@ -8,42 +8,6 @@ export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.surface};
 `;
 
-export const Header = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding-horizontal: ${scale(24)}px;
-  padding-vertical: ${verticalScale(14)}px;
-`;
-
-export const HeaderLeft = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(16)}px;
-`;
-
-export const BackButton = styled.TouchableOpacity`
-  padding: ${moderateScale(4)}px;
-`;
-
-export const HeaderTitle = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(18)}px;
-  color: ${({ theme }) => theme.colors.on_surface};
-`;
-
-export const SaveButton = styled.TouchableOpacity`
-  padding: ${moderateScale(4)}px;
-`;
-
-export const SaveText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(14)}px;
-  color: ${({ theme }) => theme.colors.on_surface};
-`;
-
 export const Content = styled.ScrollView.attrs({
   contentContainerStyle: {
     paddingHorizontal: scale(24),
@@ -203,29 +167,3 @@ export const FooterGradient = styled(LinearGradient)`
   top: -${verticalScale(48)}px;
 `;
 
-export const ContinueButton = styled.TouchableOpacity`
-  width: 100%;
-`;
-
-export const ContinueGradient = styled(LinearGradient)`
-  width: 100%;
-  height: ${moderateScale(56)}px;
-  border-radius: ${moderateScale(16)}px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: ${scale(8)}px;
-  shadow-color: ${({ theme }) => theme.colors.primary};
-  shadow-offset: 0px 8px;
-  shadow-opacity: 0.2;
-  shadow-radius: 20px;
-  elevation: 6;
-`;
-
-export const ContinueText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(16)}px;
-  color: ${({ theme }) => theme.colors.on_primary};
-  letter-spacing: 0.3px;
-`;

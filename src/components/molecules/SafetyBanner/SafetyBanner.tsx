@@ -15,6 +15,7 @@ export const SafetyBanner: React.FC<SafetyBannerProps> = ({
   onClose,
 }) => {
   const theme = useTheme();
+  const bannerStyle = { opacity: 0.7 };
 
   return (
     <Container>
@@ -33,7 +34,7 @@ export const SafetyBanner: React.FC<SafetyBannerProps> = ({
             name="close"
             size={moderateScale(18)}
             color={theme.colors.on_tertiary_container}
-            style={{ opacity: 0.7 }}
+            style={bannerStyle}
           />
         </CloseButton>
       )}

@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { scale, moderateScale } from '@/styles';
+import { Pressable } from 'react-native';
 
 export const ModalContainer = styled.View`
   width: ${scale(320)}px;
@@ -24,4 +25,9 @@ export const OptionItem = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.colors.surface_container};
   border-radius: ${({ theme }) => theme.roundness.md}px;
   gap: ${moderateScale(8)}px;
+`;
+
+export const StyledPressable = styled(Pressable)`
+  width: 100%;
+  align-items: center;
 `;

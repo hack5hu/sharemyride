@@ -39,15 +39,7 @@ export const StatValue: React.FC<StatValueProps> = ({
     <StyledTypography
       variant="title"
       weight="bold"
-      size="xl"
-      style={{
-        fontSize:
-          size === 'xl'
-            ? moderateScale(48)
-            : size === 'lg'
-            ? moderateScale(32)
-            : moderateScale(24),
-      }}
+      size={size}
     >
       {children}
     </StyledTypography>

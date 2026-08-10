@@ -26,17 +26,21 @@ const Container = styled.View<{ variant: string }>`
   border-radius: ${moderateScale(100)}px;
 `;
 
+const LabelText = styled(Typography)`
+  text-transform: uppercase;
+  letter-spacing: 1px;
+`;
+
 export const Badge: React.FC<BadgeProps> = ({ label, variant = 'primary' }) => {
   return (
     <Container variant={variant}>
-      <Typography
+      <LabelText
         variant="label"
         size="sm"
         weight="bold"
-        style={{ textTransform: 'uppercase', letterSpacing: 1 }}
       >
         {label}
-      </Typography>
+      </LabelText>
     </Container>
   );
 };

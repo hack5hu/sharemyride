@@ -105,7 +105,7 @@ export const ContinueGradient = styled(LinearGradient).attrs(({ theme }) => ({
   colors: [theme.colors.primary, theme.colors.primary_container],
   start: { x: 0, y: 0 },
   end: { x: 1, y: 1 },
-}))`
+}))<{ $disabled?: boolean }>`
   width: 100%;
   height: ${verticalScale(64)}px;
   border-radius: ${moderateScale(12)}px;
@@ -117,6 +117,7 @@ export const ContinueGradient = styled(LinearGradient).attrs(({ theme }) => ({
   shadow-opacity: 0.2;
   shadow-radius: 20px;
   elevation: 8;
+  opacity: ${({ $disabled }) => ($disabled ? 0.6 : 1)};
 `;
 
 export const ContinueButton = styled.TouchableOpacity`

@@ -111,6 +111,15 @@ export const ResultTextContainer = styled.View`
   flex: 1;
 `;
 
+export const HistoryTitle = styled.Text`
+  padding-horizontal: ${moderateScale(16)}px;
+  padding-vertical: ${moderateScale(8)}px;
+  font-size: ${moderateScale(12)}px;
+  color: ${({ theme }) => theme.colors.on_surface_variant};
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 600;
+`;
+
 export const ResultTitle = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 600;

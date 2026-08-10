@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable } from 'react-native';
+
 import { ModalBackdrop } from '@/components/atoms/ModalBackdrop';
 import { Typography } from '@/components/atoms/Typography';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -9,6 +9,7 @@ import {
   ModalContainer,
   TitleContainer,
   OptionItem,
+  StyledPressable,
 } from './ActionSheetModal.styles';
 
 export const ActionSheetModal: React.FC<ActionSheetModalProps> = ({
@@ -21,10 +22,7 @@ export const ActionSheetModal: React.FC<ActionSheetModalProps> = ({
 
   return (
     <ModalBackdrop isVisible={isVisible} onPress={onClose}>
-      <Pressable
-        onPress={e => e.stopPropagation()}
-        style={{ width: '100%', alignItems: 'center' }}
-      >
+      <StyledPressable onPress={e => e.stopPropagation()}>
         <ModalContainer>
           {title && (
             <TitleContainer>
@@ -63,7 +61,7 @@ export const ActionSheetModal: React.FC<ActionSheetModalProps> = ({
             </OptionItem>
           ))}
         </ModalContainer>
-      </Pressable>
+      </StyledPressable>
     </ModalBackdrop>
   );
 };

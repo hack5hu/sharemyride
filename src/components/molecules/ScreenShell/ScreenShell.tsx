@@ -35,14 +35,12 @@ export const ScreenShell: React.FC<ScreenShellProps> = ({
   children,
 }) => {
   const insets = useSafeAreaInsets();
+  const paddingStyle = { paddingTop: noPaddingTop ? 0 : insets.top, paddingBottom: noPaddingBottom ? 0 : insets.bottom };
 
   return (
     <Shell
       transparent={transparent}
-      style={{
-        paddingTop: noPaddingTop ? 0 : insets.top,
-        paddingBottom: noPaddingBottom ? 0 : insets.bottom,
-      }}
+      style={paddingStyle}
     >
       {title != null && (
         <ScreenHeader

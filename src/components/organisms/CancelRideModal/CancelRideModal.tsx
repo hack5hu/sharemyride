@@ -1,28 +1,39 @@
+/* eslint-disable max-lines */
 import React, { useState } from 'react';
-import { View, Pressable } from 'react-native';
-import { useTheme } from 'styled-components/native';
+
+import styled, { useTheme } from 'styled-components/native';
+
+const CategoryWrapper = styled.View`
+  width: 100%;
+`;
+
+const ModalPressable = styled.Pressable`
+  width: 100%;
+  align-items: center;
+`;
 import { Typography } from '@/components/atoms/Typography';
 import { IconButton } from '@/components/atoms/IconButton';
 import { ModalBackdrop } from '@/components/atoms/ModalBackdrop';
 import { CategoryButton } from '@/components/molecules/CategoryButton';
 import { TrustInfoBar } from '@/components/molecules/TrustInfoBar';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useLocale } from '@/constants/localization';
 import { Loader } from '@/components/atoms/Loader';
 import {
-  ModalContainer,
-  Header,
-  HeaderLeft,
-  BookingBadge,
-  Content,
-  Section,
-  CategoryGrid,
-  DescriptionInput,
-  Footer,
-  SubmitButton,
-  GradientBtn,
-  CancelButton,
-  LoadingOverlay,
-} from './CancelRideModal.styles';
+  ActionModalContainer as ModalContainer,
+  ActionModalHeader as Header,
+  ActionModalHeaderLeft as HeaderLeft,
+  ActionModalBadge as BookingBadge,
+  ActionModalContent as Content,
+  ActionModalSection as Section,
+  ActionModalCategoryGrid as CategoryGrid,
+  ActionModalDescriptionInput as DescriptionInput,
+  ActionModalFooter as Footer,
+  ActionModalSubmitButton as SubmitButton,
+  ActionModalGradientBtn as GradientBtn,
+  ActionModalCancelButton as CancelButton,
+  ActionModalLoadingOverlay as LoadingOverlay,
+} from '@/styles/ActionModalStyles';
 import { CancelRideModalProps } from './types.d';
 import { CategoryIconVariant } from '@/components/atoms/CategoryIcon';
 
@@ -143,9 +154,8 @@ export const CancelRideModal: React.FC<CancelRideModalProps> = ({
 
   return (
     <ModalBackdrop isVisible={isVisible} onPress={handleResetAndClose}>
-      <Pressable
+      <ModalPressable
         onPress={e => e.stopPropagation()}
-        style={{ width: '100%', alignItems: 'center' }}
       >
         <ModalContainer>
           {isLoading && (
@@ -154,7 +164,7 @@ export const CancelRideModal: React.FC<CancelRideModalProps> = ({
             </LoadingOverlay>
           )}
 
-          <Header>
+          <Header bgColorTint="error_container">
             <HeaderLeft>
               <IconButton
                 icon="close"
@@ -167,7 +177,7 @@ export const CancelRideModal: React.FC<CancelRideModalProps> = ({
               </Typography>
             </HeaderLeft>
             {bookingId && (
-              <BookingBadge>
+              <BookingBadge bgColorTint="error_container">
                 <Typography
                   variant="label"
                   size="xxs"
@@ -191,7 +201,7 @@ export const CancelRideModal: React.FC<CancelRideModalProps> = ({
               </Typography>
               <CategoryGrid>
                 {categories.map(cat => (
-                  <View key={cat.id} style={{ width: '100%' }}>
+                  <CategoryWrapper key={cat.id}>
                     <CategoryButton
                       label={cat.label}
                       icon={cat.icon}
@@ -199,7 +209,7 @@ export const CancelRideModal: React.FC<CancelRideModalProps> = ({
                       isSelected={selectedCategory === cat.id}
                       onPress={() => setSelectedCategory(cat.id)}
                     />
-                  </View>
+                  </CategoryWrapper>
                 ))}
               </CategoryGrid>
             </Section>
@@ -235,7 +245,7 @@ export const CancelRideModal: React.FC<CancelRideModalProps> = ({
                 colors={[theme.colors.error, theme.colors.error_container]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
-                style={{ opacity: selectedCategory && !isLoading ? 1 : 0.5 }}
+                disabledOpacity={selectedCategory && !isLoading ? 1 : 0.5}
               >
                 <Typography
                   variant="title"
@@ -263,7 +273,7 @@ export const CancelRideModal: React.FC<CancelRideModalProps> = ({
             </CancelButton>
           </Footer>
         </ModalContainer>
-      </Pressable>
+      </ModalPressable>
     </ModalBackdrop>
   );
 };

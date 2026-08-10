@@ -1,22 +1,25 @@
+import { DefaultTheme } from 'styled-components/native';
+import { SettingsTranslations } from '@/constants/localization/types';
+
 export interface SettingsTemplateProps {
-  t: any;
-  themeMode: string;
+  t: SettingsTranslations;
+  themeMode: 'light' | 'dark' | 'system';
   toggleTheme: () => void;
   language: string;
   region: string;
   handleToggleLanguage: () => void;
   pushNotifications: boolean;
   togglePushNotifications: () => void;
-  promoEmails: boolean;
-  togglePromoEmails: () => void;
-  rideReceipts: boolean;
-  toggleRideReceipts: () => void;
-  accountSecurity: boolean;
+  promoEmails?: boolean;
+  togglePromoEmails?: () => void;
+  rideReceipts?: boolean;
+  toggleRideReceipts?: () => void;
+  accountSecurity?: boolean;
   goBack: () => void;
   handleLogout: () => void;
   isLogoutModalVisible: boolean;
   isLoggingOut: boolean;
   showLogoutConfirmation: () => void;
   hideLogoutConfirmation: () => void;
-  theme: any;
+  theme: DefaultTheme;
 }

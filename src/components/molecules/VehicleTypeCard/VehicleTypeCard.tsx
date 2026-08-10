@@ -12,6 +12,7 @@ export const VehicleTypeCard: React.FC<VehicleTypeCardProps> = ({
   onPress,
 }) => {
   const theme = useTheme();
+  const titleStyle = { textAlign: 'center' as const, textTransform: 'uppercase' as const };
 
   return (
     <Container selected={selected} onPress={onPress}>
@@ -31,7 +32,7 @@ export const VehicleTypeCard: React.FC<VehicleTypeCardProps> = ({
         size="sm"
         weight="bold"
         color={selected ? 'on_secondary_fixed_variant' : 'on_surface_variant'}
-        style={{ textAlign: 'center', textTransform: 'uppercase' }}
+        style={titleStyle}
       >
         {label}
       </Typography>

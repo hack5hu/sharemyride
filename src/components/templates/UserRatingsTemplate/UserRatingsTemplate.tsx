@@ -61,15 +61,9 @@ export const UserRatingsTemplate: React.FC<UserRatingsTemplateProps> = React.mem
             ))}
           </S.StarsRow>
         </S.ReviewHeader>
-        <Typography
-          variant="body"
-          size="sm"
-          weight="medium"
-          color="on_surface_variant"
-          style={{ fontStyle: 'italic', lineHeight: 20 }}
-        >
+        <S.ReviewComment>
           "{item.comment}"
-        </Typography>
+        </S.ReviewComment>
       </S.ReviewCard>
     );
 
@@ -78,11 +72,11 @@ export const UserRatingsTemplate: React.FC<UserRatingsTemplateProps> = React.mem
         <ScreenShell title={`${userName.trim()}'s Ratings`} onBack={onBack}>
           <S.ContentContainer>
             {reviews.length === 0 ? (
-              <Box style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+              <S.EmptyStateWrapper>
                 <Typography variant="body" size="md" color="on_surface_variant">
                   No ratings or reviews yet.
                 </Typography>
-              </Box>
+              </S.EmptyStateWrapper>
             ) : (
               <FlashList
                 data={reviews}

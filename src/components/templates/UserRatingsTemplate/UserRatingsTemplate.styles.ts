@@ -1,6 +1,23 @@
 import styled from 'styled-components/native';
 import { Box } from '@/components/atoms/Box';
-import { scale, verticalScale, moderateScale } from '@/styles';
+import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
+import { Typography } from '@/components/atoms/Typography';
+
+export const ReviewComment = styled(Typography).attrs({
+  variant: 'body',
+  size: 'sm',
+  weight: 'medium',
+  color: 'on_surface_variant',
+})`
+  font-style: italic;
+  line-height: ${responsiveFont(20)}px;
+`;
+
+export const EmptyStateWrapper = styled(Box)`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
 
 export const Container = styled(Box)`
   flex: 1;

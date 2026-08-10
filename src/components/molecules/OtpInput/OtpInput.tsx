@@ -4,6 +4,10 @@ import { useTheme } from 'styled-components/native';
 import { Container } from './OtpInput.styles';
 import { scale } from '@/styles';
 import { Pressable } from 'react-native';
+import styled from 'styled-components/native';
+const Wrapper = styled(Pressable)`
+  width: 100%;
+`;
 
 export interface OtpInputProps {
   length?: number;
@@ -21,6 +25,7 @@ export const OtpInput: React.FC<OtpInputProps> = ({
   disabled,
 }) => {
   const theme = useTheme();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
   const otpRef = useRef<any>(null);
 
   const handlePress = () => {
@@ -35,7 +40,7 @@ export const OtpInput: React.FC<OtpInputProps> = ({
   };
 
   return (
-    <Pressable onPress={handlePress} style={{ width: '100%' }}>
+    <Wrapper onPress={handlePress}>
       <Container pointerEvents="none">
         <ThirdPartyOtpInput
           ref={otpRef}
@@ -85,6 +90,6 @@ export const OtpInput: React.FC<OtpInputProps> = ({
           }}
         />
       </Container>
-    </Pressable>
+    </Wrapper>
   );
 };

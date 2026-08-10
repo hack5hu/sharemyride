@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';

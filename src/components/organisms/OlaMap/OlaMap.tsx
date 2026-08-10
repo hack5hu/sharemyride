@@ -14,6 +14,7 @@ const DEFAULT_STYLE =
   'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json';
 
 export const OlaMap = React.memo(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
   forwardRef<any, OlaMapProps>(
     ({ mapStyle = DEFAULT_STYLE, children, ...rest }, ref) => {
       useEffect(() => {

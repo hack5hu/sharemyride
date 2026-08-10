@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import React, { useState } from 'react';
 import { Modal } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -32,6 +33,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
       : !url.includes('olamaps.io');
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleCopy = (text: string, label: string) => {
     Clipboard.setString(text);
   };
@@ -73,17 +75,16 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
       </S.LogHeader>
 
       <S.UrlRow>
-        <S.UrlText
+        <S.StyledUrlText
           variant="body"
           size="sm"
           numberOfLines={2}
-          style={{ flex: 1, marginBottom: 0 }}
         >
           {item.url}
-        </S.UrlText>
+        </S.StyledUrlText>
         <S.CopyButton
           onPress={() => handleCopy(generateCurl(item), 'cURL Command')}
-          style={{ marginLeft: 8 }}
+          $hasMarginLeft
         >
           <Icon
             name="content-copy"
@@ -117,14 +118,13 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
       <Typography variant="title" size="sm">
         {t.noLogsTitle}
       </Typography>
-      <Typography
+      <S.EmptyDescText
         variant="body"
         size="sm"
         color={theme.colors.on_surface_variant}
-        style={{ textAlign: 'center', marginTop: 8 }}
       >
         {t.noLogsDesc}
-      </Typography>
+      </S.EmptyDescText>
     </S.EmptyState>
   );
 
@@ -132,6 +132,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
   const isSuperAdmin =
     user?.role === 'SUPER_ADMIN' ||
     user?.isSuperAdmin === true ||
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
     (user as any)?.superAdmin === true;
 
   const isApkBuild = Boolean(buildEnv?.isApkBuild);
@@ -173,7 +174,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                     size="xs"
                     color={theme.colors.on_surface_variant}
                     weight="bold"
-                    style={{ marginTop: 0, marginBottom: 0 }}
+                    $noMargin
                   >
                     {t.overview}
                   </S.SectionTitle>
@@ -183,11 +184,10 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                     }
                   >
                     <S.CopyInnerRow>
-                      <Icon
+                      <S.CopyIcon
                         name="content-copy"
                         size={14}
                         color={theme.colors.on_surface_variant}
-                        style={{ marginRight: 4 }}
                       />
                       <Typography
                         variant="label"
@@ -257,7 +257,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                   </S.CodeText>
                 </S.CodeBlock>
 
-                <S.CopyRow style={{ marginTop: 0 }}>
+                <S.CopyRow $noMarginTop>
                   <S.SectionTitle
                     variant="label"
                     size="xs"
@@ -276,11 +276,10 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
                       }
                     >
                       <S.CopyInnerRow>
-                        <Icon
+                        <S.CopyIcon
                           name="content-copy"
                           size={14}
                           color={theme.colors.on_surface_variant}
-                          style={{ marginRight: 4 }}
                         />
                         <Typography
                           variant="label"

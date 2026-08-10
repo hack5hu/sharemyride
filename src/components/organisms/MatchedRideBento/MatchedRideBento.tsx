@@ -62,8 +62,7 @@ export const MatchedRideBento: React.FC<MatchedRideBentoProps> = ({
           <Icon
             name="radio-button-unchecked"
             size={moderateScale(16)}
-            color={theme.colors.on_primary_fixed_variant}
-            style={{ opacity: 0.6 }}
+            color={theme.colors.on_primary_fixed_variant + '99'}
           />
           <StopLabel numberOfLines={2} ellipsizeMode="tail">
             {pickup}
@@ -122,7 +121,7 @@ export const MatchedRideBento: React.FC<MatchedRideBentoProps> = ({
         </InfoRow>
       )}
 
-      <ActionButtonRow style={{ opacity: disabled ? 0.5 : 1 }}>
+      <ActionButtonRow disabledOpacity={disabled ? 0.5 : 1}>
         <SecondaryButton
           onPress={onReject}
           activeOpacity={0.8}

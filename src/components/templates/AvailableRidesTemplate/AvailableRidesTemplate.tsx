@@ -1,22 +1,17 @@
 import React from 'react';
-
-import { safeParseDate } from '@/utils/date';
-import { format } from 'date-fns';
 import { useTheme } from 'styled-components/native';
-import { View, ActivityIndicator } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { FlashList } from '@shopify/flash-list';
-import { Typography } from '@/components/atoms/Typography';
-import { moderateScale, verticalScale, scale } from '@/styles';
+import { Loader } from '@/components/atoms/Loader';
+import { scale, verticalScale } from '@/styles';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import { RideData } from '@/screens/BookFlow/3_AvailableRides/types.d';
 import { RideCard } from '@/components/organisms/RideCard/RideCard';
 import { RideFiltersModal } from '@/components/organisms/RideFiltersModal';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { EmptyState } from '@/components/molecules/EmptyState';
+import { SearchSummaryCard } from './components/SearchSummaryCard';
 import * as S from './AvailableRidesTemplate.styles';
-
-const SafeFlashList = FlashList as any;
+import { AvailableRidesTranslations, RideFiltersTranslations } from '@/constants/localization/types';
 
 export interface AvailableRidesTemplateProps {
   rides: RideData[];
@@ -32,8 +27,8 @@ export interface AvailableRidesTemplateProps {
   isFetchingMore?: boolean;
   isLoading?: boolean;
   hasMore?: boolean;
-  t: any;
-  ft: any;
+  t: AvailableRidesTranslations;
+  ft: RideFiltersTranslations;
 }
 
 export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
@@ -55,150 +50,78 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
 
   const { startLocation, destinationLocation, seatCount, travelDate } =
     useBookRideStore();
+
+  const renderRideItem = React.useCallback(({ item }: { item: RideData }) => (
+    <RideCard ride={item} onPress={onRideSelect} />
+  ), [onRideSelect]);
+
+  const listHeader = React.useMemo(() => (
+    <SearchSummaryCard
+      startLocation={startLocation}
+      destinationLocation={destinationLocation}
+      travelDate={travelDate}
+      seatCount={seatCount}
+      onOpenFilters={onOpenFilters}
+      t={t}
+    />
+  ), [startLocation, destinationLocation, travelDate, seatCount, onOpenFilters, t]);
+
+  const listEmpty = React.useMemo(() => {
+    if (isLoading) {
+      return (
+        <S.LoadingContainer>
+          <Loader size="large" />
+          <S.LoadingText
+            variant="body"
+            size="md"
+            color={theme.colors.on_surface_variant}
+            weight="medium"
+          >
+            {t.fetchingRides}
+          </S.LoadingText>
+        </S.LoadingContainer>
+      );
+    }
+    return (
+      <EmptyState
+        icon="search-off"
+        title={t.noRidesFoundTitle}
+        description={t.noRidesFoundDesc}
+      />
+    );
+  }, [isLoading, t, theme]);
+
+  const listFooter = React.useMemo(() => {
+    if (isFetchingMore || (isLoading && rides.length > 0)) {
+      return (
+        <S.FetchMoreLoadingContainer>
+          <Loader />
+        </S.FetchMoreLoadingContainer>
+      );
+    }
+    return <S.FooterSpacer />;
+  }, [isFetchingMore, isLoading, rides.length]);
+
   return (
     <ScreenShell title={t.heroTitle} onBack>
-      <SafeFlashList
-        data={rides}
-        keyExtractor={(item: any) => item.id}
-        showsVerticalScrollIndicator={false}
-        onEndReached={onLoadMore}
-        onEndReachedThreshold={0.5}
-        contentContainerStyle={{
-          paddingHorizontal: scale(24),
-          paddingBottom: verticalScale(100),
-        }}
-        renderItem={({ item }: any) => (
-          <RideCard ride={item} onPress={onRideSelect} />
-        )}
-        ListHeaderComponent={
-          <View>
-            <S.SearchSummaryCard>
-              <S.SummaryRow>
-                <S.RouteInfo>
-                  <S.LocationVertical>
-                    <Icon
-                      name="circle"
-                      size={moderateScale(14)}
-                      color={theme.colors.primary}
-                    />
-                    <S.Line />
-                    <Icon
-                      name="location-on"
-                      size={moderateScale(14)}
-                      color={theme.colors.tertiary}
-                    />
-                  </S.LocationVertical>
-                  <View style={{ flex: 1, gap: verticalScale(32) }}>
-                    <Typography
-                      variant="title"
-                      size="sm"
-                      weight="bold"
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                    >
-                      {startLocation?.address || 'Unknown'}
-                    </Typography>
-                    <Typography
-                      variant="title"
-                      size="sm"
-                      weight="bold"
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                      color={theme.colors.on_surface_variant}
-                    >
-                      {destinationLocation?.address || 'Unknown'}
-                    </Typography>
-                  </View>
-                </S.RouteInfo>
-                <S.FilterButton onPress={onOpenFilters}>
-                  <Icon
-                    name="tune"
-                    size={moderateScale(24)}
-                    color={theme.colors.on_surface_variant}
-                  />
-                </S.FilterButton>
-              </S.SummaryRow>
-
-              <S.SummaryFooter>
-                <S.FooterItem>
-                  <Icon
-                    name="calendar-today"
-                    size={moderateScale(20)}
-                    color={theme.colors.on_surface_variant}
-                  />
-                  <Typography
-                    variant="label"
-                    size="md"
-                    weight="bold"
-                    color={theme.colors.on_surface_variant}
-                  >
-                    {travelDate
-                      ? safeParseDate(travelDate)
-                        ? format(safeParseDate(travelDate)!, 'EEE, dd MMM')
-                        : t.searchSummaryDate
-                      : t.searchSummaryDate}
-                  </Typography>
-                </S.FooterItem>
-                <S.FooterItem>
-                  <Icon
-                    name="group"
-                    size={moderateScale(20)}
-                    color={theme.colors.on_surface_variant}
-                  />
-                  <Typography
-                    variant="label"
-                    size="md"
-                    weight="bold"
-                    color={theme.colors.on_surface_variant}
-                  >
-                    {t.searchSummarySeats.replace(
-                      '{count}',
-                      seatCount.toString(),
-                    )}
-                  </Typography>
-                </S.FooterItem>
-              </S.SummaryFooter>
-            </S.SearchSummaryCard>
-          </View>
-        }
-        ListEmptyComponent={
-          isLoading ? (
-            <View
-              style={{
-                paddingVertical: verticalScale(60),
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <ActivityIndicator color={theme.colors.primary} size="large" />
-              <Typography
-                variant="body"
-                size="md"
-                color={theme.colors.on_surface_variant}
-                weight="medium"
-                style={{ marginTop: verticalScale(16) }}
-              >
-                {t.fetchingRides}
-              </Typography>
-            </View>
-          ) : (
-            <EmptyState
-              icon="search-off"
-              title={t.noRidesFoundTitle}
-              description={t.noRidesFoundDesc}
-            />
-          )
-        }
-        ListFooterComponent={
-          isFetchingMore || (isLoading && rides.length > 0) ? (
-            <View style={{ paddingVertical: verticalScale(20) }}>
-              <ActivityIndicator color={theme.colors.primary} />
-            </View>
-          ) : (
-            <View style={{ height: verticalScale(32) }} />
-          )
-        }
-      />
+      <S.ListWrapper>
+        <FlashList
+          data={rides}
+          keyExtractor={(item: RideData) => item.id}
+          showsVerticalScrollIndicator={false}
+          onEndReached={onLoadMore}
+          onEndReachedThreshold={0.5}
+          contentContainerStyle={{
+            paddingHorizontal: scale(24),
+            paddingBottom: verticalScale(100),
+          }}
+          renderItem={renderRideItem}
+          ListHeaderComponent={listHeader}
+          ListEmptyComponent={listEmpty}
+          ListFooterComponent={listFooter}
+          estimatedItemSize={120}
+        />
+      </S.ListWrapper>
 
       <RideFiltersModal
         isOpen={isFilterModalOpen}

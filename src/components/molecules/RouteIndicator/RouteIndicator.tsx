@@ -16,6 +16,7 @@ export const RouteIndicator: React.FC<RouteIndicatorProps> = ({
   dropoff,
 }) => {
   const theme = useTheme();
+  const labelStyle = { letterSpacing: 1, textTransform: 'uppercase' as const };
 
   return (
     <Container>
@@ -32,7 +33,7 @@ export const RouteIndicator: React.FC<RouteIndicatorProps> = ({
             size="xxs"
             weight="bold"
             color="on_surface_variant"
-            style={{ letterSpacing: 1, textTransform: 'uppercase' }}
+            style={labelStyle}
           >
             Pickup
           </Typography>
@@ -47,7 +48,7 @@ export const RouteIndicator: React.FC<RouteIndicatorProps> = ({
             size="xxs"
             weight="bold"
             color="on_surface_variant"
-            style={{ letterSpacing: 1, textTransform: 'uppercase' }}
+            style={labelStyle}
           >
             Drop-off
           </Typography>

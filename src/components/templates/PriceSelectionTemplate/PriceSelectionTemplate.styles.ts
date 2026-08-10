@@ -5,6 +5,17 @@ export const TitleSection = styled.View`
   margin-bottom: ${verticalScale(24)}px;
 `;
 
+export const MainScrollView = styled.ScrollView.attrs(() => ({
+  showsVerticalScrollIndicator: false,
+  contentContainerStyle: {
+    paddingHorizontal: scale(24),
+    paddingBottom: verticalScale(140),
+    gap: verticalScale(20),
+  },
+}))`
+  flex: 1;
+`;
+
 export const PageTitle = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 700;

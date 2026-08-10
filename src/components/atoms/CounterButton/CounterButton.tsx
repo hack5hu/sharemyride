@@ -11,6 +11,7 @@ const Button = styled.TouchableOpacity<{ size: 'small' | 'medium' }>`
   align-items: center;
   justify-content: center;
   background-color: transparent;
+  opacity: ${({ disabled }) => (disabled ? 0.4 : 1)};
 `;
 
 const ButtonText = styled.Text<{ size: 'small' | 'medium' }>`
@@ -39,7 +40,6 @@ export const CounterButton: React.FC<CounterButtonProps> = ({
     disabled={disabled}
     size={size}
     activeOpacity={0.7}
-    style={{ opacity: disabled ? 0.4 : 1 }}
   >
     <ButtonText size={size}>{type === 'add' ? '+' : '−'}</ButtonText>
   </Button>

@@ -1,6 +1,13 @@
+export interface ProfileHubUser {
+  name: string;
+  email?: string;
+  phoneNumber?: string;
+  photoUrl?: string;
+}
+
 export interface ProfileHubTemplateProps {
-  t: any;
-  user: any;
+  t: unknown;
+  user: ProfileHubUser | null;
   isUpdatingAvatar: boolean;
   handleAvatarEdit: () => void;
   navigateToEditProfile: () => void;

@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import React, { useState } from 'react';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
@@ -7,19 +8,19 @@ import { CategoryButton } from '@/components/molecules/CategoryButton';
 import { TrustInfoBar } from '@/components/molecules/TrustInfoBar';
 import { useLocale } from '@/constants/localization';
 import {
-  ModalContainer,
-  Header,
-  HeaderLeft,
-  BookingBadge,
-  Content,
-  Section,
-  CategoryGrid,
-  DescriptionInput,
-  Footer,
-  SubmitButton,
-  GradientBtn,
-  CancelButton,
-} from './ReportIssueModal.styles';
+  ActionModalContainer as ModalContainer,
+  ActionModalHeader as Header,
+  ActionModalHeaderLeft as HeaderLeft,
+  ActionModalBadge as BookingBadge,
+  ActionModalContent as Content,
+  ActionModalSection as Section,
+  ActionModalCategoryGrid as CategoryGrid,
+  ActionModalDescriptionInput as DescriptionInput,
+  ActionModalFooter as Footer,
+  ActionModalSubmitButton as SubmitButton,
+  ActionModalGradientBtn as GradientBtn,
+  ActionModalCancelButton as CancelButton,
+} from '@/styles/ActionModalStyles';
 import { ReportIssueModalProps } from './types.d';
 import { CategoryIconVariant } from '@/components/atoms/CategoryIcon';
 import { Box } from '@/components/atoms/Box';
@@ -180,7 +181,7 @@ export const ReportIssueModal: React.FC<ReportIssueModalProps> = ({
         width="100%"
       >
         <ModalContainer>
-          <Header>
+          <Header bgColorTint="secondary_container">
             <HeaderLeft>
               <IconButton
                 icon="close"
@@ -192,16 +193,18 @@ export const ReportIssueModal: React.FC<ReportIssueModalProps> = ({
                 {t.title}
               </Typography>
             </HeaderLeft>
-            <BookingBadge>
-              <Typography
-                variant="label"
-                size="xxs"
-                weight="bold"
-                color="secondary"
-              >
-                #{bookingId}
-              </Typography>
-            </BookingBadge>
+            {bookingId && (
+              <BookingBadge bgColorTint="secondary_container">
+                <Typography
+                  variant="label"
+                  size="xxs"
+                  weight="bold"
+                  color="secondary"
+                >
+                  #{bookingId}
+                </Typography>
+              </BookingBadge>
+            )}
           </Header>
 
           <Content keyboardShouldPersistTaps="handled">
@@ -257,7 +260,7 @@ export const ReportIssueModal: React.FC<ReportIssueModalProps> = ({
                 colors={[theme.colors.primary, theme.colors.primary_container]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
-                style={{ opacity: selectedCategory ? 1 : 0.5 }}
+                disabled={!selectedCategory}
               >
                 <Typography
                   variant="title"

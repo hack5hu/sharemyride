@@ -1,7 +1,31 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { TouchableOpacity, View } from 'react-native';
+import styled from 'styled-components/native';
+
+const StyledView = styled.View``;
+const CenterView = styled.View`
+  align-items: center;
+`;
+const AvatarOverlay = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 100px;
+`;
+const EditButton = styled.TouchableOpacity<{ isUpdating: boolean }>`
+  margin-top: 8px;
+  opacity: ${({ isUpdating }) => (isUpdating ? 0.5 : 1)};
+`;
+const NameRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+`;
 import { Avatar } from '../../atoms/Avatar';
 import { Typography } from '../../atoms/Typography';
 import { Loader } from '../../atoms/Loader';
@@ -15,6 +39,8 @@ import {
   StatsSection,
   StatDivider,
   VerifiedRow,
+  SettingsButtonWrapper,
+  VerifiedIcon,
 } from './ProfileHeader.styles';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -47,15 +73,16 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
   return (
     <HeaderCard>
-      <IconButton
-        icon="settings"
-        variant="surface"
-        onPress={onSettingsPress}
-        style={{ position: 'absolute', top: 10, right: 10 }}
-      />
+      <SettingsButtonWrapper>
+        <IconButton
+          icon="settings"
+          variant="surface"
+          onPress={onSettingsPress}
+        />
+      </SettingsButtonWrapper>
       <IdentitySection>
-        <View style={{ alignItems: 'center' }}>
-          <View>
+      <CenterView>
+          <StyledView>
             <Avatar
               source={avatarUri ? { uri: avatarUri } : undefined}
               size="xl"
@@ -63,28 +90,16 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
               placeholder={name}
             />
             {isUpdatingAvatar && (
-              <View
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: 'rgba(0,0,0,0.4)',
-                  borderRadius: 100,
-                }}
-              >
+              <AvatarOverlay>
                 <Loader transparent />
-              </View>
+              </AvatarOverlay>
             )}
-          </View>
+          </StyledView>
           {onAvatarEditPress && (
-            <TouchableOpacity
+            <EditButton
               onPress={onAvatarEditPress}
               disabled={isUpdatingAvatar}
-              style={{ marginTop: 8, opacity: isUpdatingAvatar ? 0.5 : 1 }}
+              isUpdating={isUpdatingAvatar}
             >
               <Typography
                 variant="label"
@@ -94,23 +109,22 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
               >
                 {t('profileHub.editProfilePic') || 'Edit'}
               </Typography>
-            </TouchableOpacity>
+            </EditButton>
           )}
-        </View>
+        </CenterView>
         <InfoSection>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <NameRow>
             <Typography variant="title" size="lg" weight="bold">
               {name}
             </Typography>
             <Badge label={t('profileHub.proPooler')} variant="primary" />
-          </View>
+          </NameRow>
           {isVerified && (
             <VerifiedRow>
-              <Icon
+              <VerifiedIcon
                 name="verified"
                 size={18}
                 color={theme.colors.primary}
-                style={{ opacity: 0.8 }}
               />
               <Typography variant="label" size="sm" color="on_surface_variant">
                 {t('profileHub.identityVerified')}

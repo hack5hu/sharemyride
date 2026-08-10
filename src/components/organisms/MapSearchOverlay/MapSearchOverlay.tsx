@@ -11,6 +11,7 @@ import {
   ResultItem,
   ResultIconBox,
   ResultTextContainer,
+  HistoryTitle,
   ResultTitle,
   ResultSubtitle,
 } from './MapSearchOverlay.styles';
@@ -38,6 +39,7 @@ export const MapSearchOverlay: React.FC<MapSearchOverlayProps> = ({
   const theme = useTheme();
   const { mapPicker } = useLocale();
   const [isFocused, setIsFocused] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
   const inputRef = React.useRef<any>(null);
 
   // The list is hidden (condensed) when the parent says so (map is showing)
@@ -85,16 +87,9 @@ export const MapSearchOverlay: React.FC<MapSearchOverlayProps> = ({
       {!isCondensed && displayList.length > 0 && (
         <SearchResultsBox>
           {isHistory && (
-            <ResultTitle
-              style={{
-                paddingHorizontal: moderateScale(16),
-                paddingVertical: moderateScale(8),
-                fontSize: moderateScale(12),
-                color: theme.colors.on_surface_variant,
-              }}
-            >
+            <HistoryTitle>
               {mapPicker.recentSearches || 'Recent Searches'}
-            </ResultTitle>
+            </HistoryTitle>
           )}
           {displayList.map(loc => (
             <ResultItem key={loc.id} onPress={() => handleSelect(loc)}>

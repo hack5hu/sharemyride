@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale } from '@/styles';
-import { LinearGradient } from 'react-native-linear-gradient';
 import { Typography } from '@/components/atoms/Typography';
 
 export const Container = styled.View`
@@ -110,24 +109,7 @@ export const StyledCategoryErrorText = styled(Typography)`
   margin-top: ${verticalScale(4)}px;
 `;
 
-export const SubmitBtnWrapper = styled.TouchableOpacity`
-  border-radius: ${moderateScale(12)}px;
-  overflow: hidden;
-  margin-vertical: ${verticalScale(12)}px;
-`;
 
-export const SubmitGradientBtn = styled(LinearGradient).attrs<{
-  isSubmitting: boolean;
-}>(({ theme }) => ({
-  colors: [theme.colors.primary, theme.colors.primary_container],
-  start: { x: 0, y: 0 },
-  end: { x: 1, y: 1 },
-}))<{ isSubmitting: boolean }>`
-  padding-vertical: ${verticalScale(16)}px;
-  align-items: center;
-  justify-content: center;
-  opacity: ${({ isSubmitting }) => (isSubmitting ? 0.7 : 1)};
-`;
 
 export const TicketCard = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};

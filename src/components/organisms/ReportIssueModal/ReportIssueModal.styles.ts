@@ -88,7 +88,7 @@ export const GradientBtn = styled(LinearGradient).attrs(({ theme }) => ({
   padding-vertical: ${verticalScale(16)}px;
   align-items: center;
   justify-content: center;
-  opacity: ${(props: any) => (props.disabled ? 0.5 : 1)};
+  opacity: ${(props: { disabled?: boolean }) => (props.disabled ? 0.5 : 1)};
 `;
 
 export const CancelButton = styled.TouchableOpacity`

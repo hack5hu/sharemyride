@@ -7,24 +7,12 @@ export const ActivityIndicator = styled(RNActivityIndicator)``;
 
 // ── Root Layout ──────────────────────────────────────────────────────────────
 
-export const Root = styled.View`
-  flex: 1;
-  background-color: ${({ theme }) => theme.colors.surface};
-`;
-
-export const ReportButton = styled.TouchableOpacity`
-  padding: ${moderateScale(8)}px;
-`;
-
-export const ScrollContent = styled.ScrollView`
-  flex: 1;
-`;
-
-export const ContentPadding = styled.View`
-  padding-horizontal: ${scale(20)}px;
-  padding-bottom: ${verticalScale(140)}px;
-  gap: ${verticalScale(16)}px;
-`;
+export {
+  RideDetailsRoot as Root,
+  RideDetailsReportButton as ReportButton,
+  RideDetailsScrollContent as ScrollContent,
+  RideDetailsContentPadding as ContentPadding,
+} from '@/styles/RideDetailsStyles';
 
 // ── Driver Card (flat, simple) ──────────────────────────────────────────────
 
@@ -104,26 +92,11 @@ export const StatPillIcon = styled.View`
 
 // ── Section Card ──────────────────────────────────────────────────────────────
 
-export const SectionCard = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  border-radius: ${moderateScale(28)}px;
-  padding: ${moderateScale(20)}px;
-  elevation: 1;
-`;
-
-export const SectionLabelRow = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(8)}px;
-  margin-bottom: ${verticalScale(16)}px;
-`;
-
-export const SectionDot = styled.View<{ color?: string }>`
-  width: ${moderateScale(8)}px;
-  height: ${moderateScale(8)}px;
-  border-radius: ${moderateScale(4)}px;
-  background-color: ${({ theme, color }) => color || theme.colors.primary};
-`;
+export {
+  RideDetailsSectionCard as SectionCard,
+  RideDetailsSectionLabelRow as SectionLabelRow,
+  RideDetailsSectionDot as SectionDot,
+} from '@/styles/RideDetailsStyles';
 
 // ── Co-Riders ────────────────────────────────────────────────────────────────
 
@@ -170,22 +143,10 @@ export const EmptySeatPill = styled.View`
 
 // ── Preferences (formerly Ride Rules) ────────────────────────────────────────
 
-export const ChipsWrap = styled.View`
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: ${moderateScale(8)}px;
-`;
-
-export const PreferenceChip = styled.View<{ accent?: boolean }>`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(6)}px;
-  padding-horizontal: ${scale(12)}px;
-  padding-vertical: ${verticalScale(8)}px;
-  border-radius: ${moderateScale(12)}px;
-  background-color: ${({ theme, accent }) =>
-    accent ? `${theme.colors.primary}18` : theme.colors.surface_container_low};
-`;
+export {
+  RideDetailsChipsWrap as ChipsWrap,
+  RideDetailsPreferenceChip as PreferenceChip,
+} from '@/styles/RideDetailsStyles';
 
 // ── Fare Card ────────────────────────────────────────────────────────────────
 
@@ -227,93 +188,8 @@ export const FareIconBox = styled.View`
 
 // ── Fixed Footer ──────────────────────────────────────────────────────────────
 
-export const FixedFooter = styled.View`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding-horizontal: ${scale(24)}px;
-  padding-top: ${verticalScale(16)}px;
-  padding-bottom: ${verticalScale(34)}px;
-  background-color: ${({ theme }) => theme.colors.surface};
-  elevation: 8;
-  shadow-color: ${({ theme }) => theme.colors.shadow};
-  shadow-offset: 0px -4px;
-  shadow-opacity: 0.08;
-  shadow-radius: 12px;
-`;
+export {
+  RideDetailsFixedFooter as FixedFooter,
+} from '@/styles/RideDetailsStyles';
 
-export const AmenityRow = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(12)}px;
-`;
 
-export const PassengerItem = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(12)}px;
-  padding-vertical: ${verticalScale(12)}px;
-  border-bottom-width: 1px;
-  border-bottom-color: ${({ theme }) => theme.colors.surface_container_high};
-`;
-
-export const PassengerInfo = styled.View`
-  flex: 1;
-  gap: ${verticalScale(2)}px;
-`;
-
-export const SeatBadge = styled.View`
-  background-color: ${({ theme }) => `${theme.colors.primary}12`};
-  padding-horizontal: ${scale(8)}px;
-  padding-vertical: ${verticalScale(4)}px;
-  border-radius: ${moderateScale(8)}px;
-  align-self: flex-start;
-  margin-top: ${verticalScale(4)}px;
-`;
-
-export const CancelPassengerButton = styled.TouchableOpacity`
-  padding: ${moderateScale(8)}px;
-`;
-
-export const CancelWholeRideButton = styled.TouchableOpacity`
-  border-width: 1.5px;
-  border-color: ${({ theme }) => theme.colors.error};
-  border-radius: ${moderateScale(18)}px;
-  padding-vertical: ${verticalScale(18)}px;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  gap: ${scale(10)}px;
-  margin-top: ${verticalScale(12)}px;
-`;
-
-export const FareSummaryRow = styled.View`
-  flex-direction: row;
-  background-color: ${({ theme }) => theme.colors.surface};
-  border-radius: ${({ theme }) => theme.roundness.md}px;
-  padding: ${moderateScale(16)}px;
-  align-items: center;
-  elevation: 1;
-  shadow-color: ${({ theme }) => theme.colors.shadow};
-  shadow-offset: 0px 1px;
-  shadow-opacity: 0.05;
-  shadow-radius: 4px;
-`;
-
-export const FareSummaryItem = styled.View`
-  flex: 1;
-  align-items: center;
-  gap: ${verticalScale(6)}px;
-`;
-
-export const FareSummaryText = styled.View`
-  align-items: center;
-  gap: ${verticalScale(2)}px;
-`;
-
-export const FareDivider = styled.View`
-  width: 1px;
-  height: ${verticalScale(40)}px;
-  background-color: ${({ theme }) => theme.colors.outline_variant};
-`;

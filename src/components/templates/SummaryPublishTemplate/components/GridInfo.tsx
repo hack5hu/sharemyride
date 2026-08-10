@@ -12,6 +12,7 @@ import {
   GridCardSub,
   EmptyStateWrapper,
   EmptyStateText,
+  StyledEditIcon,
 } from './GridInfo.styles';
 
 interface GridInfoProps {
@@ -47,11 +48,11 @@ export const GridInfo: React.FC<GridInfoProps> = ({
             activeOpacity={0.7}
             disabled={disabled}
           >
-            <Icon
+            <StyledEditIcon
               name="edit"
               size={moderateScale(16)}
               color={theme.colors.primary}
-              style={{ opacity: disabled ? 0.4 : 1 }}
+              $disabled={disabled}
             />
           </EditButton>
         </SectionHeader>
@@ -81,11 +82,11 @@ export const GridInfo: React.FC<GridInfoProps> = ({
             activeOpacity={0.7}
             disabled={disabled}
           >
-            <Icon
+            <StyledEditIcon
               name="edit"
               size={moderateScale(16)}
               color={theme.colors.primary}
-              style={{ opacity: disabled ? 0.4 : 1 }}
+              $disabled={disabled}
             />
           </EditButton>
         </SectionHeader>

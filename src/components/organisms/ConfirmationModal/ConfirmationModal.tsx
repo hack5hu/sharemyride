@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, ActivityIndicator } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Typography } from '@/components/atoms/Typography';
@@ -12,6 +12,8 @@ import {
   PrimaryButton,
   GradientBtn,
   SecondaryButton,
+  StyledPressable,
+  DescriptionText,
 } from './ConfirmationModal.styles';
 import { ConfirmationModalProps } from './types.d';
 
@@ -57,10 +59,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
       isVisible={isVisible}
       onPress={!dismissible || isLoading ? undefined : onClose}
     >
-      <Pressable
-        onPress={e => e.stopPropagation()}
-        style={{ width: '100%', alignItems: 'center' }}
-      >
+      <StyledPressable onPress={e => e.stopPropagation()}>
         <ModalContainer>
           <IconContainer color={color}>
             <Icon name={icon} size={32} color={color} />
@@ -75,15 +74,14 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             >
               {title}
             </Typography>
-            <Typography
+            <DescriptionText
               variant="body"
               size="sm"
               color="on_surface_variant"
               align="center"
-              style={{ marginTop: 8 }}
             >
               {message}
-            </Typography>
+            </DescriptionText>
           </TextContainer>
 
           <ButtonContainer>
@@ -129,7 +127,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             </PrimaryButton>
           </ButtonContainer>
         </ModalContainer>
-      </Pressable>
+      </StyledPressable>
     </ModalBackdrop>
   );
 };

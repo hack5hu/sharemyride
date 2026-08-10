@@ -1,5 +1,4 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '../../atoms/Typography';
 import { StatValue } from '../../atoms/StatValue';
@@ -8,6 +7,8 @@ import {
   CardHeader,
   CardFooter,
   BlurElement,
+  ScoreDescrText,
+  ScoreIcon,
 } from './TrustScoreCard.styles';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -31,23 +32,21 @@ export const TrustScoreCard: React.FC<TrustScoreCardProps> = ({ score }) => {
         <Typography variant="title" size="lg" weight="bold" color="on_primary">
           {t('profileHub.trustScore')}
         </Typography>
-        <Typography
+        <ScoreDescrText
           variant="label"
           size="sm"
           color="on_primary"
-          style={{ opacity: 0.8, marginTop: 4 }}
         >
           {t('profileHub.trustScoreDescr')}
-        </Typography>
+        </ScoreDescrText>
       </CardHeader>
 
       <CardFooter>
         <StatValue size="xl">{`${score}%`}</StatValue>
-        <Icon
+        <ScoreIcon
           name="auto-awesome"
           size={40}
           color="on_primary"
-          style={{ opacity: 0.5 }}
         />
       </CardFooter>
     </CardContainer>

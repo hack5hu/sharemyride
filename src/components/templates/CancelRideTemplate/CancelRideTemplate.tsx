@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 import Animated, {
   FadeIn,
   FadeOut,
@@ -28,7 +27,7 @@ export const CancelRideTemplate: React.FC<CancelRideTemplateProps> = ({
 }) => {
   const { cancelRide } = useLocale();
   return (
-    <View style={{ flex: 1 }}>
+    <S.Container>
       <S.OverlayContext>
         <AnimatedBackdrop
           onPress={onDismiss}
@@ -87,6 +86,6 @@ export const CancelRideTemplate: React.FC<CancelRideTemplateProps> = ({
           </S.BottomSheetSurface>
         </AnimatedContainer>
       </S.OverlayContext>
-    </View>
+    </S.Container>
   );
 };

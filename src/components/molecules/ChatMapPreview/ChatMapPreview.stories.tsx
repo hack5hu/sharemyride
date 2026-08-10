@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
+import type { Meta, StoryObj } from '@storybook/react-native-native-web-vite';
 
 import { ChatMapPreview } from './ChatMapPreview';
 

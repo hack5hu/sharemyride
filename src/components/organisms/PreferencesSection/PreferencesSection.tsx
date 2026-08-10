@@ -11,7 +11,9 @@ import { Typography } from '@/components/atoms/Typography';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export interface PreferencesSectionProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
   values: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
   setFieldValue: (field: string, value: any) => void;
   disabled?: boolean;
 }
@@ -32,7 +34,7 @@ export const PreferencesSection: React.FC<PreferencesSectionProps> = React.memo(
             >
               {t('profileSetup.newsletter')}
             </NewsletterLabel>
-            <ToggleRow style={{ opacity: disabled ? 0.6 : 1 }}>
+            <ToggleRow $disabledOpacity={disabled ? 0.6 : 1}>
               <Typography variant="body" size="sm" weight="bold">
                 {t('profileSetup.personalizedSuggestions')}
               </Typography>

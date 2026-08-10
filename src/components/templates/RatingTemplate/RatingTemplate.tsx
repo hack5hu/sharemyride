@@ -10,7 +10,7 @@ import { ScreenShell } from '@/components/molecules/ScreenShell';
 import * as S from './RatingTemplate.styles';
 import { RatingTemplateProps } from './types';
 import { moderateScale, verticalScale } from '@/styles';
-import { KeyboardAvoidingView, Platform } from 'react-native';
+import { Platform } from 'react-native';
 
 export const RatingTemplate: React.FC<RatingTemplateProps> = React.memo(
   ({
@@ -39,8 +39,7 @@ export const RatingTemplate: React.FC<RatingTemplateProps> = React.memo(
     return (
       <S.Root>
         <ScreenShell title={t.title} onBack={onBack}>
-          <KeyboardAvoidingView
-            style={{ flex: 1 }}
+          <S.KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : undefined}
           >
             <S.ScrollContent showsVerticalScrollIndicator={false}>
@@ -147,7 +146,7 @@ export const RatingTemplate: React.FC<RatingTemplateProps> = React.memo(
                 {isSubmitting ? t.submittingButton : t.submitButton}
               </Button>
             </S.FooterContainer>
-          </KeyboardAvoidingView>
+          </S.KeyboardAvoidingView>
         </ScreenShell>
       </S.Root>
     );

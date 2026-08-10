@@ -8,7 +8,8 @@ const sizes: Record<IconButtonSize, number> = {
   lg: 48,
 };
 
-const getBackground = (variant: IconButtonVariant, theme: any) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
+const getBackground = (variant: IconButtonVariant, theme: any /* TODO: add proper type */) => {
   switch (variant) {
     case 'primary':
       return theme.colors.primary;

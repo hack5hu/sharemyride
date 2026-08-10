@@ -7,6 +7,7 @@ import * as S from './RideFareCard.styles';
 
 interface RideFareCardProps {
   price: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
   t: any;
 }
 

@@ -130,6 +130,7 @@ export const ContinueGradient = styled(LinearGradient)`
   shadow-opacity: 0.25;
   shadow-radius: 20px;
   elevation: 6;
+  opacity: ${(props: { disabledOpacity?: number }) => props.disabledOpacity ?? 1};
 `;
 
 export const ContinueButton = styled.TouchableOpacity`

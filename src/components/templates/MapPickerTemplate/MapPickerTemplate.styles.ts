@@ -71,13 +71,14 @@ export const PinShadow = styled.View`
   border-radius: 9999px;
 `;
 
-export const SelectButtonContainer = styled.View`
+export const SelectButtonContainer = styled.View<{ $paddingBottom?: number }>`
   margin-horizontal: ${scale(24)}px;
   margin-top: ${verticalScale(24)}px;
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
+  padding-bottom: ${({ $paddingBottom }) => $paddingBottom || 0}px;
 `;
 
 export const LocationPreviewContainer = styled.View`
@@ -109,3 +110,29 @@ export const LocationPreviewText = styled.Text`
   font-weight: 500;
   flex: 1;
 `;
+
+import { OlaMap } from '@/components/organisms/OlaMap';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+export const StyledOlaMap = styled(OlaMap)<{ $isMapVisible?: boolean }>`
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  opacity: ${({ $isMapVisible }) => ($isMapVisible ? 1 : 0)};
+`;
+
+export const PreviewIcon = styled(Ionicons)`
+  margin-right: ${scale(8)}px;
+`;
+
+export const TextWrapper = styled.View`
+  flex: 1;
+  justify-content: center;
+`;
+

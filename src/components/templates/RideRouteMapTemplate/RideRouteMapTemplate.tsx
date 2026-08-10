@@ -3,8 +3,6 @@ import { Platform } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import {
   Camera,
-  GeoJSONSource,
-  Layer,
   UserLocation,
 } from '@/components/organisms/OlaMap';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -15,6 +13,7 @@ import { useLocale } from '@/constants/localization';
 import * as S from './RideRouteMapTemplate.styles';
 import { RideRouteMapTemplateProps } from './types.d';
 import { Button } from '@/components/atoms/Button';
+import { RouteMapLayers } from './components/RouteMapLayers';
 
 interface ExtendedUserLocationProps
   extends React.ComponentProps<typeof UserLocation> {
@@ -33,34 +32,31 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> =
       mapRef,
       cameraRef,
       region,
-      zoom,
-      onRegionDidChange,
-      handleUserLocationUpdate,
       mapData,
+      onOpenExternalMap,
       onZoomIn,
       onZoomOut,
-      onOpenExternalMap,
-      isMapMounted,
-      onMapLoaded,
+      handleUserLocationUpdate,
     }) => {
       const theme = useTheme();
-      const { rideRoute } = useLocale();
       const insets = useSafeAreaInsets();
+      const translations = useLocale();
+
+      const paddingBottomVal = Math.max(insets.bottom, 12);
 
       return (
-        <ScreenShell title={title} onBack={onBack} noPaddingBottom>
-          <S.Container>
+        <S.Root>
+          <ScreenShell title={title || translations.common.back} onBack={onBack}>
             <S.MapWrapper>
-              {isMapMounted && (
+              {region && (
                 <S.StyledOlaMap
-                  ref={mapRef}
-                  onRegionDidChange={onRegionDidChange}
-                  onDidFinishLoadingMap={onMapLoaded}
+                  ref={mapRef as any}
+                  styleURL="https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json"
                 >
                   <Camera
-                    ref={cameraRef}
-                    center={[region.longitude, region.latitude]}
-                    zoom={zoom}
+                    ref={cameraRef as any}
+                    zoomLevel={region.zoom || 12}
+                    centerCoordinate={[region.longitude, region.latitude]}
                   />
 
                   <MapLibreUserLocation
@@ -70,172 +66,12 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> =
                     <UserLocationMarker />
                   </MapLibreUserLocation>
 
-                  <GeoJSONSource
-                    id="ride-route-source"
-                    data={mapData.geoJSON as any}
-                  />
-
-                  {/* Highlighted Booked Route Segment */}
-                  <Layer
-                    id="route-line-highlighted"
-                    source="ride-route-source"
-                    type="line"
-                    filter={[
-                      'all',
-                      ['==', ['get', 'type'], 'route'],
-                      ['==', ['get', 'status'], 'highlighted'],
-                    ]}
-                    paint={{
-                      'line-color': theme.colors.primary,
-                      'line-width': 6,
-                    }}
-                    layout={{
-                      'line-cap': 'round',
-                      'line-join': 'round',
-                    }}
-                  />
-                  {/* Muted Unselected Route Segments */}
-                  <Layer
-                    id="route-line-unselected"
-                    source="ride-route-source"
-                    type="line"
-                    filter={[
-                      'all',
-                      ['==', ['get', 'type'], 'route'],
-                      ['==', ['get', 'status'], 'unselected'],
-                    ]}
-                    paint={{
-                      'line-color': theme.colors.outline,
-                      'line-width': 3.5,
-                      'line-opacity': 0.5,
-                    }}
-                    layout={{
-                      'line-cap': 'round',
-                      'line-join': 'round',
-                    }}
-                  />
-                  {/* Connecting Path: User Searched Pickup to Ride Pickup */}
-                  <Layer
-                    id="route-line-connection-pickup"
-                    source="ride-route-source"
-                    type="line"
-                    filter={[
-                      'all',
-                      ['==', ['get', 'type'], 'connection'],
-                      ['==', ['get', 'status'], 'pickup'],
-                    ]}
-                    paint={{
-                      'line-color': '#00875a',
-                      'line-width': 4,
-                      'line-dasharray': [2, 2],
-                    }}
-                    layout={{
-                      'line-cap': 'round',
-                      'line-join': 'round',
-                    }}
-                  />
-                  {/* Connecting Path: Ride Dropoff to User Searched Dropoff */}
-                  <Layer
-                    id="route-line-connection-dropoff"
-                    source="ride-route-source"
-                    type="line"
-                    filter={[
-                      'all',
-                      ['==', ['get', 'type'], 'connection'],
-                      ['==', ['get', 'status'], 'dropoff'],
-                    ]}
-                    paint={{
-                      'line-color': theme.colors.error,
-                      'line-width': 4,
-                      'line-dasharray': [2, 2],
-                    }}
-                    layout={{
-                      'line-cap': 'round',
-                      'line-join': 'round',
-                    }}
-                  />
-                  <Layer
-                    id="marker-start"
-                    source="ride-route-source"
-                    type="circle"
-                    filter={[
-                      'all',
-                      ['==', ['get', 'type'], 'marker'],
-                      ['==', ['get', 'role'], 'start'],
-                    ]}
-                    paint={{
-                      'circle-color': '#00875a',
-                      'circle-radius': 8,
-                      'circle-stroke-width': 3,
-                      'circle-stroke-color': '#FFFFFF',
-                    }}
-                  />
-                  <Layer
-                    id="marker-end"
-                    source="ride-route-source"
-                    type="circle"
-                    filter={[
-                      'all',
-                      ['==', ['get', 'type'], 'marker'],
-                      ['==', ['get', 'role'], 'end'],
-                    ]}
-                    paint={{
-                      'circle-color': theme.colors.error,
-                      'circle-radius': 8,
-                      'circle-stroke-width': 3,
-                      'circle-stroke-color': '#FFFFFF',
-                    }}
-                  />
-                  <Layer
-                    id="marker-stop"
-                    source="ride-route-source"
-                    type="circle"
-                    filter={[
-                      'all',
-                      ['==', ['get', 'type'], 'marker'],
-                      ['==', ['get', 'role'], 'stop'],
-                    ]}
-                    paint={{
-                      'circle-color': theme.colors.primary_container,
-                      'circle-radius': 6,
-                      'circle-stroke-width': 2,
-                      'circle-stroke-color': theme.colors.primary,
-                    }}
-                  />
-                  {/* User Searched Pickup Marker */}
-                  <Layer
-                    id="marker-user-pickup"
-                    source="ride-route-source"
-                    type="circle"
-                    filter={[
-                      'all',
-                      ['==', ['get', 'type'], 'marker'],
-                      ['==', ['get', 'role'], 'user-pickup'],
-                    ]}
-                    paint={{
-                      'circle-color': theme.colors.primary,
-                      'circle-radius': 8,
-                      'circle-stroke-width': 3,
-                      'circle-stroke-color': '#FFFFFF',
-                    }}
-                  />
-                  {/* User Searched Dropoff Marker */}
-                  <Layer
-                    id="marker-user-dropoff"
-                    source="ride-route-source"
-                    type="circle"
-                    filter={[
-                      'all',
-                      ['==', ['get', 'type'], 'marker'],
-                      ['==', ['get', 'role'], 'user-dropoff'],
-                    ]}
-                    paint={{
-                      'circle-color': theme.colors.tertiary,
-                      'circle-radius': 8,
-                      'circle-stroke-width': 3,
-                      'circle-stroke-color': '#FFFFFF',
-                    }}
-                  />
+                  {mapData?.geoJSON && (
+                    <RouteMapLayers
+                      geoJSON={mapData.geoJSON}
+                      theme={theme}
+                    />
+                  )}
                 </S.StyledOlaMap>
               )}
             </S.MapWrapper>
@@ -244,7 +80,7 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> =
               <MapControlsFABs onZoomIn={onZoomIn} onZoomOut={onZoomOut} />
             </S.ControlsWrapper>
 
-            <S.Footer style={{ paddingBottom: Math.max(insets.bottom, 12) }}>
+            <S.Footer $paddingBottom={paddingBottomVal}>
               <Button
                 onPress={() =>
                   onOpenExternalMap(
@@ -254,12 +90,14 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> =
                 icon={Platform.OS === 'android' ? 'map' : 'explore'}
               >
                 {Platform.OS === 'android'
-                  ? rideRoute.openInGoogleMaps
-                  : rideRoute.openInAppleMaps}
+                  ? translations.rideDetails.openInGoogleMaps
+                  : translations.rideDetails.openInAppleMaps}
               </Button>
             </S.Footer>
-          </S.Container>
-        </ScreenShell>
+          </ScreenShell>
+        </S.Root>
       );
     },
   );
+
+RideRouteMapTemplate.displayName = 'RideRouteMapTemplate';

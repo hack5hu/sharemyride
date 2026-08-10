@@ -29,9 +29,11 @@ export interface RideListItem {
 interface RideItemProps {
   item: RideListItem;
   activeTab: MyRidesTab;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
   onRidePress: (params: any) => void;
   onCancelRide: (id: string | number) => void;
   onRemoveDraft: (id: string) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
   onChatPress?: (item: any) => void;
   onAcceptRide?: (id: string) => void;
   onRejectRide?: (id: string) => void;

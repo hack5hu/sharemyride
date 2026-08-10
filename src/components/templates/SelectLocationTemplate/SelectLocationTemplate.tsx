@@ -1,35 +1,13 @@
 import React from 'react';
-import { StatusBar, View, Platform } from 'react-native';
+import { StatusBar, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import { useLocale } from '@/constants/localization';
 import { Loader } from '@/components/atoms/Loader';
+import { Button } from '@/components/atoms/Button';
 import { moderateScale } from '@/styles';
-import {
-  FullScreenContainer,
-  MapWrapper,
-  FloatingHeader,
-  HeaderRow,
-  BackButton,
-  HeaderTitle,
-  CenterPinWrapper,
-  BottomContainer,
-  LocationPreviewContainer,
-  LocationPreviewTitle,
-  LocationPreviewText,
-  SelectButtonContainer,
-  SelectButton,
-  SelectGradient,
-  SelectButtonText,
-  GpsWarningBanner,
-  GpsWarningText,
-  GpsWarningPath,
-  GpsEnableButton,
-  GpsEnableText,
-  GpsCloseButton,
-} from './SelectLocationTemplate.styles';
+import * as S from './SelectLocationTemplate.styles';
 import { SelectLocationTemplateProps } from './types.d';
 
 export interface SelectLocationTemplateExtendedProps
@@ -38,147 +16,148 @@ export interface SelectLocationTemplateExtendedProps
   onBack?: () => void;
   onMyLocationPress?: () => void;
   isGpsBannerVisible?: boolean;
-  onCloseGpsBanner?: () => void;
   onOpenGpsSettings?: () => void;
   isLocating?: boolean;
 }
 
 export const SelectLocationTemplate: React.FC<
   SelectLocationTemplateExtendedProps
-> = ({
-  mapBackground,
-  title,
-  onBack,
-  centerPin,
-  onZoomIn,
-  onZoomOut,
-  onMyLocationPress,
-  locationName,
-  locationAddress,
-  onSendLocation,
-  sendLocationLabel,
-  isGpsBannerVisible,
-  onCloseGpsBanner,
-  onOpenGpsSettings,
-  isLocating,
-}) => {
-  const theme = useTheme();
-  const insets = useSafeAreaInsets();
-  const { chatLocation } = useLocale();
+> = React.memo(
+  ({
+    mapBackground,
+    title,
+    onBack,
+    centerPin,
+    onZoomIn,
+    onZoomOut,
+    onMyLocationPress,
+    locationName,
+    locationAddress,
+    onSendLocation,
+    sendLocationLabel,
+    isGpsBannerVisible,
+    onOpenGpsSettings,
+    isLocating,
+  }) => {
+    const theme = useTheme();
+    const insets = useSafeAreaInsets();
+    const { chatLocation } = useLocale();
 
-  return (
-    <FullScreenContainer>
-      <StatusBar
-        translucent
-        backgroundColor="transparent"
-        barStyle="dark-content"
-      />
+    const bottomInsetVal = Math.max(insets.bottom, 16);
 
-      {/* Layer 0 — Full-bleed map */}
-      <MapWrapper>{mapBackground}</MapWrapper>
+    return (
+      <S.FullScreenContainer>
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle="dark-content"
+        />
 
-      {/* Layer 1 — Floating glass header with back button */}
-      <FloatingHeader topInset={insets.top}>
-        <HeaderRow>
-          {onBack && (
-            <BackButton onPress={onBack} activeOpacity={0.8}>
-              <Icon
-                name="arrow-back"
-                size={moderateScale(20)}
-                color={theme.colors.on_surface}
-              />
-            </BackButton>
-          )}
-          {title && <HeaderTitle>{title}</HeaderTitle>}
-        </HeaderRow>
+        {/* Layer 0 — Full-bleed map */}
+        <S.MapWrapper>{mapBackground}</S.MapWrapper>
 
-        {isGpsBannerVisible && (
-          <GpsWarningBanner>
-            {isLocating ? (
-              <>
-                <Loader
-                  inline
-                  size="small"
-                  color={theme.colors.on_error_container}
-                  style={{ marginRight: moderateScale(10) }}
+        {/* Layer 1 — Floating glass header with back button */}
+        <S.FloatingHeader topInset={insets.top}>
+          <S.HeaderRow>
+            {onBack && (
+              <S.BackButton onPress={onBack} activeOpacity={0.8}>
+                <Icon
+                  name="arrow-back"
+                  size={moderateScale(20)}
+                  color={theme.colors.on_surface}
                 />
-                <GpsWarningText style={{ flex: 1 }}>
-                  {chatLocation.loadingCurrentLocation}
-                </GpsWarningText>
-              </>
-            ) : (
-              <>
-                <View style={{ flex: 1 }}>
-                  <GpsWarningText>
-                    {chatLocation.gpsBannerMessage}
-                  </GpsWarningText>
-                  <GpsWarningPath>
-                    {Platform.OS === 'android'
-                      ? chatLocation.gpsSettingsPathAndroid
-                      : chatLocation.gpsSettingsPathIos}
-                  </GpsWarningPath>
-                </View>
-                <GpsEnableButton
-                  onPress={onOpenGpsSettings}
-                  activeOpacity={0.8}
-                >
-                  <GpsEnableText>{chatLocation.enableGps}</GpsEnableText>
-                </GpsEnableButton>
-              </>
+              </S.BackButton>
             )}
-          </GpsWarningBanner>
-        )}
-      </FloatingHeader>
+            {title && <S.HeaderTitle>{title}</S.HeaderTitle>}
+          </S.HeaderRow>
 
-      {/* Layer 2 — Center pin (pointer-events none so map stays interactive) */}
-      <CenterPinWrapper pointerEvents="none">{centerPin}</CenterPinWrapper>
-
-      <MapControlsFABs
-        onZoomIn={onZoomIn}
-        onZoomOut={onZoomOut}
-        onLocateMe={onMyLocationPress}
-      />
-
-      {/* Layer 3 — Stacked bottom elements */}
-      <BottomContainer pointerEvents="box-none" bottomInset={Math.max(insets.bottom, 16)}>
-        <SelectButtonContainer>
-          {(locationName || locationAddress) && (
-            <LocationPreviewContainer>
-              <Icon
-                name="place"
-                size={moderateScale(24)}
-                color={theme.colors.primary}
-                style={{ marginRight: moderateScale(12) }}
-              />
-              <View style={{ flex: 1, justifyContent: 'center' }}>
-                <LocationPreviewTitle numberOfLines={1}>
-                  {locationName || 'Loading location...'}
-                </LocationPreviewTitle>
-                {!!locationAddress && (
-                  <LocationPreviewText
-                    numberOfLines={1}
-                    style={{ marginTop: 2 }}
+          {isGpsBannerVisible && (
+            <S.GpsWarningBanner>
+              {isLocating ? (
+                <>
+                  <S.LocatingIndicatorWrapper>
+                    <Loader
+                      inline
+                      size="small"
+                      color={theme.colors.on_error_container}
+                    />
+                  </S.LocatingIndicatorWrapper>
+                  <S.GpsWarningText $flex={true}>
+                    {chatLocation.loadingCurrentLocation}
+                  </S.GpsWarningText>
+                </>
+              ) : (
+                <>
+                  <S.GpsWarningContainer>
+                    <S.GpsWarningText>
+                      {chatLocation.gpsBannerMessage}
+                    </S.GpsWarningText>
+                    <S.GpsWarningPath>
+                      {Platform.OS === 'android'
+                        ? chatLocation.gpsSettingsPathAndroid
+                        : chatLocation.gpsSettingsPathIos}
+                    </S.GpsWarningPath>
+                  </S.GpsWarningContainer>
+                  <S.GpsEnableButton
+                    onPress={onOpenGpsSettings}
+                    activeOpacity={0.8}
                   >
-                    {locationAddress}
-                  </LocationPreviewText>
-                )}
-              </View>
-            </LocationPreviewContainer>
+                    <S.GpsEnableText>{chatLocation.enableGps}</S.GpsEnableText>
+                  </S.GpsEnableButton>
+                </>
+              )}
+            </S.GpsWarningBanner>
           )}
+        </S.FloatingHeader>
 
-          <SelectButton
-            onPress={onSendLocation}
-            disabled={!locationName}
-            activeOpacity={0.9}
-          >
-            <SelectGradient style={{ opacity: !locationName ? 0.6 : 1 }}>
-              <SelectButtonText>
-                {sendLocationLabel || 'Send Location'}
-              </SelectButtonText>
-            </SelectGradient>
-          </SelectButton>
-        </SelectButtonContainer>
-      </BottomContainer>
-    </FullScreenContainer>
-  );
-};
+        {/* Layer 2 — Center pin (pointer-events none so map stays interactive) */}
+        <S.CenterPinWrapper pointerEvents="none">
+          {centerPin}
+        </S.CenterPinWrapper>
+
+        <S.MapControlsFABs
+          onZoomIn={onZoomIn}
+          onZoomOut={onZoomOut}
+          onLocateMe={onMyLocationPress}
+        />
+
+        {/* Layer 3 — Stacked bottom elements */}
+        <S.BottomContainer pointerEvents="box-none" bottomInset={bottomInsetVal}>
+          <S.SelectButtonContainer>
+            {(locationName || locationAddress) && (
+              <S.LocationPreviewContainer>
+                <S.PreviewIconWrapper>
+                  <Icon
+                    name="place"
+                    size={moderateScale(24)}
+                    color={theme.colors.primary}
+                  />
+                </S.PreviewIconWrapper>
+                <S.PreviewTextWrapper>
+                  <S.LocationPreviewTitle numberOfLines={1}>
+                    {locationName || 'Loading location...'}
+                  </S.LocationPreviewTitle>
+                  {!!locationAddress && (
+                    <S.LocationPreviewText numberOfLines={1}>
+                      {locationAddress}
+                    </S.LocationPreviewText>
+                  )}
+                </S.PreviewTextWrapper>
+              </S.LocationPreviewContainer>
+            )}
+
+            <Button
+              variant="primary"
+              onPress={onSendLocation}
+              disabled={!locationName}
+            >
+              {sendLocationLabel || 'Send Location'}
+            </Button>
+          </S.SelectButtonContainer>
+        </S.BottomContainer>
+      </S.FullScreenContainer>
+    );
+  },
+);
+
+SelectLocationTemplate.displayName = 'SelectLocationTemplate';

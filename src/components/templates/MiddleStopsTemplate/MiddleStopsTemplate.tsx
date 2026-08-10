@@ -1,9 +1,5 @@
 import React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { verticalScale } from '@/styles';
-import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
-import { Location } from '@/store/useLocationStore';
 import {
   MiddleStopsList,
   RouteStop,
@@ -20,12 +16,8 @@ export interface MiddleStopsTemplateProps {
   startLocation: string;
   destination: string;
   middleStops: RouteStop[];
-  startLocationRaw?: Location | null;
-  destinationLocationRaw?: Location | null;
-  middleStopsRaw: Location[];
   onAddStop: () => void;
   onRemoveStop: (id: string) => void;
-  // New props for distance texts
   startDistanceText: string;
   destinationDistanceText?: string;
 }
@@ -42,9 +34,6 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
   destinationDistanceText,
 }) => {
   const { middleStops: t } = useLocale();
-  const insets = useSafeAreaInsets();
-  console.log('startDistanceText', startDistanceText);
-  console.log('destinationDistanceText', destinationDistanceText);
   return (
     <ScreenShell title={'Add stops'} onBack={onBackPress}>
       <S.ContentLayer showsVerticalScrollIndicator={false}>

@@ -41,7 +41,9 @@ export const Avatar: React.FC<AvatarProps> = ({
     const hasSource =
       source &&
       (typeof source === 'number' ||
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
         ((source as any).uri &&
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
           !(source as any).uri.includes('ui-avatars.com')));
 
     if (hasSource) {

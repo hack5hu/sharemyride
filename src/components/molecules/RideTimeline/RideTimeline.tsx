@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import React from 'react';
 import styled, { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';

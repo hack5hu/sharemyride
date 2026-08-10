@@ -10,14 +10,19 @@ import {
   HeaderRow,
   InfoContainer,
   FormContainer,
+  PresenceText,
 } from './IdentityProfileCard.styles';
 import { useTranslation } from '@/hooks/useTranslation';
 // Date utilities removed as they are no longer needed by DatePicker
 
 export interface IdentityProfileCardProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
   values: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
   setFieldValue: (field: string, value: any) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
   errors?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
   touched?: any;
   setFieldTouched?: (field: string, touched?: boolean) => void;
   submitCount?: number;
@@ -40,7 +45,7 @@ export const IdentityProfileCard: React.FC<IdentityProfileCardProps> =
 
       return (
         <Surface elevation="lowest" rounded="md" padding="lg">
-          <HeaderRow style={{ opacity: disabled ? 0.6 : 1 }}>
+          <HeaderRow $disabledOpacity={disabled ? 0.6 : 1}>
             <AvatarPicker
               onImageSelected={asset => setFieldValue('profileImage', asset)}
               uri={values.profileImage?.uri}
@@ -51,15 +56,14 @@ export const IdentityProfileCard: React.FC<IdentityProfileCardProps> =
               <Typography variant="title" size="lg" weight="bold">
                 {t('profileSetup.identityProfile')}
               </Typography>
-              <Typography
+              <PresenceText
                 variant="label"
                 size="sm"
                 weight="bold"
                 color="on_surface_variant"
-                style={{ textTransform: 'uppercase', letterSpacing: 1.5 }}
               >
                 {t('profileSetup.publicPresence')}
-              </Typography>
+              </PresenceText>
             </InfoContainer>
           </HeaderRow>
 

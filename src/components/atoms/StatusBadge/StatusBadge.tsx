@@ -9,7 +9,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
 }) => {
   return (
     <Container variant={variant}>
-      <LabelText variant={variant} style={{ letterSpacing: 0.8 }}>
+      <LabelText variant={variant}>
         {isUppercase ? label.toUpperCase() : label}
       </LabelText>
     </Container>

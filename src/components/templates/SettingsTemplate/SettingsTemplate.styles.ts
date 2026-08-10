@@ -57,17 +57,6 @@ export const IconBox = styled.View<{ color?: string }>`
 
 export const SettingLabelGroup = styled.View``;
 
-export const EmailCard = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  border-radius: 16px;
-  padding: ${verticalScale(16)}px ${scale(16)}px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-width: 1px;
-  border-color: ${({ theme }) => theme.colors.outline_variant}30;
-  margin-bottom: ${verticalScale(8)}px;
-`;
 
 export const ThemeGrid = styled.View`
   flex-direction: row;
@@ -146,19 +135,6 @@ export const LogoutButton = styled.TouchableOpacity`
   margin-top: ${verticalScale(16)}px;
 `;
 
-export const DeleteAccountButton = styled.TouchableOpacity`
-  width: 100%;
-  padding: ${verticalScale(16)}px;
-  background-color: ${({ theme }) => theme.colors.error_container}10;
-  border-width: 1px;
-  border-color: ${({ theme }) => theme.colors.error}15;
-  border-radius: 16px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: ${scale(12)}px;
-  margin-top: ${verticalScale(12)}px;
-`;
 
 export const FooterVersion = styled.View`
   align-items: center;
@@ -173,9 +149,6 @@ export const BadgeText = styled(Typography).attrs({
   text-transform: uppercase;
 `;
 
-export const DisabledEmailCard = styled(EmailCard)`
-  opacity: 0.5;
-`;
 
 export const AccountSection = styled(Section)`
   padding-top: ${verticalScale(16)}px;

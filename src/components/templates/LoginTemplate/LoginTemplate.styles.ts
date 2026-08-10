@@ -1,9 +1,8 @@
 import styled from 'styled-components/native';
-import { View, Image, TouchableOpacity, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { scale, verticalScale, responsiveFont, moderateScale } from '@/styles';
 
-export const Container = styled(View)`
+export const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.surface_container_low};
 `;
@@ -20,22 +19,22 @@ export const ScrollContent = styled(KeyboardAwareScrollView).attrs({
   flex: 1;
 `;
 
-export const ContentWrapper = styled(View)`
+export const ContentWrapper = styled.View`
   width: 100%;
 `;
 
-export const HeroContainer = styled(View)`
+export const HeroContainer = styled.View`
   width: 100%;
   height: ${verticalScale(420)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_low};
 `;
 
-export const HeroImage = styled(Image)`
+export const HeroImage = styled.Image`
   width: 100%;
   height: 100%;
 `;
 
-export const FormContentWrapper = styled(View)`
+export const FormContentWrapper = styled.View`
   padding-horizontal: ${scale(20)}px;
   width: 100%;
   max-width: ${moderateScale(448)}px;
@@ -43,11 +42,11 @@ export const FormContentWrapper = styled(View)`
   margin-top: -${verticalScale(40)}px;
 `;
 
-export const OverlayHeader = styled(View)`
+export const OverlayHeader = styled.View`
   align-items: center;
 `;
 
-export const OverlayTagline = styled(Text)`
+export const OverlayTagline = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-size: ${responsiveFont(15)}px;
   font-weight: 500;
@@ -57,7 +56,7 @@ export const OverlayTagline = styled(Text)`
   margin-bottom: ${verticalScale(20)}px;
 `;
 
-export const LoginCard = styled(View)`
+export const LoginCard = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   border-radius: ${moderateScale(28)}px;
   padding-horizontal: ${moderateScale(24)}px;
@@ -71,7 +70,7 @@ export const LoginCard = styled(View)`
   elevation: 8;
 `;
 
-export const TopLanguageButton = styled(TouchableOpacity)`
+export const TopLanguageButton = styled.TouchableOpacity`
   position: absolute;
   top: ${verticalScale(50)}px;
   right: ${scale(20)}px;
@@ -90,7 +89,7 @@ export const TopLanguageButton = styled(TouchableOpacity)`
   elevation: 2;
 `;
 
-export const LanguageButtonText = styled(Text)`
+export const LanguageButtonText = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-size: ${responsiveFont(13)}px;
   font-weight: 500;

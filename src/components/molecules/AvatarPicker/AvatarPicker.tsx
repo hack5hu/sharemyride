@@ -1,5 +1,5 @@
 import React from 'react';
-import { ViewStyle, Platform } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { Avatar } from '@/components/atoms/Avatar';
 import { requestPhotoPermission } from '@/utils/permissionUtils';

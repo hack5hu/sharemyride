@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { verticalScale, moderateScale, scale } from '@/styles';
+import { Typography } from '@/components/atoms/Typography';
 
 export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
@@ -25,6 +26,11 @@ export const BadgeWrapper = styled.View`
   padding-horizontal: ${scale(10)}px;
   padding-vertical: ${verticalScale(4)}px;
   border-radius: ${({ theme }) => theme.roundness.full}px;
+`;
+
+export const BadgeText = styled(Typography)`
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 `;
 
 export const DateTimeText = styled.Text`

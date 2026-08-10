@@ -114,6 +114,7 @@ export const TimeDial: React.FC<TimeDialProps> = React.memo(
           animated: false,
         });
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Sync scroll when value changes externally

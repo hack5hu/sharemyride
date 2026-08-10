@@ -12,6 +12,7 @@ import {
   InputTapOverlay,
   TruecallerRow,
   TermsContainer,
+  TermsText,
   SecurityBadge,
   DummyRow,
 } from './LoginForm.styles';
@@ -111,10 +112,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         <SecurityBadge>
           <Icon name="lock-outline" size={18} color={theme.colors.primary} />
         </SecurityBadge>
-        <Typography
+        <TermsText
           size="xs"
           color={theme.colors.on_surface_variant}
-          style={{ flex: 1 }}
         >
           {t.login.termsPrefix}
           <Typography
@@ -135,7 +135,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             {t.login.privacyPolicy}
           </Typography>
           {t.login.termsSuffix}
-        </Typography>
+        </TermsText>
       </TermsContainer>
     </FormContainer>
   );

@@ -1,9 +1,17 @@
+import { DefaultTheme } from 'styled-components/native';
+
+interface LoginTranslations {
+  brandTagline: string;
+  english: string;
+  hindi: string;
+}
+
 export interface LoginTemplateProps {
   loading: boolean;
   phone: string;
   error?: string;
   handleChange: (text: string) => void;
-  handleBlur: (e: any) => void;
+  handleBlur: (e: unknown) => void;
   handleSubmit: () => void;
   isValid: boolean;
   handleTruecallerLogin: () => void;
@@ -11,8 +19,10 @@ export interface LoginTemplateProps {
   isTruecallerSupported: boolean;
   hasDismissedTruecaller: boolean;
   isKeyboardVisible: boolean;
-  t: any;
-  theme: any;
+  t: {
+    login: LoginTranslations;
+  };
+  theme: DefaultTheme;
   language: string;
   handleLanguageToggle: () => void;
   handleHelpPress: () => void;

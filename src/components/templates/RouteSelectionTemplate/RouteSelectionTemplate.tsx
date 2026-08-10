@@ -1,25 +1,14 @@
 import React, { useRef, useEffect } from 'react';
-import { ActivityIndicator, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
-import { moderateScale, verticalScale } from '@/styles';
 import { RouteOption, RouteCard } from '@/components/organisms/RouteCard';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-import {
-  Camera,
-  GeoJSONSource,
-  Layer,
-  CameraRef,
-} from '@maplibre/maplibre-react-native';
-import { OlaMap } from '@/components/organisms/OlaMap';
-import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import { Button } from '@/components/atoms/Button';
-import LinearGradient from 'react-native-linear-gradient';
 import { FixedFooter } from '@/components/molecules/FixedFooter';
 import * as S from './RouteSelectionTemplate.styles';
 import { RouteData } from '@/screens/PublishFlow/2_RouteSelection/useRouteSelection';
+import { RouteSelectionMap } from './components/RouteSelectionMap';
 
 export interface RouteSelectionTemplateProps {
   onBackPress: () => void;
@@ -31,266 +20,123 @@ export interface RouteSelectionTemplateProps {
   isLoading?: boolean;
 }
 
-export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> = ({
-  onBackPress,
-  onContinuePress,
-  routes,
-  routesData,
-  selectedRouteId,
-  onSelectRoute,
-  isLoading,
-}) => {
-  const theme = useTheme();
-  const { routeSelection } = useLocale();
-  const insets = useSafeAreaInsets();
-  const cameraRef = useRef<CameraRef>(null);
+export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> =
+  React.memo(
+    ({
+      onBackPress,
+      onContinuePress,
+      routes,
+      routesData,
+      selectedRouteId,
+      onSelectRoute,
+      isLoading,
+    }) => {
+      const theme = useTheme();
+      const { routeSelection } = useLocale();
+      const cameraRef = useRef<any>(null);
 
-  const [isMapLoaded, setIsMapLoaded] = React.useState(false);
+      const [isMapLoaded, setIsMapLoaded] = React.useState(false);
 
-  const selectedRouteData = routesData.find(
-    r => r.uiData.id === selectedRouteId,
-  );
+      const selectedRouteData = React.useMemo(() => {
+        return routesData.find(r => r.uiData.id === selectedRouteId);
+      }, [routesData, selectedRouteId]);
 
-  useEffect(() => {
-    if (selectedRouteData && cameraRef.current && isMapLoaded) {
-      const timer = setTimeout(() => {
-        if (cameraRef.current) {
-          const [minLng, minLat, maxLng, maxLat] = selectedRouteData.bounds;
-          cameraRef.current.fitBounds([minLng, minLat, maxLng, maxLat], {
-            padding: { top: 48, right: 48, bottom: 48, left: 48 },
-            duration: 500,
-          });
+      useEffect(() => {
+        if (selectedRouteData && cameraRef.current && isMapLoaded) {
+          const timer = setTimeout(() => {
+            if (cameraRef.current) {
+              const [minLng, minLat, maxLng, maxLat] = selectedRouteData.bounds;
+              cameraRef.current.fitBounds([minLng, minLat, maxLng, maxLat], {
+                padding: { top: 48, right: 48, bottom: 48, left: 48 },
+                duration: 500,
+              });
+            }
+          }, 100);
+          return () => clearTimeout(timer);
         }
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [selectedRouteId, selectedRouteData, isMapLoaded]);
+      }, [selectedRouteId, selectedRouteData, isMapLoaded]);
 
-  const zoomRef = useRef(14);
+      const zoomRef = useRef(14);
 
-  const handleRegionDidChange = (event: any) => {
-    const currentZoom = event?.nativeEvent?.zoom || event?.zoom;
-    if (currentZoom !== undefined) {
-      zoomRef.current = currentZoom;
-    }
-  };
+      const handleRegionDidChange = React.useCallback((event: any) => {
+        const currentZoom = event?.nativeEvent?.zoom || event?.zoom;
+        if (currentZoom !== undefined) {
+          zoomRef.current = currentZoom;
+        }
+      }, []);
 
-  const handleZoom = (increment: number) => {
-    const newZoom = Math.min(Math.max(zoomRef.current + increment, 3), 20);
-    zoomRef.current = newZoom;
-    cameraRef.current?.setStop({
-      zoom: newZoom,
-      duration: 300,
-    });
-  };
-
-  const allRoutesGeoJSON = React.useMemo((): GeoJSON.FeatureCollection => {
-    const features: GeoJSON.Feature[] = routesData.map(routeData => ({
-      type: 'Feature',
-      id: routeData.uiData.id,
-      properties: {
-        id: routeData.uiData.id,
-        type: 'route',
-      },
-      geometry: {
-        type: 'LineString',
-        coordinates: routeData.coordinates,
-      },
-    }));
-
-    // Add Start and End markers for the selected route
-    if (selectedRouteData) {
-      const coords = selectedRouteData.coordinates;
-      if (coords.length > 0) {
-        features.push({
-          type: 'Feature',
-          id: 'marker-start',
-          properties: { type: 'marker', role: 'start' },
-          geometry: {
-            type: 'Point',
-            coordinates: coords[0],
-          },
+      const handleZoom = React.useCallback((increment: number) => {
+        const newZoom = Math.min(Math.max(zoomRef.current + increment, 3), 20);
+        zoomRef.current = newZoom;
+        cameraRef.current?.setStop({
+          zoom: newZoom,
+          duration: 300,
         });
-        features.push({
-          type: 'Feature',
-          id: 'marker-end',
-          properties: { type: 'marker', role: 'end' },
-          geometry: {
-            type: 'Point',
-            coordinates: coords[coords.length - 1],
-          },
-        });
-      }
-    }
+      }, []);
 
-    return {
-      type: 'FeatureCollection',
-      features,
-    };
-  }, [routesData, selectedRouteData]);
+      return (
+        <ScreenShell title="Select Route" onBack={onBackPress}>
+          <S.Root>
+            <RouteSelectionMap
+              cameraRef={cameraRef}
+              routesData={routesData}
+              selectedRouteId={selectedRouteId}
+              onSelectRoute={onSelectRoute}
+              isMapLoaded={isMapLoaded}
+              setIsMapLoaded={setIsMapLoaded}
+              handleRegionDidChange={handleRegionDidChange}
+              handleZoom={handleZoom}
+            />
 
-  const handleMapRoutePress = (event: any) => {
-    const feature = event?.features?.[0];
-    if (feature?.properties?.id && feature.properties.type === 'route') {
-      onSelectRoute(feature.properties.id);
-    }
-  };
+            <S.ContentLayer showsVerticalScrollIndicator={false}>
+              <S.RouteWrapper>
+                {selectedRouteData && (
+                  <S.SelectedRouteBadge>
+                    <S.SelectedRouteText>
+                      {selectedRouteData.uiData.title}
+                    </S.SelectedRouteText>
+                  </S.SelectedRouteBadge>
+                )}
+                <S.ContentHeader>
+                  <S.ContentTitle>{routeSelection.title}</S.ContentTitle>
+                  <S.ContentSubtitle>
+                    {routeSelection.subtitle}
+                  </S.ContentSubtitle>
+                </S.ContentHeader>
 
-  return (
-    <ScreenShell title={'Select Route'} onBack={onBackPress}>
-      <View style={{ flex: 1 }}>
-        <S.MapSection>
-          <OlaMap
-            style={{ flex: 1 }}
-            onRegionDidChange={handleRegionDidChange}
-            onDidFinishLoadingMap={() => setIsMapLoaded(true)}
-          >
-            <Camera ref={cameraRef} />
+                {isLoading ? (
+                  <S.LoaderIndicator
+                    size="large"
+                    color={theme.colors.primary}
+                  />
+                ) : (
+                  routes.map(route => (
+                    <RouteCard
+                      key={route.id}
+                      route={route}
+                      isActive={route.id === selectedRouteId}
+                      onPress={() => onSelectRoute(route.id)}
+                    />
+                  ))
+                )}
+              </S.RouteWrapper>
+            </S.ContentLayer>
+          </S.Root>
 
-            <GeoJSONSource
-              id="routes-source"
-              data={allRoutesGeoJSON}
-              onPress={handleMapRoutePress}
+          <FixedFooter>
+            <Button
+              variant="primary"
+              icon="arrow-forward"
+              iconPosition="right"
+              disabled={!selectedRouteId}
+              onPress={onContinuePress}
             >
-              {/* Unselected routes (thinner, muted) */}
-              <Layer
-                id="routes-unselected-layer"
-                type="line"
-                filter={['==', ['get', 'type'], 'route']}
-                paint={{
-                  'line-color': theme.colors.outline_variant,
-                  'line-width': 4,
-                  'line-opacity': 0.6,
-                }}
-                layout={{
-                  'line-cap': 'round',
-                  'line-join': 'round',
-                }}
-              />
-
-              {/* Selected route (thicker, primary color) */}
-              <Layer
-                id="routes-selected-layer"
-                type="line"
-                filter={[
-                  'all',
-                  ['==', ['get', 'type'], 'route'],
-                  ['==', ['get', 'id'], selectedRouteId || ''],
-                ]}
-                paint={{
-                  'line-color': theme.colors.primary,
-                  'line-width': 6,
-                }}
-                layout={{
-                  'line-cap': 'round',
-                  'line-join': 'round',
-                }}
-              />
-
-              {/* Start Marker */}
-              <Layer
-                id="marker-start-layer"
-                type="circle"
-                filter={[
-                  'all',
-                  ['==', ['get', 'type'], 'marker'],
-                  ['==', ['get', 'role'], 'start'],
-                ]}
-                paint={{
-                  'circle-color': '#00875a', // Green
-                  'circle-radius': 8,
-                  'circle-stroke-width': 3,
-                  'circle-stroke-color': '#FFFFFF',
-                }}
-              />
-
-              {/* End Marker */}
-              <Layer
-                id="marker-end-layer"
-                type="circle"
-                filter={[
-                  'all',
-                  ['==', ['get', 'type'], 'marker'],
-                  ['==', ['get', 'role'], 'end'],
-                ]}
-                paint={{
-                  'circle-color': theme.colors.error, // Red
-                  'circle-radius': 8,
-                  'circle-stroke-width': 3,
-                  'circle-stroke-color': '#FFFFFF',
-                }}
-              />
-            </GeoJSONSource>
-          </OlaMap>
-
-          <MapControlsFABs
-            onZoomIn={() => handleZoom(1)}
-            onZoomOut={() => handleZoom(-1)}
-          />
-
-          <LinearGradient
-            colors={['transparent', `${theme.colors.surface}40`]}
-            pointerEvents="none"
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: moderateScale(40),
-            }}
-          />
-        </S.MapSection>
-
-        <S.ContentLayer showsVerticalScrollIndicator={false}>
-          <S.RouteWrapper>
-            {selectedRouteData && (
-              <S.SelectedRouteBadge>
-                <S.SelectedRouteText>
-                  {selectedRouteData.uiData.title}
-                </S.SelectedRouteText>
-              </S.SelectedRouteBadge>
-            )}
-            <S.ContentHeader>
-              <S.ContentTitle>{routeSelection.title}</S.ContentTitle>
-              <S.ContentSubtitle>{routeSelection.subtitle}</S.ContentSubtitle>
-            </S.ContentHeader>
-
-            {isLoading ? (
-              <ActivityIndicator
-                size="large"
-                color={theme.colors.primary}
-                style={{ marginVertical: moderateScale(40) }}
-              />
-            ) : (
-              routes.map(route => (
-                <RouteCard
-                  key={route.id}
-                  route={route}
-                  isActive={route.id === selectedRouteId}
-                  onPress={() => onSelectRoute(route.id)}
-                />
-              ))
-            )}
-
-            {/* <S.TrustBadge>
-              <MaterialIcons name="verified-user" size={moderateScale(24)} color={theme.colors.primary} />
-              <S.TrustBadgeText>{routeSelection.trustBadge}</S.TrustBadgeText>
-            </S.TrustBadge> */}
-          </S.RouteWrapper>
-        </S.ContentLayer>
-      </View>
-
-      <FixedFooter>
-        <Button
-          variant="primary"
-          icon="arrow-forward"
-          iconPosition="right"
-          disabled={!selectedRouteId}
-          onPress={onContinuePress}
-        >
-          {routeSelection.continue}
-        </Button>
-      </FixedFooter>
-    </ScreenShell>
+              {routeSelection.continue}
+            </Button>
+          </FixedFooter>
+        </ScreenShell>
+      );
+    },
   );
-};
+
+RouteSelectionTemplate.displayName = 'RouteSelectionTemplate';

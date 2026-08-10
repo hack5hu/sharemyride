@@ -10,6 +10,7 @@ interface RideStatsStripProps {
   departureTime: string;
   durationLabel: string;
   seatsLeft: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
   t: any;
 }
 

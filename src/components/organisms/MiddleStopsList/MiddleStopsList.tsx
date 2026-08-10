@@ -63,7 +63,7 @@ export const MiddleStopsList: React.FC<MiddleStopsListProps> = ({
           <LabelText variant="start">{t.startPointLabel}</LabelText>
           <TitleText>{startLocation}</TitleText>
           {startDistanceText && (
-            <AddSubtitleText style={{ marginTop: 2 }}>
+            <AddSubtitleText>
               {startDistanceText}
             </AddSubtitleText>
           )}
@@ -86,7 +86,7 @@ export const MiddleStopsList: React.FC<MiddleStopsListProps> = ({
             }`}</LabelText>
             <TitleText>{stop.name}</TitleText>
             {stop.distanceText && (
-              <AddSubtitleText style={{ marginTop: 2 }}>
+              <AddSubtitleText>
                 {stop.distanceText}
               </AddSubtitleText>
             )}
@@ -120,7 +120,7 @@ export const MiddleStopsList: React.FC<MiddleStopsListProps> = ({
       </AddStopButtonContainer>
 
       {/* End Point */}
-      <LocationItemArea style={{ marginBottom: 0 }}>
+      <LocationItemArea $isLast>
         <IconCircle variant="end">
           <MaterialIcons
             name="flag"
@@ -132,7 +132,7 @@ export const MiddleStopsList: React.FC<MiddleStopsListProps> = ({
           <LabelText variant="end">{t.destinationLabel}</LabelText>
           <TitleText>{destination}</TitleText>
           {destinationDistanceText && (
-            <AddSubtitleText style={{ marginTop: 2 }}>
+            <AddSubtitleText>
               {destinationDistanceText}
             </AddSubtitleText>
           )}

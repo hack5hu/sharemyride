@@ -12,6 +12,7 @@ import {
   PrefBadgeText,
   EmptyStateWrapper,
   EmptyStateText,
+  StyledEditIcon,
 } from './PreferenceList.styles';
 
 interface PreferenceListProps {
@@ -34,11 +35,11 @@ export const PreferenceList: React.FC<PreferenceListProps> = ({
       <SectionHeader>
         <SectionLabel>{t.ridePreferencesLabel}</SectionLabel>
         <EditButton onPress={onEdit} activeOpacity={0.7} disabled={disabled}>
-          <Icon
+          <StyledEditIcon
             name="edit"
             size={moderateScale(16)}
             color={theme.colors.primary}
-            style={{ opacity: disabled ? 0.4 : 1 }}
+            $disabled={disabled}
           />
         </EditButton>
       </SectionHeader>

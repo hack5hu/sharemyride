@@ -20,9 +20,11 @@ export const ControlsWrapper = styled.View`
   top: 40%;
 `;
 
-export const Footer = styled.View`
+export const Footer = styled.View<{ $paddingBottom?: number }>`
   position: absolute;
   bottom: ${moderateScale(56)}px;
   left: ${moderateScale(16)}px;
   right: ${moderateScale(16)}px;
+  ${({ $paddingBottom }) =>
+    $paddingBottom !== undefined && `padding-bottom: ${$paddingBottom}px;`}
 `;

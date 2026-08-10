@@ -33,6 +33,7 @@ export const LocationDetailsCard: React.FC<LocationDetailsCardProps> = ({
 }) => {
   const theme = useTheme();
   const { mapPicker } = useLocale();
+  const gradientStyle = { opacity: disabled || !locationName ? 0.6 : 1 };
 
   return (
     <BottomSheetContainer edges={['bottom']}>
@@ -62,9 +63,7 @@ export const LocationDetailsCard: React.FC<LocationDetailsCardProps> = ({
             disabled={disabled || !locationName}
             activeOpacity={0.9}
           >
-            <SelectGradient
-              style={{ opacity: disabled || !locationName ? 0.6 : 1 }}
-            >
+            <SelectGradient style={gradientStyle}>
               <SelectButtonText>{mapPicker.selectLocation}</SelectButtonText>
             </SelectGradient>
           </SelectButton>

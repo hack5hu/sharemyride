@@ -1,6 +1,8 @@
+import { DefaultTheme } from 'styled-components/native';
+
 export interface PublishSuccessTemplateProps {
   handleGoToMyRides: () => void;
   handleShareResult: () => void;
-  t: any;
-  theme: any;
+  t: unknown;
+  theme: DefaultTheme;
 }

@@ -3,251 +3,176 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Typography } from '@/components/atoms/Typography';
 import { Toggle } from '@/components/atoms/Toggle';
-import { Checkbox } from '@/components/atoms/Checkbox';
 import { ConfirmationModal } from '@/components/organisms/ConfirmationModal';
 import { SettingsTemplateProps } from './types.d';
 import * as S from './SettingsTemplate.styles';
 import DeviceInfo from 'react-native-device-info';
+import { AppearanceSection } from './components/AppearanceSection';
 
-export const SettingsTemplate: React.FC<SettingsTemplateProps> = ({
-  t,
-  themeMode,
-  toggleTheme,
-  language,
-  region,
-  handleToggleLanguage,
-  pushNotifications,
-  togglePushNotifications,
-  promoEmails,
-  togglePromoEmails,
-  rideReceipts,
-  toggleRideReceipts,
-  accountSecurity,
-  goBack,
-  handleLogout,
-  isLogoutModalVisible,
-  isLoggingOut,
-  showLogoutConfirmation,
-  hideLogoutConfirmation,
-  theme,
-}) => {
-  return (
-    <S.ScreenWrapper>
-      <ScreenShell
-        title={t.headerTitle}
-        onBack={goBack}
-        rightElement={
-          <Typography
-            variant="title"
-            size="md"
-            weight="bold"
-            color={theme.colors.primary}
-          >
-            {t.appName}
-          </Typography>
-        }
-      >
-        <S.ContentContainer showsVerticalScrollIndicator={false}>
-          {/* Notifications */}
-          <S.Section>
-            <S.SectionTitle>{t.notifications}</S.SectionTitle>
-            <S.SettingCard>
-              <S.SettingInfo>
-                <S.IconBox color={theme.colors.primary}>
-                  <Icon
-                    name="notifications"
-                    size={24}
-                    color={theme.colors.primary}
-                  />
-                </S.IconBox>
-                <S.SettingLabelGroup>
-                  <Typography variant="label" size="md" weight="bold">
-                    {t.pushNotifications}
-                  </Typography>
-                  <Typography
-                    variant="body"
-                    size="xs"
-                    color="on_surface_variant"
-                  >
-                    {t.pushNotificationsDesc}
-                  </Typography>
-                </S.SettingLabelGroup>
-              </S.SettingInfo>
-              <Toggle
-                value={pushNotifications}
-                onValueChange={togglePushNotifications}
-              />
-            </S.SettingCard>
-          </S.Section>
-
-          {/* Appearance */}
-          <S.Section>
-            <S.SectionTitle>{t.appearance}</S.SectionTitle>
-            <S.ThemeGrid>
-              <S.ThemeCard
-                isCurrent={themeMode === 'light' || themeMode === 'dark'}
-              >
-                <Icon name="palette" size={32} color={theme.colors.primary} />
-                <S.ThemeInfo>
-                  <Typography variant="title" size="sm" weight="bold">
-                    {t.theme}
-                  </Typography>
-                  <Typography
-                    variant="body"
-                    size="xs"
-                    color="on_surface_variant"
-                  >
-                    {themeMode === 'light' ? t.lightMode : t.darkMode}
-                  </Typography>
-                </S.ThemeInfo>
-              </S.ThemeCard>
-              <S.ThemeCard>
-                <S.ThemeToggleRow>
-                  <Toggle
-                    value={themeMode === 'dark'}
-                    onValueChange={toggleTheme}
-                  />
-                </S.ThemeToggleRow>
-                <S.ThemeSwitchLabel>
-                  <Typography variant="title" size="sm" weight="bold">
-                    {t.darkModeToggle}
-                  </Typography>
-                  <Icon
-                    name={themeMode === 'dark' ? 'dark-mode' : 'light-mode'}
-                    size={24}
-                    color={theme.colors.on_surface_variant}
-                  />
-                </S.ThemeSwitchLabel>
-              </S.ThemeCard>
-            </S.ThemeGrid>
-          </S.Section>
-
-          {/* Preferences */}
-          <S.Section>
-            <S.SectionTitle>{t.preferences}</S.SectionTitle>
-            <S.OptionsList>
-              <S.OptionRow onPress={handleToggleLanguage}>
+export const SettingsTemplate: React.FC<SettingsTemplateProps> = React.memo(
+  ({
+    t,
+    themeMode,
+    toggleTheme,
+    language,
+    region,
+    handleToggleLanguage,
+    pushNotifications,
+    togglePushNotifications,
+    goBack,
+    handleLogout,
+    isLogoutModalVisible,
+    isLoggingOut,
+    showLogoutConfirmation,
+    hideLogoutConfirmation,
+    theme,
+  }) => {
+    return (
+      <S.ScreenWrapper>
+        <ScreenShell
+          title={t.headerTitle}
+          onBack={goBack}
+          rightElement={
+            <Typography
+              variant="title"
+              size="md"
+              weight="bold"
+              color={theme.colors.primary}
+            >
+              {t.appName}
+            </Typography>
+          }
+        >
+          <S.ContentContainer showsVerticalScrollIndicator={false}>
+            {/* Notifications */}
+            <S.Section>
+              <S.SectionTitle>{t.notifications}</S.SectionTitle>
+              <S.SettingCard>
                 <S.SettingInfo>
-                  <Icon
-                    name="language"
-                    size={24}
-                    color={theme.colors.secondary}
-                  />
-                  <Typography variant="label" size="md" weight="medium">
-                    {t.language}
-                  </Typography>
+                  <S.IconBox color={theme.colors.primary}>
+                    <Icon
+                      name="notifications"
+                      size={24}
+                      color={theme.colors.primary}
+                    />
+                  </S.IconBox>
+                  <S.SettingLabelGroup>
+                    <Typography variant="label" size="md" weight="bold">
+                      {t.pushNotifications}
+                    </Typography>
+                    <Typography
+                      variant="body"
+                      size="xs"
+                      color="on_surface_variant"
+                    >
+                      {t.pushNotificationsDesc}
+                    </Typography>
+                  </S.SettingLabelGroup>
                 </S.SettingInfo>
-                <S.AlignmentRow>
-                  <Typography
-                    variant="label"
-                    size="sm"
-                    weight="bold"
-                    color={theme.colors.primary}
-                  >
-                    {language === 'en' ? t.languageEn : t.languageHi}
-                  </Typography>
-                  <Icon
-                    name="chevron-right"
-                    size={20}
-                    color={theme.colors.on_surface_variant}
-                  />
-                </S.AlignmentRow>
-              </S.OptionRow>
-
-              <S.OptionRow disabled>
-                <S.SettingInfo>
-                  <Icon
-                    name="public"
-                    size={24}
-                    color={theme.colors.secondary}
-                  />
-                  <Typography variant="label" size="md" weight="medium">
-                    {t.region}
-                  </Typography>
-                </S.SettingInfo>
-                <S.Badge>
-                  <S.BadgeText color={theme.colors.on_secondary_container}>
-                    {region}
-                  </S.BadgeText>
-                </S.Badge>
-              </S.OptionRow>
-            </S.OptionsList>
-          </S.Section>
-
-          {/* Email Settings (Commented out as APIs/BE integration are pending)
-          <S.Section>
-            <S.SectionTitle>{t.emailSettings}</S.SectionTitle>
-
-            <S.EmailCard>
-              <S.AlignmentRow>
-                <Icon name="campaign" size={24} color={theme.colors.tertiary} />
-                <Typography variant="label" size="md" weight="semibold">
-                  {t.promotions}
-                </Typography>
-              </S.AlignmentRow>
-              <Checkbox checked={promoEmails} onToggle={togglePromoEmails} />
-            </S.EmailCard>
-
-            <S.EmailCard>
-              <S.AlignmentRow>
-                <Icon
-                  name="receipt-long"
-                  size={24}
-                  color={theme.colors.tertiary}
+                <Toggle
+                  value={pushNotifications}
+                  onValueChange={togglePushNotifications}
                 />
-                <Typography variant="label" size="md" weight="semibold">
-                  {t.rideReceipts}
+              </S.SettingCard>
+            </S.Section>
+
+            {/* Appearance */}
+            <AppearanceSection
+              themeMode={themeMode}
+              toggleTheme={toggleTheme}
+              t={t}
+              theme={theme}
+            />
+
+            {/* Preferences */}
+            <S.Section>
+              <S.SectionTitle>{t.preferences}</S.SectionTitle>
+              <S.OptionsList>
+                <S.OptionRow onPress={handleToggleLanguage}>
+                  <S.SettingInfo>
+                    <Icon
+                      name="language"
+                      size={24}
+                      color={theme.colors.secondary}
+                    />
+                    <Typography variant="label" size="md" weight="medium">
+                      {t.language}
+                    </Typography>
+                  </S.SettingInfo>
+                  <S.AlignmentRow>
+                    <Typography
+                      variant="label"
+                      size="sm"
+                      weight="bold"
+                      color={theme.colors.primary}
+                    >
+                      {language === 'en' ? t.languageEn : t.languageHi}
+                    </Typography>
+                    <Icon
+                      name="chevron-right"
+                      size={20}
+                      color={theme.colors.on_surface_variant}
+                    />
+                  </S.AlignmentRow>
+                </S.OptionRow>
+
+                <S.OptionRow disabled>
+                  <S.SettingInfo>
+                    <Icon
+                      name="public"
+                      size={24}
+                      color={theme.colors.secondary}
+                    />
+                    <Typography variant="label" size="md" weight="medium">
+                      {t.region}
+                    </Typography>
+                  </S.SettingInfo>
+                  <S.Badge>
+                    <S.BadgeText color={theme.colors.on_secondary_container}>
+                      {region}
+                    </S.BadgeText>
+                  </S.Badge>
+                </S.OptionRow>
+              </S.OptionsList>
+            </S.Section>
+
+            {/* Account Section */}
+            <S.AccountSection>
+              <S.LogoutButton onPress={showLogoutConfirmation}>
+                <Icon name="logout" size={24} color={theme.colors.error} />
+                <Typography
+                  variant="title"
+                  size="sm"
+                  weight="bold"
+                  color={theme.colors.error}
+                >
+                  {t.logout}
                 </Typography>
-              </S.AlignmentRow>
-              <Checkbox checked={rideReceipts} onToggle={toggleRideReceipts} />
-            </S.EmailCard>
+              </S.LogoutButton>
 
-            <S.DisabledEmailCard>
-              <S.AlignmentRow>
-                <Icon name="shield" size={24} color={theme.colors.tertiary} />
-                <Typography variant="label" size="md" weight="semibold">
-                  {t.accountSecurity}
-                </Typography>
-              </S.AlignmentRow>
-              <Checkbox checked={accountSecurity} onToggle={() => {}} />
-            </S.DisabledEmailCard>
-          </S.Section>
-          */}
+              <S.FooterVersion>
+                <S.VersionText color={theme.colors.on_surface_variant}>
+                  {t.version} {DeviceInfo.getVersion()}
+                </S.VersionText>
+              </S.FooterVersion>
+            </S.AccountSection>
+          </S.ContentContainer>
+        </ScreenShell>
 
-          {/* Account Section */}
-          <S.AccountSection>
-            <S.LogoutButton onPress={showLogoutConfirmation}>
-              <Icon name="logout" size={24} color={theme.colors.error} />
-              <Typography
-                variant="title"
-                size="sm"
-                weight="bold"
-                color={theme.colors.error}
-              >
-                {t.logout}
-              </Typography>
-            </S.LogoutButton>
+        <ConfirmationModal
+          isVisible={isLogoutModalVisible}
+          onClose={hideLogoutConfirmation}
+          onConfirm={handleLogout}
+          title={t.logoutConfirmTitle}
+          message={t.logoutConfirmMessage}
+          confirmLabel={t.logoutConfirmButton}
+          cancelLabel={t.logoutConfirmCancel}
+          type="danger"
+          isLoading={isLoggingOut}
+        />
+      </S.ScreenWrapper>
+    );
+  },
+);
 
-            <S.FooterVersion>
-              <S.VersionText color={theme.colors.on_surface_variant}>
-                {t.version} {DeviceInfo.getVersion()}
-              </S.VersionText>
-            </S.FooterVersion>
-          </S.AccountSection>
-        </S.ContentContainer>
-      </ScreenShell>
-
-      <ConfirmationModal
-        isVisible={isLogoutModalVisible}
-        onClose={hideLogoutConfirmation}
-        onConfirm={handleLogout}
-        title={t.logoutConfirmTitle}
-        message={t.logoutConfirmMessage}
-        confirmLabel={t.logoutConfirmButton}
-        cancelLabel={t.logoutConfirmCancel}
-        type="danger"
-        isLoading={isLoggingOut}
-      />
-    </S.ScreenWrapper>
-  );
-};
+SettingsTemplate.displayName = 'SettingsTemplate';

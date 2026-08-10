@@ -1,6 +1,8 @@
 import styled from 'styled-components/native';
 import { moderateScale, responsiveFont } from '@/styles';
 import LinearGradient from 'react-native-linear-gradient';
+import { Typography } from '../Typography';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export type SeatState = 'selected' | 'available' | 'driver' | 'occupied';
 
@@ -42,14 +44,29 @@ export const SeatGradient = styled(LinearGradient)`
   justify-content: center;
 `;
 
-export const DriverLabelText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${responsiveFont(8)}px;
+export const DriverLabelText = styled(Typography).attrs({
+  variant: 'label',
+  size: 'xs',
+  weight: 'bold',
+})`
   color: ${({ theme }) => theme.colors.outline};
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: ${moderateScale(-2)}px;
+  margin-top: ${moderateScale(2)}px;
+`;
+
+export const Container = styled.View`
+  align-items: center;
+  width: ${moderateScale(70)}px;
+`;
+
+export const ContentWrapper = styled.View`
+  gap: ${moderateScale(2)}px;
+  align-items: center;
+`;
+
+export const BlockIconWrapper = styled(MaterialIcons)`
+  position: absolute;
+  top: 0;
+  right: -${moderateScale(4)}px;
 `;
 
 export const PriceText = styled.Text<{ selected: boolean }>`

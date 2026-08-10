@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { LiveLocationToggle } from './LiveLocationToggle';
 import { View } from 'react-native';
 

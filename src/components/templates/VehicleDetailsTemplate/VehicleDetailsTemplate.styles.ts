@@ -147,9 +147,10 @@ export const ColorRow = styled.View`
   align-items: center;
 `;
 
-export const ColorGroup = styled.View`
+export const ColorGroup = styled.View<{ $loading?: boolean }>`
   gap: ${moderateScale(8)}px;
   margin-top: ${verticalScale(16)}px;
+  opacity: ${({ $loading }) => ($loading ? 0.6 : 1)};
 `;
 
 export const PlateInput = styled(Input).attrs({
@@ -160,9 +161,10 @@ export const PlateInput = styled(Input).attrs({
   font-weight: bold;
 `;
 
-export const CapacityRow = styled(ColorRow)`
+export const CapacityRow = styled(ColorRow)<{ $loading?: boolean }>`
   gap: 12px;
   padding-top: 10px;
+  opacity: ${({ $loading }) => ($loading ? 0.6 : 1)};
 `;
 
 export const CapacityError = styled(Typography).attrs({

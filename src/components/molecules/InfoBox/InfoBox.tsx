@@ -7,6 +7,7 @@ import { InfoBoxProps } from './types';
 
 export const InfoBox: React.FC<InfoBoxProps> = ({ children, style }) => {
   const theme = useTheme();
+  const textStyle = { flex: 1 };
 
   return (
     <StyledInfoBox style={style}>
@@ -17,7 +18,7 @@ export const InfoBox: React.FC<InfoBoxProps> = ({ children, style }) => {
         variant="label"
         size="md"
         color={theme.colors.on_surface_variant}
-        style={{ flex: 1 }}
+        style={textStyle}
       >
         {children}
       </Typography>

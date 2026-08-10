@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import React, { useState } from 'react';
 import { Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -14,6 +15,7 @@ export interface RideFiltersModalProps {
   onClear: () => void;
   onApply: (filters: string[]) => void;
   selectedFilters: string[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
   t: any;
 }
 
@@ -315,9 +317,7 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
           </S.ScrollBody>
 
           <S.Footer
-            style={{
-              paddingBottom: Math.max(insets.bottom, 16) + 16,
-            }}
+            $paddingBottom={Math.max(insets.bottom, 16) + 16}
           >
             <S.ApplyButton
               onPress={() => {

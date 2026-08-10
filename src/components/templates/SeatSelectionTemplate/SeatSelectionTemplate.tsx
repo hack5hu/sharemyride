@@ -1,6 +1,4 @@
 import React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { verticalScale } from '@/styles';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import {
@@ -31,7 +29,6 @@ export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> =
       t,
     }) => {
       const theme = useTheme();
-      const insets = useSafeAreaInsets();
       const rows = vehicleType === '7' ? SEVEN_SEATER_ROWS : FIVE_SEATER_ROWS;
 
       const renderSeatSelection = () => {
@@ -75,7 +72,6 @@ export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> =
         <ScreenShell title={t.headerTitle} onBack={onBackPress}>
           <S.ContentScroll
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 150 }}
           >
             <S.VehicleListWrapper>
               <VehicleHorizontalList

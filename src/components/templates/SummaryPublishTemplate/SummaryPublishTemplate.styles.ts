@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { View } from 'react-native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 
 export const Container = styled.View`
@@ -7,7 +6,7 @@ export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.surface};
 `;
 
-export const BackgroundBubble = styled(View)<{
+export const BackgroundBubble = styled.View<{
   top?: string;
   left?: string;
   bottom?: string;

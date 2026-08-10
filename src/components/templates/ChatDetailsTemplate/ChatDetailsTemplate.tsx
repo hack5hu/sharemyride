@@ -1,36 +1,43 @@
 import React, { useRef, useEffect } from 'react';
-import { View } from 'react-native';
 import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import { useAnimatedStyle } from 'react-native-reanimated';
 import { FlashList } from '@shopify/flash-list';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { ScreenContainer } from './ChatDetailsTemplate.styles';
+import {
+  ScreenContainer,
+  AnimatedWrapper,
+  ListContainer,
+  HeaderSpacer,
+  InputWrapper,
+} from './ChatDetailsTemplate.styles';
 import { moderateScale } from '@/styles';
 
-export interface ChatDetailsTemplateProps {
+export interface ChatDetailsTemplateProps<T extends { id: string } = { id: string }> {
   header: React.ReactNode;
-  data: any[];
-  renderItem: any;
+  data: T[];
+  renderItem: (info: { item: T; index: number }) => React.ReactElement | null;
   ListHeaderComponent?: React.ReactNode;
   input: React.ReactNode;
   onLoadMore?: () => void;
 }
 
-export const ChatDetailsTemplate: React.FC<ChatDetailsTemplateProps> = ({
+export const ChatDetailsTemplate = React.memo(<T extends { id: string } = { id: string }>({
   header,
   data,
   renderItem,
   ListHeaderComponent,
   input,
   onLoadMore,
-}) => {
-  const listRef = useRef<any>(null);
+}: ChatDetailsTemplateProps<T>) => {
+  const listRef = useRef<FlashList<T>>(null);
   const { height } = useReanimatedKeyboardAnimation();
 
   // Animate the bottom padding of the entire container based on keyboard height
   const animatedStyle = useAnimatedStyle(() => ({
     paddingBottom: -height.value,
   }));
+
+  const firstItemId = data[0]?.id;
 
   // Scroll to newest message (index 0 in inverted list) whenever messages change or get confirmed
   useEffect(() => {
@@ -45,20 +52,20 @@ export const ChatDetailsTemplate: React.FC<ChatDetailsTemplateProps> = ({
 
       return () => clearTimeout(timer);
     }
-  }, [data.length, data[0]?.id]);
+  }, [data.length, firstItemId]);
 
   return (
     <ScreenShell noPaddingBottom>
-      <Animated.View style={[{ flex: 1 }, animatedStyle]}>
+      <AnimatedWrapper style={animatedStyle}>
         <ScreenContainer>
           {header}
 
-          <View style={{ flex: 1 }}>
+          <ListContainer>
             <FlashList
               ref={listRef}
               data={data}
               renderItem={renderItem}
-              keyExtractor={item => item.id}
+              keyExtractor={(item: T) => item.id}
               inverted
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
@@ -70,17 +77,20 @@ export const ChatDetailsTemplate: React.FC<ChatDetailsTemplateProps> = ({
               onEndReachedThreshold={0.2}
               ListHeaderComponent={
                 ListHeaderComponent ? (
-                  <View style={{ marginBottom: moderateScale(16) }}>
+                  <HeaderSpacer>
                     {ListHeaderComponent}
-                  </View>
+                  </HeaderSpacer>
                 ) : null
               }
+              estimatedItemSize={80}
             />
-          </View>
+          </ListContainer>
 
-          <View>{input}</View>
+          <InputWrapper>{input}</InputWrapper>
         </ScreenContainer>
-      </Animated.View>
+      </AnimatedWrapper>
     </ScreenShell>
   );
-};
+}) as <T extends { id: string } = { id: string }>(
+  props: ChatDetailsTemplateProps<T>,
+) => React.ReactElement;

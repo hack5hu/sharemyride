@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale } from '@/styles';
+import { Typography } from '@/components/atoms/Typography';
 
 export const Container = styled.View`
   flex: 1;
@@ -87,4 +88,31 @@ export const FilterChip = styled.TouchableOpacity<{ active?: boolean }>`
   background-color: ${({ theme, active }) =>
     active ? theme.colors.primary : theme.colors.surface_container_high};
   margin-right: ${scale(12)}px;
+`;
+
+export const RouteTextContainer = styled.View`
+  flex: 1;
+  gap: ${verticalScale(32)}px;
+`;
+
+export const ListWrapper = styled.View`
+  flex: 1;
+`;
+
+export const LoadingContainer = styled.View`
+  padding-vertical: ${verticalScale(60)}px;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const LoadingText = styled(Typography)`
+  margin-top: ${verticalScale(16)}px;
+`;
+
+export const FetchMoreLoadingContainer = styled.View`
+  padding-vertical: ${verticalScale(20)}px;
+`;
+
+export const FooterSpacer = styled.View`
+  height: ${verticalScale(32)}px;
 `;

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Modal, TouchableOpacity } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { useTheme } from 'styled-components/native';
 import { NetworkLog } from '@/store/useNetworkLoggerStore';
@@ -7,6 +6,7 @@ import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Typography } from '@/components/atoms/Typography';
 import { useLocale } from '@/constants/localization';
 import * as S from './NetworkLogsTemplate.styles';
+import { LogDetailModal } from './components/LogDetailModal';
 
 interface NetworkLogsTemplateProps {
   logs: NetworkLog[];
@@ -69,14 +69,13 @@ export const NetworkLogsTemplate: React.FC<NetworkLogsTemplateProps> =
         <Typography variant="title" size="sm">
           {t.noLogsTitle}
         </Typography>
-        <Typography
+        <S.EmptyDescText
           variant="body"
           size="sm"
           color={theme.colors.on_surface_variant}
-          style={{ textAlign: 'center', marginTop: 8 }}
         >
           {t.noLogsDesc}
-        </Typography>
+        </S.EmptyDescText>
       </S.EmptyState>
     );
 
@@ -103,127 +102,16 @@ export const NetworkLogsTemplate: React.FC<NetworkLogsTemplateProps> =
             renderItem={renderItem}
             keyExtractor={item => item.id}
             ListEmptyComponent={renderEmpty}
+            estimatedItemSize={80}
           />
         </S.Container>
 
-        <Modal visible={!!selectedLog} animationType="slide" transparent>
-          <S.ModalContainer>
-            <S.ModalHeader>
-              <Typography variant="title" size="sm">
-                {t.requestDetails}
-              </Typography>
-              <TouchableOpacity
-                onPress={() => setSelectedLog(null)}
-                style={{ padding: 8 }}
-              >
-                <Typography
-                  variant="label"
-                  size="sm"
-                  color={theme.colors.primary}
-                  weight="bold"
-                >
-                  {t.close}
-                </Typography>
-              </TouchableOpacity>
-            </S.ModalHeader>
-            <S.ScrollContent>
-              {selectedLog && (
-                <>
-                  <S.SectionTitle
-                    variant="label"
-                    size="xs"
-                    color={theme.colors.on_surface_variant}
-                    weight="bold"
-                  >
-                    {t.overview}
-                  </S.SectionTitle>
-                  <S.CodeBlock>
-                    <S.CodeText>URL: {selectedLog.url}</S.CodeText>
-                    <S.CodeText>Method: {selectedLog.method}</S.CodeText>
-                    <S.CodeText>
-                      Status: {selectedLog.responseStatus || t.pending}
-                    </S.CodeText>
-                    <S.CodeText>
-                      Duration:{' '}
-                      {selectedLog.duration
-                        ? `${selectedLog.duration}ms`
-                        : 'N/A'}
-                    </S.CodeText>
-                  </S.CodeBlock>
-
-                  <S.SectionTitle
-                    variant="label"
-                    size="xs"
-                    color={theme.colors.on_surface_variant}
-                    weight="bold"
-                  >
-                    {t.requestHeaders}
-                  </S.SectionTitle>
-                  <S.CodeBlock>
-                    <S.CodeText>
-                      {JSON.stringify(selectedLog.requestHeaders, null, 2)}
-                    </S.CodeText>
-                  </S.CodeBlock>
-
-                  <S.SectionTitle
-                    variant="label"
-                    size="xs"
-                    color={theme.colors.on_surface_variant}
-                    weight="bold"
-                  >
-                    {t.requestBody}
-                  </S.SectionTitle>
-                  <S.CodeBlock>
-                    <S.CodeText>
-                      {selectedLog.requestBody
-                        ? JSON.stringify(selectedLog.requestBody, null, 2)
-                        : t.noBody}
-                    </S.CodeText>
-                  </S.CodeBlock>
-
-                  <S.SectionTitle
-                    variant="label"
-                    size="xs"
-                    color={theme.colors.on_surface_variant}
-                    weight="bold"
-                  >
-                    {t.responseHeaders}
-                  </S.SectionTitle>
-                  <S.CodeBlock>
-                    <S.CodeText>
-                      {selectedLog.responseHeaders
-                        ? JSON.stringify(selectedLog.responseHeaders, null, 2)
-                        : t.noHeaders}
-                    </S.CodeText>
-                  </S.CodeBlock>
-
-                  <S.SectionTitle
-                    variant="label"
-                    size="xs"
-                    color={theme.colors.on_surface_variant}
-                    weight="bold"
-                  >
-                    {t.responseBody}
-                  </S.SectionTitle>
-                  <S.CodeBlock>
-                    <S.CodeText>
-                      {selectedLog.responseBody
-                        ? JSON.stringify(selectedLog.responseBody, null, 2)
-                        : t.noBody}
-                    </S.CodeText>
-                  </S.CodeBlock>
-
-                  <S.SectionTitle
-                    variant="label"
-                    size="xs"
-                    color={theme.colors.on_surface_variant}
-                    weight="bold"
-                  />
-                </>
-              )}
-            </S.ScrollContent>
-          </S.ModalContainer>
-        </Modal>
+        <LogDetailModal
+          visible={!!selectedLog}
+          log={selectedLog}
+          onClose={() => setSelectedLog(null)}
+          t={t}
+        />
       </ScreenShell>
     );
   });

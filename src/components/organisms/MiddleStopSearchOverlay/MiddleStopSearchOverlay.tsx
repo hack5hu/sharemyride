@@ -54,6 +54,7 @@ export const MiddleStopSearchOverlay: React.FC<MiddleStopSearchOverlayProps> =
       recentHistory,
       onSelectLocation,
       onSelectHistory,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       isLoading,
     }) => {
       const theme = useTheme();

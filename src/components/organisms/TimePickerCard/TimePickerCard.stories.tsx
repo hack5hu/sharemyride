@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { TimePickerCard } from './TimePickerCard';
 import { View } from 'react-native';
 

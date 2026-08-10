@@ -41,12 +41,15 @@ export const Toggle: React.FC<ToggleProps> = ({
     outputRange: [2, 22],
   });
 
+  const containerStyle = { backgroundColor, opacity: disabled ? 0.6 : 1 };
+  const knobStyle = { transform: [{ translateX }] };
+
   return (
     <TouchableWithoutFeedback onPress={handlePress} disabled={disabled}>
       <Container
-        style={[style, { backgroundColor, opacity: disabled ? 0.6 : 1 }]}
+        style={[style, containerStyle]}
       >
-        <Knob style={{ transform: [{ translateX }] }} />
+        <Knob style={knobStyle} />
       </Container>
     </TouchableWithoutFeedback>
   );

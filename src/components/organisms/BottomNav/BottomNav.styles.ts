@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import { moderateScale, verticalScale, scale } from '@/styles';
 
-export const Container = styled.View`
+export const Container = styled.View<{ $paddingBottom?: number }>`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
@@ -18,6 +18,7 @@ export const Container = styled.View`
   left: 0;
   right: 0;
   padding-horizontal: ${scale(8)}px;
+  padding-bottom: ${({ $paddingBottom }) => $paddingBottom || 0}px;
 `;
 
 export const NavItem = styled.TouchableOpacity<{ active?: boolean }>`

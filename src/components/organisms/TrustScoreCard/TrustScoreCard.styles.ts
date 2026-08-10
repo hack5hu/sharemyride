@@ -1,6 +1,8 @@
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { moderateScale } from '@/styles';
+import { Typography } from '@/components/atoms/Typography';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const CardContainer = styled(LinearGradient)`
   border-radius: ${moderateScale(24)}px;
@@ -31,4 +33,13 @@ export const CardFooter = styled.View`
   align-items: flex-end;
   justify-content: space-between;
   z-index: 10;
+`;
+
+export const ScoreDescrText = styled(Typography)`
+  opacity: 0.8;
+  margin-top: 4px;
+`;
+
+export const ScoreIcon = styled(Icon)`
+  opacity: 0.5;
 `;

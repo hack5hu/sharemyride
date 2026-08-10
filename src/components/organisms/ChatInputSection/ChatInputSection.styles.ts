@@ -2,13 +2,14 @@ import styled from 'styled-components/native';
 
 import { verticalScale, moderateScale, scale } from '@/styles';
 
-export const Container = styled.View`
+export const Container = styled.View<{ $paddingBottom?: number }>`
   background-color: ${({ theme }) => theme.colors.surface};
   shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px -8px;
   shadow-opacity: 0.04;
   shadow-radius: 30px;
   elevation: 10;
+  padding-bottom: ${({ $paddingBottom }) => $paddingBottom || 0}px;
 `;
 
 export const InputWrapper = styled.View`

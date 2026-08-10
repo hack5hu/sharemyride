@@ -1,3 +1,5 @@
+import { DefaultTheme } from 'styled-components/native';
+
 export interface OTPVerificationTemplateProps {
   propPhoneNumber?: string;
   dynamicPhoneNumber?: string;
@@ -8,6 +10,14 @@ export interface OTPVerificationTemplateProps {
   handleVerify: (code: string) => void;
   handleResend: () => void;
 
-  t: any;
-  theme: any;
+  t: {
+    otp: {
+      title: string;
+      subtitle: string;
+      resendCode: string;
+      verify: string;
+      resendIn: string;
+    };
+  };
+  theme: DefaultTheme;
 }

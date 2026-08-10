@@ -66,7 +66,7 @@ export const LocationSelectionTemplate: React.FC<
         />
 
         <ContinueButtonSection>
-          <ContinueGradient style={{ opacity: canContinue ? 1 : 0.6 }}>
+          <ContinueGradient $disabled={!canContinue}>
             <ContinueButton
               onPress={onPressContinue}
               disabled={!canContinue}

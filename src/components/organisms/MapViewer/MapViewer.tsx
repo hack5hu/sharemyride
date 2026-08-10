@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import MapView, { Marker, Circle, Polyline } from 'react-native-maps';
+import { Marker, Polyline, Circle } from 'react-native-maps';
 import { useTheme } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -10,6 +10,7 @@ import { decodePolyline } from '@/utils/polyline';
 import { moderateScale } from '@/styles';
 import {
   MapContainer,
+  StyledMapView,
   StyledOverlayCard,
   IndicatorDot,
   OverlayTextContainer,
@@ -65,15 +66,15 @@ export const MapViewer: React.FC<MapViewerProps> = React.memo(
       rideDetails.status,
       rideDetails.maskedLocation,
       rideDetails.driverLocation,
+      driverLocation,
     ]);
 
     const primaryColor = theme.colors.primary;
 
     return (
       <MapContainer>
-        <MapView
+        <StyledMapView
           ref={mapRef}
-          style={{ flex: 1 }}
           initialRegion={initialRegion}
           showsUserLocation
           showsMyLocationButton={false}
@@ -148,7 +149,7 @@ export const MapViewer: React.FC<MapViewerProps> = React.memo(
               )}
             </>
           )}
-        </MapView>
+        </StyledMapView>
 
         {/* FLOATY SYSTEM STATUS OVERLAY */}
         <StyledOverlayCard>

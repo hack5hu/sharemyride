@@ -5,6 +5,10 @@ import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
 const { height } = Dimensions.get('window');
 
+export const Container = styled.View`
+  flex: 1;
+`;
+
 export const OverlayContext = styled.View`
   flex: 1;
   justify-content: flex-end;

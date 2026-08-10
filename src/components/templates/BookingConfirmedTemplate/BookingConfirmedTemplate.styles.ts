@@ -8,26 +8,6 @@ export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.surface};
 `;
 
-export const Header = styled.View`
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: 50;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: ${verticalScale(48)}px ${scale(24)}px ${verticalScale(16)}px;
-  background-color: ${({ theme }) => theme.colors.surface}CC;
-`;
-
-export const BrandTitle = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-size: ${responsiveFont(18)}px;
-  font-weight: 800;
-  color: ${({ theme }) => theme.colors.primary_container};
-  letter-spacing: -0.5px;
-`;
-
 export const MainContent = styled.ScrollView`
   flex: 1;
   padding-horizontal: ${scale(24)}px;
@@ -92,16 +72,6 @@ export const DriverCard = styled.View`
 export const DriverMeta = styled.View`
   flex: 1;
   margin-left: ${scale(16)}px;
-`;
-
-export const DriverBadge = styled.View`
-  background-color: ${({ theme }) => theme.colors.primary_fixed};
-  padding: ${verticalScale(2)}px ${scale(8)}px;
-  border-radius: 9999px;
-  align-items: center;
-  justify-content: center;
-  align-self: flex-start;
-  margin-bottom: ${verticalScale(4)}px;
 `;
 
 export const Row = styled.View`
@@ -169,13 +139,6 @@ export const SecondaryButton = styled.TouchableOpacity`
   gap: ${scale(8)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_highest};
   border-radius: ${moderateScale(16)}px;
-`;
-export const PlateBadge = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface_container};
-  padding: ${verticalScale(4)}px ${scale(12)}px;
-  border-radius: ${moderateScale(8)}px;
-  align-items: center;
-  justify-content: center;
 `;
 
 export const DriverNameText = styled(Typography)`

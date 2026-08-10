@@ -2,7 +2,6 @@ import * as Keychain from 'react-native-keychain';
 import { Platform } from 'react-native';
 import axiosClient from './axiosClient';
 import { API_ENDPOINTS } from '@/constants/apiEndpoints';
-import { useAuthStore } from '@/store/useAuthStore';
 import { getDeviceId } from '@/utils/deviceId';
 
 export interface LoginResponse {

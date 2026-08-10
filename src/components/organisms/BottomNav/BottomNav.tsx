@@ -55,7 +55,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab }) => {
 
   return (
     <Container
-      style={{ paddingBottom: Math.max(insets.bottom, verticalScale(8)) }}
+      $paddingBottom={Math.max(insets.bottom, verticalScale(8))}
     >
       {renderItem('BOOK', 'directions-car', 'navBook')}
       {renderItem('PUBLISH', 'add-circle', 'navPublish')}

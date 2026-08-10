@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { moderateScale, verticalScale, scale } from '@/styles';
+import MapView from 'react-native-maps';
 
 export const MapContainer = styled.View`
   flex: 1;
@@ -7,6 +8,10 @@ export const MapContainer = styled.View`
   overflow: hidden;
   border-radius: ${moderateScale(16)}px;
   position: relative;
+`;
+
+export const StyledMapView = styled(MapView)`
+  flex: 1;
 `;
 
 export const StyledOverlayCard = styled.View`

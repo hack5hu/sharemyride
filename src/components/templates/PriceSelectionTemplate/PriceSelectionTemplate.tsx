@@ -1,10 +1,8 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
-import { moderateScale, scale, verticalScale } from '@/styles';
+import { moderateScale } from '@/styles';
 import { PriceCounter } from '@/components/molecules/PriceCounter';
 import { FrontSeatPremium } from '@/components/molecules/FrontSeatPremium';
 import { SegmentPricingSheet } from '@/components/organisms/SegmentPricingSheet';
@@ -30,7 +28,7 @@ export interface PriceSelectionTemplateProps {
   onContinue: () => void;
   onCustomizePricing: () => void;
   sheetVisible: boolean;
-  segments: any[];
+  segments: unknown[];
   segmentPrices: Record<string, SegmentPrice>;
   onSheetClose: () => void;
   onSaveSegmentPrices: (prices: Record<string, { basePrice: number }>) => void;
@@ -57,24 +55,15 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
   segmentPrices,
   onSheetClose,
   onSaveSegmentPrices,
-  isLoading = false,
   isRecommended = false,
   showPremium = false,
 }) => {
   const theme = useTheme();
   const { priceSelection: t } = useLocale();
-  const insets = useSafeAreaInsets();
 
   return (
     <ScreenShell title={t.headerTitle} onBack={onBackPress}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingHorizontal: scale(24),
-          paddingBottom: verticalScale(140),
-          gap: verticalScale(20),
-        }}
-      >
+      <S.MainScrollView>
         <S.TitleSection>
           <S.PageTitle>{t.title}</S.PageTitle>
           <S.PageSubtitle>{t.subtitle}</S.PageSubtitle>
@@ -133,7 +122,7 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
             />
           </S.SegmentRow>
         )}
-      </ScrollView>
+      </S.MainScrollView>
 
       {/* Floating CTA */}
       <FixedFooter>

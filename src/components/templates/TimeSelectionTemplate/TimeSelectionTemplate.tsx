@@ -1,7 +1,5 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { scale, verticalScale } from '@/styles';
 import { TimePickerCard } from '@/components/organisms/TimePickerCard';
@@ -34,7 +32,6 @@ export const TimeSelectionTemplate: React.FC<TimeSelectionTemplateProps> = ({
   isContinueDisabled = false,
 }) => {
   const { timeSelection: t } = useLocale();
-  const insets = useSafeAreaInsets();
 
   return (
     <ScreenShell title={t.headerTitle} onBack={onBackPress}>

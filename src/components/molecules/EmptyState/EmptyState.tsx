@@ -22,6 +22,8 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
 }) => {
   const theme = useTheme();
 
+  const iconStyle = { opacity: 0.5 };
+
   return (
     <Container>
       <IconContainer>
@@ -29,7 +31,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
           name={icon}
           size={moderateScale(64)}
           color={theme.colors.on_surface_variant}
-          style={{ opacity: 0.5 }}
+          style={iconStyle}
         />
       </IconContainer>
       <TextContainer>

@@ -1,17 +1,14 @@
 import React from 'react';
-import { ActivityIndicator, Animated } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useTheme } from 'styled-components/native';
-import { format } from 'date-fns';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { moderateScale, verticalScale } from '@/styles';
+import { verticalScale } from '@/styles';
 import { BottomNav } from '@/components/organisms/BottomNav';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-
 import { BookRideInfoTemplateProps } from './types.d';
 import * as S from './BookRideInfoTemplate.styles';
 import { RecentSearch } from '@/store/useBookRideStore';
+import { BookingForm } from './components/BookingForm';
+import { RecentSearchItem } from './components/RecentSearchItem';
 
 export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
   React.memo(
@@ -34,23 +31,82 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
       onClearRecentSearches,
       t,
     }) => {
-      const theme = useTheme();
       const insets = useSafeAreaInsets();
 
-      const spinValue = React.useRef(new Animated.Value(0)).current;
+      const renderRecentItem = React.useCallback(
+        ({ item }: { item: RecentSearch }) => (
+          <RecentSearchItem
+            item={item}
+            isSearching={isSearching}
+            onSelectRecentSearch={onSelectRecentSearch}
+          />
+        ),
+        [isSearching, onSelectRecentSearch],
+      );
 
-      React.useEffect(() => {
-        Animated.timing(spinValue, {
-          toValue: isSwapped ? 1 : 0,
-          duration: 300,
-          useNativeDriver: true,
-        }).start();
-      }, [isSwapped, spinValue]);
+      const listHeader = React.useMemo(
+        () => (
+          <>
+            <S.Header $paddingTop={insets.top + verticalScale(12)}>
+              <S.HeaderTitle>{t.brandName}</S.HeaderTitle>
+            </S.Header>
 
-      const spin = spinValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['0deg', '180deg'],
-      });
+            <S.HeroSection>
+              <S.HeroTitle>{t.heroTitle}</S.HeroTitle>
+              <S.HeroSubtitle>{t.heroSubtitle}</S.HeroSubtitle>
+            </S.HeroSection>
+
+            <BookingForm
+              pickup={pickup}
+              destination={destination}
+              travelDate={travelDate}
+              peopleCount={peopleCount}
+              isSearching={isSearching}
+              isSwapped={isSwapped}
+              onPressPickup={onPressPickup}
+              onPressDestination={onPressDestination}
+              onSwapLocations={onSwapLocations}
+              onOpenDatePicker={onOpenDatePicker}
+              onIncrementPeople={onIncrementPeople}
+              onDecrementPeople={onDecrementPeople}
+              onSearchRides={onSearchRides}
+              t={t}
+            />
+
+            {recentSearches.length > 0 && (
+              <S.SectionContainer>
+                <S.RecentSearchesHeader>
+                  <S.SectionTitle>{t.recentSearchesTitle}</S.SectionTitle>
+                  <S.ClearButtonText
+                    onPress={isSearching ? undefined : onClearRecentSearches}
+                  >
+                    {t.clearAll}
+                  </S.ClearButtonText>
+                </S.RecentSearchesHeader>
+              </S.SectionContainer>
+            )}
+          </>
+        ),
+        [
+          insets.top,
+          pickup,
+          destination,
+          travelDate,
+          peopleCount,
+          isSearching,
+          isSwapped,
+          onPressPickup,
+          onPressDestination,
+          onSwapLocations,
+          onOpenDatePicker,
+          onIncrementPeople,
+          onDecrementPeople,
+          onSearchRides,
+          onClearRecentSearches,
+          recentSearches.length,
+          t,
+        ],
+      );
 
       return (
         <ScreenShell noPaddingTop noPaddingBottom>
@@ -61,267 +117,10 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
             contentContainerStyle={{
               paddingBottom: verticalScale(120),
             }}
-            renderItem={({ item }: { item: RecentSearch }) => (
-              <S.RecentItemContainer>
-                <S.RecentItem
-                  activeOpacity={isSearching ? 1 : 0.7}
-                  onPress={
-                    isSearching ? undefined : () => onSelectRecentSearch(item)
-                  }
-                >
-                  <S.RecentLeft>
-                    <S.RecentIconBox>
-                      <MaterialIcons
-                        name="history"
-                        size={moderateScale(24)}
-                        color={theme.colors.primary}
-                      />
-                    </S.RecentIconBox>
-                    <S.RecentContent>
-                      <S.RecentTitle numberOfLines={1}>
-                        {item.startLocation.address.split(',')[0]} to{' '}
-                        {item.destinationLocation.address.split(',')[0]}
-                      </S.RecentTitle>
-                      <S.RecentSub>
-                        {format(new Date(item.travelDate), 'MMM dd, yyyy')} •{' '}
-                        {item.seatCount}{' '}
-                        {item.seatCount === 1 ? 'Person' : 'People'}
-                      </S.RecentSub>
-                    </S.RecentContent>
-                  </S.RecentLeft>
-                  <MaterialIcons
-                    name="arrow-forward"
-                    size={moderateScale(20)}
-                    color={theme.colors.outline_variant}
-                  />
-                </S.RecentItem>
-              </S.RecentItemContainer>
-            )}
-            ListHeaderComponent={
-              <>
-                <S.Header style={{ paddingTop: insets.top + verticalScale(12) }}>
-                  <S.HeaderTitle>{t.brandName}</S.HeaderTitle>
-                </S.Header>
-
-                <S.HeroSection>
-                  <S.HeroTitle>{t.heroTitle}</S.HeroTitle>
-                  <S.HeroSubtitle>{t.heroSubtitle}</S.HeroSubtitle>
-                </S.HeroSection>
-
-                {/* <S.ToggleWrapper>
-              <RideTypeToggle
-                selected={rideType}
-                onSelect={onSetRideType}
-                localLabel={t.local}
-                intercityLabel={t.intercity}
-              />
-            </S.ToggleWrapper> */}
-
-                <S.BookingCard>
-                  <S.DecorativeAccent />
-
-                  <S.RouteContainer>
-                    <S.RouteIndicator>
-                      <S.VisualLine />
-
-                      <S.SwapButtonWrapper>
-                        <S.SwapButton
-                          activeOpacity={isSearching ? 1 : 0.7}
-                          onPress={isSearching ? undefined : onSwapLocations}
-                        >
-                          <Animated.View
-                            style={{ transform: [{ rotate: spin }] }}
-                          >
-                            <MaterialIcons
-                              name="swap-vert"
-                              size={moderateScale(20)}
-                              color={theme.colors.primary}
-                            />
-                          </Animated.View>
-                        </S.SwapButton>
-                      </S.SwapButtonWrapper>
-
-                      <S.IndicatorGroup>
-                        <S.LabelSpacer />
-                        <S.IndicatorIconBox>
-                          <MaterialIcons
-                            name="my-location"
-                            size={moderateScale(20)}
-                            color={theme.colors.primary}
-                          />
-                        </S.IndicatorIconBox>
-                      </S.IndicatorGroup>
-
-                      <S.IndicatorGroup>
-                        <S.LabelSpacer />
-                        <S.IndicatorIconBox>
-                          <MaterialIcons
-                            name="location-on"
-                            size={moderateScale(20)}
-                            color={theme.colors.tertiary}
-                          />
-                        </S.IndicatorIconBox>
-                      </S.IndicatorGroup>
-                    </S.RouteIndicator>
-
-                    <S.InputColumn>
-                      <S.InputGroup>
-                        <S.InputLabel>{t.pickupLabel}</S.InputLabel>
-                        <S.LocationBox
-                          activeOpacity={isSearching ? 1 : 0.7}
-                          onPress={isSearching ? undefined : onPressPickup}
-                        >
-                          <S.LocationValueText
-                            hasValue={!!pickup}
-                            numberOfLines={1}
-                            ellipsizeMode="tail"
-                          >
-                            {pickup || t.pickupPlaceholder}
-                          </S.LocationValueText>
-                        </S.LocationBox>
-                      </S.InputGroup>
-
-                      <S.InputGroup>
-                        <S.InputLabel>{t.destinationLabel}</S.InputLabel>
-                        <S.LocationBox
-                          activeOpacity={isSearching ? 1 : 0.7}
-                          onPress={isSearching ? undefined : onPressDestination}
-                        >
-                          <S.LocationValueText
-                            hasValue={!!destination}
-                            numberOfLines={1}
-                            ellipsizeMode="tail"
-                          >
-                            {destination || t.destinationPlaceholder}
-                          </S.LocationValueText>
-                        </S.LocationBox>
-                      </S.InputGroup>
-                    </S.InputColumn>
-                  </S.RouteContainer>
-
-                  <S.GridContainer>
-                    <S.GridItem
-                      activeOpacity={isSearching ? 1 : 0.7}
-                      onPress={isSearching ? undefined : onOpenDatePicker}
-                    >
-                      <S.GridLabel>{t.travelDateLabel}</S.GridLabel>
-                      <S.GridValueRow>
-                        <MaterialIcons
-                          name="calendar-today"
-                          size={moderateScale(14)}
-                          color={theme.colors.primary}
-                        />
-                        <S.GridValueText>
-                          {travelDate
-                            ? format(travelDate, 'MMM dd, yyyy')
-                            : t.datePlaceholder}
-                        </S.GridValueText>
-                      </S.GridValueRow>
-                    </S.GridItem>
-                  </S.GridContainer>
-
-                  <S.StepperContainer>
-                    <S.StepperLabelGroup>
-                      <S.StepperLabel>{t.peopleCountLabel}</S.StepperLabel>
-                      <S.StepperSub numberOfLines={2}>
-                        {t.peopleCountSub}
-                      </S.StepperSub>
-                    </S.StepperLabelGroup>
-
-                    <S.StepperControls>
-                      <S.StepperButton
-                        activeOpacity={
-                          isSearching || peopleCount <= 1 ? 1 : 0.7
-                        }
-                        onPress={isSearching ? undefined : onDecrementPeople}
-                        disabled={isSearching || peopleCount <= 1}
-                      >
-                        <MaterialIcons
-                          name="remove"
-                          size={moderateScale(18)}
-                          color={
-                            isSearching || peopleCount <= 1
-                              ? theme.colors.outline
-                              : theme.colors.primary
-                          }
-                        />
-                      </S.StepperButton>
-                      <S.StepperValue>{peopleCount}</S.StepperValue>
-                      <S.StepperButton
-                        primary
-                        activeOpacity={
-                          isSearching || peopleCount >= 6 ? 1 : 0.7
-                        }
-                        onPress={isSearching ? undefined : onIncrementPeople}
-                        disabled={isSearching || peopleCount >= 6}
-                      >
-                        <MaterialIcons
-                          name="add"
-                          size={moderateScale(18)}
-                          color={
-                            isSearching || peopleCount >= 6
-                              ? theme.colors.outline
-                              : theme.colors.on_primary
-                          }
-                        />
-                      </S.StepperButton>
-                    </S.StepperControls>
-                  </S.StepperContainer>
-
-                  <S.SearchButton
-                    activeOpacity={0.9}
-                    onPress={onSearchRides}
-                    disabled={isSearching || !pickup || !destination}
-                  >
-                    <S.SearchGradient
-                      colors={
-                        isSearching || !pickup || !destination
-                          ? [
-                              theme.colors.surface_variant,
-                              theme.colors.surface_variant,
-                            ]
-                          : [
-                              theme.colors.primary,
-                              theme.colors.primary_container,
-                            ]
-                      }
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 1 }}
-                    >
-                      {isSearching ? (
-                        <ActivityIndicator color={theme.colors.on_primary} />
-                      ) : (
-                        <>
-                          <S.SearchText>{t.searchButton}</S.SearchText>
-                          <MaterialIcons
-                            name="arrow-forward"
-                            size={moderateScale(20)}
-                            color={theme.colors.on_primary}
-                          />
-                        </>
-                      )}
-                    </S.SearchGradient>
-                  </S.SearchButton>
-                </S.BookingCard>
-
-                {recentSearches.length > 0 && (
-                  <S.SectionContainer>
-                    <S.RecentSearchesHeader>
-                      <S.SectionTitle>{t.recentSearchesTitle}</S.SectionTitle>
-                      <S.ClearButtonText
-                        onPress={
-                          isSearching ? undefined : onClearRecentSearches
-                        }
-                      >
-                        {t.clearAll}
-                      </S.ClearButtonText>
-                    </S.RecentSearchesHeader>
-                  </S.SectionContainer>
-                )}
-              </>
-            }
+            renderItem={renderRecentItem}
+            ListHeaderComponent={listHeader}
+            estimatedItemSize={80}
           />
-
           <BottomNav activeTab="BOOK" />
         </ScreenShell>
       );

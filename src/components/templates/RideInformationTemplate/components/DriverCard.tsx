@@ -5,7 +5,6 @@ import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
 import { VerifiedBadge } from '@/components/atoms/VerifiedBadge';
 import { moderateScale } from '@/styles';
-import { useLocale } from '@/constants/localization';
 import * as S from '../RideInformationTemplate.styles';
 
 export interface DriverCardProps {
@@ -26,7 +25,6 @@ export interface DriverCardProps {
 export const DriverCard: React.FC<DriverCardProps> = React.memo(
   ({ driver, handleDriverProfile, handleChat, showChat = true }) => {
     const theme = useTheme();
-    const translations = useLocale();
 
     return (
       <S.DriverCard>

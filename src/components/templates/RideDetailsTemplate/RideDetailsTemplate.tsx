@@ -23,7 +23,7 @@ export const RideDetailsTemplate: React.FC<RideDetailsTemplateProps> = ({
   handleCancelOwnBooking,
   isCancelModalVisible,
   setIsCancelModalVisible,
-  cancellationReasons,
+  _cancellationReasons,
   handleConfirmCancel,
   isCancelling,
   cancelTarget,

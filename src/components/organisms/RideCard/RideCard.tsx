@@ -1,6 +1,7 @@
+/* eslint-disable max-lines */
 import React from 'react';
 import styled, { useTheme } from 'styled-components/native';
-import { View } from 'react-native';
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
@@ -57,6 +58,13 @@ const PriceText = styled(Typography)`
   font-weight: 800;
   letter-spacing: -1px;
   color: ${({ theme }) => theme.colors.primary};
+`;
+
+const InfoRow = styled.View<{ marginTop?: number }>`
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  margin-top: ${({ marginTop }) => marginTop ?? 0}px;
 `;
 
 const Footer = styled.View`
@@ -122,9 +130,7 @@ export const RideCard: React.FC<{
             <Typography variant="title" size="sm" weight="bold">
               {ride.driver.name}
             </Typography>
-            <View
-              style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}
-            >
+            <InfoRow>
               <Icon
                 name="star"
                 size={moderateScale(16)}
@@ -138,16 +144,9 @@ export const RideCard: React.FC<{
               >
                 {ride.driver.rating}
               </Typography>
-            </View>
+            </InfoRow>
             {ride.pickupDistance !== undefined && ride.pickupDistance < 50 && (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 4,
-                  marginTop: 4,
-                }}
-              >
+              <InfoRow marginTop={4}>
                 <Icon
                   name="near-me"
                   size={moderateScale(14)}
@@ -163,7 +162,7 @@ export const RideCard: React.FC<{
                     distance: ride.pickupDistance.toFixed(1),
                   })}
                 </Typography>
-              </View>
+              </InfoRow>
             )}
           </DriverTextGroup>
         </DriverInfo>
@@ -179,14 +178,7 @@ export const RideCard: React.FC<{
             {tVal.perSeatLabel.toUpperCase()}
           </Typography>
           {ride.totalDuration > 0 && (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 4,
-                marginTop: 2,
-              }}
-            >
+            <InfoRow marginTop={2}>
               <Icon
                 name="schedule"
                 size={moderateScale(12)}
@@ -203,7 +195,7 @@ export const RideCard: React.FC<{
                   minutes: ride.totalDuration % 60,
                 })}
               </Typography>
-            </View>
+            </InfoRow>
           )}
         </PriceGroup>
       </Header>

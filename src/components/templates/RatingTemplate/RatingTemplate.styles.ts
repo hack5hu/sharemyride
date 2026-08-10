@@ -6,6 +6,10 @@ export const Root = styled.View`
   background-color: ${({ theme }) => theme.colors.background};
 `;
 
+export const KeyboardAvoidingView = styled.KeyboardAvoidingView`
+  flex: 1;
+`;
+
 export const ScrollContent = styled.ScrollView`
   flex: 1;
 `;

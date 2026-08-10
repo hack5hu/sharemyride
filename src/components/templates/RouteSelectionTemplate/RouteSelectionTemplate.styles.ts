@@ -1,66 +1,32 @@
 import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
-
 import { Dimensions } from 'react-native';
+import { OlaMap } from '@/components/organisms/OlaMap';
+import LinearGradient from 'react-native-linear-gradient';
 
 const { width } = Dimensions.get('window');
+
+export const Root = styled.View`
+  flex: 1;
+`;
+
+export const StyledOlaMap = styled(OlaMap)`
+  flex: 1;
+`;
+
+export const StyledLinearGradient = styled(LinearGradient)`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: ${moderateScale(40)}px;
+`;
 
 export const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.surface};
 `;
 
-export const TopHeader = styled.View`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 50;
-  background-color: ${({ theme }) => theme.colors.surface};
-  padding-horizontal: ${scale(24)}px;
-  padding-top: ${verticalScale(16)}px;
-  padding-bottom: ${verticalScale(16)}px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom-width: 1px;
-  border-bottom-color: ${({ theme }) =>
-    `${theme.colors.outline_variant}26`}; /* 15% opacity */
-`;
-
-export const HeaderLeft = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(16)}px;
-`;
-
-export const BackButton = styled.TouchableOpacity`
-  padding: ${moderateScale(8)}px;
-  border-radius: 9999px;
-`;
-
-export const HeaderTitle = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 600;
-  font-size: ${responsiveFont(18)}px;
-  color: ${({ theme }) => theme.colors.primary};
-  letter-spacing: -0.5px;
-`;
-
-export const StepIndicator = styled.View`
-  padding-horizontal: ${scale(12)}px;
-  padding-vertical: ${verticalScale(4)}px;
-  background-color: ${({ theme }) => theme.colors.primary_fixed};
-  border-radius: 9999px;
-`;
-
-export const StepText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(12)}px;
-  letter-spacing: 1px;
-  color: ${({ theme }) => theme.colors.on_primary_fixed_variant};
-`;
 
 /* Map Canvas Elements */
 export const MapSection = styled.View`
@@ -216,4 +182,8 @@ export const FixedFooter = styled.View`
   shadow-opacity: 0.08;
   shadow-radius: 12px;
   z-index: 50;
+`;
+
+export const LoaderIndicator = styled.ActivityIndicator`
+  margin-vertical: ${moderateScale(40)}px;
 `;

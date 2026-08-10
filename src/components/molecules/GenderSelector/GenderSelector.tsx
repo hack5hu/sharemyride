@@ -1,8 +1,6 @@
 import React from 'react';
-import { Box } from '@/components/atoms/Box';
 import { Button } from '@/components/atoms/Button';
 import { Typography } from '@/components/atoms/Typography';
-import { useTheme } from 'styled-components/native';
 import {
   Container,
   ButtonRow,

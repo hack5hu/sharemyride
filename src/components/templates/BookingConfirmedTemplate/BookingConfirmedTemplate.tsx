@@ -7,6 +7,7 @@ import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { moderateScale } from '@/styles';
 import * as S from './BookingConfirmedTemplate.styles';
 import { BookingConfirmedTemplateProps } from './types.d';
+import { BookingDetailCard } from './components/BookingDetailCard';
 
 export const BookingConfirmedTemplate: React.FC<
   BookingConfirmedTemplateProps
@@ -66,75 +67,19 @@ export const BookingConfirmedTemplate: React.FC<
 
           {/* Time & Seat details */}
           <S.Row>
-            <S.DetailCard>
-              <S.DetailCardHeader>
-                <S.IconBox>
-                  <MaterialIcons
-                    name="schedule"
-                    size={20}
-                    color={theme.colors.primary_container}
-                  />
-                </S.IconBox>
-                <Typography
-                  variant="label"
-                  size="sm"
-                  weight="bold"
-                  color={theme.colors.on_surface_variant}
-                >
-                  {t.pickupTimeLabel}
-                </Typography>
-              </S.DetailCardHeader>
-              <S.ValueWrapper>
-                <Typography variant="title" size="md" weight="bold">
-                  {rideData.pickupTime}
-                </Typography>
-                {rideData.departureDate ? (
-                  <Typography
-                    variant="label"
-                    size="xs"
-                    color={theme.colors.on_surface_variant}
-                  >
-                    {rideData.departureDate}
-                  </Typography>
-                ) : null}
-              </S.ValueWrapper>
-            </S.DetailCard>
+            <BookingDetailCard
+              iconName="schedule"
+              label={t.pickupTimeLabel}
+              value={rideData.pickupTime}
+              subValue={rideData.departureDate}
+            />
 
-            <S.DetailCard>
-              <S.DetailCardHeader>
-                <S.IconBox>
-                  <MaterialIcons
-                    name="event-seat"
-                    size={20}
-                    color={theme.colors.primary_container}
-                  />
-                </S.IconBox>
-                <Typography
-                  variant="label"
-                  size="sm"
-                  weight="bold"
-                  color={theme.colors.on_surface_variant}
-                >
-                  {t.seatNumberLabel}
-                </Typography>
-              </S.DetailCardHeader>
-              <S.ValueWrapper>
-                <Typography
-                  variant="title"
-                  size="md"
-                  weight="bold"
-                >
-                  {rideData.seatNumber}
-                </Typography>
-                <Typography
-                  variant="label"
-                  size="xs"
-                  color={theme.colors.on_surface_variant}
-                >
-                  {rideData.seatPreference}
-                </Typography>
-              </S.ValueWrapper>
-            </S.DetailCard>
+            <BookingDetailCard
+              iconName="event-seat"
+              label={t.seatNumberLabel}
+              value={rideData.seatNumber}
+              subValue={rideData.seatPreference}
+            />
           </S.Row>
 
           {/* Safety Guard */}

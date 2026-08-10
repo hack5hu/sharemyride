@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { moderateScale } from '@/styles';
@@ -34,7 +34,7 @@ export const SeatButton: React.FC<SeatButtonProps> = ({
   const isDIsabled = state === 'driver' || state === 'occupied';
 
   return (
-    <View style={{ alignItems: 'center', width: moderateScale(70) }}>
+    <S.Container>
       <S.SeatTouchable
         state={state}
         onPress={() => !isDIsabled && onPress?.(id)}
@@ -48,7 +48,7 @@ export const SeatButton: React.FC<SeatButtonProps> = ({
             end={{ x: 1, y: 1 }}
           />
         )}
-        <View style={{ gap: moderateScale(2), alignItems: 'center' }}>
+        <S.ContentWrapper>
           {state === 'driver' ? (
             <>
               <MaterialIcons
@@ -73,21 +73,16 @@ export const SeatButton: React.FC<SeatButtonProps> = ({
                 </S.PriceText>
               )}
               {state === 'occupied' && (
-                <MaterialIcons
+                <S.BlockIconWrapper
                   name="block"
                   size={moderateScale(12)}
                   color={iconColor}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: -moderateScale(4),
-                  }}
                 />
               )}
             </>
           )}
-        </View>
+        </S.ContentWrapper>
       </S.SeatTouchable>
-    </View>
+    </S.Container>
   );
 };

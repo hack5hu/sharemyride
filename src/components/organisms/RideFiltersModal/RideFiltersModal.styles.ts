@@ -108,9 +108,10 @@ export const CounterControls = styled(Box)`
   gap: ${scale(24)}px;
 `;
 
-export const Footer = styled(Box)`
+export const Footer = styled(Box)<{ $paddingBottom?: number }>`
   padding: ${scale(24)}px;
-  padding-bottom: ${verticalScale(16)}px;
+  padding-bottom: ${({ $paddingBottom }) =>
+    $paddingBottom !== undefined ? $paddingBottom : verticalScale(16)}px;
   background-color: ${({ theme }) => theme.colors.surface};
 `;
 

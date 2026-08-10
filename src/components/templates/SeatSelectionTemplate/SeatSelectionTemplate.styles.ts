@@ -3,7 +3,11 @@ import { scale, verticalScale, moderateScale } from '@/styles';
 
 import { Typography } from '@/components/atoms/Typography';
 
-export const ContentScroll = styled.ScrollView`
+export const ContentScroll = styled.ScrollView.attrs({
+  contentContainerStyle: {
+    paddingBottom: verticalScale(150),
+  },
+})`
   flex: 1;
 `;
 

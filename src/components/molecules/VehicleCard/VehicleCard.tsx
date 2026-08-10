@@ -35,6 +35,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({
   fullWidth,
 }) => {
   const theme = useTheme();
+  const titleStyle = { textTransform: 'uppercase' as const };
 
   if (isAddButton) {
     return (
@@ -82,7 +83,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({
             size={fullWidth ? 'sm' : 'xxs'}
             weight="bold"
             color={theme.colors.primary}
-            style={{ textTransform: 'uppercase' }}
+            style={titleStyle}
           >
             {company || 'Vehicle'}
           </Typography>

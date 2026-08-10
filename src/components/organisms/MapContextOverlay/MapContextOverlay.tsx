@@ -145,7 +145,7 @@ export const MapContextOverlay: React.FC<MapContextOverlayProps> = ({
             colors={[theme.colors.primary, theme.colors.primary_container]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            style={{ opacity: selectedLocationName ? 1 : 0.5 }}
+            disabledOpacity={selectedLocationName ? 1 : 0.5}
           >
             <ContinueButtonText>{t.continue}</ContinueButtonText>
             <MaterialIcons

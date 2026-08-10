@@ -1,32 +1,15 @@
 import styled from 'styled-components/native';
 import { Box } from '@/components/atoms/Box';
-import { scale, verticalScale, moderateScale } from '@/styles';
+import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
+import { Typography } from '@/components/atoms/Typography';
 
-export const Container = styled(Box)`
-  flex: 1;
-  background-color: ${({ theme }) => theme.colors.surface};
-`;
+
 
 export const ScrollContent = styled.ScrollView.attrs({
   contentContainerStyle: {
     paddingBottom: verticalScale(100),
   },
 })``;
-
-export const Header = styled(Box)`
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding-horizontal: ${scale(20)}px;
-  padding-top: ${verticalScale(50)}px;
-  padding-bottom: ${verticalScale(10)}px;
-  background-color: ${({ theme }) => theme.colors.surface};
-`;
-
-export const HeaderLeft = styled(Box)`
-  flex-direction: row;
-  align-items: center;
-`;
 
 export const ProfileHero = styled(Box)`
   align-items: center;
@@ -162,9 +145,6 @@ export const RatingsBreakdown = styled.TouchableOpacity`
   border-radius: ${moderateScale(12)}px;
 `;
 
-export const ReviewersAvatars = styled(Box)`
-  flex-direction: row;
-`;
 
 export const ReviewerAvatar = styled.Image`
   width: ${moderateScale(32)}px;
@@ -210,7 +190,41 @@ export const ReportButton = styled.TouchableOpacity`
   gap: ${scale(8)}px;
 `;
 
-export const Row = styled(Box)`
-  flex-direction: row;
-  align-items: center;
+
+export const HeroName = styled(Typography).attrs({
+  variant: 'headline',
+  size: 'lg',
+  weight: 'bold',
+})`
+  margin-top: ${verticalScale(16)}px;
+`;
+
+export const SectionTitleLabel = styled(Typography).attrs({
+  variant: 'label',
+  size: 'sm',
+  weight: 'bold',
+  color: 'outline',
+})`
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: ${verticalScale(12)}px;
+`;
+
+export const ReviewComment = styled(Typography).attrs({
+  variant: 'body',
+  size: 'sm',
+  weight: 'medium',
+  color: 'on_surface_variant',
+})`
+  font-style: italic;
+  line-height: ${responsiveFont(20)}px;
+`;
+
+export const RatingsBreakdownText = styled(Typography).attrs({
+  variant: 'label',
+  size: 'md',
+  weight: 'bold',
+  color: 'on_secondary_container',
+})<{ $hasAvatars: boolean }>`
+  margin-left: ${({ $hasAvatars }) => ($hasAvatars ? scale(12) : 0)}px;
 `;

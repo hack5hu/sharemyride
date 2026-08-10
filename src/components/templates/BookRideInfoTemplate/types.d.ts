@@ -1,8 +1,9 @@
 import { RecentSearch } from '@/store/useBookRideStore';
+import { BookRideInfoTranslations } from '@/constants/localization/types';
 
 export interface BookRideInfoTemplateProps {
-  pickup: string;
-  destination: string;
+  pickup: string | null;
+  destination: string | null;
   travelDate: Date | null;
   peopleCount: number;
   isSearching: boolean;
@@ -17,7 +18,7 @@ export interface BookRideInfoTemplateProps {
   onSearchRides: () => void;
   onSelectRecentSearch: (item: RecentSearch) => void;
   onClearRecentSearches: () => void;
-  t: any;
+  t: BookRideInfoTranslations;
   rideType: 'local' | 'intercity';
   onSetRideType: (type: 'local' | 'intercity') => void;
 }
