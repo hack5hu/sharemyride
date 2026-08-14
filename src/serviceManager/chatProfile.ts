@@ -1,7 +1,7 @@
 import { useChatStore } from '@/store/useChatStore';
 import { UserProfile } from '@/types/chat';
 import { Logger } from '@/utils/logger';
-import { userService } from './userService';
+import { UserService } from './UserService';
 
 interface RemoteUserProfile {
   name?: string;
@@ -23,7 +23,9 @@ export const fetchChatUserProfile = async (
   if (users[userId]) return users[userId];
 
   try {
-    const profile = await userService.getUserProfile(userId) as RemoteUserProfile;
+    const profile = (await UserService.getUserProfile(
+      userId,
+    )) as RemoteUserProfile;
     if (!profile) return undefined;
 
     const userData: UserProfile = {

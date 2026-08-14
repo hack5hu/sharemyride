@@ -4,7 +4,13 @@ import { useTheme } from 'styled-components/native';
 import { RiderCardProps } from './types';
 import * as S from './RiderCard.styles';
 
-export const RiderCard: React.FC<RiderCardProps> = ({ name, info, avatarUrl, onPress, onCancel }) => {
+export const RiderCard: React.FC<RiderCardProps> = ({
+  name,
+  info,
+  avatarUrl,
+  onPress,
+  onCancel,
+}) => {
   const theme = useTheme();
 
   return (
@@ -13,7 +19,11 @@ export const RiderCard: React.FC<RiderCardProps> = ({ name, info, avatarUrl, onP
         {avatarUrl ? (
           <S.AvatarImage source={{ uri: avatarUrl }} />
         ) : (
-          <Icon name="person" size={24} color={theme.colors.on_primary_fixed_variant} />
+          <Icon
+            name="person"
+            size={24}
+            color={theme.colors.on_primary_fixed_variant}
+          />
         )}
         {onCancel && (
           <S.RemoveButton onPress={onCancel} activeOpacity={0.7}>

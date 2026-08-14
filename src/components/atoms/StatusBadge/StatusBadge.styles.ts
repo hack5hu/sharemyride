@@ -1,12 +1,13 @@
 import styled from 'styled-components/native';
-import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+import { scale, verticalScale, responsiveFont } from '@/styles';
 import { StatusBadgeVariant } from './types.d';
 
 interface ContainerProps {
   variant: StatusBadgeVariant;
 }
 
-const getStyles = (theme: any, variant: StatusBadgeVariant) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
+const getStyles = (theme: any /* TODO: add proper type */, variant: StatusBadgeVariant) => {
   switch (variant) {
     case 'matched':
       return {
@@ -47,4 +48,5 @@ export const LabelText = styled.Text<ContainerProps>`
   font-size: ${responsiveFont(10)}px;
   font-weight: 800;
   color: ${({ theme, variant }) => getStyles(theme, variant).text};
+  letter-spacing: 0.8px;
 `;

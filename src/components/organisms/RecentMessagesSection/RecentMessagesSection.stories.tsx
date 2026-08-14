@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { RecentMessagesSection } from './RecentMessagesSection';
 import { MessageStatus } from '@/constants/enums';
 

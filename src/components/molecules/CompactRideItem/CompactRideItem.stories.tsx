@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { CompactRideItem } from './CompactRideItem';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Molecules/CompactRideItem',
   component: CompactRideItem,
-
 } satisfies Meta<typeof CompactRideItem>;
 
 export default meta;

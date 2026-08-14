@@ -12,8 +12,10 @@ export const IconBox = styled.View<{ isCurrent?: boolean }>`
   width: ${moderateScale(40)}px;
   height: ${moderateScale(40)}px;
   border-radius: ${moderateScale(20)}px;
-  background-color: ${({ theme, isCurrent }) => 
-    isCurrent ? theme.colors.secondary_container : theme.colors.surface_container_highest};
+  background-color: ${({ theme, isCurrent }) =>
+    isCurrent
+      ? theme.colors.secondary_container
+      : theme.colors.surface_container_highest};
   align-items: center;
   justify-content: center;
 `;

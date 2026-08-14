@@ -1,9 +1,13 @@
 import styled from 'styled-components/native';
-import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
-import LinearGradient from 'react-native-linear-gradient';
+import { scale, verticalScale, moderateScale } from '@/styles';
+
 import { Typography } from '@/components/atoms/Typography';
 
-export const ContentScroll = styled.ScrollView`
+export const ContentScroll = styled.ScrollView.attrs({
+  contentContainerStyle: {
+    paddingBottom: verticalScale(150),
+  },
+})`
   flex: 1;
 `;
 
@@ -41,7 +45,6 @@ export const IconCircle = styled.View`
   align-items: center;
   justify-content: center;
 `;
-
 
 export const FixedFooter = styled.View`
   position: absolute;

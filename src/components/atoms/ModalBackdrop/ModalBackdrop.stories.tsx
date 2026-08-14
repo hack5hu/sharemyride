@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { ModalBackdrop } from './ModalBackdrop';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Atoms/ModalBackdrop',
   component: ModalBackdrop,
-
 } satisfies Meta<typeof ModalBackdrop>;
 
 export default meta;

@@ -4,7 +4,12 @@ import * as Keychain from 'react-native-keychain';
 import MapView from 'react-native-maps';
 import { BASE_URL } from '@/constants/apiEndpoints';
 import { Logger } from '@/utils/logger';
-import { RideDetails, Coordinate, DriverLocationPayload, RideStatus } from './types.d';
+import {
+  RideDetails,
+  Coordinate,
+  DriverLocationPayload,
+  RideStatus,
+} from './types.d';
 
 // STOMP WebSocket requires TextEncoder/TextDecoder inside React Native environments
 import 'fast-text-encoding';
@@ -15,10 +20,13 @@ if (typeof TextDecoder === 'undefined') {
   global.TextDecoder = require('fast-text-encoding').TextDecoder;
 }
 
-export const useMapViewer = (rideDetails: RideDetails, webSocketUrl?: string) => {
+export const useMapViewer = (
+  rideDetails: RideDetails,
+  webSocketUrl?: string,
+) => {
   const mapRef = useRef<MapView>(null);
   const [driverLocation, setDriverLocation] = useState<Coordinate | null>(
-    rideDetails.driverLocation || null
+    rideDetails.driverLocation || null,
   );
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const stompClientRef = useRef<Client | null>(null);
@@ -33,7 +41,7 @@ export const useMapViewer = (rideDetails: RideDetails, webSocketUrl?: string) =>
           latitudeDelta: 0.015,
           longitudeDelta: 0.015,
         },
-        1000 // 1 second animation duration
+        1000, // 1 second animation duration
       );
     }
   };
@@ -44,44 +52,58 @@ export const useMapViewer = (rideDetails: RideDetails, webSocketUrl?: string) =>
       return;
     }
 
-    const brokerUrl = webSocketUrl || (BASE_URL.replace('http', 'ws') + '/ws/websocket');
+    const brokerUrl =
+      webSocketUrl || BASE_URL.replace('http', 'ws') + '/ws/websocket';
     let client: Client;
 
     const connectWebSocket = async () => {
       try {
-        const authCreds = await Keychain.getGenericPassword({ service: 'auth_token' });
+        const authCreds = await Keychain.getGenericPassword({
+          service: 'auth_token',
+        });
         const headers: Record<string, string> = {};
         if (authCreds) {
           headers.Authorization = `Bearer ${authCreds.password}`;
         }
 
+        let mapRetryCount = 0;
+
         client = new Client({
           webSocketFactory: () => new WebSocket(brokerUrl),
           connectHeaders: headers,
-          reconnectDelay: 5000,
-          heartbeatIncoming: 4000,
-          heartbeatOutgoing: 4000,
+          reconnectDelay: 15000,
+          heartbeatIncoming: 10000,
+          heartbeatOutgoing: 10000,
           forceBinaryWSFrames: true,
           appendMissingNULLonIncoming: true,
-          debug: (msg) => Logger.log('[MapWS-Debug]', msg),
+          debug: () => {},
         });
 
         client.onConnect = () => {
-          Logger.log(`[MapWS] Connected to channel: /topic/ride/${rideDetails.id}/location`);
+          mapRetryCount = 0;
+          Logger.log(
+            `[MapWS] Connected to channel: /topic/ride/${rideDetails.id}/location`,
+          );
           setIsConnected(true);
 
-          client.subscribe(`/topic/ride/${rideDetails.id}/location`, (msg: IMessage) => {
-            try {
-              const payload = JSON.parse(msg.body) as DriverLocationPayload;
-              if (payload && payload.latitude && payload.longitude) {
-                const newCoords = { latitude: payload.latitude, longitude: payload.longitude };
-                setDriverLocation(newCoords);
-                animateToCoordinate(newCoords);
+          client.subscribe(
+            `/topic/ride/${rideDetails.id}/location`,
+            (msg: IMessage) => {
+              try {
+                const payload = JSON.parse(msg.body) as DriverLocationPayload;
+                if (payload && payload.latitude && payload.longitude) {
+                  const newCoords = {
+                    latitude: payload.latitude,
+                    longitude: payload.longitude,
+                  };
+                  setDriverLocation(newCoords);
+                  animateToCoordinate(newCoords);
+                }
+              } catch (err) {
+                Logger.error('[MapWS] Error parsing coordinate payload:', err);
               }
-            } catch (err) {
-              Logger.error('[MapWS] Error parsing coordinate payload:', err);
-            }
-          });
+            },
+          );
         };
 
         client.onDisconnect = () => {
@@ -89,14 +111,25 @@ export const useMapViewer = (rideDetails: RideDetails, webSocketUrl?: string) =>
           Logger.log('[MapWS] Disconnected');
         };
 
-        client.onStompError = (frame) => {
-          Logger.error('[MapWS] STOMP Protocol Error:', frame.headers.message);
+        const handleMapWSFailure = () => {
+          mapRetryCount++;
           setIsConnected(false);
+          if (mapRetryCount >= 3) {
+            Logger.log(
+              '[MapWS] Maximum connection retries reached. Deactivating client.',
+            );
+            try {
+              client.deactivate();
+            } catch {}
+          }
         };
 
-        client.onWebSocketError = (event) => {
-          Logger.error('[MapWS] WebSocket Transport Error:', event);
-          setIsConnected(false);
+        client.onStompError = () => {
+          handleMapWSFailure();
+        };
+
+        client.onWebSocketError = () => {
+          handleMapWSFailure();
         };
 
         stompClientRef.current = client;

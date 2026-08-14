@@ -1,15 +1,17 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { Notification } from './Notification';
 import { View } from 'react-native';
 import { NotificationType } from '@/constants/enums';
+
+const wrapperStyle = { padding: 20, alignItems: 'center' as const };
 
 const meta = {
   title: 'Molecules/Notification',
   component: Notification,
   decorators: [
-    (Story) => (
-      <View style={{ padding: 20, alignItems: 'center' }}>
+    Story => (
+      <View style={wrapperStyle}>
         <Story />
       </View>
     ),

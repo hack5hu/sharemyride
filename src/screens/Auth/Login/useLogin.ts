@@ -2,13 +2,13 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useFocusEffect } from '@react-navigation/native';
-import { authService } from '@/serviceManager/authService';
+import { AuthService } from '@/serviceManager/AuthService';
 import { Keyboard, Platform } from 'react-native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
-import { useTruecallerLogin } from './useTruecallerLogin';
+// import { useTruecallerLogin } from './useTruecallerLogin';
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
@@ -19,11 +19,11 @@ export const useLogin = () => {
   useEffect(() => {
     const showSubscription = Keyboard.addListener(
       Platform.OS === 'android' ? 'keyboardDidShow' : 'keyboardWillShow',
-      () => setIsKeyboardVisible(true)
+      () => setIsKeyboardVisible(true),
     );
     const hideSubscription = Keyboard.addListener(
       Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide',
-      () => setIsKeyboardVisible(false)
+      () => setIsKeyboardVisible(false),
     );
 
     return () => {
@@ -32,17 +32,23 @@ export const useLogin = () => {
     };
   }, []);
 
-  const {
-    isTruecallerSupported,
-    hasDismissedTruecaller,
-    handleTruecallerLogin,
-    handleInputFocus,
-  } = useTruecallerLogin({ setLoading });
+  // Truecaller is disabled for now for both iOS and Android
+  // const {
+  //   isTruecallerSupported,
+  //   hasDismissedTruecaller,
+  //   handleTruecallerLogin,
+  //   handleInputFocus,
+  // } = useTruecallerLogin({ setLoading });
+
+  const isTruecallerSupported = false;
+  const hasDismissedTruecaller = true;
+  const handleTruecallerLogin = useCallback(() => {}, []);
+  const handleInputFocus = useCallback(() => {}, []);
 
   useFocusEffect(
     useCallback(() => {
       setLoading(false);
-    }, [])
+    }, []),
   );
 
   // Standard SMS-OTP path (also the fallback when Truecaller verification fails).
@@ -50,14 +56,17 @@ export const useLogin = () => {
     async (phone: string) => {
       setLoading(true);
       try {
-        const response = await authService.login(phone, true);
+        const response = await AuthService.login(phone, true);
         if (response.data.status === 'success' || response.status === 200) {
-          navigation.navigate('OTPVerification', { phoneNumber: phone, mode: 'sms' });
+          navigation.navigate('OTPVerification', {
+            phoneNumber: phone,
+            mode: 'sms',
+          });
         } else {
           showNotification(
             NotificationType.ERROR,
             t('notification.defaultErrorTitle'),
-            response.data.message || t('notification.defaultErrorMessage')
+            response.data.message || t('notification.defaultErrorMessage'),
           );
           setLoading(false);
         }
@@ -65,12 +74,12 @@ export const useLogin = () => {
         showNotification(
           NotificationType.ERROR,
           t('notification.defaultErrorTitle'),
-          getErrorMessage(error, t('notification.defaultErrorMessage'))
+          getErrorMessage(error, t('notification.defaultErrorMessage')),
         );
         setLoading(false);
       }
     },
-    [navigation, t]
+    [navigation, t],
   );
 
   const handleGetOtp = async (phone: string) => {
@@ -79,8 +88,8 @@ export const useLogin = () => {
 
   const formik = useFormik({
     initialValues: { phone: '' },
-    validate: (v) => (/^\d{10}$/.test(v.phone) ? {} : { phone: '' }),
-    onSubmit: (v) => {
+    validate: v => (/^\d{10}$/.test(v.phone) ? {} : { phone: '' }),
+    onSubmit: v => {
       Keyboard.dismiss();
       handleGetOtp(v.phone);
     },

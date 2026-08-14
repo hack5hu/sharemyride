@@ -3,8 +3,13 @@ import * as Keychain from 'react-native-keychain';
 import { BASE_URL } from '@/constants/apiEndpoints';
 import { useChatStore } from '@/store/useChatStore';
 import { ChatMessage, SendMessagePayload } from '@/types/chat';
-import { MessageStatus, MessageType, ConnectionStatus, NotificationType } from '@/constants/enums';
-import apiClient from './apiClient';
+import {
+  MessageStatus,
+  MessageType,
+  ConnectionStatus,
+  NotificationType,
+} from '@/constants/enums';
+import axiosClient from './axiosClient';
 import { Logger } from '@/utils/logger';
 import { registerChatSubscriptions } from './chatSubscriptions';
 import { fetchChatUserProfile } from './chatProfile';
@@ -31,29 +36,42 @@ interface HistoryMessage extends ChatMessage {
   createdAt?: string;
 }
 
-class ChatService {
+class ChatServiceClass {
   async fetchUserProfile(userId: string) {
     return fetchChatUserProfile(userId);
   }
 
   private client: Client | null = null;
   private currentUserId: string | null = null;
+  private retryCount: number = 0;
+  private maxRetries: number = 3;
+  private activeListeners: number = 0;
+  private disconnectTimeout: any = null;
 
   async connect(userId: string) {
+    this.activeListeners++;
+    if (this.disconnectTimeout) {
+      clearTimeout(this.disconnectTimeout);
+      this.disconnectTimeout = null;
+    }
+
     if (this.client?.active && this.currentUserId === userId) {
       Logger.log('[Socket] Already active for user:', userId);
       return;
     }
-    
+
+    // Reset retry count on explicit new connection request
+    this.retryCount = 0;
     this.currentUserId = userId;
     const { setConnectionStatus, setMyUserId } = useChatStore.getState();
-    
+
     setMyUserId(userId);
     setConnectionStatus(ConnectionStatus.CONNECTING);
-    
-    const brokerUrl = BASE_URL.replace('http', 'ws') + '/ws/websocket';
-    const authCreds = await Keychain.getGenericPassword({ service: 'auth_token' });
 
+    const brokerUrl = BASE_URL.replace('http', 'ws') + '/ws/websocket';
+    const authCreds = await Keychain.getGenericPassword({
+      service: 'auth_token',
+    });
     if (!authCreds) {
       Logger.warn('[Socket] Missing auth token');
       setConnectionStatus(ConnectionStatus.DISCONNECTED);
@@ -61,32 +79,39 @@ class ChatService {
     }
 
     try {
+      if (this.client) {
+        try {
+          this.client.deactivate();
+        } catch {}
+      }
+
       this.client = new Client({
         webSocketFactory: () => new WebSocket(brokerUrl),
         connectHeaders: {
           userId: userId,
           Authorization: `Bearer ${authCreds.password}`,
         },
-        debug: (msg) => {
-          Logger.log('STOMP:', msg);
-        },
-        reconnectDelay: 5000,
-        heartbeatIncoming: 4000,
-        heartbeatOutgoing: 4000,
+        debug: (str) => { Logger.log('[STOMP Debug]:', str); },
+        reconnectDelay: 15000, // 15s gentle interval instead of aggressive 5s polling
+        heartbeatIncoming: 10000,
+        heartbeatOutgoing: 10000,
         forceBinaryWSFrames: true,
         appendMissingNULLonIncoming: true,
       });
 
-      this.client.onWebSocketError = (event) => {
-        Logger.error('[Socket] WebSocket Error:', event);
+      this.client.onWebSocketError = (evt) => {
+        Logger.error('[Socket] WebSocket Error:', evt);
+        this.handleConnectionFailure();
       };
 
-      this.client.onWebSocketClose = (event) => {
-        Logger.log('[Socket] WebSocket Closed:', event);
+      this.client.onWebSocketClose = (evt) => {
+        Logger.warn('[Socket] WebSocket Closed:', evt);
+        this.handleConnectionFailure();
       };
 
       this.client.onConnect = () => {
-        Logger.log('[Socket] Connected');
+        Logger.log('[Socket] WebSocket connected successfully');
+        this.retryCount = 0; // Reset retry counter on clean connection
         setConnectionStatus(ConnectionStatus.CONNECTED);
         registerChatSubscriptions(this.client as Client, userId, {
           getConversationId: this.getConversationId,
@@ -96,32 +121,74 @@ class ChatService {
         });
       };
 
-    this.client.onDisconnect = () => {
-      setConnectionStatus(ConnectionStatus.DISCONNECTED);
-    };
+      this.client.onDisconnect = () => {
+        setConnectionStatus(ConnectionStatus.DISCONNECTED);
+      };
 
-    this.client.onStompError = (frame) => {
-      Logger.error('STOMP Error:', frame.headers.message);
-      setConnectionStatus(ConnectionStatus.DISCONNECTED);
-    };
+      this.client.onStompError = frame => {
+        Logger.warn('[Socket] STOMP Error:', frame.headers.message);
+        this.handleConnectionFailure();
+      };
 
+      Logger.log('[Socket] Activating STOMP client with URL:', brokerUrl);
       this.client.activate();
     } catch (error) {
-      Logger.error('[Socket] Initialization failed:', error);
+      Logger.warn('[Socket] Initialization failed:', error);
       setConnectionStatus(ConnectionStatus.DISCONNECTED);
+    }
+  }
+
+  private handleConnectionFailure() {
+    this.retryCount++;
+    const { setConnectionStatus } = useChatStore.getState();
+
+    if (this.retryCount >= this.maxRetries) {
+      Logger.log(
+        `[Socket] Circuit breaker triggered after ${this.retryCount} failed connection attempts. Pausing auto-reconnect to protect server & device battery.`,
+      );
+      if (this.client) {
+        try {
+          this.client.deactivate();
+        } catch {}
+      }
+      setConnectionStatus(ConnectionStatus.DISCONNECTED);
+    } else {
+      setConnectionStatus(ConnectionStatus.CONNECTING);
     }
   }
 
   disconnect() {
+    this.activeListeners = Math.max(0, this.activeListeners - 1);
+    if (this.activeListeners === 0) {
+      if (this.disconnectTimeout) {
+        clearTimeout(this.disconnectTimeout);
+      }
+      this.disconnectTimeout = setTimeout(() => {
+        if (this.activeListeners === 0) {
+          this.performDisconnect();
+        }
+      }, 500); // 500ms delay before actually tearing down
+    }
+  }
+
+  private performDisconnect() {
+    this.retryCount = 0;
     if (this.client) {
-      this.client.deactivate();
+      try {
+        this.client.deactivate();
+      } catch {}
       this.client = null;
-      useChatStore.getState().setConnectionStatus(ConnectionStatus.DISCONNECTED);
+      useChatStore
+        .getState()
+        .setConnectionStatus(ConnectionStatus.DISCONNECTED);
     }
   }
 
   sendMessage(payload: SendMessagePayload) {
-    const conversationId = this.getConversationId(payload.senderId, payload.receiverId);
+    const conversationId = this.getConversationId(
+      payload.senderId,
+      payload.receiverId,
+    );
     const tempId = `temp-${Date.now()}`;
     const isConnected = !!this.client?.connected;
 
@@ -136,14 +203,18 @@ class ChatService {
       type: payload.type || MessageType.TEXT,
       metadata: payload.metadata,
     };
-    
+
     useChatStore.getState().addMessage(conversationId, tempMessage);
 
     if (!isConnected) {
       Logger.warn('Cannot send message: STOMP not connected');
       const lang = useSettingsStore.getState().language || 'en';
       const t = translations[lang] || en;
-      showNotification(NotificationType.ERROR, t.chat.sendFailedTitle, t.chat.sendFailedMessage);
+      showNotification(
+        NotificationType.ERROR,
+        t.chat.sendFailedTitle,
+        t.chat.sendFailedMessage,
+      );
       return;
     }
 
@@ -165,7 +236,11 @@ class ChatService {
       Logger.warn('Cannot resend message: STOMP not connected');
       const lang = useSettingsStore.getState().language || 'en';
       const t = translations[lang] || en;
-      showNotification(NotificationType.ERROR, t.chat.sendFailedTitle, t.chat.sendFailedMessage);
+      showNotification(
+        NotificationType.ERROR,
+        t.chat.sendFailedTitle,
+        t.chat.sendFailedMessage,
+      );
       return;
     }
 
@@ -199,20 +274,52 @@ class ChatService {
     }
   }
 
-  async fetchHistory(myUserId: string, otherUserId: string) {
+  async fetchConversations(page: number = 0, size: number = 20) {
+    try {
+      const response = await axiosClient.get(
+        `/api/v1/chat/conversations?page=${page}&size=${size}`,
+      );
+      return response.data;
+    } catch (error) {
+      Logger.error('Failed to fetch conversations:', error);
+      return null;
+    }
+  }
+
+  async fetchHistory(myUserId: string, otherUserId: string, page: number = 0, size: number = 30) {
     const conversationId = this.getConversationId(myUserId, otherUserId);
     try {
-      const response = await apiClient.get(`/api/v1/chat/history/${myUserId}/${otherUserId}`);
-      const history = (response.data as HistoryMessage[]).map(m => ({
+      const response = await axiosClient.get(
+        `/api/v1/chat/messages/${otherUserId}?page=${page}&size=${size}`,
+      );
+      
+      let content = [];
+      let isLast = false;
+      const data = response.data;
+      
+      if (Array.isArray(data)) {
+        content = data;
+        isLast = data.length < size;
+      } else if (data.content && Array.isArray(data.content)) {
+        content = data.content;
+        isLast = data.last ?? (content.length < size);
+      }
+
+      const history = content.map((m: any) => ({
         ...m,
-        status: (m.status || m.messageStatus || MessageStatus.SENT).toUpperCase() as MessageStatus,
+        status: (
+          m.status ||
+          m.messageStatus ||
+          MessageStatus.SENT
+        ).toUpperCase() as MessageStatus,
         timestamp: parseChatTimestamp(m),
       }));
+      
       useChatStore.getState().setHistory(conversationId, history);
-      return history;
+      return { history, isLast };
     } catch (error) {
       Logger.error('Failed to fetch chat history:', error);
-      return [];
+      return { history: [], isLast: true };
     }
   }
 
@@ -220,28 +327,33 @@ class ChatService {
     const conversationId = this.getConversationId(myUserId, otherUserId);
     try {
       // Local-first: reset count immediately
-      const { markConversationAsRead, messages, updateMultipleMessageStatuses } = useChatStore.getState();
+      const {
+        markConversationAsRead,
+        messages,
+        updateMultipleMessageStatuses,
+      } = useChatStore.getState();
       markConversationAsRead(conversationId);
-      
+
       // Refresh local status of all messages immediately (Optimistic Update)
       const chatMessages = messages[conversationId] || [];
       const updates = chatMessages
-        .filter(m => m.receiverId === myUserId && m.status !== MessageStatus.READ)
+        .filter(
+          m => m.receiverId === myUserId && m.status !== MessageStatus.READ,
+        )
         .map(m => ({ messageId: m.messageId, status: MessageStatus.READ }));
 
       if (updates.length > 0) {
         updateMultipleMessageStatuses(conversationId, updates);
-        await apiClient.post(`/api/v1/chat/read/${conversationId}/${myUserId}`);
+        await axiosClient.post(`/api/v1/chat/read/${conversationId}/${myUserId}`);
       }
     } catch (error) {
       Logger.error('Failed to mark messages as read:', error);
     }
   }
 
-
   private getConversationId(u1: string, u2: string): string {
     return u1 < u2 ? `${u1}_${u2}` : `${u2}_${u1}`;
   }
 }
 
-export const chatService = new ChatService();
+export const ChatService = new ChatServiceClass();

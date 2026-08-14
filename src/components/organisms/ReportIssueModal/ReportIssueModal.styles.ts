@@ -84,10 +84,11 @@ export const GradientBtn = styled(LinearGradient).attrs(({ theme }) => ({
   colors: [theme.colors.primary, theme.colors.primary_container],
   start: { x: 0, y: 0 },
   end: { x: 1, y: 1 },
-}))`
+}))`;
   padding-vertical: ${verticalScale(16)}px;
   align-items: center;
   justify-content: center;
+  opacity: ${(props: { disabled?: boolean }) => (props.disabled ? 0.5 : 1)};
 `;
 
 export const CancelButton = styled.TouchableOpacity`
@@ -95,6 +96,5 @@ export const CancelButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   border-radius: ${moderateScale(12)}px;
-  border-width: 1px;
   border-color: ${({ theme }) => theme.colors.outline_variant + '4D'};
 `;

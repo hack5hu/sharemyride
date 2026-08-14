@@ -1,14 +1,15 @@
 import styled from 'styled-components/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { verticalScale, moderateScale, scale } from '@/styles';
 
-export const Container = styled.View`
+export const Container = styled.View<{ $paddingBottom?: number }>`
   background-color: ${({ theme }) => theme.colors.surface};
   shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px -8px;
   shadow-opacity: 0.04;
   shadow-radius: 30px;
   elevation: 10;
+  padding-bottom: ${({ $paddingBottom }) => $paddingBottom || 0}px;
 `;
 
 export const InputWrapper = styled.View`
@@ -54,12 +55,14 @@ export const SendButton = styled.TouchableOpacity<{ disabled?: boolean }>`
   width: ${moderateScale(36)}px;
   height: ${moderateScale(36)}px;
   border-radius: ${moderateScale(8)}px;
-  background-color: ${({ theme, disabled }) => disabled ? theme.colors.outline_variant : theme.colors.primary};
+  background-color: ${({ theme, disabled }) =>
+    disabled ? theme.colors.outline_variant : theme.colors.primary};
   justify-content: center;
   align-items: center;
-  shadow-color: ${({ theme, disabled }) => disabled ? 'transparent' : theme.colors.primary};
+  shadow-color: ${({ theme, disabled }) =>
+    disabled ? 'transparent' : theme.colors.primary};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.2;
   shadow-radius: 8px;
-  elevation: ${({ disabled }) => disabled ? 0 : 4};
+  elevation: ${({ disabled }) => (disabled ? 0 : 4)};
 `;

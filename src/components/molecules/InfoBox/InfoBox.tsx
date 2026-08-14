@@ -7,13 +7,19 @@ import { InfoBoxProps } from './types';
 
 export const InfoBox: React.FC<InfoBoxProps> = ({ children, style }) => {
   const theme = useTheme();
+  const textStyle = { flex: 1 };
 
   return (
     <StyledInfoBox style={style}>
       <IconContainer>
         <Icon name="info" size={20} color={theme.colors.primary} />
       </IconContainer>
-      <Typography variant="label" size="md" color={theme.colors.on_surface_variant} style={{ flex: 1 }}>
+      <Typography
+        variant="label"
+        size="md"
+        color={theme.colors.on_surface_variant}
+        style={textStyle}
+      >
         {children}
       </Typography>
     </StyledInfoBox>

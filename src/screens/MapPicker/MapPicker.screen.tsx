@@ -64,8 +64,12 @@ export const MapPickerScreen: React.FC = () => {
         history,
       }}
       locationDetailsProps={{
-        locationName: isReverseGeocoding ? 'Locating...' : selectedLocation?.name,
-        locationAddress: isReverseGeocoding ? 'Please wait...' : selectedLocation?.address,
+        locationName: isReverseGeocoding
+          ? 'Locating...'
+          : selectedLocation?.name,
+        locationAddress: isReverseGeocoding
+          ? 'Please wait...'
+          : selectedLocation?.address,
         onSelect: handleConfirmLocation,
         disabled: !selectedLocation || isReverseGeocoding,
       }}

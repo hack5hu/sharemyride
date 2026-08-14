@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { TrustScoreCard } from './TrustScoreCard';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Organisms/TrustScoreCard',
   component: TrustScoreCard,
-
 } satisfies Meta<typeof TrustScoreCard>;
 
 export default meta;

@@ -1,4 +1,9 @@
-export type StatusBadgeVariant = 'primary' | 'secondary' | 'tertiary' | 'matched' | 'pending';
+export type StatusBadgeVariant =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'matched'
+  | 'pending';
 
 export interface StatusBadgeProps {
   label: string;

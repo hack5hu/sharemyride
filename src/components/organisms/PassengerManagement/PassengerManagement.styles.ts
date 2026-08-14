@@ -75,6 +75,28 @@ export const RemoveButton = styled(IconButton)`
   background-color: ${({ theme }) => `${theme.colors.error}08`};
 `;
 
+export const RateButton = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(4)}px;
+  border-width: 1px;
+  border-color: ${({ theme }) => theme.colors.warning};
+  background-color: ${({ theme }) => `${theme.colors.warning}1A`};
+  padding-horizontal: ${scale(10)}px;
+  padding-vertical: ${verticalScale(6)}px;
+  border-radius: ${moderateScale(12)}px;
+`;
+
+export const RatedBadge = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(4)}px;
+  background-color: ${({ theme }) => `${theme.colors.on_surface_variant}12`};
+  padding-horizontal: ${scale(10)}px;
+  padding-vertical: ${verticalScale(6)}px;
+  border-radius: ${moderateScale(12)}px;
+`;
+
 // Empty State Styles
 export const EmptyStateContainer = styled.View`
   align-items: center;
@@ -91,4 +113,3 @@ export const EmptyIconCircle = styled.View`
   align-items: center;
   justify-content: center;
 `;
-

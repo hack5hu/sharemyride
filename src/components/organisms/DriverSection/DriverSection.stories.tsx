@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { DriverSection } from './DriverSection';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Organisms/DriverSection',
   component: DriverSection,
-
 } satisfies Meta<typeof DriverSection>;
 
 export default meta;

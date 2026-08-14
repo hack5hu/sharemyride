@@ -1,15 +1,15 @@
 import React from 'react';
-import { ScrollView, View, ActivityIndicator } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
-import { moderateScale, scale, verticalScale } from '@/styles';
+import { moderateScale } from '@/styles';
 import { PriceCounter } from '@/components/molecules/PriceCounter';
 import { FrontSeatPremium } from '@/components/molecules/FrontSeatPremium';
 import { SegmentPricingSheet } from '@/components/organisms/SegmentPricingSheet';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
 import { Button } from '@/components/atoms/Button';
-import { PricingTier } from '@/constants/pricing';
+
 import { SegmentPrice } from '@/components/molecules/SegmentPricingCard';
 import * as S from './PriceSelectionTemplate.styles';
 
@@ -28,7 +28,7 @@ export interface PriceSelectionTemplateProps {
   onContinue: () => void;
   onCustomizePricing: () => void;
   sheetVisible: boolean;
-  segments: any[];
+  segments: unknown[];
   segmentPrices: Record<string, SegmentPrice>;
   onSheetClose: () => void;
   onSaveSegmentPrices: (prices: Record<string, { basePrice: number }>) => void;
@@ -55,7 +55,6 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
   segmentPrices,
   onSheetClose,
   onSaveSegmentPrices,
-  isLoading = false,
   isRecommended = false,
   showPremium = false,
 }) => {
@@ -63,87 +62,79 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
   const { priceSelection: t } = useLocale();
 
   return (
-      <ScreenShell
-        title={t.headerTitle}
-        onBack={onBackPress}
-      >
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingHorizontal: scale(24),
-            paddingBottom: verticalScale(140),
-            gap: verticalScale(20),
-          }}
-        >
-          <S.TitleSection>
-            <S.PageTitle>{t.title}</S.PageTitle>
-            <S.PageSubtitle>{t.subtitle}</S.PageSubtitle>
-          </S.TitleSection>
+    <ScreenShell title={t.headerTitle} onBack={onBackPress}>
+      <S.MainScrollView>
+        <S.TitleSection>
+          <S.PageTitle>{t.title}</S.PageTitle>
+          <S.PageSubtitle>{t.subtitle}</S.PageSubtitle>
+        </S.TitleSection>
 
-          {/* Main price counter */}
-          <PriceCounter
-            price={price}
-            onPriceChange={onPriceChange}
-            label={t.basePriceLabel}
-            badgeLabel={isRecommended ? t.recommendedBadge : undefined}
-            minPrice={minPrice}
-            maxPrice={maxPrice}
-            step={10}
+        {/* Main price counter */}
+        <PriceCounter
+          price={price}
+          onPriceChange={onPriceChange}
+          label={t.basePriceLabel}
+          badgeLabel={isRecommended ? t.recommendedBadge : undefined}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          step={10}
+        />
+
+        {/* Front seat premium */}
+        {showPremium && (
+          <FrontSeatPremium
+            checked={premiumEnabled}
+            onToggle={onTogglePremium}
+            premium={premium}
+            onPremiumChange={onPremiumChange}
+            basePrice={price}
+            title={t.frontSeatPremiumTitle}
+            description={t.frontSeatPremiumDesc}
+            amountLabel={t.premiumAmountLabel}
+            maxNote={t.maxLimitNote}
           />
+        )}
 
-          {/* Front seat premium */}
-          {showPremium && (
-            <FrontSeatPremium
-              checked={premiumEnabled}
-              onToggle={onTogglePremium}
-              premium={premium}
-              onPremiumChange={onPremiumChange}
-              basePrice={price}
-              title={t.frontSeatPremiumTitle}
-              description={t.frontSeatPremiumDesc}
-              amountLabel={t.premiumAmountLabel}
-              maxNote={t.maxLimitNote}
-            />
-          )}
-
-          {/* Segment pricing entry row — only show if there are middle stops (more than 1 leg) */}
-          {segments.length > 1 && (
-            <S.SegmentRow
-              onPress={onCustomizePricing}
-              activeOpacity={0.7}
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-            >
-              <S.SegmentRowLeft>
-                <S.SegmentIconBox>
-                  <MaterialIcons name="route" size={moderateScale(22)} color={theme.colors.primary} />
-                </S.SegmentIconBox>
-                <S.SegmentTextStack>
-                  <S.SegmentRowTitle>{t.multiStopTitle}</S.SegmentRowTitle>
-                  <S.SegmentRowSub>{t.customizePricing}</S.SegmentRowSub>
-                </S.SegmentTextStack>
-              </S.SegmentRowLeft>
-              <MaterialIcons
-                name="chevron-right"
-                size={moderateScale(24)}
-                color={theme.colors.outline}
-              />
-            </S.SegmentRow>
-          )}
-        </ScrollView>
-
-        {/* Floating CTA */}
-        <S.FixedFooter>
-          <Button
-            variant="primary"
-            icon="chevron-right"
-            iconPosition="right"
-            disabled={isLoading}
-            onPress={onContinue}
+        {/* Segment pricing entry row — only show if there are middle stops (more than 1 leg) */}
+        {segments.length > 1 && (
+          <S.SegmentRow
+            onPress={onCustomizePricing}
+            activeOpacity={0.7}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
-            {t.continueButton}
-          </Button>
-        </S.FixedFooter>
-     
+            <S.SegmentRowLeft>
+              <S.SegmentIconBox>
+                <MaterialIcons
+                  name="route"
+                  size={moderateScale(22)}
+                  color={theme.colors.primary}
+                />
+              </S.SegmentIconBox>
+              <S.SegmentTextStack>
+                <S.SegmentRowTitle>{t.multiStopTitle}</S.SegmentRowTitle>
+                <S.SegmentRowSub>{t.customizePricing}</S.SegmentRowSub>
+              </S.SegmentTextStack>
+            </S.SegmentRowLeft>
+            <MaterialIcons
+              name="chevron-right"
+              size={moderateScale(24)}
+              color={theme.colors.outline}
+            />
+          </S.SegmentRow>
+        )}
+      </S.MainScrollView>
+
+      {/* Floating CTA */}
+      <FixedFooter>
+        <Button
+          variant="primary"
+          icon="chevron-right"
+          iconPosition="right"
+          onPress={onContinue}
+        >
+          {t.continueButton}
+        </Button>
+      </FixedFooter>
 
       {/* ──── Modals (Rendered at root for Modal reliability) ──── */}
       <SegmentPricingSheet

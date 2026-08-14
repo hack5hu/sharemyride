@@ -4,7 +4,12 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { moderateScale } from '@/styles';
-import { Wrapper, LeftSection, RightSection, BackButton } from './ScreenHeader.styles';
+import {
+  Wrapper,
+  LeftSection,
+  RightSection,
+  BackButton,
+} from './ScreenHeader.styles';
 
 export interface ScreenHeaderProps {
   title: string;
@@ -18,7 +23,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
   rightElement,
 }) => {
   const theme = useTheme();
-  
+
   const navigation = useAppNavigation();
   const onBackfn = () => {
     if (typeof onBack === 'function') {
@@ -30,26 +35,22 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
   return (
     <Wrapper>
       <LeftSection>
-        {
-          onBack && (
-            <BackButton onPress={onBackfn}>
-              <Icon
-                name="arrow-back"
-                size={moderateScale(22)}
-                color={theme.colors.on_surface}
-              />
-            </BackButton>
-          )
-        }
+        {onBack && (
+          <BackButton onPress={onBackfn}>
+            <Icon
+              name="arrow-back"
+              size={moderateScale(22)}
+              color={theme.colors.on_surface}
+            />
+          </BackButton>
+        )}
 
         <Typography variant="title" size="md" weight="bold" numberOfLines={1}>
           {title}
         </Typography>
       </LeftSection>
 
-      <RightSection>
-        {rightElement ?? null}
-      </RightSection>
+      <RightSection>{rightElement ?? null}</RightSection>
     </Wrapper>
   );
 };

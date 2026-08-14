@@ -50,7 +50,7 @@ interface BookRideState {
 
 export const useBookRideStore = create<BookRideState>()(
   persist(
-    (set) => ({
+    set => ({
       startLocation: null,
       destinationLocation: null,
       travelDate: null,
@@ -62,55 +62,61 @@ export const useBookRideStore = create<BookRideState>()(
       filters: {},
       rideType: 'intercity',
 
-      setStartLocation: (location) => set({ startLocation: location }),
-      setDestinationLocation: (location) => set({ destinationLocation: location }),
-      setTravelDate: (date) => set({ travelDate: date }),
-      setSeatCount: (count) => set({ seatCount: count }),
-      setSearchResults: (results) => set({ 
-        searchResults: results,
-        currentPage: 0,
-        hasMore: results ? results.length >= 10 : true
-      }),
-      appendSearchResults: (results) => set((state) => ({ 
-        searchResults: [...(state.searchResults || []), ...results],
-        hasMore: results.length >= 10
-      })),
-      setCurrentPage: (page) => set({ currentPage: page }),
-      setHasMore: (hasMore) => set({ hasMore }),
-      setFilters: (filters) => set({ filters }),
-      setRideType: (type) => set({ rideType: type }),
+      setStartLocation: location => set({ startLocation: location }),
+      setDestinationLocation: location =>
+        set({ destinationLocation: location }),
+      setTravelDate: date => set({ travelDate: date }),
+      setSeatCount: count => set({ seatCount: count }),
+      setSearchResults: results =>
+        set({
+          searchResults: results,
+          currentPage: 0,
+          hasMore: results ? results.length >= 10 : true,
+        }),
+      appendSearchResults: results =>
+        set(state => ({
+          searchResults: [...(state.searchResults || []), ...results],
+          hasMore: results.length >= 10,
+        })),
+      setCurrentPage: page => set({ currentPage: page }),
+      setHasMore: hasMore => set({ hasMore }),
+      setFilters: filters => set({ filters }),
+      setRideType: type => set({ rideType: type }),
 
-      addRecentSearch: (search) => set((state) => {
-        const newSearch: RecentSearch = {
-          ...search,
-          id: `${Date.now()}`,
-        };
-        // Avoid duplicates (simplified check by address)
-        const filtered = state.recentSearches.filter(
-          (s) => 
-            s.startLocation.address !== search.startLocation.address ||
-            s.destinationLocation.address !== search.destinationLocation.address
-        );
-        return {
-          recentSearches: [newSearch, ...filtered].slice(0, 5), // Keep last 5
-        };
-      }),
+      addRecentSearch: search =>
+        set(state => {
+          const newSearch: RecentSearch = {
+            ...search,
+            id: `${Date.now()}`,
+          };
+          // Avoid duplicates (simplified check by address)
+          const filtered = state.recentSearches.filter(
+            s =>
+              s.startLocation.address !== search.startLocation.address ||
+              s.destinationLocation.address !==
+                search.destinationLocation.address,
+          );
+          return {
+            recentSearches: [newSearch, ...filtered].slice(0, 5), // Keep last 5
+          };
+        }),
 
       clearRecentSearches: () => set({ recentSearches: [] }),
 
-      clearBookState: () => set({
-        startLocation: null,
-        destinationLocation: null,
-        travelDate: null,
-        seatCount: 1,
-        filters: {},
-        rideType: 'intercity',
-      }),
+      clearBookState: () =>
+        set({
+          startLocation: null,
+          destinationLocation: null,
+          travelDate: null,
+          seatCount: 1,
+          filters: {},
+          rideType: 'intercity',
+        }),
     }),
     {
       name: 'book-ride-storage',
       storage: createJSONStorage(() => mmkvStorage),
-      partialize: (state) => ({ recentSearches: state.recentSearches }), // Only persist recent searches
-    }
-  )
+      partialize: state => ({ recentSearches: state.recentSearches }), // Only persist recent searches
+    },
+  ),
 );

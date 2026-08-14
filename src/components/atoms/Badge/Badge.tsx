@@ -11,10 +11,14 @@ export interface BadgeProps {
 const Container = styled.View<{ variant: string }>`
   background-color: ${({ theme, variant }) => {
     switch (variant) {
-      case 'primary': return theme.colors.primary_fixed;
-      case 'secondary': return theme.colors.secondary_fixed;
-      case 'tertiary': return theme.colors.tertiary_fixed;
-      default: return theme.colors.surface_container_high;
+      case 'primary':
+        return theme.colors.primary_fixed;
+      case 'secondary':
+        return theme.colors.secondary_fixed;
+      case 'tertiary':
+        return theme.colors.tertiary_fixed;
+      default:
+        return theme.colors.surface_container_high;
     }
   }};
   padding-horizontal: ${moderateScale(12)}px;
@@ -22,12 +26,21 @@ const Container = styled.View<{ variant: string }>`
   border-radius: ${moderateScale(100)}px;
 `;
 
+const LabelText = styled(Typography)`
+  text-transform: uppercase;
+  letter-spacing: 1px;
+`;
+
 export const Badge: React.FC<BadgeProps> = ({ label, variant = 'primary' }) => {
   return (
     <Container variant={variant}>
-      <Typography variant="label" size="sm" weight="bold" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>
+      <LabelText
+        variant="label"
+        size="sm"
+        weight="bold"
+      >
         {label}
-      </Typography>
+      </LabelText>
     </Container>
   );
 };

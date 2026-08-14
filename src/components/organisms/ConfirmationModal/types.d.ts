@@ -8,4 +8,6 @@ export interface ConfirmationModalProps {
   cancelLabel?: string;
   isLoading?: boolean;
   type?: 'danger' | 'info' | 'warning';
+  hideCancel?: boolean;
+  dismissible?: boolean;
 }

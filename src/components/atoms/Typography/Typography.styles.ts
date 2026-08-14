@@ -1,6 +1,11 @@
 import styled from 'styled-components/native';
 import { responsiveFont } from '@/styles';
-import { TypographyProps, TypographyVariant, TypographySize, TypographyWeight } from './types';
+import {
+  TypographyProps,
+  TypographyVariant,
+  TypographySize,
+  TypographyWeight,
+} from './types';
 
 const getFontSize = (variant: TypographyVariant, size: TypographySize) => {
   const sizes = {
@@ -13,7 +18,10 @@ const getFontSize = (variant: TypographyVariant, size: TypographySize) => {
   return responsiveFont(sizes[variant][size]);
 };
 
-const getFontWeight = (variant: TypographyVariant, weight?: TypographyWeight) => {
+const getFontWeight = (
+  variant: TypographyVariant,
+  weight?: TypographyWeight,
+) => {
   if (weight) {
     const weights = {
       regular: '400',
@@ -23,7 +31,7 @@ const getFontWeight = (variant: TypographyVariant, weight?: TypographyWeight) =>
     };
     return weights[weight];
   }
-  
+
   // Default weights per variant
   const defaults = {
     display: '700',
@@ -41,8 +49,10 @@ interface StyledTextProps extends Omit<TypographyProps, 'color'> {
 
 export const StyledText = styled.Text<StyledTextProps>`
   font-family: 'Plus Jakarta Sans';
-  font-size: ${({ variant = 'body', size = 'md' }) => getFontSize(variant, size)}px;
-  font-weight: ${({ variant = 'body', weight }) => getFontWeight(variant, weight)};
+  font-size: ${({ variant = 'body', size = 'md' }) =>
+    getFontSize(variant, size)}px;
+  font-weight: ${({ variant = 'body', weight }) =>
+    getFontWeight(variant, weight)};
   color: ${({ theme, $color }) => {
     if ($color && $color in theme.colors) {
       return theme.colors[$color as keyof typeof theme.colors];

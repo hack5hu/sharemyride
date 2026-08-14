@@ -7,6 +7,7 @@ import { showNotification } from '@/components/organisms/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { useTranslation } from '@/hooks/useTranslation';
 import { getErrorMessage } from '@/utils/error';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 
 export const useTravelPreferences = () => {
   const navigation = useAppNavigation();
@@ -14,13 +15,16 @@ export const useTravelPreferences = () => {
     preferences: storedPrefs,
     isLoading,
     syncPreferences,
-    savePreferences
+    savePreferences,
   } = useTravelPrefStore();
   const { t } = useTranslation();
   // Helper to convert comma-separated string to array
   const parseMusic = (musicStr?: string) => {
     if (!musicStr) return ['Pop'];
-    return musicStr.split(',').map(s => s.trim()).filter(Boolean);
+    return musicStr
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean);
   };
 
   const [preferences, setPreferences] = useState<TravelPreferenceState>({
@@ -51,14 +55,20 @@ export const useTravelPreferences = () => {
     }
   }, [storedPrefs]);
 
-  const musicOptions = useMemo(() => ['Any', 'Bollywood', 'Pop', 'Jazz', 'Podcast', 'Silence'], []);
+  const musicOptions = useMemo(
+    () => ['Any', 'Bollywood', 'Pop', 'Jazz', 'Podcast', 'Silence'],
+    [],
+  );
 
-  const togglePreference = useCallback((key: keyof Omit<TravelPreferenceState, 'music' | 'waitingTime'>) => {
-    setPreferences(prev => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
-  }, []);
+  const togglePreference = useCallback(
+    (key: keyof Omit<TravelPreferenceState, 'music' | 'waitingTime'>) => {
+      setPreferences(prev => ({
+        ...prev,
+        [key]: !prev[key],
+      }));
+    },
+    [],
+  );
 
   const toggleMusicPreference = useCallback((genre: string) => {
     setPreferences(prev => {
@@ -96,17 +106,24 @@ export const useTravelPreferences = () => {
         maxBackSeats: storedPrefs?.maxBackSeats ?? 2,
         waitingTime: preferences.waitingTime,
       });
+
+      AnalyticsService.logEvent(AnalyticsEvent.PREFERENCES_UPDATED, {
+        nonSmoking: preferences.nonSmoking,
+        womenOnly: preferences.womenOnly,
+        manualApproval: preferences.manualApproval,
+      });
+
       showNotification(
         NotificationType.SUCCESS,
         t('notification.defaultSuccessTitle'),
-       'Travel preferences updated successfully.'
+        'Travel preferences updated successfully.',
       );
       navigation.goBack();
     } catch (error) {
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        getErrorMessage(error, 'Failed to update preferences.')
+        getErrorMessage(error, 'Failed to update preferences.'),
       );
     }
   }, [navigation, preferences, savePreferences, storedPrefs?.maxBackSeats]);

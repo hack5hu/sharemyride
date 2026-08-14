@@ -1,14 +1,18 @@
 import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale } from '@/styles';
 
-export const ConnectionBanner = styled.TouchableOpacity<{ isConnecting: boolean }>`
+export const ConnectionBanner = styled.TouchableOpacity<{
+  isConnecting: boolean;
+}>`
   width: 100%;
   padding-vertical: ${verticalScale(8)}px;
   padding-horizontal: ${scale(16)}px;
   align-items: center;
   justify-content: center;
   background-color: ${({ theme, isConnecting }) =>
-    isConnecting ? theme.colors.secondary_container : theme.colors.error_container};
+    isConnecting
+      ? theme.colors.secondary_container
+      : theme.colors.error_container};
 `;
 
 export const DateHeaderContainer = styled.View`

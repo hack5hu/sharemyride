@@ -5,7 +5,6 @@ import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
 import { VerifiedBadge } from '@/components/atoms/VerifiedBadge';
 import { moderateScale } from '@/styles';
-import { useLocale } from '@/constants/localization';
 import * as S from '../RideInformationTemplate.styles';
 
 export interface DriverCardProps {
@@ -23,49 +22,59 @@ export interface DriverCardProps {
   showChat?: boolean;
 }
 
-export const DriverCard: React.FC<DriverCardProps> = React.memo(({
-  driver,
-  handleDriverProfile,
-  handleChat,
-  showChat = true,
-}) => {
-  const theme = useTheme();
-  const translations = useLocale();
+export const DriverCard: React.FC<DriverCardProps> = React.memo(
+  ({ driver, handleDriverProfile, handleChat, showChat = true }) => {
+    const theme = useTheme();
 
-  return (
-    <S.DriverCard>
-      <S.DriverInfoGroup onPress={handleDriverProfile}>
-        <S.AvatarWrapper>
-          <Avatar
-            source={{ uri: driver.driverPhotoUrl || driver.avatar }}
-            size="md"
-            border
-          />
-          {driver.isVerified && (
-            <S.BadgePin>
-              <VerifiedBadge size={20} />
-            </S.BadgePin>
-          )}
-        </S.AvatarWrapper>
+    return (
+      <S.DriverCard>
+        <S.DriverInfoGroup onPress={handleDriverProfile}>
+          <S.AvatarWrapper>
+            <Avatar
+              source={{ uri: driver.driverPhotoUrl || driver.avatar }}
+              placeholder={driver.name}
+              size="md"
+              border
+            />
+            {driver.isVerified && (
+              <S.BadgePin>
+                <VerifiedBadge size={20} />
+              </S.BadgePin>
+            )}
+          </S.AvatarWrapper>
 
-        <S.DriverTextGroup>
-          <Typography variant="title" size="sm" weight="bold">
-            {driver.name}
-          </Typography>
-          <S.VerifiedRow>
-            <Icon name="star" size={moderateScale(13)} color={theme.colors.warning} />
-            <Typography variant="label" size="xs" weight="bold" color="on_surface_variant">
-              {driver.rating} · {driver.rideCount} {translations.rideDetails.ridesLabel}
+          <S.DriverTextGroup>
+            <Typography variant="title" size="sm" weight="bold">
+              {driver.name}
             </Typography>
-          </S.VerifiedRow>
-        </S.DriverTextGroup>
-      </S.DriverInfoGroup>
+            <S.VerifiedRow>
+              <Icon
+                name="star"
+                size={moderateScale(13)}
+                color={theme.colors.warning}
+              />
+              <Typography
+                variant="label"
+                size="xs"
+                weight="bold"
+                color="on_surface_variant"
+              >
+                {driver.rating}
+              </Typography>
+            </S.VerifiedRow>
+          </S.DriverTextGroup>
+        </S.DriverInfoGroup>
 
-      {showChat && (
-        <S.ChatButton onPress={handleChat} activeOpacity={0.8}>
-          <Icon name="chat-bubble-outline" size={moderateScale(20)} color={theme.colors.primary} />
-        </S.ChatButton>
-      )}
-    </S.DriverCard>
-  );
-});
+        {showChat && (
+          <S.ChatButton onPress={handleChat} activeOpacity={0.8}>
+            <Icon
+              name="chat-bubble-outline"
+              size={moderateScale(20)}
+              color={theme.colors.primary}
+            />
+          </S.ChatButton>
+        )}
+      </S.DriverCard>
+    );
+  },
+);

@@ -29,8 +29,10 @@ export const Toggle: React.FC<ToggleProps> = ({
   const backgroundColor = animatedValue.interpolate({
     inputRange: [0, 1],
     outputRange: [
-      disabled ? theme.colors.surface_container_highest : theme.colors.outline_variant, 
-      disabled ? theme.colors.outline : theme.colors.primary
+      disabled
+        ? theme.colors.surface_container_highest
+        : theme.colors.outline_variant,
+      disabled ? theme.colors.outline : theme.colors.primary,
     ],
   });
 
@@ -39,10 +41,15 @@ export const Toggle: React.FC<ToggleProps> = ({
     outputRange: [2, 22],
   });
 
+  const containerStyle = { backgroundColor, opacity: disabled ? 0.6 : 1 };
+  const knobStyle = { transform: [{ translateX }] };
+
   return (
     <TouchableWithoutFeedback onPress={handlePress} disabled={disabled}>
-      <Container style={[style, { backgroundColor, opacity: disabled ? 0.6 : 1 }]}>
-        <Knob style={{ transform: [{ translateX }] }} />
+      <Container
+        style={[style, containerStyle]}
+      >
+        <Knob style={knobStyle} />
       </Container>
     </TouchableWithoutFeedback>
   );

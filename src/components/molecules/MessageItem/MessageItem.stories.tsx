@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { MessageItem } from './MessageItem';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Molecules/MessageItem',
   component: MessageItem,
-
 } satisfies Meta<typeof MessageItem>;
 
 export default meta;

@@ -1,0 +1,22 @@
+# Auto-generated agent skills catalog. Run update_skills.sh to regenerate.
+skills:
+  - name: "storybook"
+    description: "Writing visual preview stories and executing interactive browser tests using Vitest and Playwright in Storybook."
+    tags: [storybook, testing, validation]
+    path: ".agents/skills/storybook/SKILL.md"
+  - name: "navigation"
+    description: "Implementing screen transitions, route declarations, and stack registrations in RootNavigator using useAppNavigation."
+    tags: [navigation, routing, screens]
+    path: ".agents/skills/navigation/SKILL.md"
+  - name: "components"
+    description: "Creating and extending reusable UI components under atoms, molecules, organisms, or templates."
+    tags: [components, library, design system]
+    path: ".agents/skills/components/SKILL.md"
+  - name: "api"
+    description: "Centralizing API services under serviceManager and managing async network operations inside hooks."
+    tags: [api, services, networking, axios]
+    path: ".agents/skills/api/SKILL.md"
+  - name: "localization"
+    description: "Consuming and declaring localized copy across English and Hindi using useTranslation and base localization assets."
+    tags: [localization, translations, i18n]
+    path: ".agents/skills/localization/SKILL.md"

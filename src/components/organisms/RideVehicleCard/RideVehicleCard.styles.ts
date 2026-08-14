@@ -84,5 +84,3 @@ export const ColorDot = styled.View<{ colorHex: string }>`
   border-radius: ${moderateScale(4)}px;
   background-color: ${({ colorHex }) => colorHex};
 `;
-
-

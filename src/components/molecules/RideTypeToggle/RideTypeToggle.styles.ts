@@ -16,7 +16,8 @@ export const ToggleButton = styled.TouchableOpacity<{ isActive: boolean }>`
   justify-content: center;
   background-color: ${({ theme, isActive }) =>
     isActive ? theme.colors.surface_container_lowest : 'transparent'};
-  shadow-color: ${({ theme, isActive }) => (isActive ? theme.colors.shadow : 'transparent')};
+  shadow-color: ${({ theme, isActive }) =>
+    isActive ? theme.colors.shadow : 'transparent'};
   shadow-offset: 0px 1px;
   shadow-opacity: ${({ isActive }) => (isActive ? 0.08 : 0)};
   shadow-radius: 4px;

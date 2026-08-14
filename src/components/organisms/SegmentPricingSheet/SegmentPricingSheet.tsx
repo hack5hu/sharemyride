@@ -1,74 +1,27 @@
 import React, { useCallback, useState } from 'react';
+import { scale, verticalScale } from '@/styles';
 import {
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import styled, { useTheme } from 'styled-components/native';
-import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
-import { SegmentPricingCard, SegmentPrice } from '@/components/molecules/SegmentPricingCard';
+  SegmentPricingCard,
+  SegmentPrice,
+} from '@/components/molecules/SegmentPricingCard';
 import { StopSegment } from './utils';
 import { Button } from '@/components/atoms/Button';
+import {
+  Wrapper,
+  Overlay,
+  BackdropTouchable,
+  Sheet,
+  DragHandle,
+  SheetHeader,
+  SheetTitle,
+  SheetSubtitle,
+  ListWrapper,
+  CardList,
+  ButtonRow,
+  CancelWrapper,
+  SaveWrapper,
+} from './SegmentPricingSheet.styles';
 
-/* ──── Styles ──── */
-const Overlay = styled.View`
-  flex: 1;
-  background-color: rgba(23, 29, 25, 0.4);
-  justify-content: flex-end;
-`;
-
-const Sheet = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface};
-  border-top-left-radius: ${moderateScale(40)}px;
-  border-top-right-radius: ${moderateScale(40)}px;
-  max-height: 88%;
-  padding-bottom: ${verticalScale(40)}px;
-`;
-
-const DragHandle = styled.View`
-  width: ${scale(48)}px;
-  height: ${moderateScale(5)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_highest};
-  border-radius: 9999px;
-  align-self: center;
-  margin-top: ${verticalScale(12)}px;
-  margin-bottom: ${verticalScale(4)}px;
-`;
-
-const SheetHeader = styled.View`
-  padding-horizontal: ${scale(28)}px;
-  padding-top: ${verticalScale(12)}px;
-  padding-bottom: ${verticalScale(16)}px;
-`;
-
-const SheetTitle = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${responsiveFont(24)}px;
-  color: ${({ theme }) => theme.colors.primary};
-  letter-spacing: -0.5px;
-`;
-
-const SheetSubtitle = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-size: ${responsiveFont(13)}px;
-  color: ${({ theme }) => theme.colors.outline};
-  margin-top: ${verticalScale(2)}px;
-`;
-
-const CardList = styled.ScrollView`
-  flex-grow: 1;
-`;
-
-const ButtonRow = styled.View`
-  flex-direction: row;
-  gap: ${scale(10)}px;
-  padding-horizontal: ${scale(28)}px;
-  padding-vertical: ${verticalScale(20)}px;
-  background-color: ${({ theme }) => theme.colors.surface};
-`;
-
-/* ──── Component ──── */
 export interface SegmentPricingSheetProps {
   visible: boolean;
   segments: (StopSegment & { distanceKm: number })[];
@@ -99,9 +52,6 @@ export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
   onSave,
   t,
 }) => {
-  const theme = useTheme();
-  
-  // localPrices tracks basePrice for each segment
   const [localPrices, setLocalPrices] = useState<Record<string, number>>({});
 
   React.useEffect(() => {
@@ -129,11 +79,9 @@ export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
 
   if (!visible) return null;
   return (
-    <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 999, elevation: 999 }}>
+    <Wrapper>
       <Overlay>
-        <TouchableWithoutFeedback onPress={onClose}>
-          <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
-        </TouchableWithoutFeedback>
+        <BackdropTouchable onPress={onClose} />
 
         <Sheet>
           <DragHandle />
@@ -142,7 +90,7 @@ export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
             <SheetSubtitle>{t.subtitle}</SheetSubtitle>
           </SheetHeader>
 
-          <View style={{ maxHeight: verticalScale(500) }}>
+          <ListWrapper>
             <CardList
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
@@ -160,9 +108,12 @@ export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
                   to={seg.to}
                   segmentPrice={{
                     ...segmentPrices[seg.id],
-                    basePrice: localPrices[seg.id] ?? segmentPrices[seg.id]?.basePrice ?? 0
+                    basePrice:
+                      localPrices[seg.id] ??
+                      segmentPrices[seg.id]?.basePrice ??
+                      0,
                   }}
-                  onPriceChange={(price) => handlePriceChange(seg.id, price)}
+                  onPriceChange={price => handlePriceChange(seg.id, price)}
                   segmentLabel={t.segmentLabel}
                   premiumEnabled={premiumEnabled}
                   frontSeatLabel={t.frontSeatProjectedLabel}
@@ -170,22 +121,22 @@ export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
                 />
               ))}
             </CardList>
-          </View>
+          </ListWrapper>
 
           <ButtonRow>
-            <View style={{ flex: 1 }}>
+            <CancelWrapper>
               <Button variant="outline" onPress={onClose}>
                 {t.cancelButton}
               </Button>
-            </View>
-            <View style={{ flex: 2 }}>
+            </CancelWrapper>
+            <SaveWrapper>
               <Button variant="primary" onPress={handleSave}>
                 {t.saveButton}
               </Button>
-            </View>
+            </SaveWrapper>
           </ButtonRow>
         </Sheet>
       </Overlay>
-    </View>
+    </Wrapper>
   );
 };

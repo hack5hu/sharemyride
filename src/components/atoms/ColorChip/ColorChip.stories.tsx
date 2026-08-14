@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { ColorChip } from './ColorChip';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Atoms/ColorChip',
   component: ColorChip,
-
 } satisfies Meta<typeof ColorChip>;
 
 export default meta;

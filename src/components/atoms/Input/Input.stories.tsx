@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { Input } from './Input';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Atoms/Input',
   component: Input,
-
 } satisfies Meta<typeof Input>;
 
 export default meta;

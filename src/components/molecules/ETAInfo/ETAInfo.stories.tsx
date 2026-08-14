@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { ETAInfo } from './ETAInfo';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Molecules/ETAInfo',
   component: ETAInfo,
-
 } satisfies Meta<typeof ETAInfo>;
 
 export default meta;

@@ -1,11 +1,14 @@
 import styled from 'styled-components/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
 import { Typography } from '@/components/atoms/Typography';
+import { Box } from '@/components/atoms/Box';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const FloatingButton = styled.TouchableOpacity`
   position: absolute;
-  bottom: ${verticalScale(100)}px;
+  bottom: ${verticalScale(160)}px;
   right: ${scale(24)}px;
   width: ${moderateScale(56)}px;
   height: ${moderateScale(56)}px;
@@ -35,7 +38,7 @@ export const ModalWrapper = styled(SafeAreaView)`
   elevation: 10;
 `;
 
-export const ModalHeader = styled.View`
+export const ModalHeader = styled(Box)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -54,92 +57,38 @@ export const ClearButton = styled.TouchableOpacity`
   padding: ${moderateScale(4)}px;
 `;
 
-// Reuse list styles from template
-export const Container = styled.View`
+export const Container = styled(Box)`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.surface};
 `;
 
-export const LogItem = styled.TouchableOpacity<{ isError: boolean }>`
-  padding: ${moderateScale(16)}px;
-  border-bottom-width: 1px;
-  border-bottom-color: ${({ theme }) => theme.colors.surface_variant};
-  background-color: ${({ theme, isError }) => isError ? theme.colors.error_container : theme.colors.surface};
-`;
+export {
+  LogItemStyle as LogItem,
+  LogHeaderStyle as LogHeader,
+  MethodBadgeStyle as MethodBadge,
+  MethodTextStyle as MethodText,
+  StatusBadgeStyle as StatusBadge,
+  StatusTextStyle as StatusText,
+  UrlTextStyle as UrlText,
+  MetaRowStyle as MetaRow,
+  EmptyStateStyle as EmptyState,
+  LogCodeBlockStyle as CodeBlock,
+  LogCodeTextStyle as CodeText,
+} from '@/styles/NetworkLogStyles';
+import { UrlTextStyle } from '@/styles/NetworkLogStyles';
 
-export const LogHeader = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: ${verticalScale(8)}px;
-`;
-
-export const MethodBadge = styled.View<{ method: string }>`
-  padding-horizontal: ${scale(8)}px;
-  padding-vertical: ${verticalScale(4)}px;
-  border-radius: ${moderateScale(4)}px;
-  background-color: ${({ theme, method }) => {
-    switch(method) {
-      case 'GET': return theme.colors.primary_container;
-      case 'POST': return '#e8f5e9'; // success tint
-      case 'PUT':
-      case 'PATCH': return '#fff3e0'; // warning tint
-      case 'DELETE': return theme.colors.error_container;
-      default: return theme.colors.surface_variant;
-    }
-  }};
-`;
-
-export const MethodText = styled(Typography as any)<{ method: string }>`
-  color: ${({ theme, method }) => {
-    switch(method) {
-      case 'GET': return theme.colors.on_primary_container;
-      case 'POST': return '#2e7d32'; 
-      case 'PUT':
-      case 'PATCH': return '#e65100'; 
-      case 'DELETE': return theme.colors.on_error_container;
-      default: return theme.colors.on_surface_variant;
-    }
-  }};
-  font-weight: bold;
-`;
-
-export const StatusBadge = styled.View<{ status: number | null }>`
-  padding-horizontal: ${scale(8)}px;
-  padding-vertical: ${verticalScale(4)}px;
-  border-radius: ${moderateScale(4)}px;
-  background-color: ${({ theme, status }) => {
-    if (!status) return theme.colors.surface_variant;
-    if (status >= 200 && status < 300) return '#e8f5e9';
-    if (status >= 400) return theme.colors.error_container;
-    return theme.colors.surface_variant;
-  }};
-`;
-
-export const StatusText = styled(Typography as any)<{ status: number | null }>`
-  color: ${({ theme, status }) => {
-    if (!status) return theme.colors.on_surface_variant;
-    if (status >= 200 && status < 300) return '#2e7d32';
-    if (status >= 400) return theme.colors.on_error_container;
-    return theme.colors.on_surface_variant;
-  }};
-  font-weight: bold;
-`;
-
-export const UrlText = styled(Typography as any)`
-  margin-bottom: ${verticalScale(8)}px;
-`;
-
-export const MetaRow = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-export const EmptyState = styled.View`
+export const StyledUrlText = styled(UrlTextStyle)`
   flex: 1;
-  justify-content: center;
-  align-items: center;
-  padding: ${moderateScale(24)}px;
+  margin-bottom: 0px;
+`;
+
+export const EmptyDescText = styled(Typography)`
+  text-align: center;
+  margin-top: 8px;
+`;
+
+export const CopyIcon = styled(Icon)`
+  margin-right: 4px;
 `;
 
 export const DetailModalContainer = styled(SafeAreaView)`
@@ -147,7 +96,7 @@ export const DetailModalContainer = styled(SafeAreaView)`
   background-color: ${({ theme }) => theme.colors.surface};
 `;
 
-export const DetailModalHeader = styled.View`
+export const DetailModalHeader = styled(Box)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -162,27 +111,61 @@ export const ScrollContent = styled.ScrollView`
   padding: ${moderateScale(16)}px;
 `;
 
-export const SectionTitle = styled(Typography as any)`
-  margin-top: ${verticalScale(16)}px;
-  margin-bottom: ${verticalScale(8)}px;
+export const SectionTitle = styled(Typography)<{ $noMargin?: boolean }>`
+  margin-top: ${({ $noMargin }) => ($noMargin ? 0 : verticalScale(16))}px;
+  margin-bottom: ${({ $noMargin }) => ($noMargin ? 0 : verticalScale(8))}px;
   text-transform: uppercase;
   letter-spacing: 1px;
 `;
 
-export const CodeBlock = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface_container};
-  padding: ${moderateScale(12)}px;
-  border-radius: ${moderateScale(8)}px;
-`;
 
-export const CodeText = styled.Text`
-  font-family: 'Courier';
-  font-size: ${responsiveFont(12)}px;
-  color: ${({ theme }) => theme.colors.on_surface};
-`;
-
-export const CopyButton = styled.TouchableOpacity`
+export const CopyButton = styled.TouchableOpacity<{ $hasMarginLeft?: boolean }>`
   padding: ${moderateScale(4)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_high};
   border-radius: ${moderateScale(4)}px;
+  margin-left: ${({ $hasMarginLeft }) => ($hasMarginLeft ? 8 : 0)}px;
+`;
+
+export const HeaderRow = styled(Box)`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const CopyRow = styled(Box)<{ $noMarginTop?: boolean }>`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: ${({ $noMarginTop }) => ($noMarginTop ? 0 : 16)}px;
+  margin-bottom: 8px;
+`;
+
+export const CopyInnerRow = styled(Box)`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const TabRow = styled(Box)`
+  flex-direction: row;
+  border-bottom-width: 1px;
+  border-color: ${({ theme }) => theme.colors.outline_variant};
+`;
+
+export const TabButton = styled.TouchableOpacity<{ active: boolean }>`
+  flex: 1;
+  padding-vertical: 12px;
+  border-bottom-width: 2px;
+  border-color: ${({ theme, active }) =>
+    active ? theme.colors.primary : 'transparent'};
+  align-items: center;
+`;
+
+export const UrlRow = styled(Box)`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+`;
+
+export const CloseDetailButton = styled.TouchableOpacity`
+  padding: 8px;
 `;

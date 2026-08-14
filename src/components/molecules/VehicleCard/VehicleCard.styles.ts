@@ -1,16 +1,24 @@
 import styled from 'styled-components/native';
 import { moderateScale, scale, verticalScale } from '@/styles';
 
-export const CardContainer = styled.TouchableOpacity<{ isSelected?: boolean; fullWidth?: boolean }>`
+export const CardContainer = styled.TouchableOpacity<{
+  isSelected?: boolean;
+  fullWidth?: boolean;
+}>`
   width: ${({ fullWidth }) => (fullWidth ? '100% ' : `${scale(150)}px`)};
-  padding: ${({ fullWidth }) => (fullWidth ? moderateScale(16) : moderateScale(12))}px;
+  padding: ${({ fullWidth }) =>
+    fullWidth ? moderateScale(16) : moderateScale(12)}px;
   border-radius: ${moderateScale(20)}px;
   border-width: ${({ fullWidth }) => (fullWidth ? 2.5 : 2)}px;
-  border-color: ${({ isSelected, theme }) => (isSelected ? theme.colors.primary : theme.colors.outline_variant)};
-  background-color: ${({ isSelected, theme }) => (isSelected ? `${theme.colors.primary}0D` : theme.colors.surface)};
+  border-color: ${({ isSelected, theme }) =>
+    isSelected ? theme.colors.primary : theme.colors.outline_variant};
+  background-color: ${({ isSelected, theme }) =>
+    isSelected ? `${theme.colors.primary}0D` : theme.colors.surface};
   position: relative;
   justify-content: space-between;
-  ${({ fullWidth, theme }) => fullWidth && `
+  ${({ fullWidth, theme }) =>
+    fullWidth &&
+    `
     shadow-color: ${theme.colors.shadow};
     shadow-offset: 0px 4px;
     shadow-opacity: 0.05;

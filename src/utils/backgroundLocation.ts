@@ -1,6 +1,8 @@
 import BackgroundService from 'react-native-background-actions';
-import Geolocation, { GeolocationResponse } from '@react-native-community/geolocation';
-import rideService from '@/serviceManager/rideService';
+import Geolocation, {
+  GeolocationResponse,
+} from '@react-native-community/geolocation';
+import { RideService } from '@/serviceManager/RideService';
 import { Logger } from '@/utils/logger';
 import { Platform } from 'react-native';
 import { locationQueue } from './locationQueue';
@@ -21,7 +23,9 @@ Geolocation.setRNConfiguration({
  * Resolves a single snapshot of high-accuracy device location wrapped cleanly in a Promise.
  * This guarantees execution even when native stream listeners get frozen by the OS.
  */
-const grabCurrentCoordinates = (highAccuracy: boolean): Promise<GeolocationResponse> => {
+const grabCurrentCoordinates = (
+  highAccuracy: boolean,
+): Promise<GeolocationResponse> => {
   return new Promise((resolve, reject) => {
     Geolocation.getCurrentPosition(
       position => resolve(position),
@@ -29,7 +33,7 @@ const grabCurrentCoordinates = (highAccuracy: boolean): Promise<GeolocationRespo
       {
         enableHighAccuracy: highAccuracy,
         timeout: highAccuracy ? 15000 : 8000, // Short network timeout for passive mode
-        maximumAge: highAccuracy ? 0 : 5000,   // Utilize cell tower/Wi-Fi positioning cache when stationary
+        maximumAge: highAccuracy ? 0 : 5000, // Utilize cell tower/Wi-Fi positioning cache when stationary
       },
     );
   });
@@ -101,7 +105,7 @@ const locationTrackingTask = async (
 
           try {
             // Dispatch validated payload downstream to server
-            await rideService.updateLocation(rideId, latitude, longitude);
+            await RideService.updateLocation(rideId, latitude, longitude);
             Logger.log(
               `[BackgroundLocation] Dispatched location to service Manager: ${latitude}, ${longitude}`,
             );
@@ -120,11 +124,13 @@ const locationTrackingTask = async (
               const backlog = locationQueue.get();
 
               // Upload the complete sequence to the backend in a compressed payload
-              await rideService.syncLocationBacklog(rideId, backlog);
+              await RideService.syncLocationBacklog(rideId, backlog);
 
               // Clean out the cache upon success
               locationQueue.flush();
-              Logger.log('[BackgroundLocation] Offline backlog sync completed and purged.');
+              Logger.log(
+                '[BackgroundLocation] Offline backlog sync completed and purged.',
+              );
             }
           } catch (apiErr) {
             // Network dropped or signal dead zone encountered. Buffer the coordinate natively!
@@ -254,5 +260,48 @@ export const stopBackgroundLocationTracking = async (): Promise<void> => {
       error,
     );
     throw error;
+  }
+};
+
+const liveLocationFetchTask = async (): Promise<void> => {
+  while (BackgroundService.isRunning()) {
+    await new Promise(resolve => setTimeout(resolve, 2000));
+  }
+};
+
+export const startLiveLocationFetchNotification = async (): Promise<void> => {
+  if (BackgroundService.isRunning()) {
+    await BackgroundService.stop();
+  }
+
+  const options = {
+    taskName: 'LiveLocationFetch',
+    taskTitle: 'Fetching Live Location',
+    taskDesc: 'ZyncRide is updating your position on the map...',
+    taskIcon: {
+      name: 'ic_launcher',
+      type: 'mipmap',
+    },
+    color: '#0058bc',
+    foregroundServiceType: ['location'] as 'location'[],
+    parameters: {},
+  };
+
+  try {
+    await BackgroundService.start(liveLocationFetchTask, options);
+    Logger.log('[BackgroundLocation] Live location fetch notification started.');
+  } catch (error) {
+    Logger.error('[BackgroundLocation] Failed to start live fetch notification:', error);
+  }
+};
+
+export const stopLiveLocationFetchNotification = async (): Promise<void> => {
+  try {
+    if (BackgroundService.isRunning()) {
+      await BackgroundService.stop();
+      Logger.log('[BackgroundLocation] Live location fetch notification stopped.');
+    }
+  } catch (error) {
+    Logger.error('[BackgroundLocation] Failed to stop live fetch notification:', error);
   }
 };

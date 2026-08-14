@@ -4,7 +4,7 @@ import { DefaultTheme } from 'styled-components/native';
 export const getMessageStatusIcon = (
   status: MessageStatus,
   isMe: boolean,
-  theme: DefaultTheme
+  theme: DefaultTheme,
 ) => {
   if (!isMe) {
     return null; // No status icon for incoming messages
@@ -15,10 +15,10 @@ export const getMessageStatusIcon = (
   const statusMap: Record<string, { name: string; color: string }> = {
     READ: { name: 'done-all', color: theme.colors.read_receipt },
     DELIVERED: { name: 'done-all', color: theme.colors.on_surface_variant },
-    SENT: { name: 'check', color: theme.colors.on_surface_variant },
-    PENDING: { name: 'check', color: theme.colors.on_surface_variant },
+    SENT: { name: 'done', color: theme.colors.on_surface_variant },
+    PENDING: { name: 'schedule', color: theme.colors.on_surface_variant },
+    FAILED: { name: 'error-outline', color: theme.colors.error },
   };
 
   return statusMap[normalizedStatus] || statusMap.SENT;
 };
-

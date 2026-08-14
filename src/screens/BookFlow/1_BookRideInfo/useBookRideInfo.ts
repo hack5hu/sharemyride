@@ -1,15 +1,19 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { BackHandler, ToastAndroid } from 'react-native';
 import { format, isBefore, startOfDay } from 'date-fns';
-import { useRoute, useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useLocale } from '@/constants/localization';
 import { useBookRideStore, RecentSearch } from '@/store/useBookRideStore';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import rideService, { SearchRidePayload } from '@/serviceManager/rideService';
+import { RideService, SearchRidePayload } from '@/serviceManager/RideService';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
+import { storage } from '@/utils/storage';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
+
+let globalSessionPrompted = false;
 
 export const useBookRideInfo = () => {
   const { navigation, navigate } = useAppNavigation();
@@ -17,32 +21,6 @@ export const useBookRideInfo = () => {
   const { t: translate } = useTranslation();
   const [isSearching, setIsSearching] = useState(false);
   const [isSwapped, setIsSwapped] = useState(false);
-
-  useFocusEffect(
-    useCallback(() => {
-      setIsSearching(false);
-      let backPressCount = 0;
-      const onBackPress = () => {
-        if (backPressCount === 0) {
-          backPressCount++;
-          ToastAndroid.show('Press back again to exit the app', ToastAndroid.SHORT);
-          setTimeout(() => {
-            backPressCount = 0;
-          }, 2000);
-          return true;
-        } else {
-          BackHandler.exitApp();
-          return true;
-        }
-      };
-
-      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
-      return () => {
-        subscription.remove();
-      };
-    }, [])
-  );
 
   const {
     startLocation,
@@ -74,7 +52,7 @@ export const useBookRideInfo = () => {
     const store = useBookRideStore.getState();
     const currentStart = store.startLocation;
     const currentDest = store.destinationLocation;
-    
+
     store.setStartLocation(currentDest);
     store.setDestinationLocation(currentStart);
   }, []);
@@ -87,7 +65,7 @@ export const useBookRideInfo = () => {
     const store = useBookRideStore.getState();
     store.setSeatCount(Math.min(store.seatCount + 1, 6));
   }, []);
-  
+
   const decrementPeople = useCallback(() => {
     const store = useBookRideStore.getState();
     store.setSeatCount(Math.max(store.seatCount - 1, 1));
@@ -95,7 +73,15 @@ export const useBookRideInfo = () => {
 
   const handleSearchRides = useCallback(async () => {
     const store = useBookRideStore.getState();
-    const { startLocation: curStart, destinationLocation: curDest, travelDate: curDate, seatCount: curSeats, addRecentSearch, setSearchResults, rideType: curType } = store;
+    const {
+      startLocation: curStart,
+      destinationLocation: curDest,
+      travelDate: curDate,
+      seatCount: curSeats,
+      addRecentSearch,
+      setSearchResults,
+      rideType: curType,
+    } = store;
 
     if (curStart && curDest) {
       const selectedDate = curDate ? new Date(curDate) : new Date();
@@ -119,6 +105,10 @@ export const useBookRideInfo = () => {
           size: 15,
         };
 
+        if (!curDate) {
+          store.setTravelDate(format(selectedDate, "yyyy-MM-dd'T'HH:mm:ss"));
+        }
+
         addRecentSearch({
           startLocation: curStart,
           destinationLocation: curDest,
@@ -126,10 +116,19 @@ export const useBookRideInfo = () => {
           seatCount: curSeats,
         });
 
-        const results = await rideService.searchRides(payload);
-        const ridesList = results?.rides || results?.data || (Array.isArray(results) ? results : []);
+        AnalyticsService.logEvent(AnalyticsEvent.SEARCH_RIDE, {
+          source: curStart.address,
+          destination: curDest.address,
+          seat_count: curSeats,
+        });
+
+        const results = await RideService.searchRides(payload);
+        const ridesList =
+          results?.rides ||
+          results?.data ||
+          (Array.isArray(results) ? results : []);
         setSearchResults(ridesList);
-        
+
         if (curType === 'local') {
           navigate('LocalRideResults');
         } else {
@@ -140,59 +139,68 @@ export const useBookRideInfo = () => {
         showNotification(
           NotificationType.ERROR,
           translate('notification.defaultErrorTitle'),
-          getErrorMessage(error, translate('notification.defaultErrorMessage'))
+          getErrorMessage(error, translate('notification.defaultErrorMessage')),
         );
         setIsSearching(false);
       }
     }
   }, [navigate]);
 
-  const handleSelectRecentSearch = useCallback(async (search: RecentSearch) => {
-    const store = useBookRideStore.getState();
-    store.setStartLocation(search.startLocation);
-    store.setDestinationLocation(search.destinationLocation);
-    store.setTravelDate(search.travelDate);
-    store.setSeatCount(search.seatCount);
-    
-    const selectedDate = new Date(search.travelDate);
-    if (isBefore(selectedDate, startOfDay(new Date()))) {
-      store.setTravelDate(null);
-      navigate('BookDateSelection');
-    } else {
-      try {
-        setIsSearching(true);
-        const payload: SearchRidePayload = {
-          sourceLat: search.startLocation.latitude,
-          sourceLon: search.startLocation.longitude,
-          destLat: search.destinationLocation.latitude,
-          destLon: search.destinationLocation.longitude,
-          travelDate: format(selectedDate, "yyyy-MM-dd'T'HH:mm:ss"),
-          requestedSeats: search.seatCount,
-          radiusInMeters: 10000,
-          page: 0,
-          size: 15,
-        };
+  const handleSelectRecentSearch = useCallback(
+    async (search: RecentSearch) => {
+      const store = useBookRideStore.getState();
+      store.setStartLocation(search.startLocation);
+      store.setDestinationLocation(search.destinationLocation);
+      store.setTravelDate(search.travelDate);
+      store.setSeatCount(search.seatCount);
 
-        const results = await rideService.searchRides(payload);
-        const ridesList = results?.rides || results?.data || (Array.isArray(results) ? results : []);
-        store.setSearchResults(ridesList);
-        
-        if (store.rideType === 'local') {
-          navigate('LocalRideResults');
-        } else {
-          navigate('AvailableRides');
+      const selectedDate = new Date(search.travelDate);
+      if (isBefore(selectedDate, startOfDay(new Date()))) {
+        store.setTravelDate(null);
+        navigate('BookDateSelection');
+      } else {
+        try {
+          setIsSearching(true);
+          const payload: SearchRidePayload = {
+            sourceLat: search.startLocation.latitude,
+            sourceLon: search.startLocation.longitude,
+            destLat: search.destinationLocation.latitude,
+            destLon: search.destinationLocation.longitude,
+            travelDate: format(selectedDate, "yyyy-MM-dd'T'HH:mm:ss"),
+            requestedSeats: search.seatCount,
+            radiusInMeters: 25000,
+            page: 0,
+            size: 15,
+          };
+
+          const results = await RideService.searchRides(payload);
+          const ridesList =
+            results?.rides ||
+            results?.data ||
+            (Array.isArray(results) ? results : []);
+          store.setSearchResults(ridesList);
+
+          if (store.rideType === 'local') {
+            navigate('LocalRideResults');
+          } else {
+            navigate('AvailableRides');
+          }
+        } catch (error: any) {
+          console.error('Failed to search rides from recent search:', error);
+          showNotification(
+            NotificationType.ERROR,
+            translate('notification.defaultErrorTitle'),
+            getErrorMessage(
+              error,
+              translate('notification.defaultErrorMessage'),
+            ),
+          );
+          setIsSearching(false);
         }
-      } catch (error: any) {
-        console.error('Failed to search rides from recent search:', error);
-        showNotification(
-          NotificationType.ERROR,
-          translate('notification.defaultErrorTitle'),
-          getErrorMessage(error, translate('notification.defaultErrorMessage'))
-        );
-        setIsSearching(false);
       }
-    }
-  }, [navigate]);
+    },
+    [navigate],
+  );
 
   const handleSetRideType = useCallback((type: 'local' | 'intercity') => {
     useBookRideStore.getState().setRideType(type);
@@ -202,9 +210,190 @@ export const useBookRideInfo = () => {
     useBookRideStore.getState().clearRecentSearches();
   }, []);
 
+  const [ratingPromptRide, setRatingPromptRide] = useState<any>(null);
+  const [isRatingPromptVisible, setIsRatingPromptVisible] = useState(false);
+
+  const checkUnratedRides = useCallback(async () => {
+    // Only prompt once per app runtime session
+    if (globalSessionPrompted) return;
+
+    try {
+      // Fetch archived/past rides
+      const response = await RideService.getMyRides(2, 0, 10);
+      let rideList: any[] = [];
+      if (Array.isArray(response)) rideList = response;
+      else if (response?.rides && Array.isArray(response.rides))
+        rideList = response.rides;
+      else if (response?.data && Array.isArray(response.data))
+        rideList = response.data;
+      else if (response?.content && Array.isArray(response.content))
+        rideList = response.content;
+
+      // Find completed rides (sorted by most recent)
+      const completedRides = rideList.filter(
+        (r: any) => r.rideStatus === 'COMPLETED' || r.status === 'COMPLETED',
+      );
+
+      if (completedRides.length === 0) return;
+
+      // Only evaluate the MOST RECENT completed ride
+      const latestRide = completedRides[0];
+      const targetRideId =
+        latestRide.rideId ||
+        latestRide.bookingId ||
+        latestRide.id ||
+        latestRide._id;
+
+      if (!targetRideId) return;
+
+      // Get already rated/dismissed ride IDs from MMKV
+      const dismissedStr = storage.getString('dismissed_ratings') || '[]';
+      const dismissedIds: any[] = JSON.parse(dismissedStr);
+
+      // If the latest completed ride has already been dismissed or rated, do not prompt
+      const isLocallyDismissed = dismissedIds.some(
+        id => String(id) === String(targetRideId),
+      );
+      if (isLocallyDismissed) {
+        globalSessionPrompted = true;
+        return;
+      }
+
+      // Check if API response indicates the latest ride is already rated
+      const isDriver = latestRide.role === 'DRIVER';
+      const passengersAllRated =
+        Array.isArray(latestRide.passengers) &&
+        (latestRide.passengers.length === 0 ||
+          latestRide.passengers.every((p: any) => p.hasRated === true));
+
+      const isRated =
+        latestRide.hasRated === true ||
+        latestRide.isRated === true ||
+        (isDriver
+          ? passengersAllRated
+          : latestRide.driver?.hasRated === true ||
+            latestRide.myBooking?.hasRatedDriver === true);
+
+      if (!isRated) {
+        globalSessionPrompted = true;
+        setRatingPromptRide(latestRide);
+        setIsRatingPromptVisible(true);
+      }
+    } catch (error) {
+      console.error('[RatingCheck] Failed to check unrated rides:', error);
+    }
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsSearching(false);
+      checkUnratedRides();
+      let backPressCount = 0;
+      const onBackPress = () => {
+        if (backPressCount === 0) {
+          backPressCount++;
+          ToastAndroid.show(
+            'Press back again to exit the app',
+            ToastAndroid.SHORT,
+          );
+          setTimeout(() => {
+            backPressCount = 0;
+          }, 2000);
+          return true;
+        } else {
+          BackHandler.exitApp();
+          return true;
+        }
+      };
+
+      const subscription = BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress,
+      );
+
+      return () => {
+        subscription.remove();
+      };
+    }, [checkUnratedRides]),
+  );
+
+  const handleConfirmRating = useCallback(() => {
+    globalSessionPrompted = true;
+    if (!ratingPromptRide) return;
+
+    const targetRideId =
+      ratingPromptRide.rideId ||
+      ratingPromptRide.bookingId ||
+      ratingPromptRide.id ||
+      ratingPromptRide._id;
+
+    if (targetRideId) {
+      const dismissedStr = storage.getString('dismissed_ratings') || '[]';
+      const dismissedIds: any[] = JSON.parse(dismissedStr);
+      const exists = dismissedIds.some(
+        id => String(id) === String(targetRideId),
+      );
+      if (!exists) {
+        dismissedIds.push(String(targetRideId));
+        storage.set('dismissed_ratings', JSON.stringify(dismissedIds));
+      }
+    }
+
+    setIsRatingPromptVisible(false);
+
+    // Navigate based on role
+    const isUserDriver = ratingPromptRide.role === 'DRIVER';
+    if (isUserDriver) {
+      // Driver rates passenger(s) on RideDetails
+      (navigation.navigate as any)('RideDetails', {
+        rideId: String(targetRideId),
+        status: 'COMPLETED',
+      });
+    } else {
+      // Passenger rates driver on RatingScreen
+      (navigation.navigate as any)('Rating', {
+        rideId: String(targetRideId),
+        targetUserId:
+          ratingPromptRide.driver?.driverId ||
+          ratingPromptRide.driver?.userId ||
+          ratingPromptRide.driverId ||
+          ratingPromptRide.userId ||
+          'driver-1',
+        targetUserName: ratingPromptRide.driver?.name || 'Driver',
+        targetUserRole: 'DRIVER',
+      });
+    }
+  }, [navigation, ratingPromptRide]);
+
+  const handleDismissRating = useCallback(() => {
+    globalSessionPrompted = true;
+    if (!ratingPromptRide) {
+      setIsRatingPromptVisible(false);
+      return;
+    }
+    const targetRideId =
+      ratingPromptRide.rideId ||
+      ratingPromptRide.bookingId ||
+      ratingPromptRide.id ||
+      ratingPromptRide._id;
+
+    if (targetRideId) {
+      const dismissedStr = storage.getString('dismissed_ratings') || '[]';
+      const dismissedIds: any[] = JSON.parse(dismissedStr);
+      const exists = dismissedIds.some(
+        id => String(id) === String(targetRideId),
+      );
+      if (!exists) {
+        dismissedIds.push(String(targetRideId));
+        storage.set('dismissed_ratings', JSON.stringify(dismissedIds));
+      }
+    }
+    setIsRatingPromptVisible(false);
+  }, [ratingPromptRide]);
+
   return {
     pickup: startLocation?.address || '',
-    destination:  destinationLocation?.address || '',
+    destination: destinationLocation?.address || '',
     travelDate: travelDate ? new Date(travelDate) : new Date(),
     peopleCount: seatCount,
     isSearching,
@@ -222,5 +411,9 @@ export const useBookRideInfo = () => {
     t,
     rideType,
     setRideType: handleSetRideType,
+    ratingPromptRide,
+    isRatingPromptVisible,
+    handleConfirmRating,
+    handleDismissRating,
   };
 };

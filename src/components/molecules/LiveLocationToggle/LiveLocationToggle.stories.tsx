@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { LiveLocationToggle } from './LiveLocationToggle';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Molecules/LiveLocationToggle',
   component: LiveLocationToggle,
-
 } satisfies Meta<typeof LiveLocationToggle>;
 
 export default meta;

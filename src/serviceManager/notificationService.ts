@@ -1,11 +1,13 @@
-import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
-import { getMessaging, requestPermission, AuthorizationStatus, registerDeviceForRemoteMessages, getToken, onMessage, onTokenRefresh } from '@react-native-firebase/messaging';
+import notifee, { AndroidImportance, EventType, AndroidStyle } from '@notifee/react-native';
+import messaging from '@react-native-firebase/messaging';
 import { Platform } from 'react-native';
 import { Logger } from '@/utils/logger';
 import { navigate } from '@/navigation/navigationService';
 import { useChatStore } from '@/store/useChatStore';
+import { requestNotificationPermission } from '@/utils/permissionUtils';
+import { MessageStatus } from '@/constants/enums';
 
-class NotificationService {
+export class NotificationService {
   /**
    * Initialize Notifee and Firebase Messaging
    */
@@ -31,7 +33,11 @@ class NotificationService {
     notifee.onBackgroundEvent(async ({ type, detail }) => {
       const { notification, pressAction } = detail;
 
-      if (type === EventType.PRESS && pressAction?.id === 'default' && notification) {
+      if (
+        type === EventType.PRESS &&
+        pressAction?.id === 'default' &&
+        notification
+      ) {
         // Handle notification press from background
         this.handleNotificationTap(notification);
         await notifee.cancelNotification(notification.id!);
@@ -40,15 +46,26 @@ class NotificationService {
 
     // Request permissions
     await this.requestPermission();
-    
-    // Set up FCM foreground listener
+
+    // Set up FCM foreground listener and tap listener
     this.setupFcmListeners();
 
-    // Check if app was opened via notification
+    // Check if app was opened via Notifee local notification
     const initialNotification = await notifee.getInitialNotification();
     if (initialNotification?.notification) {
       Logger.log('[Notifee] App opened via notification:', initialNotification);
       this.handleNotificationTap(initialNotification.notification);
+    }
+
+    // Check if app was opened via FCM push notification from completely quit state
+    try {
+      const fcmInitial = await messaging().getInitialNotification();
+      if (fcmInitial) {
+        Logger.log('[FCM] App opened via notification (quit state):', fcmInitial);
+        this.handleNotificationTap(fcmInitial);
+      }
+    } catch (err) {
+      Logger.error('[FCM] getInitialNotification error:', err);
     }
   }
 
@@ -57,26 +74,56 @@ class NotificationService {
    * Also marks all messages from that sender as read (Optimistic UX).
    */
   public static handleNotificationTap(notification: any) {
+    console.log('====== NOTIFICATION TAPPED ======');
+    console.log(JSON.stringify(notification, null, 2));
+    Logger.log('[NotificationService] Tapped full payload:', notification);
+
     const data = notification.data || {};
-    
-    if (data.type === 'chat' && data.userId && data.name) {
-      Logger.log('[NotificationService] Navigating to ChatDetails from tap', data);
+    const typeStr = String(data.type || '').toLowerCase();
+
+    const rideIdVal = data.rideId || data.ride_id || data.bookingId || data.booking_id;
+
+    if (typeStr === 'chat' && data.userId && data.name) {
+      Logger.log(
+        '[NotificationService] Navigating to ChatDetails from tap',
+        data,
+      );
 
       // Optimistically mark all messages in this conversation as read
       const { myUserId } = useChatStore.getState();
       if (myUserId) {
         const senderId = String(data.userId);
-        const conversationId = myUserId < senderId
-          ? `${myUserId}_${senderId}`
-          : `${senderId}_${myUserId}`;
+        const conversationId =
+          myUserId < senderId
+            ? `${myUserId}_${senderId}`
+            : `${senderId}_${myUserId}`;
         useChatStore.getState().markConversationAsRead(conversationId);
       }
 
-      navigate('ChatDetails', { 
-        userId: String(data.userId), 
+      navigate('ChatDetails', {
+        userId: String(data.userId),
         name: String(data.name),
-        rideId: data.rideId ? String(data.rideId) : undefined,
+        rideId: rideIdVal ? String(rideIdVal) : undefined,
       });
+    } else if (typeStr === 'ride_request' || typeStr.includes('request')) {
+      Logger.log(
+        '[NotificationService] Navigating to MyRides (requests) from tap',
+        data,
+      );
+      navigate('MyRides');
+    } else if (rideIdVal) {
+      Logger.log(
+        '[NotificationService] Navigating to RideDetails from tap',
+        data,
+      );
+      navigate('RideDetails', {
+        rideId: String(rideIdVal),
+      });
+    } else {
+      Logger.log(
+        '[NotificationService] Notification tapped, but no specific routing matched',
+        data,
+      );
     }
   }
 
@@ -85,8 +132,9 @@ class NotificationService {
    */
   public static async requestPermission() {
     try {
+      await requestNotificationPermission();
       const settings = await notifee.requestPermission();
-      
+
       if (settings.authorizationStatus >= 1) {
         Logger.log('[Notifee] Permissions enabled');
       } else {
@@ -94,11 +142,10 @@ class NotificationService {
       }
 
       // Also request FCM permission
-      const messagingInstance = getMessaging();
-      const authStatus = await requestPermission(messagingInstance);
+      const authStatus = await messaging().requestPermission();
       const enabled =
-        authStatus === AuthorizationStatus.AUTHORIZED ||
-        authStatus === AuthorizationStatus.PROVISIONAL;
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
       if (enabled) {
         Logger.log('[FCM] Auth status:', authStatus);
@@ -113,11 +160,12 @@ class NotificationService {
    */
   public static async getFcmToken(): Promise<string | null> {
     try {
-      const messagingInstance = getMessaging();
-      if (typeof registerDeviceForRemoteMessages === 'function') {
-        await registerDeviceForRemoteMessages(messagingInstance);
+      if (Platform.OS === 'ios') {
+        if (!messaging().isDeviceRegisteredForRemoteMessages) {
+          await messaging().registerDeviceForRemoteMessages();
+        }
       }
-      return await getToken(messagingInstance);
+      return await messaging().getToken();
     } catch (error) {
       Logger.error('[FCM] Token retrieval failed', error);
       return null;
@@ -128,45 +176,81 @@ class NotificationService {
    * Set up Firebase Cloud Messaging listeners
    */
   private static setupFcmListeners() {
-    const messagingInstance = getMessaging();
     // Foreground messages
-    onMessage(messagingInstance, async remoteMessage => {
+    messaging().onMessage(async remoteMessage => {
+      console.log('====== FOREGROUND NOTIFICATION RECEIVED ======');
+      console.log(JSON.stringify(remoteMessage, null, 2));
       Logger.log('[FCM] Foreground message arrived:', remoteMessage);
 
       const data = remoteMessage.data || {};
-      const isChatNotification = data.type === 'chat';
+      const typeStr = String(data.type || '').toLowerCase();
+      const isChatNotification = typeStr === 'chat';
 
       if (isChatNotification) {
         // Smart suppression: if user is already viewing this exact chat, do not show a banner.
         const { activeConversationId, myUserId } = useChatStore.getState();
         const myId = myUserId || '';
         const senderId = String(data.userId || '');
-        const expectedConvId = myId < senderId
-          ? `${myId}_${senderId}`
-          : `${senderId}_${myId}`;
+        const expectedConvId =
+          myId < senderId ? `${myId}_${senderId}` : `${senderId}_${myId}`;
 
         if (activeConversationId === expectedConvId) {
-          Logger.log('[FCM] Suppressed notification: user is already in this chat');
+          Logger.log(
+            '[FCM] Suppressed notification: user is already in this chat',
+          );
           return;
         }
 
+        // Add message to local store to update bottom nav badge count
+        const timestampStr = data.timestamp;
+        let timestampVal = Date.now();
+        if (typeof timestampStr === 'string' || typeof timestampStr === 'number') {
+          const num = Number(timestampStr);
+          timestampVal = isNaN(num) ? new Date(timestampStr as string).getTime() : num;
+        }
+
+        const messageContent = String(data.message || remoteMessage.notification?.body || 'New message');
+
+        const chatMessage = {
+          messageId: String(data.messageId || `fcm-${Date.now()}`),
+          senderId: senderId,
+          receiverId: myId,
+          content: messageContent,
+          timestamp: timestampVal,
+          status: MessageStatus.DELIVERED,
+          type: 'text' as const,
+          metadata: data.rideId ? { rideId: String(data.rideId) } : undefined,
+        };
+        useChatStore.getState().addMessage(expectedConvId, chatMessage);
+
+        // Extract display name and body with fallback to notification payload
+        const displayTitle = data.name 
+          ? `💬 ${data.name}` 
+          : (remoteMessage.notification?.title ? `💬 ${remoteMessage.notification.title}` : '💬 New message');
+
         // Mark pending delivery in background — user is NOT in this chat
         await this.displayLocalNotification(
-          `💬 ${String(data.name || 'New message')}`,
-          String(data.message || 'You have a new message'),
-          data as Record<string, string>
+          displayTitle,
+          messageContent,
+          data as Record<string, string>,
         );
       } else if (remoteMessage.notification) {
         await this.displayLocalNotification(
           remoteMessage.notification.title || 'Notification',
           remoteMessage.notification.body || '',
-          remoteMessage.data as Record<string, string>
+          remoteMessage.data as Record<string, string>,
         );
       }
     });
 
+    // Handle clicks when the app is in the background (but running)
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      Logger.log('[FCM] Notification opened app in background:', remoteMessage);
+      this.handleNotificationTap(remoteMessage);
+    });
+
     // Handle token refresh
-    onTokenRefresh(messagingInstance, token => {
+    messaging().onTokenRefresh(token => {
       Logger.log('[FCM] Token refreshed:', token);
     });
   }
@@ -177,14 +261,50 @@ class NotificationService {
   public static async displayLocalNotification(
     title: string,
     body: string,
-    data?: Record<string, string | number | object>
+    data?: Record<string, string | number | object>,
   ) {
     const isChat = data?.type === 'chat';
-    const groupId = isChat ? `chat-${data.userId}` : 'default-group';
+    const rideIdVal = data?.rideId || data?.ride_id || data?.bookingId || data?.booking_id;
+    
+    let groupId = 'default-group';
+    let tag: string | undefined = undefined;
 
-    // Display a notification
+    if (isChat) {
+      groupId = `chat-${data?.userId}`;
+      tag = `chat-${data?.userId}`;
+    } else if (rideIdVal) {
+      groupId = `ride-${rideIdVal}`;
+      tag = `ride-${rideIdVal}`;
+    }
+
+    let styleConfig: any = undefined;
+
+    if (isChat && data?.userId) {
+      try {
+        const { messages, myUserId } = useChatStore.getState();
+        const senderId = String(data.userId);
+        const myId = myUserId || '';
+        const conversationId =
+          myId < senderId ? `${myId}_${senderId}` : `${senderId}_${myId}`;
+        const chatMessages = messages[conversationId] || [];
+        
+        // Extract up to 5 latest messages for the inbox lines view
+        const lines = chatMessages.slice(-5).map(m => m.content);
+        if (lines.length > 0) {
+          styleConfig = {
+            type: AndroidStyle.INBOX,
+            lines: lines,
+          };
+        }
+      } catch (err) {
+        Logger.warn('[Notification] Failed to generate inbox style:', err);
+      }
+    }
+
+    // Display a single collapsed/replaced notification
     await notifee.displayNotification({
-      title,
+      id: tag, // Reusing tag as ID replaces the previous notification so it collapses
+      title: isChat ? title.replace('💬 ', '') : title, // Clean title
       body,
       android: {
         channelId: 'default',
@@ -194,10 +314,12 @@ class NotificationService {
         },
         color: '#04885b', // Primary brand color
         groupId: groupId,
+        tag: tag,
+        style: styleConfig,
       },
       data,
     });
   }
 }
 
-export default NotificationService;
+

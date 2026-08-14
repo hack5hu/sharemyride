@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, RefObject } from 'react';
 
 export interface LocalRideResultsTemplateProps {
   onBack: () => void;
@@ -8,9 +8,9 @@ export interface LocalRideResultsTemplateProps {
   requestLocalPartnerLabel: string;
   onRequestLocalPartner: () => void;
   mapChildren?: ReactNode;
-  onRegionChangeComplete?: (event: any) => void;
-  mapRef?: any;
-  cameraRef?: any;
+  onRegionChangeComplete?: (event: unknown) => void;
+  mapRef?: RefObject<unknown>;
+  cameraRef?: RefObject<unknown>;
   zoom?: number;
   onZoomIn?: () => void;
   onZoomOut?: () => void;

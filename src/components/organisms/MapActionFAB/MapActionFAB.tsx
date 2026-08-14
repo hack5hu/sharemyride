@@ -5,15 +5,18 @@ import { Container, Label } from './MapActionFAB.styles';
 import { MapActionFABProps } from './types.d';
 import { moderateScale } from '@/styles';
 
-export const MapActionFAB: React.FC<MapActionFABProps> = ({ onPress, label }) => {
+export const MapActionFAB: React.FC<MapActionFABProps> = ({
+  onPress,
+  label,
+}) => {
   const theme = useTheme();
 
   return (
     <Container onPress={onPress} activeOpacity={0.9}>
-      <Icon 
-        name="check-circle" 
-        size={moderateScale(20)} 
-        color={theme.colors.on_primary} 
+      <Icon
+        name="check-circle"
+        size={moderateScale(20)}
+        color={theme.colors.on_primary}
       />
       <Label>{label}</Label>
     </Container>

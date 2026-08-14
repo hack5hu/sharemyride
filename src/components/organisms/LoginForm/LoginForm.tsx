@@ -12,6 +12,7 @@ import {
   InputTapOverlay,
   TruecallerRow,
   TermsContainer,
+  TermsText,
   SecurityBadge,
   DummyRow,
 } from './LoginForm.styles';
@@ -23,7 +24,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   onBlur,
   error,
   onSubmit,
-  isValid,
   loading,
   onTruecallerLogin,
   onInputFocus,
@@ -79,11 +79,19 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             >
               {t.login.truecallerPrefix}
             </Typography>
-            <Icon name="verified-user" size={16} color={theme.colors.truecaller} />
+            <Icon
+              name="verified-user"
+              size={16}
+              color={theme.colors.truecaller}
+            />
             <Typography size="md" weight="bold" color={theme.colors.truecaller}>
               {t.login.truecallerSuffix}
             </Typography>
-            <Icon name="keyboard-arrow-right" size={16} color={theme.colors.truecaller} />
+            <Icon
+              name="keyboard-arrow-right"
+              size={16}
+              color={theme.colors.truecaller}
+            />
           </TruecallerRow>
         ) : (
           <DummyRow />
@@ -104,10 +112,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         <SecurityBadge>
           <Icon name="lock-outline" size={18} color={theme.colors.primary} />
         </SecurityBadge>
-        <Typography
+        <TermsText
           size="xs"
           color={theme.colors.on_surface_variant}
-          style={{ flex: 1 }}
         >
           {t.login.termsPrefix}
           <Typography
@@ -128,7 +135,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             {t.login.privacyPolicy}
           </Typography>
           {t.login.termsSuffix}
-        </Typography>
+        </TermsText>
       </TermsContainer>
     </FormContainer>
   );

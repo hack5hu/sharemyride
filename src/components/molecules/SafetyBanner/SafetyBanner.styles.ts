@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { verticalScale, moderateScale, scale } from '@/styles';
+import { moderateScale, scale } from '@/styles';
 
 export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.tertiary_container};

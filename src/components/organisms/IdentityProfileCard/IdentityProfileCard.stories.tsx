@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { IdentityProfileCard } from './IdentityProfileCard';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Organisms/IdentityProfileCard',
   component: IdentityProfileCard,
-
 } satisfies Meta<typeof IdentityProfileCard>;
 
 export default meta;

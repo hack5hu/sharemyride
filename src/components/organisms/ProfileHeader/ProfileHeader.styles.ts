@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
-import { moderateScale } from '@/styles';
+import { moderateScale, scale } from '@/styles';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const HeaderCard = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
@@ -32,11 +33,23 @@ export const StatsSection = styled.View`
 export const StatDivider = styled.View`
   width: 1px;
   height: ${moderateScale(32)}px;
-  background-color: ${({ theme }) => theme.colors.outline_variant}4D; // 30% opacity
+  background-color: ${({ theme }) =>
+    theme.colors.outline_variant}4D; // 30% opacity
 `;
 
 export const VerifiedRow = styled.View`
   flex-direction: row;
   align-items: center;
   gap: ${moderateScale(6)}px;
+`;
+
+export const VerifiedIcon = styled(Icon)`
+  opacity: 0.8;
+`;
+
+export const SettingsButtonWrapper = styled.View`
+  position: absolute;
+  top: ${moderateScale(10)}px;
+  right: ${scale(10)}px;
+  z-index: 10;
 `;

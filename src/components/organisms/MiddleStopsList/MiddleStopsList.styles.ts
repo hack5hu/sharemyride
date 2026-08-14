@@ -8,10 +8,10 @@ export const ListContainer = styled.View`
 
 export const PathLine = styled(LinearGradient).attrs(({ theme }) => ({
   colors: [
-    `${theme.colors.primary}80`, 
-    `${theme.colors.primary}33`, 
+    `${theme.colors.primary}80`,
+    `${theme.colors.primary}33`,
     theme.colors.secondary_container,
-    `${theme.colors.primary}80`
+    `${theme.colors.primary}80`,
   ],
   start: { x: 0, y: 0 },
   end: { x: 0, y: 1 },
@@ -28,7 +28,7 @@ export const PathLine = styled(LinearGradient).attrs(({ theme }) => ({
    Actually icons are horizontal positioned at padding + half-width. 
 */
 
-export const LocationItemArea = styled.View`
+export const LocationItemArea = styled.View<{ $isLast?: boolean }>`
   z-index: 10;
   flex-direction: row;
   align-items: center;
@@ -36,7 +36,8 @@ export const LocationItemArea = styled.View`
   padding: ${moderateScale(16)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_low};
   border-radius: ${moderateScale(12)}px;
-  margin-bottom: ${verticalScale(12)}px;
+  margin-bottom: ${({ $isLast }) =>
+    $isLast ? 0 : verticalScale(12)}px;
   /* Premium Shadow */
   shadow-color: ${({ theme }) => theme.colors.primary};
   shadow-offset: 0px 4px;
@@ -70,7 +71,8 @@ export const AddStopButtonContainer = styled.TouchableOpacity`
   align-items: center;
   gap: ${scale(16)}px;
   padding: ${moderateScale(16)}px;
-  background-color: ${({ theme }) => `${theme.colors.primary_fixed_dim}1A`}; /* 10% opacity */
+  background-color: ${({ theme }) =>
+    `${theme.colors.primary_fixed_dim}1A`}; /* 10% opacity */
   border-width: 1px;
   border-style: dashed;
   border-color: ${({ theme }) => theme.colors.primary}66;
@@ -78,7 +80,9 @@ export const AddStopButtonContainer = styled.TouchableOpacity`
   margin-bottom: ${verticalScale(16)}px;
 `;
 
-export const IconCircle = styled.View<{ variant: 'start' | 'stop' | 'add' | 'end' }>`
+export const IconCircle = styled.View<{
+  variant: 'start' | 'stop' | 'add' | 'end';
+}>`
   width: ${moderateScale(48)}px;
   height: ${moderateScale(48)}px;
   border-radius: 9999px;
@@ -86,14 +90,21 @@ export const IconCircle = styled.View<{ variant: 'start' | 'stop' | 'add' | 'end
   justify-content: center;
   background-color: ${({ theme, variant }) => {
     switch (variant) {
-      case 'start': return theme.colors.primary_fixed;
-      case 'stop': return theme.colors.secondary_container;
-      case 'add': return theme.colors.surface_container_lowest;
-      case 'end': return theme.colors.primary;
-      default: return 'transparent';
+      case 'start':
+        return theme.colors.primary_fixed;
+      case 'stop':
+        return theme.colors.secondary_container;
+      case 'add':
+        return theme.colors.surface_container_lowest;
+      case 'end':
+        return theme.colors.primary;
+      default:
+        return 'transparent';
     }
   }};
-  ${({ variant, theme }) => variant === 'add' && `
+  ${({ variant, theme }) =>
+    variant === 'add' &&
+    `
     shadow-color: ${theme.colors.on_surface};
     shadow-offset: 0px 1px;
     shadow-opacity: 0.05;
@@ -112,7 +123,10 @@ export const LabelText = styled.Text<{ variant: 'start' | 'stop' | 'end' }>`
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: ${({ theme, variant }) => variant === 'stop' ? theme.colors.on_surface_variant : theme.colors.primary};
+  color: ${({ theme, variant }) =>
+    variant === 'stop'
+      ? theme.colors.on_surface_variant
+      : theme.colors.primary};
 `;
 
 export const TitleText = styled.Text`
@@ -133,6 +147,7 @@ export const AddSubtitleText = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-size: ${responsiveFont(12)}px;
   color: ${({ theme }) => theme.colors.on_surface_variant};
+  margin-top: ${verticalScale(2)}px;
 `;
 
 export const RemoveButton = styled.TouchableOpacity`

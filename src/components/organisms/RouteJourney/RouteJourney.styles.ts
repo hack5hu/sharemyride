@@ -17,7 +17,8 @@ export const ConnectorLine = styled(LinearGradient)`
   position: absolute;
   left: ${scale(32) + moderateScale(11)}px;
   top: ${verticalScale(32) + moderateScale(8)}px;
-  bottom: ${verticalScale(32) + moderateScale(32)}px; /* Adjusted to end at the last icon */
+  bottom: ${verticalScale(32) +
+  moderateScale(32)}px; /* Adjusted to end at the last icon */
   width: ${scale(2)}px;
   border-radius: ${scale(1)}px;
 `;

@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
+import { Pressable } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { Typography } from '@/components/atoms/Typography';
 import { moderateScale, verticalScale } from '@/styles';
 
 export const ModalContainer = styled.View`
@@ -57,4 +59,13 @@ export const SecondaryButton = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.colors.surface_variant}50;
+`;
+
+export const StyledPressable = styled(Pressable)`
+  width: 100%;
+  align-items: center;
+`;
+
+export const DescriptionText = styled(Typography)`
+  margin-top: 8px;
 `;

@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { ChatInputSection } from './ChatInputSection';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Organisms/ChatInputSection',
   component: ChatInputSection,
-
 } satisfies Meta<typeof ChatInputSection>;
 
 export default meta;

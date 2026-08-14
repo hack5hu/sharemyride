@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { Tag } from './Tag';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Atoms/Tag',
   component: Tag,
-
 } satisfies Meta<typeof Tag>;
 
 export default meta;

@@ -33,17 +33,25 @@ export interface RouteCardProps {
   onPress: () => void;
 }
 
-export const RouteCard: React.FC<RouteCardProps> = ({ route, isActive, onPress }) => {
+export const RouteCard: React.FC<RouteCardProps> = ({
+  route,
+  isActive,
+  onPress,
+}) => {
   const theme = useTheme();
   const { routeSelection } = useLocale();
 
   return (
     <CardContainer $isActive={isActive} onPress={onPress} activeOpacity={0.8}>
       <IconContainer $isActive={isActive}>
-        <MaterialIcons 
-          name={route.iconName} 
-          size={moderateScale(24)} 
-          color={isActive ? theme.colors.on_primary_fixed_variant : theme.colors.on_surface_variant} 
+        <MaterialIcons
+          name={route.iconName}
+          size={moderateScale(24)}
+          color={
+            isActive
+              ? theme.colors.on_primary_fixed_variant
+              : theme.colors.on_surface_variant
+          }
         />
       </IconContainer>
       <ContentContainer>
@@ -57,11 +65,19 @@ export const RouteCard: React.FC<RouteCardProps> = ({ route, isActive, onPress }
         </HeaderRow>
         <MetricsRow>
           <MetricItem>
-            <MaterialIcons name="schedule" size={moderateScale(16)} color={theme.colors.on_surface_variant} />
+            <MaterialIcons
+              name="schedule"
+              size={moderateScale(16)}
+              color={theme.colors.on_surface_variant}
+            />
             <MetricText>{route.duration}</MetricText>
           </MetricItem>
           <MetricItem>
-            <MaterialIcons name="straighten" size={moderateScale(16)} color={theme.colors.on_surface_variant} />
+            <MaterialIcons
+              name="straighten"
+              size={moderateScale(16)}
+              color={theme.colors.on_surface_variant}
+            />
             <MetricText>{route.distance}</MetricText>
           </MetricItem>
         </MetricsRow>

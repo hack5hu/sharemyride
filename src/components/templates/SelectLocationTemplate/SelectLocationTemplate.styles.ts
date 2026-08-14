@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { Platform } from 'react-native';
+
 import { scale, verticalScale, moderateScale } from '@/styles';
 
 // Full-screen container that sits behind everything
@@ -42,7 +42,7 @@ export const BackButton = styled.TouchableOpacity`
   width: ${moderateScale(36)}px;
   height: ${moderateScale(36)}px;
   border-radius: ${moderateScale(18)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container}; 
+  background-color: ${({ theme }) => theme.colors.surface_container};
   align-items: center;
   justify-content: center;
 `;
@@ -55,22 +55,23 @@ export const HeaderTitle = styled.Text`
   letter-spacing: -0.3px;
 `;
 
-
 // Center pin anchored at the true visual center of the map area (below header, above sheet)
 export const CenterPinWrapper = styled.View`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translateX(-${moderateScale(18)}px) translateY(-${moderateScale(56)}px);
+  transform: translateX(-${moderateScale(18)}px)
+    translateY(-${moderateScale(56)}px);
   z-index: 10;
 `;
 
-export const BottomContainer = styled.View`
+export const BottomContainer = styled.View<{ bottomInset: number }>`
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 30;
+  padding-bottom: ${({ bottomInset }) => bottomInset}px;
 `;
 
 // FAB anchored just above the bottom sheet
@@ -78,15 +79,6 @@ export const ActionFABWrapper = styled.View`
   padding-horizontal: ${scale(16)}px;
   padding-bottom: ${verticalScale(16)}px;
   align-items: center;
-`;
-
-
-export const ZoomControlsWrapper = styled.View`
-  position: absolute;
-  right: ${scale(16)}px;
-  top: 50%;
-  transform: translateY(${verticalScale(-60)}px);
-  z-index: 60;
 `;
 
 export const LocationPreviewContainer = styled.View`
@@ -116,35 +108,28 @@ export const LocationPreviewText = styled.Text`
   font-size: ${moderateScale(13)}px;
   font-weight: 500;
   color: ${({ theme }) => theme.colors.on_surface_variant};
+  margin-top: ${verticalScale(2)}px;
 `;
 
 export const SelectButtonContainer = styled.View`
   margin: ${verticalScale(24)}px;
 `;
 
-export const SelectGradient = styled.View`
-  width: 100%;
-  padding-vertical: ${verticalScale(18)}px;
-  border-radius: ${moderateScale(16)}px;
-  align-items: center;
-  background-color: ${({ theme }) => theme.colors.primary};
-  shadow-color: ${({ theme }) => theme.colors.primary};
-  shadow-offset: 0px 12px;
-  shadow-opacity: 0.25;
-  shadow-radius: 24px;
-  elevation: 8;
+export const PreviewTextWrapper = styled.View`
+  flex: 1;
+  justify-content: center;
 `;
 
-export const SelectButton = styled.TouchableOpacity`
-  width: 100%;
-  align-items: center;
+export const GpsWarningContainer = styled.View`
+  flex: 1;
 `;
 
-export const SelectButtonText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${moderateScale(18)}px;
-  color: ${({ theme }) => theme.colors.on_primary};
+export const LocatingIndicatorWrapper = styled.View`
+  margin-right: ${moderateScale(10)}px;
+`;
+
+export const PreviewIconWrapper = styled.View`
+  margin-right: ${moderateScale(12)}px;
 `;
 
 export const GpsWarningBanner = styled.View`
@@ -156,11 +141,12 @@ export const GpsWarningBanner = styled.View`
   margin-top: ${verticalScale(12)}px;
 `;
 
-export const GpsWarningText = styled.Text`
+export const GpsWarningText = styled.Text<{ $flex?: boolean }>`
   font-family: 'Plus Jakarta Sans';
   font-size: ${moderateScale(13)}px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.on_error_container};
+  ${({ $flex }) => $flex && 'flex: 1;'}
 `;
 
 export const GpsWarningPath = styled.Text`

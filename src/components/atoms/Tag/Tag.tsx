@@ -11,14 +11,21 @@ export const Tag: React.FC<TagProps> = ({
   style,
 }) => {
   const theme = useTheme();
-  
+
   return (
-    <StyledTag active={active} onPress={onPress} activeOpacity={0.7} style={style}>
+    <StyledTag
+      active={active}
+      onPress={onPress}
+      activeOpacity={0.7}
+      style={style}
+    >
       <Typography
         variant="label"
         size="md"
         weight="semibold"
-        color={active ? theme.colors.on_primary : theme.colors.on_surface_variant}
+        color={
+          active ? theme.colors.on_primary : theme.colors.on_surface_variant
+        }
       >
         {children}
       </Typography>

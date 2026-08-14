@@ -1,6 +1,9 @@
 import { VehicleType } from '@/components/molecules/VehicleToggle/VehicleToggle';
 import { Vehicle } from '@/store/useVehicleStore';
-import { SeatSelectionTranslations, SelectSeatTranslations } from '@/constants/localization/types';
+import {
+  SeatSelectionTranslations,
+  SelectSeatTranslations,
+} from '@/constants/localization/types';
 
 export interface SeatSelectionTemplateProps {
   flow: 'publish' | 'book';

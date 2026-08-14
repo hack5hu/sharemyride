@@ -4,7 +4,7 @@ import { useSettingsStore } from '@/store/settings';
 import { useAuthStore } from '@/store';
 import { useLocale } from '@/constants/localization';
 import { storage } from '@/utils/storage';
-import { authService } from '@/serviceManager/authService';
+import { AuthService } from '@/serviceManager/AuthService';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
@@ -15,6 +15,8 @@ export const useSettings = () => {
 
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Appearance
   const themeMode = useSettingsStore(state => state.themeMode);
@@ -30,10 +32,14 @@ export const useSettings = () => {
   const promoEmails = useSettingsStore(state => state.promoEmails);
   const rideReceipts = useSettingsStore(state => state.rideReceipts);
   const accountSecurity = useSettingsStore(state => state.accountSecurity);
-  
-  const togglePushNotifications = useSettingsStore(state => state.togglePushNotifications);
+
+  const togglePushNotifications = useSettingsStore(
+    state => state.togglePushNotifications,
+  );
   const togglePromoEmails = useSettingsStore(state => state.togglePromoEmails);
-  const toggleRideReceipts = useSettingsStore(state => state.toggleRideReceipts);
+  const toggleRideReceipts = useSettingsStore(
+    state => state.toggleRideReceipts,
+  );
 
   // Auth / Logout
   const logout = useAuthStore(state => state.logout);
@@ -48,8 +54,8 @@ export const useSettings = () => {
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
-      // 2. Call authService to notify backend and wipe Keychain + Zustand
-      await authService.logout();
+      // 2. Call AuthService to notify backend and wipe Keychain + Zustand
+      await AuthService.logout();
 
       // 3. Reset Navigation (if Zustand doesn't already catch it)
       navigation.reset({
@@ -61,11 +67,35 @@ export const useSettings = () => {
       showNotification(
         NotificationType.ERROR,
         t.notification.defaultErrorTitle,
-        getErrorMessage(e, t.notification.defaultErrorMessage)
+        getErrorMessage(e, t.notification.defaultErrorMessage),
       );
     } finally {
       setIsLoggingOut(false);
       setIsLogoutModalVisible(false);
+    }
+  };
+
+  const showDeleteConfirmation = () => setIsDeleteModalVisible(true);
+  const hideDeleteConfirmation = () => setIsDeleteModalVisible(false);
+
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    try {
+      await AuthService.deleteAccount();
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login' as never }],
+      });
+    } catch (e: any) {
+      console.error('Delete account failed in settings:', e);
+      showNotification(
+        NotificationType.ERROR,
+        t.notification.defaultErrorTitle,
+        getErrorMessage(e, t.notification.defaultErrorMessage),
+      );
+    } finally {
+      setIsDeleting(false);
+      setIsDeleteModalVisible(false);
     }
   };
 
@@ -93,5 +123,10 @@ export const useSettings = () => {
     isLoggingOut,
     showLogoutConfirmation,
     hideLogoutConfirmation,
+    isDeleteModalVisible,
+    isDeleting,
+    showDeleteConfirmation,
+    hideDeleteConfirmation,
+    handleDeleteAccount,
   };
 };

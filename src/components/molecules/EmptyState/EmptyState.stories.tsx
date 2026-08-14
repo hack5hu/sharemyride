@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { EmptyState } from './EmptyState';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Molecules/EmptyState',
   component: EmptyState,
-
 } satisfies Meta<typeof EmptyState>;
 
 export default meta;

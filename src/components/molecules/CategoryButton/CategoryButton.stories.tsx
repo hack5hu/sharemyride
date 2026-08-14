@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { CategoryButton } from './CategoryButton';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Molecules/CategoryButton',
   component: CategoryButton,
-
 } satisfies Meta<typeof CategoryButton>;
 
 export default meta;

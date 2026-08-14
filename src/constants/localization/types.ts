@@ -146,8 +146,14 @@ export interface ProfileHubTranslations {
   changePassword: string;
   changePasswordDescr: string;
   helpSupport: string;
+  helpSupportDescr: string;
   aboutUs: string;
+  aboutUsDescr: string;
   termsPrivacy: string;
+  termsConditions: string;
+  termsConditionsDescr: string;
+  privacyPolicy: string;
+  privacyPolicyDescr: string;
   logout: string;
   deleteAccount: string;
   navBook: string;
@@ -155,6 +161,8 @@ export interface ProfileHubTranslations {
   navMyRides: string;
   navChats: string;
   navProfile: string;
+  suggestionsFeedback: string;
+  suggestionsFeedbackDescr: string;
 }
 
 export interface EditProfileTranslations {
@@ -261,7 +269,7 @@ export interface ChatTranslations {
   yesterday: string;
   activeDrivers: string;
   locationShared: string;
-  safetmsg: string;
+  safetyMsg: string;
   emptyTitle: string;
   emptyDescription: string;
   sendFailedTitle: string;
@@ -366,6 +374,8 @@ export interface LocationSelectionTranslations {
   continueJourney: string;
   contextualInfo: string;
   recentRidesTitle: string;
+  minDistanceError: string;
+  minDistanceErrorTitle: string;
 }
 
 export interface MapPickerTranslations {
@@ -535,8 +545,10 @@ export interface Translations {
   notification: NotificationTranslations;
   reportIssue: ReportIssueTranslations;
   splash: SplashTranslations;
+  rating: RatingTranslations;
+  otaUpdate: OtaUpdateTranslations;
+  suggestions: SuggestionsTranslations;
 }
-
 
 export interface NotificationTranslations {
   defaultSuccessTitle: string;
@@ -571,6 +583,7 @@ export interface UserProfileDetailTranslations {
   viewRatings: string;
   recentReviews: string;
   reportUser: string;
+  rideCountLabel: string;
   bioTitle: string;
   defaultBio: string;
 }
@@ -650,6 +663,11 @@ export interface SettingsTranslations {
   logoutConfirmMessage: string;
   logoutConfirmButton: string;
   logoutConfirmCancel: string;
+  deleteAccount: string;
+  deleteAccountConfirmTitle: string;
+  deleteAccountConfirmMessage: string;
+  deleteAccountConfirmButton: string;
+  deleteAccountConfirmCancel: string;
   version: string;
 }
 
@@ -879,11 +897,17 @@ export interface ReportIssueTranslations {
   title: string;
   whatHappenedTitle: string;
   whatHappenedSubtitle: string;
-  categorySafety: string;
-  categoryBehavior: string;
-  categoryVehicle: string;
-  categoryPayment: string;
+  categoryInappropriateBehaviour: string;
+  categoryHarassment: string;
+  categoryFakeProfile: string;
+  categoryUnsafeDriving: string;
+  categoryNoShow: string;
+  categorySpam: string;
   categoryOther: string;
+  categoryWrongRoute: string;
+  categoryOvercharging: string;
+  categoryDriverNoShow: string;
+  categoryVehicleCondition: string;
   tellUsMoreTitle: string;
   tellUsMoreSubtitle: string;
   placeholder: string;
@@ -891,7 +915,6 @@ export interface ReportIssueTranslations {
   submitReport: string;
   cancel: string;
 }
-
 
 export interface ChatLocationTranslations {
   headerTitle: string;
@@ -908,5 +931,69 @@ export interface ChatLocationTranslations {
   gpsSettingsPathAndroid: string;
   gpsSettingsPathIos: string;
   loadingCurrentLocation: string;
+  locationDisclosureTitle: string;
+  locationDisclosureMessage: string;
+  agree: string;
 }
 
+export interface RatingTranslations {
+  title: string;
+  subtitle: string;
+  submitButton: string;
+  submittingButton: string;
+  successTitle: string;
+  successMessage: string;
+  ratingRequired: string;
+  reviewPlaceholder: string;
+  rateUser: string;
+  cameOnTime: string;
+  ridingExperience: string;
+  talkingExperience: string;
+  cleanliness: string;
+  behavior: string;
+  overall: string;
+  ratingCardTitle: string;
+  ratingCardSubtitle: string;
+  rateButtonText: string;
+  ratedStatus: string;
+}
+
+export interface SuggestionsTranslations {
+  title: string;
+  submitTab: string;
+  historyTab: string;
+  categoryLabel: string;
+  categoryFeature: string;
+  categoryBug: string;
+  categoryImprovement: string;
+  categoryOther: string;
+  summaryLabel: string;
+  summaryPlaceholder: string;
+  descriptionLabel: string;
+  descriptionPlaceholder: string;
+  screenshotsLabel: string;
+  screenshotsDescription: string;
+  addPhoto: string;
+  submitButton: string;
+  submittingButton: string;
+  validationErrorCategory: string;
+  validationErrorSummary: string;
+  validationErrorDescription: string;
+  successTitle: string;
+  successMessage: string;
+  ticketNumber: string;
+  ticketStatusOpen: string;
+  ticketStatusInProgress: string;
+  ticketStatusResolved: string;
+  ticketStatusUnderReview: string;
+  ticketCreatedOn: string;
+  updatesLabel: string;
+  noTicketsTitle: string;
+  noTicketsMessage: string;
+}
+
+export interface OtaUpdateTranslations {
+  title: string;
+  message: string;
+  confirmBtn: string;
+}

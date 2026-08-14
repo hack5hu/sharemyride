@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import LinearGradient from 'react-native-linear-gradient';
-import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+
+import { scale, verticalScale, responsiveFont } from '@/styles';
 
 export const FixedFooter = styled.View`
   position: absolute;
@@ -27,8 +27,6 @@ export const ErrorText = styled.Text`
   margin-bottom: ${verticalScale(12)}px;
   padding-horizontal: ${scale(24)}px;
 `;
-
-
 
 export const TermsText = styled.Text`
   font-family: 'Plus Jakarta Sans';

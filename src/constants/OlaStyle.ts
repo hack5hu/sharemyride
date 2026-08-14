@@ -33,10 +33,8 @@ export const getOlaStyleUrl = {
       url: `https://api.olamaps.io/tiles/vector/v1/data/street.json?api_key=${OLA_API_KEY}`,
     },
   },
-  sprite:
-    `https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/sprite?api_key=${OLA_API_KEY}`,
-  glyphs:
-    `https://api.olamaps.io/tiles/vector/v1/fonts/{fontstack}/{range}.pbf?api_key=${OLA_API_KEY}`,
+  sprite: `https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/sprite?api_key=${OLA_API_KEY}`,
+  glyphs: `https://api.olamaps.io/tiles/vector/v1/fonts/{fontstack}/{range}.pbf?api_key=${OLA_API_KEY}`,
   layers: [
     {
       id: 'background',

@@ -6,17 +6,19 @@ export const useCancelRide = () => {
   const navigation = useAppNavigation();
   const { cancelRide } = useLocale();
 
-
   const [selectedReasonId, setSelectedReasonId] = useState<string | null>(null);
   const [otherReasonText, setOtherReasonText] = useState<string>('');
 
-  const reasons = useMemo(() => [
-    { id: 'driver_far', label: cancelRide.reasonDriverFar },
-    { id: 'changed_mind', label: cancelRide.reasonChangedMind },
-    { id: 'cheaper_ride', label: cancelRide.reasonCheaperRide },
-    { id: 'wait_long', label: cancelRide.reasonWaitLong },
-    { id: 'other', label: cancelRide.reasonOther },
-  ], [cancelRide]);
+  const reasons = useMemo(
+    () => [
+      { id: 'driver_far', label: cancelRide.reasonDriverFar },
+      { id: 'changed_mind', label: cancelRide.reasonChangedMind },
+      { id: 'cheaper_ride', label: cancelRide.reasonCheaperRide },
+      { id: 'wait_long', label: cancelRide.reasonWaitLong },
+      { id: 'other', label: cancelRide.reasonOther },
+    ],
+    [cancelRide],
+  );
 
   const onSelectReason = useCallback((id: string) => {
     setSelectedReasonId(id);

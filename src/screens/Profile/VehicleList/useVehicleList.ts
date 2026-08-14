@@ -13,10 +13,13 @@ export const useVehicleList = (): UseVehicleListReturn => {
   const navigation = useAppNavigation();
   const isFocused = useIsFocused();
   const locale = useLocale();
-  const { vehicles, isLoading, syncVehicles, removeVehicle } = useVehicleStore();
+  const { vehicles, isLoading, syncVehicles, removeVehicle } =
+    useVehicleStore();
 
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(null);
+  const [selectedVehicleId, setSelectedVehicleId] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
     if (isFocused) {
@@ -24,9 +27,12 @@ export const useVehicleList = (): UseVehicleListReturn => {
     }
   }, [isFocused, syncVehicles]);
 
-  const onEdit = useCallback((id: string) => {
-    (navigation.navigate as any)('VehicleDetails', { vehicleId: id });
-  }, [navigation]);
+  const onEdit = useCallback(
+    (id: string) => {
+      (navigation.navigate as any)('VehicleDetails', { vehicleId: id });
+    },
+    [navigation],
+  );
 
   const onDelete = useCallback((id: string) => {
     setSelectedVehicleId(id);
@@ -40,13 +46,13 @@ export const useVehicleList = (): UseVehicleListReturn => {
       showNotification(
         NotificationType.SUCCESS,
         locale.notification.defaultSuccessTitle,
-        locale.notification.vehicleRemoved
+        locale.notification.vehicleRemoved,
       );
     } catch {
       showNotification(
         NotificationType.ERROR,
         locale.notification.defaultErrorTitle,
-        locale.notification.vehicleRemoveError
+        locale.notification.vehicleRemoveError,
       );
     } finally {
       setIsDeleteModalVisible(false);

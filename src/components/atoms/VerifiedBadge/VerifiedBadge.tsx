@@ -9,10 +9,10 @@ export const VerifiedBadge: React.FC<VerifiedBadgeProps> = ({ size = 16 }) => {
 
   return (
     <Container size={size}>
-      <StyledIcon 
-        name="verified" 
-        size={moderateScale(size * 0.6)} 
-        color={theme.colors.on_primary} 
+      <StyledIcon
+        name="verified"
+        size={moderateScale(size * 0.6)}
+        color={theme.colors.on_primary}
       />
     </Container>
   );

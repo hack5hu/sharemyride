@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { PreferencesSection } from './PreferencesSection';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Organisms/PreferencesSection',
   component: PreferencesSection,
-
 } satisfies Meta<typeof PreferencesSection>;
 
 export default meta;

@@ -1,16 +1,24 @@
 import React from 'react';
-import { ViewStyle, PermissionsAndroid, Platform } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { Avatar } from '../../atoms/Avatar';
-import { IconButton } from '../../atoms/IconButton';
-import { Container, EditButtonContainer, AvatarWrapper, DOBLabel, TouchableAvatar } from './AvatarPicker.styles';
-import { Typography } from '../../atoms/Typography';
+import { Avatar } from '@/components/atoms/Avatar';
+import { requestPhotoPermission } from '@/utils/permissionUtils';
+
+import {
+  Container,
+  AvatarWrapper,
+  TouchableAvatar,
+  AddPhotoText,
+} from './AvatarPicker.styles';
 import { useTranslation } from '@/hooks/useTranslation';
-import { moderateScale } from '@/styles';
 
 export interface AvatarPickerProps {
   uri?: string;
-  onImageSelected?: (asset: { uri: string; name?: string; type?: string }) => void;
+  onImageSelected?: (asset: {
+    uri: string;
+    name?: string;
+    type?: string;
+  }) => void;
   style?: ViewStyle;
   disabled?: boolean;
   showAddText?: boolean;
@@ -24,28 +32,10 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({
   showAddText,
 }) => {
   const { t } = useTranslation();
-  
+
   const handlePicker = async () => {
     if (disabled) return;
-    if (Platform.OS === 'android') {
-      try {
-        const apiLevel = parseInt(Platform.Version.toString(), 10);
-        
-        if (apiLevel >= 33) {
-          // Android 13+ requires specific media permissions
-          await PermissionsAndroid.request(
-            (PermissionsAndroid.PERMISSIONS as any).READ_MEDIA_IMAGES,
-          );
-        } else {
-          // Older Android versions use broader storage permission
-          await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-          );
-        }
-      } catch (err) {
-        console.warn('Permission request failed', err);
-      }
-    }
+    await requestPhotoPermission();
 
     // Launch the picker regardless of the permission result.
     // Modern Android system photo pickers often don't require app-level permissions.
@@ -68,32 +58,25 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = ({
 
   return (
     <Container style={style}>
-      <TouchableAvatar 
+      <TouchableAvatar
         onPress={disabled ? undefined : handlePicker}
         disabled={disabled}
         activeOpacity={0.7}
       >
-        <AvatarWrapper style={{ opacity: disabled ? 0.6 : 1 }}>
-          <Avatar 
-            source={uri ? { uri } : undefined} 
-            size="lg" 
-            iconName={!uri ? "person" : undefined}
+        <AvatarWrapper disabled={disabled}>
+          <Avatar
+            source={uri ? { uri } : undefined}
+            size="lg"
+            iconName={!uri ? 'person' : undefined}
           />
         </AvatarWrapper>
-        
-        {(!uri && showAddText) && (
-          <Typography 
-            variant="label" 
-            size="lg" 
-            weight="bold" 
-            color="primary"
-            style={{ marginTop: moderateScale(8) }}
-          >
+
+        {!uri && showAddText && (
+          <AddPhotoText variant="label" size="lg" weight="bold" color="primary">
             {t('profileSetup.addPhoto')}
-          </Typography>
+          </AddPhotoText>
         )}
       </TouchableAvatar>
     </Container>
   );
 };
-

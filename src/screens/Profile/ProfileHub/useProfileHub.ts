@@ -1,11 +1,11 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '@/navigation/types';
 import { useTranslation } from '@/hooks/useTranslation';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect, useMemo } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { userService } from '@/serviceManager/userService';
+import { Linking } from 'react-native';
+import { UserService } from '@/serviceManager/UserService';
+import { computeTotalRides } from '@/utils/user';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 
@@ -15,6 +15,10 @@ export const useProfileHub = () => {
   const { user, fetchProfile } = useAuthStore();
   const [isUpdatingAvatar, setIsUpdatingAvatar] = useState(false);
   const [isAvatarModalVisible, setAvatarModalVisible] = useState(false);
+
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
 
   const handleAvatarEdit = useCallback(() => {
     if (isUpdatingAvatar) return;
@@ -37,21 +41,27 @@ export const useProfileHub = () => {
       setIsUpdatingAvatar(true);
       const selectedImage = result.assets[0];
 
-      await userService.uploadProfilePhoto(selectedImage.uri!);
+      await UserService.uploadProfilePhoto(selectedImage.uri!);
 
       await fetchProfile();
       showNotification(
         NotificationType.SUCCESS,
-        t('notification.defaultSuccessTitle') ,
-        t('notification.profilePhotoUpdated')
+        t('notification.defaultSuccessTitle'),
+        t('notification.profilePhotoUpdated'),
       );
     } catch (error: unknown) {
-      const axiosError = error as { response?: { data?: { message?: string } }; message?: string };
-      const errorMessage = axiosError?.response?.data?.message || axiosError?.message || t('notification.defaultErrorMessage');
+      const axiosError = error as {
+        response?: { data?: { message?: string } };
+        message?: string;
+      };
+      const errorMessage =
+        axiosError?.response?.data?.message ||
+        axiosError?.message ||
+        t('notification.defaultErrorMessage');
       showNotification(
         NotificationType.ERROR,
-        t('notification.defaultErrorTitle') ,
-        errorMessage
+        t('notification.defaultErrorTitle'),
+        errorMessage,
       );
     } finally {
       setIsUpdatingAvatar(false);
@@ -62,24 +72,24 @@ export const useProfileHub = () => {
     setAvatarModalVisible(false);
     try {
       setIsUpdatingAvatar(true);
-      await userService.deleteProfilePhoto();
+      await UserService.deleteProfilePhoto();
 
       await fetchProfile();
       showNotification(
         NotificationType.SUCCESS,
-        t('notification.defaultSuccessTitle') ,
-        t('notification.profilePhotoUpdated') // We can use the same generic success message or a new one
+        t('notification.defaultSuccessTitle'),
+        t('notification.profilePhotoUpdated'), // We can use the same generic success message or a new one
       );
-    } catch (error) {
+    } catch {
       showNotification(
         NotificationType.ERROR,
-        t('notification.defaultErrorTitle') ,
-        t('notification.defaultErrorMessage')
+        t('notification.defaultErrorTitle'),
+        t('notification.defaultErrorMessage'),
       );
     } finally {
       setIsUpdatingAvatar(false);
     }
-  }, [user, fetchProfile, t]);
+  }, [fetchProfile, t]);
 
   const navigateToEditProfile = useCallback(() => {
     navigation.navigate('EditProfile');
@@ -93,29 +103,73 @@ export const useProfileHub = () => {
     navigation.navigate('TravelPreferences');
   }, [navigation]);
 
-  const navigateToDummy = useCallback((title: string, options?: { 
-    showBack?: boolean, 
-    showBottomNav?: boolean, 
-    contentKey?: 'about' | 'help' | 'terms' 
-  }) => {
-    navigation.navigate('Dummy', { title, ...options });
-  }, [navigation]);
+  const navigateToDummy = useCallback(
+    (
+      title: string,
+      options?: {
+        showBack?: boolean;
+        showBottomNav?: boolean;
+        contentKey?: 'about' | 'help' | 'terms';
+      },
+    ) => {
+      navigation.navigate('Dummy', { title, ...options });
+    },
+    [navigation],
+  );
 
   const navigateToSettings = useCallback(() => {
     navigation.navigate('Settings');
   }, [navigation]);
 
+  const navigateToHelpAndSupport = useCallback(() => {
+    Linking.openURL('https://www.zyncride.com/contact').catch(err =>
+      console.error('Failed to open support URL', err),
+    );
+  }, []);
+
   const navigateToTermsAndConditions = useCallback(() => {
-    navigation.navigate('TermsAndConditions');
-  }, [navigation]);
+    Linking.openURL('https://www.zyncride.com/terms-and-conditions').catch(err =>
+      console.error('Failed to open terms URL', err),
+    );
+  }, []);
+
+  const navigateToPrivacyPolicy = useCallback(() => {
+    Linking.openURL('https://www.zyncride.com/privacy-policy').catch(err =>
+      console.error('Failed to open privacy policy URL', err),
+    );
+  }, []);
 
   const navigateToAboutUs = useCallback(() => {
-    navigation.navigate('AboutUs');
+    Linking.openURL('https://www.zyncride.com').catch(err =>
+      console.error('Failed to open about us URL', err),
+    );
+  }, []);
+
+  const navigateToSuggestions = useCallback(() => {
+    navigation.navigate('Suggestions');
   }, [navigation]);
 
-  const navigateToHelpAndSupport = useCallback(() => {
-    navigation.navigate('HelpAndSupport');
-  }, [navigation]);
+  const rating = useMemo(() => {
+    return user?.rating !== undefined ? Number(user.rating) : 0;
+  }, [user?.rating]);
+
+  const rides = useMemo(() => {
+    return computeTotalRides(user);
+  }, [user]);
+
+  const memberSince = useMemo(() => {
+    if (user?.createdAt) {
+      const date = new Date(String(user.createdAt));
+      if (!isNaN(date.getTime())) {
+        return date.getFullYear();
+      }
+    }
+    return 2026;
+  }, [user?.createdAt]);
+
+  const isVerified = useMemo(() => {
+    return !!(user?.emailVerified || user?.phoneVerified);
+  }, [user?.emailVerified, user?.phoneVerified]);
 
   return {
     t,
@@ -132,8 +186,13 @@ export const useProfileHub = () => {
     navigateToSettings,
     navigateToDummy,
     navigateToTermsAndConditions,
+    navigateToPrivacyPolicy,
     navigateToAboutUs,
     navigateToHelpAndSupport,
+    navigateToSuggestions,
+    rating,
+    rides,
+    memberSince,
+    isVerified,
   };
 };
-

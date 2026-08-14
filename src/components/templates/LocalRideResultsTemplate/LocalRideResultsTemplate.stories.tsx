@@ -10,7 +10,7 @@ export const Default = () => (
   <LocalRideResultsTemplate
     onBack={() => console.log('Back')}
     latitude={28.6139}
-    longitude={77.2090}
+    longitude={77.209}
     localServiceAreaLabel="Local Service Area"
     requestLocalPartnerLabel="Request Local Partner"
     onRequestLocalPartner={() => console.log('Request')}

@@ -22,7 +22,6 @@ export const ScrollArea = styled.ScrollView.attrs({
   flex-grow: 0;
 `;
 
-
 export const Section = styled.View`
   padding-vertical: ${verticalScale(16)}px;
 `;

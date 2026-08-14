@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { AppState, AppStateStatus } from 'react-native';
 import { useAuthStore } from '@/store/useAuthStore';
-import { chatService } from '@/serviceManager/chatService';
+import { ChatService } from '@/serviceManager/ChatService';
 import { useChatStore } from '@/store/useChatStore';
 
 /**
@@ -15,15 +15,13 @@ export const useChatSocket = (isActive: boolean = true) => {
 
   useEffect(() => {
     if (isActive && user?.userId) {
-      chatService.connect(user.userId).catch(() => undefined);
+      ChatService.connect(user.userId).catch(() => undefined);
       // Periodic cleanup of old messages (14-day rule)
       flushOldMessages();
     }
 
     return () => {
-      // We might not want to disconnect immediately if just navigating between chat screens
-      // But for this requirement, we ensure it's handled.
-      // chatService.disconnect();
+      ChatService.disconnect();
     };
   }, [isActive, user?.userId, flushOldMessages]);
 
@@ -32,11 +30,14 @@ export const useChatSocket = (isActive: boolean = true) => {
 
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
       if (nextAppState === 'active' && user.userId) {
-        chatService.connect(user.userId).catch(() => undefined);
+        ChatService.connect(user.userId).catch(() => undefined);
       }
     };
 
-    const subscription = AppState.addEventListener('change', handleAppStateChange);
+    const subscription = AppState.addEventListener(
+      'change',
+      handleAppStateChange,
+    );
     return () => {
       subscription.remove();
     };

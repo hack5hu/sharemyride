@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import * as Keychain from 'react-native-keychain';
 import { mmkvStorage } from '../utils/storage';
 import { Logger } from '@/utils/logger';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 
 interface AuthUser {
   id?: string;
@@ -23,7 +24,11 @@ interface AuthState {
   isAuthenticated: boolean;
   isProfileCompleted: boolean;
   isInitializing: boolean;
-  setAuth: (user: AuthUser, token: string, isProfileCompleted?: boolean) => void;
+  setAuth: (
+    user: AuthUser,
+    token: string,
+    isProfileCompleted?: boolean,
+  ) => void;
   setProfileCompleted: (value: boolean) => void;
   logout: () => void;
   initialize: () => Promise<void>;
@@ -32,50 +37,81 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set) => ({
+    set => ({
       token: null,
       user: null,
       isAuthenticated: false,
       isProfileCompleted: false,
       isInitializing: true,
-      
+
       setAuth: (user, token, isProfileCompleted = false) => {
         set({ user, token, isAuthenticated: true, isProfileCompleted });
+        if (user?.userId || user?.id) {
+          AnalyticsService.setUser((user.userId || user.id) as string);
+        }
       },
 
-      setProfileCompleted: (value) => {
+      setProfileCompleted: value => {
         set({ isProfileCompleted: value });
       },
-      
+
       logout: () => {
-        set({ user: null, token: null, isAuthenticated: false, isProfileCompleted: false });
+        set({
+          user: null,
+          token: null,
+          isAuthenticated: false,
+          isProfileCompleted: false,
+        });
+        AnalyticsService.clearUser();
+        AnalyticsService.logEvent(AnalyticsEvent.USER_LOGOUT);
+        try {
+          const { resetAllStores } = require('./resetAllStores');
+          resetAllStores();
+        } catch (error) {
+          Logger.error('Failed to reset all stores in auth logout:', error);
+        }
       },
-      
+
       initialize: async () => {
         const startTime = Date.now();
         try {
-          const credentials = await Keychain.getGenericPassword({ service: 'auth_token' });
+          const credentials = await Keychain.getGenericPassword({
+            service: 'auth_token',
+          });
           if (credentials && credentials.password) {
-            set({ 
-              token: credentials.password, 
-              isAuthenticated: true 
+            set({
+              token: credentials.password,
+              isAuthenticated: true,
             });
-            // Background fetch profile after token is loaded only if profile is completed
             if (useAuthStore.getState().isProfileCompleted) {
               useAuthStore.getState().fetchProfile();
             }
+            if (useAuthStore.getState().user) {
+              const u = useAuthStore.getState().user;
+              if (u?.userId || u?.id) AnalyticsService.setUser((u.userId || u.id) as string);
+            }
           } else {
             // No valid token in keychain — clear any stale persisted state
-            set({ user: null, token: null, isAuthenticated: false, isProfileCompleted: false });
+            set({
+              user: null,
+              token: null,
+              isAuthenticated: false,
+              isProfileCompleted: false,
+            });
           }
         } catch {
           // Keychain error: treat as logged out
-          set({ user: null, token: null, isAuthenticated: false, isProfileCompleted: false });
+          set({
+            user: null,
+            token: null,
+            isAuthenticated: false,
+            isProfileCompleted: false,
+          });
         } finally {
           const elapsedTime = Date.now() - startTime;
           const remainingTime = Math.max(0, 1500 - elapsedTime);
           if (remainingTime > 0) {
-            await new Promise((resolve) => setTimeout(resolve, remainingTime));
+            await new Promise(resolve => setTimeout(resolve, remainingTime));
           }
           set({ isInitializing: false });
         }
@@ -83,32 +119,47 @@ export const useAuthStore = create<AuthState>()(
 
       fetchProfile: async () => {
         try {
-          const { userService } = require('@/serviceManager/userService');
-          const profile = await userService.getProfile();
+          const { UserService } = require('@/serviceManager/UserService');
+          const profile = await UserService.getProfile();
           if (profile) {
             const currentUser = useAuthStore.getState().user;
-            const isProfileCompleted = !!profile.name && !!(profile.date || profile.dateOfBirth);
-            
-            const isIdentical = currentUser &&
+            const isProfileCompleted =
+              !!profile.name && !!(profile.date || profile.dateOfBirth);
+
+            const isIdentical =
+              currentUser &&
               currentUser.name === profile.name &&
-              currentUser.dateOfBirth === (profile.date || profile.dateOfBirth) &&
+              currentUser.dateOfBirth ===
+                (profile.date || profile.dateOfBirth) &&
               currentUser.phoneNumber === profile.phoneNumber &&
               currentUser.profilePhotoUrl === profile.profilePhotoUrl &&
               currentUser.gender === profile.gender &&
               currentUser.bio === profile.bio &&
+              currentUser.rating === profile.rating &&
+              currentUser.totalRidesAsDriver === profile.totalRidesAsDriver &&
+              currentUser.totalRidesAsPassenger === profile.totalRidesAsPassenger &&
+              currentUser.createdAt === profile.createdAt &&
+              currentUser.emailVerified === profile.emailVerified &&
+              currentUser.phoneVerified === profile.phoneVerified &&
               useAuthStore.getState().isProfileCompleted === isProfileCompleted;
 
             if (!isIdentical) {
-              set((state) => ({
-                user: { 
-                  ...state.user, 
+              set(state => ({
+                user: {
+                  ...state.user,
                   ...profile,
                   name: profile.name,
                   dateOfBirth: profile.date || profile.dateOfBirth,
                   phoneNumber: profile.phoneNumber,
                   profilePhotoUrl: profile.profilePhotoUrl,
+                  rating: profile.rating,
+                  totalRidesAsDriver: profile.totalRidesAsDriver,
+                  totalRidesAsPassenger: profile.totalRidesAsPassenger,
+                  createdAt: profile.createdAt,
+                  emailVerified: profile.emailVerified,
+                  phoneVerified: profile.phoneVerified,
                 },
-                isProfileCompleted
+                isProfileCompleted,
               }));
             }
           }
@@ -130,6 +181,6 @@ export const useAuthStore = create<AuthState>()(
         ...(persistedState as Partial<AuthState>),
         token: null,
       }),
-    }
-  )
+    },
+  ),
 );

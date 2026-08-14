@@ -2,16 +2,17 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { moderateScale } from '@/styles';
-import { 
-  GridRow, 
-  GridCard, 
-  SectionHeader, 
-  SectionLabel, 
-  EditButton, 
-  GridCardValue, 
-  GridCardSub, 
-  EmptyStateWrapper, 
-  EmptyStateText 
+import {
+  GridRow,
+  GridCard,
+  SectionHeader,
+  SectionLabel,
+  EditButton,
+  GridCardValue,
+  GridCardSub,
+  EmptyStateWrapper,
+  EmptyStateText,
+  StyledEditIcon,
 } from './GridInfo.styles';
 
 interface GridInfoProps {
@@ -23,11 +24,11 @@ interface GridInfoProps {
   disabled?: boolean;
 }
 
-export const GridInfo: React.FC<GridInfoProps> = ({ 
-  vehicle, 
-  pricing, 
-  onEditVehicle, 
-  onEditSeats, 
+export const GridInfo: React.FC<GridInfoProps> = ({
+  vehicle,
+  pricing,
+  onEditVehicle,
+  onEditSeats,
   t,
   disabled,
 }) => {
@@ -37,9 +38,22 @@ export const GridInfo: React.FC<GridInfoProps> = ({
     <GridRow>
       <GridCard>
         <SectionHeader>
-          <Icon name="directions-car" size={moderateScale(20)} color={theme.colors.primary} />
-          <EditButton onPress={onEditVehicle} activeOpacity={0.7} disabled={disabled}>
-            <Icon name="edit" size={moderateScale(16)} color={theme.colors.primary} style={{ opacity: disabled ? 0.4 : 1 }} />
+          <Icon
+            name="directions-car"
+            size={moderateScale(20)}
+            color={theme.colors.primary}
+          />
+          <EditButton
+            onPress={onEditVehicle}
+            activeOpacity={0.7}
+            disabled={disabled}
+          >
+            <StyledEditIcon
+              name="edit"
+              size={moderateScale(16)}
+              color={theme.colors.primary}
+              $disabled={disabled}
+            />
           </EditButton>
         </SectionHeader>
         <SectionLabel>{t.vehicleLabel}</SectionLabel>
@@ -58,9 +72,22 @@ export const GridInfo: React.FC<GridInfoProps> = ({
 
       <GridCard>
         <SectionHeader>
-          <Icon name="group" size={moderateScale(20)} color={theme.colors.primary} />
-          <EditButton onPress={onEditSeats} activeOpacity={0.7} disabled={disabled}>
-            <Icon name="edit" size={moderateScale(16)} color={theme.colors.primary} style={{ opacity: disabled ? 0.4 : 1 }} />
+          <Icon
+            name="group"
+            size={moderateScale(20)}
+            color={theme.colors.primary}
+          />
+          <EditButton
+            onPress={onEditSeats}
+            activeOpacity={0.7}
+            disabled={disabled}
+          >
+            <StyledEditIcon
+              name="edit"
+              size={moderateScale(16)}
+              color={theme.colors.primary}
+              $disabled={disabled}
+            />
           </EditButton>
         </SectionHeader>
         <SectionLabel>{t.availabilityLabel}</SectionLabel>

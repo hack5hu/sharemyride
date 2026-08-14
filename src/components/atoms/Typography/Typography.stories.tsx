@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { Typography } from './Typography';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Atoms/Typography',
   component: Typography,
-
 } satisfies Meta<typeof Typography>;
 
 export default meta;

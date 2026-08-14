@@ -1,10 +1,10 @@
-import { 
-  StyledAvatar, 
-  AvatarImage, 
-  PlaceholderContainer, 
-  Container, 
-  StatusBadge, 
-  VerifiedBadge 
+import {
+  StyledAvatar,
+  AvatarImage,
+  PlaceholderContainer,
+  Container,
+  StatusBadge,
+  VerifiedBadge,
 } from './Avatar.styles';
 import { AvatarProps } from './types';
 import { Typography } from '../Typography';
@@ -38,8 +38,14 @@ export const Avatar: React.FC<AvatarProps> = ({
   };
 
   const renderContent = () => {
-    const hasSource = source && (typeof source === 'number' || (source as any).uri);
-    
+    const hasSource =
+      source &&
+      (typeof source === 'number' ||
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
+        ((source as any).uri &&
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
+          !(source as any).uri.includes('ui-avatars.com')));
+
     if (hasSource) {
       return <AvatarImage source={source} size={size} />;
     }
@@ -47,10 +53,10 @@ export const Avatar: React.FC<AvatarProps> = ({
     if (iconName) {
       return (
         <PlaceholderContainer size={size}>
-          <MaterialIcon 
-            name={iconName} 
-            size={getIconSize()} 
-            color={theme.colors.primary} 
+          <MaterialIcon
+            name={iconName}
+            size={getIconSize()}
+            color={theme.colors.primary}
           />
         </PlaceholderContainer>
       );
@@ -60,12 +66,19 @@ export const Avatar: React.FC<AvatarProps> = ({
       if (!name) return 'U';
       const parts = name.trim().split(' ');
       if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
-      return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+      return (
+        parts[0].charAt(0) + parts[parts.length - 1].charAt(0)
+      ).toUpperCase();
     };
-    
+
     return (
       <PlaceholderContainer size={size}>
-        <Typography variant="title" size="lg" weight="bold" color={theme.colors.on_surface_variant}>
+        <Typography
+          variant="title"
+          size="lg"
+          weight="bold"
+          color={theme.colors.on_surface_variant}
+        >
           {getInitials(placeholder)}
         </Typography>
       </PlaceholderContainer>
@@ -88,14 +101,10 @@ export const Avatar: React.FC<AvatarProps> = ({
       <StyledAvatar size={size} border={border}>
         {renderContent()}
       </StyledAvatar>
-      
+
       {isVerified && (
         <VerifiedBadge size={size}>
-          <MaterialIcon 
-            name="check" 
-            size={moderateScale(10)} 
-            color="#FFFFFF" 
-          />
+          <MaterialIcon name="check" size={moderateScale(10)} color="#FFFFFF" />
         </VerifiedBadge>
       )}
 

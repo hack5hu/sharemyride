@@ -6,8 +6,8 @@ export const createPreferenceSlice: StateCreator<
   [],
   [],
   PreferenceSlice
-> = (set) => ({
+> = set => ({
   language: 'en',
   region: 'INDIA', // Static Region based on design
-  setLanguage: (lang) => set({ language: lang }),
+  setLanguage: lang => set({ language: lang }),
 });

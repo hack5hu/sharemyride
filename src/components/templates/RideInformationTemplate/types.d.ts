@@ -1,4 +1,7 @@
-import { TimelinePoint, DriverData } from '@/screens/BookFlow/3_AvailableRides/types';
+import {
+  TimelinePoint,
+  DriverData,
+} from '@/screens/BookFlow/3_AvailableRides/types';
 
 export interface Passenger {
   id?: string;

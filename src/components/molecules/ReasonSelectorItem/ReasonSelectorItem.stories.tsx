@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { ReasonSelectorItem } from './ReasonSelectorItem';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Molecules/ReasonSelectorItem',
   component: ReasonSelectorItem,
-
 } satisfies Meta<typeof ReasonSelectorItem>;
 
 export default meta;

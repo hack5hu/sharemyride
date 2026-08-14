@@ -16,4 +16,3 @@ export const Container = styled.View<{ size: number }>`
 export const StyledIcon = styled(Icon)`
   font-variation-settings: 'FILL' 1;
 `;
-

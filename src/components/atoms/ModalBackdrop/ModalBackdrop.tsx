@@ -1,9 +1,14 @@
 import React from 'react';
 import { Modal } from 'react-native';
-import { Backdrop, BlurOverlay } from './ModalBackdrop.styles';
+import { Backdrop } from './ModalBackdrop.styles';
 import { ModalBackdropProps } from './types.d';
+import { GlobalNotification } from '@/components/organisms/GlobalNotification';
 
-export const ModalBackdrop: React.FC<ModalBackdropProps> = ({ isVisible, onPress, children }) => {
+export const ModalBackdrop: React.FC<ModalBackdropProps> = ({
+  isVisible,
+  onPress,
+  children,
+}) => {
   return (
     <Modal
       transparent
@@ -13,6 +18,7 @@ export const ModalBackdrop: React.FC<ModalBackdropProps> = ({ isVisible, onPress
     >
       <Backdrop onPress={onPress}>
         {children}
+        <GlobalNotification />
       </Backdrop>
     </Modal>
   );

@@ -1,10 +1,10 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
-import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { scale, verticalScale } from '@/styles';
 import { TimePickerCard } from '@/components/organisms/TimePickerCard';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
 import { Button } from '@/components/atoms/Button';
 import * as S from './TimeSelectionTemplate.styles';
 
@@ -31,14 +31,10 @@ export const TimeSelectionTemplate: React.FC<TimeSelectionTemplateProps> = ({
   minMinute,
   isContinueDisabled = false,
 }) => {
-  const theme = useTheme();
   const { timeSelection: t } = useLocale();
 
   return (
-    <ScreenShell
-      title={t.headerTitle}
-      onBack={onBackPress}
-    >
+    <ScreenShell title={t.headerTitle} onBack={onBackPress}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled={true}
@@ -68,7 +64,7 @@ export const TimeSelectionTemplate: React.FC<TimeSelectionTemplateProps> = ({
       </ScrollView>
 
       {/* Floating footer */}
-      <S.FixedFooter>
+      <FixedFooter>
         <Button
           variant="primary"
           disabled={isContinueDisabled}
@@ -76,7 +72,7 @@ export const TimeSelectionTemplate: React.FC<TimeSelectionTemplateProps> = ({
         >
           {t.continue}
         </Button>
-      </S.FixedFooter>
+      </FixedFooter>
     </ScreenShell>
   );
 };

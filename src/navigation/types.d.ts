@@ -130,9 +130,9 @@ export type RootStackParamList = {
     departureDate?: string;
     departureTime?: string;
   };
-  BookingConfirmed: { 
-    rideId: string; 
-    bookedSeats?: string[]; 
+  BookingConfirmed: {
+    rideId: string;
+    bookedSeats?: string[];
     pickupTime?: string;
     vehicleType?: string;
     departureDate?: string;
@@ -141,4 +141,16 @@ export type RootStackParamList = {
   UserProfileDetail: {
     userId: string;
   };
+  Rating: {
+    rideId: string;
+    targetUserId: string;
+    targetUserName: string;
+    targetUserRole: 'DRIVER' | 'PASSENGER';
+    targetUserAvatar?: string;
+  };
+  UserRatings: {
+    userId: string;
+    userName: string;
+  };
+  Suggestions: undefined;
 };

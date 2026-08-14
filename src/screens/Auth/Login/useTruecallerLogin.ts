@@ -4,7 +4,10 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
-import { useTruecaller, type TruecallerAndroidResponse } from '@ajitpatel28/react-native-truecaller';
+import {
+  useTruecaller,
+  type TruecallerAndroidResponse,
+} from '@ajitpatel28/react-native-truecaller';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Logger } from '@/utils/logger';
 import { useNetworkLoggerStore } from '@/store/useNetworkLoggerStore';
@@ -27,17 +30,14 @@ export const useTruecallerLogin = ({ setLoading }: UseTruecallerLoginProps) => {
   const [hasDismissedTruecaller, setHasDismissedTruecaller] = useState(false);
 
   const verifyTruecaller = useCallback(
-    async (params: {
-      authorizationCode?: string;
-      codeVerifier?: string;
-    }) => {
+    async (params: { authorizationCode?: string; codeVerifier?: string }) => {
       setLoading(true);
       try {
         if (!params.authorizationCode) {
           showNotification(
             NotificationType.ERROR,
             t('notification.defaultErrorTitle'),
-            t('login.truecallerInvalidCredentials')
+            t('login.truecallerInvalidCredentials'),
           );
           setLoading(false);
           return;
@@ -45,22 +45,26 @@ export const useTruecallerLogin = ({ setLoading }: UseTruecallerLoginProps) => {
 
         const response = await executeTruecallerAuth(
           params.authorizationCode,
-          params.codeVerifier
+          params.codeVerifier,
         );
 
         if (response.data.status === 'success' || response.status === 200) {
-          const { token, userId, userProfileCompleted: completed } = response.data;
+          const {
+            token,
+            userId,
+            userProfileCompleted: completed,
+          } = response.data;
           await syncUserProfileAndData(userId, token, completed, setAuth);
           showNotification(
             NotificationType.SUCCESS,
             t('notification.welcomeSuccessTitle'),
-            t('notification.welcomeBack')
+            t('notification.welcomeBack'),
           );
         } else {
           showNotification(
             NotificationType.ERROR,
             t('notification.defaultErrorTitle'),
-            response.data.message || t('notification.defaultErrorMessage')
+            response.data.message || t('notification.defaultErrorMessage'),
           );
         }
       } catch (error: any) {
@@ -68,13 +72,13 @@ export const useTruecallerLogin = ({ setLoading }: UseTruecallerLoginProps) => {
         showNotification(
           NotificationType.ERROR,
           t('notification.defaultErrorTitle'),
-          getErrorMessage(error, t('login.truecallerLoginFailed'))
+          getErrorMessage(error, t('login.truecallerLoginFailed')),
         );
       } finally {
         setLoading(false);
       }
     },
-    [setAuth, t, setLoading]
+    [setAuth, t, setLoading],
   );
 
   const handleTruecallerSuccess = useCallback(
@@ -83,32 +87,35 @@ export const useTruecallerLogin = ({ setLoading }: UseTruecallerLoginProps) => {
       authorizationCode?: string;
       codeVerifier?: string;
     }) => verifyTruecaller(data),
-    [verifyTruecaller]
+    [verifyTruecaller],
   );
 
-  const androidSuccessHandler = useCallback((data: TruecallerAndroidResponse) => {
-    useNetworkLoggerStore.getState().addLog({
-      id: `tc-${Date.now()}`,
-      method: 'SDK',
-      url: 'truecaller://verify',
-      requestHeaders: {},
-      requestBody: null,
-      responseStatus: 200,
-      responseHeaders: null,
-      responseBody: data,
-      startTime: Date.now(),
-      endTime: Date.now(),
-      duration: 0,
-      isError: false,
-    });
+  const androidSuccessHandler = useCallback(
+    (data: TruecallerAndroidResponse) => {
+      useNetworkLoggerStore.getState().addLog({
+        id: `tc-${Date.now()}`,
+        method: 'SDK',
+        url: 'truecaller://verify',
+        requestHeaders: {},
+        requestBody: null,
+        responseStatus: 200,
+        responseHeaders: null,
+        responseBody: data,
+        startTime: Date.now(),
+        endTime: Date.now(),
+        duration: 0,
+        isError: false,
+      });
 
-    const accessToken = (data as any).accessToken || '';
-    handleTruecallerSuccess({
-      accessToken,
-      authorizationCode: data.authorizationCode,
-      codeVerifier: (data as any).codeVerifier,
-    });
-  }, [handleTruecallerSuccess]);
+      const accessToken = (data as any).accessToken || '';
+      handleTruecallerSuccess({
+        accessToken,
+        authorizationCode: data.authorizationCode,
+        codeVerifier: (data as any).codeVerifier,
+      });
+    },
+    [handleTruecallerSuccess],
+  );
 
   const {
     initializeTruecallerSDK,
@@ -129,13 +136,13 @@ export const useTruecallerLogin = ({ setLoading }: UseTruecallerLoginProps) => {
       Logger.log(`Initializing Truecaller SDK (attempt ${retries + 1})...`);
       initializeTruecallerSDK()
         .then(() => isSdkUsable())
-        .then((supported) => {
+        .then(supported => {
           Logger.log('Truecaller SDK support check:', supported);
           if (active) {
             setIsTruecallerSupported(supported);
           }
         })
-        .catch((err) => {
+        .catch(err => {
           Logger.log(`Truecaller SDK init attempt ${retries + 1} failed:`, err);
           if (active) {
             if (retries < maxRetries) {
@@ -159,7 +166,9 @@ export const useTruecallerLogin = ({ setLoading }: UseTruecallerLoginProps) => {
 
   useEffect(() => {
     if (userProfile) {
-      handleTruecallerSuccess({ accessToken: (userProfile as any).accessToken || '' });
+      handleTruecallerSuccess({
+        accessToken: (userProfile as any).accessToken || '',
+      });
     }
   }, [userProfile, handleTruecallerSuccess]);
 
@@ -192,7 +201,7 @@ export const useTruecallerLogin = ({ setLoading }: UseTruecallerLoginProps) => {
       showNotification(
         NotificationType.ERROR,
         t('login.truecallerErrorTitle'),
-        getErrorMessage(truecallerError, t('login.truecallerLoginFailed'))
+        getErrorMessage(truecallerError, t('login.truecallerLoginFailed')),
       );
     }
   }, [truecallerError, t]);
@@ -207,7 +216,7 @@ export const useTruecallerLogin = ({ setLoading }: UseTruecallerLoginProps) => {
         showNotification(
           NotificationType.ERROR,
           t('login.truecallerUnavailableTitle'),
-          t('login.truecallerUnavailableMessage')
+          t('login.truecallerUnavailableMessage'),
         );
       }
     } catch (err) {
@@ -215,7 +224,7 @@ export const useTruecallerLogin = ({ setLoading }: UseTruecallerLoginProps) => {
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        t('login.truecallerStartError')
+        t('login.truecallerStartError'),
       );
     }
   };

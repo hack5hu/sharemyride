@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { moderateScale } from '@/styles';
-import { AvatarProps, AvatarSize } from './types';
+import { AvatarSize } from './types';
 
 const sizes: Record<AvatarSize, number> = {
   sm: 40,

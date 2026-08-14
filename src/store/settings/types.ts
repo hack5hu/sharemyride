@@ -22,4 +22,6 @@ export interface PreferenceSlice {
   setLanguage: (lang: Locale) => void;
 }
 
-export type SettingsStore = AppearanceSlice & NotificationSlice & PreferenceSlice;
+export type SettingsStore = AppearanceSlice &
+  NotificationSlice &
+  PreferenceSlice;

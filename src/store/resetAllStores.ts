@@ -14,6 +14,10 @@ export const resetAllStores = () => {
   // Clear all MMKV persistent storage
   try {
     storage.clearAll();
+    // Explicitly delete custom keys just in case clearAll() didn't fully purge them
+    storage.remove('recent_published_rides');
+    storage.remove('rated_rides');
+    storage.remove('location_backlog');
   } catch (error) {
     console.error('[Storage] Failed to clear MMKV storage on logout:', error);
   }
@@ -54,8 +58,8 @@ export const resetAllStores = () => {
   });
 
   // 5. Ride Publish Store (Clear current publishing flow)
-  useRidePublishStore.setState({ 
-    startLocation: null, 
+  useRidePublishStore.setState({
+    startLocation: null,
     destinationLocation: null,
     middleStops: [],
     routeDetails: null,
@@ -77,7 +81,7 @@ export const resetAllStores = () => {
     price: 0,
     fullJourneyPrice: 0,
     frontSeatPrice: 0,
-    premiumEnabled: true,
+    premiumEnabled: false,
     premiumPercentage: 10,
     segmentPrices: {},
     requestType: 'instant',

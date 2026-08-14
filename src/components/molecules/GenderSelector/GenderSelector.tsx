@@ -1,9 +1,12 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Button } from '../../atoms/Button';
-import { Typography } from '../../atoms/Typography';
-import { useTheme } from 'styled-components/native';
-import { Container, ButtonRow } from './GenderSelector.styles';
+import { Button } from '@/components/atoms/Button';
+import { Typography } from '@/components/atoms/Typography';
+import {
+  Container,
+  ButtonRow,
+  OptionWrapper,
+  StyledLabel,
+} from './GenderSelector.styles';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export interface GenderSelectorProps {
@@ -12,6 +15,7 @@ export interface GenderSelectorProps {
   onValueChange: (value: string) => void;
   required?: boolean;
   disabled?: boolean;
+  error?: string;
 }
 
 export const GenderSelector: React.FC<GenderSelectorProps> = ({
@@ -22,7 +26,6 @@ export const GenderSelector: React.FC<GenderSelectorProps> = ({
   disabled,
 }) => {
   const { t } = useTranslation();
-  const theme = useTheme();
 
   const options = [
     { label: t('profileSetup.genderMale'), value: 'male' },
@@ -32,28 +35,31 @@ export const GenderSelector: React.FC<GenderSelectorProps> = ({
 
   return (
     <Container>
-      <Typography
+      <StyledLabel
         variant="label"
         size="sm"
         weight="bold"
         color="on_surface_variant"
-        style={{ marginBottom: 8, textTransform: 'uppercase' }}
       >
         {label}
-        {required && <Typography variant="label" size="sm" color="error"> *</Typography>}
-      </Typography>
-      <ButtonRow style={{ opacity: disabled ? 0.6 : 1 }}>
-        {options.map((option) => (
-          <View key={option.value} style={{ flex: 1, marginHorizontal: 4 }}>
+        {required && (
+          <Typography variant="label" size="sm" color="error">
+            {' '}
+            *
+          </Typography>
+        )}
+      </StyledLabel>
+      <ButtonRow disabled={disabled}>
+        {options.map(option => (
+          <OptionWrapper key={option.value}>
             <Button
               variant={value === option.value ? 'primary' : 'secondary'}
               onPress={disabled ? undefined : () => onValueChange(option.value)}
-              style={{ height: 48 }}
               disabled={disabled}
             >
               {option.label}
             </Button>
-          </View>
+          </OptionWrapper>
         ))}
       </ButtonRow>
     </Container>

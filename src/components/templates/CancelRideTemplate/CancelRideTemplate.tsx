@@ -1,6 +1,10 @@
 import React from 'react';
-import { View } from 'react-native';
-import Animated, { FadeIn, FadeOut, SlideInDown, SlideOutDown } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  FadeOut,
+  SlideInDown,
+  SlideOutDown,
+} from 'react-native-reanimated';
 import { useLocale } from '@/constants/localization';
 import { ReasonSelectorItem } from '@/components/molecules/ReasonSelectorItem';
 import { Button } from '@/components/atoms/Button';
@@ -8,7 +12,9 @@ import * as S from './CancelRideTemplate.styles';
 import { CancelRideTemplateProps } from './types.d';
 
 const AnimatedBackdrop = Animated.createAnimatedComponent(S.Backdrop);
-const AnimatedContainer = Animated.createAnimatedComponent(S.BottomSheetContainer);
+const AnimatedContainer = Animated.createAnimatedComponent(
+  S.BottomSheetContainer,
+);
 
 export const CancelRideTemplate: React.FC<CancelRideTemplateProps> = ({
   reasons,
@@ -21,7 +27,7 @@ export const CancelRideTemplate: React.FC<CancelRideTemplateProps> = ({
 }) => {
   const { cancelRide } = useLocale();
   return (
-    <View style={{ flex: 1 }}>
+    <S.Container>
       <S.OverlayContext>
         <AnimatedBackdrop
           onPress={onDismiss}
@@ -35,14 +41,14 @@ export const CancelRideTemplate: React.FC<CancelRideTemplateProps> = ({
         >
           <S.BottomSheetSurface>
             <S.DragHandle />
-            
+
             <S.HeaderContent>
               <S.Title>{cancelRide.title}</S.Title>
               <S.Subtitle>{cancelRide.subtitle}</S.Subtitle>
             </S.HeaderContent>
 
             <S.ChoicesScroll>
-              {reasons.map((reason) => (
+              {reasons.map(reason => (
                 <ReasonSelectorItem
                   key={reason.id}
                   label={reason.label}
@@ -50,7 +56,7 @@ export const CancelRideTemplate: React.FC<CancelRideTemplateProps> = ({
                   onPress={() => onSelectReason(reason.id)}
                 />
               ))}
-              
+
               {selectedReasonId === 'other' && (
                 <S.OtherInput
                   placeholder={cancelRide.otherReasonPlaceholder}
@@ -66,7 +72,10 @@ export const CancelRideTemplate: React.FC<CancelRideTemplateProps> = ({
             <S.ActionsContainer>
               <Button
                 onPress={onConfirm}
-                disabled={!selectedReasonId || (selectedReasonId === 'other' && !otherReasonText.trim())}
+                disabled={
+                  !selectedReasonId ||
+                  (selectedReasonId === 'other' && !otherReasonText.trim())
+                }
               >
                 {cancelRide.confirmCancel}
               </Button>
@@ -77,6 +86,6 @@ export const CancelRideTemplate: React.FC<CancelRideTemplateProps> = ({
           </S.BottomSheetSurface>
         </AnimatedContainer>
       </S.OverlayContext>
-    </View>
+    </S.Container>
   );
 };

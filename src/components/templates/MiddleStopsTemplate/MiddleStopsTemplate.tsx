@@ -1,10 +1,12 @@
 import React from 'react';
-import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
-import { Location } from '@/store/useLocationStore';
-import { MiddleStopsList, RouteStop } from '@/components/organisms/MiddleStopsList';
-import { BentoMapPreview } from '@/components/molecules/BentoMapPreview';
+import {
+  MiddleStopsList,
+  RouteStop,
+} from '@/components/organisms/MiddleStopsList';
+
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
 import { Button } from '@/components/atoms/Button';
 import * as S from './MiddleStopsTemplate.styles';
 
@@ -14,12 +16,8 @@ export interface MiddleStopsTemplateProps {
   startLocation: string;
   destination: string;
   middleStops: RouteStop[];
-  startLocationRaw?: Location | null;
-  destinationLocationRaw?: Location | null;
-  middleStopsRaw: Location[];
   onAddStop: () => void;
   onRemoveStop: (id: string) => void;
-  // New props for distance texts
   startDistanceText: string;
   destinationDistanceText?: string;
 }
@@ -30,23 +28,14 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
   startLocation,
   destination,
   middleStops,
-  startLocationRaw,
-  destinationLocationRaw,
-  middleStopsRaw,
   onAddStop,
   onRemoveStop,
   startDistanceText,
   destinationDistanceText,
 }) => {
-  const theme = useTheme();
   const { middleStops: t } = useLocale();
-  console.log("startDistanceText", startDistanceText);
-  console.log("destinationDistanceText", destinationDistanceText);
   return (
-    <ScreenShell
-      title={"Add stops"}
-      onBack={onBackPress}
-    >
+    <ScreenShell title={'Add stops'} onBack={onBackPress}>
       <S.ContentLayer showsVerticalScrollIndicator={false}>
         {/* Title */}
         <S.TitleSection>
@@ -74,7 +63,7 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
       </S.ContentLayer>
 
       {/* Floating Footer */}
-      <S.FixedFooter>
+      <FixedFooter>
         <Button
           variant="primary"
           icon="arrow-forward"
@@ -83,7 +72,7 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
         >
           {t.continue}
         </Button>
-      </S.FixedFooter>
+      </FixedFooter>
     </ScreenShell>
   );
 };

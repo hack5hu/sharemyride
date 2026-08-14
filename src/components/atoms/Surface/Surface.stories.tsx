@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { Surface } from './Surface';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Atoms/Surface',
   component: Surface,
-
 } satisfies Meta<typeof Surface>;
 
 export default meta;

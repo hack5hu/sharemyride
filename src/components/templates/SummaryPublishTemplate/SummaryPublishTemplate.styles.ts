@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { View } from 'react-native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 
 export const Container = styled.View`
@@ -7,7 +6,7 @@ export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.surface};
 `;
 
-export const BackgroundBubble = styled(View)<{
+export const BackgroundBubble = styled.View<{
   top?: string;
   left?: string;
   bottom?: string;
@@ -26,14 +25,15 @@ export const BackgroundBubble = styled(View)<{
 
 export const SaveButton = styled.TouchableOpacity<{ disabled?: boolean }>`
   padding-right: ${moderateScale(24)}px;
-  opacity: ${({ disabled }) => disabled ? 0.4 : 1};
+  opacity: ${({ disabled }) => (disabled ? 0.4 : 1)};
 `;
 
 export const SaveText = styled.Text<{ disabled?: boolean }>`
   font-family: 'Plus Jakarta Sans';
   font-weight: 700;
   font-size: ${responsiveFont(14)}px;
-  color: ${({ theme, disabled }) => disabled ? theme.colors.on_surface_variant : theme.colors.on_surface};
+  color: ${({ theme, disabled }) =>
+    disabled ? theme.colors.on_surface_variant : theme.colors.on_surface};
 `;
 
 export const Content = styled.ScrollView.attrs({

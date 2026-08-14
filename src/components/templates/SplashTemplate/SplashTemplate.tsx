@@ -7,12 +7,43 @@ import * as S from './SplashTemplate.styles';
 import { SplashTemplateProps } from './types.d';
 import { useSplashAnimations } from './useSplashAnimations';
 
-export const SplashTemplate: React.FC<SplashTemplateProps> = ({
+export const SplashTemplate: React.FC<SplashTemplateProps> = React.memo(({
   loadingText,
 }) => {
   const { splash } = useLocale();
   const theme = useTheme();
   const anim = useSplashAnimations();
+
+  const orbOneStyle = React.useMemo(() => ({
+    transform: [{ scale: anim.orbOneScale }],
+  }), [anim.orbOneScale]);
+
+  const orbTwoStyle = React.useMemo(() => ({
+    transform: [{ scale: anim.orbTwoScale }],
+  }), [anim.orbTwoScale]);
+
+  const orbThreeStyle = React.useMemo(() => ({
+    opacity: 0.04,
+    transform: [{ scale: anim.orbTwoScale }],
+  }), [anim.orbTwoScale]);
+
+  const brandClusterStyle = React.useMemo(() => ({
+    opacity: anim.logoOpacity,
+    transform: [{ scale: anim.logoScale }],
+  }), [anim.logoOpacity, anim.logoScale]);
+
+  const subtitleStyle = React.useMemo(() => ({
+    opacity: anim.subtitleOpacity,
+  }), [anim.subtitleOpacity]);
+
+  const loaderStyle = React.useMemo(() => ({
+    opacity: anim.loaderOpacity,
+  }), [anim.loaderOpacity]);
+
+  const pulseStyle = React.useMemo(() => ({
+    transform: [{ scale: anim.pulseScale }],
+    opacity: anim.pulseOpacity,
+  }), [anim.pulseScale, anim.pulseOpacity]);
 
   return (
     <S.Container>
@@ -21,33 +52,28 @@ export const SplashTemplate: React.FC<SplashTemplateProps> = ({
         size={220}
         top={-40}
         right={-60}
-        style={{ transform: [{ scale: anim.orbOneScale }] }}
+        style={orbOneStyle}
       />
       <S.AccentOrb
         size={180}
         bottom={80}
         left={-50}
-        style={{ transform: [{ scale: anim.orbTwoScale }] }}
+        style={orbTwoStyle}
       />
       <S.GradientOrb
         size={100}
         top={160}
         left={-30}
-        style={{ opacity: 0.04, transform: [{ scale: anim.orbTwoScale }] }}
+        style={orbThreeStyle}
       />
 
       {/* Central branding */}
-      <S.BrandCluster
-        style={{
-          opacity: anim.logoOpacity,
-          transform: [{ scale: anim.logoScale }],
-        }}
-      >
+      <S.BrandCluster style={brandClusterStyle}>
         <S.LogoRow>
           <ZyncRideLogo width={240} height={80} />
         </S.LogoRow>
 
-        <S.SubtitleRow style={{ opacity: anim.subtitleOpacity }}>
+        <S.SubtitleRow style={subtitleStyle}>
           <Typography
             variant="body"
             size="sm"
@@ -60,13 +86,8 @@ export const SplashTemplate: React.FC<SplashTemplateProps> = ({
       </S.BrandCluster>
 
       {/* Bottom loader */}
-      <S.LoaderSection style={{ opacity: anim.loaderOpacity }}>
-        <S.PulseRing
-          style={{
-            transform: [{ scale: anim.pulseScale }],
-            opacity: anim.pulseOpacity,
-          }}
-        />
+      <S.LoaderSection style={loaderStyle}>
+        <S.PulseRing style={pulseStyle} />
         <Typography
           variant="label"
           size="xs"
@@ -78,4 +99,6 @@ export const SplashTemplate: React.FC<SplashTemplateProps> = ({
       </S.LoaderSection>
     </S.Container>
   );
-};
+});
+
+SplashTemplate.displayName = 'SplashTemplate';

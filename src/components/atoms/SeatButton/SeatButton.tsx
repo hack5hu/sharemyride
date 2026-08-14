@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { moderateScale } from '@/styles';
@@ -13,21 +13,28 @@ export interface SeatButtonProps {
   price?: number;
 }
 
-export const SeatButton: React.FC<SeatButtonProps> = ({ id, state, onPress, driverLabel, price }) => {
+export const SeatButton: React.FC<SeatButtonProps> = ({
+  id,
+  state,
+  onPress,
+  driverLabel,
+  price,
+}) => {
   const theme = useTheme();
 
-  const iconColor = state === 'selected'
-    ? theme.colors.on_primary
-    : state === 'driver'
-    ? theme.colors.outline
-    : state === 'occupied'
-    ? theme.colors.outline + 'CC'
-    : theme.colors.primary;
+  const iconColor =
+    state === 'selected'
+      ? theme.colors.on_primary
+      : state === 'driver'
+      ? theme.colors.outline
+      : state === 'occupied'
+      ? theme.colors.outline + 'CC'
+      : theme.colors.primary;
 
   const isDIsabled = state === 'driver' || state === 'occupied';
 
   return (
-    <View style={{ alignItems: 'center', width: moderateScale(70) }}>
+    <S.Container>
       <S.SeatTouchable
         state={state}
         onPress={() => !isDIsabled && onPress?.(id)}
@@ -41,36 +48,41 @@ export const SeatButton: React.FC<SeatButtonProps> = ({ id, state, onPress, driv
             end={{ x: 1, y: 1 }}
           />
         )}
-        <View style={{ gap: moderateScale(2), alignItems: 'center' }}>
+        <S.ContentWrapper>
           {state === 'driver' ? (
             <>
-              <MaterialIcons name="directions-car" size={moderateScale(28)} color={iconColor} />
+              <MaterialIcons
+                name="directions-car"
+                size={moderateScale(28)}
+                color={iconColor}
+              />
               {driverLabel && (
                 <S.DriverLabelText>{driverLabel}</S.DriverLabelText>
               )}
             </>
           ) : (
             <>
-              <MaterialIcons 
-                name="airline-seat-recline-normal" 
-                size={moderateScale(24)} 
-                color={iconColor} 
+              <MaterialIcons
+                name="airline-seat-recline-normal"
+                size={moderateScale(24)}
+                color={iconColor}
               />
               {price !== undefined && state !== 'occupied' && (
-                <S.PriceText selected={state === 'selected'}>₹{price}</S.PriceText>
+                <S.PriceText selected={state === 'selected'}>
+                  ₹{price}
+                </S.PriceText>
               )}
               {state === 'occupied' && (
-                 <MaterialIcons 
-                  name="block" 
-                  size={moderateScale(12)} 
+                <S.BlockIconWrapper
+                  name="block"
+                  size={moderateScale(12)}
                   color={iconColor}
-                  style={{ position: 'absolute', top: 0, right: -moderateScale(4) }}
-                 />
+                />
               )}
             </>
           )}
-        </View>
+        </S.ContentWrapper>
       </S.SeatTouchable>
-    </View>
+    </S.Container>
   );
 };

@@ -47,7 +47,11 @@ export const LocationInputsBento: React.FC<LocationInputsBentoProps> = ({
           <InputContent>
             <InputLabel>{locationSelection.startLabel}</InputLabel>
             <MockInput>
-              <MockInputText $hasValue={!!startLocationName} numberOfLines={1} ellipsizeMode="tail">
+              <MockInputText
+                $hasValue={!!startLocationName}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
                 {startLocationName || locationSelection.startPlaceholder}
               </MockInputText>
             </MockInput>
@@ -66,8 +70,13 @@ export const LocationInputsBento: React.FC<LocationInputsBentoProps> = ({
           <InputContent>
             <InputLabel>{locationSelection.destinationLabel}</InputLabel>
             <MockInput>
-              <MockInputText $hasValue={!!destinationLocationName} numberOfLines={1} ellipsizeMode="tail">
-                {destinationLocationName || locationSelection.destinationPlaceholder}
+              <MockInputText
+                $hasValue={!!destinationLocationName}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {destinationLocationName ||
+                  locationSelection.destinationPlaceholder}
               </MockInputText>
             </MockInput>
           </InputContent>

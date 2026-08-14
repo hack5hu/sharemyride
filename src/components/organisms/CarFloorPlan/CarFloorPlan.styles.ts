@@ -37,8 +37,12 @@ export const Mirror = styled.View<{ side: 'left' | 'right' }>`
   height: ${moderateScale(16)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_high};
   border-radius: ${moderateScale(4)}px;
-  border-${({ side }) => (side === 'left' ? 'top-left' : 'top-right')}-radius: ${moderateScale(10)}px;
-  border-${({ side }) => (side === 'left' ? 'bottom-left' : 'bottom-right')}-radius: ${moderateScale(10)}px;
+  border-${({ side }) =>
+    side === 'left' ? 'top-left' : 'top-right'}-radius: ${moderateScale(10)}px;
+  border-${({ side }) =>
+    side === 'left' ? 'bottom-left' : 'bottom-right'}-radius: ${moderateScale(
+  10,
+)}px;
 `;
 
 export const SeatsWrapper = styled.View`

@@ -1,9 +1,6 @@
 import React, { useRef, useState, useCallback } from 'react';
 import { useTheme } from 'styled-components/native';
-import {
-  GeoJSONSource,
-  Layer,
-} from '@maplibre/maplibre-react-native';
+import { GeoJSONSource, Layer } from '@maplibre/maplibre-react-native';
 import { LocalRideResultsTemplate } from '@/components/templates/LocalRideResultsTemplate';
 import { useLocalRideResults } from './useLocalRideResults';
 
@@ -59,11 +56,11 @@ export const LocalRideResultsScreen: React.FC = React.memo(() => {
           />
         </GeoJSONSource>
       )}
-      
+
       {/* Start Marker */}
       {startLocation && (
-        <GeoJSONSource 
-          id="pickup-marker-source" 
+        <GeoJSONSource
+          id="pickup-marker-source"
           data={{
             type: 'Feature',
             properties: {},
@@ -88,14 +85,17 @@ export const LocalRideResultsScreen: React.FC = React.memo(() => {
 
       {/* Destination Marker */}
       {destinationLocation && (
-        <GeoJSONSource 
-          id="dropoff-marker-source" 
+        <GeoJSONSource
+          id="dropoff-marker-source"
           data={{
             type: 'Feature',
             properties: {},
             geometry: {
               type: 'Point',
-              coordinates: [destinationLocation.longitude, destinationLocation.latitude],
+              coordinates: [
+                destinationLocation.longitude,
+                destinationLocation.latitude,
+              ],
             },
           }}
         >

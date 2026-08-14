@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { MapActionFAB } from './MapActionFAB';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Organisms/MapActionFAB',
   component: MapActionFAB,
-
 } satisfies Meta<typeof MapActionFAB>;
 
 export default meta;

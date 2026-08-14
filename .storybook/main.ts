@@ -24,24 +24,64 @@ const config: StorybookConfig = {
   async viteFinal(config) {
     return mergeConfig(config, {
       define: {
-        '__DEV__': true,
+        __DEV__: true,
         'process.env.NODE_ENV': JSON.stringify('development'),
       },
       resolve: {
         alias: {
           'react-native-linear-gradient': 'react-native-web-linear-gradient',
-          'react-native': path.resolve(process.cwd(), '.storybook', 'rn-web-fix.js'),
-          '@maplibre/maplibre-react-native': path.resolve(process.cwd(), '.storybook', 'mocks.js'),
-          'react-native-date-picker': path.resolve(process.cwd(), '.storybook', 'mocks.js'),
-          'react-native-maps': path.resolve(process.cwd(), '.storybook', 'mocks.js'),
-          'react-native-safe-area-context': path.resolve(process.cwd(), '.storybook', 'mocks.js'),
-          'react-native-mmkv': path.resolve(process.cwd(), '.storybook', 'mocks.js'),
-          'react-native-reanimated': path.resolve(process.cwd(), '.storybook', 'mocks.js'),
-          'react-native-device-info': path.resolve(process.cwd(), '.storybook', 'device-info-mock.js'),
-          '@react-native-firebase/app': path.resolve(process.cwd(), '.storybook/firebase-mock.js'),
-          '@react-native-firebase/messaging': path.resolve(process.cwd(), '.storybook/firebase-mock.js'),
-          'react-native-vector-icons/MaterialIcons': 'react-native-vector-icons/dist/MaterialIcons',
-          'react-native-vector-icons/Ionicons': 'react-native-vector-icons/dist/Ionicons',
+          'react-native': path.resolve(
+            process.cwd(),
+            '.storybook',
+            'rn-web-fix.js',
+          ),
+          '@maplibre/maplibre-react-native': path.resolve(
+            process.cwd(),
+            '.storybook',
+            'mocks.js',
+          ),
+          'react-native-date-picker': path.resolve(
+            process.cwd(),
+            '.storybook',
+            'mocks.js',
+          ),
+          'react-native-maps': path.resolve(
+            process.cwd(),
+            '.storybook',
+            'mocks.js',
+          ),
+          'react-native-safe-area-context': path.resolve(
+            process.cwd(),
+            '.storybook',
+            'mocks.js',
+          ),
+          'react-native-mmkv': path.resolve(
+            process.cwd(),
+            '.storybook',
+            'mocks.js',
+          ),
+          'react-native-reanimated': path.resolve(
+            process.cwd(),
+            '.storybook',
+            'mocks.js',
+          ),
+          'react-native-device-info': path.resolve(
+            process.cwd(),
+            '.storybook',
+            'device-info-mock.js',
+          ),
+          '@react-native-firebase/app': path.resolve(
+            process.cwd(),
+            '.storybook/firebase-mock.js',
+          ),
+          '@react-native-firebase/messaging': path.resolve(
+            process.cwd(),
+            '.storybook/firebase-mock.js',
+          ),
+          'react-native-vector-icons/MaterialIcons':
+            'react-native-vector-icons/dist/MaterialIcons',
+          'react-native-vector-icons/Ionicons':
+            'react-native-vector-icons/dist/Ionicons',
           '@env': path.resolve(process.cwd(), '.storybook', 'env-mock.js'),
           '@': path.resolve(process.cwd(), 'src'),
         },

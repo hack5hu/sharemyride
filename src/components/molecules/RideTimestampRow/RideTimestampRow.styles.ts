@@ -18,7 +18,8 @@ export const IndicatorWrapper = styled.View`
 export const Dot = styled.View<{ color: string; isSquare?: boolean }>`
   width: ${moderateScale(8)}px;
   height: ${moderateScale(8)}px;
-  border-radius: ${({ isSquare }) => (isSquare ? moderateScale(2) : moderateScale(4))}px;
+  border-radius: ${({ isSquare }) =>
+    isSquare ? moderateScale(2) : moderateScale(4)}px;
   background-color: ${({ color }) => color};
 `;
 

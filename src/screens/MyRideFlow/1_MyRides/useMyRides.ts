@@ -3,35 +3,37 @@ import { useRoute } from '@react-navigation/native';
 import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
 import { useMyRidesData, TAB_TO_FILTER } from './useMyRidesData';
 import { useMyRidesActions } from './useMyRidesActions';
-import { mapBackendRideToUI } from './utils/rideMapper';
+import { mapBackendRideToUI } from '@/utils/rideMapper';
 import { MyRidesHookData, RideListItem } from './types.d';
 import { useTranslation } from '@/hooks/useTranslation';
-import rideService from '@/serviceManager/rideService';
+import { RideService } from '@/serviceManager/RideService';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
+import { storage } from '@/utils/storage';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 
 export const useMyRides = (): MyRidesHookData => {
   const { t } = useTranslation();
   const route = useRoute<any>();
   const initialTab = route.params?.tab || 'upcoming';
   const [activeTab, setActiveTab] = useState<MyRidesTab>(initialTab);
-  
+
   useEffect(() => {
     if (route.params?.tab) {
       setActiveTab(route.params.tab);
     }
   }, [route.params?.tab]);
-  
+
   const [isActionLoading, setIsActionLoading] = useState(false);
-  
+
   const {
     isLoading,
     isRefreshing,
     onRefresh,
     onLoadMore,
     rides,
-    fetchInitialRides
+    fetchInitialRides,
   } = useMyRidesData(activeTab);
 
   // Auto-switch to requests tab if data exists on first load
@@ -81,16 +83,20 @@ export const useMyRides = (): MyRidesHookData => {
     onCancelRide,
     onClearDrafts,
     onChatPress,
-    drafts
+    drafts,
   } = useMyRidesActions(fetchInitialRides, showConfirm);
 
   const onTabChange = useCallback((tab: MyRidesTab) => {
     setActiveTab(tab);
   }, []);
 
-  const mappedRequests = useMemo(() => 
-    (rides?.[3]?.data || []).map(r => mapBackendRideToUI(r, 'requests' as any, t)), 
-  [rides?.[3]?.data, t]);
+  const mappedRequests = useMemo(
+    () =>
+      (rides?.[3]?.data || []).map(r =>
+        mapBackendRideToUI(r, 'requests' as any, t),
+      ),
+    [rides?.[3]?.data, t],
+  );
 
   const hasRequests = mappedRequests.length > 0;
 
@@ -102,86 +108,163 @@ export const useMyRides = (): MyRidesHookData => {
   }, [activeTab, hasRequests]);
 
   const formattedDrafts = useMemo((): RideListItem[] => {
-    return drafts.map((draft) => {
+    return drafts.map(draft => {
       const start = draft.state.startLocation?.name || 'Unknown';
       const end = draft.state.destinationLocation?.name || 'Unknown';
-      const dateStr = draft.state.departureDate 
-        ? new Date(draft.state.departureDate).toLocaleDateString() 
+      const dateStr = draft.state.departureDate
+        ? new Date(draft.state.departureDate).toLocaleDateString()
         : 'No date';
       return {
         id: draft.id,
         title: `${start} to ${end}`,
         subtitle: `Draft • ${dateStr}`,
-        price: draft.state.fullJourneyPrice ? `₹${draft.state.fullJourneyPrice}` : (draft.state.price ? `₹${draft.state.price}` : '₹0'),
+        price: draft.state.fullJourneyPrice
+          ? `₹${draft.state.fullJourneyPrice}`
+          : draft.state.price
+          ? `₹${draft.state.price}`
+          : '₹0',
         type: 'draft' as const,
       };
     });
   }, [drafts]);
 
-  const mappedUpcoming = useMemo(() => 
-    (rides?.[1]?.data || []).map(r => mapBackendRideToUI(r, 'upcoming', t)), 
-  [rides?.[1]?.data, t]);
+  const mappedUpcoming = useMemo(
+    () =>
+      (rides?.[1]?.data || []).map(r => mapBackendRideToUI(r, 'upcoming', t)),
+    [rides?.[1]?.data, t],
+  );
 
-  const mappedArchive = useMemo(() => 
-    (rides?.[2]?.data || []).map(r => mapBackendRideToUI(r, 'archive', t)), 
-  [rides?.[2]?.data, t]);
+  const mappedArchive = useMemo(
+    () =>
+      (rides?.[2]?.data || []).map(r => mapBackendRideToUI(r, 'archive', t)),
+    [rides?.[2]?.data, t],
+  );
 
-  const getTabData = useCallback((tab: MyRidesTab) => {
-    if (tab === 'drafts') return formattedDrafts;
-    if (tab === 'requests') return mappedRequests;
-    
-    const allRides = tab === 'upcoming' ? mappedUpcoming : mappedArchive;
+  const getTabData = useCallback(
+    (tab: MyRidesTab) => {
+      if (tab === 'drafts') return formattedDrafts;
+      if (tab === 'requests') return mappedRequests;
 
-    return [...allRides].sort((a, b) => {
-      const timeA = a.rawDate?.getTime() || 0;
-      const timeB = b.rawDate?.getTime() || 0;
-      return tab === 'upcoming' ? timeA - timeB : timeB - timeA;
+      const allRides = tab === 'upcoming' ? mappedUpcoming : mappedArchive;
+
+      return [...allRides].sort((a, b) => {
+        const timeA = a.rawDate?.getTime() || 0;
+        const timeB = b.rawDate?.getTime() || 0;
+        return tab === 'upcoming' ? timeA - timeB : timeB - timeA;
+      });
+    },
+    [mappedUpcoming, mappedArchive, mappedRequests, formattedDrafts],
+  );
+
+  const onAcceptBooking = useCallback(
+    async (id: string) => {
+      setIsActionLoading(true);
+      try {
+        await RideService.acceptBooking(id);
+        showNotification(
+          NotificationType.SUCCESS,
+          t('notification.defaultSuccessTitle'),
+          t('notification.bookingAccepted'),
+        );
+        onRefresh();
+      } catch (error: any) {
+        console.error('Failed to accept booking:', error);
+        showNotification(
+          NotificationType.ERROR,
+          t('notification.defaultErrorTitle'),
+          getErrorMessage(error, t('notification.defaultErrorMessage')),
+        );
+      } finally {
+        setIsActionLoading(false);
+      }
+    },
+    [onRefresh, t],
+  );
+
+  const onRejectBooking = useCallback(
+    async (id: string) => {
+      setIsActionLoading(true);
+      try {
+        await RideService.rejectBooking(id);
+        showNotification(
+          NotificationType.SUCCESS,
+          t('notification.defaultSuccessTitle'),
+          t('notification.bookingRejected'),
+        );
+        onRefresh();
+      } catch (error: any) {
+        console.error('Failed to reject booking:', error);
+        showNotification(
+          NotificationType.ERROR,
+          t('notification.defaultErrorTitle'),
+          getErrorMessage(error, t('notification.defaultErrorMessage')),
+        );
+      } finally {
+        setIsActionLoading(false);
+      }
+    },
+    [onRefresh, t],
+  );
+
+  const navigation = useAppNavigation();
+
+  const pendingReview = useMemo(() => {
+    const archiveData = rides?.[2]?.data || [];
+    const ratedStr = storage.getString('rated_rides') || '[]';
+    const ratedIds: string[] = JSON.parse(ratedStr);
+
+    const completed = archiveData.filter(
+      (r: any) => r.status === 'COMPLETED' || r.rideStatus === 'COMPLETED',
+    );
+
+    const unrated = completed.find((r: any) => {
+      const id = r.rideId || r.bookingId || r.id || r._id;
+      return id && !ratedIds.includes(String(id));
     });
-  }, [mappedUpcoming, mappedArchive, mappedRequests, formattedDrafts]);
 
-  const onAcceptBooking = useCallback(async (id: string) => {
-    setIsActionLoading(true);
-    try {
-      await rideService.acceptBooking(id);
-      showNotification(
-        NotificationType.SUCCESS,
-        t('notification.defaultSuccessTitle'),
-        t('notification.bookingAccepted')
-      );
-      onRefresh();
-    } catch (error: any) {
-      console.error('Failed to accept booking:', error);
-      showNotification(
-        NotificationType.ERROR,
-        t('notification.defaultErrorTitle'),
-        getErrorMessage(error, t('notification.defaultErrorMessage'))
-      );
-    } finally {
-      setIsActionLoading(false);
-    }
-  }, [onRefresh, t]);
+    if (!unrated) return null;
 
-  const onRejectBooking = useCallback(async (id: string) => {
-    setIsActionLoading(true);
-    try {
-      await rideService.rejectBooking(id);
-      showNotification(
-        NotificationType.SUCCESS,
-        t('notification.defaultSuccessTitle'),
-        t('notification.bookingRejected')
-      );
-      onRefresh();
-    } catch (error: any) {
-      console.error('Failed to reject booking:', error);
-      showNotification(
-        NotificationType.ERROR,
-        t('notification.defaultErrorTitle'),
-        getErrorMessage(error, t('notification.defaultErrorMessage'))
-      );
-    } finally {
-      setIsActionLoading(false);
-    }
-  }, [onRefresh, t]);
+    const targetRideId = String(
+      unrated.rideId || unrated.bookingId || unrated.id || unrated._id,
+    );
+    const isDriver = unrated.role === 'DRIVER';
+
+    return {
+      rideId: targetRideId,
+      isDriver,
+      title: isDriver
+        ? `Rate your co-riders for ${unrated.sourceStopName?.split(',')[0] || 'your trip'}`
+        : `Rate your trip with ${unrated.driver?.name || unrated.name || 'Driver'}`,
+      targetUserId: isDriver
+        ? undefined
+        : unrated.driver?.driverId ||
+          unrated.driver?.userId ||
+          unrated.driverId ||
+          unrated.userId ||
+          'driver-1',
+      targetUserName: unrated.driver?.name || unrated.name || 'Driver',
+    };
+  }, [rides?.[2]?.data]);
+
+  const onRateReview = useCallback(
+    (review: any) => {
+      if (!review) return;
+      if (review.isDriver) {
+        (navigation.navigate as any)('RideDetails', {
+          rideId: review.rideId,
+          status: 'COMPLETED',
+        });
+      } else {
+        (navigation.navigate as any)('Rating', {
+          rideId: review.rideId,
+          targetUserId: review.targetUserId,
+          targetUserName: review.targetUserName,
+          targetUserRole: 'DRIVER',
+        });
+      }
+    },
+    [navigation],
+  );
 
   return {
     activeTab,
@@ -196,11 +279,15 @@ export const useMyRides = (): MyRidesHookData => {
     onChatPress,
     onRefresh,
     onLoadMore,
-    hasMore: TAB_TO_FILTER[activeTab] ? rides?.[TAB_TO_FILTER[activeTab]!]?.hasMore : false,
+    hasMore: TAB_TO_FILTER[activeTab]
+      ? rides?.[TAB_TO_FILTER[activeTab]!]?.hasMore
+      : false,
     getTabData,
     drafts,
     mappedRequests,
     hasRequests,
+    pendingReview,
+    onRateReview,
     onMenuPress: () => {},
     onProfilePress: () => {},
     onAcceptRide: onAcceptBooking,

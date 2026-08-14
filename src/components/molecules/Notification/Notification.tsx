@@ -60,5 +60,5 @@ export const Notification: React.FC<NotificationProps> = memo(
         )}
       </NotificationContainer>
     );
-  }
+  },
 );

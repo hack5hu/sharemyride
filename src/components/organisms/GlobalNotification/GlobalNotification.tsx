@@ -3,21 +3,22 @@ import Toast, { ToastConfig, BaseToastProps } from 'react-native-toast-message';
 import { Notification } from '@/components/molecules/Notification';
 import { NotificationType } from '@/constants/enums';
 
+const toastConfig: ToastConfig = {
+  success: (props: BaseToastProps) => (
+    <Notification {...props} type={NotificationType.SUCCESS} />
+  ),
+  error: (props: BaseToastProps) => (
+    <Notification {...props} type={NotificationType.ERROR} />
+  ),
+  info: (props: BaseToastProps) => (
+    <Notification {...props} type={NotificationType.INFO} />
+  ),
+  warning: (props: BaseToastProps) => (
+    <Notification {...props} type={NotificationType.WARNING} />
+  ),
+};
+
 export const GlobalNotification = () => {
-  const toastConfig: ToastConfig = {
-    success: (props: BaseToastProps) => (
-      <Notification {...props} type={NotificationType.SUCCESS} />
-    ),
-    error: (props: BaseToastProps) => (
-      <Notification {...props} type={NotificationType.ERROR} />
-    ),
-    info: (props: BaseToastProps) => (
-      <Notification {...props} type={NotificationType.INFO} />
-    ),
-    warning: (props: BaseToastProps) => (
-      <Notification {...props} type={NotificationType.WARNING} />
-    ),
-  };
 
   return <Toast config={toastConfig} />;
 };
@@ -25,7 +26,7 @@ export const GlobalNotification = () => {
 export const showNotification = (
   type: NotificationType,
   title: string,
-  message?: string
+  message?: string,
 ) => {
   Toast.show({
     type,

@@ -1,20 +1,46 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { TouchableOpacity, View } from 'react-native';
+import styled from 'styled-components/native';
+
+const StyledView = styled.View``;
+const CenterView = styled.View`
+  align-items: center;
+`;
+const AvatarOverlay = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 100px;
+`;
+const EditButton = styled.TouchableOpacity<{ isUpdating: boolean }>`
+  margin-top: 8px;
+  opacity: ${({ isUpdating }) => (isUpdating ? 0.5 : 1)};
+`;
+const NameRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+`;
 import { Avatar } from '../../atoms/Avatar';
 import { Typography } from '../../atoms/Typography';
 import { Loader } from '../../atoms/Loader';
 import { Badge } from '../../atoms/Badge';
 import { StatItem } from '../../molecules/StatItem';
 import { IconButton } from '../../atoms/IconButton';
-import { 
-  HeaderCard, 
-  IdentitySection, 
-  InfoSection, 
-  StatsSection, 
-  StatDivider, 
-  VerifiedRow 
+import {
+  HeaderCard,
+  IdentitySection,
+  InfoSection,
+  StatsSection,
+  StatDivider,
+  VerifiedRow,
+  SettingsButtonWrapper,
+  VerifiedIcon,
 } from './ProfileHeader.styles';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -39,7 +65,6 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   isVerified = true,
   avatarUri,
   isUpdatingAvatar = false,
-  onEditPress,
   onSettingsPress,
   onAvatarEditPress,
 }) => {
@@ -48,52 +73,58 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
   return (
     <HeaderCard>
-      <IconButton icon="settings" variant="surface" onPress={onSettingsPress} style={{ position: 'absolute', top: 10, right: 10 }} />
+      <SettingsButtonWrapper>
+        <IconButton
+          icon="settings"
+          variant="surface"
+          onPress={onSettingsPress}
+        />
+      </SettingsButtonWrapper>
       <IdentitySection>
-        <View style={{ alignItems: 'center' }}>
-          <View>
-            <Avatar 
-              source={avatarUri ? { uri: avatarUri } : undefined} 
-              size="xl" 
+      <CenterView>
+          <StyledView>
+            <Avatar
+              source={avatarUri ? { uri: avatarUri } : undefined}
+              size="xl"
               border
               placeholder={name}
             />
             {isUpdatingAvatar && (
-              <View style={{
-                position: 'absolute',
-                top: 0, left: 0, right: 0, bottom: 0,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'rgba(0,0,0,0.4)',
-                borderRadius: 100,
-              }}>
+              <AvatarOverlay>
                 <Loader transparent />
-              </View>
+              </AvatarOverlay>
             )}
-          </View>
+          </StyledView>
           {onAvatarEditPress && (
-            <TouchableOpacity onPress={onAvatarEditPress} disabled={isUpdatingAvatar} style={{ marginTop: 8, opacity: isUpdatingAvatar ? 0.5 : 1 }}>
-              <Typography variant="label" size="lg" color="primary" weight="bold">
+            <EditButton
+              onPress={onAvatarEditPress}
+              disabled={isUpdatingAvatar}
+              isUpdating={isUpdatingAvatar}
+            >
+              <Typography
+                variant="label"
+                size="lg"
+                color="primary"
+                weight="bold"
+              >
                 {t('profileHub.editProfilePic') || 'Edit'}
               </Typography>
-            </TouchableOpacity>
+            </EditButton>
           )}
-          
-        </View>
+        </CenterView>
         <InfoSection>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <NameRow>
             <Typography variant="title" size="lg" weight="bold">
               {name}
             </Typography>
             <Badge label={t('profileHub.proPooler')} variant="primary" />
-          </View>
+          </NameRow>
           {isVerified && (
             <VerifiedRow>
-              <Icon 
-                name="verified" 
-                size={18} 
-                color={theme.colors.primary} 
-                style={{ opacity: 0.8 }} 
+              <VerifiedIcon
+                name="verified"
+                size={18}
+                color={theme.colors.primary}
               />
               <Typography variant="label" size="sm" color="on_surface_variant">
                 {t('profileHub.identityVerified')}

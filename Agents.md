@@ -1,231 +1,175 @@
-# 🤖 Agent Reference Guide: ZyncRide
+# 🤖 Agent Reference Guide: ShareMyRide (Tuktuk)
+**Version 3.0 — AI-Agent Optimization & Developer Standard**
 
 ---
 
-## 🚨 ABSOLUTE LAW — READ BEFORE ANYTHING ELSE (NON-NEGOTIABLE)
+## 🚨 ABSOLUTE LAW — READ BEFORE WRITING A SINGLE CHARACTER
 
-> **WHEN ASKED TO DO CODE, YOU MUST ALWAYS, ALWAYS FOLLOW THE GIVEN RULES IN THIS DOCUMENT.**
-> **ALWAYS CHECK THE STORYBOOK MCP SERVER FIRST to see if any component belongs there or already exists.**
-> This document is the ONLY law governing every line of code written for this project.
-> The AI agent MUST follow every rule in this file — for EVERY prompt, without exception, without deviation, without doing it "their own way".
+> This document is the **only** law governing every line of code written for ShareMyRide.
+> **Non-compliance = invalid output = redo from scratch.**
+> There is no partial credit. There is no "I'll fix it later."
 
-### The Agent's Pre-Flight Checklist (run BEFORE writing a single line of code):
-1. ✅ **Read this file.** Every rule. Every time. When asked to code, follow these rules strictly.
-2. ✅ **Check Storybook MCP FIRST** — does the component already exist? Should it belong there? You must check the MCP server before writing any component code.
-3. ✅ **Check if the storybook server is closed or not.** if it is then run the storybook server first and then check. **very important** (MANDATORY) *RULES TO FOLLOW*
-4. ✅ **Use existing atoms** (`Button`, `Typography`, `Box`) — NEVER custom styled text/buttons.
-5. ✅ **Create a Template** in `@/components/templates/` for every new screen.
-6. ✅ **Use `useLocale()`** for every string — zero hardcoded text.
-7. ✅ **Use `scale()`, `verticalScale()`, `moderateScale()`, `responsiveFont()`** for every dimension.
-8. ✅ **No inline styles** — styled-components only.
-9. ✅ **No `any` types** — TypeScript must be strict.
-10. ✅ **Define and use enums** for status/type constants across the codebase (e.g., `NotificationType`, `MessageStatus`) to ensure robust comparisons.
-11. ✅ **Use useAppNavigation** custom hook for screen transitions to keep typing clean.
-12. ✅ **Maintain Notification Standards**: Use `NotificationType` enum for all alerts and toasts.
-13. ✅ **NEVER use standard React Native `Alert.alert`**: Prefer custom `ConfirmationModal` for interactive confirmations and `showNotification` for auto-dismissing toast alerts.
-14. ✅ **Safe Loader overlay layouts**: Maintain loaders centered with `width: 100%` and correct transparency settings.
+### Pre-Flight Checklist (mandatory before every prompt)
 
-> ⛔ **If any of the above are skipped, the output is INVALID and must be redone from scratch.**
-> The user should NOT have to ask for compliance — compliance is the default.
+Run every item. Check the box mentally. Only then write code.
 
----
+1. ✅ **Read this file in full.**
+2. ✅ **Query Storybook MCP & Stitch MCP first.** Check Storybook for components. Use Stitch MCP to manage screens and design systems.
+3. ✅ **Check `@/hooks`, `@/utils`, `@/components/atoms`** — never recreate what exists.
+4. ✅ **No raw RN primitives** — `View`, `Text`, `TouchableOpacity` are forbidden; use atoms.
+5. ✅ **Every screen needs a Template** in `@/components/templates/`.
+6. ✅ **Every string goes through `useTranslation()`** — zero hardcoded text.
+7. ✅ **Every dimension uses a scaling util** — `scale()`, `verticalScale()`, `moderateScale()`, `responsiveFont()`.
+8. ✅ **Styled-components only** — no inline styles, no `StyleSheet.create`.
+9. ✅ **`any` is a build error** — use proper generics or discriminated unions.
+10. ✅ **Enums for every status/type constant** — never compare raw strings.
+11. ✅ **`useAppNavigation`** for all screen transitions.
+12. ✅ **`showNotification` / `ConfirmationModal`** — never `Alert.alert`.
+13. ✅ **Loader overlays** — `width: 100%`, centered, `transparent` prop.
+14. ✅ **`React.memo`, `useCallback`, `useMemo`** applied by default — not as an afterthought.
+15. ✅ **200-line hard cap per file** — exceed it and refactor immediately.
+16. ✅ **Remove all `console.log`, dead imports, unused variables** before output.
+17. ✅ **No `eslint-disable` comments** — fix the root cause.
 
-This document is the **source of truth** for all development. AI agents must adhere to these rules strictly to maintain the "ZyncRide" brand identity and codebase integrity.
-
-## 🔍 0. The "Storybook MCP" Protocol | Critical "Search-First" Protocol (MANDATORY)
-Before creating **any** new component, the AI Agent must perform a "Discovery Phase" using the Storybook MCP server.
-
-1.  **Check MCP Inventory:** Query the Storybook MCP server to see if the component (or a similar one) already exists.
-2.  **The "No-Duplicate" Rule:** * If the component exists in Storybook: **Use it.**
-    * If the component exists but lacks a specific feature: **Update the existing component** in its original directory.
-    * **NEVER** create a duplicate component (e.g., if `PrimaryButton` exists, do not create `ActionBtn`).
-    * **Rule:** If a component exists that performs 80% of the task, **extend or use it**. Do not create duplicates (e.g., do not create `CustomButton.tsx` if `Button.tsx` exists in atoms).
-3.  **Syncing:** Any updates made to a component must be reflected in its corresponding `.stories.tsx` file immediately to keep the MCP server up to date.
-4.  Check `@/hooks` and `@/utils`.
+> ⛔ Skipping any item above produces invalid output. Redo from scratch.
 
 ---
 
-## 🎯 1. Core Architectural Principles
-* **Atomic Design:** Components must live in `atoms`, `molecules`, `organisms`, or `templates`.
-* **SOLID & Modular:** 
-We follow **Atomic Design** combined with **SOLID** principles:
-**S - Single Responsibility:** One component = one job. Logic lives in `useComponentName.ts`, UI lives in `ComponentName.tsx`.
-**O - Open/Closed:** Components should be open for extension (via props) but closed for modification.
-**L - Liskov Substitution:** Shared UI components must handle standard props (e.g., a custom `Input` should accept standard `TextInputProps`).
-**I - Interface Segregation:** Don't force a component to depend on props it doesn't use. Use specific TypeScript interfaces.
-**D - Dependency Inversion:** High-level modules (Screens) shouldn't depend on low-level modules. Both should depend on abstractions (Services/Context).
-* **The 200-Line Rule:** No file shall exceed **200 lines**. Exceeding this requires immediate refactoring into smaller sub-components or hooks.
-* **Clean Exports:** Every component folder must contain an `index.ts` for clean barrel exports.
+## 🔍 0. Quick-Start for AI Agents
+
+Welcome, AI Agent! To ensure you work effectively with a limited context window:
+1. **Locate Skills**: Reference `.agents/skills/SKILLS.yaml` to discover tool capabilities.
+2. **Consult Instructions**: Check `.agents/instructions/` for step-by-step guidance on creating components, routing, and running tests.
+3. **Verify Constraints**: Strictly adhere to `.agents/rules/development.md`.
+4. **Run Tests**: Execute `yarn test` for Jest unit tests and `npx vitest` for Storybook browser-based interaction tests.
 
 ---
 
-## 📁 2. Component Structure
-Every component or screen folder must follow this exact pattern:
-Strictly adhere to this folder pattern. **No file exceeds 200 lines.**
+## 🛠️ 1. Tech Stack Overview
+
+* **Primary Language**: TypeScript (`tsconfig.json` configured with absolute path mapping)
+* **Framework**: React Native 0.84.1 & React 19.2.3 (React Native CLI-based codebase)
+* **Build System / Package Manager**: Gradle (Android), CocoaPods (iOS) / Yarn (using `yarn.lock`)
+* **Test Frameworks**: Jest (unit testing) and Vitest + Playwright (Storybook interaction testing)
+* **Styling & Theme Engine**: Styled Components (`styled-components/native`)
+* **State Management**: Zustand (stores defined in `src/store/`)
+* **Central Networking Client**: Axios instance located in `src/serviceManager/`
+* **Local Storage / Secure Storage**: MMKV (`react-native-mmkv`) & Keychain (`react-native-keychain`)
+
+---
+
+## 🎨 2. Design Tokens Reference
+
+For detailed visual specs, see [design_tokens.md](file:///.agents/docs/design_tokens.md).
+
+* **Colors** (Accessible via `theme.colors.*` in snake_case):
+  - Primary Action: `primary` (`#0058bc` / `#adc6ff`)
+  - Container Backgrounds: `primary_container` (`#0070eb` / `#004390`)
+  - Screen Backgrounds: `background` (`#f9f9f9` / `#111318`)
+  - Neutral Secondary Surface: `surface_variant` (`#e2e2e2` / `#44474f`)
+  - Typography Copy: `on_surface_variant` (`#414755` / `#c4c6d0`)
+* **Spacing Guidelines**: `xs: 4px`, `sm: 8px`, `md: 16px`, `lg: 24px`, `xl: 32px`, `xxl: 40px` (use `theme.spacing.*`).
+* **Border Radii**: `none: 0`, `xs: 4`, `sm: 8`, `md: 12` (default card radius), `lg: 16`, `xl: 24`, `full: 999`.
+* **Typography**: Plus Jakarta Sans only. Scale size with `responsiveFont()`.
+
+---
+
+## 📁 3. Components Catalog
+
+The codebase enforces **Atomic Design**. Below is an inventory of all reusable components:
+
+### Atoms (`src/components/atoms/`)
+* `Avatar`, `Badge`, `Box`, `Button`, `CategoryIcon`, `Checkbox`, `Chip`, `ColorChip`, `CounterButton`, `DurationChip`, `Handlebar`, `IconButton`, `Input`, `Loader`, `MapPin`, `MessageStatus`, `ModalBackdrop`, `SeatButton`, `SectionHeader`, `StatValue`, `StatusBadge`, `Surface`, `Tag`, `Toggle`, `Typography`, `UserLocationMarker`, `VerifiedBadge`, `ZyncRideLogo`.
+
+### Molecules (`src/components/molecules/`)
+* `AvatarPicker`, `BentoMapPreview`, `CategoryButton`, `ChatMapPreview`, `CommonHeader`, `CompactRideItem`, `DatePickerInput`, `DobInput`, `DriverProfileSummary`, `ETAInfo`, `EmptyState`, `FareCard`, `FrontSeatPremium`, `GenderSelector`, `GlassSearchBar`, `InfoBar`, `InfoBox`, `LiveLocationToggle`, `LocationDetailsCard`, `LocationInput`, `LocationListItem`, `MapControlsFABs`, `MessageBubble`, `MessageItem`, `MultiStopCard`, `Notification`, `OtpInput`, `PreferenceCard`, `PriceCounter`, `ProfileMenuItem`, `ReasonSelectorItem`, `RideTimeline`, `RideTimestampRow`, `RideTypeToggle`, `RiderCard`, `RouteIndicator`, `SafetyBanner`, `ScreenHeader`, `ScreenShell`, `SearchInput`, `SeatLegend`, `SeatSummaryBar`, `SegmentPricingCard`, `SelectionPreviewCard`, `SocialButton`, `StatItem`, `StopItem`, `TimeDial`, `Toast`, `TrustInfoBar`, `VehicleCard`, `VehicleHorizontalList`, `VehicleToggle`, `VehicleTypeCard`.
+
+### Organisms (`src/components/organisms/`)
+* `ActionSheetModal`, `BottomNav`, `CancelRideModal`, `CarFloorPlan`, `ChatAppHeader`, `ChatInputSection`, `ConfirmationModal`, `DriverSection`, `GlobalNotification`, `IdentityProfileCard`, `LocationBottomSheet`, `LocationInputsBento`, `LoginForm`, `MapActionFAB`, `MapContextOverlay`, `MapSearchOverlay`, `MapViewer`, `MatchedRideBento`, `MiddleStopSearchOverlay`, `MiddleStopsList`, `MonthCalendar`, `MyRidesHeader`, `NetworkLoggerModal`, `OlaMap`, `PassengerManagement`, `PreferencesSection`, `ProfileHeader`, `RecentMessagesSection`, `ReportIssueModal`, `RideCard`, `RideComfortSection`, `RideFareCard`, `RideFiltersModal`, `RideItem`, `RideListHeader`, `RideStatsStrip`, `RideSummaryCard`, `RideVehicleCard`, `RidersHorizontalList`, `RouteCard`, `RouteJourney`, `SafetyTrustCard`, `SegmentPricingSheet`, `SocialSection`, `TimePickerCard`, `TrustScoreCard`, `UpcomingRideCard`.
+
+### Templates (`src/components/templates/`)
+* `AvailableRidesTemplate`, `BookRideInfoTemplate`, `BookSeatSelectionTemplate`, `BookingConfirmedTemplate`, `CancelRideTemplate`, `ChatDetailsTemplate`, `ChatListTemplate`, `DateSelectionTemplate`, `DummyTemplate`, `EditProfileTemplate`, `LocalRideResultsTemplate`, `LocationSelectionTemplate`, `LoginTemplate`, `MapPickerTemplate`, `MiddleStopMapTemplate`, `MiddleStopsTemplate`, `MyRideDetailsTemplate`, `MyRidesTemplate`, `NetworkLogsTemplate`, `OTPVerificationTemplate`, `PriceSelectionTemplate`, `ProfileHubTemplate`, `ProfileSetupTemplate`, `PublishSuccessTemplate`, `RatingTemplate`, `RequestTypeTemplate`, `RideDetailsTemplate`, `RideInformationTemplate`, `RideRouteMapTemplate`, `RouteSelectionTemplate`, `SeatSelectionTemplate`, `SelectLocationTemplate`, `SettingsTemplate`, `SplashTemplate`, `SuggestionsTemplate`, `SummaryPublishTemplate`, `SupportTemplate`, `TimeSelectionTemplate`, `TravelPreferencesTemplate`, `UserProfileDetailTemplate`, `VehicleDetailsTemplate`, `VehicleListTemplate`.
+
+---
+
+## 📈 4. Concrete Recommendations Report (Priority Matrix)
+
+### AI Agent Navigability
+* **Aliased Pathing**: TS paths (`@/*`, `atoms/*`, `molecule/*`, `organism/*`, `template/*`, `services/*`, `store/*`) simplify module references and eliminate deep relative imports (`../../`). Always import via aliases.
+* **Bounded Components**: Every component has a dedicated folder containing UI, styles, types, and logic hook. Do not spread component files across folders.
+
+### Context Efficiency
+* **Line Limit**: Keep files strictly under **200 lines**. This keeps context footprints small and limits the tokens generated in diffs.
+* **Atomic State Selectors**: When consuming Zustand store values in logic hooks, import only the specific fields needed rather than the whole store object.
+
+### Code Discoverability
+* **Component Indexing**: Use component barrel export `index.ts` files to easily search export maps.
+* **Component Inventory**: Refer to Section 3 of this document to identify existing controls before authoring new ones.
+
+### Task Decomposition
+* Split any new screen or feature request into independent, verifiable sub-tasks:
+  1. Declare localized labels in `en.ts` / `hi.ts`.
+  2. Register navigation parameters in `types.d.ts`.
+  3. Author styled components in `styles.ts`.
+  4. Write core state/handlers in `useHook.ts`.
+  5. Assemble the Template file.
+  6. Mount in a screen container file under `src/screens/`.
+  7. Add story files and verify in Storybook.
+
+### Dependency Clarity
+* **Lock-file Sync**: Never run modifications to package versions without committing the updated `yarn.lock` along with `package.json`.
+* **Central Services**: Maintain the central Axios client (`axiosClient.ts`) to manage tokens and api routes. Never call Axios inline in hooks.
+
+### Build/Test Isolation
+* Test files are isolated from bundle paths. Run local `yarn test` commands to verify logic changes in isolation.
+* Use Vitest browser tests (`npx vitest`) to execute specific Stories verification without launching full Android/iOS simulators.
+
+### Documentation Quality
+* Document component props in `types.d.ts` and write docstrings on public utilities in `src/utils/` to give agents immediate auto-complete context.
+
+### Repository Scalability
+* As the workspace grows, transition toward a monorepo setup (e.g. Turborepo) where shared mobile UI components are structured into a package distinct from screens.
+
+### Developer Onboarding
+* Run `yarn start` and launch simulators with `yarn android` or `yarn ios`. Use `yarn storybook` to launch visual testing immediately.
+
+### Multi-agent Parallel Development
+* **Isolation Branches**: Agents should always compile and test changes inside dedicated git branches prefixed with `agent/`.
+* **Atomic commits**: Commit changes incrementally by component bounds to prevent merge conflicts.
+* **State Cleanliness**: Enums must be used for comparisons to avoid branch merge issues on string mutations.
+
+---
+
+## 🌳 5. Created Directory Structure (`tree -L 3 .agents`)
 
 ```text
-ComponentName/
-├── ComponentName.screen.tsx        (Logic-free UI, React.memo)
-├── ComponentName.styles.ts         (Styled-components only)
-├── useComponentName.ts             (Handlers, API calls, Logic)
-├── ComponentName.stories.tsx       (create only for common components. required for MCP Visibility)
-├── types.d.ts                      (Interfaces)
-└── index.ts                        (Clean Export)
+.agents/
+├── docs/
+│   ├── architecture.md
+│   └── design_tokens.md
+├── instructions/
+│   ├── components.md
+│   ├── navigation.md
+│   └── testing.md
+├── rules/
+│   └── development.md
+└── skills/
+    ├── api/
+    │   └── SKILL.md
+    ├── components/
+    │   └── SKILL.md
+    ├── localization/
+    │   └── SKILL.md
+    ├── navigation/
+    │   └── SKILL.md
+    ├── storybook/
+    │   └── SKILL.md
+    ├── SKILLS.yaml
+    └── update_skills.sh
 ```
 
 ---
 
-## 🎨 3. Styling & "ZyncRide" Design System
-**Creative North Star:** Editorial Fluidity & Organic Sophistication.
+## 🎯 6. TL-Checklist (Verification)
 
-* **Styled Components Only:** No inline styles. No `StyleSheet.create`.
-* **The "No-Line" Rule:** Do **not** use `borderWidth: 1`. Use **Tonal Shifts** (different surface colors) or **Negative Space** to separate content.
-* **Typography:** Use **Plus Jakarta Sans** only. Access via `theme` or `Typography` atom.
-*   **Tokens:** Never use hardcoded colors or spacing. Use `theme.colors` and `theme.spacing`. Use **snake_case** for theme color tokens (e.g., `on_surface_variant`, not `onSurfaceVariant`).
-* **Shadows:** Use tinted ambient shadows. "Higher is Lighter" (higher elevation = lighter background color).
-* **Gradients:** Use linear gradients (Primary to Primary Container at 135°) for main Action buttons.
-
----
-
-## 📱 4. Responsiveness & UI/UX
-* **Scaling Utils:** Wrap every dimension in scaling functions from `src/styles`:
-    * `scale(x)`: Horizontal/Width.
-    * `verticalScale(y)`: Vertical/Height.
-    * `moderateScale(z)`: Icons/Spacing.
-    * `responsiveFont(f)`: Font sizes.
-* **Keyboard Safety:** Elements must never be hidden by the keyboard. Use `KeyboardAvoidingView` or `KeyboardAwareScrollView`.
-* **Pre-built Atoms:** Never use React Native's `View`, `Text`, or `TouchableOpacity` directly. Use components from `src/components/atoms`.
-* **Transitions:** Use smooth fade animations for screen navigation.
-
----
-
-## ⚙️ 5. Logic, State & Data
-* **State:** Use **Zustand** for global state. Keep stores modular.
-* **API:** Use **Axios** with a centralized client (`src/serviceManager`). Use interceptors for tokens and error handling.
-* **Localization:** No hardcoded strings. Every piece of text must come from `baseLocalization`.
-* **Storage:** * `MMKV` for fast local storage.
-    * `Keychain` for sensitive tokens.
-* **Memorization:** Use `useCallback`, `useMemo`, and `React.memo` by default to prevent unnecessary re-renders.
-
----
-
-## 🔗 6. Path Aliases
-AI must use alias imports to avoid deep relative paths (`../../`).
-
-| Alias | Target Directory |
-| :--- | :--- |
-| `@/*` | `src/*` |
-| `atoms/*` | `src/components/atoms/*` |
-| `molecule/*` | `src/components/molecules/*` |
-| `organism/*` | `src/components/organisms/*` |
-| `screens/*` | `src/screens/*` |
-| `utils/*` | `src/utils/*` |
-| `services/*` | `src/serviceManager/*` |
-
----
-
-## 🛡️ 7. Error Handling & Quality
-* **Error Boundaries:** All major screen segments must be wrapped in an Error Boundary.
-* **Modals & Alerts:** **NEVER** use standard React Native `Alert.alert`. Prefer the custom `ConfirmationModal` for interactive confirmations and the `showNotification` global method for auto-dismissing toast alerts.
-* **Logging:** Use the project's custom Logger that toggles behavior between Development and Production.
-* **Validation:** All forms must have validation (Zod/Yup) with user-friendly error messages shown via the UI.
-* **TypeScript:** `any` is strictly forbidden. Fix all linter and type errors before finalizing code.
-
----
-
-## ⚠️ 8. Critical "Do Not" List
-1.  **Do NOT** modify existing business logic unless explicitly requested.
-2.  **Do NOT** change provided UI designs; maintain "ZyncRide" fidelity.
-3.  **Do NOT** create duplicate components/hooks if they exist in `src/components/...`.
-4.  **Do NOT** use `fetch` API.
-5.  **Do NOT** use hardcoded hex codes or pixel values.
-6.  **Do NOT** use standard React Native `Alert.alert`. Always use custom `ConfirmationModal` or `showNotification`.
-7.  **Do NOT** use hardcoded strings/literals in UI screens or hooks. Everything must be localized using `useLocale()` or `useTranslation()`.
-8.  **Do NOT** render loader overlays without `width: 100%` or correct centering and transparency settings.
-
----
-
-## 📝 9. User-Friendly UI Additions
-* **Haptics:** Add subtle haptic feedback (Success/Error/Impact) for primary button actions.
-* **Transitions:** Use `LayoutAnimation` or `Reanimated` for smooth UI entries.
-* **Empty States:** Always provide a visual "No Data Found" component for lists.
-* **Feedback:** Show a Toast or Snack-bar for every background action (e.g., "Profile Updated").
-
----
-
-## 🔐 10. Safety & Clean Code
-* **No `any`:** TypeScript must be strict.
-* **Path Aliases:** Use `@/atoms`, `@/molecule`, `@/organism`, `@/services`.
-* **Clean-up:** Remove `console.log`, unused imports, and dead code before submission.
-* **Logging:** Use the internal `Logger` utility for production-safe debugging.
-
----
-
-## 🌐 11. Data & Networking
-* **API:** Use **Axios**. No `fetch`. Use the `useApi` custom hook for all requests.
-* **State:** Use **Zustand**. Keep stores small (e.g., `useUserStore`, `useRideStore`).
-* **Localization:** **ZERO** hardcoded strings. Use `baseLocalization.t('key')`.
-* **Storage:** Use `MMKV` for persistence and `Keychain` for sensitive tokens.
-
----
-
-## 🚀 12. Optimization & Performance (User-Friendly Code)
-* **Memoization:** Wrap all functional components in `React.memo`. Wrap handlers in `useCallback` and expensive calculations in `useMemo`.
-* **Asset Optimization:** Use SVGs (via `react-native-svg`) instead of PNGs where possible.
-* **Lazy Loading:** Use dynamic imports for heavy screens to improve startup time.
-* **List Optimization:** Always use `FlashList` (Shopify) instead of `FlatList` for better performance.
-
----
-
-## 🌍 13. Localization (Zero Hardcoding)
-* **Rule:** **Zero** "String Literals" in UI files.
-* **language**: The default language is `english`, 2nd language is `hindi`.
-* **Storage:** All text must live in `@/constants/baseLocalization`.
-* **Format:** Use hierarchical keys: `auth.login.title` or `errors.server_error`.
-* **Dynamic Text:** Use interpolation (e.g., `{{count}}`) for variables.
-
-
----
-
-## 🌍 14. RULES:
-* do not use React native's component. use only components from @/components folder. **very important** (MANDATORY) *RULES TO FOLLOW*
-* do not create components. first check if the component is already in the Storybook MCP server, if not then create it. **very important** (MANDATORY) *RULES TO FOLLOW*
-* always apply "No-Line" design aesthetics, and ensure 100% localization and strict TypeScript typing. **very important** (MANDATORY) *RULES TO FOLLOW*
-* do not use inline styles. use only styled-component. **very important** (MANDATORY) *RULES TO FOLLOW*
-* do not use hardcoded hex codes or pixel values. **very important** (MANDATORY) *RULES TO FOLLOW*
-* always use localizations. **very important** (MANDATORY) *RULES TO FOLLOW*
-* optimise the code for performance. **very important** (MANDATORY) *RULES TO FOLLOW*
-* do not use any api directly. use the @/services folder. **very important** (MANDATORY) *RULES TO FOLLOW*
-* create small functions for each task. **very important** (MANDATORY) *RULES TO FOLLOW*
-* follow SOLID principles. **very important** (MANDATORY) *RULES TO FOLLOW*
-* create *.stories.tsx file for each component in component folder except templates, only if not exist in storybook MCP server. **very important** (MANDATORY) *RULES TO FOLLOW*
-* first check the storybook MCP server to see if the component already exists, if not then create it. **very important** (MANDATORY) *RULES TO FOLLOW*
-* never create .stories.tsx file for any other folder outside the components folder. this is very important. **very important** (MANDATORY) *RULES TO FOLLOW*
-* create template for new screens, and save them in @/components/templates folder. **very important** (MANDATORY) *RULES TO FOLLOW*
-* always make and use enums for status/type constants across the codebase to ensure robust comparisons. **very important** (MANDATORY) *RULES TO FOLLOW*
-* always use the custom navigation hook (useAppNavigation) for screen transitions instead of raw hook to ensure clean types without 'as any' casts. **very important** (MANDATORY) *RULES TO FOLLOW*
-* NEVER use React Native's `Alert.alert`. Use custom `ConfirmationModal` and `showNotification`. **very important** (MANDATORY) *RULES TO FOLLOW*
-* Ensure Loader overlays are centered safely with `width: 100%` and have the `transparent` prop enabled. **very important** (MANDATORY) *RULES TO FOLLOW*
-
----
-
-## 🚫 15. Zero-Tolerance Enforcement
-
-> These rules are **non-negotiable** and apply to **every single prompt** — no exceptions.
-
-* **NEVER skip the pre-flight checklist.** Every prompt must go through it.
-* **NEVER use raw `Text`, `View`, `TouchableOpacity`** from React Native. Always use atoms from `@/components/atoms`.
-* **NEVER write hardcoded strings** in UI files. Use `useLocale()` always.
-* **NEVER write hardcoded pixel values or hex codes.** Use theme tokens and scaling utils.
-* **NEVER create a screen without a Template** in `@/components/templates/`.
-* **NEVER use inline styles.** Styled-components only.
-* **NEVER do things your own way.** If something is unclear, ask the user — do not improvise.
-* **ALWAYS check Storybook MCP before creating any component.**
-* **ALWAYS follow the 200-line rule.** Refactor immediately if exceeded.
-* **ALWAYS use `React.memo`, `useCallback`, `useMemo`** for performance.
-* **ALWAYS define and use enums** for status/type constants across the codebase to ensure robust comparisons.
-* **ALWAYS use the custom navigation hook (useAppNavigation)** for screen transitions instead of raw hooks or raw navigation calls to avoid 'as any' casts.
-* **ALWAYS avoid standard React Native `Alert.alert` in favor of custom `ConfirmationModal` or `showNotification`.**
-* **ALWAYS ensure loader overlays are centered safely with `width: 100%` and correct transparency settings.**
-
-> 💬 If the AI ever violates any rule above, the correct response is to **redo the work from scratch** following the rules — not patch it.
+> **"Team Lead Checklist: Verify that `Agents.md` is in the root, `.agents/skills/SKILLS.yaml` is fully populated, the automation script `update_skills.sh` runs successfully, and all rule/instruction markdown documents are present."**

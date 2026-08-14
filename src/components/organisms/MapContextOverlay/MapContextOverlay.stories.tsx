@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { MapContextOverlay } from './MapContextOverlay';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Organisms/MapContextOverlay',
   component: MapContextOverlay,
-
 } satisfies Meta<typeof MapContextOverlay>;
 
 export default meta;

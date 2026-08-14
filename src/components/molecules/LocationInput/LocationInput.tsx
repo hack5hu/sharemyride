@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+
 import { Input } from '../../atoms/Input';
 import { Tag } from '../../atoms/Tag';
 import { Container, TagRow } from './LocationInput.styles';
@@ -35,9 +35,7 @@ export const LocationInput: React.FC<LocationInputProps> = ({
         <Tag active onPress={onPressNearby}>
           {t('profileSetup.nearbyOnly')}
         </Tag>
-        <Tag onPress={onPressGlobal}>
-          {t('profileSetup.globalReach')}
-        </Tag>
+        <Tag onPress={onPressGlobal}>{t('profileSetup.globalReach')}</Tag>
       </TagRow>
     </Container>
   );

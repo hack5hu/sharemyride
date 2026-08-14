@@ -7,9 +7,10 @@ import { BottomNav } from '@/components/organisms/BottomNav';
 import { useChatList } from './useChatList';
 import { ChatListScreenProps } from './types';
 
-
-export const ChatListScreen: React.FC<ChatListScreenProps> = ({ navigation }) => {
-  const { searchQuery, setSearchQuery, filteredMessages, t } = useChatList();
+export const ChatListScreen: React.FC<ChatListScreenProps> = ({
+  navigation,
+}) => {
+  const { searchQuery, setSearchQuery, filteredMessages, t, loadMore, isLoading } = useChatList();
 
   return (
     <ChatListTemplate
@@ -23,7 +24,9 @@ export const ChatListScreen: React.FC<ChatListScreenProps> = ({ navigation }) =>
       content={
         <RecentMessagesSection
           messages={filteredMessages as any}
-          onMessagePress={(id) => {
+          onLoadMore={loadMore}
+          isLoading={isLoading}
+          onMessagePress={id => {
             const chat = (filteredMessages as any[]).find(m => m.id === id);
             navigation.navigate('ChatDetails', {
               userId: id,
@@ -36,9 +39,7 @@ export const ChatListScreen: React.FC<ChatListScreenProps> = ({ navigation }) =>
           }}
         />
       }
-      bottomNav={
-        <BottomNav activeTab="CHATS" />
-      }
+      bottomNav={<BottomNav activeTab="CHATS" />}
     />
   );
 };

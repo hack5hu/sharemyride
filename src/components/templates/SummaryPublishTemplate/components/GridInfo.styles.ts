@@ -1,5 +1,10 @@
 import styled from 'styled-components/native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
+export const StyledEditIcon = styled(Icon)<{ $disabled?: boolean }>`
+  opacity: ${({ $disabled }) => ($disabled ? 0.4 : 1)};
+`;
 
 export const GridRow = styled.View`
   flex-direction: row;
@@ -9,7 +14,8 @@ export const GridRow = styled.View`
 
 export const GridCard = styled.View`
   flex: 1;
-  background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}99`};
+  background-color: ${({ theme }) =>
+    `${theme.colors.surface_container_lowest}99`};
   border-radius: ${moderateScale(20)}px;
   padding: ${moderateScale(16)}px;
   border-width: 1px;

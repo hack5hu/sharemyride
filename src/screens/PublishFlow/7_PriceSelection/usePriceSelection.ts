@@ -2,8 +2,13 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
-import { locationService } from '@/serviceManager/locationService';
-import { calculateBasePrice, calculateFrontSeatPrice, PRICING_MULTIPLIERS, roundToNearest } from '@/utils/pricing';
+import { LocationService } from '@/serviceManager/LocationService';
+import {
+  calculateBasePrice,
+  calculateFrontSeatPrice,
+  PRICING_MULTIPLIERS,
+  roundToNearest,
+} from '@/utils/pricing';
 import { SegmentPrice } from '@/components/molecules/SegmentPricingCard';
 import { StopSegment } from '@/components/organisms/SegmentPricingSheet/utils';
 
@@ -12,9 +17,9 @@ export const usePriceSelection = () => {
   const route = useRoute();
   const params = route.params as any;
 
-  const { 
-    startLocation, 
-    destinationLocation, 
+  const {
+    startLocation,
+    destinationLocation,
     middleStops,
     routeDetails,
     setRouteDetails,
@@ -26,39 +31,87 @@ export const usePriceSelection = () => {
     segmentPrices: storeSegmentPrices,
   } = useRidePublishStore();
 
-  const divisor = useMemo(() => (publishVehicleType === '7' ? 6 : 4), [publishVehicleType]);
+  const divisor = useMemo(
+    () => (publishVehicleType === '7' ? 6 : 4),
+    [publishVehicleType],
+  );
 
   const [isLoading, setIsLoading] = useState(false);
   const totalDistanceKm = (routeDetails?.totalDistanceMeters || 0) / 1000;
 
   const initialPrice = useMemo(() => {
     if (totalDistanceKm > 0) {
-      return calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MID, divisor);
+      return calculateBasePrice(
+        totalDistanceKm,
+        PRICING_MULTIPLIERS.MID,
+        divisor,
+      );
     }
     return 0;
   }, [totalDistanceKm, divisor]);
 
   const showPremium = true;
 
-  const [price, setPrice] = useState<number>(storePrice || initialPrice);
-  const [premiumEnabled, setPremiumEnabled] = useState(storePremiumEnabled ?? false);
+  // Pricing Boundaries
+  const minPrice = useMemo(
+    () => calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MIN, divisor),
+    [totalDistanceKm, divisor],
+  );
+  const maxPrice = useMemo(
+    () => calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MAX, divisor),
+    [totalDistanceKm, divisor],
+  );
 
-  const [premiumPercentage, setPremiumPercentage] = useState(storePremiumPercentage || 10);
+  // Validate storePrice against current route distance bounds. If stale or out of bounds, use initialPrice.
+  const validPrice = useMemo(() => {
+    if (
+      storePrice &&
+      minPrice > 0 &&
+      storePrice >= minPrice &&
+      storePrice <= maxPrice
+    ) {
+      return storePrice;
+    }
+    return initialPrice;
+  }, [storePrice, minPrice, maxPrice, initialPrice]);
+
+  const [price, setPrice] = useState<number>(validPrice || initialPrice);
+
+  useEffect(() => {
+    if (validPrice > 0 && (price === 0 || (price !== validPrice && !storePrice))) {
+      setPrice(validPrice);
+    }
+  }, [validPrice]);
+
+  const [premiumEnabled, setPremiumEnabled] = useState(
+    storePremiumEnabled ?? false,
+  );
+
+  const [premiumPercentage, setPremiumPercentage] = useState(
+    storePremiumPercentage || 10,
+  );
   const [sheetVisible, setSheetVisible] = useState(false);
-  
-  const [segmentPricesState, setSegmentPricesState] = useState<Record<string, number>>(storeSegmentPrices || {});
 
-  // Pricing Boundaries (7x to 12x) - Adjusted for Vehicle Capacity
-  const minPrice = useMemo(() => calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MIN, divisor), [totalDistanceKm, divisor]);
-  const maxPrice = useMemo(() => calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MAX, divisor), [totalDistanceKm, divisor]);
+  const [segmentPricesState, setSegmentPricesState] = useState<
+    Record<string, number>
+  >(storeSegmentPrices || {});
 
   // 1. Fetch Finalized Route on Mount
   useEffect(() => {
     const fetchFinalRoute = async () => {
       if (!startLocation || !destinationLocation) return;
-      
-      // If we have route details and price is already in store or set correctly, skip
-      if (routeDetails && (storePrice > 0 || price > 0)) {
+
+      // If we have route details, ensure price matches the route's recommended price if storePrice is unassigned
+      if (routeDetails) {
+        const calculatedRec = calculateBasePrice(
+          totalDistanceKm,
+          PRICING_MULTIPLIERS.MID,
+          divisor,
+        );
+        if (price === 0) {
+          setPrice(calculatedRec);
+        }
+
         // Just sync segment prices if we have legs and some are missing (e.g. after adding middle stops)
         if (routeDetails.legs.length > 0) {
           let updated = false;
@@ -66,62 +119,82 @@ export const usePriceSelection = () => {
           routeDetails.legs.forEach((leg, i) => {
             const segId = `seg-${i}`;
             if (newSegmentPrices[segId] === undefined) {
-              newSegmentPrices[segId] = calculateBasePrice(leg.distanceMeters / 1000, PRICING_MULTIPLIERS.MID, divisor);
+              newSegmentPrices[segId] = calculateBasePrice(
+                leg.distanceMeters / 1000,
+                PRICING_MULTIPLIERS.MID,
+                divisor,
+              );
               updated = true;
             }
           });
-          if (updated || Object.keys(segmentPricesState).length !== routeDetails.legs.length) {
+          if (
+            updated ||
+            Object.keys(segmentPricesState).length !== routeDetails.legs.length
+          ) {
             setSegmentPricesState(newSegmentPrices);
           }
         }
         return;
       }
-      
-      // Update price if it was 0 but we have details (redundancy fix)
-      if (routeDetails && price === 0 && initialPrice > 0) {
-        setPrice(initialPrice);
-      }
 
       setIsLoading(true);
       try {
         // Waypoints must be in the sorted order
-        const waypoints = middleStops.length > 0 
-          ? middleStops.map(s => `${s.latitude},${s.longitude}`).join('|')
-          : undefined;
+        const waypoints =
+          middleStops.length > 0
+            ? middleStops.map(s => `${s.latitude},${s.longitude}`).join('|')
+            : undefined;
 
-        const results = await locationService.getDirections(
+        const results = await LocationService.getDirections(
           startLocation.latitude,
           startLocation.longitude,
           destinationLocation.latitude,
           destinationLocation.longitude,
-          waypoints
+          waypoints,
         );
 
         if (results && results.length > 0) {
           const mainRoute = results[0];
-          const legs = mainRoute.legs?.map((leg, i) => ({
-            distanceMeters: leg.distance,
-            durationSeconds: leg.duration,
-            startAddress: i === 0 ? startLocation.name : middleStops[i-1].name,
-            endAddress: i === (mainRoute.legs?.length || 0) - 1 ? destinationLocation.name : middleStops[i].name
-          })) || [];
+          const legs =
+            mainRoute.legs?.map((leg, i) => ({
+              distanceMeters: leg.distance,
+              durationSeconds: leg.duration,
+              startAddress:
+                i === 0 ? startLocation.name : middleStops[i - 1].name,
+              endAddress:
+                i === (mainRoute.legs?.length || 0) - 1
+                  ? destinationLocation.name
+                  : middleStops[i].name,
+            })) || [];
 
           const details = {
-            totalDistanceMeters: mainRoute.distance ?? legs.reduce((acc, leg) => acc + leg.distanceMeters, 0),
-            totalDurationSeconds: mainRoute.duration ?? legs.reduce((acc, leg) => acc + leg.durationSeconds, 0),
-            legs
+            totalDistanceMeters:
+              mainRoute.distance ??
+              legs.reduce((acc, leg) => acc + leg.distanceMeters, 0),
+            totalDurationSeconds:
+              mainRoute.duration ??
+              legs.reduce((acc, leg) => acc + leg.durationSeconds, 0),
+            legs,
           };
           setRouteDetails(details);
 
           // Initialize prices based on recommendation multiplier
           const totalKm = details.totalDistanceMeters / 1000;
-          const calculatedPrice = calculateBasePrice(totalKm, PRICING_MULTIPLIERS.MID, divisor);
+          const calculatedPrice = calculateBasePrice(
+            totalKm,
+            PRICING_MULTIPLIERS.MID,
+            divisor,
+          );
           setPrice(calculatedPrice);
 
           const initialSegmentPrices: Record<string, number> = {};
           legs.forEach((leg, i) => {
             const segId = `seg-${i}`;
-            initialSegmentPrices[segId] = calculateBasePrice(leg.distanceMeters / 1000, PRICING_MULTIPLIERS.MID, divisor);
+            initialSegmentPrices[segId] = calculateBasePrice(
+              leg.distanceMeters / 1000,
+              PRICING_MULTIPLIERS.MID,
+              divisor,
+            );
           });
           setSegmentPricesState(initialSegmentPrices);
         }
@@ -133,7 +206,18 @@ export const usePriceSelection = () => {
     };
 
     fetchFinalRoute();
-  }, [startLocation, destinationLocation, middleStops, routeDetails, setRouteDetails, price, divisor, initialPrice, segmentPricesState, storePrice]);
+  }, [
+    startLocation,
+    destinationLocation,
+    middleStops,
+    routeDetails,
+    setRouteDetails,
+    price,
+    divisor,
+    initialPrice,
+    segmentPricesState,
+    storePrice,
+  ]);
 
   // 2. Pricing Calculations (Premium)
   const premium = useMemo(() => {
@@ -147,7 +231,7 @@ export const usePriceSelection = () => {
       id: `seg-${i}`,
       from: leg.startAddress,
       to: leg.endAddress,
-      distanceKm: leg.distanceMeters / 1000
+      distanceKm: leg.distanceMeters / 1000,
     })) as any;
   }, [routeDetails]);
 
@@ -155,16 +239,29 @@ export const usePriceSelection = () => {
   const segmentPrices: Record<string, SegmentPrice> = useMemo(() => {
     const prices: Record<string, SegmentPrice> = {};
     segments.forEach((seg: any) => {
-      const basePrice = segmentPricesState[seg.id] || calculateBasePrice(seg.distanceKm, PRICING_MULTIPLIERS.MID, divisor);
-      
+      const basePrice =
+        segmentPricesState[seg.id] ||
+        calculateBasePrice(seg.distanceKm, PRICING_MULTIPLIERS.MID, divisor);
+
       // Front seat pricing logic for segments: basePrice + calculated premium based on shared percentage
-      const legFrontSeatPrice = calculateFrontSeatPrice(basePrice, premiumPercentage);
+      const legFrontSeatPrice = calculateFrontSeatPrice(
+        basePrice,
+        premiumPercentage,
+      );
 
       prices[seg.id] = {
         basePrice,
         frontSeatPrice: legFrontSeatPrice,
-        minPrice: calculateBasePrice(seg.distanceKm, PRICING_MULTIPLIERS.MIN, divisor),
-        maxPrice: calculateBasePrice(seg.distanceKm, PRICING_MULTIPLIERS.MAX, divisor),
+        minPrice: calculateBasePrice(
+          seg.distanceKm,
+          PRICING_MULTIPLIERS.MIN,
+          divisor,
+        ),
+        maxPrice: calculateBasePrice(
+          seg.distanceKm,
+          PRICING_MULTIPLIERS.MAX,
+          divisor,
+        ),
       } as any;
     });
     return prices;
@@ -176,21 +273,26 @@ export const usePriceSelection = () => {
   }, []);
 
   const handleTogglePremium = useCallback(() => {
-    setPremiumEnabled((prev) => !prev);
+    setPremiumEnabled(prev => !prev);
   }, []);
 
-  const handlePremiumChange = useCallback((v: number) => {
-    const basePrice = Number(price) || 1; 
-    // Calculate required percentage to reach the desired currency amount
-    const percentage = (v / basePrice) * 100;
-    // Allow for more precision to satisfy step changes in small amounts
-    setPremiumPercentage(Math.min(Number(percentage.toFixed(2)), 10));
-  }, [price]);
+  const handlePremiumChange = useCallback(
+    (v: number) => {
+      const basePrice = Number(price) || 1;
+      // Calculate required percentage to reach the desired currency amount
+      const percentage = (v / basePrice) * 100;
+      // Allow for more precision to satisfy step changes in small amounts
+      setPremiumPercentage(Math.min(Number(percentage.toFixed(2)), 10));
+    },
+    [price],
+  );
 
   const handleBackPress = useCallback(() => {
     const basePriceNum = Number(price) || 0;
     const premiumPctNum = Number(premiumPercentage) || 0;
-    const frontSeatPrice = premiumEnabled ? roundToNearest(basePriceNum * (1 + premiumPctNum / 100), 10) : basePriceNum;
+    const frontSeatPrice = premiumEnabled
+      ? roundToNearest(basePriceNum * (1 + premiumPctNum / 100), 10)
+      : basePriceNum;
 
     setPricing({
       price: basePriceNum,
@@ -201,13 +303,23 @@ export const usePriceSelection = () => {
       segmentPrices: segmentPricesState,
     });
     navigation.goBack();
-  }, [navigation, setPricing, price, premiumEnabled, premiumPercentage, segmentPricesState, showPremium]);
+  }, [
+    navigation,
+    setPricing,
+    price,
+    premiumEnabled,
+    premiumPercentage,
+    segmentPricesState,
+    showPremium,
+  ]);
 
   const handleContinue = useCallback(() => {
     const basePriceNum = Number(price) || 0;
     const premiumPctNum = Number(premiumPercentage) || 0;
-    const frontSeatPrice = premiumEnabled ? roundToNearest(basePriceNum * (1 + premiumPctNum / 100), 10) : basePriceNum;
-    
+    const frontSeatPrice = premiumEnabled
+      ? roundToNearest(basePriceNum * (1 + premiumPctNum / 100), 10)
+      : basePriceNum;
+
     setPricing({
       price: basePriceNum,
       fullJourneyPrice: basePriceNum,
@@ -222,7 +334,16 @@ export const usePriceSelection = () => {
     } else {
       (navigation.navigate as any)('SummaryPublish');
     }
-  }, [navigation, setPricing, price, premiumEnabled, premiumPercentage, segmentPricesState, showPremium, params]);
+  }, [
+    navigation,
+    setPricing,
+    price,
+    premiumEnabled,
+    premiumPercentage,
+    segmentPricesState,
+    showPremium,
+    params,
+  ]);
 
   const handleCustomizePricing = useCallback(() => {
     setSheetVisible(true);
@@ -232,19 +353,26 @@ export const usePriceSelection = () => {
     setSheetVisible(false);
   }, []);
 
-  const handleSaveSegmentPrices = useCallback((prices: Record<string, { basePrice: number }>) => {
-    setSegmentPricesState(prev => {
-      const next = { ...prev };
-      Object.keys(prices).forEach(id => {
-        next[id] = prices[id].basePrice;
+  const handleSaveSegmentPrices = useCallback(
+    (prices: Record<string, { basePrice: number }>) => {
+      setSegmentPricesState(prev => {
+        const next = { ...prev };
+        Object.keys(prices).forEach(id => {
+          next[id] = prices[id].basePrice;
+        });
+        return next;
       });
-      return next;
-    });
-  }, []);
+    },
+    [],
+  );
 
   // Recommended logic: price within +/- 15% of SID suggestion
   const isRecommended = useMemo(() => {
-    const recommendedMid = calculateBasePrice(totalDistanceKm, PRICING_MULTIPLIERS.MID, divisor);
+    const recommendedMid = calculateBasePrice(
+      totalDistanceKm,
+      PRICING_MULTIPLIERS.MID,
+      divisor,
+    );
     const tolerance = recommendedMid * 0.15;
     return Math.abs(price - recommendedMid) <= tolerance;
   }, [price, totalDistanceKm, divisor]);

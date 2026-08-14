@@ -3,7 +3,6 @@ import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 import LinearGradient from 'react-native-linear-gradient';
 import { OlaMap } from '@/components/organisms/OlaMap';
 
-
 export const Container = styled.View`
   margin-top: ${verticalScale(32)}px;
   overflow: hidden;
@@ -48,11 +47,12 @@ export const BadgeContainer = styled.View`
   flex-direction: row;
   align-items: center;
   gap: ${scale(8)}px;
-  background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}E6`}; /* 90% opacity roughly */
+  background-color: ${({ theme }) =>
+    `${theme.colors.surface_container_lowest}E6`}; /* 90% opacity roughly */
   padding-horizontal: ${scale(12)}px;
   padding-vertical: ${verticalScale(6)}px;
   border-radius: 9999px;
-  shadow-color: rgb(0,0,0);
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px 2px;
   shadow-opacity: 0.1;
   shadow-radius: 4px;

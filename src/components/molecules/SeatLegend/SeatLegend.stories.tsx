@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { SeatLegend } from './SeatLegend';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Molecules/SeatLegend',
   component: SeatLegend,
-
 } satisfies Meta<typeof SeatLegend>;
 
 export default meta;

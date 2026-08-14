@@ -1,5 +1,3 @@
-import { CameraRef } from '@maplibre/maplibre-react-native';
-
 export interface RideRouteMapTemplateProps {
   title: string;
   onBack: () => void;

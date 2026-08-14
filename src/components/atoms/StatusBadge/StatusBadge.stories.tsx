@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { StatusBadge } from './StatusBadge';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Atoms/StatusBadge',
   component: StatusBadge,
-
 } satisfies Meta<typeof StatusBadge>;
 
 export default meta;

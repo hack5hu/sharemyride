@@ -13,10 +13,11 @@ export const BottomSheetContainer = styled(SafeAreaView)`
 `;
 
 export const CardSurface = styled.View`
-  background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}E6`}; /* 90% opacity */
+  background-color: ${({ theme }) =>
+    `${theme.colors.surface_container_lowest}E6`}; /* 90% opacity */
   border-radius: ${moderateScale(32)}px;
   padding: ${moderateScale(24)}px;
-  shadow-color: rgb(0,0,0);
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px -8px;
   shadow-opacity: 0.06;
   shadow-radius: 40px;

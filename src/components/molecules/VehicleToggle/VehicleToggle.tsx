@@ -1,7 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
+
 import styled from 'styled-components/native';
-import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+import { moderateScale, verticalScale, responsiveFont } from '@/styles';
 
 const ToggleContainer = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_low};
@@ -49,10 +49,18 @@ export const VehicleToggle: React.FC<VehicleToggleProps> = ({
   sevenSeaterLabel,
 }) => (
   <ToggleContainer>
-    <ToggleButton isActive={selected === '5'} onPress={() => onSelect('5')} activeOpacity={0.8}>
+    <ToggleButton
+      isActive={selected === '5'}
+      onPress={() => onSelect('5')}
+      activeOpacity={0.8}
+    >
       <ToggleText isActive={selected === '5'}>{fiveSeaterLabel}</ToggleText>
     </ToggleButton>
-    <ToggleButton isActive={selected === '7'} onPress={() => onSelect('7')} activeOpacity={0.8}>
+    <ToggleButton
+      isActive={selected === '7'}
+      onPress={() => onSelect('7')}
+      activeOpacity={0.8}
+    >
       <ToggleText isActive={selected === '7'}>{sevenSeaterLabel}</ToggleText>
     </ToggleButton>
   </ToggleContainer>

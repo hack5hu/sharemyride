@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Box } from '@/components/atoms/Box';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { moderateScale } from '@/styles';
@@ -28,14 +28,22 @@ export const SelectionPreviewCard: React.FC<SelectionPreviewCardProps> = ({
     <CardContainer>
       <LeftSection>
         <IconCircle>
-          <MaterialIcons name={icon} size={moderateScale(20)} color={theme.colors.primary} />
+          <MaterialIcons
+            name={icon}
+            size={moderateScale(20)}
+            color={theme.colors.primary}
+          />
         </IconCircle>
-        <View>
+        <Box>
           <LabelText>{label}</LabelText>
           <ValueText>{value}</ValueText>
-        </View>
+        </Box>
       </LeftSection>
-      <MaterialIcons name="check-circle" size={moderateScale(24)} color={theme.colors.primary} />
+      <MaterialIcons
+        name="check-circle"
+        size={moderateScale(24)}
+        color={theme.colors.primary}
+      />
     </CardContainer>
   );
 };

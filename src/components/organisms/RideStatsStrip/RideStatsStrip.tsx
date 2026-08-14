@@ -10,6 +10,7 @@ interface RideStatsStripProps {
   departureTime: string;
   durationLabel: string;
   seatsLeft: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
   t: any;
 }
 
@@ -26,7 +27,11 @@ export const RideStatsStrip: React.FC<RideStatsStripProps> = ({
     <S.StatsStrip>
       <S.StatPill>
         <S.StatPillIcon>
-          <Icon name="calendar-today" size={moderateScale(15)} color={theme.colors.on_primary} />
+          <Icon
+            name="calendar-today"
+            size={moderateScale(15)}
+            color={theme.colors.on_primary}
+          />
         </S.StatPillIcon>
         <Typography variant="label" size="sm" weight="bold" numberOfLines={1}>
           {departureDate}
@@ -38,7 +43,11 @@ export const RideStatsStrip: React.FC<RideStatsStripProps> = ({
 
       <S.StatPill>
         <S.StatPillIcon>
-          <Icon name="schedule" size={moderateScale(15)} color={theme.colors.on_primary} />
+          <Icon
+            name="schedule"
+            size={moderateScale(15)}
+            color={theme.colors.on_primary}
+          />
         </S.StatPillIcon>
         <Typography variant="label" size="sm" weight="bold">
           {departureTime}
@@ -50,7 +59,11 @@ export const RideStatsStrip: React.FC<RideStatsStripProps> = ({
 
       <S.StatPill>
         <S.StatPillIcon>
-          <Icon name="timer" size={moderateScale(15)} color={theme.colors.on_primary} />
+          <Icon
+            name="timer"
+            size={moderateScale(15)}
+            color={theme.colors.on_primary}
+          />
         </S.StatPillIcon>
         <Typography variant="label" size="sm" weight="bold">
           {durationLabel}
@@ -62,7 +75,11 @@ export const RideStatsStrip: React.FC<RideStatsStripProps> = ({
 
       <S.StatPill>
         <S.StatPillIcon>
-          <Icon name="event-seat" size={moderateScale(15)} color={theme.colors.on_primary} />
+          <Icon
+            name="event-seat"
+            size={moderateScale(15)}
+            color={theme.colors.on_primary}
+          />
         </S.StatPillIcon>
         <Typography variant="label" size="sm" weight="bold">
           {seatsLeft}
@@ -74,4 +91,3 @@ export const RideStatsStrip: React.FC<RideStatsStripProps> = ({
     </S.StatsStrip>
   );
 };
-

@@ -1,18 +1,20 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 import { Alert, Clipboard } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
 import { RideDetailsScreenProps } from './types';
-import rideService from '@/serviceManager/rideService';
+import { RideService } from '@/serviceManager/RideService';
 import { useMyRidesStore } from '@/store/useMyRidesStore';
 import { Logger } from '@/utils/logger';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
+import { storage } from '@/utils/storage';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import { navigate } from '@/navigation/navigationService';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 
 export const useRideDetails = () => {
   const navigation = useAppNavigation();
@@ -27,8 +29,12 @@ export const useRideDetails = () => {
   const fetchDetails = useCallback(async () => {
     setIsLoading(true);
     try {
-      const data = await rideService.getMyRideDetail(rideId, sourceStopId, destinationStopId);
-      
+      const data = await RideService.getMyRideDetail(
+        rideId,
+        sourceStopId,
+        destinationStopId,
+      );
+
       // Merge route parameters if fields are missing in raw response
       if (data) {
         if (!data.status && route.params.status) {
@@ -38,23 +44,25 @@ export const useRideDetails = () => {
           data.cancellationReason = route.params.cancellationReason;
         }
       }
-      
+
       setRideData(data);
     } catch (error) {
       Logger.error('Fetching ride details failed:', error);
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        getErrorMessage(error, t('notification.defaultErrorMessage'))
+        getErrorMessage(error, t('notification.defaultErrorMessage')),
       );
     } finally {
       setIsLoading(false);
     }
   }, [rideId, sourceStopId, destinationStopId, route.params]);
 
-  useEffect(() => {
-    fetchDetails();
-  }, [fetchDetails]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchDetails();
+    }, [fetchDetails])
+  );
 
   const handleBack = useCallback(() => {
     navigation.goBack();
@@ -69,7 +77,11 @@ export const useRideDetails = () => {
   }, [rideData]);
 
   const [isCancelModalVisible, setIsCancelModalVisible] = useState(false);
-  const [cancelTarget, setCancelTarget] = useState<{ type: 'RIDE' | 'BOOKING'; id: string | number; isSelf?: boolean } | null>(null);
+  const [cancelTarget, setCancelTarget] = useState<{
+    type: 'RIDE' | 'BOOKING';
+    id: string | number;
+    isSelf?: boolean;
+  } | null>(null);
   const [isCancelling, setIsCancelling] = useState(false);
 
   const [isReportModalVisible, setIsReportModalVisible] = useState(false);
@@ -78,75 +90,133 @@ export const useRideDetails = () => {
     setIsReportModalVisible(true);
   }, []);
 
-  const handleReportSubmit = useCallback((_data: { categoryId: string; description: string }) => {
-    setIsReportModalVisible(false);
-    showNotification(
-      NotificationType.SUCCESS,
-      t('rideDetails.reportSuccessTitle'),
-      t('rideDetails.reportSuccessMessage')
-    );
-  }, [t]);
+  const handleReportSubmit = useCallback(
+    async (data: {
+      categoryId: string;
+      reason?: string;
+      description: string;
+    }) => {
+      setIsReportModalVisible(false);
+      try {
+        await RideService.reportRide({
+          rideId,
+          reason: data.reason || data.categoryId.toUpperCase(),
+          description: data.description,
+        });
+        showNotification(
+          NotificationType.SUCCESS,
+          t('rideDetails.reportSuccessTitle') || 'Report Submitted',
+          t('rideDetails.reportSuccessMessage') ||
+            'Thank you for reporting this ride.',
+        );
+      } catch (error: any) {
+        console.error('Ride report error:', error);
+        showNotification(
+          NotificationType.ERROR,
+          'Submission Failed',
+          getErrorMessage(error, 'Failed to report ride. Please try again.'),
+        );
+      }
+    },
+    [rideId, t],
+  );
 
-  const cancellationReasons = useMemo(() => [
-    { id: 'change_plans', label: t('cancelRide.reasonPlansChanged') },
-    { id: 'found_alternative', label: t('cancelRide.reasonAlternative') },
-    { id: 'uncomfortable_pickup', label: t('cancelRide.reasonUncomfortable') },
-    { id: 'not_available', label: t('cancelRide.reasonNotAvailable') },
-    { id: 'other', label: t('cancelRide.reasonOther') },
-  ], [t]);
+  const cancellationReasons = useMemo(
+    () => [
+      { id: 'change_plans', label: t('cancelRide.reasonPlansChanged') },
+      { id: 'found_alternative', label: t('cancelRide.reasonAlternative') },
+      {
+        id: 'uncomfortable_pickup',
+        label: t('cancelRide.reasonUncomfortable'),
+      },
+      { id: 'not_available', label: t('cancelRide.reasonNotAvailable') },
+      { id: 'other', label: t('cancelRide.reasonOther') },
+    ],
+    [t],
+  );
 
-  const handleOpenCancelModal = useCallback((type: 'RIDE' | 'BOOKING', id: string | number, isSelf: boolean = false) => {
-    setCancelTarget({ type, id, isSelf });
-    setIsCancelModalVisible(true);
-  }, []);
+  const handleOpenCancelModal = useCallback(
+    (
+      type: 'RIDE' | 'BOOKING',
+      id: string | number,
+      isSelf: boolean = false,
+    ) => {
+      setCancelTarget({ type, id, isSelf });
+      setIsCancelModalVisible(true);
+    },
+    [],
+  );
 
-  const handleConfirmCancel = useCallback(async ({ categoryId, description }: { categoryId: string; description: string }) => {
-    if (!cancelTarget) return;
+  const handleConfirmCancel = useCallback(
+    async ({
+      categoryId,
+      description,
+    }: {
+      categoryId: string;
+      description: string;
+    }) => {
+      if (!cancelTarget) return;
 
-    const reason = description ? `${categoryId}: ${description}` : categoryId;
+      const reason = description ? `${categoryId}: ${description}` : categoryId;
 
-    const bookingId = cancelTarget.id || rideData?.myBooking?.bookingId || rideId;
-    setIsCancelling(true);
-    try {
-      if (cancelTarget.type === 'RIDE') {
-        await rideService.cancelRide(bookingId, reason);
-        const { removeRide } = useMyRidesStore.getState();
-        removeRide(1, rideId);
-        navigation.goBack();
-      } else {
-        await rideService.cancelBooking(bookingId, reason);
-        if (cancelTarget.isSelf) {
+      const bookingId =
+        cancelTarget.id || rideData?.myBooking?.bookingId || rideId;
+      setIsCancelling(true);
+      try {
+        if (cancelTarget.type === 'RIDE') {
+          await RideService.cancelRide(bookingId, reason);
+          AnalyticsService.logEvent(AnalyticsEvent.RIDE_CANCELLED, {
+            type: 'ride',
+            id: bookingId,
+            reason: categoryId,
+          });
           const { removeRide } = useMyRidesStore.getState();
-          removeRide(1, bookingId);
+          removeRide(1, rideId);
           navigation.goBack();
         } else {
-          fetchDetails();
+          await RideService.cancelBooking(bookingId, reason);
+          AnalyticsService.logEvent(AnalyticsEvent.RIDE_CANCELLED, {
+            type: 'booking',
+            id: bookingId,
+            reason: categoryId,
+          });
+          if (cancelTarget.isSelf) {
+            const { removeRide } = useMyRidesStore.getState();
+            removeRide(1, bookingId);
+            navigation.goBack();
+          } else {
+            fetchDetails();
+          }
         }
+        setIsCancelModalVisible(false);
+        showNotification(
+          NotificationType.SUCCESS,
+          t('common.success'),
+          t('cancelRide.successMessage'),
+        );
+      } catch (error) {
+        showNotification(
+          NotificationType.ERROR,
+          t('common.error'),
+          getErrorMessage(error, t('cancelRide.errorMessage')),
+        );
+      } finally {
+        setIsCancelling(false);
       }
-      setIsCancelModalVisible(false);
-      showNotification(
-        NotificationType.SUCCESS,
-        t('common.success'),
-        t('cancelRide.successMessage')
-      );
-    } catch (error) {
-      showNotification(
-        NotificationType.ERROR,
-        t('common.error'),
-        getErrorMessage(error, t('cancelRide.errorMessage'))
-      );
-    } finally {
-      setIsCancelling(false);
-    }
-  }, [cancelTarget, rideData, fetchDetails, navigation, rideId, t]);
+    },
+    [cancelTarget, rideData, fetchDetails, navigation, rideId, t],
+  );
 
   const handleCancelRide = useCallback(() => {
     handleOpenCancelModal('RIDE', rideId, true);
   }, [rideId, handleOpenCancelModal]);
 
-  const handleCancelPassenger = useCallback((bookingId: string) => {
-    handleOpenCancelModal('BOOKING', bookingId, false);
-  }, [handleOpenCancelModal]);
+  const handleCancelPassenger = useCallback(
+    (bookingId: string) => {
+      handleOpenCancelModal('BOOKING', bookingId, false);
+    },
+    [handleOpenCancelModal],
+  );
 
   const handleCancelOwnBooking = useCallback(() => {
     handleOpenCancelModal('BOOKING', rideData?.myBooking?.bookingId || 0, true);
@@ -158,25 +228,39 @@ export const useRideDetails = () => {
     }
   }, [navigate, rideData]);
 
-  const handlePassengerProfile = useCallback((id: string) => {
-    navigate('UserProfileDetail', { userId: id });
-  }, [navigate]);
+  const handlePassengerProfile = useCallback(
+    (id: string) => {
+      navigate('UserProfileDetail', { userId: id });
+    },
+    [navigate],
+  );
 
   const handleChat = useCallback(() => {
-    const targetName = isDriver ? t('rideDetails.passengers') : (rideData?.driver?.name || t('rideDetails.driver'));
+    const targetName = isDriver
+      ? t('rideDetails.passengers')
+      : rideData?.driver?.name || t('rideDetails.driver');
     const startLoc = rideData?.stops?.[0]?.stopName?.split(',')[0] || '';
-    const endLoc = rideData?.stops?.[rideData?.stops.length - 1]?.stopName?.split(',')[0] || '';
-    const startTimeStr = rideData?.startTime 
-      ? new Date(rideData.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    const endLoc =
+      rideData?.stops?.[rideData?.stops.length - 1]?.stopName?.split(',')[0] ||
+      '';
+    const startTimeStr = rideData?.startTime
+      ? new Date(rideData.startTime).toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        })
       : '';
     const dateStr = rideData?.startTime
       ? new Date(rideData.startTime).toLocaleDateString()
       : '';
 
-    (navigation.navigate as any)('ChatDetails', { 
-      userId: isDriver 
-        ? (rideData?.passengers?.[0]?.passengerId) 
-        : (rideData?.driver?.driverId || rideData?.driver?.userId),
+    (navigation.navigate as any)('ChatDetails', {
+      userId: isDriver
+        ? rideData?.passengers?.[0]?.passengerId
+        : rideData?.driver?.id ||
+          rideData?.driver?.driverId ||
+          rideData?.driver?.userId ||
+          rideData?.driverId ||
+          rideData?.userId,
       rideId: rideId,
       name: targetName,
       avatarUri: isDriver ? undefined : rideData?.driver?.photoUrl,
@@ -185,105 +269,161 @@ export const useRideDetails = () => {
         dropoff: endLoc,
         date: dateStr,
         time: startTimeStr,
-      }
+      },
     });
   }, [navigation, rideId, rideData, isDriver, t]);
 
-  const handleViewRoute = useCallback((index?: number) => {
-    const stops = rideData?.stops?.map((s: any) => ({
-      id: s.id,
-      lat: s.lat,
-      lon: s.lon,
-      name: s.stopName || s.name,
-      sequence: s.sequence,
-    }));
-    if (!stops || stops.length === 0) return;
-    
-    const sourceId = rideData?.myBooking?.sourceStopId || sourceStopId;
-    const destId = rideData?.myBooking?.destinationStopId || destinationStopId;
 
-    const store = useBookRideStore.getState();
-    const userSearchedPickup = store.startLocation ? {
-      latitude: store.startLocation.latitude,
-      longitude: store.startLocation.longitude,
-      name: store.startLocation.name || store.startLocation.address || 'Pickup Point',
-    } : undefined;
-    const userSearchedDropoff = store.destinationLocation ? {
-      latitude: store.destinationLocation.latitude,
-      longitude: store.destinationLocation.longitude,
-      name: store.destinationLocation.name || store.destinationLocation.address || 'Dropoff Point',
-    } : undefined;
 
-    (navigation.navigate as any)('RideRouteMap', {
-      routePath: rideData?.routePath ?? '',
-      stops,
-      initialStopIndex: index,
-      sourceStopId: sourceId,
-      destinationStopId: destId,
-      userSearchedPickup,
-      userSearchedDropoff,
-    });
-  }, [navigation, rideData, sourceStopId, destinationStopId]);
+  const handleRateDriver = useCallback(() => {
+    if (rideData) {
+      const driverId =
+        rideData.driver?.id ||
+        rideData.driver?.driverId ||
+        rideData.driver?.userId ||
+        rideData.driverId ||
+        rideData.userId;
 
-  const handleCopyAddress = useCallback((address: string) => {
-    Clipboard.setString(address);
-    showNotification(
-      NotificationType.SUCCESS,
-      t('common.addressCopied') || 'Address Copied',
-      address
-    );
-  }, [t]);
+
+
+      navigation.navigate('Rating', {
+        rideId,
+        targetUserId: driverId,
+        targetUserName: rideData.driver?.name || rideData.name || 'Driver',
+        targetUserRole: 'DRIVER',
+        targetUserAvatar: rideData.driver?.photoUrl || rideData.driver?.avatar,
+      });
+    }
+  }, [navigation, rideId, rideData]);
+
+  const handleRatePassenger = useCallback(
+    (passengerId: string, name: string, avatarUri?: string) => {
+      navigation.navigate('Rating', {
+        rideId,
+        targetUserId: passengerId,
+        targetUserName: name,
+        targetUserRole: 'PASSENGER',
+        targetUserAvatar: avatarUri,
+      });
+    },
+    [navigation, rideId],
+  );
+
+  const handleViewRoute = useCallback(
+    (index?: number) => {
+      const stops = rideData?.stops?.map((s: any) => ({
+        id: s.id,
+        lat: s.lat,
+        lon: s.lon,
+        name: s.stopName || s.name,
+        sequence: s.sequence,
+      }));
+      if (!stops || stops.length === 0) return;
+
+      const sourceId = rideData?.myBooking?.sourceStopId || sourceStopId;
+      const destId =
+        rideData?.myBooking?.destinationStopId || destinationStopId;
+
+      const store = useBookRideStore.getState();
+      const userSearchedPickup = store.startLocation
+        ? {
+            latitude: store.startLocation.latitude,
+            longitude: store.startLocation.longitude,
+            name:
+              store.startLocation.name ||
+              store.startLocation.address ||
+              'Pickup Point',
+          }
+        : undefined;
+      const userSearchedDropoff = store.destinationLocation
+        ? {
+            latitude: store.destinationLocation.latitude,
+            longitude: store.destinationLocation.longitude,
+            name:
+              store.destinationLocation.name ||
+              store.destinationLocation.address ||
+              'Dropoff Point',
+          }
+        : undefined;
+
+      (navigation.navigate as any)('RideRouteMap', {
+        routePath: rideData?.routePath ?? '',
+        stops,
+        initialStopIndex: index,
+        sourceStopId: sourceId,
+        destinationStopId: destId,
+        userSearchedPickup,
+        userSearchedDropoff,
+      });
+    },
+    [navigation, rideData, sourceStopId, destinationStopId],
+  );
+
+  const handleCopyAddress = useCallback(
+    (address: string) => {
+      Clipboard.setString(address);
+      showNotification(
+        NotificationType.SUCCESS,
+        t('common.addressCopied') || 'Address Copied',
+        address,
+      );
+    },
+    [t],
+  );
 
   return {
     ride: rideData,
     isLoading,
     isDriver,
-    t: useMemo(() => ({
-      title: t('rideDetails.headerTitle'),
-      timelineTitle: t('rideDetails.timelineTitle'),
-      loaderMessage: t('rideDetails.fetchingDetails'),
-      today: t('common.today'),
-      ridesLabel: t('rideDetails.ridesLabel'),
-      bookingTotal: t('rideDetails.bookingTotal'),
-      seatsLabel: t('rideDetails.seatsLabel'),
-      seatLabel: t('rideDetails.seatLabel'),
-      paymentLabel: t('rideDetails.paymentLabel'),
-      cashLabel: t('rideDetails.cashLabel'),
-      cancelRide: t('rideDetails.cancelRide'),
-      selectSeat: t('rideDetails.selectSeat'),
-      cancelBooking: t('rideDetails.cancelBooking'),
-      passengers: t('rideDetails.passengers'),
-      driver: t('rideDetails.driver'),
-      openingMap: t('common.openingMap'),
-      navigatingTo: t('common.navigatingTo'),
-      addressCopied: t('common.addressCopied'),
-      success: t('common.success'),
-      error: t('common.error'),
-      seatsLeft: t('rideDetails.seatsLeft'),
-      startsIn: t('myRides.startsIn'),
-      mins: t('myRides.mins'),
-      journeyComfort: t('rideDetails.journeyComfort'),
-      journeyItinerary: t('rideDetails.journeyItinerary'),
-      yourFare: t('rideDetails.yourFare'),
-      perSeatNote: t('rideDetails.perSeatNote'),
-      smokeFree: t('rideDetails.smokeFree'),
-      petsWelcome: t('rideDetails.petsWelcome'),
-      luggageOk: t('rideDetails.luggageOk'),
-      ladiesOnly: t('rideDetails.ladiesOnly'),
-      approvalRequired: t('rideDetails.approvalRequired'),
-      instantBooking: t('rideDetails.instantBooking'),
-      vibes: t('rideDetails.vibes'),
-      date: t('rideDetails.date'),
-      time: t('rideDetails.time'),
-      duration: t('rideDetails.duration'),
-      seatsLeftLabel: t('rideDetails.seatsLeftLabel'),
-      assignedVehicle: t('rideDetails.assignedVehicle'),
-      compactSedan: t('rideDetails.compactSedan'),
-      premiumSuv: t('rideDetails.premiumSuv'),
-      swiftBike: t('rideDetails.swiftBike'),
-      standardVehicle: t('rideDetails.standardVehicle'),
-      cancellationReason: t('rideDetails.cancellationReason'),
-    }), [t]),
+    t: useMemo(
+      () => ({
+        title: t('rideDetails.headerTitle'),
+        timelineTitle: t('rideDetails.timelineTitle'),
+        loaderMessage: t('rideDetails.fetchingDetails'),
+        today: t('common.today'),
+        ridesLabel: t('rideDetails.ridesLabel'),
+        bookingTotal: t('rideDetails.bookingTotal'),
+        seatsLabel: t('rideDetails.seatsLabel'),
+        seatLabel: t('rideDetails.seatLabel'),
+        paymentLabel: t('rideDetails.paymentLabel'),
+        cashLabel: t('rideDetails.cashLabel'),
+        cancelRide: t('rideDetails.cancelRide'),
+        selectSeat: t('rideDetails.selectSeat'),
+        cancelBooking: t('rideDetails.cancelBooking'),
+        passengers: t('rideDetails.passengers'),
+        driver: t('rideDetails.driver'),
+        openingMap: t('common.openingMap'),
+        navigatingTo: t('common.navigatingTo'),
+        addressCopied: t('common.addressCopied'),
+        success: t('common.success'),
+        error: t('common.error'),
+        seatsLeft: t('rideDetails.seatsLeft'),
+        startsIn: t('myRides.startsIn'),
+        mins: t('myRides.mins'),
+        journeyComfort: t('rideDetails.journeyComfort'),
+        journeyItinerary: t('rideDetails.journeyItinerary'),
+        yourFare: t('rideDetails.yourFare'),
+        perSeatNote: t('rideDetails.perSeatNote'),
+        smokeFree: t('rideDetails.smokeFree'),
+        petsWelcome: t('rideDetails.petsWelcome'),
+        luggageOk: t('rideDetails.luggageOk'),
+        ladiesOnly: t('rideDetails.ladiesOnly'),
+        approvalRequired: t('rideDetails.approvalRequired'),
+        instantBooking: t('rideDetails.instantBooking'),
+        vibes: t('rideDetails.vibes'),
+        date: t('rideDetails.date'),
+        time: t('rideDetails.time'),
+        duration: t('rideDetails.duration'),
+        seatsLeftLabel: t('rideDetails.seatsLeftLabel'),
+        assignedVehicle: t('rideDetails.assignedVehicle'),
+        compactSedan: t('rideDetails.compactSedan'),
+        premiumSuv: t('rideDetails.premiumSuv'),
+        swiftBike: t('rideDetails.swiftBike'),
+        standardVehicle: t('rideDetails.standardVehicle'),
+        cancellationReason: t('rideDetails.cancellationReason'),
+      }),
+      [t],
+    ),
 
     handleBack,
     handleBook,
@@ -305,5 +445,7 @@ export const useRideDetails = () => {
     setIsReportModalVisible,
     handleReportRide,
     handleReportSubmit,
+    handleRateDriver,
+    handleRatePassenger,
   };
 };

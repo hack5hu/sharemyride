@@ -1,7 +1,8 @@
 import styled from 'styled-components/native';
 import { SurfaceElevation, SurfaceRounded, SurfacePadding } from './types';
 
-const getElevationStyle = (elevation: SurfaceElevation, theme: any) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
+const getElevationStyle = (elevation: SurfaceElevation, theme: any /* TODO: add proper type */) => {
   switch (elevation) {
     case 'lowest':
       return `
@@ -34,8 +35,11 @@ export const StyledSurface = styled.View<{
   $rounded?: SurfaceRounded;
   $padding?: SurfacePadding;
 }>`
-  border-radius: ${({ $rounded = 'md', theme }) => theme.roundness[$rounded as keyof typeof theme.roundness]}px;
-  padding: ${({ $padding = 'md', theme }) => ($padding === 'none' ? 0 : theme.spacing[$padding as keyof typeof theme.spacing])}px;
+  border-radius: ${({ $rounded = 'md', theme }) =>
+    theme.roundness[$rounded as keyof typeof theme.roundness]}px;
+  padding: ${({ $padding = 'md', theme }) =>
+    $padding === 'none'
+      ? 0
+      : theme.spacing[$padding as keyof typeof theme.spacing]}px;
   ${({ $elevation = 'low', theme }) => getElevationStyle($elevation, theme)}
-  
 `;

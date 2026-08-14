@@ -8,11 +8,11 @@ export const useLocalRideResults = () => {
   const { bookRideInfo: t } = useLocale();
   const { goBack } = useAppNavigation();
   const { startLocation, destinationLocation } = useBookRideStore();
-  
+
   // Center of the map, initialized to startLocation or a default
   const [center, setCenter] = useState({
     latitude: startLocation?.latitude || 28.6139,
-    longitude: startLocation?.longitude || 77.2090,
+    longitude: startLocation?.longitude || 77.209,
   });
 
   const handleRegionChange = useCallback((feature: any) => {

@@ -13,16 +13,21 @@ import { useDeviceIdStore } from '@/store/useDeviceIdStore';
 import { useSettingsStore } from '@/store/settings';
 import { NetworkLoggerModal } from '@/components/organisms/NetworkLoggerModal';
 import { GlobalNotification } from '@/components/organisms/GlobalNotification';
+import { StallionUpdateModal } from '@/components/organisms/StallionUpdateModal';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
-import NotificationService from '@/serviceManager/notificationService';
+import { NotificationService } from '@/serviceManager/NotificationService';
 
 import { navigationRef } from '@/navigation/navigationService';
+import { AnalyticsService } from '@/serviceManager/AnalyticsService';
+import { withStallion } from 'react-native-stallion';
+
 
 const App = () => {
+  const routeNameRef = React.useRef<string | undefined>(undefined);
   const initialize = useAuthStore(state => state.initialize);
   const initialiseDeviceId = useDeviceIdStore(state => state.initialise);
   const themeMode = useSettingsStore(state => state.themeMode);
-  
+
   const activeTheme = themeMode === 'dark' ? DarkTheme : LightTheme;
 
   useEffect(() => {
@@ -33,23 +38,38 @@ const App = () => {
 
   return (
     <SafeAreaProvider>
-      <KeyboardProvider>
+      <KeyboardProvider statusBarTranslucent navigationBarTranslucent>
         <ThemeProvider theme={activeTheme}>
-        <StatusBar 
-          barStyle={themeMode === 'dark' ? 'light-content' : 'dark-content'} 
-          backgroundColor="transparent" 
-          translucent 
-        />
-        <NavigationContainer ref={navigationRef}>
-          <RootNavigator />
-        </NavigationContainer>
-        <NetworkLoggerModal />
-        <GlobalNotification />
+          <StatusBar
+            barStyle={themeMode === 'dark' ? 'light-content' : 'dark-content'}
+            backgroundColor="transparent"
+            translucent
+          />
+          <NavigationContainer
+            ref={navigationRef}
+            onReady={() => {
+              routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
+            }}
+            onStateChange={async () => {
+              const previousRouteName = routeNameRef.current;
+              const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
+
+              if (previousRouteName !== currentRouteName && currentRouteName) {
+                await AnalyticsService.logScreenView(currentRouteName);
+              }
+              routeNameRef.current = currentRouteName;
+            }}
+          >
+            <RootNavigator />
+          </NavigationContainer>
+         <NetworkLoggerModal /> 
+          <GlobalNotification />
+          <StallionUpdateModal />
         </ThemeProvider>
       </KeyboardProvider>
     </SafeAreaProvider>
   );
 };
 
-
-export default App;
+export default withStallion(App);
+// export default App;

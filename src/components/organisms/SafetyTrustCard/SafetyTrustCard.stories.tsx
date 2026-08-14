@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { SafetyTrustCard } from './SafetyTrustCard';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Organisms/SafetyTrustCard',
   component: SafetyTrustCard,
-
 } satisfies Meta<typeof SafetyTrustCard>;
 
 export default meta;

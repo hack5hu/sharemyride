@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { UpcomingRideCard } from './UpcomingRideCard';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Organisms/UpcomingRideCard',
   component: UpcomingRideCard,
-
 } satisfies Meta<typeof UpcomingRideCard>;
 
 export default meta;

@@ -1,7 +1,9 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { mmkvStorage } from '@/utils/storage';
-import rideService, { TravelPreferenceData } from '@/serviceManager/rideService';
+import { RideService,
+  TravelPreferenceData,
+} from '@/serviceManager/RideService';
 
 interface TravelPrefStore {
   preferences: TravelPreferenceData;
@@ -28,8 +30,8 @@ export const useTravelPrefStore = create<TravelPrefStore>()(
       preferences: DEFAULT_PREFERENCES,
       isLoading: false,
 
-      setPreferences: (newPrefs) => {
-        set((state) => ({
+      setPreferences: newPrefs => {
+        set(state => ({
           preferences: { ...state.preferences, ...newPrefs },
         }));
       },
@@ -37,14 +39,15 @@ export const useTravelPrefStore = create<TravelPrefStore>()(
       syncPreferences: async () => {
         const currentPrefs = get().preferences;
         // Determine initial load by checking if it's identical to default or uninitialized
-        const isInitialLoad = !currentPrefs || Object.keys(currentPrefs).length === 0;
+        const isInitialLoad =
+          !currentPrefs || Object.keys(currentPrefs).length === 0;
         if (isInitialLoad) {
           set({ isLoading: true });
         }
         try {
-          const data = await rideService.getPreferences();
+          const data = await RideService.getPreferences();
           if (data) {
-            const isIdentical = 
+            const isIdentical =
               currentPrefs.nonSmoking === data.nonSmoking &&
               currentPrefs.womenOnly === data.womenOnly &&
               currentPrefs.manualApproval === data.manualApproval &&
@@ -67,10 +70,10 @@ export const useTravelPrefStore = create<TravelPrefStore>()(
         }
       },
 
-      savePreferences: async (prefs) => {
+      savePreferences: async prefs => {
         set({ isLoading: true });
         try {
-          await rideService.savePreferences(prefs);
+          await RideService.savePreferences(prefs);
           set({ preferences: prefs });
         } catch (error) {
           console.error('Failed to save preferences:', error);
@@ -83,6 +86,6 @@ export const useTravelPrefStore = create<TravelPrefStore>()(
     {
       name: 'travel-preferences-storage',
       storage: createJSONStorage(() => mmkvStorage),
-    }
-  )
+    },
+  ),
 );

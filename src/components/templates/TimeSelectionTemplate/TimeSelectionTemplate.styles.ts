@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
-import { View } from 'react-native';
+
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
-import LinearGradient from 'react-native-linear-gradient';
 
 export const Container = styled.View`
   flex: 1;
@@ -57,7 +56,8 @@ export const StepDots = styled.View`
 
 export const StepDot = styled.View<{ variant: 'active' | 'done' | 'inactive' }>`
   height: ${moderateScale(4)}px;
-  width: ${({ variant }) => variant === 'active' ? moderateScale(32) : moderateScale(16)}px;
+  width: ${({ variant }) =>
+    variant === 'active' ? moderateScale(32) : moderateScale(16)}px;
   border-radius: 9999px;
   background-color: ${({ theme, variant }) => {
     if (variant === 'active') return theme.colors.primary;
@@ -72,7 +72,9 @@ export const ScrollContent = styled.ScrollView.attrs({
     paddingTop: verticalScale(32),
     paddingBottom: verticalScale(90),
   },
-})`flex: 1;`;
+})`
+  flex: 1;
+`;
 
 export const TitleSection = styled.View`
   margin-bottom: ${verticalScale(24)}px;

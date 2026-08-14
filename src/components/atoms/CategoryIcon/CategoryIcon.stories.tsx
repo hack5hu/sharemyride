@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { CategoryIcon } from './CategoryIcon';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Atoms/CategoryIcon',
   component: CategoryIcon,
-
 } satisfies Meta<typeof CategoryIcon>;
 
 export default meta;

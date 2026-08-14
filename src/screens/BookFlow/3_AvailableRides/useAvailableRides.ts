@@ -4,7 +4,7 @@ import { RideData } from './types';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import { calculateDistance } from '@/utils/location';
 import { calculateSegmentPrice } from '@/utils/pricing';
-import rideService from '@/serviceManager/rideService';
+import { RideService } from '@/serviceManager/RideService';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
@@ -21,19 +21,16 @@ export const useAvailableRides = () => {
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { 
-    searchResults, 
-    startLocation, 
-    destinationLocation, 
-    hasMore,
-  } = useBookRideStore();
+  const { searchResults, startLocation, destinationLocation, hasMore } =
+    useBookRideStore();
 
   const mapFiltersToPayload = useCallback((activeFilters: string[]) => {
     const payload: any = {};
-    
+
     if (activeFilters.includes('nearPickup')) payload.proximityType = 'PICKUP';
-    if (activeFilters.includes('nearDropoff')) payload.proximityType = 'DROP_OFF';
-    
+    if (activeFilters.includes('nearDropoff'))
+      payload.proximityType = 'DROP_OFF';
+
     if (activeFilters.includes('noSmoking')) payload.noSmoking = true;
     if (activeFilters.includes('ladiesOnly')) payload.ladiesOnly = true;
     if (activeFilters.includes('verifiedOnly')) payload.verifiedDrivers = true;
@@ -42,10 +39,12 @@ export const useAvailableRides = () => {
 
     const timeFilters = activeFilters.filter(f => f.startsWith('time_'));
     if (timeFilters.length > 0) {
-      const slots = timeFilters.map(f => {
-        const [_, s, e] = f.split('_').map(Number);
-        return { s, e };
-      }).sort((a, b) => a.s - b.s);
+      const slots = timeFilters
+        .map(f => {
+          const [_, s, e] = f.split('_').map(Number);
+          return { s, e };
+        })
+        .sort((a, b) => a.s - b.s);
 
       const merged: string[] = [];
       let current = slots[0];
@@ -54,11 +53,29 @@ export const useAvailableRides = () => {
         if (slots[i].s === current.e) {
           current.e = slots[i].e;
         } else {
-          merged.push(`${current.s === 0 ? 12 : (current.s > 12 ? current.s - 12 : current.s)}-${current.e > 12 ? current.e - 12 : (current.e === 0 ? 12 : current.e)} ${current.e <= 12 ? 'AM' : 'PM'}`);
+          merged.push(
+            `${
+              current.s === 0 ? 12 : current.s > 12 ? current.s - 12 : current.s
+            }-${
+              current.e > 12 ? current.e - 12 : current.e === 0 ? 12 : current.e
+            } ${current.e <= 12 ? 'AM' : 'PM'}`,
+          );
           current = slots[i];
         }
       }
-      merged.push(`${current.s === 0 ? 12 : (current.s > 12 ? current.s - 12 : current.s)}-${current.e > 12 ? current.e - 12 : (current.e === 0 ? 12 : (current.e === 24 ? 12 : current.e))} ${current.e <= 12 ? 'AM' : (current.e === 24 ? 'AM' : 'PM')}`);
+      merged.push(
+        `${
+          current.s === 0 ? 12 : current.s > 12 ? current.s - 12 : current.s
+        }-${
+          current.e > 12
+            ? current.e - 12
+            : current.e === 0
+            ? 12
+            : current.e === 24
+            ? 12
+            : current.e
+        } ${current.e <= 12 ? 'AM' : current.e === 24 ? 'AM' : 'PM'}`,
+      );
       payload.departureTimeSlot = merged.join(', ');
     }
 
@@ -67,14 +84,22 @@ export const useAvailableRides = () => {
 
   const handleLoadMore = useCallback(async () => {
     const store = useBookRideStore.getState();
-    const { startLocation: curStart, destinationLocation: curDest, travelDate: curDate, currentPage, hasMore: curHasMore, seatCount } = store;
+    const {
+      startLocation: curStart,
+      destinationLocation: curDest,
+      travelDate: curDate,
+      currentPage,
+      hasMore: curHasMore,
+      seatCount,
+    } = store;
 
-    if (isFetchingMore || !curHasMore || !curStart || !curDest || !curDate) return;
+    if (isFetchingMore || !curHasMore || !curStart || !curDest || !curDate)
+      return;
 
     try {
       setIsFetchingMore(true);
       const nextPage = currentPage + 1;
-      
+
       const payload = {
         sourceLat: curStart.latitude,
         sourceLon: curStart.longitude,
@@ -85,12 +110,15 @@ export const useAvailableRides = () => {
         radiusInMeters: 10000,
         page: nextPage,
         size: 10,
-        ...mapFiltersToPayload(selectedFilters)
+        ...mapFiltersToPayload(selectedFilters),
       };
 
-      const response = await rideService.searchRides(payload);
-      const newRides = response?.rides || response?.data || (Array.isArray(response) ? response : []);
-      
+      const response = await RideService.searchRides(payload);
+      const newRides =
+        response?.rides ||
+        response?.data ||
+        (Array.isArray(response) ? response : []);
+
       if (newRides && newRides.length > 0) {
         store.appendSearchResults(newRides);
         store.setCurrentPage(nextPage);
@@ -100,65 +128,103 @@ export const useAvailableRides = () => {
       showNotification(
         NotificationType.ERROR,
         translate('notification.defaultErrorTitle'),
-        getErrorMessage(error, translate('notification.defaultErrorMessage'))
+        getErrorMessage(error, translate('notification.defaultErrorMessage')),
       );
     } finally {
       setIsFetchingMore(false);
     }
-  }, [isFetchingMore, selectedFilters, mapFiltersToPayload]);
+  }, [isFetchingMore, selectedFilters, mapFiltersToPayload, translate]);
 
   const mappedRides: RideData[] = useMemo(() => {
-    if (!searchResults || !Array.isArray(searchResults) || searchResults.length === 0) return [];
-    
-    return searchResults
-      .filter(Boolean)
-      .map((ride, index) => {
+    if (
+      !searchResults ||
+      !Array.isArray(searchResults) ||
+      searchResults.length === 0
+    )
+      return [];
+
+    return searchResults.filter(Boolean).map((ride, index) => {
       const hasStops = ride.stops && ride.stops.length > 0;
       const firstStop = hasStops ? ride.stops[0] : null;
       const lastStop = hasStops ? ride.stops[ride.stops.length - 1] : null;
-      
-      const totalPrice = hasStops 
+
+      const totalPrice = hasStops
         ? calculateSegmentPrice(ride.stops || [], ride.fullJourneyPrice)
-        : (ride.price || 0);
+        : ride.price || 0;
 
       const features: string[] = [];
       if (ride.preferences?.nonSmoking) features.push('noSmoking');
       if (ride.preferences?.womenOnly) features.push('ladiesOnly');
       if (ride.preferences?.petFriendly) features.push('petFriendly');
       if (ride.preferences?.luggageAllowed) features.push('luggageAllowed');
-      if (ride.preferences?.manualApproval === false) features.push('autoApproval');
-      if (ride.preferences?.musicPreference) features.push(`music:${ride.preferences.musicPreference}`);
+      if (ride.preferences?.manualApproval === false)
+        features.push('autoApproval');
+      if (ride.preferences?.musicPreference)
+        features.push(`music:${ride.preferences.musicPreference}`);
 
-      const sLat = hasStops ? firstStop?.lat : (ride.sourceLat || 0);
-      const sLon = hasStops ? firstStop?.lon : (ride.sourceLon || 0);
-      const dLat = hasStops ? lastStop?.lat : (ride.destLat || 0);
-      const dLon = hasStops ? lastStop?.lon : (ride.destLon || 0);
+      const sLat = hasStops ? firstStop?.lat : ride.sourceLat || 0;
+      const sLon = hasStops ? firstStop?.lon : ride.sourceLon || 0;
+      const dLat = hasStops ? lastStop?.lat : ride.destLat || 0;
+      const dLon = hasStops ? lastStop?.lon : ride.destLon || 0;
 
-      const pickupDistance = startLocation 
-        ? calculateDistance(startLocation.latitude, startLocation.longitude, sLat, sLon)
+      const pickupDistance = startLocation
+        ? calculateDistance(
+            startLocation.latitude,
+            startLocation.longitude,
+            sLat,
+            sLon,
+          )
         : 9999;
-      
+
       const dropoffDistance = destinationLocation
-        ? calculateDistance(destinationLocation.latitude, destinationLocation.longitude, dLat, dLon)
+        ? calculateDistance(
+            destinationLocation.latitude,
+            destinationLocation.longitude,
+            dLat,
+            dLon,
+          )
         : 9999;
 
-      const timeline = hasStops 
+      const timeline = hasStops
         ? ride.stops.map((stop: any, idx: number, arr: any[]) => ({
-            time: formatTimeSafely(stop.arrivalTime),
+            time: formatTimeSafely(
+              stop.arrivalTime,
+              { hour: '2-digit', minute: '2-digit' },
+              'TBD',
+              false,
+            ),
             location: stop.name || stop.address || 'Unknown Location',
-            type: idx === 0 ? 'pickup' : (idx === arr.length - 1 ? 'destination' : 'stop'),
+            type:
+              idx === 0
+                ? 'pickup'
+                : idx === arr.length - 1
+                ? 'destination'
+                : 'stop',
           }))
         : [
             {
-              time: formatTimeSafely(ride.startTime),
+              time: formatTimeSafely(
+                ride.startTime,
+                { hour: '2-digit', minute: '2-digit' },
+                'TBD',
+                false,
+              ),
               location: ride.sourceStopName || ride.sourceAddress || 'Pickup',
-              type: 'pickup'
+              type: 'pickup',
             },
             {
-              time: formatTimeSafely(ride.endTime),
-              location: ride.destinationStopName || ride.destinationAddress || 'Dropoff',
-              type: 'destination'
-            }
+              time: formatTimeSafely(
+                ride.endTime,
+                { hour: '2-digit', minute: '2-digit' },
+                'TBD',
+                false,
+              ),
+              location:
+                ride.destinationStopName ||
+                ride.destinationAddress ||
+                'Dropoff',
+              type: 'destination',
+            },
           ];
 
       const sTime = ride.startTime || firstStop?.arrivalTime;
@@ -169,8 +235,9 @@ export const useAvailableRides = () => {
         driver: {
           name: ride.driverName || 'Unknown Host',
           rating: ride.driverRating || 4.8,
-          rideCount: ride.driverRideCount || 15,
-          avatar: ride.driverPhotoUrl || 'https://ui-avatars.com/api/?name=' + (ride.driverName || 'U'),
+          avatar:
+            ride.driverPhotoUrl ||
+            'https://ui-avatars.com/api/?name=' + (ride.driverName || 'U'),
           driverPhotoUrl: ride.driverPhotoUrl,
           isVerified: true,
         },
@@ -182,11 +249,16 @@ export const useAvailableRides = () => {
         pickupDistance,
         dropoffDistance,
         totalDuration: (() => {
-          const start = safeParseDate(sTime);
-          const end = safeParseDate(eTime);
-          return start && end ? Math.round((end.getTime() - start.getTime()) / (1000 * 60)) : 0;
+          const start = safeParseDate(sTime, false);
+          const end = safeParseDate(eTime, false);
+          return start && end
+            ? Math.round((end.getTime() - start.getTime()) / (1000 * 60))
+            : 0;
         })(),
-        departureHour: sTime ? (safeParseDate(sTime)?.getHours() ?? undefined) : undefined,
+        departureHour: sTime
+          ? safeParseDate(sTime, false)?.getHours() ?? undefined
+          : undefined,
+        rawStartTime: sTime,
         sourceStopId: ride.sourceStopId,
         destinationStopId: ride.destinationStopId,
       } as any;
@@ -200,9 +272,9 @@ export const useAvailableRides = () => {
       const timeFilters = selectedFilters.filter(f => f.startsWith('time_'));
 
       if (timeFilters.length > 0) {
-        result = result.filter((ride) => {
+        result = result.filter(ride => {
           if (ride.departureHour === undefined) return false;
-          return timeFilters.some((slot) => {
+          return timeFilters.some(slot => {
             const [_, start, end] = slot.split('_').map(Number);
             return ride.departureHour! >= start && ride.departureHour! < end;
           });
@@ -210,11 +282,20 @@ export const useAvailableRides = () => {
       }
     }
 
-    if (selectedFilters.includes('time')) {
+    // Always sort by time by default unless distance sort is applied
+    const hasDistanceSort =
+      selectedFilters.includes('nearPickup') ||
+      selectedFilters.includes('nearDropoff');
+
+    if (!hasDistanceSort || selectedFilters.includes('time')) {
       result.sort((a, b) => {
-        const timeA = a.timeline[0]?.time || 'TBD';
-        const timeB = b.timeline[0]?.time || 'TBD';
-        return timeA.localeCompare(timeB);
+        if (!a.rawStartTime && !b.rawStartTime) return 0;
+        if (!a.rawStartTime) return 1;
+        if (!b.rawStartTime) return -1;
+        return (
+          new Date(a.rawStartTime).getTime() -
+          new Date(b.rawStartTime).getTime()
+        );
       });
     }
 
@@ -223,7 +304,9 @@ export const useAvailableRides = () => {
     }
 
     if (selectedFilters.includes('nearDropoff')) {
-      result.sort((a, b) => (a.dropoffDistance || 0) - (b.dropoffDistance || 0));
+      result.sort(
+        (a, b) => (a.dropoffDistance || 0) - (b.dropoffDistance || 0),
+      );
     }
 
     return result;
@@ -233,15 +316,18 @@ export const useAvailableRides = () => {
     goBack();
   }, [goBack]);
 
-  const handleRideSelect = useCallback((rideId: string) => {
-    const rawRides = useBookRideStore.getState().searchResults;
-    const ride = rawRides?.find(r => String(r.id) === String(rideId));
-    navigate('RideInformation', { 
-      rideId,
-      sourceStopId: ride?.sourceStopId,
-      destinationStopId: ride?.destinationStopId
-    });
-  }, [navigate]);
+  const handleRideSelect = useCallback(
+    (rideId: string) => {
+      const rawRides = useBookRideStore.getState().searchResults;
+      const ride = rawRides?.find(r => String(r.id) === String(rideId));
+      navigate('RideInformation', {
+        rideId,
+        sourceStopId: ride?.sourceStopId,
+        destinationStopId: ride?.destinationStopId,
+      });
+    },
+    [navigate],
+  );
 
   const handleOpenFilters = useCallback(() => {
     setIsFilterModalOpen(true);
@@ -254,7 +340,7 @@ export const useAvailableRides = () => {
   const toggleFilter = useCallback((filter: string) => {
     setSelectedFilters(prev => {
       const isAlreadySelected = prev.includes(filter);
-      
+
       if (isAlreadySelected) {
         return prev.filter(f => f !== filter);
       } else {
@@ -274,10 +360,16 @@ export const useAvailableRides = () => {
     const store = useBookRideStore.getState();
     store.setFilters({});
     setIsFilterModalOpen(false);
-    
-    const { startLocation: curStart, destinationLocation: curDest, travelDate: curDate, seatCount, setSearchResults } = store;
+
+    const {
+      startLocation: curStart,
+      destinationLocation: curDest,
+      travelDate: curDate,
+      seatCount,
+      setSearchResults,
+    } = store;
     if (!curStart || !curDest || !curDate) return;
-    
+
     setSearchResults([]);
     setIsLoading(true);
     try {
@@ -292,66 +384,81 @@ export const useAvailableRides = () => {
         page: 0,
         size: 10,
       };
-      const response = await rideService.searchRides(payload);
-      const ridesList = response?.rides || response?.data || (Array.isArray(response) ? response : []);
+      const response = await RideService.searchRides(payload);
+      const ridesList =
+        response?.rides ||
+        response?.data ||
+        (Array.isArray(response) ? response : []);
       setSearchResults(ridesList);
     } catch (error: any) {
       console.error('Failed to clear filters and fetch:', error);
       showNotification(
         NotificationType.ERROR,
         translate('notification.defaultErrorTitle'),
-        getErrorMessage(error, translate('notification.defaultErrorMessage'))
+        getErrorMessage(error, translate('notification.defaultErrorMessage')),
       );
     } finally {
       setIsLoading(false);
     }
-  }, []);
-  
-  const handleApplyFilters = useCallback(async (filters: string[]) => {
-    const isSame = 
-      filters.length === selectedFilters.length && 
-      filters.every(f => selectedFilters.includes(f));
-    
-    if (isSame) {
-      return;
-    }
+  }, [translate]);
 
-    setSelectedFilters(filters);
-    const store = useBookRideStore.getState();
-    const { startLocation: curStart, destinationLocation: curDest, travelDate: curDate, seatCount, setSearchResults } = store;
-    if (!curStart || !curDest || !curDate) return;
+  const handleApplyFilters = useCallback(
+    async (filters: string[]) => {
+      const isSame =
+        filters.length === selectedFilters.length &&
+        filters.every(f => selectedFilters.includes(f));
 
-    setSearchResults([]);
-    setIsLoading(true);
-    try {
-      const filterPayload = mapFiltersToPayload(filters);
-      const payload = {
-        sourceLat: curStart.latitude,
-        sourceLon: curStart.longitude,
-        destLat: curDest.latitude,
-        destLon: curDest.longitude,
+      if (isSame) {
+        return;
+      }
+
+      setSelectedFilters(filters);
+      const store = useBookRideStore.getState();
+      const {
+        startLocation: curStart,
+        destinationLocation: curDest,
         travelDate: curDate,
-        requestedSeats: seatCount,
-        radiusInMeters: 10000,
-        page: 0,
-        size: 10,
-        ...filterPayload
-      };
+        seatCount,
+        setSearchResults,
+      } = store;
+      if (!curStart || !curDest || !curDate) return;
 
-      const response = await rideService.searchRides(payload);
-      const ridesList = response?.rides || response?.data || (Array.isArray(response) ? response : []);
-      setSearchResults(ridesList);
-    } catch (error: any) {
-      console.error('Failed to apply filters:', error);
-      showNotification(
-        NotificationType.ERROR,
-        translate('notification.defaultErrorTitle'),
-        getErrorMessage(error, translate('notification.defaultErrorMessage'))
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  }, [mapFiltersToPayload, selectedFilters]);
+      setSearchResults([]);
+      setIsLoading(true);
+      try {
+        const filterPayload = mapFiltersToPayload(filters);
+        const payload = {
+          sourceLat: curStart.latitude,
+          sourceLon: curStart.longitude,
+          destLat: curDest.latitude,
+          destLon: curDest.longitude,
+          travelDate: curDate,
+          requestedSeats: seatCount,
+          radiusInMeters: 10000,
+          page: 0,
+          size: 10,
+          ...filterPayload,
+        };
+
+        const response = await RideService.searchRides(payload);
+        const ridesList =
+          response?.rides ||
+          response?.data ||
+          (Array.isArray(response) ? response : []);
+        setSearchResults(ridesList);
+      } catch (error: any) {
+        console.error('Failed to apply filters:', error);
+        showNotification(
+          NotificationType.ERROR,
+          translate('notification.defaultErrorTitle'),
+          getErrorMessage(error, translate('notification.defaultErrorMessage')),
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [mapFiltersToPayload, selectedFilters, translate],
+  );
 
   const handleViewDetails = useCallback((rideId: string) => {
     console.log('Viewing details:', rideId);

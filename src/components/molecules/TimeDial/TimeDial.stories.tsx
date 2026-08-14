@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { TimeDial } from './TimeDial';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Molecules/TimeDial',
   component: TimeDial,
-
 } satisfies Meta<typeof TimeDial>;
 
 export default meta;

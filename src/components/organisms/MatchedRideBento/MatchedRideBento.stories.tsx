@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { MatchedRideBento } from './MatchedRideBento';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Organisms/MatchedRideBento',
   component: MatchedRideBento,
-
 } satisfies Meta<typeof MatchedRideBento>;
 
 export default meta;

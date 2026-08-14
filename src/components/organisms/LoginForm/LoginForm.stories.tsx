@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { LoginForm } from './LoginForm';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Organisms/LoginForm',
   component: LoginForm,
-
 } satisfies Meta<typeof LoginForm>;
 
 export default meta;

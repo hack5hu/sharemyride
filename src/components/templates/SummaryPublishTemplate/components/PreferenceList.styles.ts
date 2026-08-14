@@ -1,12 +1,19 @@
 import styled from 'styled-components/native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
+export const StyledEditIcon = styled(Icon)<{ $disabled?: boolean }>`
+  opacity: ${({ $disabled }) => ($disabled ? 0.4 : 1)};
+`;
 
 export const GlassCard = styled.View<{ hasError?: boolean }>`
-  background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}99`};
+  background-color: ${({ theme }) =>
+    `${theme.colors.surface_container_lowest}99`};
   border-radius: ${moderateScale(20)}px;
   padding: ${moderateScale(20)}px;
   border-width: 1px;
-  border-color: ${({ theme, hasError }) => hasError ? theme.colors.error : `${theme.colors.on_surface}1A`};
+  border-color: ${({ theme, hasError }) =>
+    hasError ? theme.colors.error : `${theme.colors.on_surface}1A`};
   margin-bottom: ${verticalScale(16)}px;
 `;
 

@@ -36,7 +36,9 @@ export const snapToRoute = (
   const targetPoint = point(target);
   const line = lineString(routeCoords);
 
-  const snapped = nearestPointOnLine(line, targetPoint, { units: 'kilometers' });
+  const snapped = nearestPointOnLine(line, targetPoint, {
+    units: 'kilometers',
+  });
 
   const snappedCoords = snapped.geometry.coordinates as [number, number];
   const distanceKm = turfDistance(targetPoint, point(snappedCoords), {

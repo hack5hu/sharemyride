@@ -17,7 +17,9 @@ export const Chip = styled.View<{ color: string; selected: boolean }>`
   border-color: ${({ theme, selected, color }) => {
     if (selected) return theme.colors.primary;
     // For white/very light colors, show a subtle border
-    return color.toLowerCase() === '#ffffff' ? theme.colors.outline_variant : 'transparent';
+    return color.toLowerCase() === '#ffffff'
+      ? theme.colors.outline_variant
+      : 'transparent';
   }};
   shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 2px;

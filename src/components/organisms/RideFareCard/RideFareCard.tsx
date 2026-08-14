@@ -7,6 +7,7 @@ import * as S from './RideFareCard.styles';
 
 interface RideFareCardProps {
   price: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
   t: any;
 }
 
@@ -24,7 +25,9 @@ export const RideFareCard: React.FC<RideFareCardProps> = ({ price, t }) => {
           {t.yourFare || 'YOUR FARE'}
         </Typography>
         <S.FarePriceBig>₹{price.toFixed(0)}</S.FarePriceBig>
-        <S.PerSeatNote>{t.perSeatNote || 'per seat · no hidden fees'}</S.PerSeatNote>
+        <S.PerSeatNote>
+          {t.perSeatNote || 'per seat · no hidden fees'}
+        </S.PerSeatNote>
       </S.FareLabel>
       <S.FareIconBox>
         <Icon name="currency-rupee" size={moderateScale(32)} color="#FFFFFF" />
@@ -32,4 +35,3 @@ export const RideFareCard: React.FC<RideFareCardProps> = ({ price, t }) => {
     </S.FareCard>
   );
 };
-

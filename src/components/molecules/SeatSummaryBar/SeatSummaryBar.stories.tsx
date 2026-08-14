@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { SeatSummaryBar } from './SeatSummaryBar';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Molecules/SeatSummaryBar',
   component: SeatSummaryBar,
-
 } satisfies Meta<typeof SeatSummaryBar>;
 
 export default meta;

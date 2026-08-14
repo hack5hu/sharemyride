@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, ActivityIndicator } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Typography } from '@/components/atoms/Typography';
@@ -12,6 +12,8 @@ import {
   PrimaryButton,
   GradientBtn,
   SecondaryButton,
+  StyledPressable,
+  DescriptionText,
 } from './ConfirmationModal.styles';
 import { ConfirmationModalProps } from './types.d';
 
@@ -25,6 +27,8 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   cancelLabel = 'Cancel',
   isLoading = false,
   type = 'info',
+  hideCancel = false,
+  dismissible = true,
 }) => {
   const theme = useTheme();
 
@@ -51,43 +55,57 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   const { icon, color } = getTypeStyles();
 
   return (
-    <ModalBackdrop isVisible={isVisible} onPress={isLoading ? undefined : onClose}>
-      <Pressable 
-        onPress={(e) => e.stopPropagation()} 
-        style={{ width: '100%', alignItems: 'center' }}
-      >
+    <ModalBackdrop
+      isVisible={isVisible}
+      onPress={!dismissible || isLoading ? undefined : onClose}
+    >
+      <StyledPressable onPress={e => e.stopPropagation()}>
         <ModalContainer>
           <IconContainer color={color}>
             <Icon name={icon} size={32} color={color} />
           </IconContainer>
 
           <TextContainer>
-            <Typography variant="headline" size="sm" weight="bold" align="center">
+            <Typography
+              variant="headline"
+              size="sm"
+              weight="bold"
+              align="center"
+            >
               {title}
             </Typography>
-            <Typography 
-              variant="body" 
-              size="sm" 
-              color="on_surface_variant" 
+            <DescriptionText
+              variant="body"
+              size="sm"
+              color="on_surface_variant"
               align="center"
-              style={{ marginTop: 8 }}
             >
               {message}
-            </Typography>
+            </DescriptionText>
           </TextContainer>
 
           <ButtonContainer>
-            <SecondaryButton onPress={onClose} disabled={isLoading}>
-              <Typography variant="title" size="sm" weight="bold" color="on_surface_variant">
-                {cancelLabel}
-              </Typography>
-            </SecondaryButton>
+            {!hideCancel && (
+              <SecondaryButton onPress={onClose} disabled={isLoading}>
+                <Typography
+                  variant="title"
+                  size="sm"
+                  weight="bold"
+                  color="on_surface_variant"
+                >
+                  {cancelLabel}
+                </Typography>
+              </SecondaryButton>
+            )}
 
             <PrimaryButton onPress={onConfirm} disabled={isLoading}>
               <GradientBtn
                 colors={
                   type === 'danger'
-                    ? [theme.colors.error || '#BA1A1A', theme.colors.error_container || '#FFDAD6']
+                    ? [
+                        theme.colors.error || '#BA1A1A',
+                        theme.colors.error_container || '#FFDAD6',
+                      ]
                     : [theme.colors.primary, theme.colors.primary_container]
                 }
                 start={{ x: 0, y: 0 }}
@@ -96,7 +114,12 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                 {isLoading ? (
                   <ActivityIndicator color={theme.colors.on_primary} />
                 ) : (
-                  <Typography variant="title" size="sm" weight="bold" color="on_primary">
+                  <Typography
+                    variant="title"
+                    size="sm"
+                    weight="bold"
+                    color="on_primary"
+                  >
                     {confirmLabel}
                   </Typography>
                 )}
@@ -104,7 +127,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             </PrimaryButton>
           </ButtonContainer>
         </ModalContainer>
-      </Pressable>
+      </StyledPressable>
     </ModalBackdrop>
   );
 };

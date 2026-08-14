@@ -38,7 +38,6 @@ export const BlobBottomRight = styled.View`
   background-color: ${({ theme }) => `${theme.colors.secondary_container}30`};
 `;
 
-
 export const Header = styled.View`
   flex-direction: row;
   justify-content: space-between;
@@ -109,7 +108,8 @@ export const PageSubtitle = styled.Text`
 
 /* CARDS */
 export const GlassCard = styled.View`
-  background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}99`};
+  background-color: ${({ theme }) =>
+    `${theme.colors.surface_container_lowest}99`};
   border-radius: ${moderateScale(20)}px;
   padding: ${moderateScale(20)}px;
   border-width: 1px;
@@ -206,7 +206,8 @@ export const GridRow = styled.View`
 
 export const GridCard = styled.View`
   flex: 1;
-  background-color: ${({ theme }) => `${theme.colors.surface_container_lowest}99`};
+  background-color: ${({ theme }) =>
+    `${theme.colors.surface_container_lowest}99`};
   border-radius: ${moderateScale(20)}px;
   padding: ${moderateScale(16)}px;
   border-width: 1px;

@@ -1,12 +1,17 @@
 import styled from 'styled-components/native';
-import { View } from 'react-native';
-import { verticalScale, moderateScale, scale } from '@/styles';
+
+import { verticalScale, scale } from '@/styles';
 
 export const SafeAreaContainer = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.background};
 `;
 
+export const HeaderWrapper = styled.View`
+  margin-top: ${verticalScale(8)}px;
+  margin-bottom: ${verticalScale(8)}px;
+  padding-horizontal: ${scale(4)}px;
+`;
 export const ScrollContainer = styled.ScrollView.attrs({
   contentContainerStyle: {
     paddingBottom: verticalScale(120), // Height for BottomNav + FAB

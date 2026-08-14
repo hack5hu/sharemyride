@@ -5,7 +5,11 @@ import { useLocale } from '@/constants/localization';
 import { FareCardProps } from './types';
 import * as S from './FareCard.styles';
 
-export const FareCard: React.FC<FareCardProps> = ({ amount, currency = '$', onPress }) => {
+export const FareCard: React.FC<FareCardProps> = ({
+  amount,
+  currency = '$',
+  onPress,
+}) => {
   const theme = useTheme();
   const { rideDetails } = useLocale();
 
@@ -17,10 +21,17 @@ export const FareCard: React.FC<FareCardProps> = ({ amount, currency = '$', onPr
         </S.IconContainer>
         <S.TextContainer>
           <S.Title>{rideDetails.totalFare}</S.Title>
-          <S.Value>{currency}{amount}</S.Value>
+          <S.Value>
+            {currency}
+            {amount}
+          </S.Value>
         </S.TextContainer>
       </S.LeftContent>
-      <Icon name="chevron-right" size={24} color={theme.colors.outline_variant} />
+      <Icon
+        name="chevron-right"
+        size={24}
+        color={theme.colors.outline_variant}
+      />
     </S.Container>
   );
 };

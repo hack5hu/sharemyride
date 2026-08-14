@@ -9,7 +9,7 @@ import { Logger } from '@/utils/logger';
 export const getFcmToken = async (): Promise<string | null> => {
   try {
     const authStatus = await messaging().requestPermission();
-    
+
     const enabled =
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;

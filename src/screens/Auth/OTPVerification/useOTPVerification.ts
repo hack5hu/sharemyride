@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Keyboard } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { authService } from '@/serviceManager/authService';
+import { AuthService } from '@/serviceManager/AuthService';
 import { useAuthStore } from '@/store/useAuthStore';
 import { getDeviceId } from '@/utils/deviceId';
 import { getFcmToken } from '@/utils/fcm';
@@ -9,6 +9,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 
 export const useOTPVerification = () => {
   const [timer, setTimer] = useState(45);
@@ -18,7 +19,6 @@ export const useOTPVerification = () => {
   const { phoneNumber, mode } = route.params || {};
   const { t } = useTranslation();
   const { setAuth } = useAuthStore();
-
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -37,12 +37,10 @@ export const useOTPVerification = () => {
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        t('notification.defaultErrorMessage')
+        t('notification.defaultErrorMessage'),
       );
       return;
     }
-
-
 
     setLoading(true);
     try {
@@ -51,7 +49,7 @@ export const useOTPVerification = () => {
         getFcmToken(),
       ]);
 
-      const response = await authService.verifyOtp(
+      const response = await AuthService.verifyOtp(
         phoneNumber,
         code,
         deviceId,
@@ -74,12 +72,17 @@ export const useOTPVerification = () => {
           fetchProfile();
         }
 
+        AnalyticsService.logEvent(AnalyticsEvent.USER_LOGIN, {
+          user_id: userId,
+          phone_number: phoneNumber,
+        });
+
         setLoading(false);
 
         showNotification(
           NotificationType.SUCCESS,
           t('notification.welcomeSuccessTitle'),
-          t('notification.welcomeBack')
+          t('notification.welcomeBack'),
         );
 
         // Navigation is handled by RootNavigator reacting to store changes
@@ -89,7 +92,7 @@ export const useOTPVerification = () => {
         showNotification(
           NotificationType.ERROR,
           t('notification.defaultErrorTitle'),
-          response.data.message || t('notification.defaultErrorMessage')
+          response.data.message || t('notification.defaultErrorMessage'),
         );
         setLoading(false);
       }
@@ -97,7 +100,7 @@ export const useOTPVerification = () => {
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        getErrorMessage(error, t('notification.defaultErrorMessage'))
+        getErrorMessage(error, t('notification.defaultErrorMessage')),
       );
       setLoading(false);
     }
@@ -107,12 +110,12 @@ export const useOTPVerification = () => {
     setTimer(45);
 
     try {
-      await authService.resendOtp(phoneNumber);
+      await AuthService.resendOtp(phoneNumber);
     } catch (error: any) {
       showNotification(
         NotificationType.ERROR,
         t('notification.defaultErrorTitle'),
-        getErrorMessage(error, t('notification.defaultErrorMessage'))
+        getErrorMessage(error, t('notification.defaultErrorMessage')),
       );
     }
   };

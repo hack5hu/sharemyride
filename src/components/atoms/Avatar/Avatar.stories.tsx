@@ -1,12 +1,11 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { Avatar } from './Avatar';
 import { View } from 'react-native';
 
 const meta = {
   title: 'Atoms/Avatar',
   component: Avatar,
-
 } satisfies Meta<typeof Avatar>;
 
 export default meta;

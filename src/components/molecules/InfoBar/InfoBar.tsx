@@ -15,9 +15,12 @@ export const InfoBar: React.FC<InfoBarProps> = ({
 
   const getIconName = () => {
     switch (variant) {
-      case 'error': return 'error';
-      case 'success': return 'check-circle';
-      default: return 'info';
+      case 'error':
+        return 'error';
+      case 'success':
+        return 'check-circle';
+      default:
+        return 'info';
     }
   };
 
@@ -48,6 +51,7 @@ export const InfoBar: React.FC<InfoBarProps> = ({
   };
 
   const colors = getColors();
+  const titleStyle = { marginTop: 2 };
 
   return (
     <StyledInfoBar variant={variant} style={style} colors={colors}>
@@ -55,12 +59,7 @@ export const InfoBar: React.FC<InfoBarProps> = ({
         <Icon name={getIconName()} size={20} color={colors.icon} />
       </IconContainer>
       <TextContainer>
-        <Typography
-          variant="label"
-          size="md"
-          weight="bold"
-          color={colors.text}
-        >
+        <Typography variant="label" size="md" weight="bold" color={colors.text}>
           {title}
         </Typography>
         {subtitle && (
@@ -68,7 +67,7 @@ export const InfoBar: React.FC<InfoBarProps> = ({
             variant="label"
             size="sm"
             color={theme.colors.on_surface_variant}
-            style={{ marginTop: 2 }}
+            style={titleStyle}
           >
             {subtitle}
           </Typography>

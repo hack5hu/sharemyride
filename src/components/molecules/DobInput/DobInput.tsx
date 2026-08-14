@@ -1,5 +1,11 @@
+/* eslint-disable max-lines */
 import React, { useState, useEffect } from 'react';
-import { View, Modal, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import {
+  Modal,
+  ScrollView,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Input } from '../../atoms/Input';
@@ -16,6 +22,13 @@ import {
   ModalContent,
   MonthItem,
 } from './DobInput.styles';
+
+const Overlay = styled.View`
+  flex: 1;
+  background-color: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+`;
 
 export interface DobInputProps {
   label: string;
@@ -69,6 +82,7 @@ export const DobInput: React.FC<DobInputProps> = ({
         if (parts[2] !== year) setYear(parts[2]);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   const emitChange = (d: string, m: string, y: string) => {
@@ -109,7 +123,12 @@ export const DobInput: React.FC<DobInputProps> = ({
     emitChange(day, month, numericText);
   };
 
-  const currentMonthLabel = months.find((m) => m.value === month)?.label || 'Month';
+  const currentMonthLabel =
+    months.find(m => m.value === month)?.label || 'Month';
+
+  const containerOpacityStyle = { opacity: disabled ? 0.6 : 1 };
+  const monthOpacityStyle = { opacity: month ? 1 : 0.4 };
+  const errorMarginStyle = { marginTop: 4 };
 
   return (
     <Container>
@@ -117,9 +136,9 @@ export const DobInput: React.FC<DobInputProps> = ({
         {label}
         {required && <RequiredAsterisk> *</RequiredAsterisk>}
       </LabelText>
-      
+
       <Row>
-        <DayContainer style={{ opacity: disabled ? 0.6 : 1 }}>
+        <DayContainer style={containerOpacityStyle}>
           <Input
             value={day}
             onChangeText={handleDayChange}
@@ -138,7 +157,7 @@ export const DobInput: React.FC<DobInputProps> = ({
           />
         </DayContainer>
 
-        <MonthContainer style={{ opacity: disabled ? 0.6 : 1 }}>
+        <MonthContainer style={containerOpacityStyle}>
           <MonthSelectorButton
             isFocused={isMonthFocused}
             hasError={!!error}
@@ -152,7 +171,7 @@ export const DobInput: React.FC<DobInputProps> = ({
               variant="body"
               size="md"
               color={month ? 'on_surface' : 'on_surface_variant'}
-              style={{ opacity: month ? 1 : 0.4 }}
+              style={monthOpacityStyle}
             >
               {currentMonthLabel}
             </Typography>
@@ -164,7 +183,7 @@ export const DobInput: React.FC<DobInputProps> = ({
           </MonthSelectorButton>
         </MonthContainer>
 
-        <YearContainer style={{ opacity: disabled ? 0.6 : 1 }}>
+        <YearContainer style={containerOpacityStyle}>
           <Input
             value={year}
             onChangeText={handleYearChange}
@@ -179,7 +198,12 @@ export const DobInput: React.FC<DobInputProps> = ({
       </Row>
 
       {error && (
-        <Typography variant="label" size="sm" color="error" style={{ marginTop: 4 }}>
+        <Typography
+          variant="label"
+          size="sm"
+          color="error"
+          style={errorMarginStyle}
+        >
           {error}
         </Typography>
       )}
@@ -199,18 +223,11 @@ export const DobInput: React.FC<DobInputProps> = ({
             setMonthFocused(false);
           }}
         >
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: 'rgba(0,0,0,0.5)',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+          <Overlay>
             <TouchableWithoutFeedback>
               <ModalContent>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                  {months.map((m) => (
+                  {months.map(m => (
                     <MonthItem
                       key={m.value}
                       onPress={() => handleMonthSelect(m.value)}
@@ -228,7 +245,7 @@ export const DobInput: React.FC<DobInputProps> = ({
                 </ScrollView>
               </ModalContent>
             </TouchableWithoutFeedback>
-          </View>
+          </Overlay>
         </TouchableWithoutFeedback>
       </Modal>
     </Container>

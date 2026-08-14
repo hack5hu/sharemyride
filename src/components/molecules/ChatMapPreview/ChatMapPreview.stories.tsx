@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
+import type { Meta, StoryObj } from '@storybook/react-native-native-web-vite';
 
 import { ChatMapPreview } from './ChatMapPreview';
 
@@ -12,7 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    "latitude": 0,
-    "longitude": 0
+    latitude: 0,
+    longitude: 0,
   },
 };

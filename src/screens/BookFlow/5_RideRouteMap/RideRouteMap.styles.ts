@@ -11,11 +11,9 @@ export const MapWrapper = styled.View`
   flex: 1;
 `;
 
-
 export const StyledOlaMap = styled(OlaMap)`
   flex: 1;
 `;
-
 
 export const ControlsWrapper = styled.View`
   position: absolute;

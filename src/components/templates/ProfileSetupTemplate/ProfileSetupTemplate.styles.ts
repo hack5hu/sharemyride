@@ -30,7 +30,8 @@ export const MainContent = styled.View`
 
 export const FooterContainer = styled.View<{ insetsBottom: number }>`
   padding-horizontal: ${scale(30)}px;
-  padding-bottom: ${({ insetsBottom }) => insetsBottom > 0 ? insetsBottom + verticalScale(12) : verticalScale(24)}px;
+  padding-bottom: ${({ insetsBottom }) =>
+    insetsBottom > 0 ? insetsBottom + verticalScale(12) : verticalScale(24)}px;
   padding-top: ${verticalScale(16)}px;
   background-color: ${({ theme }) => theme.colors.surface};
 `;

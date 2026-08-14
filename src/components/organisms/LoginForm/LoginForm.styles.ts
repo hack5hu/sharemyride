@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
-import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+import { scale, verticalScale } from '@/styles';
+import { Typography } from '@/components/atoms/Typography';
 
 export const FormContainer = styled.View`
   gap: ${verticalScale(20)}px;
@@ -36,6 +37,10 @@ export const TermsContainer = styled.View`
   align-items: center;
   gap: ${scale(12)}px;
   margin-top: ${verticalScale(4)}px;
+`;
+
+export const TermsText = styled(Typography)`
+  flex: 1;
 `;
 
 export const SecurityBadge = styled.View`
