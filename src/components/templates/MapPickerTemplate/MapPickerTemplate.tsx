@@ -12,6 +12,7 @@ import {
   GradientOverlay,
   StyledOlaMap,
   PreviewIcon,
+  MapPinIcon,
 } from './MapPickerTemplate.styles';
 import {
   MapSearchOverlayProps,
@@ -189,7 +190,7 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
                 </TooltipText>
               </TooltipBubble>
 
-              <PreviewIcon
+              <MapPinIcon
                 name="pin-sharp"
                 size={moderateScale(28)}
                 color={theme.colors.primary_container}

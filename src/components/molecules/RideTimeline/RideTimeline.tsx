@@ -46,7 +46,7 @@ const Point = styled.View<{
       ? theme.colors.primary_fixed
       : type === 'destination'
       ? theme.colors.tertiary_fixed
-      : 'white'};
+      : theme.colors.surface_container_lowest};
   elevation: ${({ isHighlighted }) => (isHighlighted ? 4 : 0)};
   transform: scale(${({ isHighlighted }) => (isHighlighted ? 1.3 : 1)});
 `;
@@ -65,6 +65,7 @@ const LeftContent = styled.View`
   align-items: flex-end;
   padding-right: ${scale(12)}px;
   padding-top: ${verticalScale(2)}px;
+  gap: ${verticalScale(4)}px;
 `;
 
 const RightContent = styled.View`
@@ -77,7 +78,6 @@ const RightContent = styled.View`
 const TimeText = styled(Typography)`
   font-size: ${moderateScale(12)}px;
   font-weight: 800;
-  color: ${({ theme }) => theme.colors.primary};
 `;
 
 const IconButton = styled.TouchableOpacity`
@@ -145,7 +145,7 @@ export const RideTimeline: React.FC<{
               color={
                 point.type === 'stop'
                   ? theme.colors.on_surface_variant
-                  : undefined
+                  : theme.colors.primary
               }
             >
               {point.time}

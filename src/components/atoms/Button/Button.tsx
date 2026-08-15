@@ -26,16 +26,23 @@ export const Button: React.FC<ButtonProps> = ({
     const color =
       variant === 'primary' ? theme.colors.on_primary : theme.colors.primary;
 
+    if (loading) {
+      return (
+        <ButtonContent>
+          <ActivityIndicator color={color} size="small" />
+        </ButtonContent>
+      );
+    }
+
     return (
       <ButtonContent>
-        {loading && <ActivityIndicator color={color} size="small" />}
-        {!loading && icon && iconPosition === 'left' && (
+        {icon && iconPosition === 'left' && (
           <Icon name={icon} size={20} color={color} />
         )}
         <Typography variant="title" size="md" color={color} weight="bold">
           {children}
         </Typography>
-        {!loading && icon && iconPosition === 'right' && (
+        {icon && iconPosition === 'right' && (
           <Icon name={icon} size={20} color={color} />
         )}
       </ButtonContent>
@@ -43,6 +50,10 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   if (variant === 'primary') {
+    const gradientColors = disabled
+      ? [theme.colors.outline_variant, theme.colors.outline_variant]
+      : [theme.colors.primary, theme.colors.primary_container];
+
     return (
       <StyledButton
         disabled={disabled || loading}
@@ -50,8 +61,7 @@ export const Button: React.FC<ButtonProps> = ({
         {...props}
       >
         <GradientBackground
-          colors={[theme.colors.primary, theme.colors.primary_container]}
-          disabled={disabled || loading}
+          colors={gradientColors}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >

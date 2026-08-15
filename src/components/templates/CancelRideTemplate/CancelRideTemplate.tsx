@@ -79,9 +79,9 @@ export const CancelRideTemplate: React.FC<CancelRideTemplateProps> = ({
               >
                 {cancelRide.confirmCancel}
               </Button>
-              <S.GhostButton onPress={onDismiss} activeOpacity={0.8}>
-                <S.GhostButtonText>{cancelRide.keepRide}</S.GhostButtonText>
-              </S.GhostButton>
+              <Button onPress={onDismiss} variant="secondary">
+                {cancelRide.keepRide}
+              </Button>
             </S.ActionsContainer>
           </S.BottomSheetSurface>
         </AnimatedContainer>

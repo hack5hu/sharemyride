@@ -89,6 +89,6 @@ export const PulseRing = styled(Animated.View)`
 
 export const VersionTag = styled.View`
   position: absolute;
-  bottom: ${verticalScale(32)}px;
+  bottom: ${verticalScale(8)}px;
   align-items: center;
 `;

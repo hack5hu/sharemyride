@@ -167,7 +167,7 @@ export class NotificationService {
       }
       return await messaging().getToken();
     } catch (error) {
-      Logger.error('[FCM] Token retrieval failed', error);
+      Logger.warn('[FCM] Token retrieval failed', error);
       return null;
     }
   }

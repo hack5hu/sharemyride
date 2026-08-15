@@ -1,0 +1,47 @@
+diff --git a/node_modules/@ajitpatel28/react-native-truecaller/ajit-react-native-truecaller.podspec b/node_modules/@ajitpatel28/react-native-truecaller/ajit-react-native-truecaller.podspec
+index f9f41eb..7680b09 100644
+--- a/node_modules/@ajitpatel28/react-native-truecaller/ajit-react-native-truecaller.podspec
++++ b/node_modules/@ajitpatel28/react-native-truecaller/ajit-react-native-truecaller.podspec
+@@ -16,6 +16,8 @@ Pod::Spec.new do |s|
+ 
+   s.source_files = "ios/**/*.{h,m,mm}"
+ 
++  s.dependency "TrueSDK", "0.1.8"
++
+   # Use install_modules_dependencies helper to install the dependencies if React Native version >=0.71.0.
+   # See https://github.com/facebook/react-native/blob/febf6b7f33fdb4904669f99d795eba4c0f95d7bf/scripts/cocoapods/new_architecture.rb#L79.
+   if respond_to?(:install_modules_dependencies, true)
+@@ -36,7 +38,6 @@ Pod::Spec.new do |s|
+       s.dependency "RCTRequired"
+       s.dependency "RCTTypeSafety"
+       s.dependency "ReactCommon/turbomodule/core"
+-      s.dependency "TrueSDK"
+     end
+   end
+ end
+diff --git a/node_modules/@ajitpatel28/react-native-truecaller/ios/ReactNativeTruecaller.mm b/node_modules/@ajitpatel28/react-native-truecaller/ios/ReactNativeTruecaller.mm
+index 074920f..d3121cf 100644
+--- a/node_modules/@ajitpatel28/react-native-truecaller/ios/ReactNativeTruecaller.mm
++++ b/node_modules/@ajitpatel28/react-native-truecaller/ios/ReactNativeTruecaller.mm
+@@ -41,14 +41,14 @@ RCT_EXPORT_METHOD(requestProfile) {
+     return [[TCTrueSDK sharedManager] application:[UIApplication sharedApplication] continueUserActivity:userActivity restorationHandler:restorationHandler];
+ }
+ 
+-- (void)didReceiveTrueProfileResponse:(TCTrueProfileResponse *)profileResponse {
++- (void)didReceiveTrueProfile:(TCTrueProfile *)profile {
+     NSDictionary *profileData = @{
+-        @"firstName": profileResponse.profile.firstName ?: [NSNull null],
+-        @"lastName": profileResponse.profile.lastName ?: [NSNull null],
+-        @"email": profileResponse.profile.email ?: [NSNull null],
+-        @"phoneNumber": profileResponse.profile.phoneNumber ?: [NSNull null],
+-        @"countryCode": profileResponse.profile.countryCode ?: [NSNull null],
+-        @"gender": profileResponse.profile.gender ?: [NSNull null],
++        @"firstName": profile.firstName ?: [NSNull null],
++        @"lastName": profile.lastName ?: [NSNull null],
++        @"email": profile.email ?: [NSNull null],
++        @"phoneNumber": profile.phoneNumber ?: [NSNull null],
++        @"countryCode": profile.countryCode ?: [NSNull null],
++        @"gender": @(profile.gender)
+     };
+ 
+     [self sendEventWithName:@"TruecallerIOSSuccess" body:profileData];

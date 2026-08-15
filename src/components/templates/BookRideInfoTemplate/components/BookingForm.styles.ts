@@ -44,7 +44,7 @@ export const VisualLine = styled.View`
   left: 50%;
   margin-left: -1px;
   top: ${verticalScale(44)}px;
-  bottom: ${verticalScale(32)}px;
+  bottom: ${verticalScale(8)}px;
   background-color: ${({ theme }) => `${theme.colors.outline_variant}40`};
   z-index: 1;
 `;

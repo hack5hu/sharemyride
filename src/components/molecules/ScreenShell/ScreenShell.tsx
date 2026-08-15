@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { ScreenHeader } from '@/components/molecules/ScreenHeader';
 import { Shell } from './ScreenShell.styles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -35,7 +36,15 @@ export const ScreenShell: React.FC<ScreenShellProps> = ({
   children,
 }) => {
   const insets = useSafeAreaInsets();
-  const paddingStyle = { paddingTop: noPaddingTop ? 0 : insets.top, paddingBottom: noPaddingBottom ? 0 : insets.bottom };
+  
+  // Use a static bottom padding for iOS as the default inset can be too large,
+  // while preserving the default behaviour on Android.
+  const bottomPadding = Platform.OS === 'ios' ? 16 : insets.bottom;
+  
+  const paddingStyle = { 
+    paddingTop: noPaddingTop ? 0 : insets.top, 
+    paddingBottom: noPaddingBottom ? 0 : bottomPadding 
+  };
 
   return (
     <Shell

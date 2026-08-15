@@ -12,6 +12,13 @@ export {
   RideDetailsReportButton as ReportButton,
   RideDetailsScrollContent as ScrollContent,
   RideDetailsContentPadding as ContentPadding,
+  RideDetailsSectionCard as SectionCard,
+  RideDetailsSectionLabelRow as SectionLabelRow,
+  RideDetailsTimelineLabelRow as TimelineLabelRow,
+  RideDetailsSectionDot as SectionDot,
+  RideDetailsChipsWrap as ChipsWrap,
+  RideDetailsPreferenceChip as PreferenceChip,
+  RideDetailsFixedFooter as FixedFooter,
 } from '@/styles/RideDetailsStyles';
 
 // ── Driver Card (flat, simple) ──────────────────────────────────────────────
@@ -90,13 +97,7 @@ export const StatPillIcon = styled.View`
   justify-content: center;
 `;
 
-// ── Section Card ──────────────────────────────────────────────────────────────
 
-export {
-  RideDetailsSectionCard as SectionCard,
-  RideDetailsSectionLabelRow as SectionLabelRow,
-  RideDetailsSectionDot as SectionDot,
-} from '@/styles/RideDetailsStyles';
 
 // ── Co-Riders ────────────────────────────────────────────────────────────────
 
@@ -141,12 +142,7 @@ export const EmptySeatPill = styled.View`
   padding-vertical: ${verticalScale(6)}px;
 `;
 
-// ── Preferences (formerly Ride Rules) ────────────────────────────────────────
 
-export {
-  RideDetailsChipsWrap as ChipsWrap,
-  RideDetailsPreferenceChip as PreferenceChip,
-} from '@/styles/RideDetailsStyles';
 
 // ── Fare Card ────────────────────────────────────────────────────────────────
 
@@ -186,10 +182,6 @@ export const FareIconBox = styled.View`
   justify-content: center;
 `;
 
-// ── Fixed Footer ──────────────────────────────────────────────────────────────
 
-export {
-  RideDetailsFixedFooter as FixedFooter,
-} from '@/styles/RideDetailsStyles';
 
 

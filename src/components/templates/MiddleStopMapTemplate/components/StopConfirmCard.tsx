@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { moderateScale, verticalScale } from '@/styles';
 import { Button } from '@/components/atoms/Button';
@@ -39,7 +40,7 @@ export const StopConfirmCard: React.FC<StopConfirmCardProps> = ({
 
   return (
     <S.BottomCard
-      $paddingBottom={insets.bottom + verticalScale(20)}
+      $paddingBottom={useBottomSafeArea(verticalScale(20), verticalScale(20))}
     >
       <S.BottomGradient />
 

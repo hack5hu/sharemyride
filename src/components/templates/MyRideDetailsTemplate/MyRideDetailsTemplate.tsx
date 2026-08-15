@@ -1,10 +1,13 @@
 import React from 'react';
+import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
 import { MyRideDetailsTemplateProps } from './types.d';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { FixedFooter } from '@/components/molecules/FixedFooter';
 import * as S from './MyRideDetailsTemplate.styles';
 import { Button } from '@/components/atoms/Button';
+import { IconButton } from '@/components/atoms/IconButton';
+import { Typography } from '@/components/atoms/Typography';
 import { Loader } from '@/components/atoms/Loader';
 import { RideComfortSection } from '@/components/organisms/RideComfortSection/RideComfortSection';
 import { PassengerManagement } from '@/components/organisms/PassengerManagement/PassengerManagement';
@@ -36,10 +39,11 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
       onRatePassenger,
     }) => {
       const translations = useLocale();
+      const theme = useTheme();
 
       if (isLoading) {
         return (
-          <ScreenShell
+          <ScreenShell noPaddingBottom
             title={translations.rideDetails.headerTitle}
             onBack={handleBack}
           >
@@ -69,15 +73,15 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
 
       return (
         <S.Root>
-          <ScreenShell
+          <ScreenShell noPaddingBottom
             title={translations.rideDetails.headerTitle}
             onBack={handleBack}
             rightElement={
               !isArchived && onReportRide ? (
-                <Button
-                  variant="text"
+                <IconButton
+                  variant="surface"
                   icon="flag"
-                  iconPosition="left"
+                  iconColor={theme.colors.error}
                   onPress={onReportRide}
                 />
               ) : undefined
@@ -104,12 +108,16 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
                   )}
 
                 <S.SectionCard>
-                  <S.SectionLabelRow>
-                    <S.SectionDot />
-                    <Button variant="text" size="small" disabled>
+                  <S.TimelineLabelRow>
+                    <Typography
+                      variant="label"
+                      size="md"
+                      weight="bold"
+                      color="#0058bc"
+                    >
                       {translations.rideDetails.timelineTitle.toUpperCase()}
-                    </Button>
-                  </S.SectionLabelRow>
+                    </Typography>
+                  </S.TimelineLabelRow>
                   <RideTimeline
                     points={timelinePoints}
                     showActions={true}

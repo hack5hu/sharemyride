@@ -152,7 +152,7 @@ export const BadgeText = styled(Typography).attrs({
 
 export const AccountSection = styled(Section)`
   padding-top: ${verticalScale(16)}px;
-  padding-bottom: ${verticalScale(32)}px;
+  padding-bottom: ${verticalScale(8)}px;
 `;
 
 export const VersionText = styled(Typography).attrs({

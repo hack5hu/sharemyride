@@ -35,7 +35,7 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
 }) => {
   const { middleStops: t } = useLocale();
   return (
-    <ScreenShell title={'Add stops'} onBack={onBackPress}>
+    <ScreenShell noPaddingBottom title={'Add stops'} onBack={onBackPress}>
       <S.ContentLayer showsVerticalScrollIndicator={false}>
         {/* Title */}
         <S.TitleSection>

@@ -62,6 +62,7 @@ export const useLogin = () => {
             phoneNumber: phone,
             mode: 'sms',
           });
+          setTimeout(() => setLoading(false), 300);
         } else {
           showNotification(
             NotificationType.ERROR,

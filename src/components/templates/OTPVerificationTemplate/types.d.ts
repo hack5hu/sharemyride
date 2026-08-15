@@ -1,4 +1,5 @@
 import { DefaultTheme } from 'styled-components/native';
+import { OtpVerificationTranslations } from '@/constants/localization/types';
 
 export interface OTPVerificationTemplateProps {
   propPhoneNumber?: string;
@@ -10,14 +11,7 @@ export interface OTPVerificationTemplateProps {
   handleVerify: (code: string) => void;
   handleResend: () => void;
 
-  t: {
-    otp: {
-      title: string;
-      subtitle: string;
-      resendCode: string;
-      verify: string;
-      resendIn: string;
-    };
-  };
+  t: OtpVerificationTranslations;
   theme: DefaultTheme;
 }
+

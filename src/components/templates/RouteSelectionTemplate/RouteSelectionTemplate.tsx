@@ -75,7 +75,7 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> =
       }, []);
 
       return (
-        <ScreenShell title="Select Route" onBack={onBackPress}>
+        <ScreenShell noPaddingBottom title="Select Route" onBack={onBackPress}>
           <S.Root>
             <RouteSelectionMap
               cameraRef={cameraRef}

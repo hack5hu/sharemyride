@@ -37,6 +37,8 @@ export const RideDetailsSectionLabelRow = styled.View`
   margin-bottom: ${verticalScale(16)}px;
 `;
 
+export const RideDetailsTimelineLabelRow = styled(RideDetailsSectionLabelRow)``;
+
 export const RideDetailsSectionDot = styled.View<{ color?: string }>`
   width: ${moderateScale(8)}px;
   height: ${moderateScale(8)}px;
@@ -68,7 +70,7 @@ export const RideDetailsFixedFooter = styled.View`
   right: 0;
   padding-horizontal: ${scale(24)}px;
   padding-top: ${verticalScale(16)}px;
-  padding-bottom: ${verticalScale(34)}px;
+  padding-bottom: ${verticalScale(8)}px;
   background-color: ${({ theme }) => theme.colors.surface};
   elevation: 8;
   shadow-color: ${({ theme }) => theme.colors.shadow};

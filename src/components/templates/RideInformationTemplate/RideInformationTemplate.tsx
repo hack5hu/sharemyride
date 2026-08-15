@@ -82,7 +82,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> =
 
       if (isLoading) {
         return (
-          <ScreenShell
+          <ScreenShell noPaddingBottom
             title={translations.rideDetails.headerTitle}
             onBack={handleBack}
           >
@@ -98,7 +98,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> =
 
       return (
         <S.Root>
-          <ScreenShell
+          <ScreenShell noPaddingBottom
             title={translations.rideDetails.headerTitle}
             onBack={handleBack}
             rightElement={
@@ -124,17 +124,16 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> =
 
                 {/* ── Route Timeline ── */}
                 <S.SectionCard>
-                  <S.SectionLabelRow>
-                    <S.SectionDot />
+                  <S.TimelineLabelRow>
                     <Typography
                       variant="label"
-                      size="xs"
+                      size="md"
                       weight="bold"
-                      color="on_surface_variant"
+                      color={theme.colors.primary}
                     >
                       {translations.rideDetails.timelineTitle.toUpperCase()}
                     </Typography>
-                  </S.SectionLabelRow>
+                  </S.TimelineLabelRow>
                   <RideTimeline
                     points={ride.timeline}
                     showActions={true}

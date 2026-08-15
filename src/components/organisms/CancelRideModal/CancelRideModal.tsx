@@ -16,8 +16,6 @@ import { IconButton } from '@/components/atoms/IconButton';
 import { ModalBackdrop } from '@/components/atoms/ModalBackdrop';
 import { CategoryButton } from '@/components/molecules/CategoryButton';
 import { TrustInfoBar } from '@/components/molecules/TrustInfoBar';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { useLocale } from '@/constants/localization';
 import { Loader } from '@/components/atoms/Loader';
 import {
   ActionModalContainer as ModalContainer,

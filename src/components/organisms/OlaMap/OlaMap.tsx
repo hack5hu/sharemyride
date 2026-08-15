@@ -4,14 +4,13 @@ import {
   TransformRequestManager,
   OfflineManager,
 } from '@maplibre/maplibre-react-native';
-import { OLA_API_KEY } from '@/constants/OlaStyle';
+import { OLA_API_KEY, OLA_MAP_STYLE_URL } from '@/constants/OlaStyle';
 import { OlaMapProps } from './types.d';
 
 // Run setup only once
 let isTransformRequestSetup = false;
 
-const DEFAULT_STYLE =
-  'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json';
+const DEFAULT_STYLE = OLA_MAP_STYLE_URL;
 
 export const OlaMap = React.memo(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type

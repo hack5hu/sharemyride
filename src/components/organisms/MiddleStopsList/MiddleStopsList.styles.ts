@@ -19,7 +19,7 @@ export const PathLine = styled(LinearGradient).attrs(({ theme }) => ({
   position: absolute;
   left: ${scale(24 + 16)}px; /* Align with center of IconCircle */
   top: ${verticalScale(40)}px;
-  bottom: ${verticalScale(40)}px;
+  bottom: ${verticalScale(8)}px;
   width: ${moderateScale(2)}px;
   z-index: 0;
 `;

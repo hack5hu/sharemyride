@@ -32,7 +32,7 @@ export const Sheet = styled(Box)`
   border-top-left-radius: ${moderateScale(40)}px;
   border-top-right-radius: ${moderateScale(40)}px;
   max-height: 88%;
-  padding-bottom: ${verticalScale(40)}px;
+  padding-bottom: ${verticalScale(8)}px;
 `;
 
 export const DragHandle = styled(Box)`

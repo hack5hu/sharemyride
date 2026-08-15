@@ -57,7 +57,7 @@ export const HeroSubtitle = styled.Text`
 export const SectionContainer = styled.View`
   padding-horizontal: ${scale(24)}px;
   margin-top: ${verticalScale(32)}px;
-  padding-bottom: ${verticalScale(32)}px;
+  padding-bottom: ${verticalScale(8)}px;
 `;
 
 export const SectionHeader = styled.View`

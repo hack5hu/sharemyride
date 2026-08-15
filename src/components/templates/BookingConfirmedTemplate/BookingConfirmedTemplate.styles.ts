@@ -115,30 +115,11 @@ export const ActionArea = styled.View`
   gap: ${verticalScale(12)}px;
 `;
 
-export const PrimaryButton = styled(LinearGradient)`
-  width: 100%;
-  padding-vertical: ${verticalScale(18)}px;
-  border-radius: ${moderateScale(16)}px;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  gap: ${scale(8)}px;
-  elevation: 4;
-  shadow-color: ${({ theme }) => theme.colors.primary};
-  shadow-offset: 0px 4px;
-  shadow-opacity: 0.1;
-  shadow-radius: 8px;
-`;
-
-export const SecondaryButton = styled.TouchableOpacity`
-  width: 100%;
-  padding-vertical: ${verticalScale(16)}px;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  gap: ${scale(8)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_highest};
-  border-radius: ${moderateScale(16)}px;
+export const PrimaryButtonText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 800;
+  font-size: ${responsiveFont(16)}px;
+  color: ${({ theme }) => theme.colors.on_primary};
 `;
 
 export const DriverNameText = styled(Typography)`
@@ -172,14 +153,10 @@ export const SafetySubtitleText = styled(Typography)`
   opacity: 0.8;
 `;
 
-export const PrimaryButtonWrapper = styled.TouchableOpacity`
-  width: 100%;
-`;
-
 export const TrustSection = styled.View`
   align-items: center;
   opacity: 0.5;
-  padding-bottom: ${verticalScale(40)}px;
+  padding-bottom: ${verticalScale(8)}px;
 `;
 
 export const TrustIconsRow = styled(Row)`

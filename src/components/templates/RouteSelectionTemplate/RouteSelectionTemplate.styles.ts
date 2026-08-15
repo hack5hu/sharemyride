@@ -61,7 +61,7 @@ export const RouteWrapper = styled.View`
   background-color: ${({ theme }) => theme.colors.surface};
   padding-horizontal: ${scale(24)}px;
   padding-top: ${verticalScale(24)}px;
-  padding-bottom: ${verticalScale(32)}px;
+  padding-bottom: ${verticalScale(8)}px;
   min-height: 100%;
 `;
 
@@ -174,7 +174,7 @@ export const FixedFooter = styled.View`
   right: 0;
   padding-horizontal: ${scale(24)}px;
   padding-top: ${verticalScale(16)}px;
-  padding-bottom: ${verticalScale(34)}px;
+  padding-bottom: ${verticalScale(8)}px;
   background-color: ${({ theme }) => theme.colors.surface};
   elevation: 8;
   shadow-color: ${({ theme }) => theme.colors.shadow};

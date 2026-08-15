@@ -99,18 +99,3 @@ export const OtherInput = styled.TextInput.attrs(({ theme }) => ({
 export const ActionsContainer = styled.View`
   gap: ${verticalScale(8)}px;
 `;
-
-export const GhostButton = styled.TouchableOpacity`
-  width: 100%;
-  paddingvertical: ${verticalScale(12)}px;
-  border-radius: ${moderateScale(16)}px;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const GhostButtonText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(16)}px;
-  color: ${({ theme }) => theme.colors.primary};
-`;

@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale } from '@/styles';
-import { LinearGradient } from 'react-native-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 export const ActionModalContainer = styled.View`
   width: 90%;
@@ -39,13 +40,14 @@ export const ActionModalBadge = styled.View<{ bgColorTint: string }>`
   border-radius: ${moderateScale(12)}px;
 `;
 
-export const ActionModalContent = styled.ScrollView.attrs({
+export const ActionModalContent = styled(KeyboardAwareScrollView).attrs({
   contentContainerStyle: {
     padding: moderateScale(24),
     gap: verticalScale(24),
   },
 })`
   max-height: ${verticalScale(500)}px;
+  flex-shrink: 1;
 `;
 
 export const ActionModalSection = styled.View`
@@ -58,9 +60,11 @@ export const ActionModalCategoryGrid = styled.View`
   gap: ${moderateScale(8)}px;
 `;
 
-export const ActionModalDescriptionInput = styled.TextInput.attrs(({ theme }) => ({
-  placeholderTextColor: theme.colors.on_surface_variant + '80',
-}))`
+export const ActionModalDescriptionInput = styled.TextInput.attrs(
+  ({ theme }) => ({
+    placeholderTextColor: theme.colors.on_surface_variant + '80',
+  }),
+)`
   background-color: ${({ theme }) => theme.colors.surface_container_high};
   border-radius: ${moderateScale(12)}px;
   padding: ${moderateScale(16)}px;
@@ -78,16 +82,19 @@ export const ActionModalFooter = styled.View`
 `;
 
 export const ActionModalSubmitButton = styled.TouchableOpacity`
+  width: 100%;
+  height: ${verticalScale(56)}px;
   border-radius: ${moderateScale(12)}px;
   overflow: hidden;
 `;
 
-export const ActionModalGradientBtn = styled(LinearGradient)`
-  padding-vertical: ${verticalScale(16)}px;
+export const ActionModalGradientBtn = styled(LinearGradient)<{ disabledOpacity?: number }>`
+  flex: 1;
+  width: 100%;
+  height: 100%;
   align-items: center;
   justify-content: center;
-  min-height: ${verticalScale(56)}px;
-  opacity: ${(props: { disabledOpacity?: number }) => props.disabledOpacity ?? 1};
+  opacity: ${props => props.disabledOpacity ?? 1};
 `;
 
 export const ActionModalCancelButton = styled.TouchableOpacity`
@@ -96,8 +103,7 @@ export const ActionModalCancelButton = styled.TouchableOpacity`
   justify-content: center;
   min-height: ${verticalScale(52)}px;
   border-radius: ${moderateScale(12)}px;
-  border-width: 1px;
-  border-color: ${({ theme }) => theme.colors.outline_variant + '4D'};
+  background-color: ${({ theme }) => theme.colors.surface_variant};
 `;
 
 export const ActionModalLoadingOverlay = styled.View`

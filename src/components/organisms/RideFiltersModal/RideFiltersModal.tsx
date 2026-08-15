@@ -1,12 +1,13 @@
 /* eslint-disable max-lines */
 import React, { useState } from 'react';
-import { Modal } from 'react-native';
+import {  Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { moderateScale } from '@/styles';
 import { Checkbox } from '@/components/atoms/Checkbox';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
 import * as S from './RideFiltersModal.styles';
 
 export interface RideFiltersModalProps {
@@ -317,7 +318,7 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
           </S.ScrollBody>
 
           <S.Footer
-            $paddingBottom={Math.max(insets.bottom, 16) + 16}
+            $paddingBottom={useBottomSafeArea(16, 16) + 16}
           >
             <S.ApplyButton
               onPress={() => {

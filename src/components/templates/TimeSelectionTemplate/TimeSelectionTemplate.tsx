@@ -34,7 +34,7 @@ export const TimeSelectionTemplate: React.FC<TimeSelectionTemplateProps> = ({
   const { timeSelection: t } = useLocale();
 
   return (
-    <ScreenShell title={t.headerTitle} onBack={onBackPress}>
+    <ScreenShell noPaddingBottom title={t.headerTitle} onBack={onBackPress}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled={true}

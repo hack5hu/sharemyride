@@ -20,6 +20,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
+    - TrueSDK (= 0.1.8)
     - Yoga
   - AsyncStorage (3.0.2):
     - hermes-engine
@@ -1909,6 +1910,29 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
+  - react-native-stallion (2.4.1):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
+    - ZIPFoundation
   - React-NativeModulesApple (0.84.1):
     - hermes-engine
     - React-callinvoker
@@ -2746,8 +2770,9 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - TrueSDK (0.2.3)
+  - TrueSDK (0.1.8)
   - Yoga (0.0.0)
+  - ZIPFoundation (0.9.20)
 
 DEPENDENCIES:
   - "ajit-react-native-truecaller (from `../node_modules/@ajitpatel28/react-native-truecaller`)"
@@ -2803,6 +2828,7 @@ DEPENDENCIES:
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
+  - react-native-stallion (from `../node_modules/react-native-stallion`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-networking (from `../node_modules/react-native/ReactCommon/react/networking`)
   - React-oscompat (from `../node_modules/react-native/ReactCommon/oscompat`)
@@ -2875,6 +2901,7 @@ SPEC REPOS:
     - PromisesObjC
     - PromisesSwift
     - TrueSDK
+    - ZIPFoundation
 
 EXTERNAL SOURCES:
   ajit-react-native-truecaller:
@@ -2982,6 +3009,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-slider:
     :path: "../node_modules/@react-native-community/slider"
+  react-native-stallion:
+    :path: "../node_modules/react-native-stallion"
   React-NativeModulesApple:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios"
   React-networking:
@@ -3084,7 +3113,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  ajit-react-native-truecaller: c1e58601268096d8966a066b5b56e55f325bd15f
+  ajit-react-native-truecaller: 8cac3040e8ca59d35002f0441164e6da425e9f72
   AsyncStorage: b9dbc3eecddb3ec3c5254c8eb57e9018724912d8
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   FBLazyVector: e97c19a5a442429d1988f182a1940fb08df514da
@@ -3153,6 +3182,7 @@ SPEC CHECKSUMS:
   react-native-maps: c545a4c303ce633d2dce0c178c1ad84dd286d3b0
   react-native-safe-area-context: 29044d05d61f2c60d0828c373bd0ebe17eed58d0
   react-native-slider: a20ed17f350cbc9935f0dc9610e4cb29b9e7a4c7
+  react-native-stallion: b13037339e6bfe9f8ee97edc877eb00a5d265d86
   React-NativeModulesApple: b94faa2dce6d8c0a9d722ed7ee27b996d28b62d1
   React-networking: e409d8fb062162da6293e98b77f8d80cf4430e07
   React-oscompat: ff26abf0ae3e3fdbe47b44224571e3fc7226a573
@@ -3202,9 +3232,10 @@ SPEC CHECKSUMS:
   RNSVG: 7f2453d6a1cb84b5fbc9144f6e6333c196ef784b
   RNVectorIcons: af977c18ed27deba54ed038b439fca2911a08cfc
   RNWorklets: 0d4c7664dfbb168bb4edf5906a0b7c11701677b8
-  TrueSDK: b6f116762c5c33e4a8216e84a2da758a86941eff
+  TrueSDK: 6845b0387144212913ec8fd851f4a57998c1ea21
   Yoga: 7c1c3b93e408ac46c7ed64b5641ca7161747378d
+  ZIPFoundation: dfd3d681c4053ff7e2f7350bc4e53b5dba3f5351
 
-PODFILE CHECKSUM: 329c6811fe0af15ee1e8eb54b6fef3d3a2c68ce1
+PODFILE CHECKSUM: 5afa5aa12348fb5a46f6e405980c5a4c77e08932
 
 COCOAPODS: 1.15.2

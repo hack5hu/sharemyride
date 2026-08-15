@@ -3,6 +3,7 @@ import { StatusBar, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
 import { useLocale } from '@/constants/localization';
 import { Loader } from '@/components/atoms/Loader';
 import { Button } from '@/components/atoms/Button';
@@ -43,7 +44,7 @@ export const SelectLocationTemplate: React.FC<
     const insets = useSafeAreaInsets();
     const { chatLocation } = useLocale();
 
-    const bottomInsetVal = Math.max(insets.bottom, 16);
+    const bottomInsetVal = useBottomSafeArea(16, 16);
 
     return (
       <S.FullScreenContainer>

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
@@ -6,14 +7,13 @@ import { Container, NavItem, Badge, BadgeText } from './BottomNav.styles';
 import { BottomTabType, BottomNavProps } from './types';
 import { useBottomNav } from './useBottomNav';
 import { useChatStore } from '@/store/useChatStore';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
 import { verticalScale } from '@/styles';
 
 export const BottomNav: React.FC<BottomNavProps> = ({ activeTab }) => {
   const theme = useTheme();
   const { t, handlePress } = useBottomNav(activeTab);
   const { conversations } = useChatStore();
-  const insets = useSafeAreaInsets();
 
   const unreadConversationsCount = conversations.filter(
     conv => (conv.unreadCount || 0) > 0,
@@ -53,9 +53,11 @@ export const BottomNav: React.FC<BottomNavProps> = ({ activeTab }) => {
     );
   };
 
+  const bottomPadding = useBottomSafeArea(verticalScale(16));
+
   return (
     <Container
-      $paddingBottom={Math.max(insets.bottom, verticalScale(8))}
+      $paddingBottom={bottomPadding}
     >
       {renderItem('BOOK', 'directions-car', 'navBook')}
       {renderItem('PUBLISH', 'add-circle', 'navPublish')}

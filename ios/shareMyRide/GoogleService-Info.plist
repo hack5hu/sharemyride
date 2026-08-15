@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDb-6RepvjPoxcCaOkryeG07nWOnE2HQbU</string>
+	<string>AIzaSyB8gXmeXojVqZvr3cm-f1WLEQ12MGXr0Xg</string>
 	<key>GCM_SENDER_ID</key>
-	<string>762037720180</string>
+	<string>464997505927</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.sharemyride</string>
+	<string>com.yet.zyncride</string>
 	<key>PROJECT_ID</key>
-	<string>rydofast</string>
+	<string>zyncride</string>
 	<key>STORAGE_BUCKET</key>
-	<string>rydofast.firebasestorage.app</string>
+	<string>zyncride.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:762037720180:ios:c08a65099a9178cd156d21</string>
+	<string>1:464997505927:ios:cc3446542cd06510a99122</string>
 </dict>
 </plist>

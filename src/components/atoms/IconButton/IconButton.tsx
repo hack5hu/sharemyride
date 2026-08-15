@@ -10,6 +10,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
   variant = 'primary',
   onPress,
   style,
+  iconColor,
   ...props
 }) => {
   const theme = useTheme();
@@ -28,6 +29,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
   };
 
   const getIconColor = () => {
+    if (iconColor) return iconColor;
     switch (variant) {
       case 'primary':
         return theme.colors.on_primary;

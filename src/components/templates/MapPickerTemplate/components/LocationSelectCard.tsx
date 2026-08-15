@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { moderateScale, verticalScale } from '@/styles';
+import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
 import { Button } from '@/components/atoms/Button';
 import { MapPickerTranslations } from '@/constants/localization/types';
 import * as S from '../MapPickerTemplate.styles';
@@ -22,11 +22,11 @@ export const LocationSelectCard: React.FC<LocationSelectCardProps> = ({
   t,
 }) => {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
+  const bottomPadding = useBottomSafeArea(verticalScale(16), verticalScale(12));
 
   return (
     <S.SelectButtonContainer
-      $paddingBottom={Math.max(insets.bottom, verticalScale(12))}
+      $paddingBottom={bottomPadding}
     >
       <S.LocationPreviewContainer>
         <S.PreviewIcon

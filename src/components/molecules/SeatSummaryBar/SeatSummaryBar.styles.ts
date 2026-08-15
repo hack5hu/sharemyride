@@ -10,7 +10,7 @@ export const BarWrapper = styled(Box)`
   left: 0;
   right: 0;
   padding-horizontal: ${scale(24)}px;
-  padding-bottom: ${verticalScale(40)}px;
+  padding-bottom: ${verticalScale(8)}px;
   padding-top: ${verticalScale(24)}px;
   background-color: ${({ theme }) => theme.colors.surface}E6;
   border-top-width: 1px;

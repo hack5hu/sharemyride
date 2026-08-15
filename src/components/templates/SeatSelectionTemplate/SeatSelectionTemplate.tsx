@@ -69,7 +69,7 @@ export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> =
       };
 
       return (
-        <ScreenShell title={t.headerTitle} onBack={onBackPress}>
+        <ScreenShell noPaddingBottom title={t.headerTitle} onBack={onBackPress}>
           <S.ContentScroll
             showsVerticalScrollIndicator={false}
           >

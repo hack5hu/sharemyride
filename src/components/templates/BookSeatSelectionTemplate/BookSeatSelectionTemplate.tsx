@@ -32,7 +32,7 @@ export const BookSeatSelectionTemplate: React.FC<
 
   return (
     <S.Root>
-      <ScreenShell title={st.headerTitle} onBack={handleBack}>
+      <ScreenShell noPaddingBottom title={st.headerTitle} onBack={handleBack}>
         <S.ScrollContent
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: verticalScale(240) }}

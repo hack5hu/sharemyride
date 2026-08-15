@@ -47,6 +47,40 @@ target 'shareMyRide' do
       end
     end
 
+    # Fix for ReactCodegen duplicate/missing sources bug
+    react_codegen_target = installer.pods_project.targets.find { |t| t.name == 'ReactCodegen' }
+    if react_codegen_target
+      puts "Fixing ReactCodegen target sources..."
+      sources_phase = react_codegen_target.source_build_phase
+      sources_phase.clear
+      
+      react_codegen_group = installer.pods_project.objects.select { |o| o.isa == 'PBXGroup' && o.name == 'ReactCodegen' }.first
+      if react_codegen_group
+        all_source_files = []
+        queue = [react_codegen_group]
+        while !queue.empty?
+          current = queue.shift
+          current.children.each do |child|
+            if child.isa == 'PBXFileReference'
+              if child.path && (child.path.end_with?('.cpp') || child.path.end_with?('.mm') || child.path.end_with?('.c'))
+                all_source_files << child
+              end
+            elsif child.isa == 'PBXGroup'
+              queue << child
+            end
+          end
+        end
+        
+        all_source_files.uniq.each do |file_ref|
+          build_file = sources_phase.add_file_reference(file_ref)
+          build_file.settings = { 'COMPILER_FLAGS' => '-DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DFOLLY_CFG_NO_COROUTINES=1 -DFOLLY_HAVE_CLOCK_GETTIME=1 -Wno-comma -Wno-shorten-64-to-32 -Wno-documentation -Wno-nullability-completeness -std=c++20' }
+        end
+        puts "ReactCodegen source build phase updated to #{sources_phase.files.count} files."
+      else
+        puts "Error: ReactCodegen group not found!"
+      end
+    end
+
     # Workaround for "Multiple commands produce Assets.car"
     installer.aggregate_targets.each do |target|
       copy_resources_path = "Pods/Target Support Files/#{target.name}/#{target.name}-resources.sh"

@@ -2,6 +2,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { OtpInput } from '@/components/molecules/OtpInput';
+import { Button } from '@/components/atoms/Button';
 import { OTPVerificationTemplateProps } from './types.d';
 import {
   KeyboardContainer,
@@ -11,8 +12,7 @@ import {
   Subtitle,
   PhoneRow,
   PhoneText,
-  VerifyButton,
-  VerifyButtonText,
+  ButtonContainer,
   ResendContainer,
   ResendHintText,
   ResendActionRow,
@@ -65,15 +65,15 @@ export const OTPVerificationTemplate: React.FC<OTPVerificationTemplateProps> = (
             disabled={loading}
           />
 
-          <VerifyButton
-            onPress={() => handleVerify(otpValue)}
-            activeOpacity={0.8}
-            disabled={isButtonDisabled}
-          >
-            <VerifyButtonText>
-              {loading ? t.verifyingButton : t.verifyButton}
-            </VerifyButtonText>
-          </VerifyButton>
+          <ButtonContainer>
+            <Button
+              onPress={() => handleVerify(otpValue)}
+              disabled={isButtonDisabled}
+              loading={loading}
+            >
+              {t.verifyButton}
+            </Button>
+          </ButtonContainer>
 
           <ResendContainer>
             <ResendHintText>{t.didNotReceive}</ResendHintText>

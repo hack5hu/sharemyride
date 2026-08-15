@@ -36,7 +36,7 @@ export const ListContainer = styled.View`
 
 export const FloatingButtonContainer = styled.View`
   position: absolute;
-  bottom: ${verticalScale(32)}px;
+  bottom: ${verticalScale(8)}px;
   left: ${scale(20)}px;
   right: ${scale(20)}px;
 `;

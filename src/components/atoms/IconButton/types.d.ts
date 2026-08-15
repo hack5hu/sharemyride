@@ -9,4 +9,5 @@ export interface IconButtonProps {
   variant?: IconButtonVariant;
   onPress?: () => void;
   style?: ViewStyle;
+  iconColor?: string;
 }

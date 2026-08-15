@@ -62,7 +62,7 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
   const { priceSelection: t } = useLocale();
 
   return (
-    <ScreenShell title={t.headerTitle} onBack={onBackPress}>
+    <ScreenShell noPaddingBottom title={t.headerTitle} onBack={onBackPress}>
       <S.MainScrollView>
         <S.TitleSection>
           <S.PageTitle>{t.title}</S.PageTitle>

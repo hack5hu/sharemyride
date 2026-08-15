@@ -84,46 +84,6 @@ export const InfoText = styled.Text`
 export const ActionArea = styled.View`
   width: 100%;
   padding-horizontal: ${scale(32)}px;
-  padding-bottom: ${verticalScale(40)}px;
+  padding-bottom: ${verticalScale(8)}px;
   gap: ${verticalScale(12)}px;
-`;
-
-export const PrimaryButton = styled.TouchableOpacity`
-  width: 100%;
-`;
-
-export const PrimaryGradient = styled(LinearGradient)`
-  width: 100%;
-  height: ${moderateScale(58)}px;
-  border-radius: ${moderateScale(16)}px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: ${scale(8)}px;
-  shadow-color: ${({ theme }) => theme.colors.primary};
-  shadow-offset: 0px 8px;
-  shadow-opacity: 0.25;
-  shadow-radius: 24px;
-  elevation: 8;
-`;
-
-export const PrimaryButtonText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${responsiveFont(16)}px;
-  color: ${({ theme }) => theme.colors.on_primary};
-`;
-
-export const SecondaryButton = styled.TouchableOpacity`
-  width: 100%;
-  height: ${moderateScale(54)}px;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const SecondaryButtonText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(15)}px;
-  color: ${({ theme }) => theme.colors.primary};
 `;

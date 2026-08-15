@@ -131,6 +131,8 @@ export const PreviewIcon = styled(Ionicons)`
   margin-right: ${scale(8)}px;
 `;
 
+export const MapPinIcon = styled(Ionicons)``;
+
 export const TextWrapper = styled.View`
   flex: 1;
   justify-content: center;

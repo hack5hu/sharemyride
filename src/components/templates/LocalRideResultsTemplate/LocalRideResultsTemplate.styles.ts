@@ -38,7 +38,7 @@ export const BackButtonContainer = styled.TouchableOpacity`
 
 export const InfoCard = styled.View`
   position: absolute;
-  bottom: ${verticalScale(40)}px;
+  bottom: ${verticalScale(8)}px;
   left: ${scale(20)}px;
   right: ${scale(20)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};

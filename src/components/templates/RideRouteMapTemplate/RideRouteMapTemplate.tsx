@@ -6,6 +6,7 @@ import {
   UserLocation,
 } from '@/components/organisms/OlaMap';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import { UserLocationMarker } from '@/components/atoms/UserLocationMarker';
@@ -32,6 +33,7 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> =
       mapRef,
       cameraRef,
       region,
+      zoom,
       mapData,
       onOpenExternalMap,
       onZoomIn,
@@ -42,21 +44,20 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> =
       const insets = useSafeAreaInsets();
       const translations = useLocale();
 
-      const paddingBottomVal = Math.max(insets.bottom, 12);
+      const paddingBottomVal = useBottomSafeArea(12, 12);
 
       return (
-        <S.Root>
+        <S.Container>
           <ScreenShell title={title || translations.common.back} onBack={onBack}>
             <S.MapWrapper>
               {region && (
                 <S.StyledOlaMap
                   ref={mapRef as any}
-                  styleURL="https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json"
                 >
                   <Camera
                     ref={cameraRef as any}
-                    zoomLevel={region.zoom || 12}
-                    centerCoordinate={[region.longitude, region.latitude]}
+                    zoom={zoom ?? 12}
+                    center={[region.longitude, region.latitude]}
                   />
 
                   <MapLibreUserLocation
@@ -90,12 +91,12 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> =
                 icon={Platform.OS === 'android' ? 'map' : 'explore'}
               >
                 {Platform.OS === 'android'
-                  ? translations.rideDetails.openInGoogleMaps
-                  : translations.rideDetails.openInAppleMaps}
+                  ? translations.rideRoute.openInGoogleMaps
+                  : translations.rideRoute.openInAppleMaps}
               </Button>
             </S.Footer>
           </ScreenShell>
-        </S.Root>
+        </S.Container>
       );
     },
   );

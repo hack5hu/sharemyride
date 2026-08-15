@@ -12,9 +12,7 @@ export const StyledButton = styled.TouchableOpacity`
   overflow: hidden;
 `;
 
-export const GradientBackground = styled(LinearGradient)<{
-  disabled?: boolean;
-}>`
+export const GradientBackground = styled(LinearGradient)`
   flex: 1;
   width: 100%;
   height: 100%;
@@ -22,8 +20,6 @@ export const GradientBackground = styled(LinearGradient)<{
   justify-content: center;
   flex-direction: row;
   gap: ${scale(8)}px;
-  background-color: ${({ theme, disabled }) =>
-    disabled ? theme.colors.outline_variant : 'transparent'};
 `;
 
 export const OutlineContainer = styled.View<{ variant: ButtonVariant }>`

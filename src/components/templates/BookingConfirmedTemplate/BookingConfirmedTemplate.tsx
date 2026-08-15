@@ -3,6 +3,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
+import { Button } from '@/components/atoms/Button';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { moderateScale } from '@/styles';
 import * as S from './BookingConfirmedTemplate.styles';
@@ -113,46 +114,22 @@ export const BookingConfirmedTemplate: React.FC<
 
         {/* Final Actions */}
         <S.ActionArea>
-          <S.PrimaryButtonWrapper
+          <Button
             onPress={handleGoToMyRides}
-            activeOpacity={0.8}
+            icon="arrow-forward"
+            iconPosition="right"
           >
-            <S.PrimaryButton
-              colors={[theme.colors.primary, theme.colors.primary_container]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-            >
-              <Typography
-                variant="body"
-                size="md"
-                weight="bold"
-                color={theme.colors.on_primary}
-              >
-                {t.primaryCTA}
-              </Typography>
-              <MaterialIcons
-                name="arrow-forward"
-                size={20}
-                color={theme.colors.on_primary}
-              />
-            </S.PrimaryButton>
-          </S.PrimaryButtonWrapper>
+            {t.primaryCTA}
+          </Button>
 
-          <S.SecondaryButton onPress={handleShareDetails}>
-            <MaterialIcons
-              name="share"
-              size={20}
-              color={theme.colors.primary}
-            />
-            <Typography
-              variant="body"
-              size="md"
-              weight="bold"
-              color={theme.colors.primary}
-            >
-              {t.secondaryCTA}
-            </Typography>
-          </S.SecondaryButton>
+          <Button
+            onPress={handleShareDetails}
+            variant="secondary"
+            icon="share"
+            iconPosition="left"
+          >
+            {t.secondaryCTA}
+          </Button>
         </S.ActionArea>
 
         {/* Trust Indicators */}

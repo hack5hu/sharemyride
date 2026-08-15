@@ -1,9 +1,15 @@
 /**
  * Ola Maps Configuration Constants
  */
-import { OLA_API_KEY as ENV_OLA_API_KEY } from '@env';
+import {
+  OLA_API_KEY as ENV_OLA_API_KEY,
+  OLA_MAP_STYLE_URL as ENV_OLA_MAP_STYLE_URL,
+} from '@env';
 
-export const OLA_API_KEY = 'LqlaA77D09ngpTaBVVAnHAEsvBycEoGmb76reivs';
+export const OLA_API_KEY = ENV_OLA_API_KEY || 'LqlaA77D09ngpTaBVVAnHAEsvBycEoGmb76reivs';
+export const OLA_MAP_STYLE_URL =
+  ENV_OLA_MAP_STYLE_URL ||
+  'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json';
 
 /**
  * Helper to build a clean style URL.

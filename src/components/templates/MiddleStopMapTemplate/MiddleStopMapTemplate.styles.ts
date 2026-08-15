@@ -81,7 +81,7 @@ export const MarkerDotOuter = styled.View<{ color?: string }>`
 /* Floating footer for stops count */
 export const SearchFloatingFooter = styled.View`
   position: absolute;
-  bottom: ${verticalScale(32)}px;
+  bottom: ${verticalScale(8)}px;
   left: ${scale(24)}px;
   right: ${scale(24)}px;
   background-color: ${({ theme }) =>

@@ -16,16 +16,21 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
-	<key>StallionProjectId</key>
-	<string>6a528caf7af37d42f935d9da</string>
-	<key>StallionAppToken</key>
-	<string>spb_ap_V1nP4TNd6UJdcl1HCT5aei5V8J50DmsYCRVZgk-Dh5</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.3.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>truecallersdk-{xo3glydxwgapbf0zumg28mys6qud3tkzfnfzbxcqiay}</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>6</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -41,23 +46,18 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>CFBundleURLTypes</key>
-	<array>
-	<dict>
-	<key>CFBundleURLSchemes</key>
-	<array>
-		<string>truecallersdk-{xo3glydxwgapbf0zumg28mys6qud3tkzfnfzbxcqiay}</string>
-	</array>
-	</dict>
-	</array>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>ZyncRide needs access to your location in the background to share real-time progress of the ride with your riders.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>ZyncRide needs access to your location in the background to share real-time progress of the ride with your riders.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>ZyncRide needs access to your location to share it with your riders.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>ZyncRide needs access to your photo library to choose a profile picture.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
+	<key>StallionAppToken</key>
+	<string>spb_ap_V1nP4TNd6UJdcl1HCT5aei5V8J50DmsYCRVZgk-Dh5</string>
+	<key>StallionProjectId</key>
+	<string>6a528caf7af37d42f935d9da</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Fontisto.ttf</string>

@@ -9,6 +9,7 @@ export {
   RideDetailsContentPadding as ContentPadding,
   RideDetailsSectionCard as SectionCard,
   RideDetailsSectionLabelRow as SectionLabelRow,
+  RideDetailsTimelineLabelRow as TimelineLabelRow,
   RideDetailsSectionDot as SectionDot,
   RideDetailsChipsWrap as ChipsWrap,
   RideDetailsPreferenceChip as PreferenceChip,

@@ -86,22 +86,9 @@ export const EditButton = styled.TouchableOpacity`
   border-radius: ${({ theme }) => theme.roundness.full}px;
 `;
 
-export const VerifyButton = styled.TouchableOpacity`
+export const ButtonContainer = styled.View`
   width: 100%;
-  height: ${verticalScale(56)}px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  border-radius: ${({ theme }) => theme.roundness.sm}px;
-  align-items: center;
-  justify-content: center;
   margin-top: ${verticalScale(40)}px;
-  box-shadow: 0px 4px 12px rgba(0, 135, 90, 0.2);
-  elevation: 4;
-`;
-
-export const VerifyButtonText = styled.Text`
-  font-family: 'PlusJakartaSans-Bold';
-  font-size: ${responsiveFont(18)}px;
-  color: ${({ theme }) => theme.colors.on_primary};
 `;
 
 export const ResendContainer = styled.View`

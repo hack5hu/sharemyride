@@ -2,6 +2,7 @@ import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { moderateScale } from '@/styles';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { Button } from '@/components/atoms/Button';
 import { PublishSuccessTemplateProps } from './types.d';
 import {
   MainContent,
@@ -13,11 +14,6 @@ import {
   InfoTitle,
   InfoText,
   ActionArea,
-  PrimaryButton,
-  PrimaryGradient,
-  PrimaryButtonText,
-  SecondaryButton,
-  SecondaryButtonText,
 } from './PublishSuccessTemplate.styles';
 
 export const PublishSuccessTemplate: React.FC<PublishSuccessTemplateProps> = ({
@@ -54,24 +50,20 @@ export const PublishSuccessTemplate: React.FC<PublishSuccessTemplateProps> = ({
       </MainContent>
 
       <ActionArea>
-        <PrimaryButton onPress={handleGoToMyRides} activeOpacity={0.9}>
-          <PrimaryGradient
-            colors={[theme.colors.primary, theme.colors.primary_container]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-          >
-            <PrimaryButtonText>{t.primaryCTA}</PrimaryButtonText>
-            <MaterialIcons
-              name="arrow-forward"
-              size={moderateScale(20)}
-              color={theme.colors.on_primary}
-            />
-          </PrimaryGradient>
-        </PrimaryButton>
+        <Button
+          onPress={handleGoToMyRides}
+          icon="arrow-forward"
+          iconPosition="right"
+        >
+          {t.primaryCTA}
+        </Button>
 
-        <SecondaryButton onPress={handleShareResult} activeOpacity={0.7}>
-          <SecondaryButtonText>{t.secondaryCTA}</SecondaryButtonText>
-        </SecondaryButton>
+        <Button
+          onPress={handleShareResult}
+          variant="secondary"
+        >
+          {t.secondaryCTA}
+        </Button>
       </ActionArea>
     </ScreenShell>
   );

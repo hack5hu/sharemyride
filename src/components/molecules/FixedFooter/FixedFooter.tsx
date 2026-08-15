@@ -1,6 +1,6 @@
 import React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { verticalScale } from '@/styles';
+import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
 import { Container } from './FixedFooter.styles';
 import { FixedFooterProps } from './types';
 
@@ -8,19 +8,19 @@ import { FixedFooterProps } from './types';
  * FixedFooter Molecule
  *
  * Single source of truth for fixed bottom action footers across the app.
- * Automatically handles `insets.bottom` to ensure full edge-to-edge support on Android & iOS.
+ * Automatically handles bottom padding to ensure full edge-to-edge support on Android & iOS.
  */
 export const FixedFooter: React.FC<FixedFooterProps> = ({
   extraBottomOffset = verticalScale(16),
   style,
   children,
 }) => {
-  const insets = useSafeAreaInsets();
+  const bottomPadding = useBottomSafeArea(extraBottomOffset, extraBottomOffset);
 
   return (
     <Container
       style={[
-        { paddingBottom: insets.bottom + extraBottomOffset },
+        { paddingBottom: bottomPadding },
         style,
       ]}
     >
