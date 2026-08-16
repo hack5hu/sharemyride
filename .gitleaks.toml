@@ -1,0 +1,17 @@
+[extend]
+# Use default Gitleaks configuration rules
+
+[allowlist]
+description = "Global allowlist for public SDK tokens and harmless mock identifiers"
+paths = [
+  '''node_modules''',
+  '''ios/Pods''',
+  '''\.agents''',
+  '''yarn\.lock''',
+  '''ios/Podfile\.lock''',
+]
+regexes = [
+  '''xo3glydxwgapbf0zumg28mys6qud3tkzfnfzbxcqiay''', # Truecaller ClientId
+  '''spb_ap_V1nP4TNd6UJdcl1HCT5aei5V8J50DmsYCRVZgk-Dh5''', # Stallion App Token
+  '''6a528caf7af37d42f935d9da''', # Stallion Project ID
+]

@@ -180,7 +180,9 @@ const main = async () => {
   const target = process.argv[2];
 
   if (!target) {
-    console.error('❌ Please pass a target: aab, apk, ios, or ota');
+    console.error(
+      '❌ Please pass a target: prod (both), dev (both), aab, apk, ios, or ota',
+    );
     process.exit(1);
   }
 
@@ -205,8 +207,41 @@ const main = async () => {
           `$(yarn global bin)/stallion publish-bundle --upload-path=${STALLION_UPLOAD_PATH} --platform=${p.trim()} --release-note="${escapedNotes}"`,
         );
       }
+    } else if (target === 'prod' || target === 'all' || target === 'production') {
+      console.log('\n🌟 --- Unified Production Release (Android + iOS) ---');
+      await autoBumpVersion();
+      await handleAndroidVersionCode();
+      await handleIosBuildNumber();
+      cleanAndroid();
+      run(`cd android && ${gradlew} bundleRelease --no-daemon`);
+      run('cd ios && pod install');
+      console.log('\n🎉 --- Production Builds Ready! ---');
+      console.log(
+        '🤖 Android AAB: android/app/build/outputs/bundle/release/app-release.aab',
+      );
+      console.log(
+        '🍎 iOS: Open ios/shareMyRide.xcworkspace in Xcode and click Product -> Archive',
+      );
+    } else if (target === 'dev' || target === 'uat') {
+      console.log('\n🧪 --- Unified Dev / UAT Release (Android + iOS) ---');
+      await autoBumpVersion('uat');
+      await handleAndroidVersionCode();
+      await handleIosBuildNumber();
+      cleanAndroid();
+      setBuildEnv(true);
+      run(
+        `cd android && ${gradlew} assembleRelease --no-daemon -PreactNativeArchitectures=armeabi-v7a,arm64-v8a && cd ..`,
+      );
+      run('cd ios && pod install');
+      console.log('\n🎉 --- Dev / UAT Builds Ready! ---');
+      console.log(
+        '🤖 Android APK: android/app/build/outputs/apk/release/app-release.apk',
+      );
+      console.log(
+        '🍎 iOS: Open ios/shareMyRide.xcworkspace in Xcode for Development/AdHoc Archive',
+      );
     } else if (target === 'aab') {
-      console.log('\n📦 --- Production AAB Build ---');
+      console.log('\n📦 --- Production AAB Build (Android Only) ---');
       await autoBumpVersion();
       await handleAndroidVersionCode();
       cleanAndroid();
@@ -215,7 +250,7 @@ const main = async () => {
         '✅ AAB generated at: android/app/build/outputs/bundle/release/app-release.aab',
       );
     } else if (target === 'apk') {
-      console.log('\n📱 --- UAT APK Build ---');
+      console.log('\n📱 --- UAT APK Build (Android Only) ---');
       await autoBumpVersion('uat');
       await handleAndroidVersionCode();
       cleanAndroid();
@@ -227,11 +262,11 @@ const main = async () => {
         '✅ APK generated at: android/app/build/outputs/apk/release/app-release.apk',
       );
     } else if (target === 'ios') {
-      console.log('\n🍎 --- iOS Release Prep ---');
+      console.log('\n🍎 --- iOS Release Prep (iOS Only) ---');
       await autoBumpVersion();
       await handleIosBuildNumber();
       run('cd ios && pod install');
-      console.log('✅ iOS version bumped.');
+      console.log('✅ iOS version bumped and pods synced.');
       console.log(
         '⚠️  To generate the final .ipa, open ios/shareMyRide.xcworkspace in Xcode and click Product -> Archive.',
       );
