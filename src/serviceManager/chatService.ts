@@ -119,6 +119,7 @@ class ChatServiceClass {
           markAsRead: this.markAsRead.bind(this),
           fetchHistory: this.fetchHistory.bind(this),
         });
+        this.resendPendingMessages();
       };
 
       this.client.onDisconnect = () => {
@@ -171,7 +172,7 @@ class ChatServiceClass {
     }
   }
 
-  private performDisconnect() {
+  public performDisconnect() {
     this.retryCount = 0;
     if (this.client) {
       try {
@@ -274,6 +275,75 @@ class ChatServiceClass {
     }
   }
 
+  resendPendingMessages() {
+    const { messages } = useChatStore.getState();
+    Object.keys(messages).forEach(conversationId => {
+      const pending = (messages[conversationId] || []).filter(
+        m => m.status === MessageStatus.PENDING || m.status === MessageStatus.FAILED,
+      );
+      pending.forEach(m => {
+        this.resendMessage(conversationId, m.messageId);
+      });
+    });
+  }
+
+  async syncConversations(userId: string) {
+    try {
+      const data = await this.fetchConversations(0, 20);
+      if (data) {
+        let content = [];
+        if (Array.isArray(data)) {
+          content = data;
+        } else if (data.content && Array.isArray(data.content)) {
+          content = data.content;
+        }
+        if (content.length > 0) {
+          const { messages: localMessages } = useChatStore.getState();
+          const mappedConversations = content.map((item: any) => {
+            const convId = item.conversationId || item.id;
+            const otherId = item.otherUserId || item.id;
+            const convMessages = localMessages[convId] || [];
+            const lastLocalMsg = convMessages.length > 0 ? convMessages[convMessages.length - 1] : null;
+
+            const isMe =
+              item.lastMessageSenderId === userId ||
+              item.lastSenderId === userId ||
+              item.senderId === userId ||
+              item.isLastMessageFromMe === true ||
+              item.isFromMe === true ||
+              (lastLocalMsg && lastLocalMsg.senderId === userId);
+
+            const lastSender = isMe ? userId : otherId;
+            const lastReceiver = isMe ? otherId : userId;
+
+            return {
+              conversationId: convId,
+              participants: [userId, otherId],
+              unreadCount: isMe ? 0 : (item.unreadCount || 0),
+              updatedAt: item.lastMessageTime ? parseChatTimestamp({ timestamp: item.lastMessageTime }) : 0,
+              metadata: {
+                name: item.otherUserName || item.name,
+                avatarUri: item.otherUserPhoto || item.photo,
+              },
+              lastMessage: lastLocalMsg || {
+                messageId: `preview-${convId}`,
+                senderId: lastSender,
+                receiverId: lastReceiver,
+                content: item.lastMessagePreview || item.lastMessage?.content || '',
+                timestamp: item.lastMessageTime ? parseChatTimestamp({ timestamp: item.lastMessageTime }) : 0,
+                status: (item.lastMessageStatus || 'SENT').toUpperCase() as MessageStatus,
+                type: 'text',
+              },
+            };
+          });
+          useChatStore.getState().setConversations(mappedConversations);
+        }
+      }
+    } catch (error) {
+      Logger.error('Failed to sync conversations on app state change:', error);
+    }
+  }
+
   async fetchConversations(page: number = 0, size: number = 20) {
     try {
       const response = await axiosClient.get(
@@ -351,7 +421,7 @@ class ChatServiceClass {
     }
   }
 
-  private getConversationId(u1: string, u2: string): string {
+  public getConversationId(u1: string, u2: string): string {
     return u1 < u2 ? `${u1}_${u2}` : `${u2}_${u1}`;
   }
 }

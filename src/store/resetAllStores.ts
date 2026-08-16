@@ -129,4 +129,12 @@ export const resetAllStores = () => {
     language: 'en',
     region: 'INDIA',
   });
+
+  // Disconnect chat WebSocket on logout
+  try {
+    const { ChatService } = require('@/serviceManager/ChatService');
+    ChatService.performDisconnect();
+  } catch (error) {
+    console.error('[Logout] Failed to disconnect ChatService:', error);
+  }
 };

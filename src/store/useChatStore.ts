@@ -136,7 +136,7 @@ export const useChatStore = create<ChatState>()(
             lastMessage: message,
             unreadCount:
               isFromMe || isActive || isRead
-                ? existingConv?.unreadCount || 0
+                ? 0
                 : (existingConv?.unreadCount || 0) + 1,
             updatedAt: message.timestamp,
             metadata: mergedMetadata,
@@ -315,11 +315,14 @@ export const useChatStore = create<ChatState>()(
           );
 
           if (lastMsg) {
+            const isLastFromMe = lastMsg.senderId === state.myUserId;
             const convData: ChatConversation = {
               conversationId,
               participants: [lastMsg.senderId, lastMsg.receiverId],
               lastMessage: lastMsg,
-              unreadCount: updatedConversations[convIndex]?.unreadCount || 0,
+              unreadCount: isLastFromMe
+                ? 0
+                : updatedConversations[convIndex]?.unreadCount || 0,
               updatedAt: lastMsg.timestamp,
             };
 

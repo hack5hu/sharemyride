@@ -4,6 +4,7 @@ import * as Keychain from 'react-native-keychain';
 import { mmkvStorage } from '../utils/storage';
 import { Logger } from '@/utils/logger';
 import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
+import { useChatStore } from './useChatStore';
 
 interface AuthUser {
   id?: string;
@@ -46,8 +47,10 @@ export const useAuthStore = create<AuthState>()(
 
       setAuth: (user, token, isProfileCompleted = false) => {
         set({ user, token, isAuthenticated: true, isProfileCompleted });
-        if (user?.userId || user?.id) {
-          AnalyticsService.setUser((user.userId || user.id) as string);
+        const uid = (user?.userId || user?.id) as string;
+        if (uid) {
+          AnalyticsService.setUser(uid);
+          useChatStore.getState().setMyUserId(uid);
         }
       },
 
@@ -88,7 +91,11 @@ export const useAuthStore = create<AuthState>()(
             }
             if (useAuthStore.getState().user) {
               const u = useAuthStore.getState().user;
-              if (u?.userId || u?.id) AnalyticsService.setUser((u.userId || u.id) as string);
+              const uid = (u?.userId || u?.id) as string;
+              if (uid) {
+                AnalyticsService.setUser(uid);
+                useChatStore.getState().setMyUserId(uid);
+              }
             }
           } else {
             // No valid token in keychain — clear any stale persisted state

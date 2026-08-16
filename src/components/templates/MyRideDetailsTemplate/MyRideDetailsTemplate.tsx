@@ -154,6 +154,7 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
                     }
                     handleChat={handleChat}
                     showChat={true}
+                    isCompleted={isCompleted}
                   />
                 )}
 

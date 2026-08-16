@@ -17,7 +17,7 @@ export const MapControlsFABs: React.FC<MapControlsFABsProps> = ({
   const theme = useTheme();
 
   return (
-    <FABsContainer>
+    <FABsContainer pointerEvents="box-none">
       {onLocateMe && (
         <>
           <FABControl onPress={onLocateMe} activeOpacity={0.7}>

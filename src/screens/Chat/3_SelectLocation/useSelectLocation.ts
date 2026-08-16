@@ -159,7 +159,6 @@ export const useSelectLocation = () => {
           resolve();
         },
         error => {
-          console.log('[useSelectLocation] Fast cache check error:', error);
           resolve();
         },
         {

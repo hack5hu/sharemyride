@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import { verticalScale } from '@/styles';
 import { Typography } from '@/components/atoms/Typography';
-import { SectionCard, SectionLabelRow, SectionDot } from '@/styles/RideDetailsStyles';
+import { SectionCard, SectionLabelRow, SectionDot } from '../MyRideDetailsTemplate.styles';
 
 export const RatingCardContainer = styled(SectionCard)`
   background-color: ${({ theme }) => theme.colors.surface_container_low};

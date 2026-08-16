@@ -461,7 +461,6 @@ export const useAvailableRides = () => {
   );
 
   const handleViewDetails = useCallback((rideId: string) => {
-    console.log('Viewing details:', rideId);
   }, []);
 
   return {

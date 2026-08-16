@@ -12,8 +12,11 @@ import {
   HeaderRow,
   RouteContainer,
   BadgeContainer,
+  InfoColumn,
+  MessageContentRow,
+  StatusIconContainer,
 } from './MessageItem.styles';
-import { moderateScale } from '@/styles';
+import { moderateScale, verticalScale } from '@/styles';
 
 export const MessageItem: React.FC<MessageItemProps> = React.memo(
   ({
@@ -34,7 +37,7 @@ export const MessageItem: React.FC<MessageItemProps> = React.memo(
     const isUnread = unreadCount > 0;
     const theme = useTheme();
 
-    const renderStatus = () => {
+    const renderUnreadBadge = () => {
       if (isUnread) {
         return (
           <BadgeContainer>
@@ -49,6 +52,11 @@ export const MessageItem: React.FC<MessageItemProps> = React.memo(
           </BadgeContainer>
         );
       }
+      return null;
+    };
+
+    const renderStatusIcon = () => {
+      if (isUnread || !isLastMessageFromMe) return null;
 
       const iconInfo = getMessageStatusIcon(
         lastMessageStatus || MessageStatus.SENT,
@@ -58,11 +66,13 @@ export const MessageItem: React.FC<MessageItemProps> = React.memo(
       if (!iconInfo) return null;
 
       return (
-        <MaterialIcon
-          name={iconInfo.name}
-          size={moderateScale(16)}
-          color={iconInfo.color}
-        />
+        <StatusIconContainer>
+          <MaterialIcon
+            name={iconInfo.name}
+            size={moderateScale(16)}
+            color={iconInfo.color}
+          />
+        </StatusIconContainer>
       );
     };
 
@@ -77,25 +87,15 @@ export const MessageItem: React.FC<MessageItemProps> = React.memo(
         />
 
         <ContentContainer>
-          <HeaderRow>
-            <Typography
-              variant="title"
-              size="md"
-              weight={isUnread ? 'bold' : 'medium'}
-              color={isUnread ? 'on_surface' : 'on_surface_variant'}
-              numberOfLines={1}
-            >
-              {name}
-            </Typography>
-            <Typography
-              variant="label"
-              size="sm"
-              weight={isUnread ? 'bold' : 'medium'}
-              color={isUnread ? 'primary' : 'on_surface_variant'}
-            >
-              {time}
-            </Typography>
-          </HeaderRow>
+          <Typography
+            variant="title"
+            size="md"
+            weight={isUnread ? 'bold' : 'medium'}
+            color={isUnread ? 'on_surface' : 'on_surface_variant'}
+            numberOfLines={1}
+          >
+            {name}
+          </Typography>
 
           {source && destination ? (
             <RouteContainer>
@@ -111,19 +111,34 @@ export const MessageItem: React.FC<MessageItemProps> = React.memo(
             </RouteContainer>
           ) : null}
 
-          <Typography
-            variant="body"
-            size="sm"
-            weight={isUnread ? 'bold' : 'medium'}
-            color={isUnread ? 'on_surface' : 'on_surface_variant'}
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {lastMessage}
-          </Typography>
+          <MessageContentRow>
+            {renderStatusIcon()}
+            <Typography
+              variant="body"
+              size="sm"
+              weight={isUnread ? 'bold' : 'medium'}
+              color={isUnread ? 'on_surface' : 'on_surface_variant'}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={{ flex: 1 }}
+            >
+              {lastMessage}
+            </Typography>
+          </MessageContentRow>
         </ContentContainer>
 
-        {renderStatus()}
+        <InfoColumn>
+          <Typography
+            variant="label"
+            size="sm"
+            weight={isUnread ? 'bold' : 'medium'}
+            color={isUnread ? 'primary' : 'on_surface_variant'}
+            style={{ marginBottom: verticalScale(4) }}
+          >
+            {time}
+          </Typography>
+          {renderUnreadBadge()}
+        </InfoColumn>
       </Container>
     );
   },

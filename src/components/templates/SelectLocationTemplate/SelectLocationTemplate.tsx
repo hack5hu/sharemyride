@@ -8,6 +8,7 @@ import { useLocale } from '@/constants/localization';
 import { Loader } from '@/components/atoms/Loader';
 import { Button } from '@/components/atoms/Button';
 import { moderateScale } from '@/styles';
+import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import * as S from './SelectLocationTemplate.styles';
 import { SelectLocationTemplateProps } from './types.d';
 
@@ -116,7 +117,7 @@ export const SelectLocationTemplate: React.FC<
           {centerPin}
         </S.CenterPinWrapper>
 
-        <S.MapControlsFABs
+        <MapControlsFABs
           onZoomIn={onZoomIn}
           onZoomOut={onZoomOut}
           onLocateMe={onMyLocationPress}

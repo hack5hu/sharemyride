@@ -4,6 +4,7 @@ import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
 import { VerifiedBadge } from '@/components/atoms/VerifiedBadge';
+import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';
 import * as S from '../RideInformationTemplate.styles';
 
@@ -20,11 +21,13 @@ export interface DriverCardProps {
   handleDriverProfile: () => void;
   handleChat: () => void;
   showChat?: boolean;
+  isCompleted?: boolean;
 }
 
 export const DriverCard: React.FC<DriverCardProps> = React.memo(
-  ({ driver, handleDriverProfile, handleChat, showChat = true }) => {
+  ({ driver, handleDriverProfile, handleChat, showChat = true, isCompleted }) => {
     const theme = useTheme();
+    const locale = useLocale();
 
     return (
       <S.DriverCard>
@@ -65,15 +68,35 @@ export const DriverCard: React.FC<DriverCardProps> = React.memo(
           </S.DriverTextGroup>
         </S.DriverInfoGroup>
 
-        {showChat && (
-          <S.ChatButton onPress={handleChat} activeOpacity={0.8}>
-            <Icon
-              name="chat-bubble-outline"
-              size={moderateScale(20)}
-              color={theme.colors.primary}
-            />
-          </S.ChatButton>
-        )}
+        <S.DriverActions>
+          {isCompleted && driver.hasRated && (
+            <S.RatedBadge>
+              <Icon
+                name="check-circle"
+                size={moderateScale(16)}
+                color={theme.colors.on_surface_variant}
+              />
+              <Typography
+                variant="label"
+                size="xs"
+                weight="bold"
+                color="on_surface_variant"
+              >
+                {locale.rating?.ratedStatus || 'Rated'}
+              </Typography>
+            </S.RatedBadge>
+          )}
+
+          {showChat && (
+            <S.ChatButton onPress={handleChat} activeOpacity={0.8}>
+              <Icon
+                name="chat-bubble-outline"
+                size={moderateScale(20)}
+                color={theme.colors.primary}
+              />
+            </S.ChatButton>
+          )}
+        </S.DriverActions>
       </S.DriverCard>
     );
   },

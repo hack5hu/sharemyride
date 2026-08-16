@@ -259,26 +259,61 @@ export const useBookRideInfo = () => {
         return;
       }
 
-      // Check if API response indicates the latest ride is already rated
+      // Check if API response indicates the latest ride is already rated or has no passengers
       const isDriver = latestRide.role === 'DRIVER';
-      const passengersAllRated =
-        Array.isArray(latestRide.passengers) &&
-        (latestRide.passengers.length === 0 ||
-          latestRide.passengers.every((p: any) => p.hasRated === true));
 
-      const isRated =
-        latestRide.hasRated === true ||
-        latestRide.isRated === true ||
-        (isDriver
-          ? passengersAllRated
-          : latestRide.driver?.hasRated === true ||
-            latestRide.myBooking?.hasRatedDriver === true);
+      if (isDriver) {
+        let passengers = latestRide.passengers;
+        // If passengers list not present in summary, fetch detail to be 100% accurate
+        if (!Array.isArray(passengers)) {
+          try {
+            const detail = await RideService.getMyRideDetail(targetRideId);
+            passengers = detail?.passengers || [];
+          } catch {
+            passengers = [];
+          }
+        }
 
-      if (!isRated) {
-        globalSessionPrompted = true;
-        setRatingPromptRide(latestRide);
-        setIsRatingPromptVisible(true);
+        const hasNoPassengers =
+          !Array.isArray(passengers) ||
+          passengers.length === 0 ||
+          latestRide.bookedSeats === 0 ||
+          latestRide.totalBookedSeats === 0;
+
+        // If driver had 0 passengers or all passengers are already rated, do not prompt
+        const allRated =
+          Array.isArray(passengers) &&
+          passengers.length > 0 &&
+          passengers.every((p: any) => p.hasRated === true);
+
+        if (hasNoPassengers || allRated || latestRide.hasRated === true) {
+          if (!dismissedIds.some(id => String(id) === String(targetRideId))) {
+            dismissedIds.push(String(targetRideId));
+            storage.set('dismissed_ratings', JSON.stringify(dismissedIds));
+          }
+          globalSessionPrompted = true;
+          return;
+        }
+      } else {
+        const isPassengerRated =
+          latestRide.hasRated === true ||
+          latestRide.isRated === true ||
+          latestRide.driver?.hasRated === true ||
+          latestRide.myBooking?.hasRatedDriver === true;
+
+        if (isPassengerRated) {
+          if (!dismissedIds.some(id => String(id) === String(targetRideId))) {
+            dismissedIds.push(String(targetRideId));
+            storage.set('dismissed_ratings', JSON.stringify(dismissedIds));
+          }
+          globalSessionPrompted = true;
+          return;
+        }
       }
+
+      globalSessionPrompted = true;
+      setRatingPromptRide(latestRide);
+      setIsRatingPromptVisible(true);
     } catch (error) {
       console.error('[RatingCheck] Failed to check unrated rides:', error);
     }

@@ -211,7 +211,11 @@ export const useMyRides = (): MyRidesHookData => {
   const pendingReview = useMemo(() => {
     const archiveData = rides?.[2]?.data || [];
     const ratedStr = storage.getString('rated_rides') || '[]';
-    const ratedIds: string[] = JSON.parse(ratedStr);
+    const dismissedStr = storage.getString('dismissed_ratings') || '[]';
+    const ratedIds: string[] = [
+      ...JSON.parse(ratedStr),
+      ...JSON.parse(dismissedStr)
+    ];
 
     const completed = archiveData.filter(
       (r: any) => r.status === 'COMPLETED' || r.rideStatus === 'COMPLETED',
@@ -219,7 +223,26 @@ export const useMyRides = (): MyRidesHookData => {
 
     const unrated = completed.find((r: any) => {
       const id = r.rideId || r.bookingId || r.id || r._id;
-      return id && !ratedIds.includes(String(id));
+      if (!id || ratedIds.includes(String(id))) return false;
+
+      const isDriver = r.role === 'DRIVER';
+      if (isDriver) {
+        const hasNoPassengers =
+          (Array.isArray(r.passengers) && r.passengers.length === 0) ||
+          r.bookedSeats === 0 ||
+          r.totalBookedSeats === 0 ||
+          r.seatsBooked === 0;
+        if (hasNoPassengers) return false;
+
+        if (Array.isArray(r.passengers) && r.passengers.length > 0) {
+          return r.passengers.some((p: any) => p.hasRated !== true);
+        }
+      } else {
+        if (r.hasRated === true || r.isRated === true || r.driver?.hasRated === true) {
+          return false;
+        }
+      }
+      return true;
     });
 
     if (!unrated) return null;

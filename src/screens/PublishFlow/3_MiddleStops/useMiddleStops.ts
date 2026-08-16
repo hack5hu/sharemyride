@@ -27,7 +27,6 @@ export const useMiddleStops = () => {
   );
 
   const sortedStops = middleStops; // Already sorted in store
-  console.log('sortedStops', sortedStops);
   const handleBackPress = useCallback(() => {
     navigation.goBack();
   }, [navigation]);

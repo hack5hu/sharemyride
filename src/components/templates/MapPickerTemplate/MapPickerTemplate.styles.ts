@@ -21,6 +21,7 @@ export const GradientOverlay = styled(LinearGradient).attrs(({ theme }) => ({
   left: 0;
   right: 0;
   bottom: 0;
+  pointer-events: none;
 `;
 
 /* Map Pin Styles */

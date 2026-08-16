@@ -13,10 +13,12 @@ import { verticalScale } from '@/styles';
 export const BottomNav: React.FC<BottomNavProps> = ({ activeTab }) => {
   const theme = useTheme();
   const { t, handlePress } = useBottomNav(activeTab);
-  const { conversations } = useChatStore();
+  const { conversations, myUserId } = useChatStore();
 
   const unreadConversationsCount = conversations.filter(
-    conv => (conv.unreadCount || 0) > 0,
+    conv =>
+      (conv.unreadCount || 0) > 0 &&
+      (!myUserId || conv.lastMessage?.senderId !== myUserId),
   ).length;
 
   const renderItem = (tab: BottomTabType, icon: string, labelKey: string) => {

@@ -6,6 +6,7 @@ import { navigate } from '@/navigation/navigationService';
 import { useChatStore } from '@/store/useChatStore';
 import { requestNotificationPermission } from '@/utils/permissionUtils';
 import { MessageStatus } from '@/constants/enums';
+import { useAuthStore } from '@/store';
 
 export class NotificationService {
   /**
@@ -47,6 +48,26 @@ export class NotificationService {
     // Request permissions
     await this.requestPermission();
 
+    // === iOS Push Notification Diagnostics ===
+    if (Platform.OS === 'ios') {
+      try {
+        const isRegistered = messaging().isDeviceRegisteredForRemoteMessages;
+        Logger.log(`🔔 [iOS Diag] isDeviceRegisteredForRemoteMessages: ${isRegistered}`);
+
+        const apnsToken = await messaging().getAPNSToken();
+        Logger.log(`🔔 [iOS Diag] APNs Token: ${apnsToken || 'NULL - THIS IS THE PROBLEM'}`);
+
+        const fcmToken = await messaging().getToken();
+        Logger.log(`🔔 [iOS Diag] FCM Token: ${fcmToken || 'NULL'}`);
+
+        const authStatus = await messaging().hasPermission();
+        Logger.log(`🔔 [iOS Diag] Auth Status: ${authStatus} (1=AUTHORIZED, 2=PROVISIONAL, 0=DENIED, -1=NOT_DETERMINED)`);
+      } catch (diagError) {
+        Logger.error('🔔 [iOS Diag] Error during diagnostics:', diagError);
+        console.error('🔔 [iOS Diag] Error:', diagError);
+      }
+    }
+
     // Set up FCM foreground listener and tap listener
     this.setupFcmListeners();
 
@@ -74,8 +95,6 @@ export class NotificationService {
    * Also marks all messages from that sender as read (Optimistic UX).
    */
   public static handleNotificationTap(notification: any) {
-    console.log('====== NOTIFICATION TAPPED ======');
-    console.log(JSON.stringify(notification, null, 2));
     Logger.log('[NotificationService] Tapped full payload:', notification);
 
     const data = notification.data || {};
@@ -132,6 +151,11 @@ export class NotificationService {
    */
   public static async requestPermission() {
     try {
+      if (Platform.OS === 'ios') {
+        if (!messaging().isDeviceRegisteredForRemoteMessages) {
+          await messaging().registerDeviceForRemoteMessages();
+        }
+      }
       await requestNotificationPermission();
       const settings = await notifee.requestPermission();
 
@@ -178,8 +202,6 @@ export class NotificationService {
   private static setupFcmListeners() {
     // Foreground messages
     messaging().onMessage(async remoteMessage => {
-      console.log('====== FOREGROUND NOTIFICATION RECEIVED ======');
-      console.log(JSON.stringify(remoteMessage, null, 2));
       Logger.log('[FCM] Foreground message arrived:', remoteMessage);
 
       const data = remoteMessage.data || {};
@@ -189,7 +211,11 @@ export class NotificationService {
       if (isChatNotification) {
         // Smart suppression: if user is already viewing this exact chat, do not show a banner.
         const { activeConversationId, myUserId } = useChatStore.getState();
-        const myId = myUserId || '';
+        const authUser = useAuthStore.getState().user;
+        const myId = String(myUserId || authUser?.userId || authUser?.id || '');
+        if (myId && !myUserId) {
+          useChatStore.getState().setMyUserId(myId);
+        }
         const senderId = String(data.userId || '');
         const expectedConvId =
           myId < senderId ? `${myId}_${senderId}` : `${senderId}_${myId}`;
@@ -209,13 +235,13 @@ export class NotificationService {
           timestampVal = isNaN(num) ? new Date(timestampStr as string).getTime() : num;
         }
 
-        const messageContent = String(data.message || remoteMessage.notification?.body || 'New message');
+        const rawMessageContent = String(data.message || remoteMessage.notification?.body || 'New message');
 
         const chatMessage = {
           messageId: String(data.messageId || `fcm-${Date.now()}`),
           senderId: senderId,
           receiverId: myId,
-          content: messageContent,
+          content: rawMessageContent,
           timestamp: timestampVal,
           status: MessageStatus.DELIVERED,
           type: 'text' as const,
@@ -228,18 +254,35 @@ export class NotificationService {
           ? `💬 ${data.name}` 
           : (remoteMessage.notification?.title ? `💬 ${remoteMessage.notification.title}` : '💬 New message');
 
+        const displayMessageContent = rawMessageContent.startsWith('[LOCATION_DATA]:') 
+          ? '📍 Location shared' 
+          : rawMessageContent;
+
         // Mark pending delivery in background — user is NOT in this chat
         await this.displayLocalNotification(
           displayTitle,
-          messageContent,
+          displayMessageContent,
           data as Record<string, string>,
         );
-      } else if (remoteMessage.notification) {
-        await this.displayLocalNotification(
-          remoteMessage.notification.title || 'Notification',
-          remoteMessage.notification.body || '',
-          remoteMessage.data as Record<string, string>,
-        );
+      } else {
+        const title =
+          remoteMessage.notification?.title ||
+          (typeof data.title === 'string' ? data.title : '') ||
+          (typeof data.name === 'string' ? data.name : '') ||
+          'Notification';
+        const body =
+          remoteMessage.notification?.body ||
+          (typeof data.body === 'string' ? data.body : '') ||
+          (typeof data.message === 'string' ? data.message : '') ||
+          '';
+
+        if (title || body) {
+          await this.displayLocalNotification(
+            title,
+            body,
+            data as Record<string, string>,
+          );
+        }
       }
     });
 
@@ -267,11 +310,11 @@ export class NotificationService {
     const rideIdVal = data?.rideId || data?.ride_id || data?.bookingId || data?.booking_id;
     
     let groupId = 'default-group';
-    let tag: string | undefined = undefined;
+    let tag: string = `notif-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-    if (isChat) {
-      groupId = `chat-${data?.userId}`;
-      tag = `chat-${data?.userId}`;
+    if (isChat && data?.userId) {
+      groupId = `chat-${data.userId}`;
+      tag = `chat-${data.userId}`;
     } else if (rideIdVal) {
       groupId = `ride-${rideIdVal}`;
       tag = `ride-${rideIdVal}`;
@@ -282,14 +325,17 @@ export class NotificationService {
     if (isChat && data?.userId) {
       try {
         const { messages, myUserId } = useChatStore.getState();
+        const authUser = useAuthStore.getState().user;
         const senderId = String(data.userId);
-        const myId = myUserId || '';
+        const myId = String(myUserId || authUser?.userId || authUser?.id || '');
         const conversationId =
           myId < senderId ? `${myId}_${senderId}` : `${senderId}_${myId}`;
         const chatMessages = messages[conversationId] || [];
         
         // Extract up to 5 latest messages for the inbox lines view
-        const lines = chatMessages.slice(-5).map(m => m.content);
+        const lines = chatMessages.slice(-5).map(m => {
+          return m.content.startsWith('[LOCATION_DATA]:') ? '📍 Location shared' : m.content;
+        });
         if (lines.length > 0) {
           styleConfig = {
             type: AndroidStyle.INBOX,
@@ -316,6 +362,13 @@ export class NotificationService {
         groupId: groupId,
         tag: tag,
         style: styleConfig,
+      },
+      ios: {
+        foregroundPresentationOptions: {
+          badge: true,
+          sound: true,
+          banner: true,
+        },
       },
       data,
     });

@@ -1,9 +1,11 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useChatStore } from '@/store/useChatStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useChatSocket } from '@/hooks/useChatSocket';
 import { ChatService } from '@/serviceManager/ChatService';
+import { parseChatTimestamp } from '@/utils/date';
 
 export const useChatList = () => {
   const { t } = useTranslation();
@@ -18,7 +20,9 @@ export const useChatList = () => {
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const { setConversations } = useChatStore();
+  const isLoadingRef = useRef(false);
+  const pageRef = useRef(0);
+  const hasMoreRef = useRef(true);
 
   // Activate socket
   useChatSocket(true);
@@ -29,70 +33,126 @@ export const useChatList = () => {
     }
   }, [user?.userId, setMyUserId]);
 
-  const loadMore = async () => {
-    if (isLoading || !hasMore) return;
+  const loadMore = useCallback(async (targetPage?: number) => {
+    const pageToFetch = targetPage !== undefined ? targetPage : pageRef.current;
+    if (isLoadingRef.current || (!hasMoreRef.current && targetPage === undefined)) return;
+
+    isLoadingRef.current = true;
     setIsLoading(true);
-    const data = await ChatService.fetchConversations(page, 20);
-    
-    if (data) {
-      let content = [];
-      let isLast = false;
+    try {
+      const data = await ChatService.fetchConversations(pageToFetch, 20);
+      
+      if (data) {
+        let content = [];
+        let isLast = false;
 
-      // Handle Spring Data Page or raw array
-      if (Array.isArray(data)) {
-        content = data;
-        isLast = data.length < 20;
-      } else if (data.content && Array.isArray(data.content)) {
-        content = data.content;
-        isLast = data.last ?? (data.content.length < 20);
-      }
+        if (Array.isArray(data)) {
+          content = data;
+          isLast = data.length < 20;
+        } else if (data.content && Array.isArray(data.content)) {
+          content = data.content;
+          isLast = data.last ?? (data.content.length < 20);
+        }
 
-      if (content.length > 0 && user?.userId) {
-        const mappedConversations = content.map((item: any) => ({
-          conversationId: item.conversationId || item.id,
-          participants: [user.userId, item.otherUserId || item.id],
-          unreadCount: item.unreadCount || 0,
-          updatedAt: item.lastMessageTime ? new Date(item.lastMessageTime).getTime() : Date.now(),
-          metadata: {
-            name: item.otherUserName || item.name,
-            avatarUri: item.otherUserPhoto || item.photo,
-          },
-          lastMessage: {
-            messageId: `preview-${item.conversationId || item.id}`,
-            senderId: item.otherUserId || item.id, // Just to satisfy UI
-            receiverId: user.userId,
-            content: item.lastMessagePreview || item.lastMessage?.content || '',
-            timestamp: item.lastMessageTime ? new Date(item.lastMessageTime).getTime() : Date.now(),
-            status: item.lastMessageStatus || 'SENT',
-            type: 'text',
-          },
-        }));
-        setConversations(mappedConversations);
-      }
+        const currentUserId = user?.userId;
+        if (content.length > 0 && currentUserId) {
+          const { messages: localMessages, setConversations } = useChatStore.getState();
+          const mappedConversations = content.map((item: any) => {
+            const otherUserId = String(item.otherUserId || item.id);
+            const myId = String(currentUserId);
+            const standardConvId = ChatService.getConversationId(myId, otherUserId);
+            const convMessages = localMessages[standardConvId] || [];
+            const lastLocalMsg = convMessages.length > 0 ? convMessages[convMessages.length - 1] : null;
 
-      setHasMore(!isLast);
-      if (!isLast) {
-        setPage(prev => prev + 1);
+            const serverTimestamp = item.lastMessageTime
+              ? parseChatTimestamp({ timestamp: item.lastMessageTime })
+              : 0;
+            const serverContent = item.lastMessagePreview || item.lastMessage?.content || '';
+
+            const isLocalNewer =
+              lastLocalMsg &&
+              (lastLocalMsg.timestamp > serverTimestamp ||
+                (lastLocalMsg.timestamp === serverTimestamp && lastLocalMsg.content === serverContent));
+
+            const isMe =
+              item.lastMessageSenderId === myId ||
+              item.lastSenderId === myId ||
+              item.senderId === myId ||
+              item.isLastMessageFromMe === true ||
+              item.isFromMe === true ||
+              (isLocalNewer && lastLocalMsg?.senderId === myId);
+
+            const lastSender = isMe ? myId : otherUserId;
+            const lastReceiver = isMe ? otherUserId : myId;
+
+            const chosenLastMessage = isLocalNewer && lastLocalMsg
+              ? lastLocalMsg
+              : {
+                  messageId: `preview-${item.conversationId || item.id}`,
+                  senderId: lastSender,
+                  receiverId: lastReceiver,
+                  content: serverContent,
+                  timestamp: serverTimestamp,
+                  status: (item.lastMessageStatus || 'SENT').toUpperCase(),
+                  type: 'text',
+                };
+            
+            return {
+              conversationId: standardConvId,
+              participants: [myId, otherUserId],
+              unreadCount: isMe ? 0 : (item.unreadCount || 0),
+              updatedAt: Math.max(serverTimestamp, chosenLastMessage.timestamp || 0),
+              metadata: {
+                name: item.otherUserName || item.name,
+                avatarUri: item.otherUserPhoto || item.photo,
+              },
+              lastMessage: chosenLastMessage,
+            };
+          });
+          setConversations(mappedConversations);
+        }
+
+        hasMoreRef.current = !isLast;
+        setHasMore(!isLast);
+        pageRef.current = pageToFetch + 1;
+        setPage(pageToFetch + 1);
+      } else {
+        hasMoreRef.current = false;
+        setHasMore(false);
       }
-    } else {
-      setHasMore(false);
+    } finally {
+      isLoadingRef.current = false;
+      setIsLoading(false);
     }
-    setIsLoading(false);
-  };
+  }, [user?.userId]);
 
-  useEffect(() => {
-    loadMore();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadMore(0);
+    }, [loadMore])
+  );
 
   const messages = useMemo(() => {
     const myUserId = user?.userId;
     if (!myUserId) return [];
 
-    return [...storeConversations]
+    return storeConversations
+      .slice()
       .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))
       .map(conv => {
-        const lastMsg = conv.lastMessage;
+        const convMessages = storeMessages[conv.conversationId] || [];
+        let lastMsg = conv.lastMessage;
+        const lastLocalMsg =
+          convMessages.length > 0 ? convMessages[convMessages.length - 1] : null;
+
+        if (lastLocalMsg && conv.lastMessage) {
+          if (lastLocalMsg.timestamp > (conv.lastMessage.timestamp || 0)) {
+            lastMsg = lastLocalMsg;
+          } else if (lastLocalMsg.content === conv.lastMessage.content) {
+            lastMsg = lastLocalMsg;
+          }
+        }
+        
         if (!lastMsg) return null;
 
         const otherParticipantId = conv.participants.find(p => p !== myUserId);
@@ -125,7 +185,7 @@ export const useChatList = () => {
             hour: '2-digit',
             minute: '2-digit',
           }),
-          unreadCount: conv.unreadCount,
+          unreadCount: lastMsg.senderId === myUserId ? 0 : conv.unreadCount,
           isLastMessageFromMe: lastMsg.senderId === myUserId,
           lastMessageStatus: lastMsg.status,
           source: metadata.pickup || metadata.source,
@@ -149,7 +209,7 @@ export const useChatList = () => {
         };
       })
       .filter(Boolean);
-  }, [storeConversations, user?.userId, users, t]);
+  }, [storeConversations, storeMessages, user?.userId, users, t]);
 
   const filteredMessages = useMemo(() => {
     return messages.filter(

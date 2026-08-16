@@ -54,7 +54,18 @@ export const BadgeContainer = styled.View`
 `;
 
 export const InfoColumn = styled.View`
-  align-items: end;
+  align-self: stretch;
+  align-items: flex-end;
   justify-content: space-between;
-  height: 100%;
+  margin-left: ${scale(12)}px;
+`;
+
+export const MessageContentRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-top: ${verticalScale(4)}px;
+`;
+
+export const StatusIconContainer = styled.View`
+  margin-right: ${scale(4)}px;
 `;

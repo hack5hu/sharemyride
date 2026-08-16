@@ -71,6 +71,22 @@ export const ChatButton = styled.TouchableOpacity`
   justify-content: center;
 `;
 
+export const DriverActions = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(8)}px;
+`;
+
+export const RatedBadge = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(4)}px;
+  background-color: ${({ theme }) => `${theme.colors.on_surface_variant}12`};
+  padding-horizontal: ${scale(10)}px;
+  padding-vertical: ${verticalScale(6)}px;
+  border-radius: ${moderateScale(12)}px;
+`;
+
 // ── Stats Strip ───────────────────────────────────────────────────────────────
 
 export const StatsStrip = styled.View`
