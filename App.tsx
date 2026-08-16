@@ -22,6 +22,7 @@ import { ChatService } from '@/serviceManager/ChatService';
 import { navigationRef } from '@/navigation/navigationService';
 import { AnalyticsService } from '@/serviceManager/AnalyticsService';
 import { withStallion } from 'react-native-stallion';
+import BootSplash from 'react-native-bootsplash';
 
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
   const activeTheme = themeMode === 'dark' ? DarkTheme : LightTheme;
 
   useEffect(() => {
+    BootSplash.hide().catch(() => {});
     initialize();
     initialiseDeviceId();
     NotificationService.initialize();
@@ -72,6 +74,7 @@ const App = () => {
             ref={navigationRef}
             onReady={() => {
               routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
+              BootSplash.hide().catch(() => {});
             }}
             onStateChange={async () => {
               const previousRouteName = routeNameRef.current;

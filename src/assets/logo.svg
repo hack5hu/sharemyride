@@ -1,0 +1,24 @@
+<svg viewBox="0 0 300 100" width="300" height="100" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(10, 20) scale(0.6)">
+    <path
+      d="M25 25H75L25 75H75"
+      fill="none"
+      stroke="#0058bc"
+      stroke-width="12"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <circle cx="75" cy="25" r="6" fill="#111318" />
+    <circle cx="25" cy="75" r="6" fill="#111318" />
+  </g>
+  <text
+    x="80"
+    y="65"
+    font-family="sans-serif"
+    font-weight="bold"
+    font-size="40"
+    fill="#111318"
+  >
+    Zync<tspan fill="#0058bc">Ride</tspan>
+  </text>
+</svg>
