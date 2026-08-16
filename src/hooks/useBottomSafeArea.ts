@@ -19,9 +19,15 @@ export const useBottomSafeArea = (
   const insets = useSafeAreaInsets();
 
   const iosPadding = iosStaticPadding ?? verticalScale(24);
-  const androidPadding = androidMinPadding ?? insets.bottom;
+  
+  // For Android, if edge-to-edge gesture navigation is active, insets.bottom is > 0.
+  // We don't need excessive extra padding, just the inset itself so it clears the gesture bar.
+  // If insets.bottom is 0 (classic 3-button nav outside the window), we add a small default padding.
+  const androidPadding = insets.bottom > 0 
+    ? insets.bottom 
+    : (androidMinPadding ?? verticalScale(8));
 
   return Platform.OS === 'ios'
-    ? iosPadding + verticalScale(12)
-    : androidPadding + verticalScale(12);
+    ? iosPadding + verticalScale(8)
+    : androidPadding;
 };
