@@ -25,9 +25,13 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>truecaller</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>truecallersdk-{xo3glydxwgapbf0zumg28mys6qud3tkzfnfzbxcqiay}</string>
+				<string>truecallersdk-xo3glydxwgapbf0zumg28mys6qud3tkzfnfzbxcqiay</string>
 			</array>
 		</dict>
 	</array>
@@ -102,7 +106,11 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 </dict>
 </plist>

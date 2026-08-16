@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar, LogBox } from 'react-native';
+import { StatusBar, LogBox, AppState, AppStateStatus } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 LogBox.ignoreLogs(['InteractionManager has been deprecated']);
 
@@ -16,6 +17,7 @@ import { GlobalNotification } from '@/components/organisms/GlobalNotification';
 import { StallionUpdateModal } from '@/components/organisms/StallionUpdateModal';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { NotificationService } from '@/serviceManager/NotificationService';
+import { ChatService } from '@/serviceManager/ChatService';
 
 import { navigationRef } from '@/navigation/navigationService';
 import { AnalyticsService } from '@/serviceManager/AnalyticsService';
@@ -27,6 +29,8 @@ const App = () => {
   const initialize = useAuthStore(state => state.initialize);
   const initialiseDeviceId = useDeviceIdStore(state => state.initialise);
   const themeMode = useSettingsStore(state => state.themeMode);
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+  const user = useAuthStore(state => state.user);
 
   const activeTheme = themeMode === 'dark' ? DarkTheme : LightTheme;
 
@@ -36,9 +40,28 @@ const App = () => {
     NotificationService.initialize();
   }, [initialize, initialiseDeviceId]);
 
+  useEffect(() => {
+    if (!isAuthenticated || !user?.userId) return;
+
+    // Sync conversations on mount if authenticated
+    ChatService.syncConversations(user.userId).catch(() => undefined);
+
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+      if (nextAppState === 'active' && user?.userId) {
+        ChatService.syncConversations(user.userId).catch(() => undefined);
+      }
+    };
+
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+    return () => {
+      subscription.remove();
+    };
+  }, [isAuthenticated, user?.userId]);
+
   return (
-    <SafeAreaProvider>
-      <KeyboardProvider statusBarTranslucent navigationBarTranslucent>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <KeyboardProvider statusBarTranslucent navigationBarTranslucent>
         <ThemeProvider theme={activeTheme}>
           <StatusBar
             barStyle={themeMode === 'dark' ? 'light-content' : 'dark-content'}
@@ -68,6 +91,7 @@ const App = () => {
         </ThemeProvider>
       </KeyboardProvider>
     </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 };
 

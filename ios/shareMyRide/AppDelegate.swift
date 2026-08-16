@@ -1,9 +1,8 @@
 import UIKit
+import FirebaseCore
 import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
-import Firebase
-import FirebaseMessaging
 import react_native_stallion
 
 @main
@@ -17,10 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
-    
-    // Initialize Firebase
     FirebaseApp.configure()
-    
     let delegate = ReactNativeDelegate()
     let factory = RCTReactNativeFactory(delegate: delegate)
     delegate.dependencyProvider = RCTAppDependencyProvider()
@@ -37,20 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     return true
-  }
-
-  func application(
-    _ application: UIApplication,
-    didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
-  ) {
-    Messaging.messaging().apnsToken = deviceToken
-  }
-
-  func application(
-    _ application: UIApplication,
-    didFailToRegisterForRemoteNotificationsWithError error: Error
-  ) {
-    print("Failed to register for remote notifications: \(error)")
   }
 }
 

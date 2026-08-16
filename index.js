@@ -18,9 +18,6 @@ if (!__DEV__) {
 
 // Register background handler
 setBackgroundMessageHandler(getMessaging(), async remoteMessage => {
-  console.log('====== BACKGROUND NOTIFICATION RECEIVED ======');
-  console.log(JSON.stringify(remoteMessage, null, 2));
-  console.log('Message handled in the background!', remoteMessage);
   
   if (remoteMessage.notification) {
     // FCM automatically displays background notifications if the `notification` payload is present.
