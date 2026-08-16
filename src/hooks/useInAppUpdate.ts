@@ -6,8 +6,8 @@ import { Logger } from '@/utils/logger';
 
 export const useInAppUpdate = () => {
   useEffect(() => {
-    // In-App Updates via Google Play only work on production builds installed directly from Play Store.
-    // Skip in development/emulator builds to prevent Play Store service binding errors.
+    // In-App Updates only work on production builds installed from the Store.
+    // Skip in development/emulator builds to prevent store service binding errors.
     if (__DEV__) return;
 
     const inAppUpdates = new SpInAppUpdates(false);
@@ -15,21 +15,34 @@ export const useInAppUpdate = () => {
     const checkUpdates = async () => {
       try {
         const curVersion = DeviceInfo.getVersion();
-        const result = await inAppUpdates.checkNeedsUpdate({ curVersion });
+        const result = await inAppUpdates.checkNeedsUpdate({
+          curVersion,
+          country: 'in',
+        });
 
         if (result.shouldUpdate) {
           let updateOptions: StartUpdateOptions = {};
           if (Platform.OS === 'android') {
-            // Immediate update enforces a full screen block prompting the user to update
+            // Immediate update enforces a full screen prompt by Google Play
             updateOptions = {
               updateType: IAUUpdateKind.IMMEDIATE,
+            };
+          } else if (Platform.OS === 'ios') {
+            // iOS prompts with native alert and redirects to the App Store page
+            updateOptions = {
+              title: 'Update Available',
+              message:
+                'A new version of ZyncRide is available on the App Store. Please update to continue enjoying the latest features.',
+              buttonUpgradeText: 'Update Now',
+              buttonCancelText: 'Later',
+              country: 'in',
             };
           }
           await inAppUpdates.startUpdate(updateOptions);
         }
-      } catch (error: any) {
-        const errorStr = String(error?.message || error || '');
-        // Ignore expected Play Store service binding failures on sideloaded/non-Play Store builds
+      } catch (error: unknown) {
+        const errorStr = String((error as Error)?.message || error || '');
+        // Ignore expected Store service binding failures on sideloaded/debug builds
         if (!errorStr.includes('Failed to bind') && !errorStr.includes('zzy')) {
           Logger.warn('[InAppUpdate] Error checking/starting update:', error);
         }

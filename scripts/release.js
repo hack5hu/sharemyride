@@ -90,6 +90,89 @@ const autoBumpVersion = async (preReleaseId = null) => {
   console.log('✅ Version bumped, synced natively, and committed/tagged!');
 };
 
+// Manages Android versionCode interactively so Google Play never rejects duplicate build codes
+const handleAndroidVersionCode = async () => {
+  const buildGradlePath = path.join(__dirname, '../android/app/build.gradle');
+  if (!fs.existsSync(buildGradlePath)) return;
+
+  let content = fs.readFileSync(buildGradlePath, 'utf8');
+  const match = content.match(/versionCode\s+(\d+)/);
+  if (!match) return;
+
+  const currentCode = parseInt(match[1], 10);
+  const nextCode = currentCode + 1;
+
+  console.log(`\n📱 Current Android versionCode: ${currentCode}`);
+  const answer = await ask(
+    `Update versionCode? [Press Enter for ${nextCode}, enter custom number, or 'n' to keep ${currentCode}]: `,
+  );
+
+  const trimmed = answer.trim().toLowerCase();
+  let targetCode = currentCode;
+
+  if (trimmed === '' || trimmed === 'y' || trimmed === 'yes') {
+    targetCode = nextCode;
+  } else if (trimmed === 'n' || trimmed === 'no') {
+    console.log(`⏭️ Keeping versionCode at ${currentCode}.`);
+    return;
+  } else {
+    const parsed = parseInt(trimmed, 10);
+    if (!isNaN(parsed) && parsed > 0) {
+      targetCode = parsed;
+    } else {
+      console.log(`⚠️ Invalid input. Keeping versionCode at ${currentCode}.`);
+      return;
+    }
+  }
+
+  content = content.replace(/(versionCode\s+)\d+/, `$1${targetCode}`);
+  fs.writeFileSync(buildGradlePath, content, 'utf8');
+  console.log(`✅ Android versionCode updated to: ${targetCode}`);
+};
+
+// Manages iOS build number (CFBundleVersion) interactively
+const handleIosBuildNumber = async () => {
+  const infoPlistPath = path.join(__dirname, '../ios/shareMyRide/Info.plist');
+  if (!fs.existsSync(infoPlistPath)) return;
+
+  let content = fs.readFileSync(infoPlistPath, 'utf8');
+  const match = content.match(/<key>CFBundleVersion<\/key>\s*<string>(\d+)<\/string>/);
+  if (!match) return;
+
+  const currentBuild = parseInt(match[1], 10);
+  const nextBuild = currentBuild + 1;
+
+  console.log(`\n🍎 Current iOS build number (CFBundleVersion): ${currentBuild}`);
+  const answer = await ask(
+    `Update build number? [Press Enter for ${nextBuild}, enter custom number, or 'n' to keep ${currentBuild}]: `,
+  );
+
+  const trimmed = answer.trim().toLowerCase();
+  let targetBuild = currentBuild;
+
+  if (trimmed === '' || trimmed === 'y' || trimmed === 'yes') {
+    targetBuild = nextBuild;
+  } else if (trimmed === 'n' || trimmed === 'no') {
+    console.log(`⏭️ Keeping build number at ${currentBuild}.`);
+    return;
+  } else {
+    const parsed = parseInt(trimmed, 10);
+    if (!isNaN(parsed) && parsed > 0) {
+      targetBuild = parsed;
+    } else {
+      console.log(`⚠️ Invalid input. Keeping build number at ${currentBuild}.`);
+      return;
+    }
+  }
+
+  content = content.replace(
+    /(<key>CFBundleVersion<\/key>\s*<string>)\d+(<\/string>)/,
+    `$1${targetBuild}$2`,
+  );
+  fs.writeFileSync(infoPlistPath, content, 'utf8');
+  console.log(`✅ iOS build number updated to: ${targetBuild}`);
+};
+
 const main = async () => {
   process.env.NODE_ENV = 'production';
   process.env.BABEL_ENV = 'production';
@@ -125,6 +208,7 @@ const main = async () => {
     } else if (target === 'aab') {
       console.log('\n📦 --- Production AAB Build ---');
       await autoBumpVersion();
+      await handleAndroidVersionCode();
       cleanAndroid();
       run(`cd android && ${gradlew} bundleRelease --no-daemon`);
       console.log(
@@ -133,6 +217,7 @@ const main = async () => {
     } else if (target === 'apk') {
       console.log('\n📱 --- UAT APK Build ---');
       await autoBumpVersion('uat');
+      await handleAndroidVersionCode();
       cleanAndroid();
       setBuildEnv(true);
       run(
@@ -144,6 +229,7 @@ const main = async () => {
     } else if (target === 'ios') {
       console.log('\n🍎 --- iOS Release Prep ---');
       await autoBumpVersion();
+      await handleIosBuildNumber();
       run('cd ios && pod install');
       console.log('✅ iOS version bumped.');
       console.log(
