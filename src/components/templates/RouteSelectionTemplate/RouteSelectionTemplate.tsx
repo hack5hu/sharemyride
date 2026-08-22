@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { CameraRef } from '@maplibre/maplibre-react-native';
 
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
@@ -33,16 +34,20 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> =
     }) => {
       const theme = useTheme();
       const { routeSelection } = useLocale();
-      const cameraRef = useRef<any>(null);
+      const cameraRef = useRef<CameraRef>(null);
 
-      const [isMapLoaded, setIsMapLoaded] = React.useState(false);
+      const [mapLoadedTrigger, setMapLoadedTrigger] = React.useState(0);
+
+      const handleMapLoadedTrigger = React.useCallback(() => {
+        setMapLoadedTrigger(prev => prev + 1);
+      }, []);
 
       const selectedRouteData = React.useMemo(() => {
         return routesData.find(r => r.uiData.id === selectedRouteId);
       }, [routesData, selectedRouteId]);
 
       useEffect(() => {
-        if (selectedRouteData && cameraRef.current && isMapLoaded) {
+        if (selectedRouteData && cameraRef.current) {
           const timer = setTimeout(() => {
             if (cameraRef.current) {
               const [minLng, minLat, maxLng, maxLat] = selectedRouteData.bounds;
@@ -51,10 +56,10 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> =
                 duration: 500,
               });
             }
-          }, 100);
+          }, 150);
           return () => clearTimeout(timer);
         }
-      }, [selectedRouteId, selectedRouteData, isMapLoaded]);
+      }, [selectedRouteId, selectedRouteData, mapLoadedTrigger]);
 
       const zoomRef = useRef(14);
 
@@ -82,8 +87,7 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> =
               routesData={routesData}
               selectedRouteId={selectedRouteId}
               onSelectRoute={onSelectRoute}
-              isMapLoaded={isMapLoaded}
-              setIsMapLoaded={setIsMapLoaded}
+              onMapLoadedTrigger={handleMapLoadedTrigger}
               handleRegionDidChange={handleRegionDidChange}
               handleZoom={handleZoom}
             />

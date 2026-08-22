@@ -1,17 +1,17 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
+import { CameraRef } from '@maplibre/maplibre-react-native';
 import { Camera, GeoJSONSource, Layer } from '@/components/organisms/OlaMap';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import { RouteData } from '@/screens/PublishFlow/2_RouteSelection/useRouteSelection';
 import * as S from '../RouteSelectionTemplate.styles';
 
 export interface RouteSelectionMapProps {
-  cameraRef: React.RefObject<any>;
+  cameraRef: React.RefObject<CameraRef | null>;
   routesData: RouteData[];
   selectedRouteId: string | null;
   onSelectRoute: (id: string) => void;
-  isMapLoaded: boolean;
-  setIsMapLoaded: (loaded: boolean) => void;
+  onMapLoadedTrigger: () => void;
   handleRegionDidChange: (event: any) => void;
   handleZoom: (increment: number) => void;
 }
@@ -21,7 +21,7 @@ export const RouteSelectionMap: React.FC<RouteSelectionMapProps> = React.memo(({
   routesData,
   selectedRouteId,
   onSelectRoute,
-  setIsMapLoaded,
+  onMapLoadedTrigger,
   handleRegionDidChange,
   handleZoom,
 }) => {
@@ -86,9 +86,11 @@ export const RouteSelectionMap: React.FC<RouteSelectionMapProps> = React.memo(({
     <S.MapSection>
       <S.StyledOlaMap
         onRegionDidChange={handleRegionDidChange}
-        onDidFinishLoadingMap={() => setIsMapLoaded(true)}
+        onLayout={onMapLoadedTrigger}
+        onDidFinishLoadingStyle={onMapLoadedTrigger}
+        onDidFinishLoadingMap={onMapLoadedTrigger}
       >
-        <Camera ref={cameraRef} minZoom={8} maxZoom={18} />
+        <Camera ref={cameraRef} minZoom={3} maxZoom={18} />
 
         <GeoJSONSource
           id="routes-source"
