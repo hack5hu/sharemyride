@@ -156,6 +156,7 @@ export interface ProfileHubTranslations {
   privacyPolicyDescr: string;
   logout: string;
   deleteAccount: string;
+  deleteAccountDescr: string;
   navBook: string;
   navPublish: string;
   navMyRides: string;

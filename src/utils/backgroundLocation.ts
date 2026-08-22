@@ -259,49 +259,5 @@ export const stopBackgroundLocationTracking = async (): Promise<void> => {
       '[BackgroundLocation] Engine termination routines faulted:',
       error,
     );
-    throw error;
-  }
-};
-
-const liveLocationFetchTask = async (): Promise<void> => {
-  while (BackgroundService.isRunning()) {
-    await new Promise(resolve => setTimeout(resolve, 2000));
-  }
-};
-
-export const startLiveLocationFetchNotification = async (): Promise<void> => {
-  if (BackgroundService.isRunning()) {
-    await BackgroundService.stop();
-  }
-
-  const options = {
-    taskName: 'LiveLocationFetch',
-    taskTitle: 'Fetching Live Location',
-    taskDesc: 'ZyncRide is updating your position on the map...',
-    taskIcon: {
-      name: 'ic_launcher',
-      type: 'mipmap',
-    },
-    color: '#0058bc',
-    foregroundServiceType: ['location'] as 'location'[],
-    parameters: {},
-  };
-
-  try {
-    await BackgroundService.start(liveLocationFetchTask, options);
-    Logger.log('[BackgroundLocation] Live location fetch notification started.');
-  } catch (error) {
-    Logger.error('[BackgroundLocation] Failed to start live fetch notification:', error);
-  }
-};
-
-export const stopLiveLocationFetchNotification = async (): Promise<void> => {
-  try {
-    if (BackgroundService.isRunning()) {
-      await BackgroundService.stop();
-      Logger.log('[BackgroundLocation] Live location fetch notification stopped.');
-    }
-  } catch (error) {
-    Logger.error('[BackgroundLocation] Failed to stop live fetch notification:', error);
   }
 };

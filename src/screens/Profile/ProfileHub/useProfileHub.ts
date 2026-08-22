@@ -103,20 +103,6 @@ export const useProfileHub = () => {
     navigation.navigate('TravelPreferences');
   }, [navigation]);
 
-  const navigateToDummy = useCallback(
-    (
-      title: string,
-      options?: {
-        showBack?: boolean;
-        showBottomNav?: boolean;
-        contentKey?: 'about' | 'help' | 'terms';
-      },
-    ) => {
-      navigation.navigate('Dummy', { title, ...options });
-    },
-    [navigation],
-  );
-
   const navigateToSettings = useCallback(() => {
     navigation.navigate('Settings');
   }, [navigation]);
@@ -184,7 +170,6 @@ export const useProfileHub = () => {
     navigateToVehicleDetails,
     navigateToTravelPreferences,
     navigateToSettings,
-    navigateToDummy,
     navigateToTermsAndConditions,
     navigateToPrivacyPolicy,
     navigateToAboutUs,

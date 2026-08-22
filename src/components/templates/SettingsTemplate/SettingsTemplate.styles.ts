@@ -135,6 +135,18 @@ export const LogoutButton = styled.TouchableOpacity`
   margin-top: ${verticalScale(16)}px;
 `;
 
+export const DeleteAccountButton = styled.TouchableOpacity`
+  width: 100%;
+  padding: ${verticalScale(14)}px;
+  background-color: transparent;
+  border-radius: 16px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: ${scale(8)}px;
+  margin-top: ${verticalScale(8)}px;
+`;
+
 
 export const FooterVersion = styled.View`
   align-items: center;

@@ -21,5 +21,10 @@ export interface SettingsTemplateProps {
   isLoggingOut: boolean;
   showLogoutConfirmation: () => void;
   hideLogoutConfirmation: () => void;
+  isDeleteModalVisible: boolean;
+  isDeleting: boolean;
+  showDeleteConfirmation: () => void;
+  hideDeleteConfirmation: () => void;
+  handleDeleteAccount: () => void;
   theme: DefaultTheme;
 }

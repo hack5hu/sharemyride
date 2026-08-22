@@ -159,6 +159,7 @@ export const en: Translations = {
     privacyPolicyDescr: 'How we protect and manage your data',
     logout: 'Logout',
     deleteAccount: 'Delete Account',
+    deleteAccountDescr: 'Permanently remove your account and data',
     navBook: 'BOOK',
     navPublish: 'PUBLISH',
     navMyRides: 'MY RIDES',

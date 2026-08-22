@@ -25,6 +25,11 @@ export const SettingsScreen: React.FC = () => {
     isLoggingOut,
     showLogoutConfirmation,
     hideLogoutConfirmation,
+    isDeleteModalVisible,
+    isDeleting,
+    showDeleteConfirmation,
+    hideDeleteConfirmation,
+    handleDeleteAccount,
   } = useSettings();
 
   return (
@@ -48,6 +53,11 @@ export const SettingsScreen: React.FC = () => {
       isLoggingOut={isLoggingOut}
       showLogoutConfirmation={showLogoutConfirmation}
       hideLogoutConfirmation={hideLogoutConfirmation}
+      isDeleteModalVisible={isDeleteModalVisible}
+      isDeleting={isDeleting}
+      showDeleteConfirmation={showDeleteConfirmation}
+      hideDeleteConfirmation={hideDeleteConfirmation}
+      handleDeleteAccount={handleDeleteAccount}
       theme={theme}
     />
   );

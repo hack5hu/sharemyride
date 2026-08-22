@@ -1,5 +1,6 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState } from 'react';
+import { Linking } from 'react-native';
 import { useSettingsStore } from '@/store/settings';
 import { useAuthStore } from '@/store';
 import { useLocale } from '@/constants/localization';
@@ -62,7 +63,7 @@ export const useSettings = () => {
         index: 0,
         routes: [{ name: 'Login' as never }],
       });
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error('Logout failed in settings:', e);
       showNotification(
         NotificationType.ERROR,
@@ -81,12 +82,18 @@ export const useSettings = () => {
   const handleDeleteAccount = async () => {
     setIsDeleting(true);
     try {
-      await AuthService.deleteAccount();
+      const phoneNumber = useAuthStore.getState().user?.phoneNumber;
+      await AuthService.deleteAccount(phoneNumber);
+      showNotification(
+        NotificationType.SUCCESS,
+        t.notification.defaultSuccessTitle,
+        t.settings.deleteAccountConfirmTitle,
+      );
       navigation.reset({
         index: 0,
         routes: [{ name: 'Login' as never }],
       });
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error('Delete account failed in settings:', e);
       showNotification(
         NotificationType.ERROR,

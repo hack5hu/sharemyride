@@ -154,6 +154,7 @@ export const hi: Translations = {
     privacyPolicyDescr: 'हम आपके डेटा की सुरक्षा कैसे करते हैं',
     logout: 'लॉगआउट करें',
     deleteAccount: 'अकाउंट डिलीट करें',
+    deleteAccountDescr: 'अपना अकाउंट और डेटा स्थायी रूप से हटाएं',
     navBook: 'बुक करें',
     navPublish: 'राइड दें',
     navMyRides: 'मेरी राइड्स',

@@ -18,10 +18,6 @@ import {
   requestLocationPermission,
   checkLocationServices,
 } from '@/utils/permissionUtils';
-import {
-  startLiveLocationFetchNotification,
-  stopLiveLocationFetchNotification,
-} from '@/utils/backgroundLocation';
 
 const DEFAULT_REGION = {
   latitude: 12.9716, // Bengaluru
@@ -55,9 +51,6 @@ export const useSelectLocation = () => {
       if (!hasPermission) return;
 
       setIsLocating(true);
-      if (Platform.OS === 'android') {
-        startLiveLocationFetchNotification();
-      }
 
       Geolocation.getCurrentPosition(
         position => {
@@ -189,11 +182,7 @@ export const useSelectLocation = () => {
     initLocation();
   }, [getFastCachedLocation, checkGpsAndGetLocation]);
 
-  useEffect(() => {
-    return () => {
-      stopLiveLocationFetchNotification();
-    };
-  }, []);
+
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState: AppStateStatus) => {

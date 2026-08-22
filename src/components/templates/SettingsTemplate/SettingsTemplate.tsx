@@ -6,8 +6,8 @@ import { Toggle } from '@/components/atoms/Toggle';
 import { ConfirmationModal } from '@/components/organisms/ConfirmationModal';
 import { SettingsTemplateProps } from './types.d';
 import * as S from './SettingsTemplate.styles';
-import DeviceInfo from 'react-native-device-info';
 import { AppearanceSection } from './components/AppearanceSection';
+import { AccountSection } from './components/AccountSection';
 
 export const SettingsTemplate: React.FC<SettingsTemplateProps> = React.memo(
   ({
@@ -25,6 +25,11 @@ export const SettingsTemplate: React.FC<SettingsTemplateProps> = React.memo(
     isLoggingOut,
     showLogoutConfirmation,
     hideLogoutConfirmation,
+    isDeleteModalVisible,
+    isDeleting,
+    showDeleteConfirmation,
+    hideDeleteConfirmation,
+    handleDeleteAccount,
     theme,
   }) => {
     return (
@@ -137,25 +142,12 @@ export const SettingsTemplate: React.FC<SettingsTemplateProps> = React.memo(
             </S.Section>
 
             {/* Account Section */}
-            <S.AccountSection>
-              <S.LogoutButton onPress={showLogoutConfirmation}>
-                <Icon name="logout" size={24} color={theme.colors.error} />
-                <Typography
-                  variant="title"
-                  size="sm"
-                  weight="bold"
-                  color={theme.colors.error}
-                >
-                  {t.logout}
-                </Typography>
-              </S.LogoutButton>
-
-              <S.FooterVersion>
-                <S.VersionText color={theme.colors.on_surface_variant}>
-                  {t.version} {DeviceInfo.getVersion()}
-                </S.VersionText>
-              </S.FooterVersion>
-            </S.AccountSection>
+            <AccountSection
+              t={t}
+              theme={theme}
+              showLogoutConfirmation={showLogoutConfirmation}
+              showDeleteConfirmation={showDeleteConfirmation}
+            />
           </S.ContentContainer>
         </ScreenShell>
 
@@ -169,6 +161,18 @@ export const SettingsTemplate: React.FC<SettingsTemplateProps> = React.memo(
           cancelLabel={t.logoutConfirmCancel}
           type="danger"
           isLoading={isLoggingOut}
+        />
+
+        <ConfirmationModal
+          isVisible={isDeleteModalVisible}
+          onClose={hideDeleteConfirmation}
+          onConfirm={handleDeleteAccount}
+          title={t.deleteAccountConfirmTitle}
+          message={t.deleteAccountConfirmMessage}
+          confirmLabel={t.deleteAccountConfirmButton}
+          cancelLabel={t.deleteAccountConfirmCancel}
+          type="danger"
+          isLoading={isDeleting}
         />
       </S.ScreenWrapper>
     );

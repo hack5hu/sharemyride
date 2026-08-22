@@ -8,6 +8,7 @@ export const API_ENDPOINTS = {
     RESEND_OTP: 'auth/resend-otp',
     LOGOUT: 'auth/logout',
     TRUECALLER_LOGIN: '/auth/truecaller-login',
+    ACCOUNT: '/auth/account',
   },
   USER: {
     PROFILE: '/user/profile',

@@ -19,6 +19,11 @@ export interface VerifyOtpResponse {
   status: string; // "success"
 }
 
+export interface DeleteAccountResponse {
+  status?: string;
+  message?: string;
+}
+
 export const AuthService = {
   login: async (
     phoneNumber: string,
@@ -37,7 +42,7 @@ export const AuthService = {
     deviceId?: string | null,
     fcmToken?: string | null,
   ) => {
-    const payload: any = {
+    const payload: Record<string, unknown> = {
       phoneNumber: Number(phoneNumber),
       otp: Number(otp),
       platform: Platform.OS.toUpperCase(),
@@ -64,7 +69,10 @@ export const AuthService = {
     fcmToken?: string | null,
     codeVerifier?: string,
   ) => {
-    const payload: any = { authorizationCode, platform: Platform.OS.toUpperCase() };
+    const payload: Record<string, unknown> = {
+      authorizationCode,
+      platform: Platform.OS.toUpperCase(),
+    };
     if (codeVerifier) payload.codeVerifier = codeVerifier;
     if (deviceId) payload.deviceId = deviceId;
     if (fcmToken) payload.fcmToken = fcmToken;
@@ -88,7 +96,7 @@ export const AuthService = {
       const refreshCreds = await Keychain.getGenericPassword({ service: 'refresh_token' });
       if (refreshCreds) {
         const deviceId = await getDeviceId().catch(() => null);
-        const payload: any = { refreshToken: refreshCreds.password };
+        const payload: Record<string, unknown> = { refreshToken: refreshCreds.password };
         if (deviceId) payload.deviceId = deviceId;
 
         await axiosClient.post(API_ENDPOINTS.AUTH.LOGOUT, payload);
@@ -100,14 +108,15 @@ export const AuthService = {
     }
   },
 
-  deleteAccount: async () => {
-    try {
-      // Placeholder for backend API if needed in the future
-      await AuthService.clearLocalSession();
-    } catch (error) {
-      console.error('Delete account API error', error);
-      await AuthService.clearLocalSession();
-    }
+  deleteAccount: async (phoneNumber?: string) => {
+    const response = await axiosClient.delete<DeleteAccountResponse>(
+      API_ENDPOINTS.AUTH.ACCOUNT,
+      {
+        data: phoneNumber ? { phoneNumber: String(phoneNumber) } : undefined,
+      },
+    );
+    await AuthService.clearLocalSession();
+    return { status: response.status, data: response.data };
   },
 
   clearLocalSession: async () => {

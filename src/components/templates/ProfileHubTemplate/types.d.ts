@@ -1,8 +1,9 @@
 export interface ProfileHubUser {
-  name: string;
+  name?: string;
   email?: string;
   phoneNumber?: string;
   photoUrl?: string;
+  profilePhotoUrl?: string;
 }
 
 export interface ProfileHubTemplateProps {
