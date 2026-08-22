@@ -1,4 +1,5 @@
 import { ReactNode, RefObject } from 'react';
+import { MapRef, CameraRef } from '@maplibre/maplibre-react-native';
 
 export interface LocalRideResultsTemplateProps {
   onBack: () => void;
@@ -9,9 +10,10 @@ export interface LocalRideResultsTemplateProps {
   onRequestLocalPartner: () => void;
   mapChildren?: ReactNode;
   onRegionChangeComplete?: (event: unknown) => void;
-  mapRef?: RefObject<unknown>;
-  cameraRef?: RefObject<unknown>;
+  mapRef?: RefObject<MapRef | null>;
+  cameraRef?: RefObject<CameraRef | null>;
   zoom?: number;
   onZoomIn?: () => void;
   onZoomOut?: () => void;
 }
+

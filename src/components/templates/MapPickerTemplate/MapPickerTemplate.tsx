@@ -162,6 +162,8 @@ export const MapPickerTemplate: React.FC<MapPickerTemplateProps> = ({
             ref={cameraRef as any}
             center={[region.longitude, region.latitude]}
             zoom={zoom ?? 14}
+            minZoom={8}
+            maxZoom={18}
           />
           {hasPermission && (
             <MapLibreUserLocation

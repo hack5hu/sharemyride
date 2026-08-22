@@ -43,6 +43,8 @@ export const LocalRideResultsTemplate: React.FC<LocalRideResultsTemplateProps> =
                   ref={cameraRef}
                   center={[longitude, latitude]}
                   zoom={zoom}
+                  minZoom={8}
+                  maxZoom={18}
                 />
                 {mapChildren}
               </OlaMap>

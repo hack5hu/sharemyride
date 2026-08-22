@@ -5,7 +5,8 @@ import {
   OfflineManager,
   type MapRef,
 } from '@maplibre/maplibre-react-native';
-import { OLA_API_KEY, OLA_MAP_STYLE_URL } from '@/constants/OlaStyle';
+import { OLA_API_KEY, getOlaStyleUrl } from '@/constants/OlaStyle';
+import type { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { OlaMapProps } from './types.d';
 
 // Run setup only once
@@ -41,7 +42,8 @@ const setupOlaMap = (): void => {
 // Eagerly initialize native interceptors on module load
 setupOlaMap();
 
-const DEFAULT_STYLE = OLA_MAP_STYLE_URL;
+const DEFAULT_STYLE = getOlaStyleUrl as unknown as StyleSpecification;
+
 
 export const OlaMap = React.memo(
   forwardRef<MapRef, OlaMapProps>(

@@ -58,6 +58,8 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> =
                     ref={cameraRef as any}
                     zoom={zoom ?? 12}
                     center={[region.longitude, region.latitude]}
+                    minZoom={8}
+                    maxZoom={18}
                   />
 
                   <MapLibreUserLocation

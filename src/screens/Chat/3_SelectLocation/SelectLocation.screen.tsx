@@ -57,6 +57,8 @@ export const SelectLocationScreen: React.FC<SelectLocationScreenProps> = memo(
                 ref={cameraRef}
                 center={[region.longitude, region.latitude]}
                 zoom={zoom}
+                minZoom={8}
+                maxZoom={18}
                 duration={1000}
                 easing="fly"
               />

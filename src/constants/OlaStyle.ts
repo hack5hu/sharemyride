@@ -542,7 +542,7 @@ export const getOlaStyleUrl = {
             [22, 128],
           ],
         },
-        'line-dasharray': [1],
+        'line-dasharray': [1, 1],
       },
     },
     {
@@ -572,7 +572,7 @@ export const getOlaStyleUrl = {
             [22, 170],
           ],
         },
-        'line-dasharray': [1],
+        'line-dasharray': [1, 1],
         'line-opacity': 1,
       },
     },
@@ -603,7 +603,7 @@ export const getOlaStyleUrl = {
             [22, 210],
           ],
         },
-        'line-dasharray': [1],
+        'line-dasharray': [1, 1],
         'line-opacity': 1,
       },
     },
@@ -622,7 +622,7 @@ export const getOlaStyleUrl = {
       layout: { 'line-join': 'miter', visibility: 'none' },
       paint: {
         'line-color': 'rgba(147, 169, 188, 1)',
-        'line-dasharray': [1],
+        'line-dasharray': [1, 1],
         'line-width': {
           base: 1.2,
           stops: [
@@ -994,7 +994,7 @@ export const getOlaStyleUrl = {
             [22, 120],
           ],
         },
-        'line-dasharray': [1],
+        'line-dasharray': [1, 1],
         'line-opacity': 1,
         'line-blur': 0,
       },
@@ -1029,7 +1029,7 @@ export const getOlaStyleUrl = {
             [22, 120],
           ],
         },
-        'line-dasharray': [1],
+        'line-dasharray': [1, 1],
         'line-opacity': 1,
         'line-blur': 0,
       },
@@ -2450,7 +2450,7 @@ export const getOlaStyleUrl = {
           ],
         },
         'line-width': 1,
-        'line-dasharray': [1],
+        'line-dasharray': [1, 1],
         'line-gap-width': 0,
         'line-blur': 2,
       },
@@ -2488,7 +2488,7 @@ export const getOlaStyleUrl = {
       filter: ['all', ['==', '$type', 'LineString'], ['!=', 'class', 'drain']],
       layout: {
         'text-field': '{name}',
-        'text-font': ['Gentona_Book'],
+        'text-font': ['Gentona Book'],
         'text-max-width': 5,
         'text-size': 14,
         'symbol-placement': 'line',
@@ -2511,7 +2511,7 @@ export const getOlaStyleUrl = {
       filter: ['==', '$type', 'Point'],
       layout: {
         'text-field': '{name}',
-        'text-font': ['Gentona_Book_Italic'],
+        'text-font': ['Gentona Book Italic'],
         'text-max-width': 5,
         'text-size': 13,
         visibility: 'visible',
@@ -2660,7 +2660,7 @@ export const getOlaStyleUrl = {
         'symbol-placement': 'line',
         'text-anchor': 'center',
         'text-field': '{name}',
-        'text-font': ['Gentona_Semi_Bold'],
+        'text-font': ['Gentona Semi Bold'],
         'text-offset': [0, 0.15],
         'text-size': {
           base: 1,
@@ -2701,7 +2701,7 @@ export const getOlaStyleUrl = {
         'symbol-placement': 'line',
         'text-anchor': 'center',
         'text-field': '{name}',
-        'text-font': ['Gentona_Semi_Bold'],
+        'text-font': ['Gentona Semi Bold'],
         'text-offset': [0, 0.15],
         'text-size': {
           base: 1,
@@ -2742,7 +2742,7 @@ export const getOlaStyleUrl = {
         'symbol-placement': 'line',
         'text-anchor': 'center',
         'text-field': '{name}',
-        'text-font': ['Gentona_Semi_Bold'],
+        'text-font': ['Gentona Semi Bold'],
         'text-offset': [0, 0.15],
         'text-size': {
           base: 1,
@@ -2783,7 +2783,7 @@ export const getOlaStyleUrl = {
         'symbol-placement': 'line',
         'text-anchor': 'center',
         'text-field': '{name}',
-        'text-font': ['Gentona_Semi_Bold'],
+        'text-font': ['Gentona Semi Bold'],
         'text-offset': [0, 0.15],
         'text-size': {
           base: 1,
@@ -2832,7 +2832,7 @@ export const getOlaStyleUrl = {
         visibility: 'visible',
         'text-optional': false,
         'icon-optional': false,
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
         'icon-anchor': 'center',
         'icon-rotate': ['to-number', ['get', 'angle']],
         'icon-pitch-alignment': 'map',
@@ -2889,7 +2889,7 @@ export const getOlaStyleUrl = {
         visibility: 'visible',
         'text-optional': false,
         'icon-optional': false,
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
       },
       paint: {
         'text-color': 'rgba(71, 145, 255, 1)',
@@ -2923,7 +2923,7 @@ export const getOlaStyleUrl = {
         visibility: 'visible',
         'text-optional': false,
         'icon-optional': false,
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
       },
       paint: {
         'text-color': 'rgba(71, 145, 255, 1)',
@@ -2949,7 +2949,7 @@ export const getOlaStyleUrl = {
         'text-line-height': ['step', ['zoom'], 0.95, 21, 1.2],
         visibility: 'visible',
         'icon-image': 'general',
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
       },
       paint: {
         'text-color': 'rgba(100, 127, 168, 1)',
@@ -2975,7 +2975,7 @@ export const getOlaStyleUrl = {
         'text-line-height': ['step', ['zoom'], 0.95, 21, 1.2],
         visibility: 'visible',
         'icon-image': 'residential',
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
       },
       paint: {
         'text-color': 'rgba(100, 127, 168, 1)',
@@ -3007,7 +3007,7 @@ export const getOlaStyleUrl = {
         visibility: 'visible',
         'text-optional': false,
         'icon-optional': false,
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
       },
       paint: {
         'text-color': 'rgba(71, 145, 255, 1)',
@@ -3036,7 +3036,7 @@ export const getOlaStyleUrl = {
         visibility: 'visible',
         'text-optional': false,
         'icon-optional': false,
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
       },
       paint: {
         'text-color': 'rgba(71, 145, 255, 1)',
@@ -3071,7 +3071,7 @@ export const getOlaStyleUrl = {
         visibility: 'visible',
         'text-optional': false,
         'icon-optional': false,
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
         'symbol-sort-key': ['-', ['get', 'pop']],
         'text-anchor': 'center',
         'text-keep-upright': true,
@@ -3172,7 +3172,7 @@ export const getOlaStyleUrl = {
         visibility: 'none',
         'text-optional': false,
         'icon-optional': false,
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
         'symbol-sort-key': ['get', 'pop'],
       },
       paint: {
@@ -3212,7 +3212,7 @@ export const getOlaStyleUrl = {
         'symbol-placement': 'line',
         'text-anchor': 'center',
         'text-field': '{name}',
-        'text-font': ['Gentona_Semi_Bold', 'Noto_Sans_Bold'],
+        'text-font': ['Gentona Semi Bold', 'Noto Sans Bold'],
         'text-size': 13,
         visibility: 'visible',
         'text-transform': 'uppercase',
@@ -3250,7 +3250,7 @@ export const getOlaStyleUrl = {
         'symbol-placement': 'line',
         'text-anchor': 'center',
         'text-field': '{name}',
-        'text-font': ['Gentona_Semi_Bold', 'Noto_Sans_Bold'],
+        'text-font': ['Gentona Semi Bold', 'Noto Sans Bold'],
         'text-offset': [0, 0],
         'text-size': 13,
         visibility: 'visible',
@@ -3285,7 +3285,7 @@ export const getOlaStyleUrl = {
         'symbol-placement': 'line',
         'text-anchor': 'center',
         'text-field': '{name} ',
-        'text-font': ['Gentona_Semi_Bold', 'Noto_Sans_Bold'],
+        'text-font': ['Gentona Semi Bold', 'Noto Sans Bold'],
         'text-offset': [0, 0],
         'text-size': 13,
         visibility: 'visible',
@@ -3322,7 +3322,7 @@ export const getOlaStyleUrl = {
         visibility: 'visible',
         'text-optional': false,
         'icon-optional': false,
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
         'icon-anchor': 'bottom',
         'icon-pitch-alignment': 'auto',
       },
@@ -3348,7 +3348,7 @@ export const getOlaStyleUrl = {
         visibility: 'visible',
         'text-optional': false,
         'icon-optional': false,
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
       },
       paint: {
         'text-color': [
@@ -3396,7 +3396,7 @@ export const getOlaStyleUrl = {
         },
         'symbol-spacing': 500,
         'text-field': '{ref}',
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
         'text-offset': [0, 0],
         'text-rotation-alignment': 'viewport',
         'text-size': 10,
@@ -3437,7 +3437,7 @@ export const getOlaStyleUrl = {
       ],
       layout: {
         'text-field': '{name}',
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
         'text-letter-spacing': 0.15,
         'text-max-width': 9,
         'text-size': {
@@ -3466,7 +3466,7 @@ export const getOlaStyleUrl = {
       filter: ['all', ['in', 'class', 'locality'], ['>=', 'population', 50000]],
       layout: {
         'text-field': '{name}',
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
         'text-letter-spacing': 0,
         'text-max-width': 9,
         'text-size': {
@@ -3497,7 +3497,7 @@ export const getOlaStyleUrl = {
       filter: ['all', ['==', 'class', 'island'], ['==', 'class', 'islet']],
       layout: {
         'text-field': '{name}',
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
         'text-max-width': 8,
         'text-size': {
           base: 1.2,
@@ -3523,7 +3523,7 @@ export const getOlaStyleUrl = {
       filter: ['any', ['==', 'class', 'village']],
       layout: {
         'text-field': '{name}',
-        'text-font': ['Gentona_Book'],
+        'text-font': ['Gentona Book'],
         'text-max-width': 8,
         'text-size': {
           base: 1.2,
@@ -3557,7 +3557,7 @@ export const getOlaStyleUrl = {
         'icon-image': '',
         'text-anchor': 'bottom',
         'text-field': '{name}',
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
         'text-max-width': 8,
         'text-offset': [0, 0],
         'text-size': {
@@ -3593,7 +3593,7 @@ export const getOlaStyleUrl = {
         'text-justify': 'auto',
         'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
         'text-field': '({iata})\n{name}',
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
         'text-max-width': 9,
         'text-optional': false,
         'icon-optional': false,
@@ -3620,7 +3620,7 @@ export const getOlaStyleUrl = {
       layout: {
         'text-anchor': 'center',
         'text-field': '{name}',
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
         'text-max-width': 8,
         'text-size': {
           base: 1.2,
@@ -3657,7 +3657,7 @@ export const getOlaStyleUrl = {
       layout: {
         'text-anchor': 'center',
         'text-field': '{name}',
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
         'text-max-width': 8,
         'text-size': {
           base: 1.2,
@@ -3694,7 +3694,7 @@ export const getOlaStyleUrl = {
       layout: {
         'text-anchor': 'center',
         'text-field': '{name}',
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
         'text-max-width': 8,
         'text-size': {
           base: 1.2,
@@ -3731,7 +3731,7 @@ export const getOlaStyleUrl = {
       layout: {
         'text-anchor': 'center',
         'text-field': '{name}',
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
         'text-max-width': 8,
         'text-size': {
           base: 1.2,
@@ -3769,7 +3769,7 @@ export const getOlaStyleUrl = {
         'icon-size': 0.65,
         'text-anchor': 'center',
         'text-field': '{name}',
-        'text-font': ['Gentona_Semi_Bold'],
+        'text-font': ['Gentona Semi Bold'],
         'text-max-width': 8,
         'text-size': {
           base: 1.2,
@@ -3804,7 +3804,7 @@ export const getOlaStyleUrl = {
       filter: ['all', ['==', 'class', 'state']],
       layout: {
         'text-field': '{name}',
-        'text-font': ['Gentona_Medium'],
+        'text-font': ['Gentona Medium'],
         'text-size': {
           stops: [
             [4, 11],
@@ -3831,7 +3831,7 @@ export const getOlaStyleUrl = {
       filter: ['all', ['==', 'class', 'country']],
       layout: {
         'text-field': '{name}',
-        'text-font': ['Gentona_Extra_Bold'],
+        'text-font': ['Gentona Extra Bold'],
         'text-max-width': 6,
         'text-size': {
           stops: [
@@ -3859,7 +3859,7 @@ export const getOlaStyleUrl = {
       filter: ['all', ['==', 'class', 'continent']],
       layout: {
         'text-field': '{name}',
-        'text-font': ['Gentona_Heavy'],
+        'text-font': ['Gentona Heavy'],
         'text-size': {
           stops: [
             [0, 10],
@@ -3889,7 +3889,7 @@ export const getOlaStyleUrl = {
       filter: ['==', 'class', 'country'],
       layout: {
         'text-field': '{name}',
-        'text-font': ['Gentona_Bold'],
+        'text-font': ['Gentona Bold'],
         'text-max-width': 6,
         'text-size': {
           stops: [

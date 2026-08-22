@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback } from 'react';
 import { useTheme } from 'styled-components/native';
-import { GeoJSONSource, Layer } from '@maplibre/maplibre-react-native';
+import { GeoJSONSource, Layer, MapRef, CameraRef } from '@maplibre/maplibre-react-native';
 import { LocalRideResultsTemplate } from '@/components/templates/LocalRideResultsTemplate';
 import { useLocalRideResults } from './useLocalRideResults';
 
@@ -18,8 +18,8 @@ export const LocalRideResultsScreen: React.FC = React.memo(() => {
     t,
   } = useLocalRideResults();
 
-  const mapRef = useRef<any>(null);
-  const cameraRef = useRef<any>(null);
+  const mapRef = useRef<MapRef>(null);
+  const cameraRef = useRef<CameraRef>(null);
   const [zoom, setZoom] = useState(14);
 
   const handleZoomIn = useCallback(() => setZoom(z => Math.min(z + 1, 20)), []);

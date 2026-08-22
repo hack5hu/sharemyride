@@ -18,12 +18,13 @@ export interface SelectLocationTemplateExtendedProps
   onBack?: () => void;
   onMyLocationPress?: () => void;
   isGpsBannerVisible?: boolean;
+  onCloseGpsBanner?: () => void;
   onOpenGpsSettings?: () => void;
   isLocating?: boolean;
 }
 
 export const SelectLocationTemplate: React.FC<
-  SelectLocationTemplateExtendedProps
+  SelectLocationTemplateProps
 > = React.memo(
   ({
     mapBackground,
@@ -38,6 +39,7 @@ export const SelectLocationTemplate: React.FC<
     onSendLocation,
     sendLocationLabel,
     isGpsBannerVisible,
+    onCloseGpsBanner,
     onOpenGpsSettings,
     isLocating,
   }) => {
@@ -106,6 +108,18 @@ export const SelectLocationTemplate: React.FC<
                   >
                     <S.GpsEnableText>{chatLocation.enableGps}</S.GpsEnableText>
                   </S.GpsEnableButton>
+                  {onCloseGpsBanner && (
+                    <S.GpsCloseButton
+                      onPress={onCloseGpsBanner}
+                      activeOpacity={0.7}
+                    >
+                      <Icon
+                        name="close"
+                        size={moderateScale(18)}
+                        color={theme.colors.on_error_container}
+                      />
+                    </S.GpsCloseButton>
+                  )}
                 </>
               )}
             </S.GpsWarningBanner>

@@ -53,17 +53,25 @@ export interface OlaRoutingResponse {
 
 const directionsCache = new Map<string, OlaRoutingRoute[]>();
 const geocodeCache = new Map<string, { name: string; address: string }>();
+const autocompleteCache = new Map<string, OlaPrediction[]>();
 
 export const LocationService = {
   autocomplete: async (input: string): Promise<OlaPrediction[]> => {
     try {
-      if (!input.trim()) return [];
+      const trimmed = input.trim().toLowerCase();
+      if (!trimmed) return [];
+
+      if (autocompleteCache.has(trimmed)) {
+        return autocompleteCache.get(trimmed)!;
+      }
 
       const response = await olaClient.get('/places/v1/autocomplete', {
-        params: { input },
+        params: { input: trimmed },
       });
 
-      return response.data.predictions || [];
+      const predictions = response.data.predictions || [];
+      autocompleteCache.set(trimmed, predictions);
+      return predictions;
     } catch (error) {
       Logger.error('Ola Maps Autocomplete Error:', error);
       return [];
@@ -74,7 +82,8 @@ export const LocationService = {
     latitude: number,
     longitude: number,
   ): Promise<{ name: string; address: string }> => {
-    const cacheKey = `${latitude.toFixed(6)},${longitude.toFixed(6)}`;
+    // 4 decimal places (~11m) allows adjacent jitter to hit the cache
+    const cacheKey = `${latitude.toFixed(4)},${longitude.toFixed(4)}`;
     if (geocodeCache.has(cacheKey)) {
       return geocodeCache.get(cacheKey)!;
     }
@@ -102,6 +111,7 @@ export const LocationService = {
       return { name: 'Picked Location', address: '' };
     }
   },
+
 
   getDirections: async (
     originLat: number,

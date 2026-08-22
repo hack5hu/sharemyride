@@ -88,7 +88,7 @@ export const RouteSelectionMap: React.FC<RouteSelectionMapProps> = React.memo(({
         onRegionDidChange={handleRegionDidChange}
         onDidFinishLoadingMap={() => setIsMapLoaded(true)}
       >
-        <Camera ref={cameraRef} />
+        <Camera ref={cameraRef} minZoom={8} maxZoom={18} />
 
         <GeoJSONSource
           id="routes-source"

@@ -44,6 +44,37 @@ export const useSelectLocation = () => {
 
   const mapRef = useRef<any>(null);
   const cameraRef = useRef<any>(null);
+  const lastCenterRef = useRef<[number, number] | null>(null);
+
+  // Debounced reverse geocoding to prevent excessive API calls while panning
+  const debouncedReverseGeocode = useRef(
+    debounce(async (latitude: number, longitude: number) => {
+      try {
+        const locationData = await LocationService.reverseGeocode(
+          latitude,
+          longitude,
+        );
+
+        setSelectedLocation({
+          id: `picked-${Date.now()}`,
+          name: locationData.name || 'Selected Location',
+          address: locationData.address || 'Custom coordinates',
+          latitude: latitude,
+          longitude: longitude,
+        });
+      } catch (error) {
+        console.warn('Reverse geocode error:', error);
+      } finally {
+        setIsReverseGeocoding(false);
+      }
+    }, 800),
+  ).current;
+
+  useEffect(() => {
+    return () => {
+      debouncedReverseGeocode.cancel?.();
+    };
+  }, [debouncedReverseGeocode]);
 
   const checkGpsAndGetLocation = useCallback(
     async (showModalOnError = true) => {
@@ -265,7 +296,7 @@ export const useSelectLocation = () => {
     } else {
       await checkGpsAndGetLocation(true);
     }
-  }, [requestLocationPermission, currentUserLocation, checkGpsAndGetLocation]);
+  }, [currentUserLocation, checkGpsAndGetLocation]);
 
   const handleZoom = useCallback(
     (increment: number) => {
@@ -284,47 +315,47 @@ export const useSelectLocation = () => {
   const handleZoomIn = useCallback(() => handleZoom(1), [handleZoom]);
   const handleZoomOut = useCallback(() => handleZoom(-1), [handleZoom]);
 
-  const handleRegionChangeComplete = useCallback(async (event: any) => {
-    const viewState = event?.nativeEvent || event;
-    if (!viewState?.center) return;
+  const handleRegionChangeComplete = useCallback(
+    (event: any) => {
+      const viewState = event?.nativeEvent || event;
+      if (!viewState?.center) return;
 
-    const [longitude, latitude] = viewState.center;
-    if (
-      longitude == null ||
-      latitude == null ||
-      isNaN(longitude) ||
-      isNaN(latitude)
-    )
-      return;
+      const [longitude, latitude] = viewState.center;
+      if (
+        longitude == null ||
+        latitude == null ||
+        isNaN(longitude) ||
+        isNaN(latitude)
+      )
+        return;
 
-    // Ignore exact 0,0 map initialization coordinates
-    if (longitude === 0 && latitude === 0) return;
+      // Ignore exact 0,0 map initialization coordinates
+      if (longitude === 0 && latitude === 0) return;
 
-    const currentZoom = viewState.zoom;
+      const currentZoom = viewState.zoom;
 
-    if (currentZoom !== undefined) {
-      zoomRef.current = currentZoom;
-      setZoom(currentZoom);
-    }
+      if (currentZoom !== undefined) {
+        zoomRef.current = currentZoom;
+        setZoom(currentZoom);
+      }
 
-    setRegion({ latitude, longitude });
-    setIsReverseGeocoding(true);
+      // Guard: Prevent redundant reverse geocode if center hasn't changed
+      const lastCenter = lastCenterRef.current;
+      if (
+        lastCenter &&
+        Math.abs(lastCenter[0] - longitude) < 0.0001 &&
+        Math.abs(lastCenter[1] - latitude) < 0.0001
+      ) {
+        return;
+      }
+      lastCenterRef.current = [longitude, latitude];
 
-    const locationData = await LocationService.reverseGeocode(
-      latitude,
-      longitude,
-    );
-
-    setSelectedLocation({
-      id: `picked-${Date.now()}`,
-      name: locationData.name || 'Selected Location',
-      address: locationData.address || 'Custom coordinates',
-      latitude: latitude,
-      longitude: longitude,
-    });
-
-    setIsReverseGeocoding(false);
-  }, []);
+      setRegion({ latitude, longitude });
+      setIsReverseGeocoding(true);
+      debouncedReverseGeocode(latitude, longitude);
+    },
+    [debouncedReverseGeocode],
+  );
 
   const handleConfirmLocation = useCallback(
     (overrideLocation?: any) => {

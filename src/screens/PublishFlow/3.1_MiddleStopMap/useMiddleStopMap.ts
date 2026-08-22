@@ -382,7 +382,7 @@ export const useMiddleStopMap = () => {
     navigation,
     addSearchHistory,
     contextKey,
-    t,
+    tStops,
   ]);
 
   const handleZoom = useCallback((increment: number) => {
@@ -426,11 +426,52 @@ export const useMiddleStopMap = () => {
     ),
   ).current;
 
+  const lastCenterRef = useRef<[number, number] | null>(null);
+
+  const debouncedReverseGeocode = useRef(
+    debounce(
+      async (
+        latitude: number,
+        longitude: number,
+        currentSelectedId?: string,
+      ) => {
+        setIsReverseGeocoding(true);
+        try {
+          const locationData = await LocationService.reverseGeocode(
+            latitude,
+            longitude,
+          );
+
+          const mapped: MiddleStopMapLocation = {
+            id:
+              currentSelectedId && currentSelectedId.startsWith('picked-')
+                ? currentSelectedId
+                : `picked-${Date.now()}-${Math.random()
+                    .toString(36)
+                    .substr(2, 5)}`,
+            name: locationData.name || 'Selected Location',
+            address: locationData.address || 'Custom coordinates',
+            latitude,
+            longitude,
+          };
+
+          setSelectedLocation(mapped);
+        } catch (error) {
+          console.error('Failed to reverse geocode center:', error);
+        } finally {
+          setIsReverseGeocoding(false);
+        }
+      },
+      800,
+    ),
+  ).current;
+
   useEffect(() => {
     return () => {
       throttledRegionIsChanging.cancel?.();
+      debouncedReverseGeocode.cancel?.();
     };
-  }, [throttledRegionIsChanging]);
+  }, [throttledRegionIsChanging, debouncedReverseGeocode]);
 
   const handleRegionIsChanging = useCallback(
     (event: any) => {
@@ -466,56 +507,38 @@ export const useMiddleStopMap = () => {
       if (routeCoordinates.length >= 2) {
         const result = snapToRoute([longitude, latitude], routeCoordinates);
         setSnapResult(result);
-      }
 
-      setIsReverseGeocoding(true);
-      try {
-        const locationData = await LocationService.reverseGeocode(
-          latitude,
-          longitude,
-        );
-
-        const mapped: MiddleStopMapLocation = {
-          id:
-            selectedLocation?.id && selectedLocation.id.startsWith('picked-')
-              ? selectedLocation.id
-              : `picked-${Date.now()}-${Math.random()
-                  .toString(36)
-                  .substr(2, 5)}`,
-          name: locationData.name || 'Selected Location',
-          address: locationData.address || 'Custom coordinates',
-          latitude,
-          longitude,
-        };
-
-        setSelectedLocation(mapped);
-
-        if (routeCoordinates.length >= 2) {
-          const result = snapToRoute([longitude, latitude], routeCoordinates);
-          setSnapResult(result);
-
-          if (!result.isWithinThreshold) {
-            showNotification(
-              NotificationType.WARNING,
-              t.tooFarFromRoute,
-              t.tooFarFromRouteMsg,
-            );
-          } else {
-            Toast.hide();
-          }
+        if (!result.isWithinThreshold) {
+          showNotification(
+            NotificationType.WARNING,
+            t.tooFarFromRoute,
+            t.tooFarFromRouteMsg,
+          );
+        } else {
+          Toast.hide();
         }
-      } catch (error) {
-        console.error('Failed to reverse geocode center:', error);
-      } finally {
-        setIsReverseGeocoding(false);
       }
+
+      // Guard: Prevent redundant reverse geocode if center hasn't changed
+      const lastCenter = lastCenterRef.current;
+      if (
+        lastCenter &&
+        Math.abs(lastCenter[0] - longitude) < 0.0001 &&
+        Math.abs(lastCenter[1] - latitude) < 0.0001
+      ) {
+        return;
+      }
+      lastCenterRef.current = [longitude, latitude];
+
+      debouncedReverseGeocode(latitude, longitude, selectedLocation?.id);
     },
     [
       isSearching,
       routeCoordinates,
       t,
-      selectedLocation,
+      selectedLocation?.id,
       throttledRegionIsChanging,
+      debouncedReverseGeocode,
     ],
   );
 

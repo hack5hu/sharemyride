@@ -87,7 +87,13 @@ export const MapLayerSection: React.FC<MapLayerSectionProps> = ({
           }}
           onRegionDidChange={onRegionChangeComplete}
         >
-          <Camera ref={cameraRef as any} center={initialCenter} zoom={14} />
+          <Camera
+            ref={cameraRef as any}
+            center={initialCenter}
+            zoom={14}
+            minZoom={8}
+            maxZoom={18}
+          />
 
           {routeGeoJSON && (
             <>

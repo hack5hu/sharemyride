@@ -119,7 +119,13 @@ export const BentoMapPreview: React.FC<BentoMapPreviewProps> = ({
     <S.Container>
       <S.MapWrapper>
         <S.StyledOlaMap>
-          <Camera ref={cameraRef} center={initialCenter} zoom={zoom} />
+          <Camera
+            ref={cameraRef}
+            center={initialCenter}
+            zoom={zoom}
+            minZoom={8}
+            maxZoom={18}
+          />
 
           <GeoJSONSource id="points-source" data={pointsGeoJSON}>
             <Layer
