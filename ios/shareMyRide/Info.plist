@@ -36,7 +36,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>11</string>
+	<string>12</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -52,10 +52,8 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>ZyncRide needs access to your location in the background to share real-time progress of the ride with your riders.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>ZyncRide needs access to your location to share it with your riders.</string>
+	<string>ZyncRide needs access to your location to find nearby rides and display your route.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>ZyncRide needs access to your photo library to choose a profile picture.</string>
 	<key>RCTNewArchEnabled</key>
@@ -89,7 +87,6 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
-		<string>location</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>BootSplash</string>
