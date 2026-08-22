@@ -27,8 +27,12 @@ export const HeaderTitle = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 800;
   font-size: ${responsiveFont(20)}px;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.on_surface};
   letter-spacing: -1px;
+`;
+
+export const HeaderTitleHighlight = styled.Text`
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 /* Hero Section */

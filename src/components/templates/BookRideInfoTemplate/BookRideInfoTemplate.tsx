@@ -48,7 +48,12 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
         () => (
           <>
             <S.Header $paddingTop={insets.top + verticalScale(12)}>
-              <S.HeaderTitle>{t.brandName}</S.HeaderTitle>
+              <S.HeaderTitle>
+                {t.brandName.slice(0, 4)}
+                <S.HeaderTitleHighlight>
+                  {t.brandName.slice(4)}
+                </S.HeaderTitleHighlight>
+              </S.HeaderTitle>
             </S.Header>
 
             <S.HeroSection>
