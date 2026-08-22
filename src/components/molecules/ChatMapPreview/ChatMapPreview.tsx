@@ -1,11 +1,11 @@
-import React from 'react';
-import { Camera } from '@maplibre/maplibre-react-native';
+import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import {
   Container,
   MapWrapper,
-  StyledOlaMap,
+  StaticMapImage,
+  MapPlaceholder,
   InfoContainer,
   LocationName,
   Address,
@@ -13,6 +13,7 @@ import {
 } from './ChatMapPreview.styles';
 import { ChatMapPreviewProps } from './types.d';
 import { moderateScale } from '@/styles';
+import { OLA_API_KEY } from '@/constants/OlaStyle';
 
 export const ChatMapPreview: React.FC<ChatMapPreviewProps> = ({
   latitude,
@@ -22,13 +23,28 @@ export const ChatMapPreview: React.FC<ChatMapPreviewProps> = ({
   onPress,
 }) => {
   const theme = useTheme();
+  const [imageError, setImageError] = useState(false);
+
+  const staticMapUrl = `https://api.olamaps.io/places/v1/staticmap?center=${latitude},${longitude}&zoom=15&size=480x280&api_key=${OLA_API_KEY}`;
 
   return (
     <Container activeOpacity={0.9} onPress={onPress}>
       <MapWrapper pointerEvents="none">
-        <StyledOlaMap mapStyle="https://api.olamaps.io/tiles/vector/v1/styles/default-dark-standard/style.json">
-          <Camera center={[longitude, latitude]} zoom={15} />
-        </StyledOlaMap>
+        {!imageError ? (
+          <StaticMapImage
+            source={{ uri: staticMapUrl }}
+            onError={() => setImageError(true)}
+            resizeMode="cover"
+          />
+        ) : (
+          <MapPlaceholder>
+            <Icon
+              name="map"
+              size={moderateScale(40)}
+              color={theme.colors.surface_variant}
+            />
+          </MapPlaceholder>
+        )}
         <MarkerOverlay>
           <Icon
             name="location-on"

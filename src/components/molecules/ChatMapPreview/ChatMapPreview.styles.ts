@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
-import { OlaMap } from '@/components/organisms/OlaMap';
 
 export const Container = styled.TouchableOpacity`
   width: ${scale(240)}px;
@@ -13,10 +12,20 @@ export const MapWrapper = styled.View`
   height: ${verticalScale(140)}px;
   width: 100%;
   position: relative;
+  background-color: ${({ theme }) => theme.colors.surface_variant};
 `;
 
-export const StyledOlaMap = styled(OlaMap)`
-  flex: 1;
+export const StaticMapImage = styled.Image`
+  width: 100%;
+  height: 100%;
+`;
+
+export const MapPlaceholder = styled.View`
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ theme }) => theme.colors.surface_container_high};
 `;
 
 export const InfoContainer = styled.View`
