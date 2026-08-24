@@ -5,7 +5,6 @@ export const VehicleCard = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   border-radius: ${moderateScale(20)}px;
   padding: ${moderateScale(18)}px ${moderateScale(20)}px;
-  margin-bottom: ${verticalScale(16)}px;
   shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.06;
@@ -30,21 +29,21 @@ export const SectionDot = styled.View<{ color?: string }>`
 export const MainRow = styled.View`
   flex-direction: row;
   align-items: center;
-  gap: ${scale(18)}px;
+  gap: ${scale(14)}px;
 `;
 
 export const VehicleIconBox = styled.View`
-  width: ${moderateScale(64)}px;
-  height: ${moderateScale(64)}px;
-  border-radius: ${moderateScale(18)}px;
-  background-color: ${({ theme }) => `${theme.colors.primary}10`};
+  width: ${moderateScale(52)}px;
+  height: ${moderateScale(52)}px;
+  border-radius: ${moderateScale(14)}px;
+  background-color: ${({ theme }) => `${theme.colors.primary}12`};
   align-items: center;
   justify-content: center;
 `;
 
 export const VehicleDetails = styled.View`
   flex: 1;
-  gap: ${verticalScale(8)}px;
+  gap: ${verticalScale(6)}px;
 `;
 
 export const PlateRow = styled.View`
@@ -56,26 +55,26 @@ export const PlateRow = styled.View`
 
 export const PlateBadge = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_high};
-  padding-horizontal: ${scale(12)}px;
-  padding-vertical: ${verticalScale(4)}px;
-  border-radius: ${moderateScale(8)}px;
+  padding-horizontal: ${scale(10)}px;
+  padding-vertical: ${verticalScale(3)}px;
+  border-radius: ${moderateScale(6)}px;
 `;
 
 export const CategoryPill = styled.View`
-  background-color: ${({ theme }) => `${theme.colors.secondary}12`};
-  padding-horizontal: ${scale(12)}px;
-  padding-vertical: ${verticalScale(4)}px;
-  border-radius: ${moderateScale(12)}px;
+  background-color: ${({ theme }) => `${theme.colors.primary}12`};
+  padding-horizontal: ${scale(10)}px;
+  padding-vertical: ${verticalScale(3)}px;
+  border-radius: ${moderateScale(6)}px;
 `;
 
 export const ColorPill = styled.View`
   flex-direction: row;
   align-items: center;
   gap: ${scale(6)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container};
-  padding-horizontal: ${scale(12)}px;
-  padding-vertical: ${verticalScale(4)}px;
-  border-radius: ${moderateScale(12)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_low};
+  padding-horizontal: ${scale(10)}px;
+  padding-vertical: ${verticalScale(3)}px;
+  border-radius: ${moderateScale(6)}px;
 `;
 
 export const ColorDot = styled.View<{ colorHex: string }>`

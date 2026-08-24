@@ -6,7 +6,6 @@ export const SectionCard = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   border-radius: ${moderateScale(20)}px;
   padding: ${moderateScale(18)}px ${moderateScale(20)}px;
-  margin-bottom: ${verticalScale(16)}px;
   shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 4px;
   shadow-opacity: 0.06;
@@ -35,23 +34,40 @@ export const PassengerList = styled.View`
 export const PassengerCard = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  padding: ${moderateScale(14)}px;
+  justify-content: space-between;
+  padding: ${moderateScale(14)}px ${moderateScale(16)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_low};
   border-radius: ${moderateScale(16)}px;
 `;
 
 export const PassengerInfo = styled.View`
   flex: 1;
-  margin-left: ${scale(12)}px;
   gap: ${verticalScale(4)}px;
+`;
+
+export const RightMetaGroup = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(6)}px;
+  margin-left: ${scale(12)}px;
+`;
+
+export const SegmentRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(4)}px;
 `;
 
 export const SeatBadge = styled.View`
   align-self: flex-start;
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(4)}px;
   background-color: ${({ theme }) => `${theme.colors.primary}12`};
-  padding-horizontal: ${scale(10)}px;
-  padding-vertical: ${verticalScale(4)}px;
-  border-radius: ${moderateScale(8)}px;
+  padding-horizontal: ${scale(8)}px;
+  padding-vertical: ${verticalScale(3)}px;
+  border-radius: ${moderateScale(6)}px;
+  margin-top: ${verticalScale(2)}px;
 `;
 
 export const CoRidersList = styled.ScrollView`

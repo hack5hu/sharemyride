@@ -41,20 +41,59 @@ export const DriverCard = styled.View`
 export const DriverInfoGroup = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  gap: ${scale(14)}px;
+  gap: ${scale(12)}px;
   flex: 1;
 `;
 
 export const DriverTextGroup = styled.View`
-  gap: ${verticalScale(2)}px;
+  gap: ${verticalScale(4)}px;
   flex: 1;
+`;
+
+export const DriverNameRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(4)}px;
+`;
+
+export const DriverMetaRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(6)}px;
+  flex-wrap: wrap;
+`;
+
+export const RatingPill = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(3)}px;
+  background-color: ${({ theme }) => `${theme.colors.warning || '#f59e0b'}18`};
+  padding-horizontal: ${scale(6)}px;
+  padding-vertical: ${verticalScale(2)}px;
+  border-radius: ${moderateScale(6)}px;
+`;
+
+export const MetaBadge = styled.View`
+  background-color: ${({ theme }) => theme.colors.surface_container_high};
+  padding-horizontal: ${scale(6)}px;
+  padding-vertical: ${verticalScale(2)}px;
+  border-radius: ${moderateScale(6)}px;
+`;
+
+export const VerifiedPill = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(3)}px;
+  background-color: ${({ theme }) => `${theme.colors.primary}12`};
+  padding-horizontal: ${scale(6)}px;
+  padding-vertical: ${verticalScale(2)}px;
+  border-radius: ${moderateScale(6)}px;
 `;
 
 export const VerifiedRow = styled.View`
   flex-direction: row;
   align-items: center;
   gap: ${scale(6)}px;
-  margin-top: ${verticalScale(2)}px;
 `;
 
 export const AvatarWrapper = styled.View`
@@ -68,12 +107,13 @@ export const BadgePin = styled.View`
 `;
 
 export const ChatButton = styled.TouchableOpacity`
-  width: ${moderateScale(40)}px;
-  height: ${moderateScale(40)}px;
-  border-radius: ${moderateScale(12)}px;
-  background-color: ${({ theme }) => `${theme.colors.primary}15`};
+  width: ${moderateScale(42)}px;
+  height: ${moderateScale(42)}px;
+  border-radius: ${moderateScale(14)}px;
+  background-color: ${({ theme }) => `${theme.colors.primary}14`};
   align-items: center;
   justify-content: center;
+  margin-left: ${scale(8)}px;
 `;
 
 export const DriverActions = styled.View`

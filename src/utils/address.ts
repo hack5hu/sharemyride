@@ -249,6 +249,26 @@ export const formatFullCleanAddress = (
 };
 
 /**
+ * Extracts just the city name from a full formatted address.
+ * E.g. "Mandiram Das..., Mathura, Uttar Pradesh, 281001, India" -> "Mathura"
+ */
+export const getCityName = (address: string | null | undefined): string => {
+  if (!address) return '';
+  const parts = address
+    .split(',')
+    .map(p => p.trim())
+    .filter(Boolean);
+
+  const withoutTail = parts.filter(part => !isTailNoise(part));
+  if (withoutTail.length === 0) return address.split(',')[0].trim();
+
+  const meaningful = withoutTail.filter(part => !isInternalDetail(part));
+  if (meaningful.length === 0) return withoutTail[withoutTail.length - 1];
+
+  return meaningful[meaningful.length - 1];
+};
+
+/**
  * Returns just the first comma-separated part (the place name).
  * Useful for compact single-line labels like ride cards / banners.
  *

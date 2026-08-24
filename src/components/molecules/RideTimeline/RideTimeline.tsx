@@ -61,11 +61,16 @@ const DashLine = styled.View`
 `;
 
 const LeftContent = styled.View`
-  width: ${scale(70)}px;
+  width: ${scale(72)}px;
   align-items: flex-end;
   padding-right: ${scale(12)}px;
   padding-top: ${verticalScale(2)}px;
-  gap: ${verticalScale(4)}px;
+`;
+
+const DurationTrackContainer = styled.View`
+  margin-top: ${verticalScale(10)}px;
+  margin-bottom: ${verticalScale(6)}px;
+  align-items: flex-end;
 `;
 
 const RightContent = styled.View<{ isLast?: boolean }>`
@@ -150,15 +155,18 @@ export const RideTimeline: React.FC<{
             >
               {point.time}
             </TimeText>
-            {point.durationSincePrevious && (
-              <Typography
-                variant="label"
-                size="xs"
-                color={theme.colors.on_surface_variant}
-              >
-                {point.durationSincePrevious}
-              </Typography>
-            )}
+            {points[index + 1]?.durationSincePrevious ? (
+              <DurationTrackContainer>
+                <Typography
+                  variant="label"
+                  size="xs"
+                  weight="bold"
+                  color={theme.colors.on_surface_variant}
+                >
+                  {points[index + 1].durationSincePrevious}
+                </Typography>
+              </DurationTrackContainer>
+            ) : null}
           </LeftContent>
 
           <DashColumn>

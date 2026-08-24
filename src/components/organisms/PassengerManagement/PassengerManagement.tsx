@@ -7,6 +7,7 @@ import { Avatar } from '@/components/atoms/Avatar';
 import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';
 import { storage } from '@/utils/storage';
+import { getCityName, getShortLocationName } from '@/utils/address';
 import * as S from './PassengerManagement.styles';
 
 export interface Passenger {
@@ -43,11 +44,11 @@ const formatSegment = (segment?: string) => {
     : null;
   if (delimiter) {
     const parts = segment.split(delimiter);
-    const start = parts[0].split(',')[0].trim();
-    const end = parts[1]?.split(',')[0].trim() || '';
+    const start = getCityName(parts[0]) || getShortLocationName(parts[0]);
+    const end = parts[1] ? (getCityName(parts[1]) || getShortLocationName(parts[1])) : '';
     return end ? `${start} → ${end}` : start;
   }
-  return segment.split(',')[0].trim();
+  return getCityName(segment) || getShortLocationName(segment);
 };
 
 export const PassengerManagement: React.FC<PassengerManagementProps> =
@@ -174,25 +175,31 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                     key={p.bookingId || p.id || i}
                     onPress={() => onPassengerPress?.(passengerId)}
                     disabled={!onPassengerPress}
+                    activeOpacity={0.7}
                   >
-                    <Avatar
-                      source={{ uri: p.photoUrl }}
-                      placeholder={p.name}
-                      size="sm"
-                    />
                     <S.PassengerInfo>
-                      <Typography variant="body" size="sm" weight="bold">
+                      <Typography variant="title" size="sm" weight="bold">
                         {p.name}
                       </Typography>
-                      <Typography
-                        variant="label"
-                        size="xs"
-                        color="on_surface_variant"
-                        numberOfLines={1}
-                      >
-                        {formatSegment(p.segment)}
-                      </Typography>
+
+                      <S.SegmentRow>
+                        <Typography
+                          variant="body"
+                          size="sm"
+                          weight="medium"
+                          color="on_surface_variant"
+                          numberOfLines={1}
+                        >
+                          {formatSegment(p.segment)}
+                        </Typography>
+                      </S.SegmentRow>
+
                       <S.SeatBadge>
+                        <Icon
+                          name="event-seat"
+                          size={moderateScale(11)}
+                          color={theme.colors.primary}
+                        />
                         <Typography
                           variant="label"
                           size="xs"
@@ -207,55 +214,70 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                         </Typography>
                       </S.SeatBadge>
                     </S.PassengerInfo>
-                    {!hideActions && (
-                      <S.RemoveButton
-                        icon="person-remove"
-                        variant="surface"
-                        onPress={() =>
-                          onCancelPassenger?.(passengerId)
-                        }
-                      />
-                    )}
-                    {isCompleted && onRatePassenger && (
-                      hasBeenRated ? (
-                        <S.RatedBadge>
-                          <Icon
-                            name="check-circle"
-                            size={moderateScale(16)}
-                            color={theme.colors.on_surface_variant}
-                          />
-                          <Typography
-                            variant="label"
-                            size="xs"
-                            weight="bold"
-                            color="on_surface_variant"
-                          >
-                            {locale.rating.ratedStatus || 'Rated'}
-                          </Typography>
-                        </S.RatedBadge>
-                      ) : (
-                        <S.RateButton
-                          activeOpacity={0.8}
+
+                    <S.RightMetaGroup>
+                      {!hideActions && (
+                        <S.RemoveButton
+                          icon="person-remove"
+                          variant="surface"
                           onPress={() =>
-                            onRatePassenger?.(passengerId, p.name, p.photoUrl)
+                            onCancelPassenger?.(passengerId)
                           }
-                        >
-                          <Icon
-                            name="star"
-                            size={moderateScale(16)}
-                            color={theme.colors.warning}
-                          />
-                          <Typography
-                            variant="label"
-                            size="xs"
-                            weight="bold"
-                            color={theme.colors.warning}
+                        />
+                      )}
+                      {isCompleted && onRatePassenger && (
+                        hasBeenRated ? (
+                          <S.RatedBadge>
+                            <Icon
+                              name="check-circle"
+                              size={moderateScale(16)}
+                              color={theme.colors.on_surface_variant}
+                            />
+                            <Typography
+                              variant="label"
+                              size="xs"
+                              weight="bold"
+                              color="on_surface_variant"
+                            >
+                              {locale.rating.ratedStatus || 'Rated'}
+                            </Typography>
+                          </S.RatedBadge>
+                        ) : (
+                          <S.RateButton
+                            activeOpacity={0.8}
+                            onPress={() =>
+                              onRatePassenger?.(passengerId, p.name, p.photoUrl)
+                            }
                           >
-                            Rate
-                          </Typography>
-                        </S.RateButton>
-                      )
-                    )}
+                            <Icon
+                              name="star"
+                              size={moderateScale(16)}
+                              color={theme.colors.warning}
+                            />
+                            <Typography
+                              variant="label"
+                              size="xs"
+                              weight="bold"
+                              color={theme.colors.warning}
+                            >
+                              Rate
+                            </Typography>
+                          </S.RateButton>
+                        )
+                      )}
+                      <Avatar
+                        source={{ uri: p.photoUrl }}
+                        placeholder={p.name}
+                        size="md"
+                      />
+                      {onPassengerPress && (
+                        <Icon
+                          name="chevron-right"
+                          size={moderateScale(20)}
+                          color={theme.colors.on_surface_variant}
+                        />
+                      )}
+                    </S.RightMetaGroup>
                   </S.PassengerCard>
                 );
               })}
@@ -267,25 +289,31 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                   key={p.bookingId || p.id || i}
                   onPress={() => onPassengerPress?.(p.id || p.bookingId || '')}
                   disabled={!onPassengerPress}
+                  activeOpacity={0.7}
                 >
-                  <Avatar
-                    source={{ uri: p.photoUrl }}
-                    placeholder={p.name}
-                    size="sm"
-                  />
                   <S.PassengerInfo>
-                    <Typography variant="body" size="sm" weight="bold">
+                    <Typography variant="title" size="sm" weight="bold">
                       {p.name}
                     </Typography>
-                    <Typography
-                      variant="label"
-                      size="xs"
-                      color="on_surface_variant"
-                      numberOfLines={1}
-                    >
-                      {formatSegment(p.segment)}
-                    </Typography>
+
+                    <S.SegmentRow>
+                      <Typography
+                        variant="body"
+                        size="sm"
+                        weight="medium"
+                        color="on_surface_variant"
+                        numberOfLines={1}
+                      >
+                        {formatSegment(p.segment)}
+                      </Typography>
+                    </S.SegmentRow>
+
                     <S.SeatBadge>
+                      <Icon
+                        name="event-seat"
+                        size={moderateScale(11)}
+                        color={theme.colors.primary}
+                      />
                       <Typography
                         variant="label"
                         size="xs"
@@ -300,6 +328,21 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                       </Typography>
                     </S.SeatBadge>
                   </S.PassengerInfo>
+
+                  <S.RightMetaGroup>
+                    <Avatar
+                      source={{ uri: p.photoUrl }}
+                      placeholder={p.name}
+                      size="md"
+                    />
+                    {onPassengerPress && (
+                      <Icon
+                        name="chevron-right"
+                        size={moderateScale(20)}
+                        color={theme.colors.on_surface_variant}
+                      />
+                    )}
+                  </S.RightMetaGroup>
                 </S.PassengerCard>
               ))}
             </S.PassengerList>

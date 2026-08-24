@@ -31,56 +31,96 @@ export const DriverCard: React.FC<DriverCardProps> = React.memo(
 
     return (
       <S.DriverCard>
-        <S.DriverInfoGroup onPress={handleDriverProfile}>
+        <S.DriverInfoGroup onPress={handleDriverProfile} activeOpacity={0.7}>
           <S.AvatarWrapper>
             <Avatar
               source={{ uri: driver.driverPhotoUrl || driver.avatar }}
               placeholder={driver.name}
               size="md"
-              border
             />
             {driver.isVerified && (
               <S.BadgePin>
-                <VerifiedBadge size={20} />
+                <VerifiedBadge size={18} />
               </S.BadgePin>
             )}
           </S.AvatarWrapper>
 
           <S.DriverTextGroup>
-            <Typography variant="title" size="sm" weight="bold">
-              {driver.name}
-            </Typography>
-            <S.VerifiedRow>
-              <Icon
-                name="star"
-                size={moderateScale(13)}
-                color={theme.colors.warning}
-              />
-              <Typography
-                variant="label"
-                size="xs"
-                weight="bold"
-                color="on_surface_variant"
-              >
-                {driver.rating}
+            <S.DriverNameRow>
+              <Typography variant="title" size="sm" weight="bold">
+                {driver.name}
               </Typography>
-            </S.VerifiedRow>
+              <Icon
+                name="chevron-right"
+                size={moderateScale(18)}
+                color={theme.colors.on_surface_variant}
+              />
+            </S.DriverNameRow>
+
+            <S.DriverMetaRow>
+              <S.RatingPill>
+                <Icon
+                  name="star"
+                  size={moderateScale(13)}
+                  color={theme.colors.warning || '#f59e0b'}
+                />
+                <Typography
+                  variant="label"
+                  size="xs"
+                  weight="bold"
+                  color={theme.colors.on_surface}
+                >
+                  {Number(driver.rating || 5).toFixed(1)}
+                </Typography>
+              </S.RatingPill>
+
+              {driver.rideCount !== undefined && driver.rideCount > 0 && (
+                <S.MetaBadge>
+                  <Typography
+                    variant="label"
+                    size="xs"
+                    weight="medium"
+                    color={theme.colors.on_surface_variant}
+                  >
+                    {driver.rideCount} rides
+                  </Typography>
+                </S.MetaBadge>
+              )}
+
+              {driver.isVerified && (
+                <S.VerifiedPill>
+                  <Icon
+                    name="verified"
+                    size={moderateScale(12)}
+                    color={theme.colors.primary}
+                  />
+                  <Typography
+                    variant="label"
+                    size="xs"
+                    weight="bold"
+                    color={theme.colors.primary}
+                  >
+                    Verified
+                  </Typography>
+                </S.VerifiedPill>
+              )}
+            </S.DriverMetaRow>
           </S.DriverTextGroup>
         </S.DriverInfoGroup>
 
         <S.DriverActions>
-          {isCompleted && driver.hasRated && (
+          {isCompleted && (driver as any).hasRated && (
             <S.RatedBadge>
               <Icon
                 name="check-circle"
-                size={moderateScale(16)}
+                size={moderateScale(14)}
                 color={theme.colors.on_surface_variant}
               />
               <Typography
                 variant="label"
                 size="xs"
                 weight="bold"
-                color="on_surface_variant"
+                color={theme.colors.on_surface_variant}
               >
                 {locale.rating?.ratedStatus || 'Rated'}
               </Typography>
@@ -90,8 +130,8 @@ export const DriverCard: React.FC<DriverCardProps> = React.memo(
           {showChat && (
             <S.ChatButton onPress={handleChat} activeOpacity={0.8}>
               <Icon
-                name="chat-bubble-outline"
-                size={moderateScale(20)}
+                name="chat-bubble"
+                size={moderateScale(18)}
                 color={theme.colors.primary}
               />
             </S.ChatButton>

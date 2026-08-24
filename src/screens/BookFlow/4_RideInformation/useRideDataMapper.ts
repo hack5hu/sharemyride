@@ -81,7 +81,8 @@ export const mapBackendRideToUI = (
         );
         const h = Math.floor(diffMins / 60);
         const m = diffMins % 60;
-        durationSincePrevious = h > 0 ? `${h}h${m > 0 ? m : ''}` : `${m}m`;
+        durationSincePrevious =
+          h > 0 ? (m > 0 ? `${h}h ${m}m` : `${h}h`) : `${m}m`;
       }
     }
 
