@@ -13,11 +13,12 @@ export const useUserRatings = (userId: string, userName: string) => {
       setIsLoading(true);
       const ratingsData = await UserService.getUserRatings(userId);
       
-      const mappedReviews = (ratingsData || []).map((r: any) => ({
-        id: String(r.ratingId),
+      const validRatings = Array.isArray(ratingsData) ? ratingsData : [];
+      const mappedReviews = validRatings.map((r: any) => ({
+        id: String(r.ratingId || Math.random()),
         reviewerName: r.raterName || 'Anonymous',
         reviewerImage: r.raterPhotoUrl || undefined,
-        rating: r.score,
+        rating: Number(r.score || 5),
         date: r.createdAt
           ? new Date(r.createdAt).toLocaleDateString([], {
               day: 'numeric',
@@ -26,7 +27,7 @@ export const useUserRatings = (userId: string, userName: string) => {
             })
           : 'Recent',
         tripInfo: r.raterRole === 'DRIVER' ? 'Rode with them' : 'Passenger',
-        comment: r.comment || '',
+        comment: (r.comment || '').trim(),
       }));
 
       setReviews(mappedReviews);

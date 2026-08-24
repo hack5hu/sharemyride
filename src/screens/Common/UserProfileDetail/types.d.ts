@@ -34,6 +34,7 @@ export interface UserProfile {
   isVerified: boolean;
   rating: number;
   ratingCount: number;
+  ridesCount?: number;
   preferences: {
     icon: string;
     label: string;

@@ -1,35 +1,69 @@
 import styled from 'styled-components/native';
-import { Box } from '@/components/atoms/Box';
-import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
-import { Typography } from '@/components/atoms/Typography';
-
-
+import { scale, verticalScale, moderateScale } from '@/styles';
 
 export const ScrollContent = styled.ScrollView.attrs({
   contentContainerStyle: {
-    paddingBottom: verticalScale(100),
+    paddingBottom: verticalScale(60),
   },
 })``;
 
-export const ProfileHero = styled(Box)`
-  align-items: center;
-  margin-vertical: ${verticalScale(30)}px;
+export const ContentPadding = styled.View`
+  padding-horizontal: ${scale(20)}px;
+  gap: ${verticalScale(16)}px;
+  margin-top: ${verticalScale(12)}px;
 `;
 
-export const AvatarWrapper = styled(Box)`
+export const ProfileHeroCard = styled.View`
+  align-items: center;
+  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
+  border-radius: ${moderateScale(24)}px;
+  padding: ${verticalScale(24)}px ${scale(20)}px;
+  elevation: 3;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.06;
+  shadow-radius: 12px;
+`;
+
+export const AvatarWrapper = styled.View`
   position: relative;
 `;
 
-export const StatsRow = styled(Box)`
+export const BadgePin = styled.View`
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+`;
+
+export const HeroName = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-size: ${moderateScale(22)}px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.on_surface};
+  margin-top: ${verticalScale(12)}px;
+  text-align: center;
+`;
+
+export const BioContainer = styled.View`
+  margin-top: ${verticalScale(10)}px;
+  padding-horizontal: ${scale(14)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_low};
+  padding-vertical: ${verticalScale(8)}px;
+  border-radius: ${moderateScale(12)}px;
+  align-self: stretch;
+  align-items: center;
+`;
+
+export const StatsRow = styled.View`
   flex-direction: row;
   align-items: center;
   margin-top: ${verticalScale(8)}px;
   gap: ${scale(8)}px;
 `;
 
-export const VerifiedTag = styled(Box)`
-  background-color: ${({ theme }) => theme.colors.primary_fixed};
-  padding-horizontal: ${scale(12)}px;
+export const VerifiedTag = styled.View`
+  background-color: ${({ theme }) => `${theme.colors.primary}12`};
+  padding-horizontal: ${scale(10)}px;
   padding-vertical: ${verticalScale(4)}px;
   border-radius: ${moderateScale(100)}px;
   flex-direction: row;
@@ -37,9 +71,9 @@ export const VerifiedTag = styled(Box)`
   gap: ${scale(4)}px;
 `;
 
-export const RatingBadge = styled(Box)`
+export const RatingBadge = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_high};
-  padding-horizontal: ${scale(12)}px;
+  padding-horizontal: ${scale(10)}px;
   padding-vertical: ${verticalScale(4)}px;
   border-radius: ${moderateScale(100)}px;
   flex-direction: row;
@@ -53,129 +87,101 @@ export const ChatButton = styled.TouchableOpacity`
   justify-content: center;
   gap: ${scale(8)}px;
   background-color: ${({ theme }) => theme.colors.primary};
-  padding-horizontal: ${scale(24)}px;
-  padding-vertical: ${verticalScale(10)}px;
+  padding-horizontal: ${scale(28)}px;
+  padding-vertical: ${verticalScale(12)}px;
   border-radius: ${moderateScale(100)}px;
   margin-top: ${verticalScale(16)}px;
+  elevation: 3;
   shadow-color: ${({ theme }) => theme.colors.primary};
   shadow-offset: 0px 4px;
-  shadow-opacity: 0.2;
+  shadow-opacity: 0.25;
   shadow-radius: 8px;
-  elevation: 4;
 `;
 
-export const Section = styled(Box)`
-  padding-horizontal: ${scale(24)}px;
-  margin-bottom: ${verticalScale(24)}px;
+export const SectionCard = styled.View`
+  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
+  border-radius: ${moderateScale(20)}px;
+  padding: ${moderateScale(18)}px;
+  elevation: 2;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
+  shadow-offset: 0px 2px;
+  shadow-opacity: 0.04;
+  shadow-radius: 8px;
+  gap: ${verticalScale(12)}px;
 `;
 
-export const PreferencesContainer = styled(Box)`
+export const SectionLabelRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(6)}px;
+`;
+
+export const SectionDot = styled.View<{ color?: string }>`
+  width: ${moderateScale(6)}px;
+  height: ${moderateScale(6)}px;
+  border-radius: ${moderateScale(3)}px;
+  background-color: ${({ theme, color }) => color || theme.colors.primary};
+`;
+
+export const PreferencesWrap = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   gap: ${scale(8)}px;
 `;
 
-export const PreferenceTag = styled(Box)`
+export const PreferenceChip = styled.View`
   flex-direction: row;
   align-items: center;
   background-color: ${({ theme }) => theme.colors.surface_container_low};
   padding-horizontal: ${scale(12)}px;
   padding-vertical: ${verticalScale(8)}px;
   border-radius: ${moderateScale(12)}px;
-  gap: ${scale(8)}px;
+  gap: ${scale(6)}px;
 `;
 
-export const BentoCard = styled(Box)`
+export const RatingsBreakdownCard = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  padding: ${moderateScale(16)}px;
-  border-radius: ${moderateScale(12)}px;
+  padding: ${moderateScale(16)}px ${moderateScale(18)}px;
+  border-radius: ${moderateScale(18)}px;
+  elevation: 2;
   shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 2px;
-  shadow-opacity: 0.05;
-  shadow-radius: 4px;
-  elevation: 2;
+  shadow-opacity: 0.04;
+  shadow-radius: 8px;
 `;
-
-export const BentoHeader = styled(Box)`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: ${verticalScale(12)}px;
-`;
-
-export const VehicleInfo = styled(Box)`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(12)}px;
-`;
-
-export const VehicleIconContainer = styled(Box)`
-  width: ${moderateScale(48)}px;
-  height: ${moderateScale(48)}px;
-  background-color: ${({ theme }) => theme.colors.primary_fixed_dim};
-  border-radius: ${moderateScale(12)}px;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const VehicleDetails = styled(Box)`
-  flex: 1;
-`;
-
-export const TagRow = styled(Box)`
-  flex-direction: row;
-  align-items: center;
-  margin-top: ${verticalScale(4)}px;
-`;
-
-export const StatusDot = styled(Box)`
-  width: ${moderateScale(6)}px;
-  height: ${moderateScale(6)}px;
-  border-radius: ${moderateScale(3)}px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  margin-right: ${scale(4)}px;
-`;
-
-export const RatingsBreakdown = styled.TouchableOpacity`
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  background-color: ${({ theme }) => theme.colors.secondary_container}33;
-  padding: ${moderateScale(16)}px;
-  border-radius: ${moderateScale(12)}px;
-`;
-
 
 export const ReviewerAvatar = styled.Image`
   width: ${moderateScale(32)}px;
   height: ${moderateScale(32)}px;
   border-radius: ${moderateScale(16)}px;
   border-width: 2px;
-  border-color: ${({ theme }) => theme.colors.surface};
+  border-color: ${({ theme }) => theme.colors.surface_container_lowest};
   margin-right: ${scale(-10)}px;
 `;
 
-export const ReviewCard = styled(Box)`
+export const ReviewItem = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_low};
-  padding: ${moderateScale(16)}px;
-  border-radius: ${moderateScale(12)}px;
-  margin-bottom: ${verticalScale(12)}px;
+  padding: ${moderateScale(14)}px;
+  border-radius: ${moderateScale(14)}px;
+  gap: ${verticalScale(8)}px;
 `;
 
-export const ReviewHeader = styled(Box)`
+export const ReviewHeader = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: ${verticalScale(12)}px;
+  align-items: center;
 `;
 
-export const ReviewerInfo = styled(Box)`
+export const ReviewerMeta = styled.View`
   flex-direction: row;
   align-items: center;
-  gap: ${scale(12)}px;
+  gap: ${scale(10)}px;
 `;
 
-export const StarsRow = styled(Box)`
+export const StarsRow = styled.View`
   flex-direction: row;
   gap: ${scale(2)}px;
 `;
@@ -184,47 +190,8 @@ export const ReportButton = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding-vertical: ${verticalScale(16)}px;
-  border-top-width: 1px;
-  border-top-color: ${({ theme }) => theme.colors.outline_variant}33;
+  padding-vertical: ${verticalScale(14)}px;
+  background-color: ${({ theme }) => `${theme.colors.error}10`};
+  border-radius: ${moderateScale(16)}px;
   gap: ${scale(8)}px;
-`;
-
-
-export const HeroName = styled(Typography).attrs({
-  variant: 'headline',
-  size: 'lg',
-  weight: 'bold',
-})`
-  margin-top: ${verticalScale(16)}px;
-`;
-
-export const SectionTitleLabel = styled(Typography).attrs({
-  variant: 'label',
-  size: 'sm',
-  weight: 'bold',
-  color: 'outline',
-})`
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: ${verticalScale(12)}px;
-`;
-
-export const ReviewComment = styled(Typography).attrs({
-  variant: 'body',
-  size: 'sm',
-  weight: 'medium',
-  color: 'on_surface_variant',
-})`
-  font-style: italic;
-  line-height: ${responsiveFont(20)}px;
-`;
-
-export const RatingsBreakdownText = styled(Typography).attrs({
-  variant: 'label',
-  size: 'md',
-  weight: 'bold',
-  color: 'on_secondary_container',
-})<{ $hasAvatars: boolean }>`
-  margin-left: ${({ $hasAvatars }) => ($hasAvatars ? scale(12) : 0)}px;
 `;

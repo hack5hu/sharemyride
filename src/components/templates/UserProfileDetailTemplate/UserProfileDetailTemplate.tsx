@@ -5,6 +5,8 @@ import { Box } from '@/components/atoms/Box';
 import { Typography } from '@/components/atoms/Typography';
 import { Loader } from '@/components/atoms/Loader';
 import { Avatar } from '@/components/atoms/Avatar';
+import { VerifiedBadge } from '@/components/atoms/VerifiedBadge';
+import { moderateScale } from '@/styles';
 import { UserProfileDetailTemplateProps } from './types';
 import * as S from './UserProfileDetailTemplate.styles';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
@@ -35,139 +37,194 @@ export const UserProfileDetailTemplate: React.FC<
     return (
       <ScreenShell title={t.headerTitle} onBack={handleBack}>
         <S.ScrollContent showsVerticalScrollIndicator={false}>
-          <S.ProfileHero>
-            <S.AvatarWrapper>
-              <Avatar
-                source={
-                  profile.profileImage
-                    ? { uri: profile.profileImage }
-                    : undefined
-                }
-                placeholder={profile.name}
-                size="lg"
-                isVerified={profile.isVerified}
-              />
-            </S.AvatarWrapper>
+          <S.ContentPadding>
+            {/* Hero Profile Card */}
+            <S.ProfileHeroCard>
+              <S.AvatarWrapper>
+                <Avatar
+                  source={
+                    profile.profileImage
+                      ? { uri: profile.profileImage }
+                      : undefined
+                  }
+                  placeholder={profile.name}
+                  size="xl"
+                  border={false}
+                />
+                {profile.isVerified && (
+                  <S.BadgePin>
+                    <VerifiedBadge size={28} />
+                  </S.BadgePin>
+                )}
+              </S.AvatarWrapper>
 
-            <S.HeroName>{profile.name}</S.HeroName>
+              <S.HeroName>{profile.name}</S.HeroName>
 
-            <S.StatsRow>
-              {profile.isVerified && (
-                <S.VerifiedTag>
+              {profile.bio ? (
+                <S.BioContainer>
+                  <Typography
+                    variant="body"
+                    size="xs"
+                    color="on_surface_variant"
+                    align="center"
+                    style={{ fontStyle: 'italic' }}
+                  >
+                    "{profile.bio}"
+                  </Typography>
+                </S.BioContainer>
+              ) : null}
+
+              <S.StatsRow>
+                {profile.isVerified && (
+                  <S.VerifiedTag>
+                    <Icon
+                      name="verified"
+                      size={moderateScale(13)}
+                      color={theme.colors.primary}
+                    />
+                    <Typography
+                      variant="label"
+                      size="xs"
+                      weight="bold"
+                      color="primary"
+                    >
+                      {t.verifiedMember || 'Verified Member'}
+                    </Typography>
+                  </S.VerifiedTag>
+                )}
+                <S.RatingBadge>
                   <Icon
-                    name="verified"
-                    size={14}
-                    color={theme.colors.on_primary_fixed_variant}
+                    name="star"
+                    size={moderateScale(13)}
+                    color={theme.colors.warning || '#f59e0b'}
+                  />
+                  <Typography
+                    variant="label"
+                    size="xs"
+                    weight="bold"
+                    color="on_surface"
+                  >
+                    {profile.rating > 0 ? profile.rating.toFixed(1) : 'New'} ·{' '}
+                    {profile.ridesCount !== undefined
+                      ? `${profile.ridesCount} ${profile.ridesCount === 1 ? 'ride' : 'rides'} completed`
+                      : t.rideCountLabel.replace(
+                          '{{count}}',
+                          String(profile.ratingCount),
+                        )}
+                  </Typography>
+                </S.RatingBadge>
+              </S.StatsRow>
+
+              {handleChat && (
+                <S.ChatButton onPress={handleChat} activeOpacity={0.85}>
+                  <Icon
+                    name="chat-bubble-outline"
+                    size={moderateScale(18)}
+                    color={theme.colors.on_primary}
                   />
                   <Typography
                     variant="label"
                     size="sm"
                     weight="bold"
-                    color={theme.colors.on_primary_fixed_variant}
+                    color="on_primary"
                   >
-                    {t.verifiedMember}
+                    Chat with {profile.name.split(' ')[0]}
                   </Typography>
-                </S.VerifiedTag>
+                </S.ChatButton>
               )}
-              <S.RatingBadge>
-                <Icon name="star" size={14} color={theme.colors.primary} />
-                <Typography variant="label" size="sm" weight="bold">
-                  {profile.rating} ·{' '}
-                  {t.rideCountLabel.replace(
-                    '{{count}}',
-                    String(profile.ratingCount),
-                  )}
-                </Typography>
-              </S.RatingBadge>
-            </S.StatsRow>
+            </S.ProfileHeroCard>
 
-            {handleChat && (
-              <S.ChatButton onPress={handleChat} activeOpacity={0.8}>
+            {/* Travel Preferences */}
+            {profile.preferences && profile.preferences.length > 0 && (
+              <S.SectionCard>
+                <S.SectionLabelRow>
+                  <S.SectionDot color={theme.colors.primary} />
+                  <Typography
+                    variant="label"
+                    size="xs"
+                    weight="bold"
+                    color="on_surface_variant"
+                  >
+                    {(t.preferences || 'PREFERENCES').toUpperCase()}
+                  </Typography>
+                </S.SectionLabelRow>
+                <S.PreferencesWrap>
+                  {profile.preferences.map((pref, index) => (
+                    <S.PreferenceChip key={index}>
+                      <Icon
+                        name={pref.icon as any}
+                        size={moderateScale(16)}
+                        color={theme.colors.primary}
+                      />
+                      <Typography variant="body" size="xs" weight="medium">
+                        {pref.label}
+                      </Typography>
+                    </S.PreferenceChip>
+                  ))}
+                </S.PreferencesWrap>
+              </S.SectionCard>
+            )}
+
+            {/* Assigned Vehicle */}
+            {profile.vehicle && (
+              <VehicleBentoCard vehicle={profile.vehicle} t={t} />
+            )}
+
+            {/* Ratings Breakdown CTA */}
+            {profile.ratingCount > 0 && (
+              <S.RatingsBreakdownCard
+                onPress={handleViewRatings}
+                activeOpacity={0.7}
+              >
+                <Box flexDirection="row" alignItems="center" gap={10}>
+                  {hasReviewerImages && (
+                    <Box flexDirection="row">
+                      {profile.reviews
+                        .filter(r => Boolean(r.reviewerImage))
+                        .slice(0, 3)
+                        .map((review, index) => (
+                          <S.ReviewerAvatar
+                            key={index}
+                            source={{ uri: review.reviewerImage! }}
+                          />
+                        ))}
+                    </Box>
+                  )}
+                  <Typography variant="title" size="xs" weight="bold">
+                    View breakdown of {profile.ratingCount}{' '}
+                    {profile.ratingCount === 1 ? 'rating' : 'ratings'}
+                  </Typography>
+                </Box>
                 <Icon
-                  name="chat-bubble-outline"
-                  size={18}
-                  color={theme.colors.on_primary}
+                  name="chevron-right"
+                  size={moderateScale(20)}
+                  color={theme.colors.on_surface_variant}
+                />
+              </S.RatingsBreakdownCard>
+            )}
+
+            {/* Recent Reviews */}
+            <RecentReviewsList reviews={profile.reviews} t={t} />
+
+            {/* Report User */}
+            {handleReport && (
+              <S.ReportButton onPress={handleReport} activeOpacity={0.8}>
+                <Icon
+                  name="report-problem"
+                  size={moderateScale(18)}
+                  color={theme.colors.error}
                 />
                 <Typography
                   variant="label"
-                  size="md"
+                  size="sm"
                   weight="bold"
-                  color="on_primary"
+                  color={theme.colors.error}
                 >
-                  Chat with {profile.name.split(' ')[0]}
+                  {t.reportUser.replace('{{name}}', profile.name)}
                 </Typography>
-              </S.ChatButton>
+              </S.ReportButton>
             )}
-          </S.ProfileHero>
-
-          <S.Section>
-            <S.SectionTitleLabel>{t.preferences}</S.SectionTitleLabel>
-            <S.PreferencesContainer>
-              {profile.preferences.map((pref, index) => (
-                <S.PreferenceTag key={index}>
-                  <Icon
-                    name={pref.icon as any}
-                    size={18}
-                    color={theme.colors.primary}
-                  />
-                  <Typography variant="body" size="sm" weight="medium">
-                    {pref.label}
-                  </Typography>
-                </S.PreferenceTag>
-              ))}
-            </S.PreferencesContainer>
-          </S.Section>
-
-          {profile.vehicle && (
-            <VehicleBentoCard vehicle={profile.vehicle} t={t} />
-          )}
-
-          <S.Section>
-            <S.RatingsBreakdown onPress={handleViewRatings}>
-              <Box flexDirection="row" alignItems="center">
-                {hasReviewerImages && (
-                  <Box flexDirection="row">
-                    {profile.reviews
-                      .filter(r => Boolean(r.reviewerImage))
-                      .slice(0, 3)
-                      .map((review, index) => (
-                        <S.ReviewerAvatar
-                          key={index}
-                          source={{ uri: review.reviewerImage! }}
-                        />
-                      ))}
-                  </Box>
-                )}
-                <S.RatingsBreakdownText $hasAvatars={hasReviewerImages}>
-                  {t.viewRatings.replace(
-                    '{{count}}',
-                    profile.ratingCount.toString(),
-                  )}
-                </S.RatingsBreakdownText>
-              </Box>
-              <Icon
-                name="arrow-forward"
-                size={20}
-                color={theme.colors.on_secondary_container}
-              />
-            </S.RatingsBreakdown>
-          </S.Section>
-
-          <RecentReviewsList reviews={profile.reviews} t={t} />
-
-          <S.Section>
-            <S.ReportButton onPress={handleReport}>
-              <Icon name="report" size={20} color={theme.colors.error} />
-              <Typography
-                variant="label"
-                size="md"
-                weight="bold"
-                color={theme.colors.error}
-              >
-                {t.reportUser.replace('{{name}}', profile.name)}
-              </Typography>
-            </S.ReportButton>
-          </S.Section>
+          </S.ContentPadding>
         </S.ScrollContent>
       </ScreenShell>
     );

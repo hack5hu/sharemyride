@@ -58,11 +58,12 @@ export const useUserProfileDetail = (userId: string) => {
       }
 
       // Map reviews
-      const mappedReviews = (ratingsData || []).map((r: any) => ({
-        id: String(r.ratingId),
+      const validRatings = Array.isArray(ratingsData) ? ratingsData : [];
+      const mappedReviews = validRatings.map((r: any) => ({
+        id: String(r.ratingId || Math.random()),
         reviewerName: r.raterName || 'Anonymous',
         reviewerImage: r.raterPhotoUrl || undefined,
-        rating: r.score,
+        rating: Number(r.score || 5),
         date: r.createdAt
           ? new Date(r.createdAt).toLocaleDateString([], {
               day: 'numeric',
@@ -71,17 +72,36 @@ export const useUserProfileDetail = (userId: string) => {
             })
           : 'Recent',
         tripInfo: r.raterRole === 'DRIVER' ? 'Rode with them' : 'Passenger',
-        comment: r.comment || '',
+        comment: (r.comment || '').trim(),
       }));
+
+      const totalRatingsCount = validRatings.length;
+      const avgScore =
+        profileData.rating && profileData.rating > 0
+          ? Number(profileData.rating)
+          : totalRatingsCount > 0
+          ? Number(
+              (
+                validRatings.reduce(
+                  (acc: number, r: any) => acc + (Number(r.score) || 0),
+                  0,
+                ) / totalRatingsCount
+              ).toFixed(1),
+            )
+          : 0;
+
+      const totalRides = computeTotalRides(profileData);
 
       const mappedProfile: UserProfile = {
         id: profileData.userId || userId,
-        name: profileData.name || 'Unknown User',
+        name: profileData.name?.trim() || 'Unknown User',
         profileImage: profileData.profilePhotoUrl,
         bio: profileData.bio || t.defaultBio,
-        isVerified: profileData.phoneVerified || profileData.emailVerified || false,
-        rating: profileData.rating ?? 5,
-        ratingCount: computeTotalRides(profileData) || ratingsData.length || 0,
+        isVerified:
+          profileData.phoneVerified || profileData.emailVerified || false,
+        rating: avgScore,
+        ratingCount: totalRatingsCount,
+        ridesCount: totalRides,
         preferences,
         vehicle: profileData.vehicle
           ? {

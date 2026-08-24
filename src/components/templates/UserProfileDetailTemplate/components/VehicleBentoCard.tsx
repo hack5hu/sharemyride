@@ -1,8 +1,43 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useTheme } from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
+import { scale, verticalScale, moderateScale } from '@/styles';
 import * as S from '../UserProfileDetailTemplate.styles';
+
+const VehicleContent = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(12)}px;
+`;
+
+const VehicleIconBox = styled.View`
+  width: ${moderateScale(52)}px;
+  height: ${moderateScale(52)}px;
+  border-radius: ${moderateScale(14)}px;
+  background-color: ${({ theme }) => `${theme.colors.primary}12`};
+  align-items: center;
+  justify-content: center;
+`;
+
+const VehicleDetails = styled.View`
+  flex: 1;
+  gap: ${verticalScale(2)}px;
+`;
+
+const TagRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(6)}px;
+  margin-top: ${verticalScale(4)}px;
+`;
+
+const CategoryPill = styled.View`
+  background-color: ${({ theme }) => theme.colors.surface_container_low};
+  padding-horizontal: ${scale(8)}px;
+  padding-vertical: ${verticalScale(2)}px;
+  border-radius: ${moderateScale(6)}px;
+`;
 
 export interface VehicleBentoCardProps {
   vehicle: {
@@ -14,38 +49,34 @@ export interface VehicleBentoCardProps {
   t: any;
 }
 
-export const VehicleBentoCard: React.FC<VehicleBentoCardProps> = React.memo(({
-  vehicle,
-  t,
-}) => {
-  const theme = useTheme();
+export const VehicleBentoCard: React.FC<VehicleBentoCardProps> = React.memo(
+  ({ vehicle, t }) => {
+    const theme = useTheme();
 
-  return (
-    <S.Section>
-      <S.SectionTitleLabel>
-        {t.vehicleInfo}
-      </S.SectionTitleLabel>
-      <S.BentoCard>
-        <S.BentoHeader>
-          <Typography variant="label" size="sm" color="outline">
-            {t.vehicleInfo.toUpperCase()}
+    return (
+      <S.SectionCard>
+        <S.SectionLabelRow>
+          <S.SectionDot color={theme.colors.primary} />
+          <Typography
+            variant="label"
+            size="xs"
+            weight="bold"
+            color="on_surface_variant"
+          >
+            {(t.vehicleInfo || 'ASSIGNED VEHICLE').toUpperCase()}
           </Typography>
-          <Icon
-            name="electric-car"
-            size={20}
-            color={theme.colors.primary}
-          />
-        </S.BentoHeader>
-        <S.VehicleInfo>
-          <S.VehicleIconContainer>
+        </S.SectionLabelRow>
+
+        <VehicleContent>
+          <VehicleIconBox>
             <Icon
               name="directions-car"
-              size={30}
-              color={theme.colors.primary_container}
+              size={moderateScale(28)}
+              color={theme.colors.primary}
             />
-          </S.VehicleIconContainer>
-          <S.VehicleDetails>
-            <Typography variant="title" size="md" weight="bold">
+          </VehicleIconBox>
+          <VehicleDetails>
+            <Typography variant="title" size="sm" weight="bold">
               {vehicle.model}
             </Typography>
             <Typography
@@ -57,23 +88,24 @@ export const VehicleBentoCard: React.FC<VehicleBentoCardProps> = React.memo(({
               {vehicle.color} • {vehicle.plateNumber}
             </Typography>
             {vehicle.tag && (
-              <S.TagRow>
-                <S.StatusDot />
-                <Typography
-                  variant="label"
-                  size="sm"
-                  color="primary"
-                  weight="bold"
-                >
-                  {vehicle.tag.toUpperCase()}
-                </Typography>
-              </S.TagRow>
+              <TagRow>
+                <CategoryPill>
+                  <Typography
+                    variant="label"
+                    size="xxs"
+                    color="on_surface_variant"
+                    weight="medium"
+                  >
+                    {vehicle.tag}
+                  </Typography>
+                </CategoryPill>
+              </TagRow>
             )}
-          </S.VehicleDetails>
-        </S.VehicleInfo>
-      </S.BentoCard>
-    </S.Section>
-  );
-});
+          </VehicleDetails>
+        </VehicleContent>
+      </S.SectionCard>
+    );
+  },
+);
 
 VehicleBentoCard.displayName = 'VehicleBentoCard';
