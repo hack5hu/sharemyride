@@ -62,6 +62,8 @@ export interface ThemeColors {
   truecaller: string;
 }
 
+export type ColorToken = keyof ThemeColors;
+
 export interface Theme {
   name: 'light' | 'dark';
   colors: ThemeColors;

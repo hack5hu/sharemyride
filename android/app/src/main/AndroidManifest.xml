@@ -1,7 +1,6 @@
 <manifest
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  package="com.yet.zyncride">
+  xmlns:tools="http://schemas.android.com/tools">
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
   <uses-permission android:name="android.permission.VIBRATE" />
@@ -31,7 +30,8 @@
       android:resource="@mipmap/ic_launcher" />
     <meta-data
       android:name="com.google.firebase.messaging.default_notification_color"
-      android:resource="@android:color/white" />
+      android:resource="@android:color/white"
+      tools:replace="android:resource" />
     <meta-data
       android:name="com.truecaller.android.sdk.ClientId"
       android:value="xo3glydxwgapbf0zumg28mys6qud3tkzfnfzbxcqiay" />
