@@ -19,6 +19,7 @@ import { CancellationReasonBox } from '@/components/templates/RideInformationTem
 import { mapRideDetailsData } from './utils/rideMapper';
 import { RatingInvitationCard } from './components/RatingInvitationCard';
 import { PassengerSummarySection } from './components/PassengerSummarySection';
+import { ActiveRideBanner } from '@/components/molecules/ActiveRideBanner';
 
 export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
   React.memo(
@@ -37,6 +38,7 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
       handleDriverProfile,
       onRateDriver,
       onRatePassenger,
+      onTrackLiveRide,
     }) => {
       const translations = useLocale();
       const theme = useTheme();
@@ -106,6 +108,12 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
                       t={translations.rating}
                     />
                   )}
+
+                {!isArchived && !isCompleted && onTrackLiveRide && (
+                  <ActiveRideBanner
+                    onPress={onTrackLiveRide}
+                  />
+                )}
 
                 <S.SectionCard>
                   <S.TimelineLabelRow>

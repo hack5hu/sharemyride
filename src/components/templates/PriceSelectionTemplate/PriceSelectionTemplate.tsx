@@ -28,7 +28,7 @@ export interface PriceSelectionTemplateProps {
   onContinue: () => void;
   onCustomizePricing: () => void;
   sheetVisible: boolean;
-  segments: unknown[];
+  segments: any[];
   segmentPrices: Record<string, SegmentPrice>;
   onSheetClose: () => void;
   onSaveSegmentPrices: (prices: Record<string, { basePrice: number }>) => void;

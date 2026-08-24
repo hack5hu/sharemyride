@@ -244,4 +244,16 @@ export const RideService = {
       throw error;
     }
   },
+
+  getLiveStatus: async (payload: {
+    lat: number | null;
+    lng: number | null;
+    liveLocationEnabled: boolean;
+  }) => {
+    const response = await axiosClient.post(
+      API_ENDPOINTS.RIDE.LIVE_STATUS,
+      payload,
+    );
+    return response.data;
+  },
 };

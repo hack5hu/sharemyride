@@ -17,6 +17,7 @@ export interface DriverCardProps {
     rating: number;
     rideCount: number;
     isVerified?: boolean;
+    hasRated?: boolean;
   };
   handleDriverProfile: () => void;
   handleChat: () => void;

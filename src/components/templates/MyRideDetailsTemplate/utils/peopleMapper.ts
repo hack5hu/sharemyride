@@ -19,6 +19,7 @@ interface Passenger {
   seatId?: (string | number)[];
   seatNames?: string[];
   hasRated?: boolean;
+  phoneNumber?: string;
 }
 
 export const mapDriverData = (ride: any): MappedDriverData | null => {
@@ -97,8 +98,11 @@ export const mapPassengerData = (ride: any): MappedPassengerData[] => {
       (rideId && pId ? ratedUsers.includes(`${rideId}_${pId}`) : false) ||
       false;
 
-    const sourceCity = getCityName(p.sourceStopName) || p.sourceStopName?.split(',')[0].trim();
-    const destCity = getCityName(p.destinationStopName) || p.destinationStopName?.split(',')[0].trim();
+    const sourceCity =
+      getCityName(p.sourceStopName) || p.sourceStopName?.split(',')[0].trim();
+    const destCity =
+      getCityName(p.destinationStopName) ||
+      p.destinationStopName?.split(',')[0].trim();
     const segmentText =
       p.segment ||
       (sourceCity && destCity
@@ -121,6 +125,7 @@ export const mapPassengerData = (ride: any): MappedPassengerData[] => {
       seatsBooked: seatsCount,
       seatId: seatList,
       hasRated: isRated,
+      phoneNumber: p.phoneNumber,
     };
   });
 };

@@ -9,6 +9,7 @@ import * as S from './BookRideInfoTemplate.styles';
 import { RecentSearch } from '@/store/useBookRideStore';
 import { BookingForm } from './components/BookingForm';
 import { RecentSearchItem } from './components/RecentSearchItem';
+import { ActiveRideBanner } from '@/components/molecules/ActiveRideBanner';
 
 export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
   React.memo(
@@ -34,6 +35,10 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
       onSelectRecentSearch,
       onClearRecentSearches,
       t,
+      activeRide,
+      isBannerDismissed,
+      onPressActiveRide,
+      onDismissActiveRideBanner,
     }) => {
       const insets = useSafeAreaInsets();
 
@@ -59,6 +64,17 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
                 </S.HeaderTitleHighlight>
               </S.HeaderTitle>
             </S.Header>
+
+            {activeRide && !isBannerDismissed && onPressActiveRide && (
+              <ActiveRideBanner
+                title={activeRide.message}
+                etaMinutes={activeRide.etaMinutes}
+                distanceKm={activeRide.distanceKm}
+                role={activeRide.role}
+                onPress={onPressActiveRide}
+                onDismiss={onDismissActiveRideBanner}
+              />
+            )}
 
             <S.HeroSection>
               <S.HeroTitle>{t.heroTitle}</S.HeroTitle>
@@ -122,6 +138,10 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
           onClearRecentSearches,
           recentSearches.length,
           t,
+          activeRide,
+          isBannerDismissed,
+          onPressActiveRide,
+          onDismissActiveRideBanner,
         ],
       );
 

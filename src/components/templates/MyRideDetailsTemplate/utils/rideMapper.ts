@@ -34,6 +34,7 @@ export interface MappedRideTimelinePoint {
   stopId?: string;
   isHighlighted: boolean;
   type: 'pickup' | 'destination' | 'stop';
+  description?: string;
 }
 
 export interface MappedRideDetails {
@@ -154,12 +155,12 @@ export const mapRideDetailsData = (
         lon: stop.lon,
         stopId: stop.id,
         isHighlighted,
-        type:
-          stop.id === sourceId
-            ? 'pickup'
-            : stop.id === destId
-            ? 'destination'
-            : 'stop',
+        type: (stop.id === sourceId
+          ? 'pickup'
+          : stop.id === destId
+          ? 'destination'
+          : 'stop') as 'pickup' | 'destination' | 'stop',
+        description: '',
       };
     });
   })();

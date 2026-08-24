@@ -97,6 +97,7 @@ The codebase enforces **Atomic Design**. Below is an inventory of all reusable c
 ### AI Agent Navigability
 * **Aliased Pathing**: TS paths (`@/*`, `atoms/*`, `molecule/*`, `organism/*`, `template/*`, `services/*`, `store/*`) simplify module references and eliminate deep relative imports (`../../`). Always import via aliases.
 * **Bounded Components**: Every component has a dedicated folder containing UI, styles, types, and logic hook. Do not spread component files across folders.
+* **Global Component Placement**: Reusable UI components must live in global directories (`src/components/atoms`, `src/components/molecules`, `src/components/organisms`). Do not create local `components/` subfolders nested inside templates or screens.
 
 ### Context Efficiency
 * **Line Limit**: Keep files strictly under **200 lines**. This keeps context footprints small and limits the tokens generated in diffs.

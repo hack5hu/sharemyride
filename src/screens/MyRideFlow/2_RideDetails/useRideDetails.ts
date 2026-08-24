@@ -447,5 +447,11 @@ export const useRideDetails = () => {
     handleReportSubmit,
     handleRateDriver,
     handleRatePassenger,
+    handleTrackLiveRide: () => {
+      (navigation.navigate as any)('ActiveRide', {
+        rideId: String(rideId),
+        role: isDriver ? 'DRIVER' : 'PASSENGER',
+      });
+    },
   };
 };

@@ -43,6 +43,7 @@ These development rules are absolute and must be followed by any AI agent or dev
   └── index.ts                    (barrel export)
   ```
 * Every screen must consist of a Template from `src/components/templates/` mounted within a lightweight Screen entry point under `src/screens/`.
+* **No Nested or Local Component Directories**: All UI components must be created as global, top-level components under `src/components/atoms/`, `src/components/molecules/`, or `src/components/organisms/`. Never create local `components/` subdirectories inside templates or screens.
 
 ### 5. File Limits & Optimization
 * Hard cap: **200 lines per file**. If a file exceeds this limit, refactor immediately by extracting child components or custom hooks.

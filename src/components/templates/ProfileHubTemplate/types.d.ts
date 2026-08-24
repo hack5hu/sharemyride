@@ -7,7 +7,7 @@ export interface ProfileHubUser {
 }
 
 export interface ProfileHubTemplateProps {
-  t: unknown;
+  t: any;
   user: ProfileHubUser | null;
   isUpdatingAvatar: boolean;
   handleAvatarEdit: () => void;

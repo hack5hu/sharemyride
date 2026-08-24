@@ -24,6 +24,7 @@ import { ChatDetailsScreen } from '@/screens/Chat/2_ChatDetails';
 import { SelectLocationScreen } from '@/screens/Chat/3_SelectLocation';
 import { MyRidesScreen } from '@/screens/MyRideFlow/1_MyRides';
 import { RideDetailsScreen } from '@/screens/MyRideFlow/2_RideDetails';
+import { ActiveRideDriverScreen } from '@/screens/MyRideFlow/3_ActiveRideDriver';
 import { CancelRideScreen } from '@/screens/CancelRide';
 import { LocationSelectionScreen } from '@/screens/PublishFlow/1_LocationSelection';
 import { MapPickerScreen } from '@/screens/MapPicker';
@@ -227,6 +228,18 @@ export const RootNavigator = () => {
           <Stack.Screen
             name="RideDetails"
             component={RideDetailsScreen as any}
+          />
+          <Stack.Screen
+            name="ActiveRide"
+            component={ActiveRideDriverScreen}
+          />
+          <Stack.Screen
+            name="ActiveRideDriver"
+            component={ActiveRideDriverScreen}
+          />
+          <Stack.Screen
+            name="ActiveRidePassenger"
+            component={ActiveRideDriverScreen}
           />
           <Stack.Screen
             name="CancelRide"

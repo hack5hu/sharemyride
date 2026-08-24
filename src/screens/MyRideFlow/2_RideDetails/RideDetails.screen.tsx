@@ -30,6 +30,7 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
     handleReportSubmit,
     handleRateDriver,
     handleRatePassenger,
+    handleTrackLiveRide,
   } = useRideDetails();
 
   return (
@@ -59,6 +60,7 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
       handleReportSubmit={handleReportSubmit}
       handleRateDriver={handleRateDriver}
       handleRatePassenger={handleRatePassenger}
+      handleTrackLiveRide={handleTrackLiveRide}
     />
   );
 });

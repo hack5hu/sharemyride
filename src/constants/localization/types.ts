@@ -549,6 +549,54 @@ export interface Translations {
   rating: RatingTranslations;
   otaUpdate: OtaUpdateTranslations;
   suggestions: SuggestionsTranslations;
+  activeRideDriver: ActiveRideDriverTranslations;
+  activeRidePassenger: ActiveRidePassengerTranslations;
+  activeRideBanner: ActiveRideBannerTranslations;
+}
+
+export interface ActiveRideBannerTranslations {
+  aboutToStartTitle: string;
+  inProgressTitle: string;
+  subtitle: string;
+  trackButton: string;
+}
+
+export interface ActiveRidePassengerTranslations {
+  screenTitle: string;
+  driverArrivingIn: string;
+  mins: string;
+  min: string;
+  distanceLabel: string;
+  shareMyLocation: string;
+  chat: string;
+  call: string;
+  timelineTitle: string;
+  yourPickup: string;
+  expectedTime: string;
+  finalDestination: string;
+  safetyEmergencyCenter: string;
+  arrivingAt: string;
+}
+
+export interface ActiveRideDriverTranslations {
+  screenTitle: string;
+  nextStopLabel: string;
+  distanceLabel: string;
+  etaLabel: string;
+  distanceValue: string;
+  etaValue: string;
+  liveLocationTitle: string;
+  stopsTitle: string;
+  pickupSubtitle: string;
+  pickupDistanceSubtitle: string;
+  vehicleStatus: string;
+  batteryRemaining: string;
+  safetyCenter: string;
+  callUser: string;
+  chatUser: string;
+  emergencyTitle: string;
+  emergencyMessage: string;
+  passengerDistanceAway: string;
 }
 
 export interface NotificationTranslations {

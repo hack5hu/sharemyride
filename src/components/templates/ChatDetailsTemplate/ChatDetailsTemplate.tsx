@@ -29,7 +29,7 @@ export const ChatDetailsTemplate = React.memo(<T extends { id: string } = { id: 
   input,
   onLoadMore,
 }: ChatDetailsTemplateProps<T>) => {
-  const listRef = useRef<FlashList<T>>(null);
+  const listRef = useRef<any>(null);
   const { height } = useReanimatedKeyboardAnimation();
 
   // Animate the bottom padding of the entire container based on keyboard height

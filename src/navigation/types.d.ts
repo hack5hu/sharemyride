@@ -1,3 +1,8 @@
+export enum ActiveRideRole {
+  DRIVER = 'DRIVER',
+  PASSENGER = 'PASSENGER',
+}
+
 export type RootStackParamList = {
   Splash: undefined;
   Login: undefined;
@@ -25,6 +30,12 @@ export type RootStackParamList = {
   TravelPreferences: undefined;
   VehicleList: undefined;
   VehicleDetails: { vehicleId?: string } | undefined;
+  ActiveRide: {
+    rideId?: string;
+    role?: ActiveRideRole | 'DRIVER' | 'PASSENGER';
+  } | undefined;
+  ActiveRideDriver: { rideId?: string } | undefined;
+  ActiveRidePassenger: { rideId?: string } | undefined;
   ChatList: undefined;
   ChatDetails: {
     userId: string;

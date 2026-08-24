@@ -14,6 +14,9 @@ export interface MiddleStopsTemplateProps {
   onBackPress: () => void;
   onContinuePress: () => void;
   startLocation: string;
+  startLocationRaw?: any;
+  destinationLocationRaw?: any;
+  middleStopsRaw?: any;
   destination: string;
   middleStops: RouteStop[];
   onAddStop: () => void;
