@@ -38,4 +38,8 @@ export const API_ENDPOINTS = {
     GET_USER_RATINGS: (userId: string) => `/rating/user/${userId}`,
     REPORT: '/ride/report',
   },
+  FEEDBACK: {
+    SUBMIT: '/feedback',
+    MY_FEEDBACK: '/feedback/me',
+  },
 } as const;

@@ -45,8 +45,8 @@ export enum TicketStatus {
 }
 
 export enum TicketCategory {
-  FEATURE = 'feature',
-  BUG = 'bug',
-  IMPROVEMENT = 'improvement',
-  OTHER = 'other',
+  NEW_FEATURE_SUGGESTION = 'NEW_FEATURE_SUGGESTION',
+  REPORT_ISSUE_BUG = 'REPORT_ISSUE_BUG',
+  IMPROVEMENT_IDEA = 'IMPROVEMENT_IDEA',
+  OTHER_SUGGESTIONS = 'OTHER_SUGGESTIONS',
 }

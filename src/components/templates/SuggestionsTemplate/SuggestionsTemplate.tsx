@@ -39,10 +39,10 @@ export const SuggestionsTemplate: React.FC<SuggestionsTemplateProps> = React.mem
     const [expandedTicketId, setExpandedTicketId] = useState<string | null>(null);
 
     const categories = React.useMemo(() => [
-      { id: TicketCategory.FEATURE, label: t.categoryFeature },
-      { id: TicketCategory.BUG, label: t.categoryBug },
-      { id: TicketCategory.IMPROVEMENT, label: t.categoryImprovement },
-      { id: TicketCategory.OTHER, label: t.categoryOther },
+      { id: TicketCategory.NEW_FEATURE_SUGGESTION, label: t.categoryFeature },
+      { id: TicketCategory.REPORT_ISSUE_BUG, label: t.categoryBug },
+      { id: TicketCategory.IMPROVEMENT_IDEA, label: t.categoryImprovement },
+      { id: TicketCategory.OTHER_SUGGESTIONS, label: t.categoryOther },
     ], [t]);
 
     const getStatusBadgeVariant = React.useCallback((status: Ticket['status']) => {

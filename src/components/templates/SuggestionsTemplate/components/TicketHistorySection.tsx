@@ -1,8 +1,10 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import { Typography } from '@/components/atoms/Typography';
-import { StatusBadge } from '@/components/atoms/StatusBadge';
+import { StatusBadge, StatusBadgeVariant } from '@/components/atoms/StatusBadge';
 import { EmptyState } from '@/components/molecules/EmptyState';
+import { TicketCategory } from '@/constants/enums';
+import { SuggestionsTranslations } from '@/constants/localization/types';
 import { Ticket } from '../types.d';
 import * as S from '../SuggestionsTemplate.styles';
 
@@ -11,10 +13,10 @@ export interface TicketHistorySectionProps {
   expandedTicketId: string | null;
   toggleExpandTicket: (id: string) => void;
   getStatusLabel: (status: Ticket['status']) => string;
-  getStatusBadgeVariant: (status: Ticket['status']) => any;
-  interpolate: (val: string, options: any) => string;
-  categories: Array<{ id: string; label: string }>;
-  t: any;
+  getStatusBadgeVariant: (status: Ticket['status']) => StatusBadgeVariant;
+  interpolate: (val: string, options: Record<string, string | number>) => string;
+  categories: Array<{ id: TicketCategory; label: string }>;
+  t: SuggestionsTranslations;
 }
 
 export const TicketHistorySection: React.FC<TicketHistorySectionProps> = React.memo(({

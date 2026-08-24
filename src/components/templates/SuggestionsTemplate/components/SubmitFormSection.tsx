@@ -6,13 +6,15 @@ import { Typography } from '@/components/atoms/Typography';
 import { Input } from '@/components/atoms/Input';
 import { IconButton } from '@/components/atoms/IconButton';
 import { Button } from '@/components/atoms/Button';
+import { TicketCategory } from '@/constants/enums';
+import { SuggestionsTranslations } from '@/constants/localization/types';
 import * as S from '../SuggestionsTemplate.styles';
 
 export interface SubmitFormSectionProps {
-  t: any;
-  categories: Array<{ id: string; label: string }>;
-  selectedCategory: string | null;
-  onSelectCategory: (id: string) => void;
+  t: SuggestionsTranslations;
+  categories: Array<{ id: TicketCategory; label: string }>;
+  selectedCategory: TicketCategory | null;
+  onSelectCategory: (category: TicketCategory) => void;
   summary: string;
   onSummaryChange: (text: string) => void;
   description: string;
@@ -22,7 +24,11 @@ export interface SubmitFormSectionProps {
   onDeleteScreenshot: (idx: number) => void;
   onSubmit: () => void;
   isSubmitting: boolean;
-  errors: Record<string, string>;
+  errors: {
+    category?: string;
+    summary?: string;
+    description?: string;
+  };
 }
 
 export const SubmitFormSection: React.FC<SubmitFormSectionProps> = React.memo(({
