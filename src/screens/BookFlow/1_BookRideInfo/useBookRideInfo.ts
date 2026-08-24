@@ -285,12 +285,12 @@ export const useBookRideInfo = () => {
       const isDriver = latestRide.role === 'DRIVER';
 
       if (isDriver) {
-        let passengers = latestRide.passengers;
+        let passengers = latestRide.passengers || latestRide.coPassengers;
         // If passengers list not present in summary, fetch detail to be 100% accurate
         if (!Array.isArray(passengers)) {
           try {
             const detail = await RideService.getMyRideDetail(targetRideId);
-            passengers = detail?.passengers || [];
+            passengers = detail?.passengers || detail?.coPassengers || [];
           } catch {
             passengers = [];
           }

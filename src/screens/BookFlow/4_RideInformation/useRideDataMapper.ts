@@ -173,12 +173,14 @@ export const mapBackendRideToUI = (
     totalDuration: totalDurationMins,
     routePath: rideRaw.routePath,
     seats: rideRaw.seats || [],
-    passengers: (rideRaw.passengers || []).map((p: any) => ({
-      ...p,
-      id: p.passengerId,
-      name: p.name,
-      photoUrl: p.photoUrl,
-    })),
+    passengers: (rideRaw.passengers || rideRaw.coPassengers || []).map(
+      (p: any) => ({
+        ...p,
+        id: p.passengerId || p.id,
+        name: p.name,
+        photoUrl: p.photoUrl,
+      }),
+    ),
     departureDate: formatDateSafely(
       firstStop?.arrivalTime,
       {

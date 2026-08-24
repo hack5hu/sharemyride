@@ -6,6 +6,7 @@ import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
 import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';
+import { storage } from '@/utils/storage';
 import * as S from './PassengerManagement.styles';
 
 export interface Passenger {
@@ -35,11 +36,16 @@ interface PassengerManagementProps {
 
 const formatSegment = (segment?: string) => {
   if (!segment) return 'Full Trip';
-  const parts = segment.split('->');
-  if (parts.length === 2) {
+  const delimiter = segment.includes('→')
+    ? '→'
+    : segment.includes('->')
+    ? '->'
+    : null;
+  if (delimiter) {
+    const parts = segment.split(delimiter);
     const start = parts[0].split(',')[0].trim();
-    const end = parts[1].split(',')[0].trim();
-    return `${start} → ${end}`;
+    const end = parts[1]?.split(',')[0].trim() || '';
+    return end ? `${start} → ${end}` : start;
   }
   return segment.split(',')[0].trim();
 };
@@ -151,7 +157,17 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
             <S.PassengerList>
               {passengers.map((p, i) => {
                 const passengerId = p.id || p.bookingId || '';
-                const hasBeenRated = p.hasRated;
+                let ratedUsers: string[] = [];
+                try {
+                  ratedUsers = JSON.parse(
+                    storage.getString('rated_users') || '[]',
+                  ).map((id: any) => String(id));
+                } catch {
+                  ratedUsers = [];
+                }
+                const hasBeenRated =
+                  p.hasRated ||
+                  (passengerId ? ratedUsers.includes(String(passengerId)) : false);
 
                 return (
                   <S.PassengerCard
@@ -267,7 +283,7 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                       color="on_surface_variant"
                       numberOfLines={1}
                     >
-                      {p.segment}
+                      {formatSegment(p.segment)}
                     </Typography>
                     <S.SeatBadge>
                       <Typography

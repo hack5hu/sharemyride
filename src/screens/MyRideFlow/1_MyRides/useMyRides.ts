@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useIsFocused } from '@react-navigation/native';
 import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
 import { useMyRidesData, TAB_TO_FILTER } from './useMyRidesData';
 import { useMyRidesActions } from './useMyRidesActions';
@@ -206,39 +206,81 @@ export const useMyRides = (): MyRidesHookData => {
     [onRefresh, t],
   );
 
+  const isFocused = useIsFocused();
   const navigation = useAppNavigation();
 
   const pendingReview = useMemo(() => {
     const archiveData = rides?.[2]?.data || [];
     const ratedStr = storage.getString('rated_rides') || '[]';
     const dismissedStr = storage.getString('dismissed_ratings') || '[]';
-    const ratedIds: string[] = [
-      ...JSON.parse(ratedStr),
-      ...JSON.parse(dismissedStr)
-    ];
+    const ratedUsersStr = storage.getString('rated_users') || '[]';
+
+    let ratedIds: string[] = [];
+    let ratedUsers: string[] = [];
+    try {
+      ratedIds = [
+        ...JSON.parse(ratedStr),
+        ...JSON.parse(dismissedStr),
+      ].map((id: any) => String(id));
+      ratedUsers = JSON.parse(ratedUsersStr).map((id: any) => String(id));
+    } catch {
+      ratedIds = [];
+      ratedUsers = [];
+    }
 
     const completed = archiveData.filter(
-      (r: any) => r.status === 'COMPLETED' || r.rideStatus === 'COMPLETED',
+      (r: any) =>
+        r &&
+        r.status !== 'CANCELLED' &&
+        r.status !== 'REJECTED' &&
+        r.rideStatus !== 'CANCELLED',
     );
 
     const unrated = completed.find((r: any) => {
-      const id = r.rideId || r.bookingId || r.id || r._id;
-      if (!id || ratedIds.includes(String(id))) return false;
+      const id = String(r.rideId || r.bookingId || r.id || r._id || '');
+      if (!id || ratedIds.includes(id)) return false;
 
       const isDriver = r.role === 'DRIVER';
+      const passengersList = r.passengers || r.coPassengers || [];
       if (isDriver) {
         const hasNoPassengers =
-          (Array.isArray(r.passengers) && r.passengers.length === 0) ||
+          (Array.isArray(passengersList) && passengersList.length === 0) ||
           r.bookedSeats === 0 ||
           r.totalBookedSeats === 0 ||
           r.seatsBooked === 0;
         if (hasNoPassengers) return false;
 
-        if (Array.isArray(r.passengers) && r.passengers.length > 0) {
-          return r.passengers.some((p: any) => p.hasRated !== true);
+        if (Array.isArray(passengersList) && passengersList.length > 0) {
+          const hasUnratedPassenger = passengersList.some((p: any) => {
+            const pId = String(
+              p.id || p.userId || p.bookingId || p.passengerId || '',
+            );
+            const isPassengerRated =
+              p.hasRated === true ||
+              ratedUsers.includes(pId) ||
+              ratedUsers.includes(`${id}_${pId}`);
+            return !isPassengerRated;
+          });
+          return hasUnratedPassenger;
         }
       } else {
-        if (r.hasRated === true || r.isRated === true || r.driver?.hasRated === true) {
+        const driverId = String(
+          r.driver?.id ||
+            r.driver?.driverId ||
+            r.driver?.userId ||
+            r.driverId ||
+            r.userId ||
+            '',
+        );
+        const isPassengerTripRated =
+          r.hasRated === true ||
+          r.isRated === true ||
+          r.driver?.hasRated === true ||
+          r.myBooking?.hasRatedDriver === true ||
+          (driverId ? ratedUsers.includes(driverId) : false) ||
+          (driverId ? ratedUsers.includes(`${id}_${driverId}`) : false);
+
+        if (isPassengerTripRated) {
           return false;
         }
       }
@@ -251,23 +293,37 @@ export const useMyRides = (): MyRidesHookData => {
       unrated.rideId || unrated.bookingId || unrated.id || unrated._id,
     );
     const isDriver = unrated.role === 'DRIVER';
+    const driverName =
+      unrated.driver?.name ||
+      unrated.driverName ||
+      unrated.hostName ||
+      unrated.name ||
+      'Driver';
+    const driverId =
+      unrated.driver?.id ||
+      unrated.driver?.driverId ||
+      unrated.driver?.userId ||
+      unrated.driverId ||
+      unrated.userId;
+    const driverAvatar =
+      unrated.driver?.photoUrl ||
+      unrated.driver?.avatar ||
+      unrated.driverPhotoUrl ||
+      unrated.photoUrl;
 
     return {
       rideId: targetRideId,
       isDriver,
       title: isDriver
-        ? `Rate your co-riders for ${unrated.sourceStopName?.split(',')[0] || 'your trip'}`
-        : `Rate your trip with ${unrated.driver?.name || unrated.name || 'Driver'}`,
-      targetUserId: isDriver
-        ? undefined
-        : unrated.driver?.driverId ||
-          unrated.driver?.userId ||
-          unrated.driverId ||
-          unrated.userId ||
-          'driver-1',
-      targetUserName: unrated.driver?.name || unrated.name || 'Driver',
+        ? `Rate your co-riders for ${
+            unrated.sourceStopName?.split(',')[0] || 'your trip'
+          }`
+        : `Rate your trip with ${driverName}`,
+      targetUserId: isDriver ? undefined : String(driverId || 'driver-1'),
+      targetUserName: driverName,
+      targetUserAvatar: driverAvatar,
     };
-  }, [rides?.[2]?.data]);
+  }, [rides?.[2]?.data, isFocused]);
 
   const onRateReview = useCallback(
     (review: any) => {
@@ -283,6 +339,7 @@ export const useMyRides = (): MyRidesHookData => {
           targetUserId: review.targetUserId,
           targetUserName: review.targetUserName,
           targetUserRole: 'DRIVER',
+          targetUserAvatar: review.targetUserAvatar,
         });
       }
     },

@@ -118,7 +118,15 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
     // Always fetch requests to know if we should show the tab
     fetchCategoryRides(3, 0, false);
 
-    if (filter !== null && filter !== undefined && filter !== 3) {
+    // Always fetch archive (category 2) so completed unrated rides are known on all tabs
+    fetchCategoryRides(2, 0, false);
+
+    if (
+      filter !== null &&
+      filter !== undefined &&
+      filter !== 3 &&
+      filter !== 2
+    ) {
       fetchCategoryRides(filter, 0, false);
     }
   }, [activeTab, fetchCategoryRides]);

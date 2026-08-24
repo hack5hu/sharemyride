@@ -29,8 +29,15 @@ export const CarFloorPlan: React.FC<CarFloorPlanProps> = ({
 }) => {
   const getSeatState = (id: string, isDriver?: boolean): SeatState => {
     if (isDriver) return 'driver';
-    if (selectedSeats.has(id)) return 'selected';
-    if (occupiedSeats.has(id)) return 'occupied';
+    const numId = Number(id);
+    const hasSelected =
+      selectedSeats.has(id) || (!isNaN(numId) && selectedSeats.has(numId));
+    if (hasSelected) return 'selected';
+
+    const hasOccupied =
+      occupiedSeats.has(id) || (!isNaN(numId) && occupiedSeats.has(numId));
+    if (hasOccupied) return 'occupied';
+
     return 'available';
   };
 

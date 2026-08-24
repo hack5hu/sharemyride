@@ -93,15 +93,36 @@ export const useRating = (params: {
         reviewText,
       );
 
+      // Update local storage flags for instant UI sync
       try {
         const dismissedStr = storage.getString('dismissed_ratings') || '[]';
         const dismissedIds = JSON.parse(dismissedStr) as string[];
-        if (!dismissedIds.includes(String(rideId))) {
+        if (rideId && !dismissedIds.includes(String(rideId))) {
           dismissedIds.push(String(rideId));
           storage.set('dismissed_ratings', JSON.stringify(dismissedIds));
         }
+
+        const ratedStr = storage.getString('rated_rides') || '[]';
+        const ratedIds = JSON.parse(ratedStr) as string[];
+        if (rideId && !ratedIds.includes(String(rideId))) {
+          ratedIds.push(String(rideId));
+          storage.set('rated_rides', JSON.stringify(ratedIds));
+        }
+
+        if (targetUserId) {
+          const ratedUsersStr = storage.getString('rated_users') || '[]';
+          const ratedUsers = JSON.parse(ratedUsersStr) as string[];
+          const comboKey = `${rideId}_${targetUserId}`;
+          if (!ratedUsers.includes(String(targetUserId))) {
+            ratedUsers.push(String(targetUserId));
+          }
+          if (!ratedUsers.includes(comboKey)) {
+            ratedUsers.push(comboKey);
+          }
+          storage.set('rated_users', JSON.stringify(ratedUsers));
+        }
       } catch (e) {
-        console.error('[Rating] Failed to update dismissed_ratings:', e);
+        console.error('[Rating] Failed to update storage flags:', e);
       }
 
       showNotification(

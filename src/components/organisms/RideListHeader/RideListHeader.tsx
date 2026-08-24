@@ -21,6 +21,7 @@ export interface PendingReviewInfo {
   subtitle?: string;
   targetUserId?: string;
   targetUserName?: string;
+  targetUserAvatar?: string;
 }
 
 interface RideListHeaderProps {

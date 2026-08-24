@@ -6,6 +6,19 @@ import { RootStackParamList } from '@/navigation/types.d';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useVehicleStore } from '@/store/useVehicleStore';
 
+export const getDefaultSelectedSeats = (
+  seater?: '5' | '7' | string,
+): Set<string | number> => {
+  if (seater === '7') {
+    // 7-seater: 2 (1A Front), 3 (2A Middle Left), 5 (2C Middle Right), 6 (3A Back Left), 7 (3B Back Right)
+    // Excludes center seat 4 (2B)
+    return new Set([2, 3, 5, 6, 7]);
+  }
+  // 5-seater: 2 (1A Front), 3 (2A Back Left), 5 (2C Back Right)
+  // Excludes center seat 4 (2B)
+  return new Set([2, 3, 5]);
+};
+
 export const useSeatSelection = () => {
   const navigation = useAppNavigation();
   const route = useRoute<RouteProp<RootStackParamList, 'SeatSelection'>>();
@@ -29,7 +42,12 @@ export const useSeatSelection = () => {
 
   const { vehicles, selectedVehicleId, setSelectedVehicle } = useVehicleStore();
   const [selectedSeats, setSelectedSeats] = useState<Set<string | number>>(
-    new Set(selectedSeatIds),
+    () => {
+      if (selectedSeatIds && selectedSeatIds.length > 0) {
+        return new Set(selectedSeatIds);
+      }
+      return getDefaultSelectedSeats(publishVehicleType);
+    },
   );
 
   const handleVehicleSelect = useCallback(
@@ -47,7 +65,7 @@ export const useSeatSelection = () => {
           color: vehicle.color,
           seater: vehicle.seater,
         });
-        setSelectedSeats(new Set());
+        setSelectedSeats(getDefaultSelectedSeats(vehicle.seater));
       }
     },
     [
@@ -80,6 +98,7 @@ export const useSeatSelection = () => {
             color: vehicle.color,
             seater: vehicle.seater,
           });
+          setSelectedSeats(getDefaultSelectedSeats(vehicle.seater));
         }
       }
     }
@@ -96,12 +115,15 @@ export const useSeatSelection = () => {
   ]);
 
   const onSeatPress = useCallback((id: string | number) => {
+    const numId = typeof id === 'string' && !isNaN(Number(id)) ? Number(id) : id;
+    const strId = String(id);
     setSelectedSeats(prev => {
       const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
+      if (next.has(numId) || next.has(strId)) {
+        next.delete(numId);
+        next.delete(strId);
       } else {
-        next.add(id);
+        next.add(numId);
       }
       return next;
     });
