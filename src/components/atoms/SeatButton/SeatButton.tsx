@@ -43,7 +43,7 @@ export const SeatButton: React.FC<SeatButtonProps> = ({
       >
         {state === 'selected' && (
           <S.SeatGradient
-            colors={[theme.colors.primary, theme.colors.primary_container]}
+            colors={[theme.colors.primary, theme.colors.primary_container || '#0070eb']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           />
@@ -53,31 +53,39 @@ export const SeatButton: React.FC<SeatButtonProps> = ({
             <>
               <MaterialIcons
                 name="directions-car"
-                size={moderateScale(28)}
-                color={iconColor}
+                size={moderateScale(26)}
+                color={theme.colors.on_surface_variant}
               />
-              {driverLabel && (
-                <S.DriverLabelText>{driverLabel}</S.DriverLabelText>
-              )}
+              <S.DriverLabelText>
+                {driverLabel || 'Host'}
+              </S.DriverLabelText>
+            </>
+          ) : state === 'occupied' ? (
+            <>
+              <MaterialIcons
+                name="airline-seat-recline-normal"
+                size={moderateScale(24)}
+                color={theme.colors.outline}
+              />
+              <S.OccupiedLabelText>
+                Booked
+              </S.OccupiedLabelText>
             </>
           ) : (
             <>
               <MaterialIcons
                 name="airline-seat-recline-normal"
-                size={moderateScale(24)}
-                color={iconColor}
+                size={moderateScale(26)}
+                color={
+                  state === 'selected'
+                    ? theme.colors.on_primary
+                    : theme.colors.primary
+                }
               />
-              {price !== undefined && state !== 'occupied' && (
+              {price !== undefined && (
                 <S.PriceText selected={state === 'selected'}>
                   ₹{price}
                 </S.PriceText>
-              )}
-              {state === 'occupied' && (
-                <S.BlockIconWrapper
-                  name="block"
-                  size={moderateScale(12)}
-                  color={iconColor}
-                />
               )}
             </>
           )}

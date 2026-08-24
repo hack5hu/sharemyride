@@ -106,7 +106,8 @@ export const mapPassengerData = (ride: any): MappedPassengerData[] => {
       (seatList.length > 0 ? seatList.length : 1);
 
     return {
-      bookingId: p.bookingId || p.passengerId || p.id,
+      bookingId: p.bookingId,
+      passengerId: p.passengerId,
       id: p.passengerId || p.id || p.userId,
       name: p.name || 'Passenger',
       photoUrl: p.photoUrl || p.avatar,

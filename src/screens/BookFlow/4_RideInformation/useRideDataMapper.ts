@@ -171,6 +171,8 @@ export const mapBackendRideToUI = (
     passengers: (rideRaw.passengers || rideRaw.coPassengers || []).map(
       (p: any) => ({
         ...p,
+        bookingId: p.bookingId || (p.id !== p.passengerId ? p.id : undefined),
+        passengerId: p.passengerId || p.id,
         id: p.passengerId || p.id,
         name: p.name,
         photoUrl: p.photoUrl,

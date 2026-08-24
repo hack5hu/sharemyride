@@ -2,52 +2,47 @@ import styled from 'styled-components/native';
 import { moderateScale, scale, verticalScale } from '@/styles';
 
 export const FloorPlanContainer = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface_container_low};
-  border-radius: ${moderateScale(42)}px;
-  padding: ${moderateScale(36)}px ${scale(24)}px;
-  padding-top: ${moderateScale(48)}px;
-  width: ${scale(300)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
+  border-radius: ${moderateScale(48)}px;
+  padding: ${moderateScale(32)}px ${scale(20)}px;
+  padding-top: ${moderateScale(56)}px;
+  padding-bottom: ${moderateScale(36)}px;
+  width: ${scale(310)}px;
   align-self: center;
   position: relative;
-  elevation: 2;
+  elevation: 4;
   shadow-color: ${({ theme }) => theme.colors.shadow};
-  shadow-offset: 0px 4px;
-  shadow-opacity: 0.1;
-  shadow-radius: 8px;
+  shadow-offset: 0px 8px;
+  shadow-opacity: 0.08;
+  shadow-radius: 24px;
 `;
 
 export const Windshield = styled.View`
   position: absolute;
-  top: ${moderateScale(10)}px;
+  top: ${moderateScale(12)}px;
   align-self: center;
-  width: 70%;
-  height: ${moderateScale(28)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_highest};
-  border-radius: ${moderateScale(12)}px;
-  border-bottom-left-radius: ${moderateScale(24)}px;
-  border-bottom-right-radius: ${moderateScale(24)}px;
-  opacity: 0.8;
+  width: 72%;
+  height: ${moderateScale(30)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_high};
+  border-top-left-radius: ${moderateScale(16)}px;
+  border-top-right-radius: ${moderateScale(16)}px;
+  border-bottom-left-radius: ${moderateScale(28)}px;
+  border-bottom-right-radius: ${moderateScale(28)}px;
 `;
 
 export const Mirror = styled.View<{ side: 'left' | 'right' }>`
   position: absolute;
-  top: ${moderateScale(40)}px;
-  ${({ side }) => (side === 'left' ? 'left: -6px;' : 'right: -6px;')}
-  width: ${moderateScale(8)}px;
-  height: ${moderateScale(16)}px;
+  top: ${moderateScale(44)}px;
+  ${({ side }) => (side === 'left' ? 'left: -8px;' : 'right: -8px;')}
+  width: ${moderateScale(10)}px;
+  height: ${moderateScale(20)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_high};
-  border-radius: ${moderateScale(4)}px;
-  border-${({ side }) =>
-    side === 'left' ? 'top-left' : 'top-right'}-radius: ${moderateScale(10)}px;
-  border-${({ side }) =>
-    side === 'left' ? 'bottom-left' : 'bottom-right'}-radius: ${moderateScale(
-  10,
-)}px;
+  border-radius: ${moderateScale(6)}px;
 `;
 
 export const SeatsWrapper = styled.View`
-  margin-top: ${verticalScale(4)}px;
-  gap: ${verticalScale(25)}px;
+  margin-top: ${verticalScale(8)}px;
+  gap: ${verticalScale(24)}px;
 `;
 
 export const SeatRow = styled.View`
@@ -57,11 +52,10 @@ export const SeatRow = styled.View`
 `;
 
 export const TrunkBar = styled.View`
-  margin-top: ${verticalScale(24)}px;
+  margin-top: ${verticalScale(28)}px;
   align-self: center;
-  width: 40%;
-  height: ${moderateScale(4)}px;
-  background-color: ${({ theme }) => theme.colors.outline_variant};
+  width: 44%;
+  height: ${moderateScale(5)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_high};
   border-radius: 9999px;
-  opacity: 0.3;
 `;

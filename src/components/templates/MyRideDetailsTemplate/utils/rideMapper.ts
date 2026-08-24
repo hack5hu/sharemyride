@@ -15,6 +15,7 @@ export interface MappedDriverData {
 
 export interface MappedPassengerData {
   bookingId?: string;
+  passengerId?: string;
   id?: string;
   name?: string;
   photoUrl?: string;

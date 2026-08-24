@@ -45,7 +45,9 @@ const formatSegment = (segment?: string) => {
   if (delimiter) {
     const parts = segment.split(delimiter);
     const start = getCityName(parts[0]) || getShortLocationName(parts[0]);
-    const end = parts[1] ? (getCityName(parts[1]) || getShortLocationName(parts[1])) : '';
+    const end = parts[1]
+      ? getCityName(parts[1]) || getShortLocationName(parts[1])
+      : '';
     return end ? `${start} → ${end}` : start;
   }
   return getCityName(segment) || getShortLocationName(segment);
@@ -157,7 +159,8 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
           ) : isDriver ? (
             <S.PassengerList>
               {passengers.map((p, i) => {
-                const passengerId = p.id || p.bookingId || '';
+                const bookingId = p.bookingId;
+                const passengerId = p.passengerId;
                 let ratedUsers: string[] = [];
                 try {
                   ratedUsers = JSON.parse(
@@ -168,11 +171,13 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                 }
                 const hasBeenRated =
                   p.hasRated ||
-                  (passengerId ? ratedUsers.includes(String(passengerId)) : false);
+                  (passengerId
+                    ? ratedUsers.includes(String(passengerId))
+                    : false);
 
                 return (
                   <S.PassengerCard
-                    key={p.bookingId || p.id || i}
+                    key={bookingId || passengerId || i}
                     onPress={() => onPassengerPress?.(passengerId)}
                     disabled={!onPassengerPress}
                     activeOpacity={0.7}
@@ -220,13 +225,12 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                         <S.RemoveButton
                           icon="person-remove"
                           variant="surface"
-                          onPress={() =>
-                            onCancelPassenger?.(passengerId)
-                          }
+                          onPress={() => onCancelPassenger?.(bookingId)}
                         />
                       )}
-                      {isCompleted && onRatePassenger && (
-                        hasBeenRated ? (
+                      {isCompleted &&
+                        onRatePassenger &&
+                        (hasBeenRated ? (
                           <S.RatedBadge>
                             <Icon
                               name="check-circle"
@@ -263,8 +267,7 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                               Rate
                             </Typography>
                           </S.RateButton>
-                        )
-                      )}
+                        ))}
                       <Avatar
                         source={{ uri: p.photoUrl }}
                         placeholder={p.name}
@@ -284,67 +287,73 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
             </S.PassengerList>
           ) : (
             <S.PassengerList>
-              {passengers.map((p, i) => (
-                <S.PassengerCard
-                  key={p.bookingId || p.id || i}
-                  onPress={() => onPassengerPress?.(p.id || p.bookingId || '')}
-                  disabled={!onPassengerPress}
-                  activeOpacity={0.7}
-                >
-                  <S.PassengerInfo>
-                    <Typography variant="title" size="sm" weight="bold">
-                      {p.name}
-                    </Typography>
-
-                    <S.SegmentRow>
-                      <Typography
-                        variant="body"
-                        size="sm"
-                        weight="medium"
-                        color="on_surface_variant"
-                        numberOfLines={1}
-                      >
-                        {formatSegment(p.segment)}
+              {passengers.map((p, i) => {
+                const bookingId = String(p.bookingId || p.id || '');
+                const passengerId = String(
+                  p.passengerId || p.id || p.bookingId || '',
+                );
+                return (
+                  <S.PassengerCard
+                    key={bookingId || passengerId || i}
+                    onPress={() => onPassengerPress?.(passengerId)}
+                    disabled={!onPassengerPress}
+                    activeOpacity={0.7}
+                  >
+                    <S.PassengerInfo>
+                      <Typography variant="title" size="sm" weight="bold">
+                        {p.name}
                       </Typography>
-                    </S.SegmentRow>
 
-                    <S.SeatBadge>
-                      <Icon
-                        name="event-seat"
-                        size={moderateScale(11)}
-                        color={theme.colors.primary}
-                      />
-                      <Typography
-                        variant="label"
-                        size="xs"
-                        weight="bold"
-                        color="primary"
-                      >
-                        {p.seatsBooked}{' '}
-                        {p.seatsBooked === 1
-                          ? t.seatLabelSingular || 'seat'
-                          : t.seatsLabelPlural || 'seats'}
-                        : {getFormattedSeats(p)}
-                      </Typography>
-                    </S.SeatBadge>
-                  </S.PassengerInfo>
+                      <S.SegmentRow>
+                        <Typography
+                          variant="body"
+                          size="sm"
+                          weight="medium"
+                          color="on_surface_variant"
+                          numberOfLines={1}
+                        >
+                          {formatSegment(p.segment)}
+                        </Typography>
+                      </S.SegmentRow>
 
-                  <S.RightMetaGroup>
-                    <Avatar
-                      source={{ uri: p.photoUrl }}
-                      placeholder={p.name}
-                      size="md"
-                    />
-                    {onPassengerPress && (
-                      <Icon
-                        name="chevron-right"
-                        size={moderateScale(20)}
-                        color={theme.colors.on_surface_variant}
+                      <S.SeatBadge>
+                        <Icon
+                          name="event-seat"
+                          size={moderateScale(11)}
+                          color={theme.colors.primary}
+                        />
+                        <Typography
+                          variant="label"
+                          size="xs"
+                          weight="bold"
+                          color="primary"
+                        >
+                          {p.seatsBooked}{' '}
+                          {p.seatsBooked === 1
+                            ? t.seatLabelSingular || 'seat'
+                            : t.seatsLabelPlural || 'seats'}
+                          : {getFormattedSeats(p)}
+                        </Typography>
+                      </S.SeatBadge>
+                    </S.PassengerInfo>
+
+                    <S.RightMetaGroup>
+                      <Avatar
+                        source={{ uri: p.photoUrl }}
+                        placeholder={p.name}
+                        size="md"
                       />
-                    )}
-                  </S.RightMetaGroup>
-                </S.PassengerCard>
-              ))}
+                      {onPassengerPress && (
+                        <Icon
+                          name="chevron-right"
+                          size={moderateScale(20)}
+                          color={theme.colors.on_surface_variant}
+                        />
+                      )}
+                    </S.RightMetaGroup>
+                  </S.PassengerCard>
+                );
+              })}
             </S.PassengerList>
           )}
         </S.SectionCard>

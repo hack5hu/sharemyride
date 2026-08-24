@@ -4,6 +4,7 @@ import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
 import { Button } from '@/components/atoms/Button';
+import { VerifiedBadge } from '@/components/atoms/VerifiedBadge';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { moderateScale } from '@/styles';
 import * as S from './BookingConfirmedTemplate.styles';
@@ -20,17 +21,22 @@ export const BookingConfirmedTemplate: React.FC<
       <S.MainContent showsVerticalScrollIndicator={false}>
         {/* Success Header */}
         <S.SuccessArea>
-          <S.SuccessIconContainer
-            colors={[theme.colors.primary, theme.colors.primary_container]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-          >
-            <MaterialIcons
-              name="check-circle"
-              size={moderateScale(48)}
-              color={theme.colors.on_primary}
-            />
-          </S.SuccessIconContainer>
+          <S.SuccessGlowRing>
+            <S.SuccessIconContainer
+              colors={[
+                theme.colors.primary,
+                theme.colors.primary_container || '#0070eb',
+              ]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+            >
+              <MaterialIcons
+                name="check"
+                size={moderateScale(40)}
+                color={theme.colors.on_primary}
+              />
+            </S.SuccessIconContainer>
+          </S.SuccessGlowRing>
           <S.SuccessTitle>{t.successTitle}</S.SuccessTitle>
           <S.SuccessSubtitle>{t.successSubtitle}</S.SuccessSubtitle>
         </S.SuccessArea>
@@ -39,29 +45,52 @@ export const BookingConfirmedTemplate: React.FC<
         <S.RideSummaryGrid>
           {/* Driver Info */}
           <S.DriverCard>
-            <Avatar size="lg" source={{ uri: rideData.driver.avatar }} placeholder={rideData.driver.name} />
+            <S.AvatarWrapper>
+              <Avatar
+                size="md"
+                source={{ uri: rideData.driver.avatar }}
+                placeholder={rideData.driver.name}
+              />
+              <S.BadgePin>
+                <VerifiedBadge size={18} />
+              </S.BadgePin>
+            </S.AvatarWrapper>
+
             <S.DriverMeta>
-              <S.DriverNameText variant="title" size="md" weight="bold">
+              <Typography variant="title" size="sm" weight="bold">
                 {rideData.driver.name}
-              </S.DriverNameText>
+              </Typography>
               <S.RatingRow>
-                <MaterialIcons
-                  name="star"
-                  size={moderateScale(16)}
-                  color={theme.colors.primary}
-                />
-                <Typography variant="label" size="sm" weight="bold">
-                  {typeof rideData.driver.rating === 'number'
-                    ? rideData.driver.rating.toFixed(1)
-                    : rideData.driver.rating}
-                </Typography>
-                <Typography
-                  variant="label"
-                  size="sm"
-                  color={theme.colors.on_surface_variant}
-                >
-                  • {rideData.driver.car}
-                </Typography>
+                <S.RatingPill>
+                  <MaterialIcons
+                    name="star"
+                    size={moderateScale(13)}
+                    color={theme.colors.warning || '#f59e0b'}
+                  />
+                  <Typography
+                    variant="label"
+                    size="xs"
+                    weight="bold"
+                    color={theme.colors.on_surface}
+                  >
+                    {typeof rideData.driver.rating === 'number'
+                      ? rideData.driver.rating.toFixed(1)
+                      : rideData.driver.rating || '5.0'}
+                  </Typography>
+                </S.RatingPill>
+
+                {rideData.driver.car ? (
+                  <S.MetaBadge>
+                    <Typography
+                      variant="label"
+                      size="xs"
+                      weight="medium"
+                      color={theme.colors.on_surface_variant}
+                    >
+                      {rideData.driver.car}
+                    </Typography>
+                  </S.MetaBadge>
+                ) : null}
               </S.RatingRow>
             </S.DriverMeta>
           </S.DriverCard>
@@ -87,9 +116,9 @@ export const BookingConfirmedTemplate: React.FC<
           <S.SafetyBadge>
             <S.SafetyIconBox>
               <MaterialIcons
-                name="security"
-                size={24}
-                color={theme.colors.secondary}
+                name="verified-user"
+                size={moderateScale(22)}
+                color={theme.colors.primary}
               />
             </S.SafetyIconBox>
             <S.SafetyMeta>
@@ -97,16 +126,17 @@ export const BookingConfirmedTemplate: React.FC<
                 variant="body"
                 size="sm"
                 weight="bold"
-                color={theme.colors.on_secondary_container}
+                color={theme.colors.on_surface}
               >
-                {t.safetyGuardTitle}
+                {t.safetyGuardTitle || 'Safety Guard Active'}
               </Typography>
               <S.SafetySubtitleText
                 variant="label"
                 size="xs"
-                color={theme.colors.on_secondary_container}
+                color={theme.colors.on_surface_variant}
               >
-                {t.safetyGuardSubtitle}
+                {t.safetyGuardSubtitle ||
+                  'Your journey is GPS tracked with 24/7 support.'}
               </S.SafetySubtitleText>
             </S.SafetyMeta>
           </S.SafetyBadge>
@@ -131,18 +161,6 @@ export const BookingConfirmedTemplate: React.FC<
             {t.secondaryCTA}
           </Button>
         </S.ActionArea>
-
-        {/* Trust Indicators */}
-        <S.TrustSection>
-          <S.TrustIconsRow>
-            <MaterialIcons name="verified-user" size={16} />
-            <MaterialIcons name="eco" size={16} />
-            <MaterialIcons name="electric-car" size={16} />
-          </S.TrustIconsRow>
-          <S.TrustText variant="label" size="xxs" weight="bold">
-            {t.carbonNeutralTransit}
-          </S.TrustText>
-        </S.TrustSection>
       </S.MainContent>
     </ScreenShell>
   );

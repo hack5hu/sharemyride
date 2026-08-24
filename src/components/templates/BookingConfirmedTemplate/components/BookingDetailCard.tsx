@@ -26,12 +26,12 @@ export const BookingDetailCard: React.FC<BookingDetailCardProps> = ({
           <MaterialIcons
             name={iconName}
             size={20}
-            color={theme.colors.primary_container}
+            color={theme.colors.primary}
           />
         </S.IconBox>
         <Typography
           variant="label"
-          size="sm"
+          size="xs"
           weight="bold"
           color={theme.colors.on_surface_variant}
         >
@@ -39,7 +39,7 @@ export const BookingDetailCard: React.FC<BookingDetailCardProps> = ({
         </Typography>
       </S.DetailCardHeader>
       <S.ValueWrapper>
-        <Typography variant="title" size="md" weight="bold">
+        <Typography variant="title" size="sm" weight="bold">
           {value}
         </Typography>
         {subValue ? (
