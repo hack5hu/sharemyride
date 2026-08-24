@@ -1,18 +1,20 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '@/navigation/types.d';
-import {
-  LocationService,
-  OlaPrediction,
-} from '@/serviceManager/LocationService';
+import { useState, useCallback, useRef, useEffect } from 'react';
+import { LocationService } from '@/serviceManager/LocationService';
 import { Location } from '@/store/useLocationStore';
 import debounce from 'lodash/debounce';
 import { ChatService } from '@/serviceManager/ChatService';
-import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
+import {
+  AnalyticsService,
+  AnalyticsEvent,
+} from '@/serviceManager/AnalyticsService';
 import { useAuthStore } from '@/store/useAuthStore';
-import { AppState, AppStateStatus, Platform, PermissionsAndroid } from 'react-native';
-
+import {
+  AppState,
+  AppStateStatus,
+  Platform,
+  PermissionsAndroid,
+} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {
   requestLocationPermission,
@@ -111,8 +113,7 @@ export const useSelectLocation = () => {
           });
 
           // 3. Reverse geocode in the background
-          LocationService
-            .reverseGeocode(latitude, longitude)
+          LocationService.reverseGeocode(latitude, longitude)
             .then(locData => {
               setCurrentUserLocation({
                 id: 'current-gps',
@@ -213,8 +214,6 @@ export const useSelectLocation = () => {
     initLocation();
   }, [getFastCachedLocation, checkGpsAndGetLocation]);
 
-
-
   useEffect(() => {
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
       if (nextAppState === 'active') {
@@ -230,8 +229,6 @@ export const useSelectLocation = () => {
       subscription.remove();
     };
   }, [checkGpsAndGetLocation]);
-
-
 
   const handleUserLocationUpdate = useCallback(
     (location: any) => {
@@ -261,8 +258,7 @@ export const useSelectLocation = () => {
         });
 
         // 3. Reverse geocode in the background
-        LocationService
-          .reverseGeocode(latitude, longitude)
+        LocationService.reverseGeocode(latitude, longitude)
           .then(locData => {
             setCurrentUserLocation({
               id: 'current-gps',
@@ -298,19 +294,16 @@ export const useSelectLocation = () => {
     }
   }, [currentUserLocation, checkGpsAndGetLocation]);
 
-  const handleZoom = useCallback(
-    (increment: number) => {
-      const newZoom = Math.min(Math.max(zoomRef.current + increment, 3), 20);
-      zoomRef.current = newZoom;
-      setZoom(newZoom);
+  const handleZoom = useCallback((increment: number) => {
+    const newZoom = Math.min(Math.max(zoomRef.current + increment, 3), 20);
+    zoomRef.current = newZoom;
+    setZoom(newZoom);
 
-      cameraRef.current?.setStop({
-        zoom: newZoom,
-        duration: 300,
-      });
-    },
-    [],
-  );
+    cameraRef.current?.setStop({
+      zoom: newZoom,
+      duration: 300,
+    });
+  }, []);
 
   const handleZoomIn = useCallback(() => handleZoom(1), [handleZoom]);
   const handleZoomOut = useCallback(() => handleZoom(-1), [handleZoom]);
@@ -384,12 +377,16 @@ export const useSelectLocation = () => {
         locationToConfirm.latitude != null &&
         locationToConfirm.longitude != null
       ) {
-        const myUserId = useAuthStore.getState().user?.userId || useAuthStore.getState().user?.id;
+        const myUserId =
+          useAuthStore.getState().user?.userId ||
+          useAuthStore.getState().user?.id;
         const receiverId = params?.userId;
 
         if (myUserId && receiverId && receiverId !== 'Unknown') {
           const loc = locationToConfirm;
-          const locationString = `[LOCATION_DATA]:${loc.latitude},${loc.longitude}|${loc.name}|${loc.address || ''}`;
+          const locationString = `[LOCATION_DATA]:${loc.latitude},${
+            loc.longitude
+          }|${loc.name}|${loc.address || ''}`;
 
           ChatService.sendMessage({
             senderId: myUserId,

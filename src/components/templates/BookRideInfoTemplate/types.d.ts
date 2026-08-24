@@ -31,6 +31,7 @@ export interface BookRideInfoTemplateProps {
     role?: any;
     status?: string;
     message?: string;
+    subtitle?: string;
     etaMinutes?: number;
     distanceKm?: number;
   } | null;

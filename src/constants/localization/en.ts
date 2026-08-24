@@ -969,6 +969,9 @@ export const en: Translations = {
     emergencyTitle: 'Safety Center',
     emergencyMessage: 'Contact emergency services or our 24/7 safety helpline.',
     passengerDistanceAway: 'Currently {{distance}} km away from pickup',
+    atPickupStop: 'At pickup stop',
+    distanceAwayFromStop: '{{distance}} from stop',
+    liveLocationInactive: 'Live location not active',
   },
   activeRidePassenger: {
     screenTitle: 'Active Ride',

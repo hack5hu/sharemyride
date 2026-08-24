@@ -958,6 +958,9 @@ export const hi: Translations = {
     emergencyTitle: 'सुरक्षा केंद्र',
     emergencyMessage: 'आपातकालीन सेवाओं या हमारी 24/7 हेल्पलाइन से संपर्क करें।',
     passengerDistanceAway: 'पिकअप पॉइंट से वर्तमान में {{distance}} किमी दूर',
+    atPickupStop: 'पिकअप स्टॉप पर',
+    distanceAwayFromStop: 'स्टॉप से {{distance}} दूर',
+    liveLocationInactive: 'लाइव लोकेशन सक्रिय नहीं है',
   },
   activeRidePassenger: {
     screenTitle: 'सक्रिय राइड',

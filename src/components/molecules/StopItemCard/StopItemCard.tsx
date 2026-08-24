@@ -36,10 +36,17 @@ export const StopItemCard: React.FC<StopItemCardProps> = React.memo(
 
         <S.PassengerInfo>
           <S.PassengerNameText>{stop.passengerName}</S.PassengerNameText>
-          {!!stop.distanceAway && (
-            <S.PassengerSubtitleText style={{ color: theme.colors.primary, fontWeight: '700' }}>
-              {stop.distanceAway}
-            </S.PassengerSubtitleText>
+          {!!(stop.distanceAway || subtitle) && (
+            <S.PassengerSubtitleRow>
+              <Icon
+                name="navigation"
+                size={moderateScale(12)}
+                color={theme.colors.primary}
+              />
+              <S.PassengerSubtitleText numberOfLines={1}>
+                {stop.distanceAway || subtitle}
+              </S.PassengerSubtitleText>
+            </S.PassengerSubtitleRow>
           )}
         </S.PassengerInfo>
 

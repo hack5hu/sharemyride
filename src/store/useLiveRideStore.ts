@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import Geolocation from '@react-native-community/geolocation';
 import { RideService } from '@/serviceManager/RideService';
 import { ActiveRideRole } from '@/navigation/types.d';
+import { requestLocationPermission } from '@/utils/permissionUtils';
 
 export interface ActiveRideLiveInfo {
   hasActiveRide: boolean;
@@ -9,6 +10,7 @@ export interface ActiveRideLiveInfo {
   role?: ActiveRideRole | 'DRIVER' | 'PASSENGER';
   status?: string;
   message?: string;
+  subtitle?: string;
   etaMinutes?: number;
   distanceKm?: number;
   pickupLocation?: string;
@@ -24,12 +26,64 @@ interface LiveRideState {
   isLiveLocationEnabled: boolean;
   lastFetchedAt: number | null;
   fetchLiveStatus: () => Promise<void>;
-  setLiveLocationEnabled: (enabled: boolean) => void;
+  setLiveLocationEnabled: (enabled: boolean) => Promise<void>;
   dismissBanner: () => void;
   resetLiveRide: () => void;
 }
 
-const DEFAULT_COORDS = { lat: 28.6139, lng: 77.209 };
+const sanitizeMetric = (
+  val: number | null | undefined,
+  maxAllowed: number,
+): number | undefined => {
+  if (val === null || val === undefined || isNaN(Number(val))) return undefined;
+  const num = Number(val);
+  if (num < 0 || num > maxAllowed) return undefined;
+  return num;
+};
+
+const computeDynamicSubtitle = (
+  etaMinutes: number | undefined | null,
+  distanceKm: number | undefined | null,
+  startTime?: string,
+): string | undefined => {
+  if (etaMinutes !== undefined && etaMinutes !== null) {
+    const distPart =
+      distanceKm !== undefined &&
+      distanceKm !== null &&
+      Number(distanceKm) > 0
+        ? ` • ${Number(distanceKm).toFixed(1)} km`
+        : '';
+    return `${etaMinutes} mins away${distPart}`;
+  }
+
+  if (startTime) {
+    try {
+      const startDate = new Date(startTime);
+      const now = new Date();
+      const diffMinutes = Math.round(
+        (startDate.getTime() - now.getTime()) / (1000 * 60),
+      );
+      const formattedTime = startDate.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+
+      if (diffMinutes > 0 && diffMinutes <= 60) {
+        return `Starts in ${diffMinutes} mins • ${formattedTime}`;
+      } else if (diffMinutes > 60 && diffMinutes < 1440) {
+        const hours = Math.floor(diffMinutes / 60);
+        const mins = diffMinutes % 60;
+        return `Starts in ${hours}h ${mins > 0 ? `${mins}m ` : ''}• ${formattedTime}`;
+      } else {
+        return `Scheduled for ${formattedTime}`;
+      }
+    } catch {
+      return undefined;
+    }
+  }
+
+  return undefined;
+};
 
 export const useLiveRideStore = create<LiveRideState>(set => ({
   activeRide: null,
@@ -38,8 +92,13 @@ export const useLiveRideStore = create<LiveRideState>(set => ({
   isLiveLocationEnabled: false,
   lastFetchedAt: null,
 
-  setLiveLocationEnabled: (enabled: boolean) => {
+  setLiveLocationEnabled: async (enabled: boolean) => {
     set({ isLiveLocationEnabled: enabled });
+    if (enabled) {
+      try {
+        await requestLocationPermission();
+      } catch {}
+    }
     useLiveRideStore.getState().fetchLiveStatus();
   },
 
@@ -56,7 +115,8 @@ export const useLiveRideStore = create<LiveRideState>(set => ({
     set({ isLoading: true });
 
     const sendRequest = async (lat: number | null, lng: number | null) => {
-      const isLiveLocationEnabled = useLiveRideStore.getState().isLiveLocationEnabled;
+      const isLiveLocationEnabled =
+        useLiveRideStore.getState().isLiveLocationEnabled;
 
       try {
         const data = await RideService.getLiveStatus({
@@ -67,7 +127,8 @@ export const useLiveRideStore = create<LiveRideState>(set => ({
 
         if (data && data.rideFound && data.ride) {
           const role =
-            String(data.role || data.ride.role || '').toUpperCase() === 'PASSENGER'
+            String(data.role || data.ride.role || '').toUpperCase() ===
+            'PASSENGER'
               ? ActiveRideRole.PASSENGER
               : ActiveRideRole.DRIVER;
 
@@ -76,11 +137,46 @@ export const useLiveRideStore = create<LiveRideState>(set => ({
             data.ride.rideStatus === 'ACTIVE';
 
           const firstPassenger = data.ride.passengers?.[0];
-          const passengerDistance = firstPassenger?.distanceFromDriverKm;
-          const passengerEta = firstPassenger?.etaMinutes;
+          const passengerDistance =
+            firstPassenger?.distanceFromDriverKm ??
+            firstPassenger?.distanceKm ??
+            firstPassenger?.distance;
+          const passengerEta =
+            firstPassenger?.etaMinutes ?? firstPassenger?.eta;
 
-          const distanceKm = data.distanceKm ?? passengerDistance ?? 3.8;
-          const etaMinutes = data.etaMinutes ?? passengerEta ?? 5;
+          const rawDistance =
+            data.distanceKm ??
+            data.distance ??
+            data.ride.distanceKm ??
+            data.ride.distance ??
+            passengerDistance;
+
+          const rawEta =
+            data.etaMinutes ??
+            data.eta ??
+            data.ride.etaMinutes ??
+            data.ride.eta ??
+            passengerEta;
+
+          // Filter out abnormal outlier values (e.g. 12000 km / 18000 mins due to 0,0 null island coordinates)
+          const distanceKm = sanitizeMetric(rawDistance, 800);
+          let etaMinutes = sanitizeMetric(rawEta, 720);
+
+          // If no valid live ETA from GPS, calculate from arrival/start time
+          if (etaMinutes === undefined && data.ride.startTime) {
+            try {
+              const start = new Date(data.ride.startTime).getTime();
+              const now = Date.now();
+              const diff = Math.max(0, Math.round((start - now) / 60000));
+              etaMinutes = diff > 0 && diff < 720 ? diff : undefined;
+            } catch {}
+          }
+
+          const dynamicSubtitle = computeDynamicSubtitle(
+            etaMinutes,
+            distanceKm,
+            data.ride.startTime,
+          );
 
           set({
             activeRide: {
@@ -91,6 +187,7 @@ export const useLiveRideStore = create<LiveRideState>(set => ({
               message: isStarted
                 ? 'Active Ride in Progress'
                 : 'Your ride is about to start!',
+              subtitle: dynamicSubtitle,
               etaMinutes,
               distanceKm,
               startTime: data.ride.startTime,
@@ -101,15 +198,19 @@ export const useLiveRideStore = create<LiveRideState>(set => ({
             isLoading: false,
           });
         } else {
-          set({ activeRide: null, isLoading: false, lastFetchedAt: Date.now() });
+          set({
+            activeRide: null,
+            isLoading: false,
+            lastFetchedAt: Date.now(),
+          });
         }
       } catch (error) {
-        // Non-blocking: fail silently if network or auth error
         set({ isLoading: false });
       }
     };
 
-    const isLiveLocationEnabled = useLiveRideStore.getState().isLiveLocationEnabled;
+    const isLiveLocationEnabled =
+      useLiveRideStore.getState().isLiveLocationEnabled;
 
     if (!isLiveLocationEnabled) {
       sendRequest(null, null);
@@ -123,13 +224,13 @@ export const useLiveRideStore = create<LiveRideState>(set => ({
           sendRequest(latitude, longitude);
         },
         () => {
-          // Fallback to default coordinates if GPS unavailable
-          sendRequest(DEFAULT_COORDS.lat, DEFAULT_COORDS.lng);
+          // Immediately fallback to calling API with liveLocationEnabled flag
+          sendRequest(null, null);
         },
-        { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 },
+        { enableHighAccuracy: false, timeout: 3000, maximumAge: 30000 },
       );
     } catch {
-      sendRequest(DEFAULT_COORDS.lat, DEFAULT_COORDS.lng);
+      sendRequest(null, null);
     }
   },
 }));

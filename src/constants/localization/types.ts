@@ -597,6 +597,9 @@ export interface ActiveRideDriverTranslations {
   emergencyTitle: string;
   emergencyMessage: string;
   passengerDistanceAway: string;
+  atPickupStop: string;
+  distanceAwayFromStop: string;
+  liveLocationInactive: string;
 }
 
 export interface NotificationTranslations {
