@@ -34,10 +34,10 @@ export const PassengerList = styled.View`
 export const PassengerCard = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   padding: ${moderateScale(14)}px ${moderateScale(16)}px;
   background-color: ${({ theme }) => theme.colors.surface_container_low};
   border-radius: ${moderateScale(16)}px;
+  gap: ${scale(12)}px;
 `;
 
 export const PassengerInfo = styled.View`
@@ -45,11 +45,10 @@ export const PassengerInfo = styled.View`
   gap: ${verticalScale(4)}px;
 `;
 
-export const RightMetaGroup = styled.View`
+export const RightActionsGroup = styled.View`
   flex-direction: row;
   align-items: center;
-  gap: ${scale(6)}px;
-  margin-left: ${scale(12)}px;
+  gap: ${scale(8)}px;
 `;
 
 export const SegmentRow = styled.View`
@@ -86,9 +85,13 @@ export const CoRiderCapsule = styled.View`
   border-radius: ${moderateScale(16)}px;
 `;
 
-export const RemoveButton = styled(IconButton)`
-  border-color: ${({ theme }) => theme.colors.error};
-  background-color: ${({ theme }) => `${theme.colors.error}08`};
+export const RemoveButton = styled.TouchableOpacity`
+  width: ${moderateScale(36)}px;
+  height: ${moderateScale(36)}px;
+  border-radius: ${moderateScale(18)}px;
+  background-color: ${({ theme }) => `${theme.colors.error}14`};
+  align-items: center;
+  justify-content: center;
 `;
 
 export const RateButton = styled.TouchableOpacity`

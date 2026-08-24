@@ -31,102 +31,90 @@ export const PassengerSummarySection: React.FC<PassengerSummarySectionProps> = (
   const theme = useTheme();
 
   return (
-    <S.PassengerSummaryCard>
+    <S.PassengerSummaryGrid>
       <S.SummaryRow>
-        <S.SummaryItem>
-          <Icon
-            name="calendar-today"
-            size={moderateScale(16)}
-            color={theme.colors.primary}
-          />
-          <Typography variant="body" size="sm" weight="bold">
+        <S.SummaryTile>
+          <S.SummaryTileIcon>
+            <Icon
+              name="calendar-today"
+              size={moderateScale(16)}
+              color={theme.colors.primary}
+            />
+          </S.SummaryTileIcon>
+          <Typography variant="label" size="sm" weight="bold" numberOfLines={1}>
             {departureDateLabel}
           </Typography>
-          <Typography
-            variant="label"
-            size="xs"
-            color="on_surface_variant"
-          >
+          <Typography variant="label" size="xs" color="on_surface_variant">
             {t.date || 'Date'}
           </Typography>
-        </S.SummaryItem>
-        <S.SummaryDivider />
-        <S.SummaryItem>
-          <Icon
-            name="schedule"
-            size={moderateScale(16)}
-            color={theme.colors.primary}
-          />
-          <Typography variant="body" size="sm" weight="bold">
+        </S.SummaryTile>
+
+        <S.SummaryTile>
+          <S.SummaryTileIcon>
+            <Icon
+              name="schedule"
+              size={moderateScale(16)}
+              color={theme.colors.primary}
+            />
+          </S.SummaryTileIcon>
+          <Typography variant="label" size="sm" weight="bold">
             {departureTime}
           </Typography>
-          <Typography
-            variant="label"
-            size="xs"
-            color="on_surface_variant"
-          >
+          <Typography variant="label" size="xs" color="on_surface_variant">
             {t.time || 'Time'}
           </Typography>
-        </S.SummaryItem>
-        <S.SummaryDivider />
-        <S.SummaryItem>
-          <Icon
-            name="timer"
-            size={moderateScale(16)}
-            color={theme.colors.primary}
-          />
-          <Typography variant="body" size="sm" weight="bold">
+        </S.SummaryTile>
+
+        <S.SummaryTile>
+          <S.SummaryTileIcon>
+            <Icon
+              name="timer"
+              size={moderateScale(16)}
+              color={theme.colors.primary}
+            />
+          </S.SummaryTileIcon>
+          <Typography variant="label" size="sm" weight="bold">
             {durationLabel}
           </Typography>
-          <Typography
-            variant="label"
-            size="xs"
-            color="on_surface_variant"
-          >
+          <Typography variant="label" size="xs" color="on_surface_variant">
             {t.duration || 'Duration'}
           </Typography>
-        </S.SummaryItem>
+        </S.SummaryTile>
       </S.SummaryRow>
-
-      <S.HorizontalDivider />
 
       <S.SummaryRow>
-        <S.SummaryItem>
-          <Icon
-            name="event-seat"
-            size={moderateScale(16)}
-            color={theme.colors.primary}
-          />
-          <Typography variant="body" size="sm" weight="bold">
+        <S.SummaryTile>
+          <S.SummaryTileIcon>
+            <Icon
+              name="event-seat"
+              size={moderateScale(16)}
+              color={theme.colors.primary}
+            />
+          </S.SummaryTileIcon>
+          <Typography variant="label" size="sm" weight="bold" numberOfLines={1}>
             {passengerSeatInfo}
           </Typography>
-          <Typography
-            variant="label"
-            size="xs"
-            color="on_surface_variant"
-          >
+          <Typography variant="label" size="xs" color="on_surface_variant">
             {t.seatsLabel || 'Seats'}
           </Typography>
-        </S.SummaryItem>
-        <S.SummaryDivider />
-        <S.SummaryItem>
-          <Icon
-            name="currency-rupee"
-            size={moderateScale(16)}
-            color={theme.colors.primary}
-          />
-          <Typography variant="body" size="sm" weight="bold">
+        </S.SummaryTile>
+
+        <S.SummaryTile>
+          <S.SummaryTileIcon>
+            <Icon
+              name="currency-rupee"
+              size={moderateScale(16)}
+              color={theme.colors.primary}
+            />
+          </S.SummaryTileIcon>
+          <Typography variant="title" size="sm" weight="bold" color="primary">
             ₹{passengerPrice}
           </Typography>
-          <Typography
-            variant="label"
-            size="xs"
-            color="on_surface_variant"
-          >
-            {t.bookingTotal || 'Price'}
+          <Typography variant="label" size="xs" color="on_surface_variant">
+            {t.bookingTotal || 'Booking Total'}
           </Typography>
-        </S.SummaryItem>
+        </S.SummaryTile>
       </S.SummaryRow>
-    </S.PassengerSummaryCard>
+    </S.PassengerSummaryGrid>
   );
 };

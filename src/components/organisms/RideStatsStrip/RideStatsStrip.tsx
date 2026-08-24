@@ -29,8 +29,8 @@ export const RideStatsStrip: React.FC<RideStatsStripProps> = ({
         <S.StatPillIcon>
           <Icon
             name="calendar-today"
-            size={moderateScale(15)}
-            color={theme.colors.on_primary}
+            size={moderateScale(16)}
+            color={theme.colors.primary}
           />
         </S.StatPillIcon>
         <Typography variant="label" size="sm" weight="bold" numberOfLines={1}>
@@ -45,8 +45,8 @@ export const RideStatsStrip: React.FC<RideStatsStripProps> = ({
         <S.StatPillIcon>
           <Icon
             name="schedule"
-            size={moderateScale(15)}
-            color={theme.colors.on_primary}
+            size={moderateScale(16)}
+            color={theme.colors.primary}
           />
         </S.StatPillIcon>
         <Typography variant="label" size="sm" weight="bold">
@@ -61,8 +61,8 @@ export const RideStatsStrip: React.FC<RideStatsStripProps> = ({
         <S.StatPillIcon>
           <Icon
             name="timer"
-            size={moderateScale(15)}
-            color={theme.colors.on_primary}
+            size={moderateScale(16)}
+            color={theme.colors.primary}
           />
         </S.StatPillIcon>
         <Typography variant="label" size="sm" weight="bold">
@@ -77,8 +77,8 @@ export const RideStatsStrip: React.FC<RideStatsStripProps> = ({
         <S.StatPillIcon>
           <Icon
             name="event-seat"
-            size={moderateScale(15)}
-            color={theme.colors.on_primary}
+            size={moderateScale(16)}
+            color={theme.colors.primary}
           />
         </S.StatPillIcon>
         <Typography variant="label" size="sm" weight="bold">

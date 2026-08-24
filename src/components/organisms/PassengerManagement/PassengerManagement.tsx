@@ -12,6 +12,7 @@ import * as S from './PassengerManagement.styles';
 
 export interface Passenger {
   id?: string;
+  passengerId?: string;
   bookingId?: string;
   name: string;
   photoUrl?: string;
@@ -182,6 +183,12 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                     disabled={!onPassengerPress}
                     activeOpacity={0.7}
                   >
+                    <Avatar
+                      source={{ uri: p.photoUrl }}
+                      placeholder={p.name}
+                      size="md"
+                    />
+
                     <S.PassengerInfo>
                       <Typography variant="title" size="sm" weight="bold">
                         {p.name}
@@ -220,13 +227,18 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                       </S.SeatBadge>
                     </S.PassengerInfo>
 
-                    <S.RightMetaGroup>
+                    <S.RightActionsGroup>
                       {!hideActions && (
                         <S.RemoveButton
-                          icon="person-remove"
-                          variant="surface"
+                          activeOpacity={0.8}
                           onPress={() => onCancelPassenger?.(bookingId)}
-                        />
+                        >
+                          <Icon
+                            name="person-remove"
+                            size={moderateScale(18)}
+                            color={theme.colors.error}
+                          />
+                        </S.RemoveButton>
                       )}
                       {isCompleted &&
                         onRatePassenger &&
@@ -268,11 +280,6 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                             </Typography>
                           </S.RateButton>
                         ))}
-                      <Avatar
-                        source={{ uri: p.photoUrl }}
-                        placeholder={p.name}
-                        size="md"
-                      />
                       {onPassengerPress && (
                         <Icon
                           name="chevron-right"
@@ -280,7 +287,7 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                           color={theme.colors.on_surface_variant}
                         />
                       )}
-                    </S.RightMetaGroup>
+                    </S.RightActionsGroup>
                   </S.PassengerCard>
                 );
               })}
@@ -299,6 +306,12 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                     disabled={!onPassengerPress}
                     activeOpacity={0.7}
                   >
+                    <Avatar
+                      source={{ uri: p.photoUrl }}
+                      placeholder={p.name}
+                      size="md"
+                    />
+
                     <S.PassengerInfo>
                       <Typography variant="title" size="sm" weight="bold">
                         {p.name}
@@ -337,20 +350,13 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                       </S.SeatBadge>
                     </S.PassengerInfo>
 
-                    <S.RightMetaGroup>
-                      <Avatar
-                        source={{ uri: p.photoUrl }}
-                        placeholder={p.name}
-                        size="md"
+                    {onPassengerPress && (
+                      <Icon
+                        name="chevron-right"
+                        size={moderateScale(20)}
+                        color={theme.colors.on_surface_variant}
                       />
-                      {onPassengerPress && (
-                        <Icon
-                          name="chevron-right"
-                          size={moderateScale(20)}
-                          color={theme.colors.on_surface_variant}
-                        />
-                      )}
-                    </S.RightMetaGroup>
+                    )}
                   </S.PassengerCard>
                 );
               })}

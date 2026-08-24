@@ -1,5 +1,6 @@
 import { MappedDriverData, MappedPassengerData } from './rideMapper';
 import { storage } from '@/utils/storage';
+import { getCityName } from '@/utils/address';
 
 interface Passenger {
   bookingId?: string;
@@ -56,11 +57,16 @@ export const mapDriverData = (ride: any): MappedDriverData | null => {
 
   return {
     id: driverId,
-    name: ride.driver.name,
+    name: ride.driver.name || 'Driver',
     avatar: ride.driver.photoUrl || ride.driver.avatar,
+    driverPhotoUrl: ride.driver.photoUrl || ride.driver.avatar,
     rating: ride.driver.rating || 5,
-    rideCount: ride.driver.rideCount || 0,
-    isVerified: ride.driver.isVerified || false,
+    rideCount:
+      ride.driver.rideCount ||
+      ride.driver.totalRidesAsDriver ||
+      ride.driver.totalRides ||
+      0,
+    isVerified: Boolean(ride.driver.isVerified || ride.driver.verified),
     hasRated: hasBeenRated,
   };
 };
@@ -91,13 +97,13 @@ export const mapPassengerData = (ride: any): MappedPassengerData[] => {
       (rideId && pId ? ratedUsers.includes(`${rideId}_${pId}`) : false) ||
       false;
 
-    const sourceName = p.sourceStopName?.split(',')[0].trim();
-    const destName = p.destinationStopName?.split(',')[0].trim();
+    const sourceCity = getCityName(p.sourceStopName) || p.sourceStopName?.split(',')[0].trim();
+    const destCity = getCityName(p.destinationStopName) || p.destinationStopName?.split(',')[0].trim();
     const segmentText =
       p.segment ||
-      (sourceName && destName
-        ? `${sourceName} → ${destName}`
-        : sourceName || destName || undefined);
+      (sourceCity && destCity
+        ? `${sourceCity} → ${destCity}`
+        : sourceCity || destCity || undefined);
 
     const seatList = (p.seatIds || p.seatId || p.seatNames || []).map(String);
     const seatsCount =

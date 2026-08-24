@@ -5,8 +5,9 @@ import { formatDisplayAddress, formatFullCleanAddress, getShortLocationName } fr
 
 export interface MappedDriverData {
   id: string;
-  name?: string;
+  name: string;
   avatar?: string;
+  driverPhotoUrl?: string;
   rating: number;
   rideCount: number;
   isVerified: boolean;
@@ -17,7 +18,7 @@ export interface MappedPassengerData {
   bookingId?: string;
   passengerId?: string;
   id?: string;
-  name?: string;
+  name: string;
   photoUrl?: string;
   segment: string;
   seatsBooked: number;
