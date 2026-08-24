@@ -68,10 +68,11 @@ const LeftContent = styled.View`
   gap: ${verticalScale(4)}px;
 `;
 
-const RightContent = styled.View`
+const RightContent = styled.View<{ isLast?: boolean }>`
   flex: 1;
-  padding-left: ${scale(16)}px;
-  padding-bottom: ${verticalScale(24)}px;
+  padding-left: ${scale(14)}px;
+  padding-bottom: ${({ isLast }) =>
+    isLast ? verticalScale(4) : verticalScale(16)}px;
   align-items: flex-start;
 `;
 
@@ -169,7 +170,7 @@ export const RideTimeline: React.FC<{
             {index < points.length - 1 && <DashLine />}
           </DashColumn>
 
-          <RightContent>
+          <RightContent isLast={index === points.length - 1}>
             <LocationHeaderRow>
               <LocationPressable
                 onPress={() => onMapPress?.(index)}

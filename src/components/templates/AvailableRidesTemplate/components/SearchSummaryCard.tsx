@@ -31,47 +31,58 @@ export const SearchSummaryCard: React.FC<SearchSummaryCardProps> = ({
   return (
     <S.SearchSummaryCard>
       <S.SummaryRow>
-        <S.RouteInfo>
-          <S.LocationVertical>
-            <Icon
-              name="circle"
-              size={moderateScale(14)}
-              color={theme.colors.primary}
-            />
-            <S.Line />
-            <Icon
-              name="location-on"
-              size={moderateScale(14)}
-              color={theme.colors.tertiary}
-            />
-          </S.LocationVertical>
-          <S.RouteTextContainer>
-            <Typography
-              variant="title"
-              size="sm"
-              weight="bold"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {formatDisplayAddress(startLocation?.address) || 'Unknown'}
-            </Typography>
-            <Typography
-              variant="title"
-              size="sm"
-              weight="bold"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-              color={theme.colors.on_surface_variant}
-            >
-              {formatDisplayAddress(destinationLocation?.address) || 'Unknown'}
-            </Typography>
-          </S.RouteTextContainer>
-        </S.RouteInfo>
-        <S.FilterButton onPress={onOpenFilters}>
+        <S.RouteSection>
+          {/* Origin Stop */}
+          <S.RouteRow>
+            <S.TrackColumn>
+              <S.OriginDot />
+            </S.TrackColumn>
+            <S.LocationTextWrapper>
+              <Typography
+                variant="title"
+                size="sm"
+                weight="bold"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {formatDisplayAddress(startLocation?.address) || 'Unknown'}
+              </Typography>
+            </S.LocationTextWrapper>
+          </S.RouteRow>
+
+          {/* Connecting Track Line */}
+          <S.RouteRow>
+            <S.TrackColumn>
+              <S.TrackLine />
+            </S.TrackColumn>
+            <S.LocationTextWrapper />
+          </S.RouteRow>
+
+          {/* Destination Stop */}
+          <S.RouteRow>
+            <S.TrackColumn>
+              <S.DestinationDot />
+            </S.TrackColumn>
+            <S.LocationTextWrapper>
+              <Typography
+                variant="title"
+                size="sm"
+                weight="bold"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                color={theme.colors.on_surface_variant}
+              >
+                {formatDisplayAddress(destinationLocation?.address) || 'Unknown'}
+              </Typography>
+            </S.LocationTextWrapper>
+          </S.RouteRow>
+        </S.RouteSection>
+
+        <S.FilterButton onPress={onOpenFilters} activeOpacity={0.8}>
           <Icon
             name="tune"
-            size={moderateScale(24)}
-            color={theme.colors.on_surface_variant}
+            size={moderateScale(20)}
+            color={theme.colors.primary}
           />
         </S.FilterButton>
       </S.SummaryRow>
@@ -80,14 +91,14 @@ export const SearchSummaryCard: React.FC<SearchSummaryCardProps> = ({
         <S.FooterItem>
           <Icon
             name="calendar-today"
-            size={moderateScale(20)}
-            color={theme.colors.on_surface_variant}
+            size={moderateScale(14)}
+            color={theme.colors.primary}
           />
           <Typography
             variant="label"
-            size="md"
+            size="sm"
             weight="bold"
-            color={theme.colors.on_surface_variant}
+            color={theme.colors.on_surface}
           >
             {travelDate
               ? safeParseDate(travelDate)
@@ -99,14 +110,14 @@ export const SearchSummaryCard: React.FC<SearchSummaryCardProps> = ({
         <S.FooterItem>
           <Icon
             name="group"
-            size={moderateScale(20)}
-            color={theme.colors.on_surface_variant}
+            size={moderateScale(16)}
+            color={theme.colors.primary}
           />
           <Typography
             variant="label"
-            size="md"
+            size="sm"
             weight="bold"
-            color={theme.colors.on_surface_variant}
+            color={theme.colors.on_surface}
           >
             {t.searchSummarySeats.replace('{count}', seatCount.toString())}
           </Typography>

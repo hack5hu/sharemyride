@@ -157,13 +157,25 @@ export const formatDisplayAddress = (
     .filter(Boolean);
 
   // Step 1: strip tail noise (country, state, pincode)
-  const withoutTail = parts.filter(part => !isTailNoise(part));
+  let withoutTail = parts.filter(part => !isTailNoise(part));
   if (withoutTail.length === 0) return address;
 
+  // Deduplicate adjacent identical or alias city names at the tail
+  if (withoutTail.length >= 2) {
+    const last = withoutTail[withoutTail.length - 1].toLowerCase();
+    const secondLast = withoutTail[withoutTail.length - 2].toLowerCase();
+    if (
+      last === secondLast ||
+      (last === 'gurugram' && secondLast === 'gurgaon') ||
+      (last === 'gurgaon' && secondLast === 'gurugram') ||
+      (last === 'bengaluru' && secondLast === 'bangalore')
+    ) {
+      withoutTail = withoutTail.slice(0, withoutTail.length - 1);
+    }
+  }
+
   // Step 2: strip internal venue details (floors, platforms)
-  const meaningful = withoutTail.filter(
-    part => !isInternalDetail(part),
-  );
+  let meaningful = withoutTail.filter(part => !isInternalDetail(part));
   if (meaningful.length === 0) return withoutTail.join(', ');
 
   // Step 3: if a building/tower exists after index 0,
@@ -174,11 +186,28 @@ export const formatDisplayAddress = (
     );
 
     if (buildingIdx > 0) {
-      return meaningful.slice(buildingIdx).join(', ');
+      meaningful = meaningful.slice(buildingIdx);
     }
   }
 
-  // No building found — the first part IS the landmark
+  // Step 4: If address is long (> 3 parts), keep the primary landmark (first part)
+  // and the key area / locality & city (last 2 parts) for clear, readable routing
+  if (meaningful.length > 3) {
+    const landmark = meaningful[0];
+    const areaAndCity = meaningful.slice(-2);
+    const uniqueParts = [landmark];
+    for (const part of areaAndCity) {
+      if (
+        !uniqueParts.some(
+          p => p.toLowerCase().includes(part.toLowerCase()) || part.toLowerCase().includes(p.toLowerCase()),
+        )
+      ) {
+        uniqueParts.push(part);
+      }
+    }
+    return uniqueParts.join(', ');
+  }
+
   return meaningful.join(', ');
 };
 

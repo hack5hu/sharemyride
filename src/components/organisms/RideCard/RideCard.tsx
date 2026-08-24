@@ -12,26 +12,28 @@ import { useTranslation } from '@/hooks/useTranslation';
 
 const CardContainer = styled.TouchableOpacity<{ isSpecial?: boolean }>`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  border-radius: ${moderateScale(28)}px;
-  padding: ${moderateScale(24)}px;
-  margin-bottom: ${verticalScale(16)}px;
-  box-shadow: 0px 4px 20px rgba(23, 29, 25, 0.04);
+  border-radius: ${moderateScale(20)}px;
+  padding: ${moderateScale(18)}px ${moderateScale(20)}px;
+  margin-bottom: ${verticalScale(14)}px;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.06;
+  shadow-radius: 16px;
   elevation: 3;
-  border: 1px solid ${({ theme }) => theme.colors.primary_container};
 `;
 
 const SpecialBadge = styled.View`
   position: absolute;
-  top: -${verticalScale(12)}px;
-  right: ${scale(24)}px;
+  top: -${verticalScale(10)}px;
+  right: ${scale(20)}px;
   background-color: ${({ theme }) => theme.colors.primary_container};
-  padding-horizontal: ${scale(16)}px;
-  padding-vertical: ${verticalScale(4)}px;
+  padding-horizontal: ${scale(12)}px;
+  padding-vertical: ${verticalScale(3)}px;
   border-radius: ${moderateScale(999)}px;
   flex-direction: row;
   align-items: center;
   gap: ${scale(4)}px;
-  elevation: 6;
+  elevation: 4;
 `;
 
 const Header = styled.View`
@@ -44,19 +46,22 @@ const Header = styled.View`
 const DriverInfo = styled.View`
   flex-direction: row;
   align-items: center;
-  gap: ${scale(16)}px;
+  gap: ${scale(12)}px;
+  flex: 1;
 `;
 
-const DriverTextGroup = styled.View``;
+const DriverTextGroup = styled.View`
+  flex: 1;
+`;
 
 const PriceGroup = styled.View`
   align-items: flex-end;
 `;
 
 const PriceText = styled(Typography)`
-  font-size: ${moderateScale(24)}px;
+  font-size: ${moderateScale(22)}px;
   font-weight: 800;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
   color: ${({ theme }) => theme.colors.primary};
 `;
 
@@ -70,19 +75,21 @@ const InfoRow = styled.View<{ marginTop?: number }>`
 const Footer = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
-  gap: ${scale(10)}px;
+  gap: ${scale(8)}px;
+  margin-top: ${verticalScale(10)}px;
+  padding-top: ${verticalScale(10)}px;
   border-top-width: 1px;
-  border-top-color: ${({ theme }) => theme.colors.outline_variant}0D;
+  border-top-color: ${({ theme }) => theme.colors.outline_variant}20;
 `;
 
 const FeatureBadge = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface_container_high}80;
-  padding-horizontal: ${scale(12)}px;
-  padding-vertical: ${verticalScale(6)}px;
-  border-radius: ${moderateScale(12)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_high}66;
+  padding-horizontal: ${scale(10)}px;
+  padding-vertical: ${verticalScale(5)}px;
+  border-radius: ${moderateScale(8)}px;
   flex-direction: row;
   align-items: center;
-  gap: ${scale(6)}px;
+  gap: ${scale(5)}px;
 `;
 
 export const RideCard: React.FC<{
@@ -130,40 +137,42 @@ export const RideCard: React.FC<{
             <Typography variant="title" size="sm" weight="bold">
               {ride.driver.name}
             </Typography>
-            <InfoRow>
+            <InfoRow marginTop={2}>
               <Icon
                 name="star"
-                size={moderateScale(16)}
-                color={theme.colors.primary}
+                size={moderateScale(13)}
+                color={theme.colors.warning || '#f59e0b'}
               />
               <Typography
                 variant="label"
                 size="sm"
                 weight="bold"
-                color={theme.colors.primary}
+                color={theme.colors.on_surface}
               >
                 {ride.driver.rating}
               </Typography>
+              {ride.pickupDistance !== undefined && ride.pickupDistance < 50 && (
+                <>
+                  <Typography
+                    variant="label"
+                    size="sm"
+                    color={theme.colors.outline_variant}
+                  >
+                    •
+                  </Typography>
+                  <Typography
+                    variant="label"
+                    size="sm"
+                    weight="medium"
+                    color={theme.colors.on_surface_variant}
+                  >
+                    {t('availableRides.kmFromPickup', {
+                      distance: ride.pickupDistance.toFixed(1),
+                    })}
+                  </Typography>
+                </>
+              )}
             </InfoRow>
-            {ride.pickupDistance !== undefined && ride.pickupDistance < 50 && (
-              <InfoRow marginTop={4}>
-                <Icon
-                  name="near-me"
-                  size={moderateScale(14)}
-                  color={theme.colors.primary}
-                />
-                <Typography
-                  variant="label"
-                  size="sm"
-                  weight="bold"
-                  color={theme.colors.on_surface_variant}
-                >
-                  {t('availableRides.kmFromPickup', {
-                    distance: ride.pickupDistance.toFixed(1),
-                  })}
-                </Typography>
-              </InfoRow>
-            )}
           </DriverTextGroup>
         </DriverInfo>
 
@@ -171,14 +180,14 @@ export const RideCard: React.FC<{
           <PriceText>₹{ride.price.toFixed(0)}</PriceText>
           <Typography
             variant="label"
-            size="sm"
+            size="xs"
             weight="bold"
             color={theme.colors.on_surface_variant}
           >
             {tVal.perSeatLabel.toUpperCase()}
           </Typography>
           {ride.totalDuration > 0 && (
-            <InfoRow marginTop={2}>
+            <InfoRow marginTop={3}>
               <Icon
                 name="schedule"
                 size={moderateScale(12)}

@@ -108,7 +108,8 @@ export const mapRideDetailsData = (
 
   const passengerSeatInfo = (() => {
     const booking = ride?.myBooking;
-    const seatsCount = booking?.seatCount ?? ride?.seatsBooked ?? 0;
+    const seatsCount =
+      booking?.seatCount ?? (ride as any)?.seatsBooked ?? (ride as any)?.bookedSeats ?? 0;
     const vType = ride?.vehicle?.type || ride?.vehicleType;
     const seatIds = booking?.seatIds || ride?.seatIds || [];
 
