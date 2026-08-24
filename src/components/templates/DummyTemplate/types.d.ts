@@ -8,5 +8,5 @@ export interface DummyTemplateProps {
   content: { title: string; body: string } | null;
   handleEmailSupport: () => void;
   goBack: () => void;
-  t: Record<string, string>;
+  t: any;
 }

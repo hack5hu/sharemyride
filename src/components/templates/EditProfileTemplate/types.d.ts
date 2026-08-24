@@ -6,6 +6,7 @@ export interface EditProfileFormValues {
   dob: string;
   gender: string;
   bio?: string;
+  avatarUri?: string;
 }
 
 export interface EditProfileTemplateProps {

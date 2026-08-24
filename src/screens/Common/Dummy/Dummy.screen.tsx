@@ -57,7 +57,7 @@ export const DummyScreen: React.FC = () => {
       content={content}
       handleEmailSupport={handleEmailSupport}
       goBack={() => navigation.goBack()}
-      t={t}
+      t={t as any}
     />
   );
 };

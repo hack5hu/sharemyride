@@ -12,6 +12,7 @@ import { RideService, type SearchRidePayload } from '@/serviceManager/RideServic
 import { useBookRideStore, type RecentSearch } from '@/store/useBookRideStore';
 import { getErrorMessage } from '@/utils/error';
 import { storage } from '@/utils/storage';
+import { useLiveRideStore } from '@/store/useLiveRideStore';
 
 let globalSessionPrompted = false;
 
@@ -306,10 +307,14 @@ export const useBookRideInfo = () => {
     }
   }, []);
 
+  const { activeRide, isBannerDismissed, fetchLiveStatus, dismissBanner } =
+    useLiveRideStore();
+
   useFocusEffect(
     useCallback(() => {
       setIsSearching(false);
       checkUnratedRides();
+      fetchLiveStatus();
       let backPressCount = 0;
       const onBackPress = () => {
         if (backPressCount === 0) {
@@ -338,8 +343,17 @@ export const useBookRideInfo = () => {
       return () => {
         subscription.remove();
       };
-    }, [checkUnratedRides]),
+    }, [checkUnratedRides, fetchLiveStatus]),
   );
+
+  const handlePressActiveRide = useCallback(() => {
+    if (activeRide) {
+      (navigation.navigate as any)('ActiveRide', {
+        rideId: activeRide.rideId,
+        role: activeRide.role,
+      });
+    }
+  }, [navigation, activeRide]);
 
   const handleConfirmRating = useCallback(() => {
     globalSessionPrompted = true;
@@ -444,5 +458,9 @@ export const useBookRideInfo = () => {
     isRatingPromptVisible,
     handleConfirmRating,
     handleDismissRating,
+    activeRide,
+    isBannerDismissed,
+    handlePressActiveRide,
+    handleDismissActiveRideBanner: dismissBanner,
   };
 };

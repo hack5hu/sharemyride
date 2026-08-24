@@ -24,7 +24,6 @@ export const RideDetailsTemplate: React.FC<RideDetailsTemplateProps> = ({
   handleCancelOwnBooking,
   isCancelModalVisible,
   setIsCancelModalVisible,
-  _cancellationReasons,
   handleConfirmCancel,
   isCancelling,
   cancelTarget,
@@ -34,6 +33,7 @@ export const RideDetailsTemplate: React.FC<RideDetailsTemplateProps> = ({
   handleReportSubmit,
   handleRateDriver,
   handleRatePassenger,
+  handleTrackLiveRide,
 }) => {
   if (isLoading) {
     return (
@@ -65,6 +65,7 @@ export const RideDetailsTemplate: React.FC<RideDetailsTemplateProps> = ({
         onReportRide={handleReportRide}
         onRateDriver={handleRateDriver}
         onRatePassenger={handleRatePassenger}
+        onTrackLiveRide={handleTrackLiveRide}
       />
 
       {isCancelModalVisible && (

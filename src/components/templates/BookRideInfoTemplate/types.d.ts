@@ -26,6 +26,20 @@ export interface BookRideInfoTemplateProps {
   t: BookRideInfoTranslations;
   rideType: RideType;
   onSetRideType: (type: RideType) => void;
+  rideType: 'local' | 'intercity';
+  onSetRideType: (type: 'local' | 'intercity') => void;
+  activeRide?: {
+    hasActiveRide: boolean;
+    rideId?: string;
+    role?: any;
+    status?: string;
+    message?: string;
+    etaMinutes?: number;
+    distanceKm?: number;
+  } | null;
+  isBannerDismissed?: boolean;
+  onPressActiveRide?: () => void;
+  onDismissActiveRideBanner?: () => void;
 }
 
 export interface BookingFormProps {

@@ -247,10 +247,15 @@ export const FareSummaryRow = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  border-radius: ${moderateScale(16)}px;
+  background-color: ${({ theme }) => theme.colors.surface};
+  border-radius: ${moderateScale(24)}px;
   padding: ${moderateScale(16)}px;
-  margin-bottom: ${verticalScale(16)}px;
+  margin-top: ${verticalScale(16)}px;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.05;
+  shadow-radius: 8px;
+  elevation: 2;
 `;
 
 export const FareSummaryItem = styled.View`
@@ -267,7 +272,7 @@ export const FareSummaryText = styled.View`
 
 export const FareDivider = styled.View`
   width: 1px;
-  height: ${verticalScale(24)}px;
-  background-color: ${({ theme }) => theme.colors.outline_variant};
-  margin-horizontal: ${scale(8)}px;
+  height: ${verticalScale(32)}px;
+  background-color: ${({ theme }) => theme.colors.surface_variant};
+  margin-horizontal: ${scale(12)}px;
 `;

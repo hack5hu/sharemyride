@@ -19,6 +19,7 @@ import { RatingInvitationCard } from './components/RatingInvitationCard';
 import * as S from './MyRideDetailsTemplate.styles';
 import { type MyRideDetailsTemplateProps } from './types.d';
 import { mapRideDetailsData } from './utils/rideMapper';
+import { ActiveRideBanner } from '@/components/molecules/ActiveRideBanner';
 
 export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
   React.memo(
@@ -38,6 +39,7 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
       handleDriverProfile,
       onRateDriver,
       onRatePassenger,
+      onTrackLiveRide,
     }) => {
       const translations = useLocale();
       const theme = useTheme();
@@ -107,6 +109,12 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
                       t={translations.rating}
                     />
                   )}
+
+                {!isArchived && !isCompleted && onTrackLiveRide && (
+                  <ActiveRideBanner
+                    onPress={onTrackLiveRide}
+                  />
+                )}
 
                 <S.SectionCard>
                   <S.TimelineLabelRow>
