@@ -4,6 +4,7 @@ import { useTheme } from 'styled-components/native';
 import {
   Camera,
   UserLocation,
+  ViewAnnotation,
 } from '@/components/organisms/OlaMap';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
@@ -15,6 +16,10 @@ import * as S from './RideRouteMapTemplate.styles';
 import { RideRouteMapTemplateProps } from './types.d';
 import { Button } from '@/components/atoms/Button';
 import { RouteMapLayers } from './components/RouteMapLayers';
+import {
+  RouteMarkerCallout,
+  RouteMarkerData,
+} from './components/RouteMarkerCallout';
 
 interface ExtendedUserLocationProps
   extends React.ComponentProps<typeof UserLocation> {
@@ -75,6 +80,17 @@ export const RideRouteMapTemplate: React.FC<RideRouteMapTemplateProps> =
                       theme={theme}
                     />
                   )}
+
+                  {mapData?.markers?.map((marker: RouteMarkerData) => (
+                    <ViewAnnotation
+                      key={marker.id}
+                      id={marker.id}
+                      lngLat={marker.coordinates}
+                      anchor="bottom"
+                    >
+                      <RouteMarkerCallout marker={marker} />
+                    </ViewAnnotation>
+                  ))}
                 </S.StyledOlaMap>
               )}
             </S.MapWrapper>

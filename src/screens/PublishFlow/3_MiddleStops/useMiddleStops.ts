@@ -4,6 +4,7 @@ import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { LocationService } from '@/serviceManager/LocationService';
 import { useAppNavigation } from '@/hooks/useAppNavigation'; // ensure custom navigation hook is used
 import { decodePolyline, getBoundingBox } from '@/utils/polyline';
+import { formatDisplayAddress } from '@/utils/address';
 
 export const useMiddleStops = () => {
   const navigation = useAppNavigation(); // use custom navigation hook per guidelines
@@ -205,11 +206,12 @@ export const useMiddleStops = () => {
 
   return {
     startLocation:
-      startLocation?.name || startLocation?.address || 'Pick Start Location',
+      formatDisplayAddress(startLocation?.name || startLocation?.address) ||
+      'Pick Start Location',
     destination:
-      destinationLocation?.name ||
-      destinationLocation?.address ||
-      'Pick Destination',
+      formatDisplayAddress(
+        destinationLocation?.name || destinationLocation?.address,
+      ) || 'Pick Destination',
     startLocationRaw: startLocation,
     destinationLocationRaw: destinationLocation,
     middleStops: sortedStops.map(s => ({

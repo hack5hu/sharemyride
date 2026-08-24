@@ -4,8 +4,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useLocale } from '@/constants/localization';
 import { LocationInputsBento } from '@/components/organisms/LocationInputsBento';
 import { format } from 'date-fns';
-// import { HeaderBar } from '@/components/molecules/HeaderBar';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { getShortLocationName, formatDisplayAddress } from '@/utils/address';
 
 import {
   MainContent,
@@ -90,9 +90,13 @@ export const LocationSelectionTemplate: React.FC<
             </RecentRidesHeader>
             {recentRides.map((ride, index) => {
               const startShort =
-                ride.startLocation?.address?.split(',')[0] || '';
+                getShortLocationName(
+                  formatDisplayAddress(ride.startLocation?.address),
+                ) || '';
               const destShort =
-                ride.destinationLocation?.address?.split(',')[0] || '';
+                getShortLocationName(
+                  formatDisplayAddress(ride.destinationLocation?.address),
+                ) || '';
               const formattedPublishDateTime = ride.departureDate
                 ? `${format(new Date(ride.departureDate), 'MMM dd, yyyy')} • ${
                     ride.departureTime

@@ -1,5 +1,6 @@
 import olaClient from './olaClient';
 import { Logger } from '@/utils/logger';
+import { formatDisplayAddress } from '@/utils/address';
 
 export interface OlaPrediction {
   description: string;
@@ -100,7 +101,7 @@ export const LocationService = {
         const name = result.name || result.formatted_address.split(',')[0];
         const data = {
           name: name,
-          address: result.formatted_address,
+          address: formatDisplayAddress(result.formatted_address),
         };
         geocodeCache.set(cacheKey, data);
         return data;

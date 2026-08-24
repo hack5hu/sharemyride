@@ -198,6 +198,31 @@ export const FareIconBox = styled.View`
   justify-content: center;
 `;
 
+export const FareSummaryRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
+  border-radius: ${moderateScale(16)}px;
+  padding: ${moderateScale(16)}px;
+  margin-bottom: ${verticalScale(16)}px;
+`;
 
+export const FareSummaryItem = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(8)}px;
+  flex: 1;
+`;
 
+export const FareSummaryText = styled.View`
+  flex-direction: column;
+  gap: ${verticalScale(2)}px;
+`;
 
+export const FareDivider = styled.View`
+  width: 1px;
+  height: ${verticalScale(24)}px;
+  background-color: ${({ theme }) => theme.colors.outline_variant};
+  margin-horizontal: ${scale(8)}px;
+`;

@@ -86,7 +86,8 @@ export const MockInput = styled.View`
 
 export const MockInputText = styled.Text<{ $hasValue?: boolean }>`
   font-family: 'Plus Jakarta Sans';
-  font-size: ${responsiveFont(14)}px;
+  font-size: ${responsiveFont(12.5)}px;
+  line-height: ${responsiveFont(16.5)}px;
   color: ${({ theme, $hasValue }) =>
     $hasValue ? theme.colors.on_surface : theme.colors.outline};
 `;

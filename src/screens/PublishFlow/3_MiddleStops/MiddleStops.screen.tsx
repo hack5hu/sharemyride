@@ -25,9 +25,6 @@ export const MiddleStopsScreen: React.FC = () => {
       startLocation={startLocation}
       destination={destination}
       middleStops={middleStops}
-      startLocationRaw={startLocationRaw}
-      destinationLocationRaw={destinationLocationRaw}
-      middleStopsRaw={middleStopsRaw}
       onAddStop={handleAddStop}
       onRemoveStop={handleRemoveStop}
       startDistanceText={startDistanceText}

@@ -6,6 +6,7 @@ import { RootStackParamList } from '@/navigation/types';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { storage } from '@/utils/storage';
 import { calculateDistance } from '@/utils/location';
+import { formatDisplayAddress } from '@/utils/address';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { useLocale } from '@/constants/localization';
@@ -119,8 +120,8 @@ export const useLocationSelection = () => {
   // Enforce validation: Must have both start and destination to proceed
   const canContinue = !!startLocation && !!destinationLocation;
   return {
-    startLocationName: startLocation?.address || '',
-    destinationLocationName: destinationLocation?.address || '',
+    startLocationName: formatDisplayAddress(startLocation?.address),
+    destinationLocationName: formatDisplayAddress(destinationLocation?.address),
     handlePressStart,
     handlePressDestination,
     handleContinue,

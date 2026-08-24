@@ -1,6 +1,7 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useMemo, useState } from 'react';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
+import { formatDisplayAddress } from '@/utils/address';
 import { useSummaryMappers } from './useSummaryMappers';
 import { useSummaryActions } from './useSummaryActions';
 
@@ -60,9 +61,9 @@ export const useSummaryPublish = () => {
 
   return {
     routeData: {
-      start: startLocation?.address || 'Unknown',
-      end: destinationLocation?.address || 'Unknown',
-      middleStops: middleStops.map(s => s.address),
+      start: formatDisplayAddress(startLocation?.address) || 'Unknown',
+      end: formatDisplayAddress(destinationLocation?.address) || 'Unknown',
+      middleStops: middleStops.map(s => formatDisplayAddress(s.address)),
     },
     schedule: {
       date: formattedDate,

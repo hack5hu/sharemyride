@@ -11,6 +11,7 @@ import { showNotification } from '@/components/organisms/GlobalNotification/Glob
 import { NotificationType } from '@/constants/enums';
 import { formatTimeSafely, safeParseDate } from '@/utils/date';
 import { getErrorMessage } from '@/utils/error';
+import { formatDisplayAddress } from '@/utils/address';
 
 export const useAvailableRides = () => {
   const { navigate, goBack } = useAppNavigation();
@@ -193,7 +194,9 @@ export const useAvailableRides = () => {
               'TBD',
               false,
             ),
-            location: stop.name || stop.address || 'Unknown Location',
+            location:
+              formatDisplayAddress(stop.name || stop.address || stop.stopName) ||
+              'Unknown Location',
             type:
               idx === 0
                 ? 'pickup'
@@ -209,7 +212,9 @@ export const useAvailableRides = () => {
                 'TBD',
                 false,
               ),
-              location: ride.sourceStopName || ride.sourceAddress || 'Pickup',
+              location:
+                formatDisplayAddress(ride.sourceStopName || ride.sourceAddress) ||
+                'Pickup',
               type: 'pickup',
             },
             {
@@ -220,9 +225,9 @@ export const useAvailableRides = () => {
                 false,
               ),
               location:
-                ride.destinationStopName ||
-                ride.destinationAddress ||
-                'Dropoff',
+                formatDisplayAddress(
+                  ride.destinationStopName || ride.destinationAddress,
+                ) || 'Dropoff',
               type: 'destination',
             },
           ];

@@ -1,4 +1,5 @@
 import { safeParseDate, formatTimeSafely } from '@/utils/date';
+import { getShortLocationName, formatDisplayAddress } from '@/utils/address';
 
 export const mapBackendRideToUI = (
   ride: any,
@@ -82,7 +83,9 @@ export const mapBackendRideToUI = (
     id: ride.bookingId || ride.id || ride._id || Math.random().toString(),
     rideId: ride.rideId || ride.id,
     bookingId: ride.bookingId,
-    title: `${startName.split(',')[0]} to ${endName.split(',')[0]}`,
+    title: `${getShortLocationName(
+      formatDisplayAddress(startName),
+    )} to ${getShortLocationName(formatDisplayAddress(endName))}`,
     subtitle: isRequest
       ? `${weekday}, ${dayMonth} • ${timeStr}`
       : `${weekday}, ${dayMonth} • ${timeStr}`,

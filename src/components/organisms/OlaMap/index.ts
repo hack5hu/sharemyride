@@ -6,4 +6,6 @@ export {
   GeoJSONSource,
   Layer,
   Marker,
+  ViewAnnotation,
+  Callout,
 } from '@maplibre/maplibre-react-native';

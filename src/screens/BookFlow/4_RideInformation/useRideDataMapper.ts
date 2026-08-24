@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { calculateDistance } from '@/utils/location';
 import { formatTimeSafely, formatDateSafely } from '@/utils/date';
 import { computeTotalRides } from '@/utils/user';
+import { formatDisplayAddress, getShortLocationName } from '@/utils/address';
 
 export const mapBackendRideToUI = (
   rideRaw: any,
@@ -62,19 +63,11 @@ export const mapBackendRideToUI = (
     const isHighlighted =
       stop.id === sourceStopId || stop.id === destinationStopId;
     const address = stop.stopName || stop.name || 'Unknown';
-    let displayLocation = address;
     const isDriverRole = rideRaw.userRole === 'DRIVER';
 
-    // Only truncate if NOT highlighted AND NOT driver
+    let displayLocation = formatDisplayAddress(address);
     if (!isHighlighted && !isDriverRole) {
-      const parts = address.split(',').map((p: string) => p.trim());
-      if (parts.length >= 4) {
-        displayLocation = parts[parts.length - 4];
-      } else if (parts.length >= 3) {
-        displayLocation = parts[parts.length - 3];
-      } else {
-        displayLocation = parts[0] || '';
-      }
+      displayLocation = getShortLocationName(displayLocation || address);
     }
 
     let durationSincePrevious = '';

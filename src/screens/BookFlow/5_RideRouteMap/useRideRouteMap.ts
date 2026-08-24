@@ -485,11 +485,21 @@ export const useRideRouteMap = (
       f => f.geometry.coordinates && f.geometry.coordinates.length >= 2,
     );
 
+    const markers = stopMarkers.map(sm => ({
+      id:
+        sm.id ||
+        `marker-${sm.properties.role}-${sm.geometry.coordinates.join('-')}`,
+      coordinates: sm.geometry.coordinates as [number, number],
+      role: sm.properties.role,
+      name: sm.properties.name || '',
+    }));
+
     return {
       geoJSON: {
         type: 'FeatureCollection',
         features: [...validRouteFeatures, ...stopMarkers],
       },
+      markers,
       bounds,
     };
   }, [

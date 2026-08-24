@@ -3,6 +3,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { format } from 'date-fns';
 import { moderateScale } from '@/styles';
+import { getShortLocationName, formatDisplayAddress } from '@/utils/address';
 import { RecentSearch } from '@/store/useBookRideStore';
 import * as S from './RecentSearchItem.styles';
 
@@ -35,8 +36,13 @@ export const RecentSearchItem: React.FC<RecentSearchItemProps> = ({
           </S.RecentIconBox>
           <S.RecentContent>
             <S.RecentTitle numberOfLines={1}>
-              {item.startLocation.address.split(',')[0]} to{' '}
-              {item.destinationLocation.address.split(',')[0]}
+              {getShortLocationName(
+                formatDisplayAddress(item.startLocation.address),
+              )}{' '}
+              to{' '}
+              {getShortLocationName(
+                formatDisplayAddress(item.destinationLocation.address),
+              )}
             </S.RecentTitle>
             <S.RecentSub>
               {format(new Date(item.travelDate), 'MMM dd, yyyy')} •{' '}

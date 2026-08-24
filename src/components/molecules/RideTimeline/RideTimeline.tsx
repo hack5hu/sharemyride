@@ -178,9 +178,9 @@ export const RideTimeline: React.FC<{
               >
                 <Typography
                   variant="body"
-                  size="md"
+                  size="sm"
                   weight={point.isHighlighted || isDriver ? 'bold' : 'medium'}
-                  numberOfLines={isDriver ? 2 : point.isHighlighted ? 3 : 1}
+                  numberOfLines={2}
                   ellipsizeMode="tail"
                   color={
                     point.isHighlighted || isDriver

@@ -5,6 +5,7 @@ import { Typography } from '@/components/atoms/Typography';
 import { safeParseDate } from '@/utils/date';
 import { format } from 'date-fns';
 import { moderateScale } from '@/styles';
+import { formatDisplayAddress } from '@/utils/address';
 import { AvailableRidesTranslations } from '@/constants/localization/types';
 import * as S from '../AvailableRidesTemplate.styles';
 
@@ -52,7 +53,7 @@ export const SearchSummaryCard: React.FC<SearchSummaryCardProps> = ({
               numberOfLines={1}
               ellipsizeMode="tail"
             >
-              {startLocation?.address || 'Unknown'}
+              {formatDisplayAddress(startLocation?.address) || 'Unknown'}
             </Typography>
             <Typography
               variant="title"
@@ -62,7 +63,7 @@ export const SearchSummaryCard: React.FC<SearchSummaryCardProps> = ({
               ellipsizeMode="tail"
               color={theme.colors.on_surface_variant}
             >
-              {destinationLocation?.address || 'Unknown'}
+              {formatDisplayAddress(destinationLocation?.address) || 'Unknown'}
             </Typography>
           </S.RouteTextContainer>
         </S.RouteInfo>

@@ -110,7 +110,7 @@ export const InputLabel = styled.Text`
 export const LocationBox = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.colors.surface_container_high};
   border-radius: ${moderateScale(16)}px;
-  padding-vertical: ${verticalScale(14)}px;
+  padding-vertical: ${verticalScale(10)}px;
   padding-horizontal: ${scale(16)}px;
   min-height: ${verticalScale(48)}px;
   justify-content: center;
@@ -119,7 +119,8 @@ export const LocationBox = styled.TouchableOpacity`
 export const LocationValueText = styled.Text<{ hasValue?: boolean }>`
   font-family: 'Plus Jakarta Sans';
   font-weight: 600;
-  font-size: ${responsiveFont(14)}px;
+  font-size: ${responsiveFont(12.5)}px;
+  line-height: ${verticalScale(16)}px;
   color: ${({ theme, hasValue }) =>
     hasValue
       ? theme.colors.on_surface

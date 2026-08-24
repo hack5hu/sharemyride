@@ -5,6 +5,7 @@ import { useTheme } from 'styled-components/native';
 import { format } from 'date-fns';
 import { moderateScale } from '@/styles';
 import { BookRideInfoTranslations } from '@/constants/localization/types';
+import { formatDisplayAddress } from '@/utils/address';
 import * as S from './BookingForm.styles';
 import { LocationStepper } from './LocationStepper';
 
@@ -117,10 +118,10 @@ export const BookingForm: React.FC<BookingFormProps> = ({
             >
               <S.LocationValueText
                 hasValue={!!pickup}
-                numberOfLines={1}
+                numberOfLines={2}
                 ellipsizeMode="tail"
               >
-                {pickup || t.pickupPlaceholder}
+                {pickup ? formatDisplayAddress(pickup) : t.pickupPlaceholder}
               </S.LocationValueText>
             </S.LocationBox>
           </S.InputGroup>
@@ -133,10 +134,10 @@ export const BookingForm: React.FC<BookingFormProps> = ({
             >
               <S.LocationValueText
                 hasValue={!!destination}
-                numberOfLines={1}
+                numberOfLines={2}
                 ellipsizeMode="tail"
               >
-                {destination || t.destinationPlaceholder}
+                {destination ? formatDisplayAddress(destination) : t.destinationPlaceholder}
               </S.LocationValueText>
             </S.LocationBox>
           </S.InputGroup>

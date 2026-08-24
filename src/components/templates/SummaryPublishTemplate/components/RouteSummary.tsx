@@ -67,7 +67,7 @@ export const RouteSummary: React.FC<RouteSummaryProps> = ({
           </IndicatorColumn>
           <RouteStop>
             <StopLabel>{st.departureLabel}</StopLabel>
-            <StopLocation numberOfLines={1}>{route.start}</StopLocation>
+            <StopLocation numberOfLines={2}>{route.start}</StopLocation>
           </RouteStop>
         </RouteRow>
 
@@ -87,7 +87,7 @@ export const RouteSummary: React.FC<RouteSummaryProps> = ({
               </IndicatorColumn>
               <RouteStop>
                 <StopLabel>{t('common.stop', { number: i + 1 })}</StopLabel>
-                <StopLocation numberOfLines={1}>{stop}</StopLocation>
+                <StopLocation numberOfLines={2}>{stop}</StopLocation>
               </RouteStop>
             </RouteRow>
           );
@@ -104,7 +104,7 @@ export const RouteSummary: React.FC<RouteSummaryProps> = ({
           </IndicatorColumn>
           <RouteStop>
             <StopLabel>{st.arrivalLabel}</StopLabel>
-            <StopLocation numberOfLines={1}>{route.end}</StopLocation>
+            <StopLocation numberOfLines={2}>{route.end}</StopLocation>
           </RouteStop>
         </RouteRow>
       </RouteLayout>

@@ -49,7 +49,7 @@ export const LocationInputsBento: React.FC<LocationInputsBentoProps> = ({
             <MockInput>
               <MockInputText
                 $hasValue={!!startLocationName}
-                numberOfLines={1}
+                numberOfLines={2}
                 ellipsizeMode="tail"
               >
                 {startLocationName || locationSelection.startPlaceholder}
@@ -72,7 +72,7 @@ export const LocationInputsBento: React.FC<LocationInputsBentoProps> = ({
             <MockInput>
               <MockInputText
                 $hasValue={!!destinationLocationName}
-                numberOfLines={1}
+                numberOfLines={2}
                 ellipsizeMode="tail"
               >
                 {destinationLocationName ||

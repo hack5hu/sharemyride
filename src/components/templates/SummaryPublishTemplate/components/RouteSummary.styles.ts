@@ -109,9 +109,10 @@ export const StopLabel = styled.Text`
 
 export const StopLocation = styled.Text`
   font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${responsiveFont(16)}px;
+  font-weight: 700;
+  font-size: ${responsiveFont(13)}px;
   color: ${({ theme }) => theme.colors.on_surface};
+  line-height: ${responsiveFont(18)}px;
 `;
 
 export const EditButton = styled.TouchableOpacity`

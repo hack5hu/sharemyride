@@ -12,6 +12,7 @@ import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useBookRideStore } from '@/store/useBookRideStore';
 import debounce from 'lodash/debounce';
 import { Logger } from '@/utils/logger';
+import { formatDisplayAddress } from '@/utils/address';
 
 import { requestLocationPermission, checkGpsAndPrompt } from '@/utils/permissionUtils';
 
@@ -146,7 +147,9 @@ export const useMapPicker = () => {
             .map((p: OlaPrediction) => ({
               id: p?.place_id,
               name: p?.structured_formatting?.main_text || p?.description,
-              address: p?.description,
+              address: formatDisplayAddress(
+                p?.description || p?.structured_formatting?.secondary_text,
+              ),
               latitude: p?.geometry?.location?.lat,
               longitude: p?.geometry?.location?.lng,
             }));
