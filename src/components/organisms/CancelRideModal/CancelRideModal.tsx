@@ -34,6 +34,7 @@ import {
 } from '@/styles/ActionModalStyles';
 import { CancelRideModalProps } from './types.d';
 import { CategoryIconVariant } from '@/components/atoms/CategoryIcon';
+import { Box } from '@/components/atoms/Box';
 
 export const CancelRideModal: React.FC<CancelRideModalProps> = ({
   isVisible,
@@ -237,23 +238,40 @@ export const CancelRideModal: React.FC<CancelRideModalProps> = ({
             <SubmitButton
               disabled={!selectedCategory || isLoading}
               onPress={handleSubmit}
-              activeOpacity={0.9}
+              activeOpacity={0.85}
             >
-              <GradientBtn
-                colors={[theme.colors.error, theme.colors.error_container]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                disabledOpacity={selectedCategory && !isLoading ? 1 : 0.5}
-              >
-                <Typography
-                  variant="title"
-                  size="sm"
-                  weight="bold"
-                  color="on_error"
+              {selectedCategory && !isLoading ? (
+                <GradientBtn
+                  colors={[theme.colors.error, '#dc2626']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
                 >
-                  Confirm Cancellation
-                </Typography>
-              </GradientBtn>
+                  <Typography
+                    variant="title"
+                    size="sm"
+                    weight="bold"
+                    color="on_error"
+                  >
+                    Confirm Cancellation
+                  </Typography>
+                </GradientBtn>
+              ) : (
+                <Box
+                  flex={1}
+                  alignItems="center"
+                  justifyContent="center"
+                  backgroundColor={theme.colors.surface_container_high}
+                >
+                  <Typography
+                    variant="title"
+                    size="sm"
+                    weight="bold"
+                    color="on_surface_variant"
+                  >
+                    Select a reason to cancel
+                  </Typography>
+                </Box>
+              )}
             </SubmitButton>
             <CancelButton
               onPress={handleResetAndClose}
