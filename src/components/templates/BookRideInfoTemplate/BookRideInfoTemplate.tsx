@@ -70,11 +70,11 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
             {activeRide && !isBannerDismissed && onPressActiveRide && (
               <ActiveRideBanner
                 title={activeRide.message}
+                subtitle={activeRide.subtitle}
                 etaMinutes={activeRide.etaMinutes}
                 distanceKm={activeRide.distanceKm}
                 role={activeRide.role}
                 onPress={onPressActiveRide}
-                onDismiss={onDismissActiveRideBanner}
               />
             )}
 
@@ -162,7 +162,6 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
             }}
             renderItem={renderRecentItem}
             ListHeaderComponent={listHeader}
-            estimatedItemSize={80}
           />
           <BottomNav activeTab="BOOK" />
         </ScreenShell>

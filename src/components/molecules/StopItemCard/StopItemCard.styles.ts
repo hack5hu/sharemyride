@@ -49,11 +49,18 @@ export const PassengerNameText = styled.Text`
   color: ${({ theme }) => theme.colors.on_surface};
 `;
 
+export const PassengerSubtitleRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(4)}px;
+  margin-top: ${verticalScale(2)}px;
+`;
+
 export const PassengerSubtitleText = styled.Text`
   font-family: 'Plus Jakarta Sans';
-  font-weight: 400;
+  font-weight: 600;
   font-size: ${responsiveFont(12)}px;
-  color: ${({ theme }) => theme.colors.on_surface_variant};
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 export const ActionButtonsRow = styled.View`

@@ -19,6 +19,10 @@ import {
   DriverDetails,
 } from '@/components/templates/ActiveRidePassengerTemplate';
 import { ActiveRideRouteProp, UseActiveRideReturn } from './types.d';
+import {
+  calculateDistanceKm,
+  formatPassengerDistance,
+} from './activeRideHelpers';
 
 export const useActiveRideDriver = (): UseActiveRideReturn => {
   const navigation = useAppNavigation();
@@ -40,14 +44,10 @@ export const useActiveRideDriver = (): UseActiveRideReturn => {
   const rideDetails = activeRide?.rideDetails;
 
   useEffect(() => {
-    // Initial fetch when entering screen
     fetchLiveStatus();
-
-    // Poll every 45 seconds
     const intervalId = setInterval(() => {
       fetchLiveStatus();
     }, 45000);
-
     return () => clearInterval(intervalId);
   }, [fetchLiveStatus]);
 
@@ -59,17 +59,50 @@ export const useActiveRideDriver = (): UseActiveRideReturn => {
       const pStopId = p.sourceStopId;
       if (!stopMap.has(pStopId)) stopMap.set(pStopId, []);
 
+      const stopObj = rideDetails.stops.find(
+        (s: any) => s.id === pStopId,
+      );
+      const stopLat = stopObj?.lat ?? stopObj?.latitude;
+      const stopLon = stopObj?.lon ?? stopObj?.lng ?? stopObj?.longitude;
+
+      const pLat =
+        p.lat ?? p.latitude ?? p.currentLat ?? p.liveLocation?.latitude;
+      const pLon =
+        p.lng ??
+        p.lon ??
+        p.longitude ??
+        p.currentLng ??
+        p.liveLocation?.longitude;
+
+      const computedKm = calculateDistanceKm(pLat, pLon, stopLat, stopLon);
+
+      const rawDist =
+        p.distanceFromStopKm ??
+        p.distanceFromStop ??
+        p.distanceFromPickupKm ??
+        computedKm ??
+        p.distanceFromDriverKm ??
+        p.distanceKm ??
+        p.distance;
+
+      const distanceAway =
+        formatPassengerDistance(rawDist, locale) ||
+        (p.isLiveLocationShared === false
+          ? locale.liveLocationInactive
+          : undefined);
+
       stopMap.get(pStopId)!.push({
         id: p.bookingId || p.passengerId,
         userId: p.passengerId,
         passengerName: p.name,
         passengerAvatar: p.photoUrl,
         pickupLocation: p.sourceStopName,
-        status: p.status === 'CONFIRMED' ? DriverStopStatus.PENDING : DriverStopStatus.ACTIVE,
+        status:
+          p.status === 'CONFIRMED'
+            ? DriverStopStatus.PENDING
+            : DriverStopStatus.ACTIVE,
         phone: p.phoneNumber || p.phone,
-        distanceAway: p.distanceFromDriverKm !== undefined && p.distanceFromDriverKm !== null
-          ? locale.passengerDistanceAway.replace('{{distance}}', Number(p.distanceFromDriverKm).toFixed(1))
-          : undefined,
+        distanceAway,
       });
     });
 
@@ -95,7 +128,8 @@ export const useActiveRideDriver = (): UseActiveRideReturn => {
         (p: any) => p.passengerId === nextPassengerId,
       );
 
-      const distance = nextPassenger?.distanceFromDriverKm ?? activeRide?.distanceKm ?? 3.8;
+      const distance =
+        nextPassenger?.distanceFromDriverKm ?? activeRide?.distanceKm ?? 3.8;
       const eta = nextPassenger?.etaMinutes ?? activeRide?.etaMinutes ?? 5;
 
       return {
@@ -115,7 +149,7 @@ export const useActiveRideDriver = (): UseActiveRideReturn => {
     const v = rideDetails?.vehicle;
     return {
       model: v ? `${v.company} ${v.model}`.trim() : 'Unknown Vehicle',
-      batteryPercentage: 100, // placeholder
+      batteryPercentage: 100,
     };
   }, [rideDetails?.vehicle]);
 
@@ -148,111 +182,71 @@ export const useActiveRideDriver = (): UseActiveRideReturn => {
     }));
   }, [rideDetails?.stops]);
 
-  const handleBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
-
-  const handleToggleLiveLocation = useCallback(
-    (enabled: boolean) => {
-      setLiveLocationEnabled(enabled);
-    },
-    [setLiveLocationEnabled],
-  );
-
-  const handleDriverChatPress = useCallback(
-    (stop: DriverStop) => {
-      navigation.navigate('ChatDetails', {
-        userId: stop.userId,
-        name: stop.passengerName,
-        avatarUri: stop.passengerAvatar,
-        rideId: route.params?.rideId,
-      });
-    },
-    [navigation, route.params?.rideId],
-  );
-
-  const handleDriverCallPress = useCallback((stop: DriverStop) => {
-    if (stop.phone) {
-      const sanitizedPhone = stop.phone.replace(/[^0-9+]/g, '');
-      const scheme = Platform.OS === 'ios' ? 'telprompt' : 'tel';
-      const url = `${scheme}:${sanitizedPhone}`;
-      Linking.canOpenURL(url).then(supported => {
-        if (supported) {
-          Linking.openURL(url).catch(err => {
-            console.error('Failed to dial passenger phone number:', err);
-          });
-        } else {
+  const handleCall = useCallback((phone?: string) => {
+    if (!phone) return;
+    const sanitized = phone.replace(/[^0-9+]/g, '');
+    const url = `${Platform.OS === 'ios' ? 'telprompt' : 'tel'}:${sanitized}`;
+    Linking.canOpenURL(url)
+      .then(supported => {
+        if (supported) Linking.openURL(url);
+        else
           showNotification(
             NotificationType.WARNING,
             'Calling Unavailable',
-            'This device or simulator does not support placing phone calls.',
+            'Dialer not supported.',
           );
-        }
-      }).catch(err => {
-        console.error('Failed to check dialer support:', err);
-      });
-    }
+      })
+      .catch(() => {});
   }, []);
-
-  const handlePassengerChatPress = useCallback(() => {
-    navigation.navigate('ChatDetails', {
-      userId: driverDetails.id,
-      name: driverDetails.name,
-      avatarUri: driverDetails.avatar,
-      rideId: route.params?.rideId,
-    });
-  }, [navigation, driverDetails, route.params?.rideId]);
-
-  const handlePassengerCallPress = useCallback(() => {
-    if (driverDetails.phone) {
-      const sanitizedPhone = driverDetails.phone.replace(/[^0-9+]/g, '');
-      const scheme = Platform.OS === 'ios' ? 'telprompt' : 'tel';
-      const url = `${scheme}:${sanitizedPhone}`;
-      Linking.canOpenURL(url).then(supported => {
-        if (supported) {
-          Linking.openURL(url).catch(err => {
-            console.error('Failed to dial driver phone number:', err);
-          });
-        } else {
-          showNotification(
-            NotificationType.WARNING,
-            'Calling Unavailable',
-            'This device or simulator does not support placing phone calls.',
-          );
-        }
-      }).catch(err => {
-        console.error('Failed to check dialer support:', err);
-      });
-    }
-  }, [driverDetails.phone]);
-
-  const handleSafetyCenterPress = useCallback(() => {
-    navigation.navigate('HelpAndSupport');
-  }, [navigation]);
-
-  const nextStopName = useMemo(() => {
-    if (!rideDetails?.stops || rideDetails.stops.length === 0) return '';
-    const name = rideDetails.stops[0].stopName || rideDetails.stops[0].name || '';
-    return name.split(',')[0].trim();
-  }, [rideDetails?.stops]);
 
   return {
     isPassenger,
     isLiveLocationEnabled,
-    handleBack,
-    handleToggleLiveLocation,
-    handleSafetyCenterPress,
+    handleBack: useCallback(() => navigation.goBack(), [navigation]),
+    handleToggleLiveLocation: setLiveLocationEnabled,
+    handleSafetyCenterPress: useCallback(
+      () => navigation.navigate('HelpAndSupport'),
+      [navigation],
+    ),
     nextStop,
     groupedStops,
     vehicleInfo,
-    handleDriverChatPress,
-    handleDriverCallPress,
+    handleDriverChatPress: useCallback(
+      (stop: DriverStop) => {
+        navigation.navigate('ChatDetails', {
+          userId: stop.userId,
+          name: stop.passengerName,
+          avatarUri: stop.passengerAvatar,
+          rideId: route.params?.rideId,
+        });
+      },
+      [navigation, route.params?.rideId],
+    ),
+    handleDriverCallPress: useCallback(
+      (stop: DriverStop) => handleCall(stop.phone),
+      [handleCall],
+    ),
     passengerEtaMinutes: activeRide?.etaMinutes || 5,
     passengerDistanceKm: activeRide?.distanceKm || 3.8,
     driverDetails,
     passengerTimeline,
-    handlePassengerChatPress,
-    handlePassengerCallPress,
-    nextStopName,
+    handlePassengerChatPress: useCallback(() => {
+      navigation.navigate('ChatDetails', {
+        userId: driverDetails.id,
+        name: driverDetails.name,
+        avatarUri: driverDetails.avatar,
+        rideId: route.params?.rideId,
+      });
+    }, [navigation, driverDetails, route.params?.rideId]),
+    handlePassengerCallPress: useCallback(
+      () => handleCall(driverDetails.phone),
+      [handleCall, driverDetails.phone],
+    ),
+    nextStopName: useMemo(() => {
+      if (!rideDetails?.stops || rideDetails.stops.length === 0) return '';
+      const name =
+        rideDetails.stops[0].stopName || rideDetails.stops[0].name || '';
+      return name.split(',')[0].trim();
+    }, [rideDetails?.stops]),
   };
 };

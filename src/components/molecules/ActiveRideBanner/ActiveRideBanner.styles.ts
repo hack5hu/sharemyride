@@ -46,11 +46,6 @@ export const StatusBadgeText = styled.Text`
   text-transform: uppercase;
 `;
 
-export const DismissButton = styled.TouchableOpacity`
-  padding: ${moderateScale(4)}px;
-  border-radius: ${moderateScale(12)}px;
-  background-color: rgba(255, 255, 255, 0.15);
-`;
 
 export const MainContentRow = styled.View`
   flex-direction: row;

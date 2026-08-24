@@ -7,16 +7,24 @@ import { ActiveRideBannerProps } from './types';
 import * as S from './ActiveRideBanner.styles';
 
 export const ActiveRideBanner: React.FC<ActiveRideBannerProps> = React.memo(
-  ({ title, subtitle, etaMinutes, distanceKm, onPress, onDismiss }) => {
+  ({ title, subtitle, etaMinutes, distanceKm, onPress }) => {
     const theme = useTheme();
     const { activeRideBanner: t } = useLocale();
 
     const displayTitle = title || t.aboutToStartTitle;
-    const displaySubtitle =
-      subtitle ||
-      (etaMinutes
-        ? `${etaMinutes} mins away • ${distanceKm ? `${Number(distanceKm).toFixed(1)} km` : ''}`
-        : t.subtitle);
+    const displaySubtitle = (() => {
+      if (subtitle) return subtitle;
+      if (etaMinutes !== undefined && etaMinutes !== null) {
+        const distPart =
+          distanceKm !== undefined &&
+          distanceKm !== null &&
+          Number(distanceKm) > 0
+            ? ` • ${Number(distanceKm).toFixed(1)} km`
+            : '';
+        return `${etaMinutes} mins away${distPart}`;
+      }
+      return t.subtitle;
+    })();
 
     return (
       <S.BannerContainer activeOpacity={0.9} onPress={onPress}>
@@ -25,19 +33,6 @@ export const ActiveRideBanner: React.FC<ActiveRideBannerProps> = React.memo(
             <S.PulsingDot />
             <S.StatusBadgeText>{t.inProgressTitle}</S.StatusBadgeText>
           </S.StatusBadgeRow>
-
-          {onDismiss && (
-            <S.DismissButton
-              onPress={onDismiss}
-              accessibilityLabel="Dismiss ride alert"
-            >
-              <Icon
-                name="close"
-                size={moderateScale(14)}
-                color={theme.colors.on_primary}
-              />
-            </S.DismissButton>
-          )}
         </S.TopRow>
 
         <S.MainContentRow>

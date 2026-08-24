@@ -14,6 +14,5 @@ export const Default: Story = {
     title: 'Your ride is about to start',
     subtitle: '5 mins away • 3.8 km',
     onPress: () => {},
-    onDismiss: () => {},
   },
 };

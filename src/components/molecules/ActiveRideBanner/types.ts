@@ -7,5 +7,4 @@ export interface ActiveRideBannerProps {
   distanceKm?: number;
   role?: ActiveRideRole | 'DRIVER' | 'PASSENGER';
   onPress: () => void;
-  onDismiss?: () => void;
 }
