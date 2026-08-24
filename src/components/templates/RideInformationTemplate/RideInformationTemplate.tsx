@@ -133,6 +133,26 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> =
                     >
                       {translations.rideDetails.timelineTitle.toUpperCase()}
                     </Typography>
+                    {handleViewRoute && (
+                      <S.ViewMapButton
+                        onPress={() => handleViewRoute(0)}
+                        activeOpacity={0.7}
+                      >
+                        <Icon
+                          name="map"
+                          size={moderateScale(14)}
+                          color={theme.colors.primary}
+                        />
+                        <Typography
+                          variant="label"
+                          size="xs"
+                          weight="bold"
+                          color={theme.colors.primary}
+                        >
+                          View Map
+                        </Typography>
+                      </S.ViewMapButton>
+                    )}
                   </S.TimelineLabelRow>
                   <RideTimeline
                     points={ride.timeline}

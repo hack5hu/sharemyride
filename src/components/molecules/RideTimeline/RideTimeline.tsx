@@ -81,45 +81,38 @@ const TimeText = styled(Typography)`
   font-weight: 800;
 `;
 
-const IconButton = styled.TouchableOpacity`
-  padding: ${moderateScale(4)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_low};
-  border-radius: ${moderateScale(8)}px;
-`;
-
-const InlineActionGroup = styled.View`
+const MetaRow = styled.View`
   flex-direction: row;
-  gap: ${scale(8)}px;
   align-items: center;
+  gap: ${scale(8)}px;
+  margin-top: ${verticalScale(4)}px;
+  flex-wrap: wrap;
 `;
 
-const FeedbackText = styled(Typography)`
-  position: absolute;
-  top: ${verticalScale(28)}px;
-  right: 0;
-  background-color: ${({ theme }) => theme.colors.on_surface};
-  color: ${({ theme }) => theme.colors.surface};
-  padding-horizontal: ${scale(10)}px;
-  padding-vertical: ${verticalScale(9)}px;
-  border-radius: ${moderateScale(8)}px;
-  z-index: 10;
-  width: ${scale(54)}px;
+const TagBadge = styled.View<{ type?: string }>`
+  padding-horizontal: ${scale(8)}px;
+  padding-vertical: ${verticalScale(2)}px;
+  border-radius: ${moderateScale(6)}px;
+  background-color: ${({ theme, type }) =>
+    type === 'pickup'
+      ? `${theme.colors.primary}14`
+      : type === 'destination'
+      ? `${theme.colors.tertiary || theme.colors.primary}14`
+      : theme.colors.surface_container_high};
 `;
 
-const LocationHeaderRow = styled.View`
+const ActionPill = styled.TouchableOpacity`
   flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex: 1;
+  align-items: center;
+  gap: ${scale(4)}px;
+  padding-horizontal: ${scale(8)}px;
+  padding-vertical: ${verticalScale(2)}px;
+  border-radius: ${moderateScale(6)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_low};
 `;
 
 const LocationPressable = styled.TouchableOpacity`
-  flex: 1;
-  padding-right: ${scale(8)}px;
-`;
-
-const DescriptionText = styled(Typography)`
-  margin-vertical: ${verticalScale(2)}px;
+  width: 100%;
 `;
 
 export const RideTimeline: React.FC<{
@@ -128,7 +121,13 @@ export const RideTimeline: React.FC<{
   onMapPress?: (index: number) => void;
   onCopyAddress?: (address: string) => void;
   isDriver?: boolean;
-}> = ({ points, onMapPress, onCopyAddress, isDriver = false }) => {
+}> = ({
+  points,
+  showActions = true,
+  onMapPress,
+  onCopyAddress,
+  isDriver = false,
+}) => {
   const theme = useTheme();
   const [copiedIndex, setCopiedIndex] = React.useState<number | null>(null);
 
@@ -171,62 +170,99 @@ export const RideTimeline: React.FC<{
           </DashColumn>
 
           <RightContent isLast={index === points.length - 1}>
-            <LocationHeaderRow>
-              <LocationPressable
-                onPress={() => onMapPress?.(index)}
-                disabled={!onMapPress}
-                activeOpacity={0.7}
+            <LocationPressable
+              onPress={() => onMapPress?.(index)}
+              disabled={!onMapPress}
+              activeOpacity={0.7}
+            >
+              <Typography
+                variant="body"
+                size="sm"
+                weight={point.isHighlighted || isDriver ? 'bold' : 'medium'}
+                color={
+                  point.isHighlighted || isDriver
+                    ? theme.colors.primary
+                    : theme.colors.on_surface_variant
+                }
               >
-                <Typography
-                  variant="body"
-                  size="sm"
-                  weight={point.isHighlighted || isDriver ? 'bold' : 'medium'}
-                  numberOfLines={2}
-                  ellipsizeMode="tail"
-                  color={
-                    point.isHighlighted || isDriver
-                      ? theme.colors.primary
-                      : theme.colors.on_surface_variant
-                  }
-                >
-                  {point.location}
-                </Typography>
-              </LocationPressable>
+                {point.location}
+              </Typography>
+            </LocationPressable>
 
-              {(point.isHighlighted || isDriver) && (
-                <InlineActionGroup>
-                  <IconButton onPress={() => onMapPress?.(index)}>
-                    <Icon
-                      name="map"
-                      size={moderateScale(18)}
-                      color={theme.colors.primary}
-                    />
-                  </IconButton>
-                  <IconButton onPress={() => handleCopy(point.location, index)}>
-                    {copiedIndex === index && (
-                      <FeedbackText variant="label" size="xs">
-                        Copied!
-                      </FeedbackText>
+            {(point.description || (showActions && (point.isHighlighted || isDriver))) ? (
+              <MetaRow>
+                {point.description ? (
+                  <TagBadge type={point.type}>
+                    <Typography
+                      variant="label"
+                      size="xs"
+                      weight="bold"
+                      color={
+                        point.type === 'pickup'
+                          ? theme.colors.primary
+                          : point.type === 'destination'
+                          ? theme.colors.tertiary || theme.colors.primary
+                          : theme.colors.on_surface_variant
+                      }
+                    >
+                      {point.description}
+                    </Typography>
+                  </TagBadge>
+                ) : null}
+
+                {showActions && (point.isHighlighted || isDriver) && (
+                  <>
+                    <ActionPill
+                      onPress={() => handleCopy(point.location, index)}
+                      activeOpacity={0.7}
+                    >
+                      <Icon
+                        name={copiedIndex === index ? 'check' : 'content-copy'}
+                        size={moderateScale(12)}
+                        color={
+                          copiedIndex === index
+                            ? theme.colors.success || '#10b981'
+                            : theme.colors.on_surface_variant
+                        }
+                      />
+                      <Typography
+                        variant="label"
+                        size="xs"
+                        weight="medium"
+                        color={
+                          copiedIndex === index
+                            ? theme.colors.success || '#10b981'
+                            : theme.colors.on_surface_variant
+                        }
+                      >
+                        {copiedIndex === index ? 'Copied' : 'Copy'}
+                      </Typography>
+                    </ActionPill>
+
+                    {onMapPress && (
+                      <ActionPill
+                        onPress={() => onMapPress(index)}
+                        activeOpacity={0.7}
+                      >
+                        <Icon
+                          name="place"
+                          size={moderateScale(12)}
+                          color={theme.colors.primary}
+                        />
+                        <Typography
+                          variant="label"
+                          size="xs"
+                          weight="medium"
+                          color={theme.colors.primary}
+                        >
+                          Map
+                        </Typography>
+                      </ActionPill>
                     )}
-                    <Icon
-                      name={copiedIndex === index ? 'check' : 'content-copy'}
-                      size={moderateScale(16)}
-                    />
-                  </IconButton>
-                </InlineActionGroup>
-              )}
-            </LocationHeaderRow>
-            {point.description && (
-              <DescriptionText
-                variant="label"
-                size="xs"
-                color={theme.colors.on_surface_variant}
-                numberOfLines={2}
-                ellipsizeMode="tail"
-              >
-                {point.description}
-              </DescriptionText>
-            )}
+                  </>
+                )}
+              </MetaRow>
+            ) : null}
           </RightContent>
         </TimelineRow>
       ))}

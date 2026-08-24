@@ -212,6 +212,43 @@ export const formatDisplayAddress = (
 };
 
 /**
+ * Formats a full address by stripping only tail noise (country, state, pincode)
+ * and internal venue details (floor, platform), keeping the full street/area/city
+ * details intact so users on details screens see the complete, unabbreviated address.
+ */
+export const formatFullCleanAddress = (
+  address: string | null | undefined,
+): string => {
+  if (!address) return '';
+
+  const parts = address
+    .split(',')
+    .map(p => p.trim())
+    .filter(Boolean);
+
+  let withoutTail = parts.filter(part => !isTailNoise(part));
+  if (withoutTail.length === 0) return address;
+
+  if (withoutTail.length >= 2) {
+    const last = withoutTail[withoutTail.length - 1].toLowerCase();
+    const secondLast = withoutTail[withoutTail.length - 2].toLowerCase();
+    if (
+      last === secondLast ||
+      (last === 'gurugram' && secondLast === 'gurgaon') ||
+      (last === 'gurgaon' && secondLast === 'gurugram') ||
+      (last === 'bengaluru' && secondLast === 'bangalore')
+    ) {
+      withoutTail = withoutTail.slice(0, withoutTail.length - 1);
+    }
+  }
+
+  const meaningful = withoutTail.filter(part => !isInternalDetail(part));
+  if (meaningful.length === 0) return withoutTail.join(', ');
+
+  return meaningful.join(', ');
+};
+
+/**
  * Returns just the first comma-separated part (the place name).
  * Useful for compact single-line labels like ride cards / banners.
  *

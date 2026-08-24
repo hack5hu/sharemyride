@@ -1,7 +1,7 @@
 import { RideStatus } from '@/constants/enums';
 import { getSeatDescription } from './seatDescription';
 import { mapDriverData, mapPassengerData } from './peopleMapper';
-import { formatDisplayAddress, getShortLocationName } from '@/utils/address';
+import { formatDisplayAddress, formatFullCleanAddress, getShortLocationName } from '@/utils/address';
 
 export interface MappedDriverData {
   id: string;
@@ -134,7 +134,7 @@ export const mapRideDetailsData = (
       const isHighlighted =
         isDriver || stop.id === sourceId || stop.id === destId;
       const address = stop.stopName || stop.name || '';
-      let displayLocation = formatDisplayAddress(address.trim());
+      let displayLocation = formatFullCleanAddress(address.trim());
 
       if (!isHighlighted) {
         displayLocation = getShortLocationName(displayLocation || address);

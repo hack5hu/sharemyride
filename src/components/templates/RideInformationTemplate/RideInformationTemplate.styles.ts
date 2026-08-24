@@ -19,18 +19,23 @@ export {
   RideDetailsChipsWrap as ChipsWrap,
   RideDetailsPreferenceChip as PreferenceChip,
   RideDetailsFixedFooter as FixedFooter,
+  RideDetailsViewMapButton as ViewMapButton,
 } from '@/styles/RideDetailsStyles';
 
 // ── Driver Card (flat, simple) ──────────────────────────────────────────────
 
 export const DriverCard = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface};
+  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   border-radius: ${moderateScale(20)}px;
-  padding: ${moderateScale(14)}px;
+  padding: ${moderateScale(16)}px ${moderateScale(18)}px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  elevation: 1;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.06;
+  shadow-radius: 16px;
+  elevation: 3;
 `;
 
 export const DriverInfoGroup = styled.TouchableOpacity`

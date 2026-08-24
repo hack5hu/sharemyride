@@ -25,9 +25,13 @@ export const RideDetailsContentPadding = styled.View`
 
 export const RideDetailsSectionCard = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  border-radius: ${moderateScale(28)}px;
-  padding: ${moderateScale(20)}px;
-  elevation: 1;
+  border-radius: ${moderateScale(20)}px;
+  padding: ${moderateScale(18)}px ${moderateScale(20)}px;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.06;
+  shadow-radius: 16px;
+  elevation: 3;
 `;
 
 export const RideDetailsSectionLabelRow = styled.View`
@@ -37,7 +41,22 @@ export const RideDetailsSectionLabelRow = styled.View`
   margin-bottom: ${verticalScale(16)}px;
 `;
 
-export const RideDetailsTimelineLabelRow = styled(RideDetailsSectionLabelRow)``;
+export const RideDetailsTimelineLabelRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: ${verticalScale(16)}px;
+`;
+
+export const RideDetailsViewMapButton = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(4)}px;
+  padding-horizontal: ${scale(10)}px;
+  padding-vertical: ${verticalScale(4)}px;
+  border-radius: ${moderateScale(12)}px;
+  background-color: ${({ theme }) => `${theme.colors.primary}12`};
+`;
 
 export const RideDetailsSectionDot = styled.View<{ color?: string }>`
   width: ${moderateScale(8)}px;

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { calculateDistance } from '@/utils/location';
 import { formatTimeSafely, formatDateSafely } from '@/utils/date';
 import { computeTotalRides } from '@/utils/user';
-import { formatDisplayAddress, getShortLocationName } from '@/utils/address';
+import { formatDisplayAddress, formatFullCleanAddress, getShortLocationName } from '@/utils/address';
 
 export const mapBackendRideToUI = (
   rideRaw: any,
@@ -65,7 +65,7 @@ export const mapBackendRideToUI = (
     const address = stop.stopName || stop.name || 'Unknown';
     const isDriverRole = rideRaw.userRole === 'DRIVER';
 
-    let displayLocation = formatDisplayAddress(address);
+    let displayLocation = formatFullCleanAddress(address);
     if (!isHighlighted && !isDriverRole) {
       displayLocation = getShortLocationName(displayLocation || address);
     }
@@ -97,13 +97,7 @@ export const mapBackendRideToUI = (
       location: displayLocation,
       type:
         idx === 0 ? 'pickup' : idx === arr.length - 1 ? 'destination' : 'stop',
-      description: isHighlighted
-        ? idx === 0
-          ? 'Pickup'
-          : idx === arr.length - 1
-          ? 'Dropoff'
-          : 'Stop'
-        : '',
+      description: '',
       isHighlighted,
     };
   });

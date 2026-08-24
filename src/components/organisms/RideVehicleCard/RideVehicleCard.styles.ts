@@ -2,15 +2,15 @@ import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale } from '@/styles';
 
 export const VehicleCard = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface};
-  border-radius: ${moderateScale(24)}px;
-  padding: ${moderateScale(20)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
+  border-radius: ${moderateScale(20)}px;
+  padding: ${moderateScale(18)}px ${moderateScale(20)}px;
   margin-bottom: ${verticalScale(16)}px;
-  elevation: 2;
   shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 4px;
-  shadow-opacity: 0.04;
-  shadow-radius: 12px;
+  shadow-opacity: 0.06;
+  shadow-radius: 16px;
+  elevation: 3;
 `;
 
 export const VehicleLabelRow = styled.View`
