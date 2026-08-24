@@ -722,6 +722,9 @@ export interface BookRideInfoTranslations {
   intercity: string;
   localServiceArea: string;
   requestLocalPartner: string;
+  searchRadiusLabel: string;
+  searchRadiusSub: string;
+  searchRadiusUnit: string;
 }
 
 export interface AvailableRidesTranslations {
@@ -769,6 +772,8 @@ export interface RideFiltersTranslations {
   timeSlot1216: string;
   timeSlot1620: string;
   timeSlot2024: string;
+  searchRadiusTitle: string;
+  searchRadiusUnit: string;
 }
 
 export interface RideInformationTranslations {

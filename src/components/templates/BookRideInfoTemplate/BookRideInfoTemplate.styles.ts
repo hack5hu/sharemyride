@@ -37,30 +37,30 @@ export const HeaderTitleHighlight = styled.Text`
 
 /* Hero Section */
 export const HeroSection = styled.View`
-  padding-horizontal: ${scale(24)}px;
-  margin-bottom: ${verticalScale(32)}px;
+  padding-horizontal: ${scale(20)}px;
+  margin-bottom: ${verticalScale(16)}px;
 `;
 
 export const HeroTitle = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 800;
-  font-size: ${responsiveFont(32)}px;
+  font-size: ${responsiveFont(28)}px;
   color: ${({ theme }) => theme.colors.on_surface};
-  letter-spacing: -1px;
-  margin-bottom: ${verticalScale(8)}px;
+  letter-spacing: -0.5px;
+  margin-bottom: ${verticalScale(4)}px;
 `;
 
 export const HeroSubtitle = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 500;
-  font-size: ${responsiveFont(16)}px;
+  font-size: ${responsiveFont(14)}px;
   color: ${({ theme }) => theme.colors.on_surface_variant};
 `;
 
 /* Recent Searches */
 export const SectionContainer = styled.View`
-  padding-horizontal: ${scale(24)}px;
-  margin-top: ${verticalScale(32)}px;
+  padding-horizontal: ${scale(16)}px;
+  margin-top: ${verticalScale(24)}px;
   padding-bottom: ${verticalScale(8)}px;
 `;
 

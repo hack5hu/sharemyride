@@ -4,33 +4,16 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { format } from 'date-fns';
 import { moderateScale } from '@/styles';
-import { BookRideInfoTranslations } from '@/constants/localization/types';
 import { formatDisplayAddress } from '@/utils/address';
+import { BookingFormProps } from '../types.d';
 import * as S from './BookingForm.styles';
-import { LocationStepper } from './LocationStepper';
-
-export interface BookingFormProps {
-  pickup: string | null;
-  destination: string | null;
-  travelDate: Date | null;
-  peopleCount: number;
-  isSearching: boolean;
-  isSwapped: boolean;
-  onPressPickup: () => void;
-  onPressDestination: () => void;
-  onSwapLocations: () => void;
-  onOpenDatePicker: () => void;
-  onIncrementPeople: () => void;
-  onDecrementPeople: () => void;
-  onSearchRides: () => void;
-  t: BookRideInfoTranslations;
-}
 
 export const BookingForm: React.FC<BookingFormProps> = ({
   pickup,
   destination,
   travelDate,
   peopleCount,
+  radiusKm,
   isSearching,
   isSwapped,
   onPressPickup,
@@ -39,6 +22,8 @@ export const BookingForm: React.FC<BookingFormProps> = ({
   onOpenDatePicker,
   onIncrementPeople,
   onDecrementPeople,
+  onIncrementRadius,
+  onDecrementRadius,
   onSearchRides,
   t,
 }) => {
@@ -58,25 +43,37 @@ export const BookingForm: React.FC<BookingFormProps> = ({
     outputRange: ['0deg', '180deg'],
   });
 
-  // Extract animated styles outside of JSX to prevent linter matching
-  const spinStyle = {
-    transform: [{ rotate: spin }],
-  };
+  const formattedPickup = pickup
+    ? formatDisplayAddress(pickup)
+    : t.pickupPlaceholder;
+  const formattedDestination = destination
+    ? formatDisplayAddress(destination)
+    : t.destinationPlaceholder;
+  const formattedDate = travelDate
+    ? format(travelDate, 'EEE, dd MMM yyyy')
+    : t.datePlaceholder;
+  const formattedPassengers = `${peopleCount} ${
+    peopleCount === 1 ? 'passenger' : 'passengers'
+  }`;
 
   return (
     <S.BookingCard>
-      <S.DecorativeAccent />
-
-      <S.RouteContainer>
-        <S.RouteIndicator>
-          <S.VisualLine />
-
-          <S.SwapButtonWrapper>
+      <S.FormBody>
+        {/* From (Pickup) */}
+        <S.FormRow
+          activeOpacity={isSearching ? 1 : 0.7}
+          onPress={isSearching ? undefined : onPressPickup}
+        >
+          <S.RowHeader>{t.pickupLabel}</S.RowHeader>
+          <S.RowMain>
+            <S.RowText $hasValue={!!pickup} numberOfLines={2}>
+              {formattedPickup}
+            </S.RowText>
             <S.SwapButton
               activeOpacity={isSearching ? 1 : 0.7}
               onPress={isSearching ? undefined : onSwapLocations}
             >
-              <Animated.View style={spinStyle}>
+              <Animated.View style={{ transform: [{ rotate: spin }] }}>
                 <MaterialIcons
                   name="swap-vert"
                   size={moderateScale(20)}
@@ -84,93 +81,109 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                 />
               </Animated.View>
             </S.SwapButton>
-          </S.SwapButtonWrapper>
+          </S.RowMain>
+        </S.FormRow>
 
-          <S.IndicatorGroup>
-            <S.LabelSpacer />
-            <S.IndicatorIconBox>
-              <MaterialIcons
-                name="my-location"
-                size={moderateScale(20)}
-                color={theme.colors.primary}
-              />
-            </S.IndicatorIconBox>
-          </S.IndicatorGroup>
+        <S.Divider />
 
-          <S.IndicatorGroup>
-            <S.LabelSpacer />
-            <S.IndicatorIconBox>
-              <MaterialIcons
-                name="location-on"
-                size={moderateScale(20)}
-                color={theme.colors.tertiary}
-              />
-            </S.IndicatorIconBox>
-          </S.IndicatorGroup>
-        </S.RouteIndicator>
+        {/* To (Destination) */}
+        <S.FormRow
+          activeOpacity={isSearching ? 1 : 0.7}
+          onPress={isSearching ? undefined : onPressDestination}
+        >
+          <S.RowHeader>{t.destinationLabel}</S.RowHeader>
+          <S.RowMain>
+            <S.RowText $hasValue={!!destination} numberOfLines={2}>
+              {formattedDestination}
+            </S.RowText>
+          </S.RowMain>
+        </S.FormRow>
 
-        <S.InputColumn>
-          <S.InputGroup>
-            <S.InputLabel>{t.pickupLabel}</S.InputLabel>
-            <S.LocationBox
-              activeOpacity={isSearching ? 1 : 0.7}
-              onPress={isSearching ? undefined : onPressPickup}
-            >
-              <S.LocationValueText
-                hasValue={!!pickup}
-                numberOfLines={2}
-                ellipsizeMode="tail"
-              >
-                {pickup ? formatDisplayAddress(pickup) : t.pickupPlaceholder}
-              </S.LocationValueText>
-            </S.LocationBox>
-          </S.InputGroup>
+        <S.Divider />
 
-          <S.InputGroup>
-            <S.InputLabel>{t.destinationLabel}</S.InputLabel>
-            <S.LocationBox
-              activeOpacity={isSearching ? 1 : 0.7}
-              onPress={isSearching ? undefined : onPressDestination}
-            >
-              <S.LocationValueText
-                hasValue={!!destination}
-                numberOfLines={2}
-                ellipsizeMode="tail"
-              >
-                {destination ? formatDisplayAddress(destination) : t.destinationPlaceholder}
-              </S.LocationValueText>
-            </S.LocationBox>
-          </S.InputGroup>
-        </S.InputColumn>
-      </S.RouteContainer>
-
-      <S.GridContainer>
-        <S.GridItem
+        {/* Departure Date */}
+        <S.FormRow
           activeOpacity={isSearching ? 1 : 0.7}
           onPress={isSearching ? undefined : onOpenDatePicker}
         >
-          <S.GridLabel>{t.travelDateLabel}</S.GridLabel>
-          <S.GridValueRow>
-            <MaterialIcons
-              name="calendar-today"
-              size={moderateScale(14)}
-              color={theme.colors.primary}
-            />
-            <S.GridValueText>
-              {travelDate ? format(travelDate, 'MMM dd, yyyy') : t.datePlaceholder}
-            </S.GridValueText>
-          </S.GridValueRow>
-        </S.GridItem>
-      </S.GridContainer>
+          <S.RowHeader>{t.travelDateLabel}</S.RowHeader>
+          <S.RowMain>
+            <S.RowText $hasValue={!!travelDate} numberOfLines={1}>
+              {formattedDate}
+            </S.RowText>
+          </S.RowMain>
+        </S.FormRow>
 
-      <LocationStepper
-        peopleCount={peopleCount}
-        isSearching={isSearching}
-        onIncrementPeople={onIncrementPeople}
-        onDecrementPeople={onDecrementPeople}
-        t={t}
-      />
+        <S.Divider />
 
+        {/* Passengers */}
+        <S.FormRow>
+          <S.RowHeader>{t.peopleCountLabel}</S.RowHeader>
+          <S.RowMain>
+            <S.RowText $hasValue numberOfLines={1}>
+              {formattedPassengers}
+            </S.RowText>
+            <S.StepperRow>
+              <S.StepperBtn
+                $disabled={isSearching || peopleCount <= 1}
+                onPress={isSearching ? undefined : onDecrementPeople}
+              >
+                <MaterialIcons
+                  name="remove"
+                  size={moderateScale(16)}
+                  color={theme.colors.primary}
+                />
+              </S.StepperBtn>
+              <S.StepperBtn
+                $disabled={isSearching || peopleCount >= 6}
+                onPress={isSearching ? undefined : onIncrementPeople}
+              >
+                <MaterialIcons
+                  name="add"
+                  size={moderateScale(16)}
+                  color={theme.colors.primary}
+                />
+              </S.StepperBtn>
+            </S.StepperRow>
+          </S.RowMain>
+        </S.FormRow>
+
+        <S.Divider />
+
+        {/* Search Radius */}
+        <S.FormRow>
+          <S.RowHeader>{t.searchRadiusLabel}</S.RowHeader>
+          <S.RowMain>
+            <S.RowText $hasValue numberOfLines={1}>
+              {radiusKm} {t.searchRadiusUnit}
+            </S.RowText>
+            <S.StepperRow>
+              <S.StepperBtn
+                $disabled={isSearching || radiusKm <= 1}
+                onPress={isSearching ? undefined : onDecrementRadius}
+              >
+                <MaterialIcons
+                  name="remove"
+                  size={moderateScale(16)}
+                  color={theme.colors.primary}
+                />
+              </S.StepperBtn>
+              <S.StepperBtn
+                $disabled={isSearching || radiusKm >= 50}
+                onPress={isSearching ? undefined : onIncrementRadius}
+              >
+                <MaterialIcons
+                  name="add"
+                  size={moderateScale(16)}
+                  color={theme.colors.primary}
+                />
+              </S.StepperBtn>
+            </S.StepperRow>
+          </S.RowMain>
+        </S.FormRow>
+      </S.FormBody>
+
+      {/* Search CTA */}
       <S.SearchButton
         activeOpacity={0.9}
         onPress={onSearchRides}
@@ -188,14 +201,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
           {isSearching ? (
             <ActivityIndicator color={theme.colors.on_primary} />
           ) : (
-            <>
-              <S.SearchText>{t.searchButton}</S.SearchText>
-              <MaterialIcons
-                name="arrow-forward"
-                size={moderateScale(20)}
-                color={theme.colors.on_primary}
-              />
-            </>
+            <S.SearchText>{t.searchButton}</S.SearchText>
           )}
         </S.SearchGradient>
       </S.SearchButton>

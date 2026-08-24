@@ -148,3 +148,63 @@ export const TimeCell = styled.TouchableOpacity<{ active?: boolean }>`
 `;
 
 export const ClearButton = styled.TouchableOpacity``;
+
+export const RadiusContainer = styled(Box)`
+  background-color: ${({ theme }) => theme.colors.surface_container_low};
+  border-radius: ${moderateScale(16)}px;
+  padding: ${moderateScale(12)}px ${moderateScale(16)}px;
+`;
+
+export const RadiusTopRow = styled(Box)`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const RadiusStepper = styled(Box)`
+  flex-direction: row;
+  align-items: center;
+  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
+  border-radius: ${moderateScale(16)}px;
+  padding: ${moderateScale(3)}px;
+  gap: ${scale(6)}px;
+`;
+
+export const RadiusStepperBtn = styled.TouchableOpacity<{ $primary?: boolean }>`
+  width: ${moderateScale(28)}px;
+  height: ${moderateScale(28)}px;
+  border-radius: ${moderateScale(14)}px;
+  background-color: ${({ theme, $primary }) =>
+    $primary ? theme.colors.primary : theme.colors.surface_container_high};
+  align-items: center;
+  justify-content: center;
+`;
+
+export const RadiusPresetsScroll = styled.ScrollView.attrs({
+  horizontal: true,
+  showsHorizontalScrollIndicator: false,
+})`
+  margin-top: ${verticalScale(8)}px;
+`;
+
+export const RadiusPresetsContainer = styled(Box)`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(6)}px;
+`;
+
+export const RadiusPresetChip = styled.TouchableOpacity<{ $selected: boolean }>`
+  padding-vertical: ${verticalScale(4)}px;
+  padding-horizontal: ${scale(10)}px;
+  border-radius: ${moderateScale(12)}px;
+  background-color: ${({ theme, $selected }) =>
+    $selected ? theme.colors.primary : theme.colors.surface_container_lowest};
+`;
+
+export const RadiusPresetText = styled.Text<{ $selected: boolean }>`
+  font-family: 'Plus Jakarta Sans';
+  font-size: 11px;
+  font-weight: 600;
+  color: ${({ theme, $selected }) =>
+    $selected ? theme.colors.on_primary : theme.colors.on_surface_variant};
+`;

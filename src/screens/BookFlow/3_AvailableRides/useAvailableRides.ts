@@ -108,7 +108,7 @@ export const useAvailableRides = () => {
         destLon: curDest.longitude,
         travelDate: curDate,
         requestedSeats: seatCount,
-        radiusInMeters: 10000,
+        radiusInMeters: (store.searchRadiusKm || 25) * 1000,
         page: nextPage,
         size: 10,
         ...mapFiltersToPayload(selectedFilters),
@@ -385,7 +385,7 @@ export const useAvailableRides = () => {
         destLon: curDest.longitude,
         travelDate: curDate,
         requestedSeats: seatCount,
-        radiusInMeters: 10000,
+        radiusInMeters: (store.searchRadiusKm || 25) * 1000,
         page: 0,
         size: 10,
       };
@@ -409,14 +409,6 @@ export const useAvailableRides = () => {
 
   const handleApplyFilters = useCallback(
     async (filters: string[]) => {
-      const isSame =
-        filters.length === selectedFilters.length &&
-        filters.every(f => selectedFilters.includes(f));
-
-      if (isSame) {
-        return;
-      }
-
       setSelectedFilters(filters);
       const store = useBookRideStore.getState();
       const {
@@ -439,7 +431,7 @@ export const useAvailableRides = () => {
           destLon: curDest.longitude,
           travelDate: curDate,
           requestedSeats: seatCount,
-          radiusInMeters: 10000,
+          radiusInMeters: (store.searchRadiusKm || 25) * 1000,
           page: 0,
           size: 10,
           ...filterPayload,

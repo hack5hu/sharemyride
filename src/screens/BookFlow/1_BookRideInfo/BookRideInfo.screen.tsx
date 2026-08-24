@@ -10,6 +10,7 @@ export const BookRideInfoScreen: React.FC = () => {
     destination,
     travelDate,
     peopleCount,
+    radiusKm,
     isSearching,
     isSwapped,
     recentSearches,
@@ -19,6 +20,9 @@ export const BookRideInfoScreen: React.FC = () => {
     handleOpenDatePicker,
     incrementPeople,
     decrementPeople,
+    handleIncrementRadius,
+    handleDecrementRadius,
+    handleSetRadius,
     handleSearchRides,
     handleSelectRecentSearch,
     clearRecentSearches,
@@ -45,6 +49,7 @@ export const BookRideInfoScreen: React.FC = () => {
         destination={destination}
         travelDate={travelDate}
         peopleCount={peopleCount}
+        radiusKm={radiusKm}
         isSearching={isSearching}
         isSwapped={isSwapped}
         recentSearches={recentSearches}
@@ -54,6 +59,9 @@ export const BookRideInfoScreen: React.FC = () => {
         onOpenDatePicker={handleOpenDatePicker}
         onIncrementPeople={incrementPeople}
         onDecrementPeople={decrementPeople}
+        onIncrementRadius={handleIncrementRadius}
+        onDecrementRadius={handleDecrementRadius}
+        onSelectRadius={handleSetRadius}
         onSearchRides={handleSearchRides}
         onSelectRecentSearch={handleSelectRecentSearch}
         onClearRecentSearches={clearRecentSearches}

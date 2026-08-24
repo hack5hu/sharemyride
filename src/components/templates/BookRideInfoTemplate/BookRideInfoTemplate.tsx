@@ -17,6 +17,7 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
       destination,
       travelDate,
       peopleCount,
+      radiusKm,
       isSearching,
       isSwapped,
       recentSearches,
@@ -26,6 +27,9 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
       onOpenDatePicker,
       onIncrementPeople,
       onDecrementPeople,
+      onIncrementRadius,
+      onDecrementRadius,
+      onSelectRadius,
       onSearchRides,
       onSelectRecentSearch,
       onClearRecentSearches,
@@ -66,6 +70,7 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
               destination={destination}
               travelDate={travelDate}
               peopleCount={peopleCount}
+              radiusKm={radiusKm}
               isSearching={isSearching}
               isSwapped={isSwapped}
               onPressPickup={onPressPickup}
@@ -74,6 +79,9 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
               onOpenDatePicker={onOpenDatePicker}
               onIncrementPeople={onIncrementPeople}
               onDecrementPeople={onDecrementPeople}
+              onIncrementRadius={onIncrementRadius}
+              onDecrementRadius={onDecrementRadius}
+              onSelectRadius={onSelectRadius}
               onSearchRides={onSearchRides}
               t={t}
             />
@@ -98,6 +106,7 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
           destination,
           travelDate,
           peopleCount,
+          radiusKm,
           isSearching,
           isSwapped,
           onPressPickup,
@@ -106,6 +115,9 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
           onOpenDatePicker,
           onIncrementPeople,
           onDecrementPeople,
+          onIncrementRadius,
+          onDecrementRadius,
+          onSelectRadius,
           onSearchRides,
           onClearRecentSearches,
           recentSearches.length,

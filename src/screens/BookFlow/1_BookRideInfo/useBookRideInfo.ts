@@ -27,6 +27,7 @@ export const useBookRideInfo = () => {
     destinationLocation,
     travelDate,
     seatCount,
+    searchRadiusKm,
     recentSearches,
     rideType,
   } = useBookRideStore();
@@ -71,6 +72,25 @@ export const useBookRideInfo = () => {
     store.setSeatCount(Math.max(store.seatCount - 1, 1));
   }, []);
 
+  const handleIncrementRadius = useCallback(() => {
+    const store = useBookRideStore.getState();
+    const current = store.searchRadiusKm || 25;
+    const next = Math.min(50, Math.floor(current / 5) * 5 + 5);
+    store.setSearchRadiusKm(next);
+  }, []);
+
+  const handleDecrementRadius = useCallback(() => {
+    const store = useBookRideStore.getState();
+    const current = store.searchRadiusKm || 25;
+    const prev = Math.ceil(current / 5) * 5 - 5;
+    store.setSearchRadiusKm(prev <= 0 ? 1 : prev);
+  }, []);
+
+  const handleSetRadius = useCallback((radius: number) => {
+    const store = useBookRideStore.getState();
+    store.setSearchRadiusKm(radius);
+  }, []);
+
   const handleSearchRides = useCallback(async () => {
     const store = useBookRideStore.getState();
     const {
@@ -93,6 +113,7 @@ export const useBookRideInfo = () => {
 
       try {
         setIsSearching(true);
+        const radiusKm = store.searchRadiusKm || 25;
         const payload: SearchRidePayload = {
           sourceLat: curStart.latitude,
           sourceLon: curStart.longitude,
@@ -100,7 +121,7 @@ export const useBookRideInfo = () => {
           destLon: curDest.longitude,
           travelDate: format(selectedDate, "yyyy-MM-dd'T'HH:mm:ss"),
           requestedSeats: curSeats,
-          radiusInMeters: 10000,
+          radiusInMeters: radiusKm * 1000,
           page: 0,
           size: 15,
         };
@@ -161,6 +182,7 @@ export const useBookRideInfo = () => {
       } else {
         try {
           setIsSearching(true);
+          const radiusKm = store.searchRadiusKm || 25;
           const payload: SearchRidePayload = {
             sourceLat: search.startLocation.latitude,
             sourceLon: search.startLocation.longitude,
@@ -168,7 +190,7 @@ export const useBookRideInfo = () => {
             destLon: search.destinationLocation.longitude,
             travelDate: format(selectedDate, "yyyy-MM-dd'T'HH:mm:ss"),
             requestedSeats: search.seatCount,
-            radiusInMeters: 25000,
+            radiusInMeters: radiusKm * 1000,
             page: 0,
             size: 15,
           };
@@ -431,6 +453,7 @@ export const useBookRideInfo = () => {
     destination: destinationLocation?.address || '',
     travelDate: travelDate ? new Date(travelDate) : new Date(),
     peopleCount: seatCount,
+    radiusKm: searchRadiusKm,
     isSearching,
     isSwapped,
     recentSearches,
@@ -440,6 +463,9 @@ export const useBookRideInfo = () => {
     handleOpenDatePicker,
     incrementPeople,
     decrementPeople,
+    handleIncrementRadius,
+    handleDecrementRadius,
+    handleSetRadius,
     handleSearchRides,
     handleSelectRecentSearch,
     clearRecentSearches: handleClearRecentSearches,

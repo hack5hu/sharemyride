@@ -8,6 +8,7 @@ import { moderateScale } from '@/styles';
 import { Checkbox } from '@/components/atoms/Checkbox';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
+import { useBookRideStore } from '@/store/useBookRideStore';
 import * as S from './RideFiltersModal.styles';
 
 export interface RideFiltersModalProps {
@@ -41,6 +42,15 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
     luggageAllowed: selectedFilters.includes('luggageAllowed'),
     manualApproval: selectedFilters.includes('manualApproval'),
   });
+
+  const currentStoreRadius = useBookRideStore(s => s.searchRadiusKm || 25);
+  const [radiusKm, setRadiusKm] = useState<number>(currentStoreRadius);
+
+  React.useEffect(() => {
+    if (isOpen) {
+      setRadiusKm(useBookRideStore.getState().searchRadiusKm || 25);
+    }
+  }, [isOpen]);
 
   const [selectedTimeSlots, setSelectedTimeSlots] = useState<string[]>(
     selectedFilters.filter(f => f.startsWith('time_')),
@@ -84,7 +94,13 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
             <Typography variant="title" size="md" weight="bold">
               {t.title}
             </Typography>
-            <S.ClearButton onPress={onClear}>
+            <S.ClearButton
+              onPress={() => {
+                setRadiusKm(25);
+                useBookRideStore.getState().setSearchRadiusKm(25);
+                onClear();
+              }}
+            >
               <Typography
                 variant="label"
                 size="md"
@@ -171,6 +187,86 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
                   />
                 </S.ProximityButton>
               </S.ProximityGrid>
+            </S.Section>
+
+            {/* Search Radius */}
+            <S.Section>
+              <S.SectionTitle>
+                <Typography
+                  variant="label"
+                  size="sm"
+                  weight="bold"
+                  color={theme.colors.on_surface_variant}
+                >
+                  {(t.searchRadiusTitle || 'SEARCH RADIUS').toUpperCase()}
+                </Typography>
+              </S.SectionTitle>
+              <S.RadiusContainer>
+                <S.RadiusTopRow>
+                  <Typography variant="title" size="sm" weight="bold">
+                    {radiusKm} {t.searchRadiusUnit || 'km'}
+                  </Typography>
+                  <S.RadiusStepper>
+                    <S.RadiusStepperBtn
+                      disabled={radiusKm <= 1}
+                      onPress={() => {
+                        const prev = Math.ceil(radiusKm / 5) * 5 - 5;
+                        setRadiusKm(prev <= 0 ? 1 : prev);
+                      }}
+                    >
+                      <Icon
+                        name="remove"
+                        size={moderateScale(16)}
+                        color={
+                          radiusKm <= 1
+                            ? theme.colors.outline
+                            : theme.colors.primary
+                        }
+                      />
+                    </S.RadiusStepperBtn>
+                    <S.RadiusStepperBtn
+                      $primary
+                      disabled={radiusKm >= 50}
+                      onPress={() => {
+                        const next = Math.min(
+                          50,
+                          Math.floor(radiusKm / 5) * 5 + 5,
+                        );
+                        setRadiusKm(next);
+                      }}
+                    >
+                      <Icon
+                        name="add"
+                        size={moderateScale(16)}
+                        color={
+                          radiusKm >= 50
+                            ? theme.colors.outline
+                            : theme.colors.on_primary
+                        }
+                      />
+                    </S.RadiusStepperBtn>
+                  </S.RadiusStepper>
+                </S.RadiusTopRow>
+
+                <S.RadiusPresetsScroll>
+                  <S.RadiusPresetsContainer>
+                    {[5, 10, 20, 25, 30, 40, 50].map(preset => {
+                      const isSelected = radiusKm === preset;
+                      return (
+                        <S.RadiusPresetChip
+                          key={preset}
+                          $selected={isSelected}
+                          onPress={() => setRadiusKm(preset)}
+                        >
+                          <S.RadiusPresetText $selected={isSelected}>
+                            {preset} {t.searchRadiusUnit || 'km'}
+                          </S.RadiusPresetText>
+                        </S.RadiusPresetChip>
+                      );
+                    })}
+                  </S.RadiusPresetsContainer>
+                </S.RadiusPresetsScroll>
+              </S.RadiusContainer>
             </S.Section>
 
             {/* Departure Time */}
@@ -339,6 +435,7 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
                 else if (proximity === 'dropoff')
                   activeFilters.push('nearDropoff');
 
+                useBookRideStore.getState().setSearchRadiusKm(radiusKm);
                 onApply(activeFilters);
                 onClose();
               }}

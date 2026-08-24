@@ -30,11 +30,13 @@ interface BookRideState {
   recentSearches: RecentSearch[];
   filters: SearchFilters;
   rideType: 'local' | 'intercity';
+  searchRadiusKm: number;
 
   setStartLocation: (location: Location | null) => void;
   setDestinationLocation: (location: Location | null) => void;
   setTravelDate: (date: string | null) => void;
   setSeatCount: (count: number) => void;
+  setSearchRadiusKm: (radius: number) => void;
   setSearchResults: (results: any[] | null) => void;
   appendSearchResults: (results: any[]) => void;
   currentPage: number;
@@ -61,12 +63,15 @@ export const useBookRideStore = create<BookRideState>()(
       recentSearches: [],
       filters: {},
       rideType: 'intercity',
+      searchRadiusKm: 25,
 
       setStartLocation: location => set({ startLocation: location }),
       setDestinationLocation: location =>
         set({ destinationLocation: location }),
       setTravelDate: date => set({ travelDate: date }),
       setSeatCount: count => set({ seatCount: count }),
+      setSearchRadiusKm: radius =>
+        set({ searchRadiusKm: Math.max(1, Math.min(50, radius)) }),
       setSearchResults: results =>
         set({
           searchResults: results,
@@ -109,6 +114,7 @@ export const useBookRideStore = create<BookRideState>()(
           destinationLocation: null,
           travelDate: null,
           seatCount: 1,
+          searchRadiusKm: 25,
           filters: {},
           rideType: 'intercity',
         }),

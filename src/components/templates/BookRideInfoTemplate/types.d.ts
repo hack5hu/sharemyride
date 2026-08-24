@@ -6,6 +6,7 @@ export interface BookRideInfoTemplateProps {
   destination: string | null;
   travelDate: Date | null;
   peopleCount: number;
+  radiusKm: number;
   isSearching: boolean;
   isSwapped: boolean;
   recentSearches: RecentSearch[];
@@ -15,6 +16,9 @@ export interface BookRideInfoTemplateProps {
   onOpenDatePicker: () => void;
   onIncrementPeople: () => void;
   onDecrementPeople: () => void;
+  onIncrementRadius: () => void;
+  onDecrementRadius: () => void;
+  onSelectRadius: (radius: number) => void;
   onSearchRides: () => void;
   onSelectRecentSearch: (item: RecentSearch) => void;
   onClearRecentSearches: () => void;
@@ -22,3 +26,25 @@ export interface BookRideInfoTemplateProps {
   rideType: 'local' | 'intercity';
   onSetRideType: (type: 'local' | 'intercity') => void;
 }
+
+export interface BookingFormProps {
+  pickup: string | null;
+  destination: string | null;
+  travelDate: Date | null;
+  peopleCount: number;
+  radiusKm: number;
+  isSearching: boolean;
+  isSwapped: boolean;
+  onPressPickup: () => void;
+  onPressDestination: () => void;
+  onSwapLocations: () => void;
+  onOpenDatePicker: () => void;
+  onIncrementPeople: () => void;
+  onDecrementPeople: () => void;
+  onIncrementRadius: () => void;
+  onDecrementRadius: () => void;
+  onSelectRadius: (radius: number) => void;
+  onSearchRides: () => void;
+  t: BookRideInfoTranslations;
+}
+

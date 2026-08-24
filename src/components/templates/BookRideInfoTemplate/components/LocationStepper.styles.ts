@@ -3,31 +3,31 @@ import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 
 export const StepperContainer = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_low};
-  border-radius: ${moderateScale(20)}px;
-  padding: ${moderateScale(16)}px;
+  border-radius: ${moderateScale(14)}px;
+  padding: ${moderateScale(10)}px ${moderateScale(12)}px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: ${verticalScale(24)}px;
+  margin-bottom: ${verticalScale(10)}px;
 `;
 
 export const StepperLabelGroup = styled.View`
   flex: 1;
-  margin-right: ${scale(12)}px;
+  margin-right: ${scale(8)}px;
 `;
 
 export const StepperLabel = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 800;
-  font-size: ${responsiveFont(10)}px;
+  font-size: ${responsiveFont(9.5)}px;
   color: ${({ theme }) => theme.colors.on_surface_variant};
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.2px;
 `;
 
 export const StepperSub = styled.Text`
   font-family: 'Plus Jakarta Sans';
-  font-size: ${responsiveFont(12)}px;
+  font-size: ${responsiveFont(11)}px;
   color: ${({ theme }) => `${theme.colors.on_surface_variant}B3`};
   margin-top: ${verticalScale(2)}px;
 `;
@@ -36,18 +36,18 @@ export const StepperControls = styled.View`
   flex-direction: row;
   align-items: center;
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  padding: ${moderateScale(6)}px;
-  border-radius: ${moderateScale(12)}px;
-  gap: ${scale(12)}px;
+  padding: ${moderateScale(3)}px;
+  border-radius: ${moderateScale(16)}px;
+  gap: ${scale(6)}px;
 `;
 
 export const StepperButton = styled.TouchableOpacity<{
   primary?: boolean;
   disabled?: boolean;
 }>`
-  width: ${moderateScale(32)}px;
-  height: ${moderateScale(32)}px;
-  border-radius: ${moderateScale(16)}px;
+  width: ${moderateScale(28)}px;
+  height: ${moderateScale(28)}px;
+  border-radius: ${moderateScale(14)}px;
   background-color: ${({ theme, primary, disabled }) => {
     if (disabled) return `${theme.colors.surface_container_highest}80`;
     return primary ? theme.colors.primary : theme.colors.surface_container_high;
@@ -60,8 +60,9 @@ export const StepperButton = styled.TouchableOpacity<{
 export const StepperValue = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 800;
-  font-size: ${responsiveFont(18)}px;
+  font-size: ${responsiveFont(14)}px;
   color: ${({ theme }) => theme.colors.on_surface};
-  min-width: ${scale(24)}px;
+  min-width: ${scale(20)}px;
   text-align: center;
 `;
+

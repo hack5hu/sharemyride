@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 
 export const RecentItemContainer = styled.View`
-  padding-horizontal: ${moderateScale(24)}px;
+  padding-horizontal: ${moderateScale(16)}px;
 `;
 
 export const RecentItem = styled.TouchableOpacity`
