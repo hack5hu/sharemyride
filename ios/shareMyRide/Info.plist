@@ -55,7 +55,11 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>ZyncRide needs access to your location to find nearby rides and display your route.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>ZyncRide needs access to your photo library to choose a profile picture.</string>
+	<string>ZyncRide needs access to your photo library to choose a profile picture or upload screenshots.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>ZyncRide needs permission to save photos to your photo library.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>ZyncRide needs access to your camera to take a profile photo.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>StallionAppToken</key>

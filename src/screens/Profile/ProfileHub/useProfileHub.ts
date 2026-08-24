@@ -3,7 +3,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useCallback, useState, useEffect, useMemo } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { Linking } from 'react-native';
+import { Linking, Platform } from 'react-native';
 import { UserService } from '@/serviceManager/UserService';
 import { computeTotalRides } from '@/utils/user';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
@@ -27,45 +27,49 @@ export const useProfileHub = () => {
 
   const handleOpenGallery = useCallback(async () => {
     setAvatarModalVisible(false);
-    try {
-      const result = await launchImageLibrary({
-        mediaType: 'photo',
-        quality: 0.8,
-        selectionLimit: 1,
-      });
+    // On iOS, modal dismissal is animated. We wait for dismissal to complete before presenting the image picker.
+    const delay = Platform.OS === 'ios' ? 350 : 0;
+    setTimeout(async () => {
+      try {
+        const result = await launchImageLibrary({
+          mediaType: 'photo',
+          quality: 0.8,
+          selectionLimit: 1,
+        });
 
-      if (result.didCancel || !result.assets?.[0]?.uri) {
-        return;
+        if (result.didCancel || !result.assets?.[0]?.uri) {
+          return;
+        }
+
+        setIsUpdatingAvatar(true);
+        const selectedImage = result.assets[0];
+
+        await UserService.uploadProfilePhoto(selectedImage.uri!);
+
+        await fetchProfile();
+        showNotification(
+          NotificationType.SUCCESS,
+          t('notification.defaultSuccessTitle'),
+          t('notification.profilePhotoUpdated'),
+        );
+      } catch (error: unknown) {
+        const axiosError = error as {
+          response?: { data?: { message?: string } };
+          message?: string;
+        };
+        const errorMessage =
+          axiosError?.response?.data?.message ||
+          axiosError?.message ||
+          t('notification.defaultErrorMessage');
+        showNotification(
+          NotificationType.ERROR,
+          t('notification.defaultErrorTitle'),
+          errorMessage,
+        );
+      } finally {
+        setIsUpdatingAvatar(false);
       }
-
-      setIsUpdatingAvatar(true);
-      const selectedImage = result.assets[0];
-
-      await UserService.uploadProfilePhoto(selectedImage.uri!);
-
-      await fetchProfile();
-      showNotification(
-        NotificationType.SUCCESS,
-        t('notification.defaultSuccessTitle'),
-        t('notification.profilePhotoUpdated'),
-      );
-    } catch (error: unknown) {
-      const axiosError = error as {
-        response?: { data?: { message?: string } };
-        message?: string;
-      };
-      const errorMessage =
-        axiosError?.response?.data?.message ||
-        axiosError?.message ||
-        t('notification.defaultErrorMessage');
-      showNotification(
-        NotificationType.ERROR,
-        t('notification.defaultErrorTitle'),
-        errorMessage,
-      );
-    } finally {
-      setIsUpdatingAvatar(false);
-    }
+    }, delay);
   }, [fetchProfile, t]);
 
   const handleRemoveAvatar = useCallback(async () => {
