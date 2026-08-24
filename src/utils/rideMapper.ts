@@ -103,7 +103,7 @@ export const mapBackendRideToUI = (
       ? ride.passengerName
       : isDriver
       ? undefined
-      : ride.name,
+      : ride.name || ride.driverName || ride.driver?.name || ride.hostName,
     carModel: isRequest
       ? `Requested by ${ride.passengerName}`
       : ride.vehicleRegistration
@@ -113,12 +113,12 @@ export const mapBackendRideToUI = (
       : isDriver
       ? t('myRides.yourVehicle')
       : t('myRides.vehicleDetails'),
-    rating: ride.rating || 0,
+    rating: ride.rating || ride.driver?.rating || 0,
     avatarUri: isRequest
       ? ride.passengerPhotoUrl
       : isDriver
       ? undefined
-      : ride.photoUrl,
+      : ride.photoUrl || ride.avatarUri || ride.driver?.photoUrl || ride.driver?.avatar,
     pickupTime: timeStr,
     dropoffTime: formatTimeSafely(
       ride.endTime,

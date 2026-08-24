@@ -1,20 +1,11 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { DriverProfileSummary } from '@/components/molecules/DriverProfileSummary';
-import { RideTimestampRow } from '@/components/molecules/RideTimestampRow';
-import {
-  Container,
-  CardHeader,
-  TimerBadge,
-  TimerText,
-  StatusTag,
-  StatusTagText,
-  ProfileWrapper,
-  AccentBar,
-} from './UpcomingRideCard.styles';
-import { UpcomingRideCardProps } from './types.d';
+import { Avatar } from '@/components/atoms/Avatar';
+import { useTranslation } from '@/hooks/useTranslation';
 import { moderateScale } from '@/styles';
+import * as S from './UpcomingRideCard.styles';
+import { UpcomingRideCardProps } from './types.d';
 
 export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = React.memo(
   ({
@@ -34,53 +25,130 @@ export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = React.memo(
     isDriver = false,
   }) => {
     const theme = useTheme();
+    const { t } = useTranslation();
+
+    const hostTitle = isDriver
+      ? t('myRides.youAreDriver') || 'Ride Host'
+      : driverName || 'Driver';
+
+    const vehicleSubtitle =
+      carModel || (isDriver ? t('myRides.yourVehicle') || 'Your Vehicle' : undefined);
 
     return (
-      <Container onPress={onPress} activeOpacity={0.9}>
-        {isDriver && <AccentBar />}
-
-        <CardHeader>
-          <TimerBadge>
-            <Icon
-              name="schedule"
-              size={moderateScale(14)}
-              color={theme.colors.on_secondary_container}
-            />
-            <TimerText>{timerLabel}</TimerText>
-          </TimerBadge>
-
-          {statusTag && (
-            <StatusTag status={statusTag.toUpperCase()}>
-              <StatusTagText status={statusTag.toUpperCase()}>
-                {statusTag}
-              </StatusTagText>
-            </StatusTag>
+      <S.CardContainer onPress={onPress} activeOpacity={0.88}>
+        {/* Top Header: Timer + Price / Status */}
+        <S.TopMetaRow>
+          {timerLabel ? (
+            <S.TimerPill>
+              <Icon
+                name="schedule"
+                size={moderateScale(13)}
+                color={theme.colors.primary}
+              />
+              <S.TimerPillText>{timerLabel}</S.TimerPillText>
+            </S.TimerPill>
+          ) : (
+            <S.Box />
           )}
-        </CardHeader>
 
-        {(driverName || carModel || rating || avatarUri || price) && (
-          <ProfileWrapper>
-            <DriverProfileSummary
-              name={driverName}
-              vehicleInfo={carModel}
-              rating={rating}
-              avatarUri={avatarUri}
-              isVerified={isVerified}
-              price={price}
-              variant="upcoming"
-              isDriver={isDriver}
+          <S.HeaderRight>
+            {statusTag && (
+              <S.StatusBadge $status={statusTag.toUpperCase()}>
+                <S.StatusBadgeText $status={statusTag.toUpperCase()}>
+                  {statusTag}
+                </S.StatusBadgeText>
+              </S.StatusBadge>
+            )}
+            {price ? <S.PriceLabel>{price}</S.PriceLabel> : null}
+          </S.HeaderRight>
+        </S.TopMetaRow>
+
+        {/* Route Journey Flow */}
+        <S.RouteSection>
+          {/* Pickup Stop */}
+          <S.RouteRow>
+            <S.TimeColumn>
+              <S.TimeText numberOfLines={1}>{pickupTime || '09:00 AM'}</S.TimeText>
+            </S.TimeColumn>
+            <S.TrackColumn>
+              <S.OriginDot />
+            </S.TrackColumn>
+            <S.LocationColumn>
+              <S.LocationText numberOfLines={1}>
+                {pickupLocation || 'Pickup Stop'}
+              </S.LocationText>
+            </S.LocationColumn>
+          </S.RouteRow>
+
+          {/* Track Line */}
+          <S.RouteRow>
+            <S.TimeColumn />
+            <S.TrackColumn>
+              <S.TrackLine />
+            </S.TrackColumn>
+            <S.LocationColumn />
+          </S.RouteRow>
+
+          {/* Dropoff Stop */}
+          <S.RouteRow>
+            <S.TimeColumn>
+              <S.TimeText numberOfLines={1}>{dropoffTime || '11:00 AM'}</S.TimeText>
+            </S.TimeColumn>
+            <S.TrackColumn>
+              <S.DestinationDot />
+            </S.TrackColumn>
+            <S.LocationColumn>
+              <S.LocationText numberOfLines={1}>
+                {dropoffLocation || 'Destination Stop'}
+              </S.LocationText>
+            </S.LocationColumn>
+          </S.RouteRow>
+        </S.RouteSection>
+
+        {/* Bottom Driver / Host Info Bar */}
+        <S.FooterDivider />
+        <S.FooterRow>
+          <S.DriverInfoGroup>
+            <Avatar
+              source={avatarUri ? { uri: avatarUri } : undefined}
+              placeholder={hostTitle}
+              size="sm"
+              isVerified={!isDriver && isVerified}
               iconName={isDriver ? 'directions-car' : undefined}
             />
-          </ProfileWrapper>
-        )}
+            <S.DriverTextGroup>
+              <S.DriverNameRow>
+                <S.DriverNameText numberOfLines={1}>
+                  {hostTitle}
+                </S.DriverNameText>
+                {!isDriver && rating > 0 && (
+                  <S.RatingBadge>
+                    <Icon
+                      name="star"
+                      size={moderateScale(10)}
+                      color={theme.colors.warning || '#f59e0b'}
+                    />
+                    <S.RatingText>{rating.toFixed(1)}</S.RatingText>
+                  </S.RatingBadge>
+                )}
+              </S.DriverNameRow>
+              {vehicleSubtitle ? (
+                <S.VehicleSubText numberOfLines={1}>
+                  {vehicleSubtitle}
+                </S.VehicleSubText>
+              ) : null}
+            </S.DriverTextGroup>
+          </S.DriverInfoGroup>
 
-        <RideTimestampRow
-          pickupTime={pickupTime}
-          pickupLocation={pickupLocation}
-          dropoffTime={dropoffTime}
-          dropoffLocation={dropoffLocation}
-        />
-      </Container>
+          <S.ActionIconGroup>
+            <Icon
+              name="chevron-right"
+              size={moderateScale(20)}
+              color={theme.colors.on_surface_variant}
+            />
+          </S.ActionIconGroup>
+        </S.FooterRow>
+      </S.CardContainer>
     );
   },
 );
