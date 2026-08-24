@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "you-search": {
+      "command": "npx",
+      "args": ["-y", "@youdotcom-oss/mcp"],
+      "env": {
+        "YDC_API_KEY": "ydc-sk-8eced1d7f238ed9f-OeqjffDGMHnAMWtnBsMxoorWm8CkvRf4-79eba4da",
+        "YDC_ALLOWED_TOOLS": "you-search,you-contents,you-research,you-finance,you-discover,you-balance"
+      }
+    },
+    "you-search-remote": {
+      "serverUrl": "https://api.you.com/mcp?tools=you-search,you-contents,you-research,you-finance,you-balance,you-discover",
+      "headers": {
+        "Authorization": "Bearer ydc-sk-8eced1d7f238ed9f-OeqjffDGMHnAMWtnBsMxoorWm8CkvRf4-79eba4da"
+      }
+    }
+  }
+}
