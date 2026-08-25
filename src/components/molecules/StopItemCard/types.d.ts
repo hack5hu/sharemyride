@@ -11,6 +11,9 @@ export interface DriverStop {
   passengerAvatar?: string;
   pickupLocation: string;
   distanceAway?: string;
+  distanceKm?: number;
+  etaMinutes?: number;
+  seatCount?: number;
   status: DriverStopStatus;
   phone?: string;
 }
@@ -18,7 +21,7 @@ export interface DriverStop {
 export interface StopItemCardProps {
   stop: DriverStop;
   isLast: boolean;
-  subtitle: string;
+  subtitle?: string;
   chatAccessibilityLabel: string;
   callAccessibilityLabel: string;
   onChatPress: (stop: DriverStop) => void;

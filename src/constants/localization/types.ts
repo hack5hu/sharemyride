@@ -580,6 +580,11 @@ export interface ActiveRidePassengerTranslations {
   min: string;
   distanceLabel: string;
   shareMyLocation: string;
+  liveLocationSubtitleOn: string;
+  liveLocationSubtitleOff: string;
+  liveLocationBadge: string;
+  driverTitle: string;
+  vehicleTitle: string;
   chat: string;
   call: string;
   timelineTitle: string;
@@ -588,6 +593,9 @@ export interface ActiveRidePassengerTranslations {
   finalDestination: string;
   safetyEmergencyCenter: string;
   arrivingAt: string;
+  copyLocation: string;
+  copiedLocation: string;
+  openInMap: string;
 }
 
 export interface ActiveRideDriverTranslations {
@@ -612,6 +620,14 @@ export interface ActiveRideDriverTranslations {
   atPickupStop: string;
   distanceAwayFromStop: string;
   liveLocationInactive: string;
+  liveLocationSubtitleOn: string;
+  liveLocationSubtitleOff: string;
+  liveLocationBadge: string;
+  distanceAndEtaFromStop: string;
+  atStoppageReady: string;
+  waitingAtStop: string;
+  distanceToPickupLabel: string;
+  etaToPickupLabel: string;
 }
 
 export interface NotificationTranslations {
