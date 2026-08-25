@@ -22,6 +22,8 @@ export const ActiveRideDriverScreen: React.FC = React.memo(() => {
     handlePassengerChatPress,
     handlePassengerCallPress,
     nextStopName,
+    handleCopyLocation,
+    handleOpenMap,
   } = useActiveRideDriver();
 
   if (isPassenger) {
@@ -33,11 +35,14 @@ export const ActiveRideDriverScreen: React.FC = React.memo(() => {
         isLiveLocationEnabled={isLiveLocationEnabled}
         onToggleLiveLocation={handleToggleLiveLocation}
         driver={driverDetails}
+        vehicleInfo={vehicleInfo}
         timeline={passengerTimeline}
         onChatPress={handlePassengerChatPress}
         onCallPress={handlePassengerCallPress}
         onSafetyCenterPress={handleSafetyCenterPress}
         nextStopName={nextStopName}
+        onCopyLocation={handleCopyLocation}
+        onOpenMap={handleOpenMap}
       />
     );
   }

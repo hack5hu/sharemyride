@@ -1,5 +1,7 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import Geolocation from '@react-native-community/geolocation';
+import { mmkvStorage } from '@/utils/storage';
 import { RideService } from '@/serviceManager/RideService';
 import { ActiveRideRole } from '@/navigation/types.d';
 import { requestLocationPermission } from '@/utils/permissionUtils';
@@ -33,11 +35,10 @@ interface LiveRideState {
 
 const sanitizeMetric = (
   val: number | null | undefined,
-  maxAllowed: number,
 ): number | undefined => {
   if (val === null || val === undefined || isNaN(Number(val))) return undefined;
   const num = Number(val);
-  if (num < 0 || num > maxAllowed) return undefined;
+  if (num < 0) return undefined;
   return num;
 };
 
@@ -85,31 +86,34 @@ const computeDynamicSubtitle = (
   return undefined;
 };
 
-export const useLiveRideStore = create<LiveRideState>(set => ({
-  activeRide: null,
-  isLoading: false,
-  isBannerDismissed: false,
-  isLiveLocationEnabled: false,
-  lastFetchedAt: null,
-
-  setLiveLocationEnabled: async (enabled: boolean) => {
-    set({ isLiveLocationEnabled: enabled });
-    if (enabled) {
-      try {
-        await requestLocationPermission();
-      } catch {}
-    }
-    useLiveRideStore.getState().fetchLiveStatus();
-  },
-
-  dismissBanner: () => set({ isBannerDismissed: true }),
-
-  resetLiveRide: () =>
-    set({
+export const useLiveRideStore = create<LiveRideState>()(
+  persist(
+    (set) => ({
       activeRide: null,
+      isLoading: false,
       isBannerDismissed: false,
+      isLiveLocationEnabled: false,
       lastFetchedAt: null,
-    }),
+
+      setLiveLocationEnabled: async (enabled: boolean) => {
+        set({ isLiveLocationEnabled: enabled });
+        if (enabled) {
+          try {
+            await requestLocationPermission();
+          } catch {}
+        }
+        useLiveRideStore.getState().fetchLiveStatus();
+      },
+
+      dismissBanner: () => set({ isBannerDismissed: true }),
+
+      resetLiveRide: () =>
+        set({
+          activeRide: null,
+          isBannerDismissed: false,
+          lastFetchedAt: null,
+          isLiveLocationEnabled: false,
+        }),
 
   fetchLiveStatus: async () => {
     set({ isLoading: true });
@@ -158,9 +162,8 @@ export const useLiveRideStore = create<LiveRideState>(set => ({
             data.ride.eta ??
             passengerEta;
 
-          // Filter out abnormal outlier values (e.g. 12000 km / 18000 mins due to 0,0 null island coordinates)
-          const distanceKm = sanitizeMetric(rawDistance, 800);
-          let etaMinutes = sanitizeMetric(rawEta, 720);
+          const distanceKm = sanitizeMetric(rawDistance);
+          let etaMinutes = sanitizeMetric(rawEta);
 
           // If no valid live ETA from GPS, calculate from arrival/start time
           if (etaMinutes === undefined && data.ride.startTime) {
@@ -168,7 +171,7 @@ export const useLiveRideStore = create<LiveRideState>(set => ({
               const start = new Date(data.ride.startTime).getTime();
               const now = Date.now();
               const diff = Math.max(0, Math.round((start - now) / 60000));
-              etaMinutes = diff > 0 && diff < 720 ? diff : undefined;
+              etaMinutes = diff > 0 ? diff : undefined;
             } catch {}
           }
 
@@ -219,18 +222,28 @@ export const useLiveRideStore = create<LiveRideState>(set => ({
 
     try {
       Geolocation.getCurrentPosition(
-        position => {
+        (position) => {
           const { latitude, longitude } = position.coords;
           sendRequest(latitude, longitude);
         },
-        () => {
+        (error) => {
+          console.warn('Geolocation Error in LiveRideStore:', error);
           // Immediately fallback to calling API with liveLocationEnabled flag
           sendRequest(null, null);
         },
-        { enableHighAccuracy: false, timeout: 3000, maximumAge: 30000 },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 10000 },
       );
-    } catch {
+    } catch (e) {
+      console.warn('Geolocation Catch Error:', e);
       sendRequest(null, null);
     }
   },
-}));
+}),
+{
+  name: 'live-ride-storage',
+  storage: createJSONStorage(() => mmkvStorage),
+  partialize: (state) => ({
+    isLiveLocationEnabled: state.isLiveLocationEnabled,
+  }),
+}
+));

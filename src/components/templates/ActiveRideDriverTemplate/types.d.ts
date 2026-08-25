@@ -8,9 +8,13 @@ export interface NextStopInfo {
 }
 
 export interface DriverVehicleInfo {
+  company: string;
   model: string;
   licensePlate?: string;
-  batteryPercentage: number;
+  color?: string;
+  fuelType?: string;
+  batteryPercentage?: number;
+  type?: string;
 }
 
 export interface GroupedStop {

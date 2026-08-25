@@ -13,7 +13,6 @@ export const ActiveRideDriverTemplate: React.FC<ActiveRideDriverTemplateProps> =
   React.memo(
     ({
       onBack,
-      nextStop,
       isLiveLocationEnabled,
       onToggleLiveLocation,
       groupedStops,
@@ -25,55 +24,61 @@ export const ActiveRideDriverTemplate: React.FC<ActiveRideDriverTemplateProps> =
       const theme = useTheme();
       const { activeRideDriver: t } = useLocale();
 
+      const subtitleText = isLiveLocationEnabled
+        ? t.liveLocationSubtitleOn
+        : t.liveLocationSubtitleOff;
+
       return (
         <ScreenShell title={t.screenTitle} onBack={onBack}>
           <S.Container>
             <S.ScrollContent showsVerticalScrollIndicator={false}>
-              {/* Top Hero Section */}
-              <S.HeroSection>
-                <S.NextStopBadge>{t.nextStopLabel}</S.NextStopBadge>
-                <S.PassengerName>{nextStop.passengerName}</S.PassengerName>
-
-                <S.MetricsRow>
-                  <S.MetricBlock>
-                    <S.MetricLabel>{t.distanceLabel}</S.MetricLabel>
-                    <S.MetricValue>
-                      {t.distanceValue.replace(
-                        '{{km}}',
-                        nextStop.distanceKm.toFixed(1),
-                      )}
-                    </S.MetricValue>
-                  </S.MetricBlock>
-
-                  <S.MetricBlock>
-                    <S.MetricLabel>{t.etaLabel}</S.MetricLabel>
-                    <S.MetricValue>
-                      {t.etaValue.replace(
-                        '{{mins}}',
-                        String(nextStop.etaMinutes),
-                      )}
-                    </S.MetricValue>
-                  </S.MetricBlock>
-                </S.MetricsRow>
-              </S.HeroSection>
-
               <S.BodyContent>
-                {/* Live Location Toggle */}
-                <S.LiveLocationCard>
-                  <S.LiveLocationLeft>
-                    <Icon
-                      name="location-on"
-                      size={moderateScale(22)}
-                      color={theme.colors.primary}
+                {/* Live Location Explanation Card */}
+                <S.LiveLocationCard $active={isLiveLocationEnabled}>
+                  <S.LiveLocationTopRow>
+                    <S.LiveLocationLeft>
+                      <S.LiveLocationIconContainer
+                        $active={isLiveLocationEnabled}
+                      >
+                        <Icon
+                          name={
+                            isLiveLocationEnabled
+                              ? 'my-location'
+                              : 'location-off'
+                          }
+                          size={moderateScale(22)}
+                          color={
+                            isLiveLocationEnabled
+                              ? theme.colors.primary
+                              : theme.colors.on_surface_variant
+                          }
+                        />
+                      </S.LiveLocationIconContainer>
+                      <S.LiveLocationTextGroup>
+                        <S.LiveLocationTitleRow>
+                          <S.LiveLocationText>
+                            {t.liveLocationTitle}
+                          </S.LiveLocationText>
+                          {isLiveLocationEnabled && (
+                            <S.LiveBadge>
+                              <S.LiveDot />
+                              <S.LiveBadgeText>
+                                {t.liveLocationBadge}
+                              </S.LiveBadgeText>
+                            </S.LiveBadge>
+                          )}
+                        </S.LiveLocationTitleRow>
+                      </S.LiveLocationTextGroup>
+                    </S.LiveLocationLeft>
+                    <Toggle
+                      value={isLiveLocationEnabled}
+                      onValueChange={onToggleLiveLocation}
                     />
-                    <S.LiveLocationText>
-                      {t.liveLocationTitle}
-                    </S.LiveLocationText>
-                  </S.LiveLocationLeft>
-                  <Toggle
-                    value={isLiveLocationEnabled}
-                    onValueChange={onToggleLiveLocation}
-                  />
+                  </S.LiveLocationTopRow>
+
+                  <S.LiveLocationSubtitle>
+                    {subtitleText}
+                  </S.LiveLocationSubtitle>
                 </S.LiveLocationCard>
 
                 {/* Stops List */}
@@ -82,18 +87,26 @@ export const ActiveRideDriverTemplate: React.FC<ActiveRideDriverTemplateProps> =
                   {groupedStops.map(group => {
                     return (
                       <React.Fragment key={group.stopId}>
-                        <S.StopGroupName>{group.stopName}</S.StopGroupName>
+                        <S.StopGroupNameContainer>
+                          <Icon
+                            name="place"
+                            size={moderateScale(16)}
+                            color={theme.colors.primary}
+                          />
+                          <S.StopGroupName numberOfLines={2}>
+                            {group.stopName}
+                          </S.StopGroupName>
+                        </S.StopGroupNameContainer>
                         {group.passengers.map((stop, index) => {
                           const isLast = index === group.passengers.length - 1;
-                          const subtitle = stop.pickupLocation
-                            ? t.pickupSubtitle.replace(
-                                '{{location}}',
-                                stop.pickupLocation,
-                              )
-                            : t.pickupDistanceSubtitle.replace(
-                                '{{distance}}',
-                                stop.distanceAway || '',
-                              );
+                          const subtitle =
+                            stop.distanceAway ||
+                            (stop.pickupLocation
+                              ? t.pickupSubtitle.replace(
+                                  '{{location}}',
+                                  stop.pickupLocation,
+                                )
+                              : '');
 
                           return (
                             <StopItemCard
@@ -119,29 +132,47 @@ export const ActiveRideDriverTemplate: React.FC<ActiveRideDriverTemplateProps> =
                   })}
                 </S.StopsSection>
 
-                {/* Vehicle Status */}
-                <S.VehicleStatusSection>
-                  <S.VehicleText>
-                    {vehicleInfo.licensePlate
-                      ? t.vehicleStatus
-                          .replace('{{vehicle}}', vehicleInfo.model)
-                          .replace('{{license}}', vehicleInfo.licensePlate)
-                      : vehicleInfo.model}
-                  </S.VehicleText>
-                  <S.BatteryText>
-                    {t.batteryRemaining.replace(
-                      '{{percent}}',
-                      String(vehicleInfo.batteryPercentage),
-                    )}
-                  </S.BatteryText>
-                </S.VehicleStatusSection>
+                {/* Vehicle Section */}
+                <S.VehicleCard>
+                  <S.VehicleIconContainer>
+                    <Icon
+                      name="directions-car"
+                      size={moderateScale(22)}
+                      color={theme.colors.primary}
+                    />
+                  </S.VehicleIconContainer>
+                  <S.VehicleInfoGroup>
+                    <S.VehicleText numberOfLines={1}>
+                      {vehicleInfo.company}{' '}
+                      <S.VehicleTextLight>
+                        {vehicleInfo.model}
+                      </S.VehicleTextLight>
+                    </S.VehicleText>
+                    <S.VehicleSubtext numberOfLines={1}>
+                      {[
+                        vehicleInfo.color,
+                        vehicleInfo.type,
+                        vehicleInfo.fuelType,
+                        vehicleInfo.licensePlate,
+                        vehicleInfo.batteryPercentage !== undefined
+                          ? t.batteryRemaining.replace(
+                              '{{percent}}',
+                              String(vehicleInfo.batteryPercentage),
+                            )
+                          : null,
+                      ]
+                        .filter(Boolean)
+                        .join(' • ') || 'Verified Vehicle'}
+                    </S.VehicleSubtext>
+                  </S.VehicleInfoGroup>
+                </S.VehicleCard>
 
-                {/* Safety Center Button */}
+                {/* Safety Center */}
                 <S.SafetyButton onPress={onSafetyCenterPress}>
                   <Icon
                     name="shield"
                     size={moderateScale(20)}
-                    color={theme.colors.on_error_container || '#93000a'}
+                    color={theme.colors.error || '#ba1a1a'}
                   />
                   <S.SafetyButtonText>{t.safetyCenter}</S.SafetyButtonText>
                 </S.SafetyButton>
