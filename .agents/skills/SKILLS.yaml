@@ -1,5 +1,9 @@
 # Auto-generated agent skills catalog. Run update_skills.sh to regenerate.
 skills:
+  - name: "session-wrapup"
+    description: "Concluding a coding session, verifying TypeScript types, checking line-count caps, running linters/tests, and preparing a clean session handoff summary or diary."
+    tags: [wrapup, audit, handoff, session, validation]
+    path: ".agents/skills/session-wrapup/SKILL.md"
   - name: "storybook"
     description: "Writing visual preview stories and executing interactive browser tests using Vitest and Playwright in Storybook."
     tags: [storybook, testing, validation]
