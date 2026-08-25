@@ -1,5 +1,26 @@
 # Changelog
 
+# [1.4.0](https://github.com/hack5hu/sharemyride/compare/v1.3.0...v1.4.0) (2026-08-25)
+
+### Bug Fixes
+
+* adjust Android bottom safe area padding and increment version code to 11 ([5ac6126](https://github.com/hack5hu/sharemyride/commit/5ac61264c96cae042a3cf4316a721a43ac0e2b38))
+
+### Features
+
+* add account deletion functionality and restrict app to iPhone target device family ([8601f66](https://github.com/hack5hu/sharemyride/commit/8601f6693b72b8362dc1a7cce08cf02028d8cbb7))
+* add configurable search radius selector component and integrate into booking flow ([2530498](https://github.com/hack5hu/sharemyride/commit/25304988217bd60d8d79120bf8b6e0e7b790f5bd))
+* add interactive build number incrementing to release script and enhance in-app update logic for iOS support ([4caf438](https://github.com/hack5hu/sharemyride/commit/4caf4389ba20a2029fc8fc2c8292e076b3bdc7bc))
+* add new promotional screenshots for iOS and Android app stores ([791b35f](https://github.com/hack5hu/sharemyride/commit/791b35f098f1b74e2ae8396a89b70187a77fb31a))
+* implement debounced reverse geocoding with cache optimizations and enforce map zoom constraints across components ([c7283be](https://github.com/hack5hu/sharemyride/commit/c7283be24e782318416ee65e434e7a24869be937))
+* implement feedback submission service and add iOS permission requirements for camera and photo library access ([ee763de](https://github.com/hack5hu/sharemyride/commit/ee763de79dc3597be1613d56c262218e5039d4eb))
+* implement native splash screen using react-native-bootsplash ([4824332](https://github.com/hack5hu/sharemyride/commit/482433207e1246e9732289a35834571089419b36))
+* implement new ride details components and expand template UI styling and Storybook coverage ([f375103](https://github.com/hack5hu/sharemyride/commit/f37510364f690171980c893970fce992b15549b3))
+* implement unified production and dev release scripts, add GitHub Actions CI pipeline, and enforce security scanning with Gitleaks. ([82cb3af](https://github.com/hack5hu/sharemyride/commit/82cb3af76defb629f9332d3b418fffe3bba3f220))
+* integrate backend API for feedback submission and ticket history retrieval in Suggestions screen ([c679e6e](https://github.com/hack5hu/sharemyride/commit/c679e6e40b7f6403cc6231f5123524ec09874b76))
+* introduce address formatting utility and add custom route marker callouts to map templates ([b8b0746](https://github.com/hack5hu/sharemyride/commit/b8b074649bbe4134c567e41ff584b89663bbff34))
+* update Badge component styling for dark mode and configure Android notification color and boot splash logo ([aa643d9](https://github.com/hack5hu/sharemyride/commit/aa643d90134850a7ba5936be8d77f2415a8a789b))
+
 # [1.3.0](https://github.com/hack5hu/sharemyride/compare/v1.1.1...v1.3.0) (2026-08-03)
 
 ### Features

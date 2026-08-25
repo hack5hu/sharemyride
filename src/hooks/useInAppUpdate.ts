@@ -6,29 +6,43 @@ import { Logger } from '@/utils/logger';
 
 export const useInAppUpdate = () => {
   useEffect(() => {
-    // In-App Updates only work on production builds installed from the Store.
-    // Skip in development/emulator builds to prevent store service binding errors.
-    if (__DEV__) return;
-
     const inAppUpdates = new SpInAppUpdates(false);
 
     const checkUpdates = async () => {
       try {
         const curVersion = DeviceInfo.getVersion();
-        const result = await inAppUpdates.checkNeedsUpdate({
-          curVersion,
-          country: 'in',
+        const curBuildNumber = DeviceInfo.getBuildNumber();
+        Logger.info(`[InAppUpdate] Checking update (Version: ${curVersion}, Build: ${curBuildNumber})`);
+
+        const checkOptions = Platform.select({
+          android: {
+            curVersion: curBuildNumber,
+            customVersionComparator: (newV: string, curV: string) => {
+              const newNum = parseInt(newV, 10);
+              const curNum = parseInt(curV, 10);
+              if (!isNaN(newNum) && !isNaN(curNum)) {
+                return newNum - curNum;
+              }
+              return newV.localeCompare(curV);
+            },
+          },
+          ios: {
+            curVersion,
+            country: 'in',
+          },
         });
+
+        const result = await inAppUpdates.checkNeedsUpdate(checkOptions);
+        Logger.info('[InAppUpdate] Check result:', result);
 
         if (result.shouldUpdate) {
           let updateOptions: StartUpdateOptions = {};
           if (Platform.OS === 'android') {
-            // Immediate update enforces a full screen prompt by Google Play
+            const isImmediateAllowed = (result.other as any)?.isImmediateUpdateAllowed !== false;
             updateOptions = {
-              updateType: IAUUpdateKind.IMMEDIATE,
+              updateType: isImmediateAllowed ? IAUUpdateKind.IMMEDIATE : IAUUpdateKind.FLEXIBLE,
             };
           } else if (Platform.OS === 'ios') {
-            // iOS prompts with native alert and redirects to the App Store page
             updateOptions = {
               title: 'Update Available',
               message:
@@ -42,7 +56,6 @@ export const useInAppUpdate = () => {
         }
       } catch (error: unknown) {
         const errorStr = String((error as Error)?.message || error || '');
-        // Ignore expected Store service binding failures on sideloaded/debug builds
         if (!errorStr.includes('Failed to bind') && !errorStr.includes('zzy')) {
           Logger.warn('[InAppUpdate] Error checking/starting update:', error);
         }
