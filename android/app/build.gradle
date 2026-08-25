@@ -95,6 +95,21 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 13
         versionName "1.4.0"
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
+    }
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+            pickFirsts += [
+                '**/libc++_shared.so',
+                '**/libfbjni.so',
+                '**/libjsi.so',
+                '**/libreactnativejni.so',
+                '**/libturbomodulejsijni.so'
+            ]
+        }
     }
     signingConfigs {
         debug {

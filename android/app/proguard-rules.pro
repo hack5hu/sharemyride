@@ -8,3 +8,15 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # Add any project specific keep options here:
+
+# SoLoader
+-keep class com.facebook.soloader.** { *; }
+-keepclassmembers class com.facebook.soloader.** { *; }
+
+# React Native & JNI / Cxx Feature Flags
+-keep class com.facebook.react.** { *; }
+-keep class com.facebook.jni.** { *; }
+-keepclassmembers class com.facebook.react.** { *; }
+-keepclassmembers class com.facebook.jni.** { *; }
+-keep class com.facebook.react.internal.featureflags.** { *; }
+-keepclassmembers class com.facebook.react.internal.featureflags.** { *; }
