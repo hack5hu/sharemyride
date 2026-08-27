@@ -17,6 +17,8 @@ export interface ActiveRidePassengerTemplateProps {
   onCallPress: () => void;
   onSafetyCenterPress: () => void;
   nextStopName: string;
+  nextStopLat?: number;
+  nextStopLon?: number;
   onCopyLocation?: (address: string) => void;
   onOpenMap?: (lat?: number, lon?: number, address?: string) => void;
 }

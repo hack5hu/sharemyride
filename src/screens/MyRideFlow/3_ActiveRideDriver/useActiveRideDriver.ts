@@ -169,8 +169,10 @@ export const useActiveRideDriver = (): UseActiveRideReturn => {
     nextStopName: useMemo(() => {
       if (!rideDetails?.stops || rideDetails.stops.length === 0) return '';
       const name = rideDetails.stops[0].stopName || rideDetails.stops[0].name || '';
-      return name.split(',')[0].trim();
+      return name.trim();
     }, [rideDetails?.stops]),
+    nextStopLat: rideDetails?.stops?.[0]?.lat,
+    nextStopLon: rideDetails?.stops?.[0]?.lon,
     handleCopyLocation,
     handleOpenMap,
   };

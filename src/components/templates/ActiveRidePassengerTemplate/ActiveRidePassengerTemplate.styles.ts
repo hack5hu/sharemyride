@@ -75,11 +75,17 @@ export const ETAMinutesText = styled.Text`
   color: ${({ theme }) => theme.colors.on_primary}DD;
 `;
 
+export const NextStopContainer = styled.View`
+  margin-top: ${verticalScale(10)}px;
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: ${moderateScale(12)}px;
+  border-radius: ${moderateScale(14)}px;
+`;
+
 export const NextStopRow = styled.View`
   flex-direction: row;
-  align-items: center;
-  gap: ${scale(6)}px;
-  margin-top: ${verticalScale(6)}px;
+  align-items: flex-start;
+  gap: ${scale(8)}px;
 `;
 
 export const NextStopText = styled.Text`
@@ -87,7 +93,33 @@ export const NextStopText = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 600;
   font-size: ${responsiveFont(13)}px;
-  color: ${({ theme }) => theme.colors.on_primary}EE;
+  line-height: ${responsiveFont(18)}px;
+  color: ${({ theme }) => theme.colors.on_primary};
+`;
+
+export const HeroActionsRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(8)}px;
+  margin-top: ${verticalScale(10)}px;
+  padding-left: ${scale(24)}px;
+`;
+
+export const HeroActionPill = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(5)}px;
+  background-color: rgba(255, 255, 255, 0.22);
+  padding-horizontal: ${scale(10)}px;
+  padding-vertical: ${verticalScale(5)}px;
+  border-radius: ${moderateScale(12)}px;
+`;
+
+export const HeroActionPillText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 700;
+  font-size: ${responsiveFont(11)}px;
+  color: ${({ theme }) => theme.colors.on_primary};
 `;
 
 export const DistancePill = styled.View`
