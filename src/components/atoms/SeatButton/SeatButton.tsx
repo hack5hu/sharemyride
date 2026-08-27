@@ -10,6 +10,8 @@ export interface SeatButtonProps {
   state: S.SeatState;
   onPress?: (id: string) => void;
   driverLabel?: string;
+  occupiedLabel?: string;
+  unavailableLabel?: string;
   price?: number;
 }
 
@@ -18,20 +20,14 @@ export const SeatButton: React.FC<SeatButtonProps> = ({
   state,
   onPress,
   driverLabel,
+  occupiedLabel,
+  unavailableLabel,
   price,
 }) => {
   const theme = useTheme();
 
-  const iconColor =
-    state === 'selected'
-      ? theme.colors.on_primary
-      : state === 'driver'
-      ? theme.colors.outline
-      : state === 'occupied'
-      ? theme.colors.outline + 'CC'
-      : theme.colors.primary;
-
-  const isDIsabled = state === 'driver' || state === 'occupied';
+  const isDIsabled =
+    state === 'driver' || state === 'occupied' || state === 'unavailable';
 
   return (
     <S.Container>
@@ -43,7 +39,10 @@ export const SeatButton: React.FC<SeatButtonProps> = ({
       >
         {state === 'selected' && (
           <S.SeatGradient
-            colors={[theme.colors.primary, theme.colors.primary_container || '#0070eb']}
+            colors={[
+              theme.colors.primary,
+              theme.colors.primary_container || '#0070eb',
+            ]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           />
@@ -68,8 +67,19 @@ export const SeatButton: React.FC<SeatButtonProps> = ({
                 color={theme.colors.outline}
               />
               <S.OccupiedLabelText>
-                Booked
+                {occupiedLabel || 'Booked'}
               </S.OccupiedLabelText>
+            </>
+          ) : state === 'unavailable' ? (
+            <>
+              <MaterialIcons
+                name="airline-seat-recline-normal"
+                size={moderateScale(24)}
+                color={theme.colors.outline}
+              />
+              <S.UnavailableLabelText>
+                {unavailableLabel || 'Unavailable'}
+              </S.UnavailableLabelText>
             </>
           ) : (
             <>

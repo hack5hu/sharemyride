@@ -2,7 +2,12 @@ import styled from 'styled-components/native';
 import { moderateScale, responsiveFont } from '@/styles';
 import LinearGradient from 'react-native-linear-gradient';
 
-export type SeatState = 'selected' | 'available' | 'driver' | 'occupied';
+export type SeatState =
+  | 'selected'
+  | 'available'
+  | 'driver'
+  | 'occupied'
+  | 'unavailable';
 
 export const SeatTouchable = styled.TouchableOpacity<{ state: SeatState }>`
   width: ${moderateScale(68)}px;
@@ -10,10 +15,12 @@ export const SeatTouchable = styled.TouchableOpacity<{ state: SeatState }>`
   border-radius: ${moderateScale(16)}px;
   align-items: center;
   justify-content: center;
+  opacity: ${({ state }) => (state === 'unavailable' ? 0.65 : 1)};
   background-color: ${({ theme, state }) => {
-    if (state === 'driver') return theme.colors.surface_container_low;
+    if (state === 'driver' || state === 'occupied' || state === 'unavailable') {
+      return theme.colors.surface_container_low;
+    }
     if (state === 'selected') return 'transparent';
-    if (state === 'occupied') return theme.colors.surface_container_low;
     return `${theme.colors.primary}08`;
   }};
   border-width: ${({ state }) => (state === 'available' ? '1.5px' : '0px')};
@@ -54,9 +61,18 @@ export const OccupiedLabelText = styled.Text`
   margin-top: ${moderateScale(2)}px;
 `;
 
+export const UnavailableLabelText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 600;
+  font-size: ${responsiveFont(9.5)}px;
+  color: ${({ theme }) => theme.colors.outline};
+  margin-top: ${moderateScale(2)}px;
+`;
+
 export const Container = styled.View`
   align-items: center;
   width: ${moderateScale(72)}px;
+  min-height: ${moderateScale(68)}px;
 `;
 
 export const ContentWrapper = styled.View`

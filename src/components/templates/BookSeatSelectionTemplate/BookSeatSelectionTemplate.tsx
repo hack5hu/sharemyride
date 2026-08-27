@@ -19,6 +19,7 @@ export const BookSeatSelectionTemplate: React.FC<
   rows,
   selectedSeats,
   occupiedSeats,
+  unavailableSeats,
   prices,
   totalPrice,
   seatCount,
@@ -67,9 +68,12 @@ export const BookSeatSelectionTemplate: React.FC<
                 rows={rows}
                 selectedSeats={selectedSeats}
                 occupiedSeats={occupiedSeats}
+                unavailableSeats={unavailableSeats}
                 prices={prices}
                 onSeatPress={isBooking ? () => {} : toggleSeat}
                 driverLabel={st.driverLabel}
+                occupiedLabel={st.legendBooked || 'Booked'}
+                unavailableLabel={st.legendUnavailable || 'Unavailable'}
               />
             </S.CarPlanWrapper>
           </S.ContentPadding>

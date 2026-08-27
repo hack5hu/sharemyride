@@ -14,18 +14,24 @@ export interface CarFloorPlanProps {
   rows: SeatConfig[][];
   selectedSeats: Set<string | number>;
   occupiedSeats?: Set<string | number>;
+  unavailableSeats?: Set<string | number>;
   prices?: Record<string | number, number>;
   onSeatPress: (id: string | number) => void;
   driverLabel: string;
+  occupiedLabel?: string;
+  unavailableLabel?: string;
 }
 
 export const CarFloorPlan: React.FC<CarFloorPlanProps> = ({
   rows,
   selectedSeats,
   occupiedSeats = new Set(),
+  unavailableSeats = new Set(),
   prices = {},
   onSeatPress,
   driverLabel,
+  occupiedLabel,
+  unavailableLabel,
 }) => {
   const getSeatState = (id: string, isDriver?: boolean): SeatState => {
     if (isDriver) return 'driver';
@@ -37,6 +43,11 @@ export const CarFloorPlan: React.FC<CarFloorPlanProps> = ({
     const hasOccupied =
       occupiedSeats.has(id) || (!isNaN(numId) && occupiedSeats.has(numId));
     if (hasOccupied) return 'occupied';
+
+    const hasUnavailable =
+      unavailableSeats.has(id) ||
+      (!isNaN(numId) && unavailableSeats.has(numId));
+    if (hasUnavailable) return 'unavailable';
 
     return 'available';
   };
@@ -56,6 +67,8 @@ export const CarFloorPlan: React.FC<CarFloorPlanProps> = ({
                 state={getSeatState(String(seat.seatId), seat.isDriver)}
                 onPress={onSeatPress}
                 driverLabel={seat.isDriver ? driverLabel : undefined}
+                occupiedLabel={occupiedLabel}
+                unavailableLabel={unavailableLabel}
                 price={prices[seat.seatId]}
               />
             ))}
