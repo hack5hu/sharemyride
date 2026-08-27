@@ -87,6 +87,8 @@ export const buildGroupedStops = (
       groups.push({
         stopId: s.id,
         stopName: s.stopName,
+        lat: s.lat ?? s.latitude,
+        lon: s.lon ?? s.longitude ?? s.lng,
         passengers: pass,
       });
     }

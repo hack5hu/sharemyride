@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { moderateScale } from '@/styles';
-import * as S from './ActiveRidePassengerTemplate.styles';
+import * as S from './PassengerHeroCard.styles';
 
 export interface PassengerHeroCardProps {
   t: any;

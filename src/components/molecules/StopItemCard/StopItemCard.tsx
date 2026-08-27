@@ -14,6 +14,7 @@ export const StopItemCard: React.FC<StopItemCardProps> = React.memo(
     callAccessibilityLabel,
     onChatPress,
     onCallPress,
+    isNested,
   }) => {
     const theme = useTheme();
     const { activeRideDriver: t } = useLocale();
@@ -21,7 +22,7 @@ export const StopItemCard: React.FC<StopItemCardProps> = React.memo(
     const distanceDisplay =
       stop.distanceKm !== undefined
         ? stop.distanceKm < 0.05
-          ? 'At stop'
+          ? t.atStop
           : stop.distanceKm < 1
             ? `${Math.round(stop.distanceKm * 1000)} m`
             : `${stop.distanceKm.toFixed(1)} km`
@@ -32,11 +33,14 @@ export const StopItemCard: React.FC<StopItemCardProps> = React.memo(
         ? `${stop.etaMinutes} ${stop.etaMinutes === 1 ? 'min' : 'mins'}`
         : stop.distanceAway?.split('•')[1]?.trim() || '5 mins';
 
-    const seatText = `${stop.seatCount || 1} ${(stop.seatCount || 1) > 1 ? 'Seats' : 'Seat'}`;
+    const seatCount = stop.seatCount || 1;
+    const seatText =
+      seatCount > 1
+        ? t.seatsCountPlural.replace('{{count}}', String(seatCount))
+        : t.seatsCount.replace('{{count}}', String(seatCount));
 
     return (
-      <S.StopCard>
-        {/* Top Tier: Passenger Identity & Actions */}
+      <S.StopCard $isNested={isNested}>
         <S.CardTopRow>
           <S.AvatarWrapper>
             <Avatar
@@ -44,74 +48,67 @@ export const StopItemCard: React.FC<StopItemCardProps> = React.memo(
                 stop.passengerAvatar ? { uri: stop.passengerAvatar } : undefined
               }
               placeholder={stop.passengerName}
-              size="md"
+              size="sm"
             />
           </S.AvatarWrapper>
 
           <S.PassengerInfo>
-            <S.PassengerNameText numberOfLines={1}>
-              {stop.passengerName}
-            </S.PassengerNameText>
-            <S.SeatTag>
-              <S.SeatTagText>{seatText}</S.SeatTagText>
-            </S.SeatTag>
+            <S.NameRow>
+              <S.PassengerNameText numberOfLines={1}>
+                {stop.passengerName}
+              </S.PassengerNameText>
+              <S.SeatTag>
+                <S.SeatTagText>{seatText}</S.SeatTagText>
+              </S.SeatTag>
+            </S.NameRow>
+
+            <S.MetricsInlineRow>
+              <S.MetricItem>
+                <Icon
+                  name="navigation"
+                  size={moderateScale(12)}
+                  color={theme.colors.primary}
+                />
+                <S.MetricHighlight>{distanceDisplay}</S.MetricHighlight>
+              </S.MetricItem>
+
+              <S.MetricItem>
+                <Icon
+                  name="schedule"
+                  size={moderateScale(12)}
+                  color={theme.colors.primary}
+                />
+                <S.MetricItemText>{etaDisplay}</S.MetricItemText>
+              </S.MetricItem>
+            </S.MetricsInlineRow>
           </S.PassengerInfo>
 
           <S.ActionButtonsRow>
-            <S.ActionIconButton
+            <S.ChatIconButton
               onPress={() => onChatPress(stop)}
               accessibilityLabel={chatAccessibilityLabel}
+              activeOpacity={0.75}
             >
               <Icon
                 name="chat"
-                size={moderateScale(18)}
+                size={moderateScale(16)}
                 color={theme.colors.primary}
               />
-            </S.ActionIconButton>
+            </S.ChatIconButton>
 
-            <S.ActionIconButton
+            <S.CallIconButton
               onPress={() => onCallPress(stop)}
               accessibilityLabel={callAccessibilityLabel}
+              activeOpacity={0.8}
             >
               <Icon
                 name="call"
-                size={moderateScale(18)}
-                color={theme.colors.primary}
+                size={moderateScale(16)}
+                color={theme.colors.on_primary || '#ffffff'}
               />
-            </S.ActionIconButton>
+            </S.CallIconButton>
           </S.ActionButtonsRow>
         </S.CardTopRow>
-
-        {/* Bottom Tier: Full Width Metrics Strip with clear context labels */}
-        <S.MetricsStrip>
-          <S.MetricPill>
-            <Icon
-              name="navigation"
-              size={moderateScale(16)}
-              color={theme.colors.primary}
-            />
-            <S.MetricTextGroup>
-              <S.MetricLabelText>{t.distanceToPickupLabel}</S.MetricLabelText>
-              <S.MetricValueText numberOfLines={1}>
-                {distanceDisplay}
-              </S.MetricValueText>
-            </S.MetricTextGroup>
-          </S.MetricPill>
-
-          <S.MetricPill>
-            <Icon
-              name="schedule"
-              size={moderateScale(16)}
-              color={theme.colors.primary}
-            />
-            <S.MetricTextGroup>
-              <S.MetricLabelText>{t.etaToPickupLabel}</S.MetricLabelText>
-              <S.MetricValueText numberOfLines={1}>
-                {etaDisplay}
-              </S.MetricValueText>
-            </S.MetricTextGroup>
-          </S.MetricPill>
-        </S.MetricsStrip>
       </S.StopCard>
     );
   },

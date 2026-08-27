@@ -20,6 +20,8 @@ export interface DriverVehicleInfo {
 export interface GroupedStop {
   stopId: string | number;
   stopName: string;
+  lat?: number;
+  lon?: number;
   passengers: DriverStop[];
 }
 
@@ -33,4 +35,6 @@ export interface ActiveRideDriverTemplateProps {
   onChatPress: (stop: DriverStop) => void;
   onCallPress: (stop: DriverStop) => void;
   onSafetyCenterPress: () => void;
+  onCopyLocation?: (address: string) => void;
+  onOpenMap?: (lat?: number, lon?: number, address?: string) => void;
 }
