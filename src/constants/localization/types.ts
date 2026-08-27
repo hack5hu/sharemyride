@@ -910,6 +910,7 @@ export interface SelectSeatTranslations {
   legendSelected: string;
   legendBooked: string;
   legendOccupied: string;
+  legendUnavailable: string;
   selectVehicleFirst: string;
   yourVehicles: string;
   summaryTitle: string;
@@ -974,6 +975,7 @@ export interface SeatSelectionTranslations {
   legendSelected: string;
   legendAvailable: string;
   legendOccupied: string;
+  legendUnavailable: string;
   seatsOffering: string;
   estEarnings: string;
   continue: string;

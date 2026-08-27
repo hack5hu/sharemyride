@@ -486,6 +486,7 @@ export const en: Translations = {
     legendSelected: 'Selected',
     legendAvailable: 'Available',
     legendOccupied: 'Occupied',
+    legendUnavailable: 'Unavailable',
     seatsOffering: 'Offering seats',
     estEarnings: 'Est. Earnings',
     continue: 'Continue',
@@ -688,6 +689,7 @@ export const en: Translations = {
     legendSelected: 'Selected',
     legendBooked: 'Booked',
     legendOccupied: 'Occupied',
+    legendUnavailable: 'Unavailable',
     selectVehicleFirst:
       'Please select a vehicle to view the seating arrangement.',
     yourVehicles: 'Your Vehicles',

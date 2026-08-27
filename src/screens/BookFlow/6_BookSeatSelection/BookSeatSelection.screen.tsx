@@ -21,6 +21,7 @@ export const BookSeatSelectionScreen: React.FC<BookSeatSelectionProps> =
       rows,
       selectedSeats,
       occupiedSeats,
+      unavailableSeats,
       prices,
       totalPrice,
       seatCount,
@@ -56,6 +57,7 @@ export const BookSeatSelectionScreen: React.FC<BookSeatSelectionProps> =
         rows={rows}
         selectedSeats={selectedSeats}
         occupiedSeats={occupiedSeats}
+        unavailableSeats={unavailableSeats}
         prices={prices}
         totalPrice={totalPrice}
         seatCount={seatCount}

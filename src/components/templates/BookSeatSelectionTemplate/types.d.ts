@@ -4,6 +4,7 @@ export interface BookSeatSelectionTemplateProps {
   rows: any[];
   selectedSeats: Set<string | number>;
   occupiedSeats: Set<string | number>;
+  unavailableSeats?: Set<string | number>;
   prices: any;
   totalPrice: number;
   seatCount: number;
