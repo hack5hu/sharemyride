@@ -645,6 +645,11 @@ export interface NotificationTranslations {
   vehicleRemoveError: string;
   mapOpenError: string;
   activeBookingOverlap: string;
+  liveLocationActiveTitle: string;
+  liveLocationActiveMessage: string;
+  liveLocationTrackingBody: string;
+  liveLocationPausedTitle: string;
+  liveLocationPausedMessage: string;
 }
 
 export interface RideRouteTranslations {

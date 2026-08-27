@@ -21,11 +21,13 @@ import { ChatService } from '@/serviceManager/ChatService';
 
 import { navigationRef } from '@/navigation/navigationService';
 import { AnalyticsService } from '@/serviceManager/AnalyticsService';
+import { useGlobalLiveLocation } from '@/hooks/useGlobalLiveLocation';
 import { withStallion } from 'react-native-stallion';
 import BootSplash from 'react-native-bootsplash';
 
 
 const App = () => {
+  useGlobalLiveLocation();
   const routeNameRef = React.useRef<string | undefined>(undefined);
   const initialize = useAuthStore(state => state.initialize);
   const initialiseDeviceId = useDeviceIdStore(state => state.initialise);

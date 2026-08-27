@@ -858,6 +858,11 @@ export const en: Translations = {
     mapOpenError: 'Could not open map application',
     activeBookingOverlap:
       'You already have an active booking during this time. Please complete or cancel it first.',
+    liveLocationActiveTitle: 'ZyncRide is tracking your location.',
+    liveLocationActiveMessage: 'Live location tracking active',
+    liveLocationTrackingBody: 'ETA: {{eta}} • {{distance}}',
+    liveLocationPausedTitle: 'Live Location Paused',
+    liveLocationPausedMessage: 'Location tracking has been turned off.',
   },
   reportIssue: {
     title: 'Report Issue',

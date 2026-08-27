@@ -373,6 +373,74 @@ export class NotificationService {
       data,
     });
   }
+
+  private static lastLiveNotificationBody: string = '';
+
+  /**
+   * Display or update a live location notification quietly in notification shade/lock screen
+   */
+  public static async displayLiveLocationNotification(title: string, body: string) {
+    if (this.lastLiveNotificationBody === body) {
+      return;
+    }
+    this.lastLiveNotificationBody = body;
+
+    try {
+      if (Platform.OS === 'android') {
+        await notifee.createChannel({
+          id: 'live_location',
+          name: 'Live Location Tracking',
+          importance: AndroidImportance.LOW,
+          sound: undefined,
+          vibration: false,
+        });
+      }
+
+      await notifee.displayNotification({
+        id: 'live_location_tracking_notification',
+        title,
+        body,
+        android: {
+          channelId: 'live_location',
+          onlyAlertOnce: true, // Seamless in-place update without popping
+          ongoing: false,
+          autoCancel: true,
+          importance: AndroidImportance.LOW,
+          pressAction: {
+            id: 'default',
+          },
+          color: '#0058bc',
+        },
+        ios: {
+          categoryId: 'live_location',
+          interruptionLevel: 'passive', // Does not buzz or interrupt
+          foregroundPresentationOptions: {
+            badge: false,
+            banner: false, // Prevents popup banner from dropping down over the screen!
+            list: true,    // Available quietly in notification tray / lock screen
+            sound: false,
+          },
+        },
+        data: {
+          type: 'live_location',
+        },
+      });
+    } catch (error) {
+      Logger.warn('[NotificationService] Failed to display live location notification:', error);
+    }
+  }
+
+  /**
+   * Cancel the live location notification
+   */
+  public static async cancelLiveLocationNotification() {
+    this.lastLiveNotificationBody = '';
+    try {
+      await notifee.cancelNotification('live_location_tracking_notification');
+    } catch (error) {
+      Logger.warn('[NotificationService] Failed to cancel live location notification:', error);
+    }
+  }
 }
 
 

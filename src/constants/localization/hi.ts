@@ -847,6 +847,11 @@ export const hi: Translations = {
     mapOpenError: 'मैप ऐप नहीं खुल सका।',
     activeBookingOverlap:
       'इस समय के दौरान आपकी पहले से ही एक एक्टिव बुकिंग है। कृपया इसे पहले पूरा या कैंसल करें।',
+    liveLocationActiveTitle: 'ZyncRide आपकी लोकेशन ट्रैक कर रहा है।',
+    liveLocationActiveMessage: 'लाइव लोकेशन ट्रैकिंग सक्रिय है',
+    liveLocationTrackingBody: 'पहुंचने का समय: {{eta}} • {{distance}}',
+    liveLocationPausedTitle: 'लाइव लोकेशन बंद',
+    liveLocationPausedMessage: 'लोकेशन ट्रैकिंग बंद कर दी गई है।',
   },
   reportIssue: {
     title: 'रिपोर्ट करें',

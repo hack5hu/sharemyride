@@ -16,6 +16,11 @@ export const useLocale = (): Translations => {
   return translations[locale];
 };
 
+export const getTranslations = (locale?: Locale): Translations => {
+  const currentLocale = locale || useSettingsStore.getState().language || 'en';
+  return translations[currentLocale] || en;
+};
+
 // ─── Re-exports ───────────────────────────────────────────────────────────────
 
 export type { Locale, Translations };
