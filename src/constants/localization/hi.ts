@@ -852,6 +852,9 @@ export const hi: Translations = {
     liveLocationTrackingBody: 'पहुंचने का समय: {{eta}} • {{distance}}',
     liveLocationPausedTitle: 'लाइव लोकेशन बंद',
     liveLocationPausedMessage: 'लोकेशन ट्रैकिंग बंद कर दी गई है।',
+    gpsDisabledTitle: 'GPS बंद है',
+    gpsDisabledMessage: 'लाइव लोकेशन रुकी है। सेटिंग्स में GPS चालू करने के लिए टैप करें।',
+    gpsBannerButton: 'GPS चालू करें',
   },
   reportIssue: {
     title: 'रिपोर्ट करें',

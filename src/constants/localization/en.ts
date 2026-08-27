@@ -863,6 +863,9 @@ export const en: Translations = {
     liveLocationTrackingBody: 'ETA: {{eta}} • {{distance}}',
     liveLocationPausedTitle: 'Live Location Paused',
     liveLocationPausedMessage: 'Location tracking has been turned off.',
+    gpsDisabledTitle: 'GPS is Turned Off',
+    gpsDisabledMessage: 'Live location paused. Tap to enable GPS in Settings.',
+    gpsBannerButton: 'Enable GPS',
   },
   reportIssue: {
     title: 'Report Issue',

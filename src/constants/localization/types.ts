@@ -650,6 +650,9 @@ export interface NotificationTranslations {
   liveLocationTrackingBody: string;
   liveLocationPausedTitle: string;
   liveLocationPausedMessage: string;
+  gpsDisabledTitle: string;
+  gpsDisabledMessage: string;
+  gpsBannerButton: string;
 }
 
 export interface RideRouteTranslations {

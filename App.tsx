@@ -13,6 +13,7 @@ import { useAuthStore } from '@/store';
 import { useDeviceIdStore } from '@/store/useDeviceIdStore';
 import { useSettingsStore } from '@/store/settings';
 import { NetworkLoggerModal } from '@/components/organisms/NetworkLoggerModal';
+import { GlobalGpsBanner } from '@/components/molecules/GlobalGpsBanner';
 import { GlobalNotification } from '@/components/organisms/GlobalNotification';
 import { StallionUpdateModal } from '@/components/organisms/StallionUpdateModal';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -72,6 +73,7 @@ const App = () => {
             backgroundColor="transparent"
             translucent
           />
+          <GlobalGpsBanner />
           <NavigationContainer
             ref={navigationRef}
             onReady={() => {

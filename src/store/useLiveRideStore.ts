@@ -9,7 +9,10 @@ import { showNotification } from '@/components/organisms/GlobalNotification/Glob
 import { NotificationType } from '@/constants/enums';
 import { getTranslations } from '@/constants/localization';
 import { NotificationService } from '@/serviceManager/NotificationService';
-import { parseLiveRidePayload, formatLiveLocationNotificationBody } from './liveRideHelpers';
+import {
+  parseLiveRidePayload,
+  formatLiveLocationNotificationBody,
+} from './liveRideHelpers';
 
 export interface ActiveRideLiveInfo {
   hasActiveRide: boolean;
@@ -31,9 +34,11 @@ interface LiveRideState {
   isLoading: boolean;
   isBannerDismissed: boolean;
   isLiveLocationEnabled: boolean;
+  isGpsDisabled: boolean;
   lastFetchedAt: number | null;
   fetchLiveStatus: () => Promise<void>;
   setLiveLocationEnabled: (enabled: boolean) => Promise<void>;
+  setIsGpsDisabled: (disabled: boolean) => void;
   dismissBanner: () => void;
   resetLiveRide: () => void;
 }
@@ -45,10 +50,13 @@ export const useLiveRideStore = create<LiveRideState>()(
       isLoading: false,
       isBannerDismissed: false,
       isLiveLocationEnabled: false,
+      isGpsDisabled: false,
       lastFetchedAt: null,
 
+      setIsGpsDisabled: (disabled: boolean) => set({ isGpsDisabled: disabled }),
+
       setLiveLocationEnabled: async (enabled: boolean) => {
-        set({ isLiveLocationEnabled: enabled });
+        set({ isLiveLocationEnabled: enabled, isGpsDisabled: false });
         const t = getTranslations().notification;
         const currentRide = useLiveRideStore.getState().activeRide;
         if (enabled) {
@@ -90,6 +98,7 @@ export const useLiveRideStore = create<LiveRideState>()(
           isBannerDismissed: false,
           lastFetchedAt: null,
           isLiveLocationEnabled: false,
+          isGpsDisabled: false,
         });
       },
 
@@ -115,7 +124,7 @@ export const useLiveRideStore = create<LiveRideState>()(
               isLoading: false,
             });
 
-            if (isLiveLocationEnabled) {
+            if (useLiveRideStore.getState().isLiveLocationEnabled) {
               const t = getTranslations().notification;
               const bodyText = formatLiveLocationNotificationBody(
                 parsedRide?.etaMinutes,
@@ -127,6 +136,8 @@ export const useLiveRideStore = create<LiveRideState>()(
                 t.liveLocationActiveTitle,
                 bodyText,
               );
+            } else {
+              NotificationService.cancelLiveLocationNotification();
             }
           } catch {
             set({ isLoading: false });
@@ -137,6 +148,8 @@ export const useLiveRideStore = create<LiveRideState>()(
           useLiveRideStore.getState().isLiveLocationEnabled;
 
         if (!isLiveLocationEnabled) {
+          NotificationService.cancelLiveLocationNotification();
+          set({ isGpsDisabled: false });
           sendRequest(null, null);
           return;
         }
@@ -144,13 +157,18 @@ export const useLiveRideStore = create<LiveRideState>()(
         try {
           Geolocation.getCurrentPosition(
             (position) => {
+              set({ isGpsDisabled: false });
               const { latitude, longitude } = position.coords;
               sendRequest(latitude, longitude);
             },
-            () => sendRequest(null, null),
+            () => {
+              set({ isGpsDisabled: true });
+              sendRequest(null, null);
+            },
             { enableHighAccuracy: true, timeout: 10000, maximumAge: 10000 },
           );
         } catch {
+          set({ isGpsDisabled: true });
           sendRequest(null, null);
         }
       },
