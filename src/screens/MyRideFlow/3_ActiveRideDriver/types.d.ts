@@ -36,6 +36,8 @@ export interface UseActiveRideReturn {
   handlePassengerChatPress: () => void;
   handlePassengerCallPress: () => void;
   nextStopName: string;
+  nextStopLat?: number;
+  nextStopLon?: number;
   handleCopyLocation: (address: string) => void;
   handleOpenMap: (lat?: number, lon?: number, address?: string) => void;
 }

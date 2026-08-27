@@ -22,6 +22,8 @@ export const ActiveRideDriverScreen: React.FC = React.memo(() => {
     handlePassengerChatPress,
     handlePassengerCallPress,
     nextStopName,
+    nextStopLat,
+    nextStopLon,
     handleCopyLocation,
     handleOpenMap,
   } = useActiveRideDriver();
@@ -41,6 +43,8 @@ export const ActiveRideDriverScreen: React.FC = React.memo(() => {
         onCallPress={handlePassengerCallPress}
         onSafetyCenterPress={handleSafetyCenterPress}
         nextStopName={nextStopName}
+        nextStopLat={nextStopLat}
+        nextStopLon={nextStopLon}
         onCopyLocation={handleCopyLocation}
         onOpenMap={handleOpenMap}
       />

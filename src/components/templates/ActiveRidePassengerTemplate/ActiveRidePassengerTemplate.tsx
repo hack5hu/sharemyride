@@ -8,6 +8,7 @@ import { Toggle } from '@/components/atoms/Toggle';
 import { moderateScale } from '@/styles';
 import { ActiveRidePassengerTemplateProps } from './types.d';
 import { TimelineStopItem } from '@/components/molecules/TimelineStopItem';
+import { PassengerHeroCard } from './PassengerHeroCard';
 import * as S from './ActiveRidePassengerTemplate.styles';
 
 export const ActiveRidePassengerTemplate: React.FC<ActiveRidePassengerTemplateProps> =
@@ -25,6 +26,8 @@ export const ActiveRidePassengerTemplate: React.FC<ActiveRidePassengerTemplatePr
       onCallPress,
       onSafetyCenterPress,
       nextStopName,
+      nextStopLat,
+      nextStopLon,
       onCopyLocation,
       onOpenMap,
     }) => {
@@ -41,34 +44,16 @@ export const ActiveRidePassengerTemplate: React.FC<ActiveRidePassengerTemplatePr
         <ScreenShell title={t.screenTitle} onBack={onBack}>
           <S.Container>
             <S.ScrollContent showsVerticalScrollIndicator={false}>
-              {/* Hero ETA Card */}
-              <S.HeroCard>
-                <S.HeroBadgeContainer>
-                  <S.HeroLabel>{t.driverArrivingIn}</S.HeroLabel>
-                </S.HeroBadgeContainer>
-                <S.ETARow>
-                  <S.ETANumber>{safeEta}</S.ETANumber>
-                  <S.ETAMinutesText>
-                    {safeEta === 1 ? t.min : t.mins}
-                  </S.ETAMinutesText>
-                </S.ETARow>
-
-                {!!nextStopName && (
-                  <S.NextStopRow>
-                    <Icon name="place" size={moderateScale(15)} color={theme.colors.on_primary} />
-                    <S.NextStopText numberOfLines={1}>
-                      {t.arrivingAt.replace('{{stop}}', nextStopName)}
-                    </S.NextStopText>
-                  </S.NextStopRow>
-                )}
-
-                <S.DistancePill>
-                  <Icon name="navigation" size={moderateScale(13)} color={theme.colors.on_primary} />
-                  <S.DistanceText>
-                    {t.distanceLabel.replace('{{km}}', safeDistance.toFixed(1))}
-                  </S.DistanceText>
-                </S.DistancePill>
-              </S.HeroCard>
+              <PassengerHeroCard
+                t={t}
+                safeEta={safeEta}
+                safeDistance={safeDistance}
+                nextStopName={nextStopName}
+                nextStopLat={nextStopLat}
+                nextStopLon={nextStopLon}
+                onCopyLocation={onCopyLocation}
+                onOpenMap={onOpenMap}
+              />
 
               {/* Share My Location Toggle */}
               <S.LiveLocationCard $active={isLiveLocationEnabled}>
