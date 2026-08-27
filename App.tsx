@@ -13,6 +13,7 @@ import { useAuthStore } from '@/store';
 import { useDeviceIdStore } from '@/store/useDeviceIdStore';
 import { useSettingsStore } from '@/store/settings';
 import { NetworkLoggerModal } from '@/components/organisms/NetworkLoggerModal';
+import { GlobalGpsBanner } from '@/components/molecules/GlobalGpsBanner';
 import { GlobalNotification } from '@/components/organisms/GlobalNotification';
 import { StallionUpdateModal } from '@/components/organisms/StallionUpdateModal';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -77,20 +78,22 @@ const App = () => {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <KeyboardProvider statusBarTranslucent navigationBarTranslucent>
-          <ThemeProvider theme={activeTheme}>
-            <StatusBar
-              barStyle={themeMode === 'dark' ? 'light-content' : 'dark-content'}
-              backgroundColor="transparent"
-              translucent
-            />
-            <NavigationContainer
-              ref={navigationRef}
-              onReady={() => {
-                routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
-              }}
-              onStateChange={async () => {
-                const previousRouteName = routeNameRef.current;
-                const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
+        <ThemeProvider theme={activeTheme}>
+          <StatusBar
+            barStyle={themeMode === 'dark' ? 'light-content' : 'dark-content'}
+            backgroundColor="transparent"
+            translucent
+          />
+          <GlobalGpsBanner />
+          <NavigationContainer
+            ref={navigationRef}
+            onReady={() => {
+              routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
+              BootSplash.hide().catch(() => {});
+            }}
+            onStateChange={async () => {
+              const previousRouteName = routeNameRef.current;
+              const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
 
                 if (previousRouteName !== currentRouteName && currentRouteName) {
                   await AnalyticsService.logScreenView(currentRouteName);
