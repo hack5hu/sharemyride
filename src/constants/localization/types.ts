@@ -616,6 +616,17 @@ export interface ActiveRideDriverTranslations {
   waitingAtStop: string;
   distanceToPickupLabel: string;
   etaToPickupLabel: string;
+  copyLocation: string;
+  copiedLocation: string;
+  openInMap: string;
+  seatsCount: string;
+  seatsCountPlural: string;
+  verifiedVehicle: string;
+  atStop: string;
+  chat: string;
+  call: string;
+  passengersToPickup: string;
+  pickupSummary: string;
 }
 
 export interface NotificationTranslations {

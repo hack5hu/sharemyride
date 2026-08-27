@@ -26,4 +26,5 @@ export interface StopItemCardProps {
   callAccessibilityLabel: string;
   onChatPress: (stop: DriverStop) => void;
   onCallPress: (stop: DriverStop) => void;
+  isNested?: boolean;
 }

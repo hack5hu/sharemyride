@@ -62,6 +62,8 @@ export const ActiveRideDriverScreen: React.FC = React.memo(() => {
       onChatPress={handleDriverChatPress}
       onCallPress={handleDriverCallPress}
       onSafetyCenterPress={handleSafetyCenterPress}
+      onCopyLocation={handleCopyLocation}
+      onOpenMap={handleOpenMap}
     />
   );
 });

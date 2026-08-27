@@ -6,7 +6,8 @@ import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Toggle } from '@/components/atoms/Toggle';
 import { moderateScale } from '@/styles';
 import { ActiveRideDriverTemplateProps } from './types.d';
-import { StopItemCard } from '@/components/molecules/StopItemCard';
+import { StopGroupCard } from '@/components/molecules/StopGroupCard';
+import { DriverVehicleCard } from './DriverVehicleCard';
 import * as S from './ActiveRideDriverTemplate.styles';
 
 export const ActiveRideDriverTemplate: React.FC<ActiveRideDriverTemplateProps> =
@@ -20,6 +21,8 @@ export const ActiveRideDriverTemplate: React.FC<ActiveRideDriverTemplateProps> =
       onChatPress,
       onCallPress,
       onSafetyCenterPress,
+      onCopyLocation,
+      onOpenMap,
     }) => {
       const theme = useTheme();
       const { activeRideDriver: t } = useLocale();
@@ -33,19 +36,13 @@ export const ActiveRideDriverTemplate: React.FC<ActiveRideDriverTemplateProps> =
           <S.Container>
             <S.ScrollContent showsVerticalScrollIndicator={false}>
               <S.BodyContent>
-                {/* Live Location Explanation Card */}
+                {/* Live Location Card */}
                 <S.LiveLocationCard $active={isLiveLocationEnabled}>
                   <S.LiveLocationTopRow>
                     <S.LiveLocationLeft>
-                      <S.LiveLocationIconContainer
-                        $active={isLiveLocationEnabled}
-                      >
+                      <S.LiveLocationIconContainer $active={isLiveLocationEnabled}>
                         <Icon
-                          name={
-                            isLiveLocationEnabled
-                              ? 'my-location'
-                              : 'location-off'
-                          }
+                          name={isLiveLocationEnabled ? 'my-location' : 'location-off'}
                           size={moderateScale(22)}
                           color={
                             isLiveLocationEnabled
@@ -56,15 +53,11 @@ export const ActiveRideDriverTemplate: React.FC<ActiveRideDriverTemplateProps> =
                       </S.LiveLocationIconContainer>
                       <S.LiveLocationTextGroup>
                         <S.LiveLocationTitleRow>
-                          <S.LiveLocationText>
-                            {t.liveLocationTitle}
-                          </S.LiveLocationText>
+                          <S.LiveLocationText>{t.liveLocationTitle}</S.LiveLocationText>
                           {isLiveLocationEnabled && (
                             <S.LiveBadge>
                               <S.LiveDot />
-                              <S.LiveBadgeText>
-                                {t.liveLocationBadge}
-                              </S.LiveBadgeText>
+                              <S.LiveBadgeText>{t.liveLocationBadge}</S.LiveBadgeText>
                             </S.LiveBadge>
                           )}
                         </S.LiveLocationTitleRow>
@@ -76,104 +69,36 @@ export const ActiveRideDriverTemplate: React.FC<ActiveRideDriverTemplateProps> =
                     />
                   </S.LiveLocationTopRow>
 
-                  <S.LiveLocationSubtitle>
-                    {subtitleText}
-                  </S.LiveLocationSubtitle>
+                  <S.LiveLocationSubtitle>{subtitleText}</S.LiveLocationSubtitle>
                 </S.LiveLocationCard>
 
                 {/* Stops List */}
                 <S.StopsSection>
                   <S.StopsHeader>{t.stopsTitle}</S.StopsHeader>
-                  {groupedStops.map(group => {
-                    return (
-                      <React.Fragment key={group.stopId}>
-                        <S.StopGroupNameContainer>
-                          <Icon
-                            name="place"
-                            size={moderateScale(16)}
-                            color={theme.colors.primary}
-                          />
-                          <S.StopGroupName numberOfLines={2}>
-                            {group.stopName}
-                          </S.StopGroupName>
-                        </S.StopGroupNameContainer>
-                        {group.passengers.map((stop, index) => {
-                          const isLast = index === group.passengers.length - 1;
-                          const subtitle =
-                            stop.distanceAway ||
-                            (stop.pickupLocation
-                              ? t.pickupSubtitle.replace(
-                                  '{{location}}',
-                                  stop.pickupLocation,
-                                )
-                              : '');
-
-                          return (
-                            <StopItemCard
-                              key={stop.id}
-                              stop={stop}
-                              isLast={isLast}
-                              subtitle={subtitle}
-                              chatAccessibilityLabel={t.chatUser.replace(
-                                '{{name}}',
-                                stop.passengerName,
-                              )}
-                              callAccessibilityLabel={t.callUser.replace(
-                                '{{name}}',
-                                stop.passengerName,
-                              )}
-                              onChatPress={onChatPress}
-                              onCallPress={onCallPress}
-                            />
-                          );
-                        })}
-                      </React.Fragment>
-                    );
-                  })}
+                  {groupedStops.map((group, groupIndex) => (
+                    <StopGroupCard
+                      key={group.stopId}
+                      group={group}
+                      groupIndex={groupIndex + 1}
+                      onChatPress={onChatPress}
+                      onCallPress={onCallPress}
+                      onCopyLocation={onCopyLocation}
+                      onOpenMap={onOpenMap}
+                    />
+                  ))}
                 </S.StopsSection>
 
                 {/* Vehicle Section */}
-                <S.VehicleCard>
-                  <S.VehicleIconContainer>
-                    <Icon
-                      name="directions-car"
-                      size={moderateScale(22)}
-                      color={theme.colors.primary}
-                    />
-                  </S.VehicleIconContainer>
-                  <S.VehicleInfoGroup>
-                    <S.VehicleText numberOfLines={1}>
-                      {vehicleInfo.company}{' '}
-                      <S.VehicleTextLight>
-                        {vehicleInfo.model}
-                      </S.VehicleTextLight>
-                    </S.VehicleText>
-                    <S.VehicleSubtext numberOfLines={1}>
-                      {[
-                        vehicleInfo.color,
-                        vehicleInfo.type,
-                        vehicleInfo.fuelType,
-                        vehicleInfo.licensePlate,
-                        vehicleInfo.batteryPercentage !== undefined
-                          ? t.batteryRemaining.replace(
-                              '{{percent}}',
-                              String(vehicleInfo.batteryPercentage),
-                            )
-                          : null,
-                      ]
-                        .filter(Boolean)
-                        .join(' • ') || 'Verified Vehicle'}
-                    </S.VehicleSubtext>
-                  </S.VehicleInfoGroup>
-                </S.VehicleCard>
+                {!!vehicleInfo && (
+                  <DriverVehicleCard
+                    vehicleInfo={vehicleInfo}
+                    batteryRemainingText={t.batteryRemaining}
+                  />
+                )}
 
                 {/* Safety Center */}
                 <S.SafetyButton onPress={onSafetyCenterPress}>
-                  <Icon
-                    name="shield"
-                    size={moderateScale(20)}
-                    color={theme.colors.error || '#ba1a1a'}
-                  />
+                  <Icon name="shield" size={moderateScale(20)} color={theme.colors.error || '#ba1a1a'} />
                   <S.SafetyButtonText>{t.safetyCenter}</S.SafetyButtonText>
                 </S.SafetyButton>
               </S.BodyContent>
