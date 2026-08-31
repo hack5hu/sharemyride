@@ -44,7 +44,6 @@ import { BookingConfirmedScreen } from '@/screens/BookFlow/7_BookingConfirmed';
 import { SettingsScreen } from '@/screens/Settings';
 import { RootStackParamList } from './types.d';
 import { useAuthStore } from '@/store/useAuthStore';
-import { SplashScreen } from '@/screens/Auth/Splash';
 import { BookDateSelectionScreen } from '@/screens/BookFlow/2_BookDateSelection/BookDateSelection.screen';
 import AvailableRidesScreen from '@/screens/BookFlow/3_AvailableRides';
 import RideRouteMapScreen from '@/screens/BookFlow/5_RideRouteMap';
@@ -87,8 +86,7 @@ const TAB_FADE_OPTIONS: StackNavigationOptions = {
 };
 
 export const RootNavigator = () => {
-  const { isAuthenticated, isProfileCompleted, isInitializing } =
-    useAuthStore();
+  const { isAuthenticated, isProfileCompleted } = useAuthStore();
   const theme = useTheme();
 
   // Check for Play Store / App Store updates on launch
@@ -104,9 +102,7 @@ export const RootNavigator = () => {
 
   return (
     <Stack.Navigator screenOptions={screenOptions}>
-      {isInitializing ? (
-        <Stack.Screen name="Splash" component={SplashScreen} />
-      ) : !isAuthenticated ? (
+      {!isAuthenticated ? (
         <>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen

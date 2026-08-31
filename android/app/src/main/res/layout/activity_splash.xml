@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/splash_background"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <!-- Top-Right Ambient Orb -->
+    <View
+        android:id="@+id/orbTopRight"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="-40dp"
+        android:layout_marginEnd="-60dp"
+        android:background="@drawable/shape_splash_orb_primary" />
+
+    <!-- Bottom-Left Ambient Orb (Anchored in the bottom-left corner) -->
+    <View
+        android:id="@+id/orbBottomLeft"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_gravity="bottom|start"
+        android:layout_marginBottom="-30dp"
+        android:layout_marginStart="-60dp"
+        android:background="@drawable/shape_splash_orb_accent" />
+
+    <!-- Mid-Left Subtle Ambient Orb -->
+    <View
+        android:id="@+id/orbMidLeft"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="160dp"
+        android:layout_marginStart="-30dp"
+        android:background="@drawable/shape_splash_orb_subtle" />
+
+    <!-- Center Branding Cluster -->
+    <LinearLayout
+        android:id="@+id/brandCluster"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <!-- Logo Row (Z Icon + ZyncRide Wordmark) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/logoIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_splash_z_icon" />
+
+            <TextView
+                android:id="@+id/logoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:includeFontPadding="false"
+                android:textSize="36sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Subtitle -->
+        <TextView
+            android:id="@+id/splashSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:includeFontPadding="false"
+            android:text="@string/splash_subtitle"
+            android:textColor="@color/splash_text_sub"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Bottom Loading Section -->
+    <LinearLayout
+        android:id="@+id/loaderSection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="64dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <!-- Pulsing Ring -->
+        <View
+            android:id="@+id/pulseRing"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/shape_splash_pulse_ring" />
+
+        <!-- Loading Text -->
+        <TextView
+            android:id="@+id/loadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:includeFontPadding="false"
+            android:text="@string/splash_loading"
+            android:textColor="@color/splash_text_sub"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</FrameLayout>

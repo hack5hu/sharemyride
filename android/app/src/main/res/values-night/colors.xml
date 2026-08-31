@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Backgrounds (Dark theme surface: #1a1d23) -->
+    <color name="splash_background">#1a1d23</color>
+
+    <!-- Brand Colors (Dark theme primary: #04885b / #00875a) -->
+    <color name="splash_primary">#04885b</color>
+    <color name="splash_primary_container">#00875a</color>
+
+    <!-- Typography (Dark theme on_surface: #f9fafb, on_surface_variant: #9ca3af) -->
+    <color name="splash_text_main">#f9fafb</color>
+    <color name="splash_text_sub">#9ca3af</color>
+
+    <!-- Ambient Decorative Orbs (alpha tinted for dark theme) -->
+    <color name="splash_orb_primary">#1404885B</color>
+    <color name="splash_orb_accent">#1F00875A</color>
+    <color name="splash_orb_subtle">#0F04885B</color>
+</resources>

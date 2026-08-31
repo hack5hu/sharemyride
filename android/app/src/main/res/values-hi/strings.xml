@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ZyncRide</string>
+
+    <!-- Splash Screen Strings (Hindi) -->
+    <string name="splash_subtitle">स्मार्ट सवारी, साझा सफर</string>
+    <string name="splash_loading">आपकी राइड तैयार हो रही है...</string>
+</resources>

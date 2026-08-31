@@ -115,11 +115,6 @@ export const useAuthStore = create<AuthState>()(
             isProfileCompleted: false,
           });
         } finally {
-          const elapsedTime = Date.now() - startTime;
-          const remainingTime = Math.max(0, 1500 - elapsedTime);
-          if (remainingTime > 0) {
-            await new Promise(resolve => setTimeout(resolve, remainingTime));
-          }
           set({ isInitializing: false });
         }
       },

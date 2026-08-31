@@ -37,7 +37,7 @@ export const ZyncRideLogo: React.FC<ZyncRideLogoProps> = ({
       <SvgText
         x="80"
         y="65"
-        fontFamily="sans-serif"
+        fontFamily="Plus Jakarta Sans"
         fontWeight="bold"
         fontSize="40"
         fill={theme.colors.on_surface}

@@ -5,16 +5,26 @@ import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
-
 import com.swmansion.rnscreens.fragment.restoration.RNScreensFragmentFactory
-import com.zoontek.rnbootsplash.RNBootSplash
 
 class MainActivity : ReactActivity() {
 
+  private var splashOverlay: SplashOverlay? = null
+
   override fun onCreate(savedInstanceState: Bundle?) {
     supportFragmentManager.fragmentFactory = RNScreensFragmentFactory()
-    RNBootSplash.init(this, R.style.BootTheme)
     super.onCreate(savedInstanceState)
+
+    splashOverlay = SplashOverlay(this).apply {
+      show()
+    }
+  }
+
+  fun hideSplash(fade: Boolean = true, callback: () -> Unit = {}) {
+    splashOverlay?.hide(fade) {
+      splashOverlay = null
+      callback()
+    } ?: callback()
   }
 
   /**

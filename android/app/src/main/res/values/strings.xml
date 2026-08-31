@@ -3,4 +3,8 @@
     <!-- Stallion Details -->
     <string name="StallionProjectId">6a528caf7af37d42f935d9da</string>
     <string name="StallionAppToken">spb_ap_V1nP4TNd6UJdcl1HCT5aei5V8J50DmsYCRVZgk-Dh5</string>
+
+    <!-- Splash Screen Strings -->
+    <string name="splash_subtitle">Smart rides, shared journeys</string>
+    <string name="splash_loading">Preparing your ride...</string>
 </resources>

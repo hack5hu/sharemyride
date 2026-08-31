@@ -13,9 +13,10 @@ class MainApplication : Application(), ReactApplication {
   override val reactHost: ReactHost by lazy {
     getDefaultReactHost(
       context = applicationContext,
-      packageList = PackageList(this).packages,
-
-    jsBundleFilePath = Stallion.getJSBundleFile(applicationContext)
+      packageList = PackageList(this).packages.apply {
+        add(SplashPackage())
+      },
+      jsBundleFilePath = Stallion.getJSBundleFile(applicationContext)
     )
   }
 

@@ -15,7 +15,7 @@ export const navigate = (name: keyof RootStackParamList, params?: any) => {
 
   const tryNavigate = (attempts = 0) => {
     const { isAuthenticated, isProfileCompleted, isInitializing } = useAuthStore.getState();
-    const publicScreens: Array<keyof RootStackParamList> = ['Splash', 'Login', 'OTPVerification', 'ProfileSetup'];
+    const publicScreens: Array<keyof RootStackParamList> = ['Login', 'OTPVerification', 'ProfileSetup'];
     const isTargetAuthenticated = !publicScreens.includes(name);
 
     const isReadyToNavigate =

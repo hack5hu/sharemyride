@@ -36,6 +36,7 @@
       android:name="com.truecaller.android.sdk.ClientId"
       android:value="xo3glydxwgapbf0zumg28mys6qud3tkzfnfzbxcqiay" />
 
+    <!-- Main React Native Activity (Launcher with SplashTheme) -->
     <activity
       android:name=".MainActivity"
       android:label="@string/app_name"
@@ -43,7 +44,7 @@
       android:launchMode="singleTask"
       android:windowSoftInputMode="adjustPan"
       android:exported="true"
-      android:theme="@style/BootTheme">
+      android:theme="@style/SplashTheme">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />

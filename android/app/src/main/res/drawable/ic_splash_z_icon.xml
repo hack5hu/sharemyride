@@ -1,0 +1,21 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Stylized 'Z' path with rounded caps -->
+    <path
+        android:pathData="M25,25 L75,25 L25,75 L75,75"
+        android:strokeColor="@color/splash_primary"
+        android:strokeWidth="12"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <!-- Top right dot -->
+    <path
+        android:pathData="M75,25m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"
+        android:fillColor="@color/splash_text_main" />
+    <!-- Bottom left dot -->
+    <path
+        android:pathData="M25,75m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"
+        android:fillColor="@color/splash_text_main" />
+</vector>

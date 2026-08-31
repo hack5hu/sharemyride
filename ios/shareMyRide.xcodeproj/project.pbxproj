@@ -11,11 +11,11 @@
 		1B7ADA071FBA225326026944 /* libPods-shareMyRide.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9C74957C18BBE7C7C3183B9 /* libPods-shareMyRide.a */; };
 		521E8CE63031D33C0089D613 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 521E8CE53031D33C0089D613 /* GoogleService-Info.plist */; };
 		528A3CD22FBCDC4D0085121A /* MapLibre in Frameworks */ = {isa = PBXBuildFile; productRef = E630FD9EAA88FBECF7D233A2 /* MapLibre */; };
+		52A29B78303086CD00CBA48E /* SplashOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A29B77303086CD00CBA48E /* SplashOverlayView.swift */; };
+		52A29B7C303086CD00CBA48E /* NativeSplashModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A29B7B303086CD00CBA48E /* NativeSplashModule.m */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		A6887832F12C42B086D1F249 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F978A74E41E4B10BC6F2617 /* BootSplash.storyboard */; };
 		BB51A4C2D198D1BBD0A9FAAF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
-		FFC19FF953494392B9ED3391 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 270E861039554F2B85189918 /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +25,6 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = shareMyRide/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = shareMyRide/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = shareMyRide/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		270E861039554F2B85189918 /* Colors.xcassets */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = folder.assetcatalog; name = Colors.xcassets; path = shareMyRide/Colors.xcassets; sourceTree = "<group>"; };
 		36AA414C384B420C98427A26 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		41839DBDDF5647AE9570D528 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		41BA60ADBF9842DCBAF4778C /* FontAwesome6_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome6_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Brands.ttf"; sourceTree = "<group>"; };
@@ -33,8 +32,10 @@
 		521E8CE53031D33C0089D613 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		528A3CD52FBCE1F60085121A /* shareMyRide.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = shareMyRide.entitlements; path = shareMyRide/shareMyRide.entitlements; sourceTree = "<group>"; };
 		52A29B76303086CD00CBA48E /* shareMyRideDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = shareMyRideDebug.entitlements; path = shareMyRide/shareMyRideDebug.entitlements; sourceTree = "<group>"; };
+		52A29B77303086CD00CBA48E /* SplashOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SplashOverlayView.swift; path = shareMyRide/SplashOverlayView.swift; sourceTree = "<group>"; };
+		52A29B79303086CD00CBA48E /* NativeSplashModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NativeSplashModule.h; path = shareMyRide/NativeSplashModule.h; sourceTree = "<group>"; };
+		52A29B7B303086CD00CBA48E /* NativeSplashModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NativeSplashModule.m; path = shareMyRide/NativeSplashModule.m; sourceTree = "<group>"; };
 		5ECC87D0EEC8B320D63BAC77 /* Pods-shareMyRide.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shareMyRide.release.xcconfig"; path = "Target Support Files/Pods-shareMyRide/Pods-shareMyRide.release.xcconfig"; sourceTree = "<group>"; };
-		5F978A74E41E4B10BC6F2617 /* BootSplash.storyboard */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = BootSplash.storyboard; path = shareMyRide/BootSplash.storyboard; sourceTree = "<group>"; };
 		60CE331F8E674A2C9F1B86F9 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = shareMyRide/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = shareMyRide/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -75,11 +76,12 @@
 				528A3CD52FBCE1F60085121A /* shareMyRide.entitlements */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				761780EC2CA45674006654EE /* AppDelegate.swift */,
+				52A29B77303086CD00CBA48E /* SplashOverlayView.swift */,
+				52A29B79303086CD00CBA48E /* NativeSplashModule.h */,
+				52A29B7B303086CD00CBA48E /* NativeSplashModule.m */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
-				5F978A74E41E4B10BC6F2617 /* BootSplash.storyboard */,
-				270E861039554F2B85189918 /* Colors.xcassets */,
 			);
 			name = shareMyRide;
 			sourceTree = "<group>";
@@ -232,8 +234,6 @@
 				521E8CE63031D33C0089D613 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				BB51A4C2D198D1BBD0A9FAAF /* PrivacyInfo.xcprivacy in Resources */,
-				A6887832F12C42B086D1F249 /* BootSplash.storyboard in Resources */,
-				FFC19FF953494392B9ED3391 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,6 +362,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				761780ED2CA45674006654EE /* AppDelegate.swift in Sources */,
+				52A29B78303086CD00CBA48E /* SplashOverlayView.swift in Sources */,
+				52A29B7C303086CD00CBA48E /* NativeSplashModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,3 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="bootsplash_background">#ffffff</color>
+    <!-- Backgrounds -->
+    <color name="splash_background">#f9f9f9</color>
+
+    <!-- Brand Colors -->
+    <color name="splash_primary">#0058bc</color>
+    <color name="splash_primary_container">#0070eb</color>
+
+    <!-- Typography -->
+    <color name="splash_text_main">#1a1c1c</color>
+    <color name="splash_text_sub">#414755</color>
+
+    <!-- Ambient Decorative Orbs -->
+    <color name="splash_orb_primary">#0EF058BC</color>
+    <color name="splash_orb_accent">#1A0070EB</color>
+    <color name="splash_orb_subtle">#0A0058BC</color>
 </resources>
