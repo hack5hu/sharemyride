@@ -17,8 +17,9 @@ export const Header = styled.View`
 `;
 
 export const HeroSection = styled.View`
-  margin-bottom: ${moderateScale(20)}px;
-  gap: ${moderateScale(8)}px;
+  margin-top: ${verticalScale(4)}px;
+  margin-bottom: ${moderateScale(6)}px;
+  gap: ${moderateScale(6)}px;
 `;
 
 export const ContentContainer = styled.View`

@@ -11,10 +11,11 @@ import { Typography } from '@/components/atoms/Typography';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export interface PreferencesSectionProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
-  values: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
-  setFieldValue: (field: string, value: any) => void;
+  values: {
+    newsletter?: boolean;
+    [key: string]: unknown;
+  };
+  setFieldValue: (field: string, value: unknown) => void;
   disabled?: boolean;
 }
 

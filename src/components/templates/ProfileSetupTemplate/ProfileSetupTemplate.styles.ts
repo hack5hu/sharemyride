@@ -4,6 +4,7 @@ import { scale, verticalScale, moderateScale } from '@/styles';
 
 export const Wrapper = styled.View`
   flex: 1;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 export const StyledKeyboardScrollView = styled(KeyboardAwareScrollView).attrs({
@@ -22,16 +23,18 @@ export const ScrollContainer = styled.View`
 
 export const MainContent = styled.View`
   flex: 1;
-  padding-horizontal: ${scale(24)}px;
-  padding-top: ${verticalScale(24)}px;
-  gap: ${moderateScale(24)}px;
-  padding-bottom: ${verticalScale(20)}px;
+  padding-horizontal: ${scale(20)}px;
+  padding-top: ${verticalScale(16)}px;
+  gap: ${moderateScale(18)}px;
+  padding-bottom: ${verticalScale(24)}px;
 `;
 
 export const FooterContainer = styled.View<{ insetsBottom: number }>`
-  padding-horizontal: ${scale(30)}px;
+  padding-horizontal: ${scale(20)}px;
   padding-bottom: ${({ insetsBottom }) =>
-    insetsBottom > 0 ? insetsBottom + verticalScale(12) : verticalScale(24)}px;
-  padding-top: ${verticalScale(16)}px;
+    insetsBottom > 0 ? insetsBottom + verticalScale(8) : verticalScale(16)}px;
+  padding-top: ${verticalScale(12)}px;
   background-color: ${({ theme }) => theme.colors.surface};
+  border-top-width: 1px;
+  border-top-color: ${({ theme }) => theme.colors.outline_variant}40;
 `;

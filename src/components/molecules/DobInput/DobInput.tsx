@@ -20,7 +20,9 @@ import {
   LabelText,
   RequiredAsterisk,
   ModalContent,
-  MonthItem,
+  ModalHeader,
+  MonthsGrid,
+  MonthGridItem,
 } from './DobInput.styles';
 
 const Overlay = styled.View`
@@ -226,23 +228,43 @@ export const DobInput: React.FC<DobInputProps> = ({
           <Overlay>
             <TouchableWithoutFeedback>
               <ModalContent>
-                <ScrollView showsVerticalScrollIndicator={false}>
+                <ModalHeader>
+                  <Typography variant="title" size="md" weight="bold">
+                    Select Month
+                  </Typography>
+                  <Icon
+                    name="close"
+                    size={22}
+                    color={theme.colors.on_surface_variant}
+                    onPress={() => {
+                      setMonthModalVisible(false);
+                      setMonthFocused(false);
+                    }}
+                  />
+                </ModalHeader>
+                <MonthsGrid>
                   {months.map(m => (
-                    <MonthItem
+                    <MonthGridItem
                       key={m.value}
+                      isSelected={month === m.value}
+                      activeOpacity={0.7}
                       onPress={() => handleMonthSelect(m.value)}
                     >
                       <Typography
                         variant="body"
                         size="md"
-                        color={month === m.value ? 'primary' : 'on_surface'}
-                        weight={month === m.value ? 'bold' : 'regular'}
+                        color={
+                          month === m.value
+                            ? 'on_primary_container'
+                            : 'on_surface'
+                        }
+                        weight={month === m.value ? 'bold' : 'medium'}
                       >
                         {m.label}
                       </Typography>
-                    </MonthItem>
+                    </MonthGridItem>
                   ))}
-                </ScrollView>
+                </MonthsGrid>
               </ModalContent>
             </TouchableWithoutFeedback>
           </Overlay>

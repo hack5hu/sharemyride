@@ -15,15 +15,19 @@ import {
 import { useTranslation } from '@/hooks/useTranslation';
 // Date utilities removed as they are no longer needed by DatePicker
 
+export interface ProfileFormValues {
+  fullName: string;
+  dob: string;
+  gender: string;
+  profileImage?: { uri: string; name?: string; type?: string } | null;
+  newsletter?: boolean;
+}
+
 export interface IdentityProfileCardProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
-  values: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
-  setFieldValue: (field: string, value: any) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
-  errors?: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
-  touched?: any;
+  values: ProfileFormValues;
+  setFieldValue: (field: string, value: unknown) => void;
+  errors?: Record<string, string | undefined | unknown>;
+  touched?: Record<string, boolean | undefined | unknown>;
   setFieldTouched?: (field: string, touched?: boolean) => void;
   submitCount?: number;
   maxDate?: Date;

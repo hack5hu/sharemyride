@@ -62,16 +62,42 @@ export const RequiredAsterisk = styled.Text`
   color: ${({ theme }) => theme.colors.error};
 `;
 
+export const ModalHeader = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${verticalScale(16)}px;
+  padding-horizontal: ${scale(4)}px;
+`;
+
 export const ModalContent = styled.View`
   background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.roundness.lg}px;
-  max-height: 70%;
-  width: 80%;
-  padding: ${scale(16)}px;
+  width: 88%;
+  max-width: ${scale(360)}px;
+  padding: ${scale(20)}px;
+  shadow-color: ${({ theme }) => theme.colors.shadow};
+  shadow-offset: 0px 8px;
+  shadow-opacity: 0.2;
+  shadow-radius: 16px;
+  elevation: 10;
 `;
 
-export const MonthItem = styled.TouchableOpacity`
-  padding-vertical: ${verticalScale(16)}px;
-  border-bottom-width: 1px;
-  border-bottom-color: ${({ theme }) => theme.colors.surface_container_highest};
+export const MonthsGrid = styled.View`
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: ${scale(10)}px;
+`;
+
+export const MonthGridItem = styled.TouchableOpacity<{ isSelected?: boolean }>`
+  width: 30%;
+  padding-vertical: ${verticalScale(12)}px;
+  border-radius: ${({ theme }) => theme.roundness.md}px;
+  background-color: ${({ theme, isSelected }) =>
+    isSelected
+      ? theme.colors.primary_container
+      : theme.colors.surface_container_low};
+  align-items: center;
+  justify-content: center;
 `;
