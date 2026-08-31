@@ -9,8 +9,16 @@ import { useChatStore } from './useChatStore';
 import { useSettingsStore } from './settings';
 import { useNetworkLoggerStore } from './useNetworkLoggerStore';
 import { storage } from '@/utils/storage';
+import {
+  getIsAdminDebuggerEnabled,
+  setAdminDebuggerEnabled,
+} from '@/utils/adminDebugger';
 
 export const resetAllStores = () => {
+  const isAdminDebuggerEnabled =
+    useNetworkLoggerStore.getState().isAdminDebuggerEnabled ||
+    getIsAdminDebuggerEnabled();
+
   // Clear all MMKV persistent storage
   try {
     storage.clearAll();
@@ -18,6 +26,11 @@ export const resetAllStores = () => {
     storage.remove('recent_published_rides');
     storage.remove('rated_rides');
     storage.remove('location_backlog');
+
+    // Preserve admin debugger status across logouts
+    if (isAdminDebuggerEnabled) {
+      setAdminDebuggerEnabled(true);
+    }
   } catch (error) {
     console.error('[Storage] Failed to clear MMKV storage on logout:', error);
   }

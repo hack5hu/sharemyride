@@ -18,6 +18,7 @@ import {
   syncUserProfileAndData,
   getTruecallerOptions,
 } from './truecallerHelper';
+import { setAdminDebuggerEnabled } from '@/utils/adminDebugger';
 
 interface UseTruecallerLoginProps {
   setLoading: (loading: boolean) => void;
@@ -53,7 +54,11 @@ export const useTruecallerLogin = ({ setLoading }: UseTruecallerLoginProps) => {
             token,
             userId,
             userProfileCompleted: completed,
+            admin,
           } = response.data;
+          if (admin === true) {
+            setAdminDebuggerEnabled(true);
+          }
           await syncUserProfileAndData(userId, token, completed, setAuth);
           showNotification(
             NotificationType.SUCCESS,

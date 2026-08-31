@@ -10,6 +10,7 @@ import { showNotification } from '@/components/organisms/GlobalNotification/Glob
 import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
 import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
+import { setAdminDebuggerEnabled } from '@/utils/adminDebugger';
 
 export const useOTPVerification = () => {
   const [timer, setTimer] = useState(45);
@@ -57,11 +58,15 @@ export const useOTPVerification = () => {
       );
 
       if (response.data.status === 'success' || response.status === 200) {
-        const { token, userId, userProfileCompleted } = response.data;
+        const { token, userId, userProfileCompleted, admin } = response.data;
+
+        if (admin === true) {
+          setAdminDebuggerEnabled(true);
+        }
 
         // Store auth state in Zustand
         await setAuth(
-          { id: userId, phone: phoneNumber },
+          { id: userId, phone: phoneNumber, admin: !!admin },
           token,
           userProfileCompleted,
         );

@@ -18,15 +18,18 @@ export interface NetworkLog {
 interface NetworkLoggerState {
   logs: NetworkLog[];
   isModalVisible: boolean;
+  isAdminDebuggerEnabled: boolean;
   addLog: (log: NetworkLog) => void;
   updateLog: (id: string, updates: Partial<NetworkLog>) => void;
   clearLogs: () => void;
   setModalVisible: (visible: boolean) => void;
+  setAdminDebuggerEnabled: (enabled: boolean) => void;
 }
 
 export const useNetworkLoggerStore = create<NetworkLoggerState>(set => ({
   logs: [],
   isModalVisible: false,
+  isAdminDebuggerEnabled: false,
   addLog: log => set(state => ({ logs: [log, ...state.logs].slice(0, 100) })), // Keep last 100
   updateLog: (id, updates) =>
     set(state => ({
@@ -36,4 +39,5 @@ export const useNetworkLoggerStore = create<NetworkLoggerState>(set => ({
     })),
   clearLogs: () => set({ logs: [] }),
   setModalVisible: visible => set({ isModalVisible: visible }),
+  setAdminDebuggerEnabled: enabled => set({ isAdminDebuggerEnabled: enabled }),
 }));

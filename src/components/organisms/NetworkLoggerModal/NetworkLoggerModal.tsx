@@ -128,15 +128,22 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
     </S.EmptyState>
   );
 
+  const isAdminDebuggerEnabled = useNetworkLoggerStore(
+    state => state.isAdminDebuggerEnabled,
+  );
   const user = useAuthStore(state => state.user);
   const isSuperAdmin =
+    isAdminDebuggerEnabled ||
+    user?.admin === true ||
     user?.role === 'SUPER_ADMIN' ||
     user?.isSuperAdmin === true ||
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
-    (user as any)?.superAdmin === true;
+    (typeof user === 'object' &&
+      user !== null &&
+      'superAdmin' in user &&
+      Boolean((user as Record<string, unknown>).superAdmin));
 
   const isApkBuild = Boolean(buildEnv?.isApkBuild);
-  const showDebugger = __DEV__ || isSuperAdmin || isApkBuild;
+  const showDebugger = isSuperAdmin || isApkBuild;
 
   if (!showDebugger) {
     return null;

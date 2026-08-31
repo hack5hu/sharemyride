@@ -5,6 +5,7 @@ import { mmkvStorage } from '../utils/storage';
 import { Logger } from '@/utils/logger';
 import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 import { useChatStore } from './useChatStore';
+import { initAdminDebugger } from '@/utils/adminDebugger';
 
 interface AuthUser {
   id?: string;
@@ -16,6 +17,7 @@ interface AuthUser {
   profilePhotoUrl?: string;
   gender?: string;
   bio?: string;
+  admin?: boolean;
   [key: string]: unknown;
 }
 
@@ -76,7 +78,7 @@ export const useAuthStore = create<AuthState>()(
       },
 
       initialize: async () => {
-        const startTime = Date.now();
+        initAdminDebugger();
         try {
           const credentials = await Keychain.getGenericPassword({
             service: 'auth_token',

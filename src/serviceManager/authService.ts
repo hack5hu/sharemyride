@@ -14,9 +14,10 @@ export interface VerifyOtpResponse {
   token: string;
   refreshToken: string;
   userId: string;
-  existingUser: boolean;
+  existingUser?: boolean;
   userProfileCompleted: boolean;
   status: string; // "success"
+  admin?: boolean;
 }
 
 export interface DeleteAccountResponse {
