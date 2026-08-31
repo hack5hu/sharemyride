@@ -1,6 +1,6 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useCallback, useEffect, useState, useMemo } from 'react';
-import { Alert, Clipboard } from 'react-native';
+import { Alert, Clipboard, Linking } from 'react-native';
 import { useRoute, useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -224,13 +224,16 @@ export const useRideDetails = () => {
 
   const handleDriverProfile = useCallback(() => {
     if (rideData?.driver?.id) {
-      navigate('UserProfileDetail', { userId: rideData.driver.id });
+      navigate('UserProfileDetail', {
+        userId: rideData.driver.id,
+        isDriver: true,
+      });
     }
   }, [navigate, rideData]);
 
   const handlePassengerProfile = useCallback(
     (id: string) => {
-      navigate('UserProfileDetail', { userId: id });
+      navigate('UserProfileDetail', { userId: id, isDriver: false });
     },
     [navigate],
   );
@@ -272,6 +275,15 @@ export const useRideDetails = () => {
       },
     });
   }, [navigation, rideId, rideData, isDriver, t]);
+
+  const handleCall = useCallback(() => {
+    const phone = rideData?.driver?.phoneNumber || rideData?.driver?.phone;
+    if (phone) {
+      Linking.openURL(`tel:${phone}`).catch(err => {
+        Logger.error('Failed to open dialer:', err);
+      });
+    }
+  }, [rideData?.driver?.phoneNumber, rideData?.driver?.phone]);
 
 
 
@@ -432,6 +444,10 @@ export const useRideDetails = () => {
     handleDriverProfile,
     handlePassengerProfile,
     handleChat,
+    handleCall:
+      !isDriver && (rideData?.myBooking || rideData?.driver?.phoneNumber)
+        ? handleCall
+        : undefined,
     handleCancelRide,
     handleCancelPassenger,
     handleCancelOwnBooking,

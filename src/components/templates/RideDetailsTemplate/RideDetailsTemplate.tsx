@@ -16,6 +16,7 @@ export const RideDetailsTemplate: React.FC<RideDetailsTemplateProps> = ({
   handleViewRoute,
   handleCopyAddress,
   handleChat,
+  handleCall,
   handleDriverProfile,
   handlePassengerProfile,
   handleCancelRide,
@@ -53,6 +54,7 @@ export const RideDetailsTemplate: React.FC<RideDetailsTemplateProps> = ({
         handleViewRoute={handleViewRoute}
         handleCopyAddress={handleCopyAddress}
         handleChat={handleChat}
+        handleCall={handleCall}
         handleDriverProfile={handleDriverProfile}
         handlePassengerProfile={handlePassengerProfile}
         isDriver={isDriver}

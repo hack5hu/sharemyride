@@ -18,7 +18,11 @@ export const UserProfileDetail: React.FC<UserProfileDetailProps> = ({
     onReportClose,
     onReportSubmit,
     t,
-  } = useUserProfileDetail(route.params.userId);
+  } = useUserProfileDetail(
+    route.params.userId,
+    route.params.isDriver,
+    route.params.canChat,
+  );
 
   return (
     <>

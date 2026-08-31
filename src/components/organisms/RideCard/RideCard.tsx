@@ -149,7 +149,9 @@ export const RideCard: React.FC<{
                 weight="bold"
                 color={theme.colors.on_surface}
               >
-                {ride.driver.rating}
+                {ride.driver.rating && Number(ride.driver.rating) > 0
+                  ? ride.driver.rating
+                  : 5}
               </Typography>
               {ride.pickupDistance !== undefined && ride.pickupDistance < 50 && (
                 <>

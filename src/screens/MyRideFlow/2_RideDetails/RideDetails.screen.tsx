@@ -13,6 +13,7 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
     handleViewRoute,
     handleCopyAddress,
     handleChat,
+    handleCall,
     handleDriverProfile,
     handlePassengerProfile,
     handleCancelRide,
@@ -42,6 +43,7 @@ export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
       handleViewRoute={handleViewRoute}
       handleCopyAddress={handleCopyAddress}
       handleChat={handleChat}
+      handleCall={handleCall}
       handleDriverProfile={handleDriverProfile}
       handlePassengerProfile={handlePassengerProfile}
       handleCancelRide={handleCancelRide}

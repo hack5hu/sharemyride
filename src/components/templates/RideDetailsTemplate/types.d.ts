@@ -7,6 +7,7 @@ export interface RideDetailsTemplateProps {
   handleViewRoute: () => void;
   handleCopyAddress: (address: string) => void;
   handleChat: () => void;
+  handleCall?: () => void;
   handleDriverProfile: () => void;
   handlePassengerProfile: (passengerId: string) => void;
   handleCancelRide: () => void;

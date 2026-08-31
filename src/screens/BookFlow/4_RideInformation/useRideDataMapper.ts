@@ -116,7 +116,13 @@ export const mapBackendRideToUI = (
     driver: {
       id: (rideRaw.user || rideRaw.driver)?.id,
       name: (rideRaw.user || rideRaw.driver)?.name || 'Unknown Driver',
-      rating: (rideRaw.user || rideRaw.driver)?.rating || 4.8,
+      rating:
+        rideRaw.driverRating && Number(rideRaw.driverRating) > 0
+          ? Number(rideRaw.driverRating)
+          : (rideRaw.user || rideRaw.driver)?.rating &&
+            Number((rideRaw.user || rideRaw.driver)?.rating) > 0
+          ? Number((rideRaw.user || rideRaw.driver)?.rating)
+          : 5,
       rideCount: computeTotalRides({
         ...(rideRaw.user || rideRaw.driver),
         totalRidesAsDriver: (rideRaw.user || rideRaw.driver)?.totalRidesAsDriver ?? rideRaw.totalRidesAsDriver,

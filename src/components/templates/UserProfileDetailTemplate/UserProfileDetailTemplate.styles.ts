@@ -8,77 +8,81 @@ export const ScrollContent = styled.ScrollView.attrs({
 })``;
 
 export const ContentPadding = styled.View`
-  padding-horizontal: ${scale(20)}px;
-  gap: ${verticalScale(16)}px;
-  margin-top: ${verticalScale(12)}px;
+  padding-horizontal: ${scale(16)}px;
+  gap: ${verticalScale(14)}px;
+  margin-top: ${verticalScale(4)}px;
 `;
 
 export const ProfileHeroCard = styled.View`
   align-items: center;
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  border-radius: ${moderateScale(24)}px;
-  padding: ${verticalScale(24)}px ${scale(20)}px;
-  elevation: 3;
+  border-radius: ${moderateScale(20)}px;
+  padding: ${verticalScale(20)}px ${scale(16)}px;
+  elevation: 2;
   shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 4px;
-  shadow-opacity: 0.06;
+  shadow-opacity: 0.05;
   shadow-radius: 12px;
 `;
 
 export const AvatarWrapper = styled.View`
   position: relative;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const BadgePin = styled.View`
   position: absolute;
-  bottom: 2px;
-  right: 2px;
+  bottom: 0px;
+  right: 0px;
 `;
 
 export const HeroName = styled.Text`
   font-family: 'Plus Jakarta Sans';
-  font-size: ${moderateScale(22)}px;
+  font-size: ${moderateScale(20)}px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.on_surface};
-  margin-top: ${verticalScale(12)}px;
+  margin-top: ${verticalScale(10)}px;
   text-align: center;
 `;
 
-export const BioContainer = styled.View`
-  margin-top: ${verticalScale(10)}px;
-  padding-horizontal: ${scale(14)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_low};
-  padding-vertical: ${verticalScale(8)}px;
-  border-radius: ${moderateScale(12)}px;
-  align-self: stretch;
-  align-items: center;
+export const BioText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-size: ${moderateScale(13)}px;
+  line-height: ${moderateScale(18)}px;
+  color: ${({ theme }) => theme.colors.on_surface_variant};
+  margin-top: ${verticalScale(8)}px;
+  text-align: center;
+  padding-horizontal: ${scale(12)}px;
 `;
 
 export const StatsRow = styled.View`
   flex-direction: row;
   align-items: center;
-  margin-top: ${verticalScale(8)}px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: ${verticalScale(14)}px;
   gap: ${scale(8)}px;
 `;
 
 export const VerifiedTag = styled.View`
   background-color: ${({ theme }) => `${theme.colors.primary}12`};
-  padding-horizontal: ${scale(10)}px;
-  padding-vertical: ${verticalScale(4)}px;
+  padding-horizontal: ${scale(12)}px;
+  padding-vertical: ${verticalScale(6)}px;
   border-radius: ${moderateScale(100)}px;
   flex-direction: row;
   align-items: center;
-  gap: ${scale(4)}px;
+  gap: ${scale(6)}px;
 `;
 
 export const RatingBadge = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_high};
-  padding-horizontal: ${scale(10)}px;
-  padding-vertical: ${verticalScale(4)}px;
+  padding-horizontal: ${scale(12)}px;
+  padding-vertical: ${verticalScale(6)}px;
   border-radius: ${moderateScale(100)}px;
   flex-direction: row;
   align-items: center;
-  gap: ${scale(4)}px;
+  gap: ${scale(6)}px;
 `;
 
 export const ChatButton = styled.TouchableOpacity`
@@ -87,10 +91,10 @@ export const ChatButton = styled.TouchableOpacity`
   justify-content: center;
   gap: ${scale(8)}px;
   background-color: ${({ theme }) => theme.colors.primary};
-  padding-horizontal: ${scale(28)}px;
-  padding-vertical: ${verticalScale(12)}px;
+  padding-horizontal: ${scale(24)}px;
+  padding-vertical: ${verticalScale(10)}px;
   border-radius: ${moderateScale(100)}px;
-  margin-top: ${verticalScale(16)}px;
+  margin-top: ${verticalScale(14)}px;
   elevation: 3;
   shadow-color: ${({ theme }) => theme.colors.primary};
   shadow-offset: 0px 4px;

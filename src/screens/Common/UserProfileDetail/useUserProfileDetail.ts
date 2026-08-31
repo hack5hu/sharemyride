@@ -6,8 +6,13 @@ import { useLocale } from '@/constants/localization';
 import { UserProfile } from './types';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { mapUserPreferences, mapUserReviews } from './userProfileHelper';
 
-export const useUserProfileDetail = (userId: string) => {
+export const useUserProfileDetail = (
+  userId: string,
+  isDriver?: boolean,
+  canChat?: boolean,
+) => {
   const navigation = useAppNavigation();
   const { userProfileDetail: t } = useLocale();
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -19,73 +24,24 @@ export const useUserProfileDetail = (userId: string) => {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const [profileData, ratingsData] = await Promise.all([
         UserService.getUserProfile(userId),
-        UserService.getUserRatings(userId).catch(() => []), // fallback to empty array if ratings API fails
+        UserService.getUserRatings(userId).catch(() => []),
       ]);
 
-      // Map preferences dynamically
-      const preferences: { icon: string; label: string }[] = [];
-      if (profileData.preference) {
-        const pref = profileData.preference;
-        if (pref.nonSmoking) {
-          preferences.push({ icon: 'smoke-free', label: 'Non-smoking' });
-        }
-        if (pref.petFriendly) {
-          preferences.push({ icon: 'pets', label: 'Pets allowed' });
-        } else {
-          preferences.push({ icon: 'block', label: 'No pets' });
-        }
-        if (pref.luggageAllowed) {
-          preferences.push({ icon: 'business-center', label: 'Luggage allowed' });
-        }
-        if (pref.musicPreference && pref.musicPreference !== 'None') {
-          preferences.push({
-            icon: 'music-note',
-            label: `${pref.musicPreference} music`,
-          });
-        }
-        if (pref.womenOnly) {
-          preferences.push({ icon: 'face', label: 'Ladies only' });
-        }
-      } else {
-        preferences.push(
-          { icon: 'smoke-free', label: 'Non-smoking' },
-          { icon: 'pets', label: 'Pets allowed' },
-          { icon: 'music-note', label: 'Lo-fi only' },
-        );
-      }
+      const preferences = mapUserPreferences(profileData.preference);
+      const mappedReviews = mapUserReviews(ratingsData);
+      const totalRatingsCount = mappedReviews.length;
 
-      // Map reviews
-      const validRatings = Array.isArray(ratingsData) ? ratingsData : [];
-      const mappedReviews = validRatings.map((r: any) => ({
-        id: String(r.ratingId || Math.random()),
-        reviewerName: r.raterName || 'Anonymous',
-        reviewerImage: r.raterPhotoUrl || undefined,
-        rating: Number(r.score || 5),
-        date: r.createdAt
-          ? new Date(r.createdAt).toLocaleDateString([], {
-              day: 'numeric',
-              month: 'short',
-              year: 'numeric',
-            })
-          : 'Recent',
-        tripInfo: r.raterRole === 'DRIVER' ? 'Rode with them' : 'Passenger',
-        comment: (r.comment || '').trim(),
-      }));
-
-      const totalRatingsCount = validRatings.length;
       const avgScore =
         profileData.rating && profileData.rating > 0
           ? Number(profileData.rating)
           : totalRatingsCount > 0
           ? Number(
               (
-                validRatings.reduce(
-                  (acc: number, r: any) => acc + (Number(r.score) || 0),
-                  0,
-                ) / totalRatingsCount
+                mappedReviews.reduce((acc, r) => acc + r.rating, 0) /
+                totalRatingsCount
               ).toFixed(1),
             )
           : 0;
@@ -96,10 +52,13 @@ export const useUserProfileDetail = (userId: string) => {
         id: profileData.userId || userId,
         name: profileData.name?.trim() || 'Unknown User',
         profileImage: profileData.profilePhotoUrl,
-        bio: profileData.bio || t.defaultBio,
+        bio:
+          profileData.bio && profileData.bio.trim()
+            ? profileData.bio.trim()
+            : undefined,
         isVerified:
           profileData.phoneVerified || profileData.emailVerified || false,
-        rating: avgScore,
+        rating: avgScore > 0 ? avgScore : 5,
         ratingCount: totalRatingsCount,
         ridesCount: totalRides,
         preferences,
@@ -122,7 +81,7 @@ export const useUserProfileDetail = (userId: string) => {
     } finally {
       setIsLoading(false);
     }
-  }, [userId, t.defaultBio]);
+  }, [userId]);
 
   useEffect(() => {
     fetchProfile();
@@ -178,14 +137,14 @@ export const useUserProfileDetail = (userId: string) => {
   }, [navigation, profile]);
 
   const handleChat = useCallback(() => {
-    if (profile) {
+    if (profile && (isDriver || canChat)) {
       navigation.navigate('ChatDetails', {
         userId: profile.id,
         name: profile.name,
         avatarUri: profile.profileImage,
       });
     }
-  }, [navigation, profile]);
+  }, [navigation, profile, isDriver, canChat]);
 
   return {
     profile,
@@ -194,7 +153,7 @@ export const useUserProfileDetail = (userId: string) => {
     handleBack,
     handleReport,
     handleViewRatings,
-    handleChat,
+    handleChat: isDriver || canChat ? handleChat : undefined,
     isReportVisible,
     onReportClose,
     onReportSubmit,

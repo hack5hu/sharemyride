@@ -56,6 +56,7 @@ export interface MyRideDetailsTemplateProps {
   handleViewRoute: (index?: number) => void;
   handleCopyAddress: (address: string) => void;
   handleChat: () => void;
+  handleCall?: () => void;
   isLoading?: boolean;
   isDriver: boolean;
   onCancelRide: () => void;

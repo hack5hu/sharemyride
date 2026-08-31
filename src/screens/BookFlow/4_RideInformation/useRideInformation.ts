@@ -192,13 +192,16 @@ export const useRideInformation = (
 
   const handleDriverProfile = useCallback(() => {
     if (ride?.driver?.id) {
-      navigate('UserProfileDetail', { userId: ride?.driver?.id });
+      navigate('UserProfileDetail', {
+        userId: ride?.driver?.id,
+        isDriver: true,
+      });
     }
   }, [navigate, ride]);
 
   const handlePassengerProfile = useCallback(
     (id: string) => {
-      navigate('UserProfileDetail', { userId: id });
+      navigate('UserProfileDetail', { userId: id, isDriver: false });
     },
     [navigate],
   );

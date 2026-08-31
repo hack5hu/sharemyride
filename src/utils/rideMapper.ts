@@ -113,7 +113,12 @@ export const mapBackendRideToUI = (
       : isDriver
       ? t('myRides.yourVehicle')
       : t('myRides.vehicleDetails'),
-    rating: ride.rating || ride.driver?.rating || 0,
+    rating:
+      ride.rating && Number(ride.rating) > 0
+        ? Number(ride.rating)
+        : ride.driver?.rating && Number(ride.driver?.rating) > 0
+        ? Number(ride.driver?.rating)
+        : 5,
     avatarUri: isRequest
       ? ride.passengerPhotoUrl
       : isDriver

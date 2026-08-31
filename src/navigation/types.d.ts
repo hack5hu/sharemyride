@@ -139,6 +139,8 @@ export type RootStackParamList = {
   Settings: undefined;
   UserProfileDetail: {
     userId: string;
+    isDriver?: boolean;
+    canChat?: boolean;
   };
   Rating: {
     rideId: string;

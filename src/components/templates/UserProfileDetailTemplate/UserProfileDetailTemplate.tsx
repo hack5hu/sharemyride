@@ -4,12 +4,11 @@ import { useTheme } from 'styled-components/native';
 import { Box } from '@/components/atoms/Box';
 import { Typography } from '@/components/atoms/Typography';
 import { Loader } from '@/components/atoms/Loader';
-import { Avatar } from '@/components/atoms/Avatar';
-import { VerifiedBadge } from '@/components/atoms/VerifiedBadge';
 import { moderateScale } from '@/styles';
 import { UserProfileDetailTemplateProps } from './types';
 import * as S from './UserProfileDetailTemplate.styles';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { ProfileHeroCard } from './components/ProfileHeroCard';
 import { VehicleBentoCard } from './components/VehicleBentoCard';
 import { RecentReviewsList } from './components/RecentReviewsList';
 
@@ -39,100 +38,11 @@ export const UserProfileDetailTemplate: React.FC<
         <S.ScrollContent showsVerticalScrollIndicator={false}>
           <S.ContentPadding>
             {/* Hero Profile Card */}
-            <S.ProfileHeroCard>
-              <S.AvatarWrapper>
-                <Avatar
-                  source={
-                    profile.profileImage
-                      ? { uri: profile.profileImage }
-                      : undefined
-                  }
-                  placeholder={profile.name}
-                  size="xl"
-                  border={false}
-                />
-                {profile.isVerified && (
-                  <S.BadgePin>
-                    <VerifiedBadge size={28} />
-                  </S.BadgePin>
-                )}
-              </S.AvatarWrapper>
-
-              <S.HeroName>{profile.name}</S.HeroName>
-
-              {profile.bio ? (
-                <S.BioContainer>
-                  <Typography
-                    variant="body"
-                    size="xs"
-                    color="on_surface_variant"
-                    align="center"
-                    style={{ fontStyle: 'italic' }}
-                  >
-                    "{profile.bio}"
-                  </Typography>
-                </S.BioContainer>
-              ) : null}
-
-              <S.StatsRow>
-                {profile.isVerified && (
-                  <S.VerifiedTag>
-                    <Icon
-                      name="verified"
-                      size={moderateScale(13)}
-                      color={theme.colors.primary}
-                    />
-                    <Typography
-                      variant="label"
-                      size="xs"
-                      weight="bold"
-                      color="primary"
-                    >
-                      {t.verifiedMember || 'Verified Member'}
-                    </Typography>
-                  </S.VerifiedTag>
-                )}
-                <S.RatingBadge>
-                  <Icon
-                    name="star"
-                    size={moderateScale(13)}
-                    color={theme.colors.warning || '#f59e0b'}
-                  />
-                  <Typography
-                    variant="label"
-                    size="xs"
-                    weight="bold"
-                    color="on_surface"
-                  >
-                    {profile.rating > 0 ? profile.rating.toFixed(1) : 'New'} ·{' '}
-                    {profile.ridesCount !== undefined
-                      ? `${profile.ridesCount} ${profile.ridesCount === 1 ? 'ride' : 'rides'} completed`
-                      : t.rideCountLabel.replace(
-                          '{{count}}',
-                          String(profile.ratingCount),
-                        )}
-                  </Typography>
-                </S.RatingBadge>
-              </S.StatsRow>
-
-              {handleChat && (
-                <S.ChatButton onPress={handleChat} activeOpacity={0.85}>
-                  <Icon
-                    name="chat-bubble-outline"
-                    size={moderateScale(18)}
-                    color={theme.colors.on_primary}
-                  />
-                  <Typography
-                    variant="label"
-                    size="sm"
-                    weight="bold"
-                    color="on_primary"
-                  >
-                    Chat with {profile.name.split(' ')[0]}
-                  </Typography>
-                </S.ChatButton>
-              )}
-            </S.ProfileHeroCard>
+            <ProfileHeroCard
+              profile={profile}
+              t={t}
+              handleChat={handleChat}
+            />
 
             {/* Travel Preferences */}
             {profile.preferences && profile.preferences.length > 0 && (
@@ -207,7 +117,7 @@ export const UserProfileDetailTemplate: React.FC<
             <RecentReviewsList reviews={profile.reviews} t={t} />
 
             {/* Report User */}
-            {handleReport && (
+            {Boolean(handleReport) && (
               <S.ReportButton onPress={handleReport} activeOpacity={0.8}>
                 <Icon
                   name="report-problem"

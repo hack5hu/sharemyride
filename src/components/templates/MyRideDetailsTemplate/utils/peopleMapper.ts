@@ -60,7 +60,11 @@ export const mapDriverData = (ride: any): MappedDriverData | null => {
     name: ride.driver.name || 'Driver',
     avatar: ride.driver.photoUrl || ride.driver.avatar,
     driverPhotoUrl: ride.driver.photoUrl || ride.driver.avatar,
-    rating: ride.driver.rating || 5,
+    phoneNumber: ride.driver.phoneNumber || ride.driver.phone || undefined,
+    rating:
+      ride.driver.rating && Number(ride.driver.rating) > 0
+        ? Number(ride.driver.rating)
+        : 5,
     rideCount:
       ride.driver.rideCount ||
       ride.driver.totalRidesAsDriver ||

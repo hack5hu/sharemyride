@@ -28,6 +28,7 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
       handleViewRoute,
       handleCopyAddress,
       handleChat,
+      handleCall,
       isLoading,
       isDriver,
       onCancelRide,
@@ -153,7 +154,12 @@ export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
                       handleDriverProfile?.(driverData.id)
                     }
                     handleChat={handleChat}
+                    handleCall={handleCall}
                     showChat={true}
+                    showCall={Boolean(
+                      !isDriver &&
+                        (ride.myBooking || Boolean(driverData.phoneNumber)),
+                    )}
                     isCompleted={isCompleted}
                   />
                 )}

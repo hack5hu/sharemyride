@@ -8,6 +8,7 @@ export interface MappedDriverData {
   name: string;
   avatar?: string;
   driverPhotoUrl?: string;
+  phoneNumber?: string;
   rating: number;
   rideCount: number;
   isVerified: boolean;
