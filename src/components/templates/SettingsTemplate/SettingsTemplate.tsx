@@ -93,14 +93,16 @@ export const SettingsTemplate: React.FC<SettingsTemplateProps> = React.memo(
             <S.Section>
               <S.SectionTitle>{t.preferences}</S.SectionTitle>
               <S.OptionsList>
-                <S.OptionRow onPress={handleToggleLanguage}>
+                <S.OptionRow onPress={handleToggleLanguage} activeOpacity={0.7}>
                   <S.SettingInfo>
-                    <Icon
-                      name="language"
-                      size={24}
-                      color={theme.colors.secondary}
-                    />
-                    <Typography variant="label" size="md" weight="medium">
+                    <S.OptionIconBox>
+                      <Icon
+                        name="language"
+                        size={20}
+                        color={theme.colors.primary}
+                      />
+                    </S.OptionIconBox>
+                    <Typography variant="label" size="md" weight="bold">
                       {t.language}
                     </Typography>
                   </S.SettingInfo>
@@ -123,19 +125,21 @@ export const SettingsTemplate: React.FC<SettingsTemplateProps> = React.memo(
 
                 <S.OptionRow disabled>
                   <S.SettingInfo>
-                    <Icon
-                      name="public"
-                      size={24}
-                      color={theme.colors.secondary}
-                    />
-                    <Typography variant="label" size="md" weight="medium">
+                    <S.OptionIconBox>
+                      <Icon
+                        name="public"
+                        size={20}
+                        color={theme.colors.primary}
+                      />
+                    </S.OptionIconBox>
+                    <Typography variant="label" size="md" weight="bold">
                       {t.region}
                     </Typography>
                   </S.SettingInfo>
                   <S.Badge>
-                    <S.BadgeText color={theme.colors.on_secondary_container}>
+                    <Typography variant="label" size="xs" weight="bold" color="primary">
                       {region}
-                    </S.BadgeText>
+                    </Typography>
                   </S.Badge>
                 </S.OptionRow>
               </S.OptionsList>

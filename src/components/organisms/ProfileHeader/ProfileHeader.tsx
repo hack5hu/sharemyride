@@ -1,47 +1,13 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
-import styled from 'styled-components/native';
-
-const StyledView = styled.View``;
-const CenterView = styled.View`
-  align-items: center;
-`;
-const AvatarOverlay = styled.View`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.4);
-  border-radius: 100px;
-`;
-const EditButton = styled.TouchableOpacity<{ isUpdating: boolean }>`
-  margin-top: 8px;
-  opacity: ${({ isUpdating }) => (isUpdating ? 0.5 : 1)};
-`;
-const NameRow = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
-`;
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Avatar } from '../../atoms/Avatar';
 import { Typography } from '../../atoms/Typography';
 import { Loader } from '../../atoms/Loader';
 import { Badge } from '../../atoms/Badge';
 import { StatItem } from '../../molecules/StatItem';
 import { IconButton } from '../../atoms/IconButton';
-import {
-  HeaderCard,
-  IdentitySection,
-  InfoSection,
-  StatsSection,
-  StatDivider,
-  VerifiedRow,
-  SettingsButtonWrapper,
-  VerifiedIcon,
-} from './ProfileHeader.styles';
+import * as S from './ProfileHeader.styles';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export interface ProfileHeaderProps {
@@ -72,75 +38,74 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   const theme = useTheme();
 
   return (
-    <HeaderCard>
-      <SettingsButtonWrapper>
+    <S.HeaderCard>
+      <S.SettingsButtonWrapper>
         <IconButton
           icon="settings"
           variant="surface"
           onPress={onSettingsPress}
         />
-      </SettingsButtonWrapper>
-      <IdentitySection>
-      <CenterView>
-          <StyledView>
-            <Avatar
-              source={avatarUri ? { uri: avatarUri } : undefined}
-              size="xl"
-              border
-              placeholder={name}
-            />
-            {isUpdatingAvatar && (
-              <AvatarOverlay>
-                <Loader transparent />
-              </AvatarOverlay>
-            )}
-          </StyledView>
-          {onAvatarEditPress && (
-            <EditButton
-              onPress={onAvatarEditPress}
-              disabled={isUpdatingAvatar}
-              isUpdating={isUpdatingAvatar}
-            >
-              <Typography
-                variant="label"
-                size="lg"
-                color="primary"
-                weight="bold"
-              >
-                {t('profileHub.editProfilePic') || 'Edit'}
-              </Typography>
-            </EditButton>
+      </S.SettingsButtonWrapper>
+
+      <S.IdentitySection>
+        <S.AvatarWrapper
+          onPress={onAvatarEditPress}
+          disabled={isUpdatingAvatar || !onAvatarEditPress}
+          isUpdating={isUpdatingAvatar}
+          activeOpacity={0.8}
+        >
+          <Avatar
+            source={avatarUri ? { uri: avatarUri } : undefined}
+            size="xl"
+            border
+            placeholder={name}
+          />
+          {isUpdatingAvatar ? (
+            <S.AvatarOverlay>
+              <Loader transparent />
+            </S.AvatarOverlay>
+          ) : (
+            <S.CameraBadge>
+              <Icon
+                name="photo-camera"
+                size={16}
+                color={theme.colors.on_primary}
+              />
+            </S.CameraBadge>
           )}
-        </CenterView>
-        <InfoSection>
-          <NameRow>
+        </S.AvatarWrapper>
+
+        <S.InfoSection>
+          <S.NameRow>
             <Typography variant="title" size="lg" weight="bold">
               {name}
             </Typography>
             <Badge label={t('profileHub.proPooler')} variant="primary" />
-          </NameRow>
+          </S.NameRow>
+
           {isVerified && (
-            <VerifiedRow>
-              <VerifiedIcon
+            <S.VerifiedBadgePill>
+              <S.VerifiedIcon
                 name="verified"
-                size={18}
+                size={16}
                 color={theme.colors.primary}
               />
-              <Typography variant="label" size="sm" color="on_surface_variant">
+              <Typography variant="label" size="xs" color="primary" weight="bold">
                 {t('profileHub.identityVerified')}
               </Typography>
-            </VerifiedRow>
+            </S.VerifiedBadgePill>
           )}
-        </InfoSection>
-      </IdentitySection>
+        </S.InfoSection>
+      </S.IdentitySection>
 
-      <StatsSection>
+      <S.StatsBentoCard>
         <StatItem label={t('profileHub.rating')} value={rating} />
-        <StatDivider />
+        <S.StatDivider />
         <StatItem label={t('profileHub.rides')} value={rides} />
-        <StatDivider />
+        <S.StatDivider />
         <StatItem label={t('profileHub.memberSince')} value={memberSince} />
-      </StatsSection>
-    </HeaderCard>
+      </S.StatsBentoCard>
+    </S.HeaderCard>
   );
 };
+

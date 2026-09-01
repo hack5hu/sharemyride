@@ -42,9 +42,11 @@ export const AccountSection: React.FC<AccountSectionProps> = React.memo(
         </S.DeleteAccountButton>
 
         <S.FooterVersion>
-          <S.VersionText color={theme.colors.on_surface_variant}>
-            {t.version} {DeviceInfo.getVersion()}
-          </S.VersionText>
+          <S.VersionPill>
+            <Typography variant="label" size="xs" color="on_surface_variant">
+              {t.version} {DeviceInfo.getVersion()}
+            </Typography>
+          </S.VersionPill>
         </S.FooterVersion>
       </S.AccountSection>
     );

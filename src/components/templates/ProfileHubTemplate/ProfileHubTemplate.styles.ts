@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { moderateScale, verticalScale } from '@/styles';
+import { moderateScale, scale, verticalScale } from '@/styles';
 import { Typography } from '@/components/atoms/Typography';
 
 export const ScreenWrapper = styled.View`
@@ -14,17 +14,17 @@ export const Container = styled.ScrollView`
 `;
 
 export const Content = styled.View`
-  padding: ${moderateScale(24)}px;
-  gap: ${moderateScale(24)}px;
+  padding: ${scale(16)}px;
+  gap: ${verticalScale(20)}px;
   padding-bottom: ${verticalScale(120)}px;
 `;
 
 export const Section = styled.View`
-  gap: ${moderateScale(16)}px;
+  gap: ${verticalScale(8)}px;
 `;
 
 export const SectionTitle = styled.View`
-  padding-horizontal: ${moderateScale(8)}px;
+  padding-horizontal: ${scale(6)}px;
 `;
 
 export const SectionTitleText = styled(Typography).attrs({
@@ -33,18 +33,20 @@ export const SectionTitleText = styled(Typography).attrs({
   weight: 'bold',
   color: 'on_surface_variant',
 })`
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 `;
 
 export const BentoGrid = styled.View`
   flex-direction: column;
-  gap: ${moderateScale(16)}px;
+  gap: ${verticalScale(14)}px;
 `;
 
 export const ActionGrid = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_low};
-  border-radius: ${moderateScale(24)}px;
-  padding: ${moderateScale(8)}px;
+  border-radius: ${moderateScale(22)}px;
+  padding: ${moderateScale(6)}px;
+  elevation: 1;
 `;
 
 export const DangerSection = styled.View`

@@ -2,7 +2,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '../../atoms/Typography';
-import { Container, IconBox, Content } from './ProfileMenuItem.styles';
+import * as S from './ProfileMenuItem.styles';
 
 export interface ProfileMenuItemProps {
   icon: string;
@@ -22,27 +22,30 @@ export const ProfileMenuItem: React.FC<ProfileMenuItemProps> = ({
   const theme = useTheme();
 
   return (
-    <Container onPress={onPress} activeOpacity={0.7}>
-      <IconBox>
-        <Icon name={icon} size={24} color={theme.colors.on_surface_variant} />
-      </IconBox>
-      <Content>
-        <Typography variant="body" weight="bold" color="on_surface">
+    <S.Container onPress={onPress} activeOpacity={0.7}>
+      <S.IconBox>
+        <Icon name={icon} size={22} color={theme.colors.primary} />
+      </S.IconBox>
+      <S.Content>
+        <Typography variant="body" size="md" weight="bold" color="on_surface">
           {title}
         </Typography>
         {subtitle && (
-          <Typography variant="label" size="sm" color="on_surface_variant">
+          <Typography variant="label" size="xs" color="on_surface_variant">
             {subtitle}
           </Typography>
         )}
-      </Content>
+      </S.Content>
       {showChevron && (
-        <Icon
-          name="chevron-right"
-          size={24}
-          color={theme.colors.outline_variant}
-        />
+        <S.ChevronCircle>
+          <Icon
+            name="chevron-right"
+            size={18}
+            color={theme.colors.on_surface_variant}
+          />
+        </S.ChevronCircle>
       )}
-    </Container>
+    </S.Container>
   );
 };
+

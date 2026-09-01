@@ -12,100 +12,128 @@ export const ContentContainer = styled.ScrollView.attrs({
     padding: scale(16),
     paddingBottom: verticalScale(100),
   },
+  showsVerticalScrollIndicator: false,
 })`
   flex: 1;
 `;
 
 export const Section = styled.View`
-  margin-bottom: ${verticalScale(24)}px;
+  margin-bottom: ${verticalScale(20)}px;
 `;
 
-export const SectionTitle = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-size: 12px;
-  font-weight: 800;
-  color: ${({ theme }) => theme.colors.on_surface_variant};
-  text-transform: uppercase;
+export const SectionTitle = styled(Typography).attrs({
+  variant: 'label',
+  size: 'sm',
+  weight: 'bold',
+  color: 'on_surface_variant',
+})`
   letter-spacing: 1.5px;
-  margin-bottom: ${verticalScale(12)}px;
+  text-transform: uppercase;
+  margin-bottom: ${verticalScale(10)}px;
   margin-left: ${scale(4)}px;
 `;
 
 export const SettingCard = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface_container};
-  border-radius: 16px;
-  padding: ${verticalScale(16)}px ${scale(16)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_low};
+  border-radius: ${moderateScale(20)}px;
+  padding: ${moderateScale(16)}px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-width: 1px;
-  border-color: ${({ theme }) => theme.colors.outline_variant}30;
+  elevation: 1;
 `;
 
 export const SettingInfo = styled.View`
   flex-direction: row;
   align-items: center;
-  gap: ${scale(16)}px;
+  gap: ${scale(12)}px;
+  flex: 1;
 `;
 
 export const IconBox = styled.View<{ color?: string }>`
-  background-color: ${({ theme, color }) =>
-    (color || theme.colors.primary) + '20'};
-  padding: ${moderateScale(12)}px;
+  width: ${scale(40)}px;
+  height: ${scale(40)}px;
   border-radius: ${moderateScale(12)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_high};
+  align-items: center;
+  justify-content: center;
 `;
 
-export const SettingLabelGroup = styled.View``;
-
+export const SettingLabelGroup = styled.View`
+  flex: 1;
+  gap: ${verticalScale(2)}px;
+`;
 
 export const ThemeGrid = styled.View`
   flex-direction: row;
   gap: ${scale(12)}px;
 `;
 
-export const ThemeCard = styled.View<{ isCurrent?: boolean }>`
+export const ThemeCard = styled.TouchableOpacity<{ isSelected: boolean }>`
   flex: 1;
-  aspect-ratio: 1;
-  background-color: ${({ theme, isCurrent }) =>
-    isCurrent
-      ? theme.colors.surface_container_highest + '80'
-      : theme.colors.surface_container};
-  border-radius: 24px;
-  padding: ${scale(20)}px;
-  border-width: 1px;
-  border-color: ${({ theme, isCurrent }) =>
-    isCurrent ? theme.colors.primary_container + '40' : 'transparent'};
+  padding: ${moderateScale(16)}px;
+  border-radius: ${moderateScale(20)}px;
+  background-color: ${({ theme, isSelected }) =>
+    isSelected
+      ? theme.colors.primary_container
+      : theme.colors.surface_container_low};
+  elevation: ${({ isSelected }) => (isSelected ? 3 : 1)};
   justify-content: space-between;
+  min-height: ${verticalScale(110)}px;
 `;
 
-export const ThemeInfo = styled.View`
-  margin-top: ${verticalScale(24)}px;
-`;
-
-export const ThemeToggleRow = styled.View`
-  align-items: flex-end;
-`;
-
-export const ThemeSwitchLabel = styled.View`
-  margin-top: ${verticalScale(24)}px;
+export const ThemeCardTop = styled.View`
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+`;
+
+export const ThemeIconCircle = styled.View<{ isSelected: boolean }>`
+  width: ${scale(40)}px;
+  height: ${scale(40)}px;
+  border-radius: ${scale(20)}px;
+  background-color: ${({ theme, isSelected }) =>
+    isSelected ? 'rgba(255, 255, 255, 0.25)' : theme.colors.surface_container_high};
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ThemeCheckmark = styled.View`
+  width: ${scale(22)}px;
+  height: ${scale(22)}px;
+  border-radius: ${scale(11)}px;
+  background-color: rgba(255, 255, 255, 0.3);
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ThemeCardBottom = styled.View`
+  margin-top: ${verticalScale(10)}px;
+  gap: ${verticalScale(2)}px;
 `;
 
 export const OptionsList = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface_container};
-  border-radius: 16px;
-  overflow: hidden;
+  background-color: ${({ theme }) => theme.colors.surface_container_low};
+  border-radius: ${moderateScale(20)}px;
+  padding: ${moderateScale(4)}px;
+  elevation: 1;
 `;
 
 export const OptionRow = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: ${verticalScale(16)}px ${scale(16)}px;
-  border-bottom-width: 1px;
-  border-bottom-color: ${({ theme }) => theme.colors.outline_variant}20;
+  padding: ${moderateScale(14)}px ${moderateScale(12)}px;
+  border-radius: ${moderateScale(16)}px;
+`;
+
+export const OptionIconBox = styled.View`
+  width: ${scale(38)}px;
+  height: ${scale(38)}px;
+  border-radius: ${moderateScale(12)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_high};
+  align-items: center;
+  justify-content: center;
 `;
 
 export const AlignmentRow = styled.View`
@@ -115,62 +143,46 @@ export const AlignmentRow = styled.View`
 `;
 
 export const Badge = styled.View`
-  background-color: ${({ theme }) => theme.colors.secondary_container};
-  padding-horizontal: ${scale(12)}px;
-  padding-vertical: ${verticalScale(4)}px;
-  border-radius: 20px;
+  background-color: ${({ theme }) => theme.colors.surface_container_high};
+  padding: ${verticalScale(4)}px ${scale(12)}px;
+  border-radius: ${moderateScale(12)}px;
 `;
 
 export const LogoutButton = styled.TouchableOpacity`
   width: 100%;
-  padding: ${verticalScale(16)}px;
-  background-color: ${({ theme }) => theme.colors.error_container}30;
-  border-width: 1px;
-  border-color: ${({ theme }) => theme.colors.error}20;
-  border-radius: 16px;
+  padding: ${verticalScale(14)}px;
+  background-color: ${({ theme }) => theme.colors.error_container}33;
+  border-radius: ${moderateScale(18)}px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: ${scale(12)}px;
-  margin-top: ${verticalScale(16)}px;
+  gap: ${scale(10)}px;
+  margin-top: ${verticalScale(8)}px;
 `;
 
 export const DeleteAccountButton = styled.TouchableOpacity`
   width: 100%;
-  padding: ${verticalScale(14)}px;
-  background-color: transparent;
-  border-radius: 16px;
+  padding: ${verticalScale(12)}px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: ${scale(8)}px;
-  margin-top: ${verticalScale(8)}px;
+  margin-top: ${verticalScale(4)}px;
 `;
-
 
 export const FooterVersion = styled.View`
   align-items: center;
-  margintop: ${verticalScale(24)}px;
+  margin-top: ${verticalScale(16)}px;
 `;
 
-export const BadgeText = styled(Typography).attrs({
-  variant: 'label',
-  size: 'xs',
-  weight: 'bold',
-})`
-  text-transform: uppercase;
+export const VersionPill = styled.View`
+  padding: ${verticalScale(4)}px ${scale(12)}px;
+  border-radius: ${moderateScale(12)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_high};
 `;
-
 
 export const AccountSection = styled(Section)`
-  padding-top: ${verticalScale(16)}px;
+  padding-top: ${verticalScale(8)}px;
   padding-bottom: ${verticalScale(8)}px;
 `;
 
-export const VersionText = styled(Typography).attrs({
-  variant: 'body',
-  size: 'xs',
-  weight: 'medium',
-})`
-  opacity: 0.5;
-`;
