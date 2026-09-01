@@ -143,7 +143,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
       Boolean((user as Record<string, unknown>).superAdmin));
 
   const isApkBuild = Boolean(buildEnv?.isApkBuild);
-  const showDebugger = isSuperAdmin || isApkBuild;
+  const showDebugger = __DEV__ || isSuperAdmin || isApkBuild;
 
   if (!showDebugger) {
     return null;

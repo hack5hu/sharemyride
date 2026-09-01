@@ -91,16 +91,13 @@ export const useAuthStore = create<AuthState>()(
             if (useAuthStore.getState().isProfileCompleted) {
               useAuthStore.getState().fetchProfile();
             }
-            if (useAuthStore.getState().user) {
-              const u = useAuthStore.getState().user;
-              const uid = (u?.userId || u?.id) as string;
-              if (uid) {
-                AnalyticsService.setUser(uid);
-                useChatStore.getState().setMyUserId(uid);
-              }
+            const u = useAuthStore.getState().user;
+            const uid = (u?.userId || u?.id) as string;
+            if (uid) {
+              AnalyticsService.setUser(uid);
+              useChatStore.getState().setMyUserId(uid);
             }
           } else {
-            // No valid token in keychain — clear any stale persisted state
             set({
               user: null,
               token: null,
@@ -109,7 +106,6 @@ export const useAuthStore = create<AuthState>()(
             });
           }
         } catch {
-          // Keychain error: treat as logged out
           set({
             user: null,
             token: null,
@@ -126,49 +122,37 @@ export const useAuthStore = create<AuthState>()(
           const { UserService } = require('@/serviceManager/UserService');
           const profile = await UserService.getProfile();
           if (profile) {
-            const currentUser = useAuthStore.getState().user;
-            const isProfileCompleted =
+            const isCompleted =
               !!profile.name && !!(profile.date || profile.dateOfBirth);
-
-            const isIdentical =
-              currentUser &&
-              currentUser.name === profile.name &&
-              currentUser.dateOfBirth ===
-                (profile.date || profile.dateOfBirth) &&
-              currentUser.phoneNumber === profile.phoneNumber &&
-              currentUser.profilePhotoUrl === profile.profilePhotoUrl &&
-              currentUser.gender === profile.gender &&
-              currentUser.bio === profile.bio &&
-              currentUser.rating === profile.rating &&
-              currentUser.totalRidesAsDriver === profile.totalRidesAsDriver &&
-              currentUser.totalRidesAsPassenger === profile.totalRidesAsPassenger &&
-              currentUser.createdAt === profile.createdAt &&
-              currentUser.emailVerified === profile.emailVerified &&
-              currentUser.phoneVerified === profile.phoneVerified &&
-              useAuthStore.getState().isProfileCompleted === isProfileCompleted;
-
-            if (!isIdentical) {
-              set(state => ({
-                user: {
-                  ...state.user,
-                  ...profile,
-                  name: profile.name,
-                  dateOfBirth: profile.date || profile.dateOfBirth,
-                  phoneNumber: profile.phoneNumber,
-                  profilePhotoUrl: profile.profilePhotoUrl,
-                  rating: profile.rating,
-                  totalRidesAsDriver: profile.totalRidesAsDriver,
-                  totalRidesAsPassenger: profile.totalRidesAsPassenger,
-                  createdAt: profile.createdAt,
-                  emailVerified: profile.emailVerified,
-                  phoneVerified: profile.phoneVerified,
-                },
-                isProfileCompleted,
-              }));
-            }
+            set(state => ({
+              user: {
+                ...state.user,
+                ...profile,
+                name: profile.name,
+                dateOfBirth: profile.date || profile.dateOfBirth,
+              },
+              isProfileCompleted: isCompleted,
+            }));
           }
-        } catch (error) {
+        } catch (error: any) {
           Logger.error('Failed to fetch profile:', error);
+          const errorData = error?.response?.data;
+          const status = error?.response?.status;
+          const msg = String(
+            errorData?.message || errorData?.error || error?.message || '',
+          ).toLowerCase();
+          if (
+            status === 401 ||
+            status === 403 ||
+            msg.includes('user not found') ||
+            msg.includes('user_not_found') ||
+            msg.includes('user does not exist') ||
+            msg.includes('account deleted') ||
+            msg.includes('user deleted')
+          ) {
+            Logger.warn('[Auth] User not found during fetchProfile. Logging out.');
+            useAuthStore.getState().logout();
+          }
         }
       },
     }),

@@ -1,7 +1,6 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import * as Keychain from 'react-native-keychain';
-import { API_ENDPOINTS, BASE_URL } from '@/constants/apiEndpoints';
-import { useAuthStore } from '@/store/useAuthStore';
+import { BASE_URL } from '@/constants/apiEndpoints';
 import { useNetworkLoggerStore } from '@/store/useNetworkLoggerStore';
 import {
   isNetworkLoggerEnabled,
@@ -11,18 +10,25 @@ import {
 import { Logger } from '@/utils/logger';
 import { logApiError, logApiRequest, logApiResponse } from './apiConsoleLogger';
 import { AnalyticsService, AnalyticsEvent } from './AnalyticsService';
+import {
+  isUserNotFoundOrDeleted,
+  clearAuthSessionAndLogout,
+  processFailedQueue,
+  enqueueFailedRequest,
+  getIsRefreshing,
+  setIsRefreshing,
+  executeTokenRefresh,
+} from './tokenRefreshManager';
 
 interface TrackedRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
   _logId?: string;
   _startTime?: number;
 }
-interface FailedRequest {
-  resolve: (token: string | null) => void;
-  reject: (error: unknown) => void;
-}
+
 const generateId = () =>
   `${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 12)}`;
+
 const axiosClient = axios.create({
   baseURL: BASE_URL,
   timeout: 30000,
@@ -31,18 +37,7 @@ const axiosClient = axios.create({
     Accept: 'application/json',
   },
 });
-let isRefreshing = false;
-let failedQueue: FailedRequest[] = [];
-const processQueue = (error: unknown, token: string | null = null) => {
-  failedQueue.forEach(prom => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token);
-    }
-  });
-  failedQueue = [];
-};
+
 axiosClient.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
     const trackedConfig = config as TrackedRequestConfig;
@@ -56,32 +51,26 @@ axiosClient.interceptors.request.use(
     } catch (error) {
       Logger.error('[Keychain] Failed to read auth token:', error);
     }
-    // Detect FormData using duck-typing because `instanceof FormData` fails
-    // in React Native's Hermes engine (the RN FormData polyfill doesn't match
-    // the global FormData reference that Axios checks against).
+
     const isFormDataPayload =
       config.data &&
       (config.data instanceof FormData ||
         (typeof config.data === 'object' &&
-          typeof config.data.append === 'function' &&
-          Array.isArray(config.data._parts)));
+          typeof (config.data as any).append === 'function' &&
+          Array.isArray((config.data as any)._parts)));
 
     if (isFormDataPayload) {
-      // 1. Bypass Axios's default transformRequest which would JSON.stringify
-      //    the FormData object (producing {"_parts": [...]}) since it can't
-      //    detect RN's FormData polyfill either.
       config.transformRequest = [(data: unknown) => data];
-      // 2. Set Content-Type to multipart/form-data so the RN XMLHttpRequest
-      //    adapter knows to encode FormData properly with boundaries.
-      //    The adapter will auto-append the boundary parameter.
       if (config.headers) {
         config.headers.set('Content-Type', 'multipart/form-data');
       }
     }
+
     const logId = generateId();
     trackedConfig._logId = logId;
     trackedConfig._startTime = Date.now();
     logApiRequest(config);
+
     if (isNetworkLoggerEnabled()) {
       useNetworkLoggerStore.getState().addLog({
         id: logId,
@@ -102,10 +91,12 @@ axiosClient.interceptors.request.use(
   },
   error => Promise.reject(error),
 );
+
 axiosClient.interceptors.response.use(
   response => {
     const trackedConfig = response.config as TrackedRequestConfig;
     logApiResponse(response);
+
     if (
       isNetworkLoggerEnabled() &&
       trackedConfig._logId &&
@@ -138,7 +129,9 @@ axiosClient.interceptors.response.use(
     if (!originalRequest) {
       return Promise.reject(error);
     }
+
     logApiError(axiosError);
+
     if (
       isNetworkLoggerEnabled() &&
       originalRequest._logId &&
@@ -165,10 +158,27 @@ axiosClient.interceptors.response.use(
         error_message: axiosError.message,
       });
     }
-    if (axiosError.response?.status === 401 && !originalRequest._retry) {
-      if (isRefreshing) {
+
+    const responseStatus = axiosError.response?.status;
+    const responseData = axiosError.response?.data;
+
+    // 1. Check if user is deleted or does not exist
+    if (isUserNotFoundOrDeleted(responseData, responseStatus)) {
+      Logger.warn('[Auth] User not found / account deleted. Logging out.');
+      await clearAuthSessionAndLogout();
+      return Promise.reject(error);
+    }
+
+    // 2. Check if token expired (401)
+    const isAuthRoute =
+      originalRequest.url?.includes('/auth/login') ||
+      originalRequest.url?.includes('/auth/verify-otp') ||
+      originalRequest.url?.includes('/auth/refresh');
+
+    if (responseStatus === 401 && !originalRequest._retry && !isAuthRoute) {
+      if (getIsRefreshing()) {
         return new Promise<string | null>((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
+          enqueueFailedRequest(resolve, reject);
         })
           .then(token => {
             originalRequest.headers.Authorization = `Bearer ${token}`;
@@ -176,50 +186,30 @@ axiosClient.interceptors.response.use(
           })
           .catch(err => Promise.reject(err));
       }
+
       originalRequest._retry = true;
-      isRefreshing = true;
+      setIsRefreshing(true);
+
       try {
-        const refreshCreds = await Keychain.getGenericPassword({
-          service: 'refresh_token',
-        });
-        if (!refreshCreds) {
-          throw new Error('No refresh token available');
-        }
-        const response = await axios.post(
-          `${axiosClient.defaults.baseURL}${API_ENDPOINTS.AUTH.REFRESH_TOKEN}`,
-          {
-            refreshToken: refreshCreds.password,
-          },
+        const newToken = await executeTokenRefresh(
+          axiosClient.defaults.baseURL || BASE_URL,
         );
-        const payload = response.data.data || response.data;
-        const { token, refreshToken: newRefreshToken } = payload;
-        if (!token) {
-          throw new Error('Refresh response did not contain a valid token');
-        }
-        await Keychain.setGenericPassword('auth_token', token, {
-          service: 'auth_token',
-        });
-        if (newRefreshToken) {
-          await Keychain.setGenericPassword('refresh_token', newRefreshToken, {
-            service: 'refresh_token',
-          });
-        }
-        axiosClient.defaults.headers.common.Authorization = `Bearer ${token}`;
-        originalRequest.headers.Authorization = `Bearer ${token}`;
-        processQueue(null, token);
+        axiosClient.defaults.headers.common.Authorization = `Bearer ${newToken}`;
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        processFailedQueue(null, newToken);
         return axiosClient(originalRequest);
       } catch (refreshError) {
-        processQueue(refreshError, null);
-        Logger.error('Token refresh failed');
-        await Keychain.resetGenericPassword({ service: 'auth_token' });
-        await Keychain.resetGenericPassword({ service: 'refresh_token' });
-        useAuthStore.getState().logout();
+        processFailedQueue(refreshError, null);
+        Logger.error('[Auth] Token refresh failed. Clearing session:', refreshError);
+        await clearAuthSessionAndLogout();
         return Promise.reject(refreshError);
       } finally {
-        isRefreshing = false;
+        setIsRefreshing(false);
       }
     }
+
     return Promise.reject(error);
   },
 );
+
 export default axiosClient;
