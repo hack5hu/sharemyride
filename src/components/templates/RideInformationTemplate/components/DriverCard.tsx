@@ -22,9 +22,7 @@ export interface DriverCardProps {
   };
   handleDriverProfile: () => void;
   handleChat: () => void;
-  handleCall?: () => void;
   showChat?: boolean;
-  showCall?: boolean;
   isCompleted?: boolean;
 }
 
@@ -33,9 +31,7 @@ export const DriverCard: React.FC<DriverCardProps> = React.memo(
     driver,
     handleDriverProfile,
     handleChat,
-    handleCall,
     showChat = true,
-    showCall = false,
     isCompleted,
   }) => {
     const theme = useTheme();
@@ -143,16 +139,6 @@ export const DriverCard: React.FC<DriverCardProps> = React.memo(
             <S.ChatButton onPress={handleChat} activeOpacity={0.8}>
               <Icon
                 name="chat-bubble"
-                size={moderateScale(18)}
-                color={theme.colors.primary}
-              />
-            </S.ChatButton>
-          )}
-
-          {showCall && Boolean(handleCall) && (
-            <S.ChatButton onPress={handleCall} activeOpacity={0.8}>
-              <Icon
-                name="phone"
                 size={moderateScale(18)}
                 color={theme.colors.primary}
               />

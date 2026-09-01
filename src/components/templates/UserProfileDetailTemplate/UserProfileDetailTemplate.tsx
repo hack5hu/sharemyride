@@ -23,6 +23,7 @@ export const UserProfileDetailTemplate: React.FC<
     handleReport,
     handleViewRatings,
     handleChat,
+    handleCall,
   }) => {
     const theme = useTheme();
 
@@ -42,6 +43,7 @@ export const UserProfileDetailTemplate: React.FC<
               profile={profile}
               t={t}
               handleChat={handleChat}
+              handleCall={handleCall}
             />
 
             {/* Travel Preferences */}

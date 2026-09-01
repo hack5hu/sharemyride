@@ -1,5 +1,6 @@
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useEffect, useCallback } from 'react';
+import { Linking } from 'react-native';
 import { UserService } from '@/serviceManager/UserService';
 import { computeTotalRides } from '@/utils/user';
 import { useLocale } from '@/constants/localization';
@@ -12,6 +13,7 @@ export const useUserProfileDetail = (
   userId: string,
   isDriver?: boolean,
   canChat?: boolean,
+  canCall?: boolean,
 ) => {
   const navigation = useAppNavigation();
   const { userProfileDetail: t } = useLocale();
@@ -51,6 +53,7 @@ export const useUserProfileDetail = (
       const mappedProfile: UserProfile = {
         id: profileData.userId || userId,
         name: profileData.name?.trim() || 'Unknown User',
+        phoneNumber: profileData.phoneNumber || profileData.phone || undefined,
         profileImage: profileData.profilePhotoUrl,
         bio:
           profileData.bio && profileData.bio.trim()
@@ -146,6 +149,15 @@ export const useUserProfileDetail = (
     }
   }, [navigation, profile, isDriver, canChat]);
 
+  const handleCall = useCallback(() => {
+    const phone = profile?.phoneNumber;
+    if (phone && (isDriver || canCall)) {
+      Linking.openURL(`tel:${phone}`).catch(err => {
+        console.error('Failed to open dialer:', err);
+      });
+    }
+  }, [profile?.phoneNumber, isDriver, canCall]);
+
   return {
     profile,
     isLoading,
@@ -154,6 +166,8 @@ export const useUserProfileDetail = (
     handleReport,
     handleViewRatings,
     handleChat: isDriver || canChat ? handleChat : undefined,
+    handleCall:
+      (isDriver || canCall) && profile?.phoneNumber ? handleCall : undefined,
     isReportVisible,
     onReportClose,
     onReportSubmit,

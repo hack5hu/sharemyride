@@ -9,6 +9,7 @@ export interface UserProfileDetailTemplateProps {
   handleReport: () => void;
   handleViewRatings: () => void;
   handleChat?: () => void;
+  handleCall?: () => void;
   isReportVisible?: boolean;
   onReportClose?: () => void;
   onReportSubmit?: (data: { categoryId: string; description: string }) => void;

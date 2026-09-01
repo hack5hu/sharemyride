@@ -141,6 +141,7 @@ export type RootStackParamList = {
     userId: string;
     isDriver?: boolean;
     canChat?: boolean;
+    canCall?: boolean;
   };
   Rating: {
     rideId: string;

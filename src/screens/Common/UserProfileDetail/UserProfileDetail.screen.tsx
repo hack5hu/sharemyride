@@ -14,6 +14,7 @@ export const UserProfileDetail: React.FC<UserProfileDetailProps> = ({
     handleReport,
     handleViewRatings,
     handleChat,
+    handleCall,
     isReportVisible,
     onReportClose,
     onReportSubmit,
@@ -22,6 +23,7 @@ export const UserProfileDetail: React.FC<UserProfileDetailProps> = ({
     route.params.userId,
     route.params.isDriver,
     route.params.canChat,
+    route.params.canCall,
   );
 
   return (
@@ -34,6 +36,7 @@ export const UserProfileDetail: React.FC<UserProfileDetailProps> = ({
         handleReport={handleReport}
         handleViewRatings={handleViewRatings}
         handleChat={handleChat}
+        handleCall={handleCall}
       />
       <ReportIssueModal
         isVisible={isReportVisible}

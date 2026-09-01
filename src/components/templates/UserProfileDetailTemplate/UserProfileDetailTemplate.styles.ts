@@ -85,21 +85,30 @@ export const RatingBadge = styled.View`
   gap: ${scale(6)}px;
 `;
 
-export const ChatButton = styled.TouchableOpacity`
+export const HeroActionsRow = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: ${scale(8)}px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  padding-horizontal: ${scale(24)}px;
+  gap: ${scale(10)}px;
+  margin-top: ${verticalScale(14)}px;
+  flex-wrap: wrap;
+`;
+
+export const ActionPillButton = styled.TouchableOpacity<{
+  variant?: 'primary' | 'secondary';
+}>`
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: ${scale(6)}px;
+  background-color: ${({ theme, variant }) =>
+    variant === 'secondary'
+      ? `${theme.colors.primary}15`
+      : theme.colors.primary};
+  padding-horizontal: ${scale(18)}px;
   padding-vertical: ${verticalScale(10)}px;
   border-radius: ${moderateScale(100)}px;
-  margin-top: ${verticalScale(14)}px;
-  elevation: 3;
-  shadow-color: ${({ theme }) => theme.colors.primary};
-  shadow-offset: 0px 4px;
-  shadow-opacity: 0.25;
-  shadow-radius: 8px;
+  elevation: ${({ variant }) => (variant === 'secondary' ? 0 : 2)};
 `;
 
 export const SectionCard = styled.View`
@@ -164,30 +173,6 @@ export const ReviewerAvatar = styled.Image`
   border-width: 2px;
   border-color: ${({ theme }) => theme.colors.surface_container_lowest};
   margin-right: ${scale(-10)}px;
-`;
-
-export const ReviewItem = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface_container_low};
-  padding: ${moderateScale(14)}px;
-  border-radius: ${moderateScale(14)}px;
-  gap: ${verticalScale(8)}px;
-`;
-
-export const ReviewHeader = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-export const ReviewerMeta = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(10)}px;
-`;
-
-export const StarsRow = styled.View`
-  flex-direction: row;
-  gap: ${scale(2)}px;
 `;
 
 export const ReportButton = styled.TouchableOpacity`

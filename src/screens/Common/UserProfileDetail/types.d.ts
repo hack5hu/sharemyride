@@ -29,6 +29,7 @@ export interface UserReview {
 export interface UserProfile {
   id: string;
   name: string;
+  phoneNumber?: string;
   profileImage?: string;
   bio?: string;
   isVerified: boolean;

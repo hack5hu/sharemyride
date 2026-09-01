@@ -227,15 +227,22 @@ export const useRideDetails = () => {
       navigate('UserProfileDetail', {
         userId: rideData.driver.id,
         isDriver: true,
+        canChat: true,
+        canCall: true,
       });
     }
   }, [navigate, rideData]);
 
   const handlePassengerProfile = useCallback(
     (id: string) => {
-      navigate('UserProfileDetail', { userId: id, isDriver: false });
+      navigate('UserProfileDetail', {
+        userId: id,
+        isDriver: false,
+        canChat: isDriver,
+        canCall: isDriver,
+      });
     },
-    [navigate],
+    [navigate, isDriver],
   );
 
   const handleChat = useCallback(() => {

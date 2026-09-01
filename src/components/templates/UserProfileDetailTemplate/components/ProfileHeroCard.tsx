@@ -13,10 +13,11 @@ interface ProfileHeroCardProps {
   profile: UserProfile;
   t: Translations['userProfileDetail'];
   handleChat?: () => void;
+  handleCall?: () => void;
 }
 
 export const ProfileHeroCard: React.FC<ProfileHeroCardProps> = React.memo(
-  ({ profile, t, handleChat }) => {
+  ({ profile, t, handleChat, handleCall }) => {
     const theme = useTheme();
 
     return (
@@ -84,22 +85,54 @@ export const ProfileHeroCard: React.FC<ProfileHeroCardProps> = React.memo(
           </S.RatingBadge>
         </S.StatsRow>
 
-        {Boolean(handleChat) && (
-          <S.ChatButton onPress={handleChat} activeOpacity={0.85}>
-            <Icon
-              name="chat-bubble-outline"
-              size={moderateScale(18)}
-              color={theme.colors.on_primary}
-            />
-            <Typography
-              variant="label"
-              size="sm"
-              weight="bold"
-              color="on_primary"
-            >
-              Chat with {profile.name.split(' ')[0]}
-            </Typography>
-          </S.ChatButton>
+        {(Boolean(handleChat) || Boolean(handleCall)) && (
+          <S.HeroActionsRow>
+            {Boolean(handleChat) && (
+              <S.ActionPillButton
+                variant="primary"
+                onPress={handleChat}
+                activeOpacity={0.85}
+              >
+                <Icon
+                  name="chat-bubble-outline"
+                  size={moderateScale(16)}
+                  color={theme.colors.on_primary}
+                />
+                <Typography
+                  variant="label"
+                  size="xs"
+                  weight="bold"
+                  color="on_primary"
+                >
+                  Chat with {profile.name.split(' ')[0]}
+                </Typography>
+              </S.ActionPillButton>
+            )}
+
+            {Boolean(handleCall) && (
+              <S.ActionPillButton
+                variant="secondary"
+                onPress={handleCall}
+                activeOpacity={0.85}
+              >
+                <Icon
+                  name="phone"
+                  size={moderateScale(16)}
+                  color={theme.colors.primary}
+                />
+                <Typography
+                  variant="label"
+                  size="xs"
+                  weight="bold"
+                  color="primary"
+                >
+                  {profile.phoneNumber
+                    ? `Call ${profile.phoneNumber}`
+                    : `Call ${profile.name.split(' ')[0]}`}
+                </Typography>
+              </S.ActionPillButton>
+            )}
+          </S.HeroActionsRow>
         )}
       </S.ProfileHeroCard>
     );

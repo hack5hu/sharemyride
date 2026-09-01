@@ -5,7 +5,8 @@ import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
 import { Box } from '@/components/atoms/Box';
 import { moderateScale } from '@/styles';
-import * as S from '../UserProfileDetailTemplate.styles';
+import * as TS from '../UserProfileDetailTemplate.styles';
+import * as S from './RecentReviewsList.styles';
 
 export interface RecentReviewsListProps {
   reviews: Array<{
@@ -27,9 +28,9 @@ export const RecentReviewsList: React.FC<RecentReviewsListProps> = React.memo(
     if (!reviews || reviews.length === 0) return null;
 
     return (
-      <S.SectionCard>
-        <S.SectionLabelRow>
-          <S.SectionDot color={theme.colors.tertiary} />
+      <TS.SectionCard>
+        <TS.SectionLabelRow>
+          <TS.SectionDot color={theme.colors.tertiary} />
           <Typography
             variant="label"
             size="xs"
@@ -38,7 +39,7 @@ export const RecentReviewsList: React.FC<RecentReviewsListProps> = React.memo(
           >
             {(t.recentReviews || 'RECENT REVIEWS').toUpperCase()}
           </Typography>
-        </S.SectionLabelRow>
+        </TS.SectionLabelRow>
 
         {reviews.slice(0, 3).map(review => (
           <S.ReviewItem key={review.id}>
@@ -94,7 +95,7 @@ export const RecentReviewsList: React.FC<RecentReviewsListProps> = React.memo(
             ) : null}
           </S.ReviewItem>
         ))}
-      </S.SectionCard>
+      </TS.SectionCard>
     );
   },
 );
