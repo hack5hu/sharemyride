@@ -1,6 +1,7 @@
 import { VehicleType } from '@/screens/Profile/VehicleDetails/types.d';
 
 export const VEHICLE_TYPES = [
+  { type: 'car' as VehicleType, icon: 'directions-car' },
   { type: 'sedan' as VehicleType, icon: 'directions-car' },
   { type: 'suv' as VehicleType, icon: 'commute' },
   { type: 'hatchback' as VehicleType, icon: 'drive-eta' },

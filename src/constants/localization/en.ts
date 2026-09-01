@@ -250,6 +250,7 @@ export const en: Translations = {
     colorPlaceholder: 'E.g. White',
     saveVehicle: 'Save Vehicle',
     successMessage: 'Vehicle saved successfully',
+    car: 'Car',
     sedan: 'Sedan',
     suv: 'SUV',
     hatchback: 'Hatchback',
@@ -261,6 +262,11 @@ export const en: Translations = {
     deleteVehicleTitle: 'Delete Vehicle',
     deleteVehicleConfirmMsg:
       'Are you sure you want to remove this vehicle? This action cannot be undone.',
+    garageTitle: 'Your Garage',
+    garageSubtitle: 'Manage your vehicles for sharing rides',
+    noVehiclesTitle: 'No Vehicles Found',
+    noVehiclesSubtitle: 'Add your first vehicle to start sharing rides with the community.',
+    addNewVehicle: 'Add New Vehicle',
   },
   chat: {
     headerTitle: 'Chats',

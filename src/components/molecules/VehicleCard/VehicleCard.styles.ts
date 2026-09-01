@@ -1,41 +1,51 @@
 import styled from 'styled-components/native';
 import { moderateScale, scale, verticalScale } from '@/styles';
+import { Typography } from '@/components/atoms/Typography';
 
 export const CardContainer = styled.TouchableOpacity<{
   isSelected?: boolean;
   fullWidth?: boolean;
 }>`
-  width: ${({ fullWidth }) => (fullWidth ? '100% ' : `${scale(150)}px`)};
+  width: ${({ fullWidth }) => (fullWidth ? '100%' : `${scale(160)}px`)};
   padding: ${({ fullWidth }) =>
-    fullWidth ? moderateScale(16) : moderateScale(12)}px;
+    fullWidth ? moderateScale(16) : moderateScale(14)}px;
   border-radius: ${moderateScale(20)}px;
-  border-width: ${({ fullWidth }) => (fullWidth ? 2.5 : 2)}px;
-  border-color: ${({ isSelected, theme }) =>
-    isSelected ? theme.colors.primary : theme.colors.outline_variant};
   background-color: ${({ isSelected, theme }) =>
-    isSelected ? `${theme.colors.primary}0D` : theme.colors.surface};
-  position: relative;
-  justify-content: space-between;
-  ${({ fullWidth, theme }) =>
-    fullWidth &&
-    `
-    shadow-color: ${theme.colors.shadow};
-    shadow-offset: 0px 4px;
-    shadow-opacity: 0.05;
-    shadow-radius: 8px;
-    elevation: 2;
-  `}
+    isSelected
+      ? theme.colors.primary_container
+      : theme.colors.surface_container_low};
+  elevation: 2;
+  gap: ${verticalScale(10)}px;
 `;
 
 export const SelectionIndicator = styled.View`
   position: absolute;
-  top: ${moderateScale(6)}px;
-  right: ${moderateScale(6)}px;
+  top: ${moderateScale(12)}px;
+  right: ${moderateScale(12)}px;
   z-index: 10;
 `;
 
-export const IconBox = styled.View`
-  margin-bottom: ${verticalScale(12)}px;
+export const TopRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const BrandInfoRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(10)}px;
+  flex: 1;
+`;
+
+export const IconBox = styled.View<{ isSelected?: boolean }>`
+  width: ${scale(42)}px;
+  height: ${scale(42)}px;
+  border-radius: ${moderateScale(14)}px;
+  background-color: ${({ isSelected, theme }) =>
+    isSelected ? 'rgba(255, 255, 255, 0.25)' : theme.colors.surface_container_high};
+  align-items: center;
+  justify-content: center;
 `;
 
 export const InfoBox = styled.View`
@@ -51,19 +61,50 @@ export const CompanyRow = styled.View`
 export const ColorDot = styled.View<{ color: string }>`
   width: ${moderateScale(10)}px;
   height: ${moderateScale(10)}px;
-  border-radius: ${moderateScale(4)}px;
+  border-radius: ${moderateScale(5)}px;
   background-color: ${({ color }) => color};
-  border-width: 0.5px;
-  border-color: ${({ theme }) => theme.colors.primary};
+`;
+
+export const CompanyText = styled(Typography).attrs<{ isSelected?: boolean }>(
+  ({ isSelected }) => ({
+    variant: 'label',
+    size: 'xs',
+    weight: 'bold',
+    color: isSelected ? 'on_primary' : 'primary',
+  }),
+)<{ isSelected?: boolean }>`
+  text-transform: uppercase;
+`;
+
+export const BadgesRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(8)}px;
+  margin-top: ${verticalScale(2)}px;
+`;
+
+export const SpecPill = styled.View<{ isSelected?: boolean }>`
+  padding: ${verticalScale(3)}px ${scale(10)}px;
+  border-radius: ${moderateScale(10)}px;
+  background-color: ${({ isSelected, theme }) =>
+    isSelected ? 'rgba(255, 255, 255, 0.2)' : theme.colors.surface_container_high};
+`;
+
+export const SpecTypeText = styled(Typography).attrs<{ isSelected?: boolean }>(
+  ({ isSelected }) => ({
+    variant: 'label',
+    size: 'xs',
+    weight: 'medium',
+    color: isSelected ? 'on_primary' : 'on_surface_variant',
+  }),
+)<{ isSelected?: boolean }>`
+  text-transform: capitalize;
 `;
 
 export const AddActionCard = styled.TouchableOpacity<{ fullWidth?: boolean }>`
   width: ${({ fullWidth }) => (fullWidth ? '100%' : `${scale(140)}px`)};
   padding: ${moderateScale(20)}px;
   border-radius: ${moderateScale(20)}px;
-  border-width: 2px;
-  border-style: dashed;
-  border-color: ${({ theme }) => theme.colors.outline_variant};
   background-color: ${({ theme }) => theme.colors.surface_container_low};
   align-items: center;
   justify-content: center;
@@ -74,23 +115,23 @@ export const AddIconCircle = styled.View`
   width: ${moderateScale(40)}px;
   height: ${moderateScale(40)}px;
   border-radius: ${moderateScale(20)}px;
-  background-color: ${({ theme }) => `${theme.colors.outline_variant}30`};
+  background-color: ${({ theme }) => theme.colors.surface_container_high};
   align-items: center;
   justify-content: center;
 `;
 
 export const ActionRow = styled.View`
   flex-direction: row;
-  justify-content: flex-end;
-  gap: ${scale(8)}px;
-  margin-top: ${verticalScale(12)}px;
-  padding-top: ${verticalScale(8)}px;
-  border-top-width: 1px;
-  border-color: ${({ theme }) => theme.colors.outline_variant}33;
+  align-items: center;
+  gap: ${scale(6)}px;
 `;
 
 export const ActionButton = styled.TouchableOpacity`
-  padding: ${moderateScale(8)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_low};
-  border-radius: ${moderateScale(8)}px;
+  width: ${scale(34)}px;
+  height: ${scale(34)}px;
+  border-radius: ${moderateScale(10)}px;
+  background-color: ${({ theme }) => theme.colors.surface_container_high};
+  align-items: center;
+  justify-content: center;
 `;
+

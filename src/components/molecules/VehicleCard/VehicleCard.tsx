@@ -2,7 +2,6 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
-
 import * as S from './VehicleCard.styles';
 
 export interface VehicleCardProps {
@@ -25,8 +24,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({
   model,
   seater,
   color = '#000000',
-  type = 'CAR',
-  plate,
+  type = 'sedan',
   isSelected,
   onPress,
   onEdit,
@@ -35,19 +33,31 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({
   fullWidth,
 }) => {
   const theme = useTheme();
-  const titleStyle = { textTransform: 'uppercase' as const };
+
+  const getVehicleIcon = () => {
+    switch (type?.toLowerCase()) {
+      case 'bike':
+        return 'motorcycle';
+      case 'suv':
+        return 'commute';
+      case 'hatchback':
+        return 'drive-eta';
+      default:
+        return 'directions-car';
+    }
+  };
 
   if (isAddButton) {
     return (
       <S.AddActionCard onPress={onPress} fullWidth={fullWidth}>
         <S.AddIconCircle>
-          <Icon name="add" size={24} color={theme.colors.outline} />
+          <Icon name="add" size={24} color={theme.colors.primary} />
         </S.AddIconCircle>
         <Typography
           variant="label"
           size="xs"
           weight="bold"
-          color={theme.colors.outline}
+          color="primary"
         >
           Add New
         </Typography>
@@ -63,68 +73,78 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({
     >
       {isSelected && (
         <S.SelectionIndicator>
-          <Icon name="check-circle" size={18} color={theme.colors.primary} />
+          <Icon name="check-circle" size={20} color={theme.colors.on_primary} />
         </S.SelectionIndicator>
       )}
 
-      <S.IconBox>
-        <Icon
-          name={type === 'bike' ? 'motorcycle' : 'directions-car'}
-          size={fullWidth ? 40 : 32}
-          color={isSelected ? theme.colors.primary : theme.colors.outline}
-        />
-      </S.IconBox>
+      <S.TopRow>
+        <S.BrandInfoRow>
+          <S.IconBox isSelected={isSelected}>
+            <Icon
+              name={getVehicleIcon()}
+              size={24}
+              color={isSelected ? theme.colors.on_primary : theme.colors.primary}
+            />
+          </S.IconBox>
+          <S.InfoBox>
+            <S.CompanyRow>
+              <S.ColorDot color={color} />
+              <S.CompanyText isSelected={isSelected}>
+                {company || 'Vehicle'}
+              </S.CompanyText>
+            </S.CompanyRow>
+            <Typography
+              variant="title"
+              size={fullWidth ? 'md' : 'sm'}
+              weight="bold"
+              color={isSelected ? 'on_primary' : 'on_surface'}
+              numberOfLines={1}
+            >
+              {model}
+            </Typography>
+          </S.InfoBox>
+        </S.BrandInfoRow>
 
-      <S.InfoBox>
-        <S.CompanyRow>
-          <S.ColorDot color={color} />
+        {(onEdit || onDelete) && (
+          <S.ActionRow>
+            {onEdit && (
+              <S.ActionButton onPress={onEdit}>
+                <Icon name="edit" size={16} color={theme.colors.primary} />
+              </S.ActionButton>
+            )}
+            {onDelete && (
+              <S.ActionButton onPress={onDelete}>
+                <Icon
+                  name="delete-outline"
+                  size={16}
+                  color={theme.colors.error}
+                />
+              </S.ActionButton>
+            )}
+          </S.ActionRow>
+        )}
+      </S.TopRow>
+
+      <S.BadgesRow>
+        <S.SpecPill isSelected={isSelected}>
           <Typography
             variant="label"
-            size={fullWidth ? 'sm' : 'xxs'}
-            weight="bold"
-            color={theme.colors.primary}
-            style={titleStyle}
+            size="xs"
+            weight="medium"
+            color={isSelected ? 'on_primary' : 'on_surface_variant'}
           >
-            {company || 'Vehicle'}
+            {seater}-Seater
           </Typography>
-        </S.CompanyRow>
-
-        <Typography
-          variant="title"
-          size={fullWidth ? 'md' : 'xs'}
-          weight="bold"
-          numberOfLines={1}
-        >
-          {model} • {seater}-Seater
-        </Typography>
-
-        <Typography
-          variant="body"
-          size={fullWidth ? 'sm' : 'xs'}
-          color={theme.colors.on_surface_variant}
-        >
-          {(plate || '').toUpperCase()}
-        </Typography>
-      </S.InfoBox>
-
-      {(onEdit || onDelete) && (
-        <S.ActionRow>
-          {onEdit && (
-            <S.ActionButton onPress={onEdit}>
-              <Icon name="edit" size={18} color={theme.colors.primary} />
-            </S.ActionButton>
-          )}
-          {onDelete && (
-            <S.ActionButton onPress={onDelete}>
-              <Icon
-                name="delete-outline"
-                size={18}
-                color={theme.colors.error}
-              />
-            </S.ActionButton>
-          )}
-        </S.ActionRow>
-      )}
+        </S.SpecPill>
+        {type && (
+          <S.SpecPill isSelected={isSelected}>
+            <S.SpecTypeText isSelected={isSelected}>
+              {type}
+            </S.SpecTypeText>
+          </S.SpecPill>
+        )}
+      </S.BadgesRow>
     </S.CardContainer>
   );
 };
+

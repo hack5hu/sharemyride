@@ -245,6 +245,7 @@ export const hi: Translations = {
     colorPlaceholder: 'उदा. सफेद',
     saveVehicle: 'गाड़ी सेव करें',
     successMessage: 'गाड़ी सफलतापूर्वक जुड़ गई',
+    car: 'कार / गाड़ी',
     sedan: 'सेडान',
     suv: 'SUV',
     hatchback: 'हैचबैक',
@@ -256,6 +257,11 @@ export const hi: Translations = {
     deleteVehicleTitle: 'गाड़ी हटाएं',
     deleteVehicleConfirmMsg:
       'क्या आप सच में इस गाड़ी को हटाना चाहते हैं? इसे वापस नहीं लाया जा सकेगा।',
+    garageTitle: 'आपका गैराज',
+    garageSubtitle: 'राइड शेयरिंग के लिए अपनी गाड़ियाँ मैनेज करें',
+    noVehiclesTitle: 'कोई गाड़ी नहीं मिली',
+    noVehiclesSubtitle: 'राइड शेयरिंग शुरू करने के लिए अपनी पहली गाड़ी जोड़ें।',
+    addNewVehicle: 'नई गाड़ी जोड़ें',
   },
   chat: {
     headerTitle: 'चैट',

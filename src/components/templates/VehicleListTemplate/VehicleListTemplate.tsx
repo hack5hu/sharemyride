@@ -26,18 +26,56 @@ export const VehicleListTemplate: React.FC<VehicleListTemplateProps> = ({
       <ScreenShell title={t('vehicleDetails.headerTitle')} onBack={onBack}>
         <S.Container>
           <S.ScrollContainer>
-            <S.ListHeader>
-              <Typography variant="title" size="lg" weight="bold">
-                Your Garage
-              </Typography>
-              <Typography
-                variant="body"
-                size="sm"
-                color={theme.colors.on_surface_variant}
-              >
-                Manage your vehicles for sharing rides
-              </Typography>
-            </S.ListHeader>
+            <S.GarageBanner>
+              <S.BannerDecorCircle />
+              <S.BannerTopRow>
+                <S.BannerBadge>
+                  <Icon
+                    name="garage"
+                    size={14}
+                    color={theme.colors.on_primary}
+                  />
+                  <Typography
+                    variant="label"
+                    size="xs"
+                    weight="bold"
+                    color="on_primary"
+                  >
+                    {t('vehicleDetails.garageTitle')}
+                  </Typography>
+                </S.BannerBadge>
+
+                {vehicles.length > 0 && (
+                  <S.CountPill>
+                    <Typography
+                      variant="label"
+                      size="xs"
+                      weight="bold"
+                      color="on_primary"
+                    >
+                      {vehicles.length}{' '}
+                      {vehicles.length === 1
+                        ? t('vehicleDetails.car')
+                        : `${t('vehicleDetails.car')}s`}
+                    </Typography>
+                  </S.CountPill>
+                )}
+              </S.BannerTopRow>
+
+              <S.BannerBottomContent>
+                <Typography
+                  variant="title"
+                  size="md"
+                  weight="bold"
+                  color="on_primary"
+                >
+                  {t('vehicleDetails.garageTitle')}
+                </Typography>
+                <S.BannerSubtitle>
+                  {t('vehicleDetails.garageSubtitle')}
+                </S.BannerSubtitle>
+              </S.BannerBottomContent>
+            </S.GarageBanner>
 
             {isLoading && vehicles.length === 0 ? (
               <S.Loader size="large" color={theme.colors.primary} />
@@ -60,13 +98,15 @@ export const VehicleListTemplate: React.FC<VehicleListTemplateProps> = ({
               </S.ListContainer>
             ) : (
               <S.EmptyState>
-                <Icon
-                  name="directions-car"
-                  size={64}
-                  color={theme.colors.outline_variant}
-                />
-                <Typography variant="title" size="md" align="center">
-                  No Vehicles Found
+                <S.EmptyIconCircle>
+                  <Icon
+                    name="directions-car"
+                    size={40}
+                    color={theme.colors.primary}
+                  />
+                </S.EmptyIconCircle>
+                <Typography variant="title" size="md" weight="bold" align="center">
+                  {t('vehicleDetails.noVehiclesTitle')}
                 </Typography>
                 <Typography
                   variant="body"
@@ -74,8 +114,7 @@ export const VehicleListTemplate: React.FC<VehicleListTemplateProps> = ({
                   color={theme.colors.on_surface_variant}
                   align="center"
                 >
-                  Add your first vehicle to start sharing rides with the
-                  community.
+                  {t('vehicleDetails.noVehiclesSubtitle')}
                 </Typography>
               </S.EmptyState>
             )}
@@ -83,7 +122,7 @@ export const VehicleListTemplate: React.FC<VehicleListTemplateProps> = ({
 
           <S.FloatingButtonContainer>
             <Button variant="primary" onPress={onAdd} icon="add">
-              Add New Vehicle
+              {t('vehicleDetails.addNewVehicle')}
             </Button>
           </S.FloatingButtonContainer>
         </S.Container>
@@ -94,12 +133,13 @@ export const VehicleListTemplate: React.FC<VehicleListTemplateProps> = ({
           isVisible={isDeleteModalVisible}
           onClose={() => setIsDeleteModalVisible(false)}
           onConfirm={handleConfirmDelete}
-          title="Delete Vehicle"
-          message="Are you sure you want to remove this vehicle? This action cannot be undone."
-          confirmLabel="Delete"
+          title={t('vehicleDetails.deleteVehicleTitle')}
+          message={t('vehicleDetails.deleteVehicleConfirmMsg')}
+          confirmLabel={t('vehicleDetails.deleteVehicleTitle')}
           type="danger"
         />
       )}
     </>
   );
 };
+

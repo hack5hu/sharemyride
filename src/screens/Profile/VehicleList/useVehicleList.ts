@@ -29,7 +29,7 @@ export const useVehicleList = (): UseVehicleListReturn => {
 
   const onEdit = useCallback(
     (id: string) => {
-      (navigation.navigate as any)('VehicleDetails', { vehicleId: id });
+      navigation.navigate('VehicleDetails', { vehicleId: id });
     },
     [navigation],
   );
@@ -61,7 +61,7 @@ export const useVehicleList = (): UseVehicleListReturn => {
   }, [selectedVehicleId, removeVehicle, locale]);
 
   const onAdd = useCallback(() => {
-    (navigation.navigate as any)('VehicleDetails');
+    navigation.navigate('VehicleDetails');
   }, [navigation]);
 
   return {

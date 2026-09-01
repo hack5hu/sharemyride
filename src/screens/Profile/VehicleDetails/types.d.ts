@@ -1,4 +1,4 @@
-export type VehicleType = 'sedan' | 'suv' | 'hatchback' | 'bike';
+export type VehicleType = 'car' | 'sedan' | 'suv' | 'hatchback' | 'bike';
 
 export interface VehicleDetailsState {
   company: string;
@@ -8,3 +8,4 @@ export interface VehicleDetailsState {
   color: string;
   seater: '5' | '7';
 }
+

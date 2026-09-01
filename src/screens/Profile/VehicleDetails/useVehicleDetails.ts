@@ -81,7 +81,7 @@ export const useVehicleDetails = () => {
         setPublishVehicleType(values.seater);
 
         navigation.goBack();
-      } catch (error: any) {
+      } catch (error: unknown) {
         showNotification(
           NotificationType.ERROR,
           t('notification.defaultErrorTitle'),

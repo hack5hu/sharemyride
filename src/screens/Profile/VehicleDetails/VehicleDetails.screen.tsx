@@ -7,14 +7,24 @@ import { VehicleDetailsTemplate } from '@/components/templates/VehicleDetailsTem
 export const VehicleDetailsScreen: React.FC = () => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const { formik, isLoading, carColors, setSeater, setColor, goBack } =
-    useVehicleDetails();
+  const {
+    formik,
+    isLoading,
+    vehicleTypes,
+    carColors,
+    setVehicleType,
+    setSeater,
+    setColor,
+    goBack,
+  } = useVehicleDetails();
 
   return (
     <VehicleDetailsTemplate
       formik={formik}
       isLoading={isLoading}
+      vehicleTypes={vehicleTypes}
       carColors={carColors}
+      setVehicleType={setVehicleType}
       setSeater={setSeater}
       setColor={setColor}
       goBack={goBack}
@@ -23,3 +33,4 @@ export const VehicleDetailsScreen: React.FC = () => {
     />
   );
 };
+

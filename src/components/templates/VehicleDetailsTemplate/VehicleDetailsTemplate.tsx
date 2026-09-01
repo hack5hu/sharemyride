@@ -1,185 +1,84 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Typography } from '@/components/atoms/Typography';
-import { Input } from '@/components/atoms/Input';
 import { Button } from '@/components/atoms/Button';
-import { VehicleTypeCard } from '@/components/molecules/VehicleTypeCard';
-import { ColorChip } from '@/components/atoms/ColorChip';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-import {
-  LabelText,
-  RequiredAsterisk,
-} from '@/components/atoms/Input/Input.styles';
 import { VehicleDetailsTemplateProps } from './types.d';
 import * as S from './VehicleDetailsTemplate.styles';
+import { VehicleHero } from './components/VehicleHero';
+import { BasicIdentitySection } from './components/BasicIdentitySection';
+import { VehicleTypeSection } from './components/VehicleTypeSection';
+import { ColorSection } from './components/ColorSection';
+import { CapacitySection } from './components/CapacitySection';
 
 export const VehicleDetailsTemplate: React.FC<VehicleDetailsTemplateProps> = ({
   formik,
   isLoading,
+  vehicleTypes,
   carColors,
+  setVehicleType,
   setSeater,
   setColor,
   goBack,
   t,
   theme,
 }) => {
+  const selectedTypeObj = vehicleTypes.find(
+    v => v.type === formik.values.type,
+  );
+
   return (
     <ScreenShell title={t('vehicleDetails.headerTitle')} onBack={goBack}>
       <S.ScrollContainer>
-        <S.HeroSection>
-          <S.HeroImage
-            source={{
-              uri: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=2070&auto=format&fit=crop',
-            }}
-            resizeMode="cover"
-          />
-          <S.HeroTint />
-          <S.HeroContent>
-            <S.IconBox>
-              <Icon
-                name="directions-car"
-                size={32}
-                color={theme.colors.on_primary}
-              />
-            </S.IconBox>
-            <S.HeroTextWrapper>
-              <Typography
-                variant="title"
-                size="lg"
-                weight="bold"
-                color="on_primary"
-                numberOfLines={1}
-                adjustsFontSizeToFit
-              >
-                {t('vehicleDetails.heroTitle')}
-              </Typography>
-              <S.HeroSubtitle>
-                {t('vehicleDetails.heroSubtitle')}
-              </S.HeroSubtitle>
-            </S.HeroTextWrapper>
-          </S.HeroContent>
-        </S.HeroSection>
+        <VehicleHero
+          heroTitle={t('vehicleDetails.heroTitle')}
+          heroSubtitle={t('vehicleDetails.heroSubtitle')}
+          badgeLabel={t('vehicleDetails.basicIdentity')}
+          selectedIcon={selectedTypeObj?.icon || 'directions-car'}
+          theme={theme}
+        />
 
         <S.FormWrapper>
-          <S.CardSection>
-            <S.SectionHeader>
-              <Icon name="info" size={18} color={theme.colors.primary} />
-              <S.SectionTitleText>
-                {t('vehicleDetails.basicIdentity')}
-              </S.SectionTitleText>
-            </S.SectionHeader>
-            <S.InputGroup>
-              <Input
-                label={t('vehicleDetails.vehicleCompany')}
-                placeholder={t('vehicleDetails.companyPlaceholder')}
-                value={formik.values.company}
-                onChangeText={formik.handleChange('company')}
-                error={
-                  formik.touched.company ? formik.errors.company : undefined
-                }
-                required={true}
-                editable={!isLoading}
-              />
-              <Input
-                label={t('vehicleDetails.carModel')}
-                placeholder={t('vehicleDetails.modelPlaceholder')}
-                value={formik.values.model}
-                onChangeText={formik.handleChange('model')}
-                error={formik.touched.model ? formik.errors.model : undefined}
-                required={true}
-                editable={!isLoading}
-              />
-            </S.InputGroup>
-          </S.CardSection>
+          <BasicIdentitySection
+            formik={formik}
+            isLoading={isLoading}
+            theme={theme}
+            t={t}
+          />
 
-          <S.CardSection>
-            <S.SectionHeader>
-              <Icon name="settings" size={18} color={theme.colors.primary} />
-              <S.SectionTitleText>
-                {t('vehicleDetails.technicalSpecs')}
-              </S.SectionTitleText>
-            </S.SectionHeader>
-            <S.PlateInput
-              label={t('vehicleDetails.numberPlate')}
-              placeholder={t('vehicleDetails.platePlaceholder')}
-              value={formik.values.numberPlate}
-              onChangeText={(text: string) =>
-                formik.setFieldValue('numberPlate', text.toUpperCase())
-              }
-              error={
-                formik.touched.numberPlate
-                  ? formik.errors.numberPlate
-                  : undefined
-              }
-              editable={!isLoading}
-            />
+          <VehicleTypeSection
+            vehicleTypes={vehicleTypes}
+            selectedType={formik.values.type}
+            setVehicleType={setVehicleType}
+            isLoading={isLoading}
+            theme={theme}
+            t={t}
+          />
 
-            <S.ColorGroup style={{ opacity: isLoading ? 0.6 : 1 }}>
-              <LabelText>
-                {t('vehicleDetails.color')}
-                <RequiredAsterisk> *</RequiredAsterisk>
-              </LabelText>
-              <S.ColorScroll horizontal showsHorizontalScrollIndicator={false}>
-                <S.ColorRow>
-                  {carColors.map(color => (
-                    <ColorChip
-                      key={color.value}
-                      color={color.value}
-                      selected={formik.values.color === color.value}
-                      onPress={
-                        isLoading ? () => {} : () => setColor(color.value)
-                      }
-                      label={color.label}
-                    />
-                  ))}
-                </S.ColorRow>
-              </S.ColorScroll>
-              {formik.touched.color && formik.errors.color && (
-                <Typography
-                  variant="label"
-                  size="sm"
-                  color={theme.colors.error}
-                >
-                  {formik.errors.color || ''}
-                </Typography>
-              )}
-            </S.ColorGroup>
-          </S.CardSection>
+          <ColorSection
+            carColors={carColors}
+            selectedColor={formik.values.color}
+            setColor={setColor}
+            error={formik.errors.color}
+            touched={formik.touched.color}
+            isLoading={isLoading}
+            theme={theme}
+            t={t}
+          />
 
-          <S.CardSection>
-            <S.SectionHeader>
-              <Icon name="event-seat" size={18} color={theme.colors.primary} />
-              <S.SectionTitleText>
-                {t('vehicleDetails.capacity')}
-              </S.SectionTitleText>
-            </S.SectionHeader>
-            <LabelText>
-              {t('vehicleDetails.seaterCount')}
-              <RequiredAsterisk> *</RequiredAsterisk>
-            </LabelText>
-            <S.CapacityRow style={{ opacity: isLoading ? 0.6 : 1 }}>
-              <VehicleTypeCard
-                icon="person"
-                label={t('vehicleDetails.seater5')}
-                selected={formik.values.seater === '5'}
-                onPress={isLoading ? () => {} : () => setSeater('5')}
-              />
-              <VehicleTypeCard
-                icon="groups"
-                label={t('vehicleDetails.seater7')}
-                selected={formik.values.seater === '7'}
-                onPress={isLoading ? () => {} : () => setSeater('7')}
-              />
-            </S.CapacityRow>
-            {formik.touched.seater && formik.errors.seater && (
-              <S.CapacityError>{formik.errors.seater}</S.CapacityError>
-            )}
-          </S.CardSection>
+          <CapacitySection
+            seater={formik.values.seater}
+            setSeater={setSeater}
+            error={formik.errors.seater}
+            touched={formik.touched.seater}
+            isLoading={isLoading}
+            theme={theme}
+            t={t}
+          />
         </S.FormWrapper>
       </S.ScrollContainer>
+
       <S.BottomAction>
         <Button
-          onPress={formik.handleSubmit as any}
+          onPress={formik.handleSubmit as () => void}
           variant="primary"
           icon="save"
           loading={isLoading}
@@ -190,3 +89,5 @@ export const VehicleDetailsTemplate: React.FC<VehicleDetailsTemplateProps> = ({
     </ScreenShell>
   );
 };
+
+

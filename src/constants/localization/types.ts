@@ -248,6 +248,7 @@ export interface VehicleDetailsTranslations {
   colorPlaceholder: string;
   saveVehicle: string;
   successMessage: string;
+  car: string;
   sedan: string;
   suv: string;
   hatchback: string;
@@ -258,6 +259,11 @@ export interface VehicleDetailsTranslations {
   seater7: string;
   deleteVehicleTitle: string;
   deleteVehicleConfirmMsg: string;
+  garageTitle: string;
+  garageSubtitle: string;
+  noVehiclesTitle: string;
+  noVehiclesSubtitle: string;
+  addNewVehicle: string;
 }
 
 export interface ChatTranslations {
