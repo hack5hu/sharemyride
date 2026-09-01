@@ -35,12 +35,17 @@ interface ChatState {
   setActiveConversation: (id: string | null) => void;
   users: Record<string, UserProfile>;
   upsertUser: (user: UserProfile) => void;
+  resetChat: () => void;
 }
 
-const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
+const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 
 // A simple in-memory lookup table for messageId -> conversationId to avoid O(N) searches
 const messageToConvMap = new Map<string, string>();
+
+export const clearMessageToConvMap = (): void => {
+  messageToConvMap.clear();
+};
 
 export const getConversationIdForMessage = (messageId: string): string => {
   if (messageToConvMap.has(messageId)) {
@@ -414,19 +419,19 @@ export const useChatStore = create<ChatState>()(
         set(state => {
           const newMessages: Record<string, ChatMessage[]> = {};
 
-          // 1. Keep only messages within the last 14 days
+          // 1. Keep only messages within the last 7 days
           Object.keys(state.messages).forEach(convId => {
             const filtered = state.messages[convId].filter(
-              m => now - m.timestamp < FOURTEEN_DAYS_MS,
+              m => now - m.timestamp < SEVEN_DAYS_MS,
             );
             if (filtered.length > 0) {
               newMessages[convId] = filtered;
             }
           });
 
-          // 2. Clear dead chats (conversations with no activity in 14 days)
+          // 2. Clear dead chats (conversations with no activity in 7 days)
           const activeConversations = state.conversations.filter(
-            c => now - c.updatedAt < FOURTEEN_DAYS_MS,
+            c => now - c.updatedAt < SEVEN_DAYS_MS,
           );
 
           return {
@@ -434,6 +439,21 @@ export const useChatStore = create<ChatState>()(
             conversations: activeConversations,
           };
         });
+      },
+
+      resetChat: () => {
+        messageToConvMap.clear();
+        set({
+          messages: {},
+          conversations: [],
+          connectionStatus: ConnectionStatus.DISCONNECTED,
+          myUserId: null,
+          activeConversationId: null,
+          users: {},
+        });
+        try {
+          useChatStore.persist?.clearStorage?.();
+        } catch {}
       },
     }),
     {

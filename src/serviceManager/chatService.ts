@@ -31,10 +31,6 @@ if (typeof TextDecoder === 'undefined') {
   global.TextDecoder = require('fast-text-encoding').TextDecoder;
 }
 
-interface HistoryMessage extends ChatMessage {
-  messageStatus?: MessageStatus;
-  createdAt?: string;
-}
 
 class ChatServiceClass {
   async fetchUserProfile(userId: string) {
@@ -174,15 +170,19 @@ class ChatServiceClass {
 
   public performDisconnect() {
     this.retryCount = 0;
+    this.currentUserId = null;
+    this.activeListeners = 0;
+    if (this.disconnectTimeout) {
+      clearTimeout(this.disconnectTimeout);
+      this.disconnectTimeout = null;
+    }
     if (this.client) {
       try {
         this.client.deactivate();
       } catch {}
       this.client = null;
-      useChatStore
-        .getState()
-        .setConnectionStatus(ConnectionStatus.DISCONNECTED);
     }
+    useChatStore.getState().resetChat();
   }
 
   sendMessage(payload: SendMessagePayload) {

@@ -26,6 +26,8 @@ export const resetAllStores = () => {
     storage.remove('recent_published_rides');
     storage.remove('rated_rides');
     storage.remove('location_backlog');
+    storage.remove('tuktuk-chat-storage');
+    storage.remove('auth-storage');
 
     // Preserve admin debugger status across logouts
     if (isAdminDebuggerEnabled) {
@@ -123,14 +125,8 @@ export const resetAllStores = () => {
     isLoading: false,
   });
 
-  // 8. Chat Store (Clear chats)
-  useChatStore.setState({
-    messages: {},
-    conversations: [],
-    users: {},
-    myUserId: null,
-    activeConversationId: null,
-  });
+  // 8. Chat Store (Clear chats & in-memory maps)
+  useChatStore.getState().resetChat();
 
   // 9. Settings Store (Reset theme, language, and notification settings)
   useSettingsStore.setState({
