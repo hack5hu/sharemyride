@@ -1,5 +1,14 @@
 # Changelog
 
+# [1.5.0-uat.0](https://github.com/hack5hu/sharemyride/compare/v1.4.0...v1.5.0-uat.0) (2026-09-01)
+
+### Features
+
+* add phone call capability to UserProfileDetail and integrate token refresh manager ([6f9edb7](https://github.com/hack5hu/sharemyride/commit/6f9edb7f42819953471b54e080402b4b9e3ad896))
+* implement admin debugger toggle and persist status across authentication sessions ([7936096](https://github.com/hack5hu/sharemyride/commit/793609631b393d1366a0ea7e14da9ea5e05dcdf4))
+* implement location and ride service managers and add session wrap-up skill configuration ([5decddf](https://github.com/hack5hu/sharemyride/commit/5decddf101ff2750c0683dd1f0da0147ee422d21))
+* implement LocationService for map utilities and RideService for ride lifecycle management ([c17e833](https://github.com/hack5hu/sharemyride/commit/c17e833e2b89e6ce7393debdaecdf4d0dedf4e27))
+
 # [1.4.0](https://github.com/hack5hu/sharemyride/compare/v1.3.0...v1.4.0) (2026-08-25)
 
 ### Bug Fixes
