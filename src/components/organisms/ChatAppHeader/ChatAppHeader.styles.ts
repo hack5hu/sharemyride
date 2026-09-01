@@ -53,4 +53,6 @@ export const PulseDot = styled.View`
 export const Actions = styled.View`
   flex-direction: row;
   align-items: center;
+  gap: ${scale(8)}px;
 `;
+

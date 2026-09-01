@@ -24,3 +24,11 @@ export const StarsRow = styled.View`
   flex-direction: row;
   gap: ${scale(2)}px;
 `;
+
+export const ReviewCommentText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-size: ${moderateScale(12)}px;
+  font-style: italic;
+  color: ${({ theme }) => theme.colors.on_surface};
+`;
+

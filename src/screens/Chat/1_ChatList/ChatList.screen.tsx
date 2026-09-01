@@ -1,5 +1,4 @@
 import React from 'react';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { ChatListTemplate } from '@/components/templates/ChatListTemplate';
 import { SearchInput } from '@/components/molecules/SearchInput';
 import { RecentMessagesSection } from '@/components/organisms/RecentMessagesSection';

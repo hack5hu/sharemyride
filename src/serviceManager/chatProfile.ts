@@ -12,6 +12,8 @@ interface RemoteUserProfile {
   avatarUri?: string;
   rating?: number;
   isVerified?: boolean;
+  phoneNumber?: string;
+  phone?: string;
 }
 
 export const fetchChatUserProfile = async (
@@ -20,7 +22,7 @@ export const fetchChatUserProfile = async (
   if (!userId || userId === 'Unknown') return undefined;
 
   const { users, upsertUser } = useChatStore.getState();
-  if (users[userId]) return users[userId];
+  if (users[userId]?.name && users[userId]?.avatarUri) return users[userId];
 
   try {
     const profile = (await UserService.getUserProfile(
@@ -34,6 +36,7 @@ export const fetchChatUserProfile = async (
       avatarUri: profile.profileImage?.uri || profile.avatarUri,
       rating: profile.rating,
       isVerified: profile.isVerified,
+      phoneNumber: profile.phoneNumber || profile.phone,
     };
     upsertUser(userData);
     return userData;

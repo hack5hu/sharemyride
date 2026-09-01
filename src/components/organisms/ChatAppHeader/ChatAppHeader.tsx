@@ -23,7 +23,9 @@ export const ChatAppHeader: React.FC<ChatAppHeaderProps> = ({
   isTyping,
   avatarUri,
   isVerified = true,
+  phoneNumber,
   onBackPress,
+  onCallPress,
   onReportPress,
   onProfilePress,
 }) => {
@@ -72,6 +74,16 @@ export const ChatAppHeader: React.FC<ChatAppHeaderProps> = ({
                   color={theme.colors.secondary}
                 />
               </RatingBox>
+              {phoneNumber ? (
+                <Typography
+                  variant="label"
+                  size="xs"
+                  color="on_surface_variant"
+                  weight="medium"
+                >
+                  · {phoneNumber}
+                </Typography>
+              ) : null}
               {isTyping && (
                 <>
                   <PulseDot />
@@ -90,8 +102,12 @@ export const ChatAppHeader: React.FC<ChatAppHeaderProps> = ({
       </ProfileInfo>
 
       <Actions>
+        {Boolean(phoneNumber) && Boolean(onCallPress) && (
+          <IconButton icon="phone" onPress={onCallPress} variant="surface" />
+        )}
         <IconButton icon="report" onPress={onReportPress} variant="surface" />
       </Actions>
     </Container>
   );
 };
+

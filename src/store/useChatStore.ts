@@ -75,9 +75,20 @@ export const useChatStore = create<ChatState>()(
       setMyUserId: userId => set({ myUserId: userId }),
       setActiveConversation: id => set({ activeConversationId: id }),
       upsertUser: user =>
-        set(state => ({
-          users: { ...state.users, [user.userId]: user },
-        })),
+        set(state => {
+          const existing = state.users[user.userId] || {};
+          return {
+            users: {
+              ...state.users,
+              [user.userId]: {
+                ...existing,
+                ...user,
+                // Do not overwrite existing non-empty name with empty string
+                name: user.name || existing.name || '',
+              },
+            },
+          };
+        }),
 
       addMessage: (conversationId, message) => {
         set(state => {

@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from 'react';
-import { useTheme } from 'styled-components/native';
 import { ChatDetailsTemplate } from '@/components/templates/ChatDetailsTemplate';
 import { ChatAppHeader } from '@/components/organisms/ChatAppHeader';
 import { MessageBubble } from '@/components/molecules/MessageBubble';
@@ -20,7 +19,7 @@ export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({
   navigation,
   route,
 }) => {
-  const { name, userId, avatarUri, rating = 5.0, rideInfo } = route.params;
+  const { name, userId, avatarUri, rating = 5.0 } = route.params;
 
   const {
     t,
@@ -33,7 +32,6 @@ export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({
     isReportModalVisible,
     setIsReportModalVisible,
     handleReportSubmit,
-    dynamicRideInfo,
     isSafetyVisible,
     handleSafetyClose,
     handleLoadMore,
@@ -41,10 +39,9 @@ export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({
     handleRetry,
     connectionStatus,
     handleReconnect,
+    handleCall,
     handleProfilePress,
   } = useChatDetails();
-
-  const theme = useTheme();
 
   const renderMessageItem = useCallback(
     ({ item }: { item: any }) => {
@@ -96,7 +93,9 @@ export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({
         rating={cachedUser?.rating || rating}
         isTyping={false}
         avatarUri={avatarUri || cachedUser?.avatarUri || undefined}
+        phoneNumber={cachedUser?.phoneNumber}
         onBackPress={() => navigation.goBack()}
+        onCallPress={handleCall}
         onReportPress={() => setIsReportModalVisible(true)}
         onProfilePress={handleProfilePress}
       />
@@ -108,6 +107,7 @@ export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({
       rating,
       avatarUri,
       navigation,
+      handleCall,
       setIsReportModalVisible,
       handleProfilePress,
     ],

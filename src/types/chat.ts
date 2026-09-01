@@ -75,4 +75,6 @@ export interface UserProfile {
   avatarUri?: string;
   rating?: number;
   isVerified?: boolean;
+  phoneNumber?: string;
 }
+

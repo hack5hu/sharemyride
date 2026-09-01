@@ -84,14 +84,9 @@ export const RecentReviewsList: React.FC<RecentReviewsListProps> = React.memo(
               </S.StarsRow>
             </S.ReviewHeader>
             {review.comment ? (
-              <Typography
-                variant="body"
-                size="xs"
-                color="on_surface"
-                style={{ fontStyle: 'italic' }}
-              >
+              <S.ReviewCommentText>
                 "{review.comment}"
-              </Typography>
+              </S.ReviewCommentText>
             ) : null}
           </S.ReviewItem>
         ))}

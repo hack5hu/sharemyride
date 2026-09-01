@@ -375,6 +375,14 @@ class ChatServiceClass {
         isLast = data.last ?? (content.length < size);
       }
 
+      if (data?.otherUserPhoneNumber) {
+        useChatStore.getState().upsertUser({
+          userId: otherUserId,
+          name: '',
+          phoneNumber: data.otherUserPhoneNumber,
+        });
+      }
+
       const history = content.map((m: any) => ({
         ...m,
         status: (
