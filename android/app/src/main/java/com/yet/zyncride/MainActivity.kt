@@ -1,6 +1,8 @@
 package com.yet.zyncride
 
+import android.content.Context
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
@@ -12,6 +14,13 @@ class MainActivity : ReactActivity() {
   private var splashOverlay: SplashOverlay? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    val prefs = getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
+    val themeMode = prefs.getString("themeMode", "light")
+    when (themeMode) {
+      "light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+      "dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+      else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+    }
     supportFragmentManager.fragmentFactory = RNScreensFragmentFactory()
     super.onCreate(savedInstanceState)
 

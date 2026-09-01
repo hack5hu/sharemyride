@@ -132,6 +132,14 @@ public final class SplashOverlayView: UIView {
   }
 
   private var palette: ColorPalette {
+    if let savedTheme = UserDefaults.standard.string(forKey: "themeMode") {
+      if savedTheme == "light" {
+        return SplashOverlayView.lightPalette
+      }
+      if savedTheme == "dark" {
+        return SplashOverlayView.darkPalette
+      }
+    }
     if traitCollection.userInterfaceStyle == .dark {
       return SplashOverlayView.darkPalette
     }

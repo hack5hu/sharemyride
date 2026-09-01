@@ -42,4 +42,21 @@ RCT_EXPORT_METHOD(hide:(BOOL)fade
   });
 }
 
+RCT_EXPORT_METHOD(setTheme:(NSString *)themeMode) {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[NSUserDefaults standardUserDefaults] setObject:themeMode forKey:@"themeMode"];
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    if (!window) {
+      window = [UIApplication sharedApplication].windows.firstObject;
+    }
+    if ([themeMode isEqualToString:@"light"]) {
+      window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+    } else if ([themeMode isEqualToString:@"dark"]) {
+      window.overrideUserInterfaceStyle = UIUserInterfaceStyleDark;
+    } else {
+      window.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
+    }
+  });
+}
+
 @end

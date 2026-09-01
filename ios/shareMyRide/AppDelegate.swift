@@ -24,7 +24,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     reactNativeDelegate = delegate
     reactNativeFactory = factory
 
-    window = UIWindow(frame: UIScreen.main.bounds)
+    let win = UIWindow(frame: UIScreen.main.bounds)
+    if let savedTheme = UserDefaults.standard.string(forKey: "themeMode") {
+      switch savedTheme {
+      case "light":
+        win.overrideUserInterfaceStyle = .light
+      case "dark":
+        win.overrideUserInterfaceStyle = .dark
+      default:
+        win.overrideUserInterfaceStyle = .unspecified
+      }
+    }
+    window = win
 
     factory.startReactNative(
       withModuleName: "shareMyRide",

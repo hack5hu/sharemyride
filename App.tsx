@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar, LogBox, AppState, AppStateStatus } from 'react-native';
+import { StatusBar, LogBox, AppState, AppStateStatus, Appearance } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 LogBox.ignoreLogs(['InteractionManager has been deprecated']);
@@ -16,13 +16,13 @@ import { NetworkLoggerModal } from '@/components/organisms/NetworkLoggerModal';
 import { GlobalNotification } from '@/components/organisms/GlobalNotification';
 import { StallionUpdateModal } from '@/components/organisms/StallionUpdateModal';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import NativeSplash from '@/specs/NativeSplash';
 import { NotificationService } from '@/serviceManager/NotificationService';
 import { ChatService } from '@/serviceManager/ChatService';
 
 import { navigationRef } from '@/navigation/navigationService';
 import { AnalyticsService } from '@/serviceManager/AnalyticsService';
 import { withStallion } from 'react-native-stallion';
-import { NativeModules } from 'react-native';
 
 const App = () => {
   const routeNameRef = React.useRef<string | undefined>(undefined);
@@ -35,12 +35,19 @@ const App = () => {
   const activeTheme = themeMode === 'dark' ? DarkTheme : LightTheme;
 
   useEffect(() => {
+    if (NativeSplash?.setTheme) {
+      NativeSplash.setTheme(themeMode);
+    }
+    Appearance.setColorScheme(themeMode);
+  }, [themeMode]);
+
+  useEffect(() => {
     const initApp = async () => {
       await initialize();
       initialiseDeviceId();
       NotificationService.initialize();
-      if (NativeModules.NativeSplash?.hide) {
-        NativeModules.NativeSplash.hide(true);
+      if (NativeSplash?.hide) {
+        NativeSplash.hide(true);
       }
     };
     initApp();
