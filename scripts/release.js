@@ -171,6 +171,20 @@ const handleIosBuildNumber = async () => {
   );
   fs.writeFileSync(infoPlistPath, content, 'utf8');
   console.log(`✅ iOS build number updated to: ${targetBuild}`);
+  sanitizeIosVersion();
+};
+
+// Ensures CFBundleShortVersionString in Info.plist adheres to Apple's 1-3 integer requirement (e.g., 1.5.0 instead of 1.5.0-uat.0)
+const sanitizeIosVersion = () => {
+  const infoPlistPath = path.join(__dirname, '../ios/shareMyRide/Info.plist');
+  if (!fs.existsSync(infoPlistPath)) return;
+
+  let content = fs.readFileSync(infoPlistPath, 'utf8');
+  content = content.replace(
+    /(<key>CFBundleShortVersionString<\/key>\s*<string>)([\d\.]+)(?:-[^\s<]+)?(<\/string>)/,
+    '$1$2$3',
+  );
+  fs.writeFileSync(infoPlistPath, content, 'utf8');
 };
 
 const main = async () => {
