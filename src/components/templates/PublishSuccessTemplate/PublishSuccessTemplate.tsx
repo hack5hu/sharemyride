@@ -1,9 +1,8 @@
 import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { moderateScale } from '@/styles';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Button } from '@/components/atoms/Button';
-import { PublishSuccessTemplateProps } from './types.d';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { moderateScale } from '@/styles';
 import {
   MainContent,
   SuccessIconWrapper,
@@ -15,6 +14,7 @@ import {
   InfoText,
   ActionArea,
 } from './PublishSuccessTemplate.styles';
+import { type PublishSuccessTemplateProps } from './types.d';
 
 export const PublishSuccessTemplate: React.FC<PublishSuccessTemplateProps> = ({
   handleGoToMyRides,

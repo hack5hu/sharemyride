@@ -1,7 +1,7 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useState, useCallback, useMemo } from 'react';
 import { useRoute } from '@react-navigation/native';
-import { MonthData } from '@/components/templates/DateSelectionTemplate';
+import { useState, useCallback, useMemo } from 'react';
+import { type MonthData } from '@/components/templates/DateSelectionTemplate';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 
 const getMonthsData = (): MonthData[] => {

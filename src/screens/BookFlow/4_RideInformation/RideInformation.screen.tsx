@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
-import { RideInformationTemplate } from '@/components/templates/RideInformationTemplate/RideInformationTemplate';
 import { ReportIssueModal } from '@/components/organisms/ReportIssueModal';
+import { RideInformationTemplate } from '@/components/templates/RideInformationTemplate/RideInformationTemplate';
+import { type RideInformationProps } from './types';
 import { useRideInformation } from './useRideInformation';
-import { RideInformationProps } from './types';
 
 export const RideInformationScreen: React.FC<RideInformationProps> = memo(
   ({ route }) => {

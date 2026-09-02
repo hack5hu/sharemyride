@@ -1,14 +1,14 @@
 import React from 'react';
-import { useTheme } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Avatar } from '../../atoms/Avatar';
-import { Typography } from '../../atoms/Typography';
-import { Loader } from '../../atoms/Loader';
-import { Badge } from '../../atoms/Badge';
-import { StatItem } from '../../molecules/StatItem';
-import { IconButton } from '../../atoms/IconButton';
-import * as S from './ProfileHeader.styles';
+import { useTheme } from 'styled-components/native';
 import { useTranslation } from '@/hooks/useTranslation';
+import { Avatar } from '../../atoms/Avatar';
+import { Badge } from '../../atoms/Badge';
+import { IconButton } from '../../atoms/IconButton';
+import { Loader } from '../../atoms/Loader';
+import { Typography } from '../../atoms/Typography';
+import { StatItem } from '../../molecules/StatItem';
+import * as S from './ProfileHeader.styles';
 
 export interface ProfileHeaderProps {
   name: string;

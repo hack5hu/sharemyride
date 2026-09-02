@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { BentoMapPreview } from './BentoMapPreview';
 import { View } from 'react-native';
+import { BentoMapPreview } from './BentoMapPreview';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/BentoMapPreview',

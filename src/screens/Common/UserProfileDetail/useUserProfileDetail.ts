@@ -1,12 +1,12 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useEffect, useCallback } from 'react';
 import { Linking } from 'react-native';
-import { UserService } from '@/serviceManager/UserService';
-import { computeTotalRides } from '@/utils/user';
-import { useLocale } from '@/constants/localization';
-import { UserProfile } from './types';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { useLocale } from '@/constants/localization';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { UserService } from '@/serviceManager/UserService';
+import { computeTotalRides } from '@/utils/user';
+import { type UserProfile } from './types';
 import { mapUserPreferences, mapUserReviews } from './userProfileHelper';
 
 export const useUserProfileDetail = (

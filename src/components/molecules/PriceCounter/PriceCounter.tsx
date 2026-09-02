@@ -1,10 +1,8 @@
 import React from 'react';
-
-import styled from 'styled-components/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useTheme } from 'styled-components/native';
-import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+import styled, { useTheme } from 'styled-components/native';
 import { CounterButton } from '@/components/atoms/CounterButton';
+import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 
 export interface PriceCounterProps {
   price: number;

@@ -1,6 +1,6 @@
-import styled from 'styled-components/native';
 import { View, Platform } from 'react-native';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import styled from 'styled-components/native';
 import { scale, verticalScale, responsiveFont } from '../../../styles';
 
 export const SafeArea = styled.View`

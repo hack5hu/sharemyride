@@ -1,6 +1,6 @@
 import { API_ENDPOINTS } from '@/constants/apiEndpoints';
+import { type TicketCategory } from '@/constants/enums';
 import axiosClient from './axiosClient';
-import { TicketCategory } from '@/constants/enums';
 
 export interface SubmitFeedbackPayload {
   category: TicketCategory;
@@ -55,6 +55,7 @@ export const FeedbackService = {
       API_ENDPOINTS.FEEDBACK.SUBMIT,
       formData,
     );
+
     return response.data;
   },
 
@@ -62,6 +63,7 @@ export const FeedbackService = {
     const response = await axiosClient.get<FeedbackItem[]>(
       API_ENDPOINTS.FEEDBACK.MY_FEEDBACK,
     );
+
     return response.data;
   },
 };

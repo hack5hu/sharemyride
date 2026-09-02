@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
-import { useRideDetails } from './useRideDetails';
-import { RideDetailsScreenProps } from './types';
 import { RideDetailsTemplate } from '@/components/templates/RideDetailsTemplate';
+import { type RideDetailsScreenProps } from './types';
+import { useRideDetails } from './useRideDetails';
 
 export const RideDetailsScreen: React.FC<RideDetailsScreenProps> = memo(() => {
   const {

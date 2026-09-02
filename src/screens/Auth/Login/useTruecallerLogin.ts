@@ -1,16 +1,17 @@
-import { useState, useCallback, useEffect } from 'react';
-import { Keyboard, Alert } from 'react-native';
-import { useTranslation } from '@/hooks/useTranslation';
-import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
-import { NotificationType } from '@/constants/enums';
-import { getErrorMessage } from '@/utils/error';
 import {
   useTruecaller,
   type TruecallerAndroidResponse,
 } from '@ajitpatel28/react-native-truecaller';
+import { useState, useCallback, useEffect } from 'react';
+import { Keyboard, Alert } from 'react-native';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useAuthStore } from '@/store/useAuthStore';
-import { Logger } from '@/utils/logger';
 import { useNetworkLoggerStore } from '@/store/useNetworkLoggerStore';
+import { setAdminDebuggerEnabled } from '@/utils/adminDebugger';
+import { getErrorMessage } from '@/utils/error';
+import { Logger } from '@/utils/logger';
 import {
   USER_DISMISS_CODES,
   TRANSIENT_SDK_CODES,
@@ -18,7 +19,6 @@ import {
   syncUserProfileAndData,
   getTruecallerOptions,
 } from './truecallerHelper';
-import { setAdminDebuggerEnabled } from '@/utils/adminDebugger';
 
 interface UseTruecallerLoginProps {
   setLoading: (loading: boolean) => void;
@@ -41,6 +41,7 @@ export const useTruecallerLogin = ({ setLoading }: UseTruecallerLoginProps) => {
             t('login.truecallerInvalidCredentials'),
           );
           setLoading(false);
+
           return;
         }
 

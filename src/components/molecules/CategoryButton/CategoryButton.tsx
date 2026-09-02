@@ -3,7 +3,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { moderateScale } from '@/styles';
 import { Container, IconBox, Label, RadioCircle } from './CategoryButton.styles';
-import { CategoryButtonProps } from './types.d';
+import { type CategoryButtonProps } from './types.d';
 
 export const CategoryButton: React.FC<CategoryButtonProps> = ({
   label,

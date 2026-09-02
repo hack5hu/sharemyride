@@ -1,5 +1,5 @@
-import { UserProfile } from '@/screens/Common/UserProfileDetail/types.d';
-import { Translations } from '@/constants/localization/types';
+import { type Translations } from '@/constants/localization/types';
+import { type UserProfile } from '@/screens/Common/UserProfileDetail/types.d';
 
 export interface UserProfileDetailTemplateProps {
   profile: UserProfile | null;

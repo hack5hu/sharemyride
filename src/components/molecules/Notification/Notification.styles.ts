@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
+import { type NotificationType } from '@/constants/enums';
 import { moderateScale, scale, verticalScale } from '@/styles';
-import { NotificationType } from '@/constants/enums';
 
 export const NotificationContainer = styled.View<{ type: NotificationType }>`
   width: ${scale(342)}px;

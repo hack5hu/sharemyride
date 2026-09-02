@@ -1,9 +1,9 @@
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
-import { useTheme } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Typography } from '@/components/atoms/Typography';
+import { useTheme } from 'styled-components/native';
 import { ModalBackdrop } from '@/components/atoms/ModalBackdrop';
+import { Typography } from '@/components/atoms/Typography';
 import {
   ModalContainer,
   IconContainer,
@@ -15,7 +15,7 @@ import {
   StyledPressable,
   DescriptionText,
 } from './ConfirmationModal.styles';
-import { ConfirmationModalProps } from './types.d';
+import { type ConfirmationModalProps } from './types.d';
 
 export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   isVisible,

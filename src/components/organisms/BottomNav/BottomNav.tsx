@@ -1,14 +1,13 @@
 import React from 'react';
-
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
-import { Container, NavItem, Badge, BadgeText } from './BottomNav.styles';
-import { BottomTabType, BottomNavProps } from './types';
-import { useBottomNav } from './useBottomNav';
-import { useChatStore } from '@/store/useChatStore';
 import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
+import { useChatStore } from '@/store/useChatStore';
 import { verticalScale } from '@/styles';
+import { Container, NavItem, Badge, BadgeText } from './BottomNav.styles';
+import { type BottomTabType, type BottomNavProps } from './types';
+import { useBottomNav } from './useBottomNav';
 
 export const BottomNav: React.FC<BottomNavProps> = ({ activeTab }) => {
   const theme = useTheme();

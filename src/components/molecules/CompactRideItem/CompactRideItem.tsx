@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
+import { moderateScale } from '@/styles';
 import {
   Container,
   IconBox,
@@ -14,8 +15,7 @@ import {
   StatusRow,
   ActionIconButton,
 } from './CompactRideItem.styles';
-import { CompactRideItemProps } from './types.d';
-import { moderateScale } from '@/styles';
+import { type CompactRideItemProps } from './types.d';
 
 export const CompactRideItem: React.FC<CompactRideItemProps> = ({
   title,

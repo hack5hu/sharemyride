@@ -10,7 +10,7 @@ import {
   StopText,
   TimeText,
 } from './RideTimestampRow.styles';
-import { RideTimestampRowProps } from './types.d';
+import { type RideTimestampRowProps } from './types.d';
 
 export const RideTimestampRow: React.FC<RideTimestampRowProps> = ({
   pickupTime,

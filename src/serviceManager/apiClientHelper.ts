@@ -1,4 +1,4 @@
-import { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import { type InternalAxiosRequestConfig, type AxiosResponse, type AxiosError } from 'axios';
 import { useNetworkLoggerStore } from '@/store/useNetworkLoggerStore';
 import {
   isNetworkLoggerEnabled,
@@ -34,6 +34,7 @@ export const trackRequestLog = (config: InternalAxiosRequestConfig): string => {
       isError: false,
     });
   }
+
   return logId;
 };
 

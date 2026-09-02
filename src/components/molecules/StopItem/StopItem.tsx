@@ -1,8 +1,8 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { StopItemProps } from './types';
 import * as S from './StopItem.styles';
+import { type StopItemProps } from './types';
 
 export const StopItem: React.FC<StopItemProps> = ({ type, label, address }) => {
   const theme = useTheme();
@@ -18,6 +18,7 @@ export const StopItem: React.FC<StopItemProps> = ({ type, label, address }) => {
         <Icon name="location-on" size={14} color={theme.colors.on_tertiary} />
       );
     }
+
     return <S.StopDot />;
   };
 

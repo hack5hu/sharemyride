@@ -1,5 +1,5 @@
-import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
+import styled from 'styled-components/native';
 import { verticalScale, moderateScale } from '@/styles';
 
 export const FareCard = styled(LinearGradient)`

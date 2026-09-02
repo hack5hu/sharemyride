@@ -1,14 +1,14 @@
-import React from 'react';
 import { FlashList } from '@shopify/flash-list';
+import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { verticalScale } from '@/styles';
-import { BottomNav } from '@/components/organisms/BottomNav';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { BookRideInfoTemplateProps } from './types.d';
+import { BottomNav } from '@/components/organisms/BottomNav';
+import { type RecentSearch } from '@/store/useBookRideStore';
+import { verticalScale } from '@/styles';
 import * as S from './BookRideInfoTemplate.styles';
-import { RecentSearch } from '@/store/useBookRideStore';
 import { BookingForm } from './components/BookingForm';
 import { RecentSearchItem } from './components/RecentSearchItem';
+import { type BookRideInfoTemplateProps } from './types.d';
 
 export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
   React.memo(

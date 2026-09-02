@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useTranslation } from '@/hooks/useTranslation';
-import { RootStackParamList } from '@/navigation/types';
-import { BottomTabType } from './types';
+import { type RootStackParamList } from '@/navigation/types';
+import { type BottomTabType } from './types';
 
 export const useBottomNav = (activeTab: BottomTabType) => {
   const { t } = useTranslation();
@@ -32,6 +32,7 @@ export const useBottomNav = (activeTab: BottomTabType) => {
           ),
           activeTab: tab as BottomTabType,
         });
+
         return;
       }
 

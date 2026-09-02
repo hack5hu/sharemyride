@@ -1,5 +1,5 @@
-import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
+import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
 
 export const MapPickerContainer = styled.View`

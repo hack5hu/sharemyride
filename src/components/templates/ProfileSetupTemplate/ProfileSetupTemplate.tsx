@@ -8,7 +8,7 @@ import {
   Wrapper,
   StyledKeyboardScrollView,
 } from './ProfileSetupTemplate.styles';
-import { ProfileSetupTemplateProps } from './types.d';
+import { type ProfileSetupTemplateProps } from './types.d';
 
 export const ProfileSetupTemplate: React.FC<ProfileSetupTemplateProps> = ({
   hero,

@@ -1,7 +1,8 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
-import { Typography } from '../../atoms/Typography';
+import { useTranslation } from '@/hooks/useTranslation';
 import { StatValue } from '../../atoms/StatValue';
+import { Typography } from '../../atoms/Typography';
 import {
   CardContainer,
   CardHeader,
@@ -10,7 +11,6 @@ import {
   ScoreDescrText,
   ScoreIcon,
 } from './TrustScoreCard.styles';
-import { useTranslation } from '@/hooks/useTranslation';
 
 export interface TrustScoreCardProps {
   score: number | string;

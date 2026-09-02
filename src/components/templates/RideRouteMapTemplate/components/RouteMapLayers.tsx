@@ -1,5 +1,5 @@
 import React from 'react';
-import { DefaultTheme } from 'styled-components/native';
+import { type DefaultTheme } from 'styled-components/native';
 import { GeoJSONSource, Layer } from '@/components/organisms/OlaMap';
 
 export interface RouteMapLayersProps {

@@ -1,14 +1,13 @@
 /* eslint-disable max-lines */
 import React from 'react';
-import styled, { useTheme } from 'styled-components/native';
-
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Typography } from '@/components/atoms/Typography';
+import styled, { useTheme } from 'styled-components/native';
 import { Avatar } from '@/components/atoms/Avatar';
-import { moderateScale, scale, verticalScale } from '@/styles';
-import { RideData } from '@/screens/BookFlow/3_AvailableRides/types';
+import { Typography } from '@/components/atoms/Typography';
 import { RideTimeline } from '@/components/molecules/RideTimeline/RideTimeline';
 import { useTranslation } from '@/hooks/useTranslation';
+import { type RideData } from '@/screens/BookFlow/3_AvailableRides/types';
+import { moderateScale, scale, verticalScale } from '@/styles';
 
 const CardContainer = styled.TouchableOpacity<{ isSpecial?: boolean }>`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};
@@ -103,6 +102,7 @@ export const RideCard: React.FC<{
     rideDetails: rd,
     travelPreferences: tp,
   } = translations;
+
   return (
     <CardContainer
       isSpecial={ride.isFrequentCoRider}

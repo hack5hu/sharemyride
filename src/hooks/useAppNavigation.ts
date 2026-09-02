@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '@/navigation/types';
+import { type StackNavigationProp } from '@react-navigation/stack';
 import { useCallback } from 'react';
+import { type RootStackParamList } from '@/navigation/types';
 
 export type AppNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -15,6 +15,7 @@ const canNavigate = (): boolean => {
     return false;
   }
   lastNavigationTime = now;
+
   return true;
 };
 

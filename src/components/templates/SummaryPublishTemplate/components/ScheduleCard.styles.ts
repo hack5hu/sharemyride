@@ -1,6 +1,6 @@
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import styled from 'styled-components/native';
 import { moderateScale, verticalScale, responsiveFont } from '@/styles';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const StyledEditIcon = styled(Icon)<{ $disabled?: boolean }>`
   opacity: ${({ $disabled }) => ($disabled ? 0.4 : 1)};

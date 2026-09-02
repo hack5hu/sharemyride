@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { ModalBackdrop } from './ModalBackdrop';
 import { View } from 'react-native';
+import { ModalBackdrop } from './ModalBackdrop';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Atoms/ModalBackdrop',

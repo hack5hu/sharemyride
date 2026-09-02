@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
-import { useTheme } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useTheme } from 'styled-components/native';
 import { Typography } from '../Typography';
 import {
   StyledButton,
@@ -9,7 +9,7 @@ import {
   OutlineContainer,
   ButtonContent,
 } from './Button.styles';
-import { ButtonProps } from './types';
+import { type ButtonProps } from './types';
 
 export const Button: React.FC<ButtonProps> = ({
   children,

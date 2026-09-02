@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { AvatarPicker } from './AvatarPicker';
 import { View } from 'react-native';
+import { AvatarPicker } from './AvatarPicker';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/AvatarPicker',

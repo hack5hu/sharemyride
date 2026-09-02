@@ -1,19 +1,19 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useCallback } from 'react';
 import { addSeconds, format } from 'date-fns';
-import {
-  RideService,
-  PublishRidePayload,
-  RouteStop,
-} from '@/serviceManager/RideService';
-import { roundToNearest } from '@/utils/pricing';
-import { useMyRidesStore } from '@/store/useMyRidesStore';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useCallback } from 'react';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
-import { getErrorMessage } from '@/utils/error';
-import { storage } from '@/utils/storage';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useTranslation } from '@/hooks/useTranslation';
 import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
+import {
+  RideService,
+  type PublishRidePayload,
+  type RouteStop,
+} from '@/serviceManager/RideService';
+import { useMyRidesStore } from '@/store/useMyRidesStore';
+import { getErrorMessage } from '@/utils/error';
+import { roundToNearest } from '@/utils/pricing';
+import { storage } from '@/utils/storage';
 
 export const useSummaryActions = (
   publishStore: any,
@@ -56,7 +56,7 @@ export const useSummaryActions = (
       !departureTime ||
       !vehicleId
     )
-      return;
+      {return;}
     setIsPublishing(true);
     try {
       const dateObj = new Date(departureDate);

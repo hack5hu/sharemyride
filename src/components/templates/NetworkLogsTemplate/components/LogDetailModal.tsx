@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
-import { NetworkLog } from '@/store/useNetworkLoggerStore';
+import { type NetworkLog } from '@/store/useNetworkLoggerStore';
 import * as S from '../NetworkLogsTemplate.styles';
 
 export interface LogDetailModalProps {

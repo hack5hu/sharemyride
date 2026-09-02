@@ -1,8 +1,8 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useRoute, type RouteProp, useIsFocused } from '@react-navigation/native';
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { useRoute, RouteProp, useIsFocused } from '@react-navigation/native';
 import { useLocale } from '@/constants/localization';
-import { RootStackParamList } from '@/navigation/types.d';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { type RootStackParamList } from '@/navigation/types.d';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useVehicleStore } from '@/store/useVehicleStore';
 
@@ -14,6 +14,7 @@ export const getDefaultSelectedSeats = (
     // Excludes center seat 4 (2B)
     return new Set([2, 3, 5, 6, 7]);
   }
+
   // 5-seater: 2 (1A Front), 3 (2A Back Left), 5 (2C Back Right)
   // Excludes center seat 4 (2B)
   return new Set([2, 3, 5]);
@@ -46,6 +47,7 @@ export const useSeatSelection = () => {
       if (selectedSeatIds && selectedSeatIds.length > 0) {
         return new Set(selectedSeatIds);
       }
+
       return getDefaultSelectedSeats(publishVehicleType);
     },
   );
@@ -125,6 +127,7 @@ export const useSeatSelection = () => {
       } else {
         next.add(numId);
       }
+
       return next;
     });
   }, []);

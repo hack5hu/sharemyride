@@ -1,4 +1,4 @@
-import { UserReview } from './types';
+import { type UserReview } from './types';
 
 export const mapUserPreferences = (pref?: any): { icon: string; label: string }[] => {
   if (!pref) {
@@ -24,6 +24,7 @@ export const mapUserPreferences = (pref?: any): { icon: string; label: string }[
 
 export const mapUserReviews = (ratingsData: any): UserReview[] => {
   const validRatings = Array.isArray(ratingsData) ? ratingsData : [];
+
   return validRatings.map((r: any) => ({
     id: String(r.ratingId || Math.random()),
     reviewerName: r.raterName || 'Anonymous',

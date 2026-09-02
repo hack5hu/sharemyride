@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { Chip } from './Chip';
 import { View } from 'react-native';
+import { Chip } from './Chip';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Atoms/Chip',

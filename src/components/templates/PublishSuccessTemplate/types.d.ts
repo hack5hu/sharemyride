@@ -1,5 +1,5 @@
-import { DefaultTheme } from 'styled-components/native';
-import { PublishSuccessTranslations } from '@/constants/localization/types';
+import { type DefaultTheme } from 'styled-components/native';
+import { type PublishSuccessTranslations } from '@/constants/localization/types';
 
 export interface PublishSuccessTemplateProps {
   handleGoToMyRides: () => void;

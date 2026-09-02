@@ -5,11 +5,11 @@ import Animated, {
   SlideInDown,
   SlideOutDown,
 } from 'react-native-reanimated';
-import { useLocale } from '@/constants/localization';
-import { ReasonSelectorItem } from '@/components/molecules/ReasonSelectorItem';
 import { Button } from '@/components/atoms/Button';
+import { ReasonSelectorItem } from '@/components/molecules/ReasonSelectorItem';
+import { useLocale } from '@/constants/localization';
 import * as S from './CancelRideTemplate.styles';
-import { CancelRideTemplateProps } from './types.d';
+import { type CancelRideTemplateProps } from './types.d';
 
 const AnimatedBackdrop = Animated.createAnimatedComponent(S.Backdrop);
 const AnimatedContainer = Animated.createAnimatedComponent(
@@ -26,6 +26,7 @@ export const CancelRideTemplate: React.FC<CancelRideTemplateProps> = ({
   onDismiss,
 }) => {
   const { cancelRide } = useLocale();
+
   return (
     <S.Container>
       <S.OverlayContext>

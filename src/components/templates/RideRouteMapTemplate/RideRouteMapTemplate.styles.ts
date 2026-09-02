@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { moderateScale } from '@/styles';
 import { OlaMap } from '@/components/organisms/OlaMap';
+import { moderateScale } from '@/styles';
 
 export const Container = styled.View`
   flex: 1;

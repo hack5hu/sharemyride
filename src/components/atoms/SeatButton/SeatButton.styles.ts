@@ -1,6 +1,6 @@
+import LinearGradient from 'react-native-linear-gradient';
 import styled from 'styled-components/native';
 import { moderateScale, responsiveFont } from '@/styles';
-import LinearGradient from 'react-native-linear-gradient';
 
 export type SeatState = 'selected' | 'available' | 'driver' | 'occupied';
 
@@ -14,6 +14,7 @@ export const SeatTouchable = styled.TouchableOpacity<{ state: SeatState }>`
     if (state === 'driver') return theme.colors.surface_container_low;
     if (state === 'selected') return 'transparent';
     if (state === 'occupied') return theme.colors.surface_container_low;
+
     return `${theme.colors.primary}08`;
   }};
   border-width: ${({ state }) => (state === 'available' ? '1.5px' : '0px')};

@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { MessageStatusVariant } from '@/components/atoms/MessageStatus';
+import { type ReactNode } from 'react';
+import { type MessageStatusVariant } from '@/components/atoms/MessageStatus';
 
 export interface MessageBubbleProps {
   content: string | ReactNode;

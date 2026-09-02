@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ConfirmationModal } from '@/components/organisms/ConfirmationModal';
 import { useStallionUpdate, restart } from 'react-native-stallion';
+import { ConfirmationModal } from '@/components/organisms/ConfirmationModal';
 import { useLocale } from '@/constants/localization';
 
 export const StallionUpdateModal: React.FC = React.memo(() => {

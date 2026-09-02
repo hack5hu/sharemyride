@@ -1,5 +1,5 @@
 import { useChatStore } from '@/store/useChatStore';
-import { UserProfile } from '@/types/chat';
+import { type UserProfile } from '@/types/chat';
 import { Logger } from '@/utils/logger';
 import { UserService } from './UserService';
 
@@ -39,9 +39,11 @@ export const fetchChatUserProfile = async (
       phoneNumber: profile.phoneNumber || profile.phone,
     };
     upsertUser(userData);
+
     return userData;
   } catch (error) {
     Logger.error(`Failed to fetch profile for user ${userId}:`, error);
+
     return undefined;
   }
 };

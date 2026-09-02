@@ -1,12 +1,12 @@
 import React from 'react';
-import { useTheme } from 'styled-components/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { moderateScale, verticalScale } from '@/styles';
+import { useTheme } from 'styled-components/native';
 import { Button } from '@/components/atoms/Button';
-import { LocationOption } from '@/components/organisms/MiddleStopSearchOverlay';
-import { SnapResult } from '@/utils/routeSnap';
+import { type LocationOption } from '@/components/organisms/MiddleStopSearchOverlay';
+import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
+import { moderateScale, verticalScale } from '@/styles';
+import { type SnapResult } from '@/utils/routeSnap';
 import * as S from './StopConfirmCard.styles';
 
 export interface StopConfirmCardProps {

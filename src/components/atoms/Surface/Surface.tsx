@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyledSurface } from './Surface.styles';
-import { SurfaceProps } from './types';
+import { type SurfaceProps } from './types';
 
 export const Surface: React.FC<SurfaceProps> = ({
   children,

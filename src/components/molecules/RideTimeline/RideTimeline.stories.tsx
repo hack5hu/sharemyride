@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { RideTimeline } from './RideTimeline';
 import { View } from 'react-native';
+import { RideTimeline } from './RideTimeline';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/RideTimeline',

@@ -1,7 +1,67 @@
 module.exports = {
   root: true,
   extends: ['@react-native', 'plugin:storybook/recommended'],
+  plugins: ['import'],
   rules: {
+    // 0. Import Ordering (Normal/external packages first, then @/ aliases, then relative ./ ../ with blank lines)
+    'import/order': [
+      'warn',
+      {
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index',
+          'object',
+          'type',
+        ],
+        pathGroups: [
+          {
+            pattern: '@/**',
+            group: 'internal',
+            position: 'before',
+          },
+        ],
+        pathGroupsExcludedImportTypes: ['builtin', 'external'],
+        'newlines-between': 'never',
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        },
+      },
+    ],
+    'import/no-duplicates': 'warn',
+
+    // Consistent type imports
+    '@typescript-eslint/consistent-type-imports': [
+      'warn',
+      {
+        prefer: 'type-imports',
+        fixStyle: 'inline-type-imports',
+        disallowTypeAnnotations: false,
+      },
+    ],
+
+    // Clean JSX Self Closing Tags
+    'react/self-closing-comp': [
+      'warn',
+      {
+        component: true,
+        html: true,
+      },
+    ],
+
+    // Clean return spacing
+    'padding-line-between-statements': [
+      'warn',
+      { blankLine: 'always', prev: '*', next: 'return' },
+    ],
+
+    // Clean multi-line conditionals
+    curly: ['warn', 'multi-line'],
+
     // 1. Restrict RN Primitives & Forbidden Imports (View, Text, TouchableOpacity, TextInput, Image, FlatList, Alert, StyleSheet)
     'no-restricted-imports': [
       'error',

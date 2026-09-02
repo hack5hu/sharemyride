@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { FareCard } from './FareCard';
 import { View } from 'react-native';
+import { FareCard } from './FareCard';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/FareCard',

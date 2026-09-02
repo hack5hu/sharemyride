@@ -1,10 +1,10 @@
 /* eslint-disable max-lines */
 import React from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import styled, { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
+import { type TimelinePoint } from '@/screens/BookFlow/3_AvailableRides/types';
 import { moderateScale, scale, verticalScale } from '@/styles';
-import { TimelinePoint } from '@/screens/BookFlow/3_AvailableRides/types';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Container = styled.View`
   padding-top: ${verticalScale(6)}px;
@@ -141,6 +141,7 @@ export const RideTimeline: React.FC<{
     setCopiedIndex(index);
     setTimeout(() => setCopiedIndex(null), 2000);
   };
+
   return (
     <Container>
       {points.map((point, index) => (

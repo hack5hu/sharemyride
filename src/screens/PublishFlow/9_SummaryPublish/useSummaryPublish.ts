@@ -1,9 +1,9 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useMemo, useState } from 'react';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { formatDisplayAddress } from '@/utils/address';
-import { useSummaryMappers } from './useSummaryMappers';
 import { useSummaryActions } from './useSummaryActions';
+import { useSummaryMappers } from './useSummaryMappers';
 
 export const useSummaryPublish = () => {
   const navigation = useAppNavigation();
@@ -40,6 +40,7 @@ export const useSummaryPublish = () => {
     if (dateObj < new Date()) {
       return 'Please select a future date and time for your ride.';
     }
+
     return null;
   }, [departureDate, departureTime]);
 

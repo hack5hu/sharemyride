@@ -1,11 +1,11 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Typography } from '@/components/atoms/Typography';
 import { Button } from '@/components/atoms/Button';
+import { Typography } from '@/components/atoms/Typography';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { VehicleCard } from '@/components/molecules/VehicleCard/VehicleCard';
 import { ConfirmationModal } from '@/components/organisms/ConfirmationModal';
-import { VehicleListTemplateProps } from './types.d';
+import { type VehicleListTemplateProps } from './types.d';
 import * as S from './VehicleListTemplate.styles';
 
 export const VehicleListTemplate: React.FC<VehicleListTemplateProps> = ({

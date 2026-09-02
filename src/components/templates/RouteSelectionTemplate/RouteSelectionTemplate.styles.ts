@@ -1,8 +1,8 @@
-import styled from 'styled-components/native';
-import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
 import { Dimensions } from 'react-native';
-import { OlaMap } from '@/components/organisms/OlaMap';
 import LinearGradient from 'react-native-linear-gradient';
+import styled from 'styled-components/native';
+import { OlaMap } from '@/components/organisms/OlaMap';
+import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
 
 const { width } = Dimensions.get('window');
 

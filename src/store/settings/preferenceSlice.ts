@@ -1,5 +1,5 @@
-import { StateCreator } from 'zustand';
-import { SettingsStore, PreferenceSlice } from './types';
+import { type StateCreator } from 'zustand';
+import { type SettingsStore, type PreferenceSlice } from './types';
 
 export const createPreferenceSlice: StateCreator<
   SettingsStore,

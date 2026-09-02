@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 
 export const Container = styled.View`
@@ -62,6 +61,7 @@ export const StepDot = styled.View<{ variant: 'active' | 'done' | 'inactive' }>`
   background-color: ${({ theme, variant }) => {
     if (variant === 'active') return theme.colors.primary;
     if (variant === 'done') return theme.colors.primary_container;
+
     return `${theme.colors.outline_variant}4D`;
   }};
 `;

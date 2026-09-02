@@ -1,9 +1,8 @@
 import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { moderateScale } from '@/styles';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Button } from '@/components/atoms/Button';
-import { RequestTypeTemplateProps } from './types.d';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { moderateScale } from '@/styles';
 import {
   Content,
   TitleSection,
@@ -25,6 +24,7 @@ import {
   FloatingFooter,
   FooterGradient,
 } from './RequestTypeTemplate.styles';
+import { type RequestTypeTemplateProps } from './types.d';
 
 export const RequestTypeTemplate: React.FC<RequestTypeTemplateProps> =
   React.memo(

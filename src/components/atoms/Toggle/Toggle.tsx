@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Animated, TouchableWithoutFeedback } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import { Container, Knob } from './Toggle.styles';
-import { ToggleProps } from './types';
+import { type ToggleProps } from './types';
 
 export const Toggle: React.FC<ToggleProps> = ({
   value,

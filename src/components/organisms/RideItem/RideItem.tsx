@@ -1,8 +1,8 @@
 import React from 'react';
-import { UpcomingRideCard } from '@/components/organisms/UpcomingRideCard';
 import { CompactRideItem } from '@/components/molecules/CompactRideItem';
 import { MatchedRideBento } from '@/components/organisms/MatchedRideBento';
-import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
+import { type MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
+import { UpcomingRideCard } from '@/components/organisms/UpcomingRideCard';
 
 export interface RideListItem {
   id: string;
@@ -29,11 +29,11 @@ export interface RideListItem {
 interface RideItemProps {
   item: RideListItem;
   activeTab: MyRidesTab;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
+   
   onRidePress: (params: any) => void;
   onCancelRide: (id: string | number) => void;
   onRemoveDraft: (id: string) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
+   
   onChatPress?: (item: any) => void;
   onAcceptRide?: (id: string) => void;
   onRejectRide?: (id: string) => void;

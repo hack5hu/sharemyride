@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyledTag } from './Tag.styles';
-import { TagProps } from './types';
-import { Typography } from '../Typography';
 import { useTheme } from 'styled-components/native';
+import { Typography } from '../Typography';
+import { StyledTag } from './Tag.styles';
+import { type TagProps } from './types';
 
 export const Tag: React.FC<TagProps> = ({
   children,

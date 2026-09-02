@@ -1,19 +1,18 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
+import Geolocation from '@react-native-community/geolocation';
 import { StackNavigationProp } from '@react-navigation/stack';
+import debounce from 'lodash/debounce';
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
+import { AppState, type AppStateStatus, Platform, PermissionsAndroid } from 'react-native';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { RootStackParamList } from '@/navigation/types.d';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
+import { ChatService } from '@/serviceManager/ChatService';
 import {
   LocationService,
   OlaPrediction,
 } from '@/serviceManager/LocationService';
-import { Location } from '@/store/useLocationStore';
-import debounce from 'lodash/debounce';
-import { ChatService } from '@/serviceManager/ChatService';
-import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 import { useAuthStore } from '@/store/useAuthStore';
-import { AppState, AppStateStatus, Platform, PermissionsAndroid } from 'react-native';
-
-import Geolocation from '@react-native-community/geolocation';
+import { type Location } from '@/store/useLocationStore';
 import {
   requestLocationPermission,
   checkLocationServices,
@@ -226,6 +225,7 @@ export const useSelectLocation = () => {
       'change',
       handleAppStateChange,
     );
+
     return () => {
       subscription.remove();
     };
@@ -327,7 +327,7 @@ export const useSelectLocation = () => {
         isNaN(longitude) ||
         isNaN(latitude)
       )
-        return;
+        {return;}
 
       // Ignore exact 0,0 map initialization coordinates
       if (longitude === 0 && latitude === 0) return;

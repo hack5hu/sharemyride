@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button } from '@/components/atoms/Button';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { VehicleDetailsTemplateProps } from './types.d';
-import * as S from './VehicleDetailsTemplate.styles';
-import { VehicleHero } from './components/VehicleHero';
 import { BasicIdentitySection } from './components/BasicIdentitySection';
-import { VehicleTypeSection } from './components/VehicleTypeSection';
-import { ColorSection } from './components/ColorSection';
 import { CapacitySection } from './components/CapacitySection';
+import { ColorSection } from './components/ColorSection';
+import { VehicleHero } from './components/VehicleHero';
+import { VehicleTypeSection } from './components/VehicleTypeSection';
+import { type VehicleDetailsTemplateProps } from './types.d';
+import * as S from './VehicleDetailsTemplate.styles';
 
 export const VehicleDetailsTemplate: React.FC<VehicleDetailsTemplateProps> = ({
   formik,

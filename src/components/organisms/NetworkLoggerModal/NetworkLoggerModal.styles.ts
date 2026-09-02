@@ -1,10 +1,9 @@
-import styled from 'styled-components/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
-import { Typography } from '@/components/atoms/Typography';
-import { Box } from '@/components/atoms/Box';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import styled from 'styled-components/native';
+import { Box } from '@/components/atoms/Box';
+import { Typography } from '@/components/atoms/Typography';
+import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
 
 export const FloatingButton = styled.TouchableOpacity`
   position: absolute;

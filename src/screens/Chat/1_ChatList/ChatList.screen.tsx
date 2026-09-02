@@ -1,10 +1,10 @@
 import React from 'react';
-import { ChatListTemplate } from '@/components/templates/ChatListTemplate';
 import { SearchInput } from '@/components/molecules/SearchInput';
-import { RecentMessagesSection } from '@/components/organisms/RecentMessagesSection';
 import { BottomNav } from '@/components/organisms/BottomNav';
+import { RecentMessagesSection } from '@/components/organisms/RecentMessagesSection';
+import { ChatListTemplate } from '@/components/templates/ChatListTemplate';
+import { type ChatListScreenProps } from './types';
 import { useChatList } from './useChatList';
-import { ChatListScreenProps } from './types';
 
 export const ChatListScreen: React.FC<ChatListScreenProps> = ({
   navigation,

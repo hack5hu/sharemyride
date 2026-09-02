@@ -1,9 +1,9 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { type DefaultTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
-import { DefaultTheme } from 'styled-components/native';
-import { VehicleType } from '@/screens/Profile/VehicleDetails/types.d';
-import { VEHICLE_TYPES } from '@/constants/ride';
+import { type VEHICLE_TYPES } from '@/constants/ride';
+import { type VehicleType } from '@/screens/Profile/VehicleDetails/types.d';
 import * as S from '../VehicleDetailsTemplate.styles';
 
 interface VehicleTypeSectionProps {
@@ -54,6 +54,7 @@ export const VehicleTypeSection: React.FC<VehicleTypeSectionProps> = React.memo(
             .filter(v => v.type !== 'bike')
             .map(v => {
               const isSelected = selectedType === v.type;
+
               return (
                 <S.TypeCard
                   key={v.type}

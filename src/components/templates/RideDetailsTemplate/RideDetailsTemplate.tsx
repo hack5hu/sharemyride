@@ -1,11 +1,11 @@
 import React from 'react';
-import { MyRideDetailsTemplate } from '@/components/templates/MyRideDetailsTemplate';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Loader } from '@/components/atoms/Loader';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { CancelRideModal } from '@/components/organisms/CancelRideModal';
 import { ReportIssueModal } from '@/components/organisms/ReportIssueModal';
-import { RideDetailsTemplateProps } from './types.d';
+import { MyRideDetailsTemplate } from '@/components/templates/MyRideDetailsTemplate';
 import * as S from './RideDetailsTemplate.styles';
+import { type RideDetailsTemplateProps } from './types.d';
 
 export const RideDetailsTemplate: React.FC<RideDetailsTemplateProps> = ({
   ride,

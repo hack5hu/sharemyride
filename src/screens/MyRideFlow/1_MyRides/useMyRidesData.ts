@@ -1,14 +1,14 @@
-import { useState, useCallback, useEffect } from 'react';
 import { useIsFocused } from '@react-navigation/native';
-import { useMyRidesStore, RideCategory } from '@/store/useMyRidesStore';
+import { useState, useCallback, useEffect } from 'react';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { type MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
+import { NotificationType } from '@/constants/enums';
+import { useTranslation } from '@/hooks/useTranslation';
 import { RideService } from '@/serviceManager/RideService';
 import { useAuthStore } from '@/store/useAuthStore';
-import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
-import { Logger } from '@/utils/logger';
-import { useTranslation } from '@/hooks/useTranslation';
-import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
-import { NotificationType } from '@/constants/enums';
+import { useMyRidesStore, type RideCategory } from '@/store/useMyRidesStore';
 import { getErrorMessage } from '@/utils/error';
+import { Logger } from '@/utils/logger';
 
 export const TAB_TO_FILTER: Record<string, RideCategory | null> = {
   upcoming: 1,
@@ -31,9 +31,10 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
     if (response?.rides && Array.isArray(response.rides)) return response.rides;
     if (response?.data && Array.isArray(response.data)) return response.data;
     if (response?.content && Array.isArray(response.content))
-      return response.content;
+      {return response.content;}
     if (response?.requests && Array.isArray(response.requests))
-      return response.requests;
+      {return response.requests;}
+
     return [];
   };
 
@@ -54,6 +55,7 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
         Logger.log(
           `[MyRidesData] Using cached data for ${category} page ${page}`,
         );
+
         return;
       }
 
@@ -88,6 +90,7 @@ export const useMyRidesData = (activeTab: MyRidesTab) => {
           rideList = rideList.sort((a, b) => {
             const dateA = new Date(a.startTime || a.createdAt || 0).getTime();
             const dateB = new Date(b.startTime || b.createdAt || 0).getTime();
+
             return dateB - dateA;
           });
         }

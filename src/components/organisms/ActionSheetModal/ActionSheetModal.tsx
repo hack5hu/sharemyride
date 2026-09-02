@@ -1,16 +1,15 @@
 import React from 'react';
-
-import { ModalBackdrop } from '@/components/atoms/ModalBackdrop';
-import { Typography } from '@/components/atoms/Typography';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { ActionSheetModalProps } from './types.d';
+import { ModalBackdrop } from '@/components/atoms/ModalBackdrop';
+import { Typography } from '@/components/atoms/Typography';
 import {
   ModalContainer,
   TitleContainer,
   OptionItem,
   StyledPressable,
 } from './ActionSheetModal.styles';
+import { type ActionSheetModalProps } from './types.d';
 
 export const ActionSheetModal: React.FC<ActionSheetModalProps> = ({
   isVisible,

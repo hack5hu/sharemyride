@@ -1,5 +1,5 @@
 import React from 'react';
-import { SeatButton, SeatState } from '@/components/atoms/SeatButton';
+import { SeatButton, type SeatState } from '@/components/atoms/SeatButton';
 import {
   FloorPlanContainer,
   Windshield,
@@ -8,7 +8,7 @@ import {
   TrunkBar,
   Mirror,
 } from './CarFloorPlan.styles';
-import { SeatConfig } from './seatConfig';
+import { type SeatConfig } from './seatConfig';
 
 export interface CarFloorPlanProps {
   rows: SeatConfig[][];

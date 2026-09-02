@@ -1,5 +1,5 @@
-import styled from 'styled-components/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import styled from 'styled-components/native';
 import { scale, verticalScale, responsiveFont, moderateScale } from '@/styles';
 
 export const Container = styled.View`

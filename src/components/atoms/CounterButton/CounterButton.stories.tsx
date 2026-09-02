@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { CounterButton } from './CounterButton';
 import { View } from 'react-native';
+import { CounterButton } from './CounterButton';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Atoms/CounterButton',

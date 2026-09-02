@@ -1,13 +1,12 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { Button } from '@/components/atoms/Button';
 import { Input } from '@/components/atoms/Input';
 import { DobInput } from '@/components/molecules/DobInput';
 import { GenderSelector } from '@/components/molecules/GenderSelector';
-
-import { Button } from '@/components/atoms/Button';
-import { EditProfileTemplateProps } from './types.d';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import * as S from './EditProfileTemplate.styles';
+import { type EditProfileTemplateProps } from './types.d';
 
 export const EditProfileTemplate: React.FC<EditProfileTemplateProps> = ({
   formik,

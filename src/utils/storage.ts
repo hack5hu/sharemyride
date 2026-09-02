@@ -1,6 +1,6 @@
-import { StateStorage } from 'zustand/middleware';
-import { createMMKV } from 'react-native-mmkv';
 import { MMKV_ENCRYPTION_KEY } from '@env';
+import { createMMKV } from 'react-native-mmkv';
+import { type StateStorage } from 'zustand/middleware';
 
 const getEncryptionKey = (): string => {
   if (MMKV_ENCRYPTION_KEY) {

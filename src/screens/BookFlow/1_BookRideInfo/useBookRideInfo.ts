@@ -1,17 +1,17 @@
+import { useFocusEffect } from '@react-navigation/native';
+import { format, isBefore, startOfDay } from 'date-fns';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { BackHandler, ToastAndroid } from 'react-native';
-import { format, isBefore, startOfDay } from 'date-fns';
-import { useFocusEffect } from '@react-navigation/native';
-import { useLocale } from '@/constants/localization';
-import { useBookRideStore, RecentSearch } from '@/store/useBookRideStore';
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { RideService, SearchRidePayload } from '@/serviceManager/RideService';
-import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { useLocale } from '@/constants/localization';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useTranslation } from '@/hooks/useTranslation';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
+import { RideService, type SearchRidePayload } from '@/serviceManager/RideService';
+import { useBookRideStore, type RecentSearch } from '@/store/useBookRideStore';
 import { getErrorMessage } from '@/utils/error';
 import { storage } from '@/utils/storage';
-import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 
 let globalSessionPrompted = false;
 
@@ -108,6 +108,7 @@ export const useBookRideInfo = () => {
       if (isBefore(selectedDate, startOfDay(new Date()))) {
         store.setTravelDate(null);
         navigate('BookDateSelection');
+
         return;
       }
 
@@ -245,11 +246,11 @@ export const useBookRideInfo = () => {
       let rideList: any[] = [];
       if (Array.isArray(response)) rideList = response;
       else if (response?.rides && Array.isArray(response.rides))
-        rideList = response.rides;
+        {rideList = response.rides;}
       else if (response?.data && Array.isArray(response.data))
-        rideList = response.data;
+        {rideList = response.data;}
       else if (response?.content && Array.isArray(response.content))
-        rideList = response.content;
+        {rideList = response.content;}
 
       // Find completed rides (sorted by most recent)
       const completedRides = rideList.filter(
@@ -278,6 +279,7 @@ export const useBookRideInfo = () => {
       );
       if (isLocallyDismissed) {
         globalSessionPrompted = true;
+
         return;
       }
 
@@ -314,6 +316,7 @@ export const useBookRideInfo = () => {
             storage.set('dismissed_ratings', JSON.stringify(dismissedIds));
           }
           globalSessionPrompted = true;
+
           return;
         }
       } else {
@@ -329,6 +332,7 @@ export const useBookRideInfo = () => {
             storage.set('dismissed_ratings', JSON.stringify(dismissedIds));
           }
           globalSessionPrompted = true;
+
           return;
         }
       }
@@ -356,9 +360,11 @@ export const useBookRideInfo = () => {
           setTimeout(() => {
             backPressCount = 0;
           }, 2000);
+
           return true;
         } else {
           BackHandler.exitApp();
+
           return true;
         }
       };
@@ -426,6 +432,7 @@ export const useBookRideInfo = () => {
     globalSessionPrompted = true;
     if (!ratingPromptRide) {
       setIsRatingPromptVisible(false);
+
       return;
     }
     const targetRideId =

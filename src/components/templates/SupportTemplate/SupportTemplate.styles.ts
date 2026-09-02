@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { moderateScale, verticalScale } from '@/styles';
 import { Typography } from '@/components/atoms/Typography';
+import { moderateScale, verticalScale } from '@/styles';
 
 export const ContentScroll = styled.ScrollView.attrs({
   showsVerticalScrollIndicator: false,

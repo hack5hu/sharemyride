@@ -32,6 +32,7 @@ export const RideVehicleCard: React.FC<RideVehicleCardProps> = ({
 
   const capitalizeText = (str?: string): string => {
     if (!str) return '';
+
     return str
       .trim()
       .split(/\s+/)
@@ -59,6 +60,7 @@ export const RideVehicleCard: React.FC<RideVehicleCardProps> = ({
       '#000000': '#1e293b',
       '#ffffff': '#ffffff',
     };
+
     return colorMap[name] || name;
   };
 
@@ -87,6 +89,7 @@ export const RideVehicleCard: React.FC<RideVehicleCardProps> = ({
 
     if (friendlyMap[name]) return friendlyMap[name];
     if (name.startsWith('#')) return 'Colored';
+
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
   };
 

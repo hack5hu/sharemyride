@@ -1,7 +1,7 @@
-import styled from 'styled-components/native';
-import { scale, verticalScale } from '@/styles';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import styled from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
+import { scale, verticalScale } from '@/styles';
 
 export const Container = styled.View`
   flex: 1;

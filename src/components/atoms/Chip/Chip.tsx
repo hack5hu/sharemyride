@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography } from '@/components/atoms/Typography';
 import { Container } from './Chip.styles';
-import { ChipProps } from './types';
+import { type ChipProps } from './types';
 
 export const Chip: React.FC<ChipProps> = ({
   label,

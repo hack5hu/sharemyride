@@ -16,6 +16,7 @@ export const Chip = styled.View<{ color: string; selected: boolean }>`
   border-width: ${({ selected }) => (selected ? 3 : 1)}px;
   border-color: ${({ theme, selected, color }) => {
     if (selected) return theme.colors.primary;
+
     // For white/very light colors, show a subtle border
     return color.toLowerCase() === '#ffffff'
       ? theme.colors.outline_variant

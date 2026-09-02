@@ -6,9 +6,9 @@ import { InfoBar } from '@/components/molecules/InfoBar';
 import { IdentityProfileCard } from '@/components/organisms/IdentityProfileCard';
 import { PreferencesSection } from '@/components/organisms/PreferencesSection';
 import { ProfileSetupTemplate } from '@/components/templates/ProfileSetupTemplate';
-import { useProfileSetup } from './useProfileSetup';
-import { HeroSection } from './ProfileSetup.styles';
 import { verticalScale } from '@/styles';
+import { HeroSection } from './ProfileSetup.styles';
+import { useProfileSetup } from './useProfileSetup';
 
 export const ProfileSetupScreen: React.FC = () => {
   const { formik, t, handleFieldChange } = useProfileSetup();
@@ -19,6 +19,7 @@ export const ProfileSetupScreen: React.FC = () => {
       'hardwareBackPress',
       backAction,
     );
+
     return () => backHandler.remove();
   }, []);
 

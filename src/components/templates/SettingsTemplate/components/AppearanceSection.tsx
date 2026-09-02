@@ -1,8 +1,8 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { DefaultTheme } from 'styled-components/native';
+import { type DefaultTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
-import { SettingsTranslations } from '@/constants/localization/types';
+import { type SettingsTranslations } from '@/constants/localization/types';
 import * as S from '../SettingsTemplate.styles';
 
 export interface AppearanceSectionProps {

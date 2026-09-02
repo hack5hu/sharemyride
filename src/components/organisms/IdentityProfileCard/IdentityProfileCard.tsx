@@ -1,10 +1,10 @@
 import React from 'react';
-
-import { DobInput } from '../../molecules/DobInput';
+import { useTranslation } from '@/hooks/useTranslation';
+import { Input } from '../../atoms/Input';
 import { Surface } from '../../atoms/Surface';
 import { Typography } from '../../atoms/Typography';
-import { Input } from '../../atoms/Input';
 import { AvatarPicker } from '../../molecules/AvatarPicker';
+import { DobInput } from '../../molecules/DobInput';
 import { GenderSelector } from '../../molecules/GenderSelector';
 import {
   HeaderRow,
@@ -12,7 +12,6 @@ import {
   FormContainer,
   PresenceText,
 } from './IdentityProfileCard.styles';
-import { useTranslation } from '@/hooks/useTranslation';
 // Date utilities removed as they are no longer needed by DatePicker
 
 export interface ProfileFormValues {

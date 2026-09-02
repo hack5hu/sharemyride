@@ -1,13 +1,13 @@
 import { useCallback, useState, useEffect } from 'react';
 import { Alert, Clipboard, Linking, Platform } from 'react-native';
-import { useLocale } from '@/constants/localization';
-import { useBookRideStore } from '@/store/useBookRideStore';
-import { RideService } from '@/serviceManager/RideService';
-import { useRideDataMapper } from './useRideDataMapper';
-import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { useLocale } from '@/constants/localization';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { RideService } from '@/serviceManager/RideService';
+import { useBookRideStore } from '@/store/useBookRideStore';
 import { getErrorMessage } from '@/utils/error';
+import { useRideDataMapper } from './useRideDataMapper';
 
 export const useRideInformation = (
   rideId: string,

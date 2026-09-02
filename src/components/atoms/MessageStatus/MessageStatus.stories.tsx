@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { MessageStatus } from './MessageStatus';
 import { View } from 'react-native';
+import { MessageStatus } from './MessageStatus';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Atoms/MessageStatus',

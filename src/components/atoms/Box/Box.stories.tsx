@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { Box } from './Box';
 import { View } from 'react-native';
+import { Box } from './Box';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Atoms/Box',

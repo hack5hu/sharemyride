@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { mmkvStorage } from '@/utils/storage';
 import { RideService,
-  TravelPreferenceData,
+  type TravelPreferenceData,
 } from '@/serviceManager/RideService';
+import { mmkvStorage } from '@/utils/storage';
 
 interface TravelPrefStore {
   preferences: TravelPreferenceData;

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Platform } from 'react-native';
-import SpInAppUpdates, { IAUUpdateKind, StartUpdateOptions } from 'sp-react-native-in-app-updates';
 import DeviceInfo from 'react-native-device-info';
+import SpInAppUpdates, { IAUUpdateKind, type StartUpdateOptions } from 'sp-react-native-in-app-updates';
 import { Logger } from '@/utils/logger';
 
 export const useInAppUpdate = () => {
@@ -23,6 +23,7 @@ export const useInAppUpdate = () => {
               if (!isNaN(newNum) && !isNaN(curNum)) {
                 return newNum - curNum;
               }
+
               return newV.localeCompare(curV);
             },
           },

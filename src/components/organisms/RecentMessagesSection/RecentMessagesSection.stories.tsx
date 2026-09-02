@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { RecentMessagesSection } from './RecentMessagesSection';
 import { MessageStatus } from '@/constants/enums';
+import { RecentMessagesSection } from './RecentMessagesSection';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Organisms/RecentMessagesSection',

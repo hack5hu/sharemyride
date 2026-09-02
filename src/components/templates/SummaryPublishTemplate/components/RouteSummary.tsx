@@ -1,5 +1,7 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
+import { useTranslation } from '@/hooks/useTranslation';
+import { moderateScale } from '@/styles';
 import {
   GlassCard,
   SectionHeader,
@@ -17,8 +19,6 @@ import {
   EditButton,
   EditIcon,
 } from './RouteSummary.styles';
-import { moderateScale } from '@/styles';
-import { useTranslation } from '@/hooks/useTranslation';
 
 interface RouteSummaryProps {
   route: {
@@ -74,6 +74,7 @@ export const RouteSummary: React.FC<RouteSummaryProps> = ({
         {/* Middle Stops */}
         {(route.middleStops || []).map((stop, i) => {
           const isLastStop = i === (route.middleStops?.length || 0) - 1;
+
           return (
             <RouteRow key={`stop-${i}`}>
               <IndicatorColumn>

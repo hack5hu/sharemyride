@@ -1,21 +1,21 @@
 import React from 'react';
 import { Keyboard } from 'react-native';
-import { useTheme } from 'styled-components/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useLocale } from '@/constants/localization';
-import { Location } from '@/store/useLocationStore';
+import { useTheme } from 'styled-components/native';
+import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import {
   MiddleStopSearchOverlay,
-  LocationOption,
+  type LocationOption,
 } from '@/components/organisms/MiddleStopSearchOverlay';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
-import { SnapResult } from '@/utils/routeSnap';
-import * as S from './MiddleStopMapTemplate.styles';
+import { useLocale } from '@/constants/localization';
+import { type Location } from '@/store/useLocationStore';
+import { moderateScale } from '@/styles';
+import { type SnapResult } from '@/utils/routeSnap';
+import { MapLayerSection } from './components/MapLayerSection';
 import { StopConfirmCard } from './components/StopConfirmCard';
 import { StopSelectionPin } from './components/StopSelectionPin';
-import { MapLayerSection } from './components/MapLayerSection';
-import { moderateScale } from '@/styles';
+import * as S from './MiddleStopMapTemplate.styles';
 
 export interface MiddleStopMapTemplateProps {
   isSearching: boolean;

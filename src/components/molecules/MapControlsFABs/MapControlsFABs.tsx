@@ -1,7 +1,7 @@
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components/native';
-import { FABsContainer, FABControl, Separator } from './MapControlsFABs.styles';
 import { moderateScale } from '@/styles';
+import { FABsContainer, FABControl, Separator } from './MapControlsFABs.styles';
 
 export interface MapControlsFABsProps {
   onZoomIn?: () => void;

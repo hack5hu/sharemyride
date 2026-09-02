@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
 import { Typography } from '@/components/atoms/Typography';
+import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
 
 export const LogItemStyle = styled.TouchableOpacity<{ isError: boolean }>`
   padding: ${moderateScale(16)}px;
@@ -65,6 +65,7 @@ export const StatusBadgeStyle = styled.View<{ status: number | null }>`
     if (!status) return theme.colors.surface_variant;
     if (status >= 200 && status < 300) return '#e8f5e9';
     if (status >= 400) return theme.colors.error_container;
+
     return theme.colors.surface_variant;
   }};
 `;
@@ -74,6 +75,7 @@ export const StatusTextStyle = styled(Typography as any)<{ status: number | null
     if (!status) return theme.colors.on_surface_variant;
     if (status >= 200 && status < 300) return '#2e7d32';
     if (status >= 400) return theme.colors.on_error_container;
+
     return theme.colors.on_surface_variant;
   }};
   font-weight: bold;

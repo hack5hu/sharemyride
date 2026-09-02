@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
+import { OLA_API_KEY } from '@/constants/OlaStyle';
+import { moderateScale } from '@/styles';
 import {
   Container,
   MapWrapper,
@@ -11,9 +13,7 @@ import {
   Address,
   MarkerOverlay,
 } from './ChatMapPreview.styles';
-import { ChatMapPreviewProps } from './types.d';
-import { moderateScale } from '@/styles';
-import { OLA_API_KEY } from '@/constants/OlaStyle';
+import { type ChatMapPreviewProps } from './types.d';
 
 export const ChatMapPreview: React.FC<ChatMapPreviewProps> = ({
   latitude,

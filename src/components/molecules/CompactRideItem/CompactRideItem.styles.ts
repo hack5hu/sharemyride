@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
-import { scale, verticalScale, moderateScale } from '@/styles';
 import { Box } from '@/components/atoms/Box';
 import { Typography } from '@/components/atoms/Typography';
+import { scale, verticalScale, moderateScale } from '@/styles';
 
 export const Container = styled.TouchableOpacity<{ isDraft: boolean }>`
   flex-direction: row;

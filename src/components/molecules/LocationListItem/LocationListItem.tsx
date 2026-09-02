@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
+import { moderateScale } from '@/styles';
 import {
   Container,
   IconBox,
@@ -8,8 +9,7 @@ import {
   Title,
   SubAddress,
 } from './LocationListItem.styles';
-import { LocationListItemProps } from './types.d';
-import { moderateScale } from '@/styles';
+import { type LocationListItemProps } from './types.d';
 
 export const LocationListItem: React.FC<LocationListItemProps> = ({
   title,

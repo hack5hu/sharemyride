@@ -1,10 +1,9 @@
 import React, { useRef } from 'react';
-import { OtpInput as ThirdPartyOtpInput } from 'react-native-otp-entry';
-import { useTheme } from 'styled-components/native';
-import { Container } from './OtpInput.styles';
-import { scale } from '@/styles';
 import { Pressable } from 'react-native';
-import styled from 'styled-components/native';
+import { OtpInput as ThirdPartyOtpInput } from 'react-native-otp-entry';
+import styled, { useTheme } from 'styled-components/native';
+import { scale } from '@/styles';
+import { Container } from './OtpInput.styles';
 const Wrapper = styled(Pressable)`
   width: 100%;
 `;
@@ -25,7 +24,7 @@ export const OtpInput: React.FC<OtpInputProps> = ({
   disabled,
 }) => {
   const theme = useTheme();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
+   
   const otpRef = useRef<any>(null);
 
   const handlePress = () => {

@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-
 import { scale, verticalScale, moderateScale } from '@/styles';
 
 // Full-screen container that sits behind everything

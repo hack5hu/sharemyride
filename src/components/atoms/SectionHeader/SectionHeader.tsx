@@ -7,7 +7,7 @@ import {
   ActionButton,
   ActionText,
 } from './SectionHeader.styles';
-import { SectionHeaderProps } from './types.d';
+import { type SectionHeaderProps } from './types.d';
 
 export const SectionHeader: React.FC<SectionHeaderProps> = ({
   title,

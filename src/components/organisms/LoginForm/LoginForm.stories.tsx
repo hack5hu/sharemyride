@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { LoginForm } from './LoginForm';
 import { View } from 'react-native';
+import { LoginForm } from './LoginForm';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Organisms/LoginForm',

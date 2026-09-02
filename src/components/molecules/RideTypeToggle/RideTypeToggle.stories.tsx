@@ -1,8 +1,8 @@
+import { type Meta } from '@storybook/react-native';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { RideTypeToggle } from './RideTypeToggle';
-import { RideType } from './types.d';
-import { Meta } from '@storybook/react-native';
+import { type RideType } from './types.d';
 
 const wrapperStyle = { padding: 20 };
 
@@ -22,6 +22,7 @@ export default meta;
 
 export const Default = () => {
   const [selected, setSelected] = useState<RideType>('intercity');
+
   return (
     <RideTypeToggle
       selected={selected}

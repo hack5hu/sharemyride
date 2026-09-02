@@ -1,8 +1,8 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { RiderCardProps } from './types';
 import * as S from './RiderCard.styles';
+import { type RiderCardProps } from './types';
 
 export const RiderCard: React.FC<RiderCardProps> = ({
   name,

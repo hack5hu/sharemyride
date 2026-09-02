@@ -1,5 +1,5 @@
-import styled from 'styled-components/native';
 import { Animated } from 'react-native';
+import styled from 'styled-components/native';
 import { moderateScale } from '@/styles';
 
 export const Container = styled(Animated.View)`

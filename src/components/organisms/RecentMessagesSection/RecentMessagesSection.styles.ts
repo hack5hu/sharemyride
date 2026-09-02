@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { verticalScale, moderateScale } from '@/styles';
 import { Typography } from '@/components/atoms/Typography';
+import { verticalScale, moderateScale } from '@/styles';
 
 export const Container = styled.View`
   flex: 1;

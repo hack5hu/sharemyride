@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { AppState, AppStateStatus } from 'react-native';
-import { useAuthStore } from '@/store/useAuthStore';
+import { AppState, type AppStateStatus } from 'react-native';
 import { ChatService } from '@/serviceManager/ChatService';
+import { useAuthStore } from '@/store/useAuthStore';
 import { useChatStore } from '@/store/useChatStore';
 
 /**
@@ -38,6 +38,7 @@ export const useChatSocket = (isActive: boolean = true) => {
       'change',
       handleAppStateChange,
     );
+
     return () => {
       subscription.remove();
     };

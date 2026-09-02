@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { LocationBottomSheet } from './LocationBottomSheet';
 import { View } from 'react-native';
+import { LocationBottomSheet } from './LocationBottomSheet';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Organisms/LocationBottomSheet',

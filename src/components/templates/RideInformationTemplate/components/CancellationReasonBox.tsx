@@ -1,10 +1,10 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styled, { useTheme } from 'styled-components/native';
-import { Typography } from '@/components/atoms/Typography';
 import { Box } from '@/components/atoms/Box';
-import { moderateScale, verticalScale } from '@/styles';
+import { Typography } from '@/components/atoms/Typography';
 import { useLocale } from '@/constants/localization';
+import { moderateScale, verticalScale } from '@/styles';
 
 interface CancellationReasonBoxProps {
   cancellationReason: string;

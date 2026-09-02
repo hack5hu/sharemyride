@@ -1,21 +1,13 @@
-import React, { useMemo } from 'react';
 import {
   createStackNavigator,
   type StackNavigationOptions,
   type StackCardStyleInterpolator,
 } from '@react-navigation/stack';
+import React, { useMemo } from 'react';
 import { useTheme } from 'styled-components/native';
+import { useInAppUpdate } from '@/hooks/useInAppUpdate';
 import { LoginScreen } from '@/screens/Auth/Login';
 import { OTPVerificationScreen } from '@/screens/Auth/OTPVerification/OTPVerification.screen';
-import { ProfileSetupScreen } from '@/screens/Profile/ProfileSetup';
-import { ProfileHubScreen } from '@/screens/Profile/ProfileHub';
-import { UserProfileDetailScreen } from '@/screens/Common/UserProfileDetail';
-import { UserRatingsScreen } from '@/screens/Common/UserRatings';
-import { DummyScreen } from '@/screens/Common/Dummy';
-import { TermsAndConditionsScreen } from '@/screens/Support/TermsAndConditions';
-import { AboutUsScreen } from '@/screens/Support/AboutUs';
-import { HelpAndSupportScreen } from '@/screens/Support/HelpAndSupport';
-import { EditProfileScreen } from '@/screens/Profile/EditProfile';
 import { TravelPreferencesScreen } from '@/screens/Profile/TravelPreferences';
 import { VehicleListScreen } from '@/screens/Profile/VehicleList';
 import { VehicleDetailsScreen } from '@/screens/Profile/VehicleDetails';
@@ -48,9 +40,17 @@ import { BookDateSelectionScreen } from '@/screens/BookFlow/2_BookDateSelection/
 import AvailableRidesScreen from '@/screens/BookFlow/3_AvailableRides';
 import RideRouteMapScreen from '@/screens/BookFlow/5_RideRouteMap';
 import { BookSeatSelectionScreen } from '@/screens/BookFlow/6_BookSeatSelection';
+import { DummyScreen } from '@/screens/Common/Dummy';
+import { UserProfileDetailScreen } from '@/screens/Common/UserProfileDetail';
+import { UserRatingsScreen } from '@/screens/Common/UserRatings';
+import { EditProfileScreen } from '@/screens/Profile/EditProfile';
+import { ProfileHubScreen } from '@/screens/Profile/ProfileHub';
+import { ProfileSetupScreen } from '@/screens/Profile/ProfileSetup';
 import { RatingScreen } from '@/screens/Rating';
+import { AboutUsScreen } from '@/screens/Support/AboutUs';
+import { HelpAndSupportScreen } from '@/screens/Support/HelpAndSupport';
 import { SuggestionsScreen } from '@/screens/Support/Suggestions';
-import { useInAppUpdate } from '@/hooks/useInAppUpdate';
+import { TermsAndConditionsScreen } from '@/screens/Support/TermsAndConditions';
 
 const Stack = createStackNavigator<RootStackParamList>();
 

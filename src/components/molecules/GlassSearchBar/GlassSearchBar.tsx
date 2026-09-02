@@ -1,13 +1,13 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
+import { moderateScale } from '@/styles';
 import {
   Container,
   StyledInput,
   LocationButton,
 } from './GlassSearchBar.styles';
-import { GlassSearchBarProps } from './types.d';
-import { moderateScale } from '@/styles';
+import { type GlassSearchBarProps } from './types.d';
 
 export const GlassSearchBar: React.FC<GlassSearchBarProps> = ({
   value,

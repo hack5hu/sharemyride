@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from '@/hooks/useTranslation';
 import {
   Container,
   TopSection,
@@ -8,8 +9,7 @@ import {
   TabButton,
   TabLabel,
 } from './MyRidesHeader.styles';
-import { MyRidesHeaderProps, MyRidesTab } from './types.d';
-import { useTranslation } from '@/hooks/useTranslation';
+import { type MyRidesHeaderProps, type MyRidesTab } from './types.d';
 
 export const MyRidesHeader: React.FC<MyRidesHeaderProps> = ({
   activeTab,

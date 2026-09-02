@@ -1,9 +1,9 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { Container, PinCircle, PinStem } from './MapPin.styles';
-import { MapPinProps } from './types.d';
 import { moderateScale } from '@/styles';
+import { Container, PinCircle, PinStem } from './MapPin.styles';
+import { type MapPinProps } from './types.d';
 
 export const MapPin: React.FC<MapPinProps> = ({ isVisible = true }) => {
   const theme = useTheme();

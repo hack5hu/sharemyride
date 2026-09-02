@@ -1,4 +1,4 @@
-import { Vehicle } from '@/store/useVehicleStore';
+import { type Vehicle } from '@/store/useVehicleStore';
 
 export interface VehicleListState {
   vehicles: Vehicle[];

@@ -1,18 +1,18 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useState, useMemo } from 'react';
 import { useFormik } from 'formik';
+import { useState, useMemo } from 'react';
 import * as Yup from 'yup';
-import {
-  ProfileUpdateData,
-  UserService,
-} from '@/serviceManager/UserService';
-import { useTranslation } from '@/hooks/useTranslation';
-import { useAuthStore } from '@/store/useAuthStore';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useTranslation } from '@/hooks/useTranslation';
+import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
+import {
+  type ProfileUpdateData,
+  UserService,
+} from '@/serviceManager/UserService';
+import { useAuthStore } from '@/store/useAuthStore';
 import { getErrorMessage } from '@/utils/error';
 import { Logger } from '@/utils/logger';
-import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 
 export interface EditProfileFormValues {
   fullName: string;
@@ -38,6 +38,7 @@ export const useEditProfile = () => {
     if (parts.length === 3) {
       return `${parts[2]}/${parts[1]}/${parts[0]}`;
     }
+
     return '';
   }, [user?.dateOfBirth]);
 
@@ -82,6 +83,7 @@ export const useEditProfile = () => {
   const formattedPhone = useMemo(() => {
     if (!user?.phoneNumber) return '';
     const phone = user.phoneNumber.replace(/^\+91/, '');
+
     return `+91 ${phone.slice(0, 5)} ${phone.slice(5)}`;
   }, [user?.phoneNumber]);
 
@@ -134,6 +136,7 @@ export const useEditProfile = () => {
           setTimeout(() => {
             navigation.goBack();
           }, 1000);
+
           return;
         }
 

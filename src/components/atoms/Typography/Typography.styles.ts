@@ -1,10 +1,10 @@
 import styled from 'styled-components/native';
 import { responsiveFont } from '@/styles';
 import {
-  TypographyProps,
-  TypographyVariant,
-  TypographySize,
-  TypographyWeight,
+  type TypographyProps,
+  type TypographyVariant,
+  type TypographySize,
+  type TypographyWeight,
 } from './types';
 
 const getFontSize = (variant: TypographyVariant, size: TypographySize) => {
@@ -15,6 +15,7 @@ const getFontSize = (variant: TypographyVariant, size: TypographySize) => {
     body: { xxs: 8, xs: 10, sm: 12, md: 14, lg: 16, xl: 18 },
     label: { xxs: 8, xs: 9, sm: 10, md: 11, lg: 12, xl: 14 },
   };
+
   return responsiveFont(sizes[variant][size]);
 };
 
@@ -29,6 +30,7 @@ const getFontWeight = (
       semibold: '600',
       bold: '700',
     };
+
     return weights[weight];
   }
 
@@ -40,6 +42,7 @@ const getFontWeight = (
     body: '400',
     label: '500',
   };
+
   return defaults[variant];
 };
 
@@ -57,6 +60,7 @@ export const StyledText = styled.Text<StyledTextProps>`
     if ($color && $color in theme.colors) {
       return theme.colors[$color as keyof typeof theme.colors];
     }
+
     return $color || theme.colors.on_surface;
   }};
   text-align: ${({ align = 'left' }) => align};

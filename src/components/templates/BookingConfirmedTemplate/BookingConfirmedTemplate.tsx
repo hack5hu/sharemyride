@@ -1,15 +1,15 @@
 import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
 import { Button } from '@/components/atoms/Button';
+import { Typography } from '@/components/atoms/Typography';
 import { VerifiedBadge } from '@/components/atoms/VerifiedBadge';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { moderateScale } from '@/styles';
 import * as S from './BookingConfirmedTemplate.styles';
-import { BookingConfirmedTemplateProps } from './types.d';
 import { BookingDetailCard } from './components/BookingDetailCard';
+import { type BookingConfirmedTemplateProps } from './types.d';
 
 export const BookingConfirmedTemplate: React.FC<
   BookingConfirmedTemplateProps

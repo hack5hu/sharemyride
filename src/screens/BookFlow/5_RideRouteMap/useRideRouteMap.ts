@@ -1,9 +1,9 @@
+import { type CameraRef } from '@maplibre/maplibre-react-native';
 import { useCallback, useMemo, useState, useRef, useEffect } from 'react';
 import { Linking } from 'react-native';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { CameraRef } from '@maplibre/maplibre-react-native';
-import { decodePolyline, getBoundingBox } from '@/utils/polyline';
 import { LocationService } from '@/serviceManager/LocationService';
+import { decodePolyline, getBoundingBox } from '@/utils/polyline';
 
 const findClosestCoordinateIndex = (
   pt: [number, number],
@@ -20,6 +20,7 @@ const findClosestCoordinateIndex = (
       closestIndex = i;
     }
   }
+
   return closestIndex;
 };
 
@@ -138,6 +139,7 @@ export const useRideRouteMap = (
     };
 
     fetchDirections();
+
     return () => {
       active = false;
     };
@@ -145,9 +147,10 @@ export const useRideRouteMap = (
 
   const initialPoint = useMemo(() => {
     if (destination)
-      return { lat: destination.latitude, lon: destination.longitude };
+      {return { lat: destination.latitude, lon: destination.longitude };}
     if (initialStopIndex !== undefined && stops && stops[initialStopIndex])
-      return stops[initialStopIndex];
+      {return stops[initialStopIndex];}
+
     return stops && stops.length > 0
       ? stops[0]
       : { lat: 12.9716, lon: 77.5946 };
@@ -539,6 +542,7 @@ export const useRideRouteMap = (
         ]);
       }
     }
+
     return null;
   }, [
     initialStopIndex,
@@ -573,6 +577,7 @@ export const useRideRouteMap = (
         });
       }
     }, 200);
+
     return () => clearTimeout(timer);
   }, [
     initialStopIndex,

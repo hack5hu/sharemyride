@@ -13,6 +13,7 @@ export const isTablet = SCREEN_WIDTH >= 768;
  */
 export const scale = (size: number) => {
   const newSize = (SCREEN_WIDTH / BASE_WIDTH) * size;
+
   return Math.round(PixelRatio.roundToNearestPixel(newSize));
 };
 
@@ -21,6 +22,7 @@ export const scale = (size: number) => {
  */
 export const verticalScale = (size: number) => {
   const newSize = (SCREEN_HEIGHT / BASE_HEIGHT) * size;
+
   return Math.round(PixelRatio.roundToNearestPixel(newSize));
 };
 
@@ -30,6 +32,7 @@ export const verticalScale = (size: number) => {
  */
 export const moderateScale = (size: number, factor = 0.5) => {
   const newSize = size + (scale(size) - size) * factor;
+
   return Math.round(PixelRatio.roundToNearestPixel(newSize));
 };
 
@@ -40,5 +43,6 @@ export const responsiveSize = moderateScale;
 
 export const responsiveFont = (size: number) => {
   const factor = isTablet ? 0.3 : 0.4; // Scale fonts less on tablets to prevent giant text
+
   return moderateScale(size, factor);
 };

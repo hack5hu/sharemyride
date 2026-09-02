@@ -1,5 +1,5 @@
-import React from 'react';
-import { ViewStyle } from 'react-native';
+import { type ViewStyle } from 'react-native';
+import type React from 'react';
 
 export interface FixedFooterProps {
   /** Optional extra bottom padding beyond safe-area inset (defaults to verticalScale(16)) */

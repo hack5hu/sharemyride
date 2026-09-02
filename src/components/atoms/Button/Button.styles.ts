@@ -1,7 +1,7 @@
-import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
+import styled from 'styled-components/native';
 import { scale, verticalScale } from '@/styles';
-import { ButtonVariant } from './types';
+import { type ButtonVariant } from './types';
 
 export const StyledButton = styled.TouchableOpacity`
   width: 100%;

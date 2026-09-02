@@ -1,11 +1,11 @@
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { useCallback, useMemo } from 'react';
-import { useTranslation } from '@/hooks/useTranslation';
-import { useAuthStore } from '@/store/useAuthStore';
-import { UserService } from '@/serviceManager/UserService';
+import * as Yup from 'yup';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { useTranslation } from '@/hooks/useTranslation';
+import { UserService } from '@/serviceManager/UserService';
+import { useAuthStore } from '@/store/useAuthStore';
 import { getErrorMessage } from '@/utils/error';
 
 export const useProfileSetup = () => {

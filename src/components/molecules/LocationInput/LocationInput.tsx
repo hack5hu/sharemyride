@@ -1,9 +1,8 @@
 import React from 'react';
-
+import { useTranslation } from '@/hooks/useTranslation';
 import { Input } from '../../atoms/Input';
 import { Tag } from '../../atoms/Tag';
 import { Container, TagRow } from './LocationInput.styles';
-import { useTranslation } from '@/hooks/useTranslation';
 
 export interface LocationInputProps {
   label: string;

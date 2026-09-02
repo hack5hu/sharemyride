@@ -1,8 +1,18 @@
 import React, { useRef, useEffect } from 'react';
 import { Animated, Keyboard } from 'react-native';
 import { useTheme } from 'styled-components/native';
-import { useLocale } from '@/constants/localization';
+import { UserLocationMarker } from '@/components/atoms/UserLocationMarker';
+import { type LocationDetailsCardProps } from '@/components/molecules/LocationDetailsCard';
+import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import {
+  type MapSearchOverlayProps,
+  MapSearchOverlay,
+} from '@/components/organisms/MapSearchOverlay';
 import { Camera, UserLocation } from '@/components/organisms/OlaMap';
+import { useLocale } from '@/constants/localization';
+import { moderateScale, verticalScale } from '@/styles';
+import { LocationSelectCard } from './components/LocationSelectCard';
 import {
   PinContainer,
   PinWrapper,
@@ -14,16 +24,6 @@ import {
   PreviewIcon,
   MapPinIcon,
 } from './MapPickerTemplate.styles';
-import {
-  MapSearchOverlayProps,
-  MapSearchOverlay,
-} from '@/components/organisms/MapSearchOverlay';
-import { LocationDetailsCardProps } from '@/components/molecules/LocationDetailsCard';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
-import { moderateScale, verticalScale } from '@/styles';
-import { UserLocationMarker } from '@/components/atoms/UserLocationMarker';
-import { LocationSelectCard } from './components/LocationSelectCard';
 
 interface ExtendedUserLocationProps
   extends React.ComponentProps<typeof UserLocation> {

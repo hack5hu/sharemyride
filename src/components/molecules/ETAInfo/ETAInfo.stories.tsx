@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { ETAInfo } from './ETAInfo';
 import { View } from 'react-native';
+import { ETAInfo } from './ETAInfo';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/ETAInfo',

@@ -1,12 +1,12 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useState, useCallback, useEffect } from 'react';
-import { useFormik } from 'formik';
 import { useFocusEffect } from '@react-navigation/native';
-import { AuthService } from '@/serviceManager/AuthService';
+import { useFormik } from 'formik';
+import { useState, useCallback, useEffect } from 'react';
 import { Keyboard, Platform } from 'react-native';
-import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useTranslation } from '@/hooks/useTranslation';
+import { AuthService } from '@/serviceManager/AuthService';
 import { getErrorMessage } from '@/utils/error';
 // import { useTruecallerLogin } from './useTruecallerLogin';
 

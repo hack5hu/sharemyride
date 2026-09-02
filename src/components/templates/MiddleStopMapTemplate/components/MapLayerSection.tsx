@@ -1,14 +1,14 @@
 import React from 'react';
 import { Keyboard } from 'react-native';
 import { useTheme } from 'styled-components/native';
-import { Location } from '@/store/useLocationStore';
 import {
   Camera,
   GeoJSONSource,
   Layer,
   Marker,
 } from '@/components/organisms/OlaMap';
-import { SnapResult } from '@/utils/routeSnap';
+import { type Location } from '@/store/useLocationStore';
+import { type SnapResult } from '@/utils/routeSnap';
 import * as S from './MapLayerSection.styles';
 import { StyledOlaMap } from './MapLayerSection.styles';
 

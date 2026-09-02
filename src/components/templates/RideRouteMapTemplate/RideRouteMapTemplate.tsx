@@ -1,25 +1,25 @@
 import React from 'react';
 import { Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'styled-components/native';
+import { Button } from '@/components/atoms/Button';
+import { UserLocationMarker } from '@/components/atoms/UserLocationMarker';
+import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import {
   Camera,
   UserLocation,
   ViewAnnotation,
 } from '@/components/organisms/OlaMap';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
-import { UserLocationMarker } from '@/components/atoms/UserLocationMarker';
 import { useLocale } from '@/constants/localization';
-import * as S from './RideRouteMapTemplate.styles';
-import { RideRouteMapTemplateProps } from './types.d';
-import { Button } from '@/components/atoms/Button';
+import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
 import { RouteMapLayers } from './components/RouteMapLayers';
 import {
   RouteMarkerCallout,
-  RouteMarkerData,
+  type RouteMarkerData,
 } from './components/RouteMarkerCallout';
+import * as S from './RideRouteMapTemplate.styles';
+import { type RideRouteMapTemplateProps } from './types.d';
 
 interface ExtendedUserLocationProps
   extends React.ComponentProps<typeof UserLocation> {

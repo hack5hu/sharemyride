@@ -1,7 +1,7 @@
 import React from 'react';
+import { BottomNav } from '@/components/organisms/BottomNav';
 import { LocationSelectionTemplate } from '@/components/templates/LocationSelectionTemplate';
 import { useLocationSelection } from './useLocationSelection';
-import { BottomNav } from '@/components/organisms/BottomNav';
 
 export const LocationSelectionScreen: React.FC = () => {
   const {

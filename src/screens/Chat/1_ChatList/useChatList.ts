@@ -1,10 +1,10 @@
-import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { useTranslation } from '@/hooks/useTranslation';
-import { useChatStore } from '@/store/useChatStore';
-import { useAuthStore } from '@/store/useAuthStore';
+import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { useChatSocket } from '@/hooks/useChatSocket';
+import { useTranslation } from '@/hooks/useTranslation';
 import { ChatService } from '@/serviceManager/ChatService';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useChatStore } from '@/store/useChatStore';
 import { parseChatTimestamp } from '@/utils/date';
 import { mapConversationToListItem } from './chatListHelper';
 
@@ -34,7 +34,7 @@ export const useChatList = () => {
   const loadMore = useCallback(async (targetPage?: number) => {
     const pageToFetch = targetPage !== undefined ? targetPage : pageRef.current;
     if (isLoadingRef.current || (!hasMoreRef.current && targetPage === undefined))
-      return;
+      {return;}
 
     isLoadingRef.current = true;
     setIsLoading(true);

@@ -2,6 +2,7 @@ import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
+import { moderateScale } from '@/styles';
 import {
   BottomSheetContainer,
   CardSurface,
@@ -16,7 +17,6 @@ import {
   SelectButton,
   SelectButtonText,
 } from './LocationDetailsCard.styles';
-import { moderateScale } from '@/styles';
 
 export interface LocationDetailsCardProps {
   locationName?: string;

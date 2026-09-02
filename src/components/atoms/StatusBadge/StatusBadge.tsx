@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, LabelText } from './StatusBadge.styles';
-import { StatusBadgeProps } from './types.d';
+import { type StatusBadgeProps } from './types.d';
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({
   label,

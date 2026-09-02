@@ -1,9 +1,11 @@
 /* eslint-disable max-lines */
 import React, { useState } from 'react';
 import { useTheme } from 'styled-components/native';
-import { Typography } from '@/components/atoms/Typography';
+import { Box } from '@/components/atoms/Box';
+import { type CategoryIconVariant } from '@/components/atoms/CategoryIcon';
 import { IconButton } from '@/components/atoms/IconButton';
 import { ModalBackdrop } from '@/components/atoms/ModalBackdrop';
+import { Typography } from '@/components/atoms/Typography';
 import { CategoryButton } from '@/components/molecules/CategoryButton';
 import { TrustInfoBar } from '@/components/molecules/TrustInfoBar';
 import { useLocale } from '@/constants/localization';
@@ -21,9 +23,7 @@ import {
   ActionModalGradientBtn as GradientBtn,
   ActionModalCancelButton as CancelButton,
 } from '@/styles/ActionModalStyles';
-import { ReportIssueModalProps } from './types.d';
-import { CategoryIconVariant } from '@/components/atoms/CategoryIcon';
-import { Box } from '@/components/atoms/Box';
+import { type ReportIssueModalProps } from './types.d';
 
 export const ReportIssueModal: React.FC<ReportIssueModalProps> = ({
   isVisible,

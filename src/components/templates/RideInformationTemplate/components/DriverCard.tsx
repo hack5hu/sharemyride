@@ -1,8 +1,8 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
+import { Typography } from '@/components/atoms/Typography';
 import { VerifiedBadge } from '@/components/atoms/VerifiedBadge';
 import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';

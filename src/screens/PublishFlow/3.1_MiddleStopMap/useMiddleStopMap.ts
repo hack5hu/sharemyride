@@ -1,26 +1,26 @@
+import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle';
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useRidePublishStore } from '@/store/useRidePublishStore';
-import { useLocationStore, Location } from '@/store/useLocationStore';
-import {
-  LocationService,
-  OlaPrediction,
-} from '@/serviceManager/LocationService';
-import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import Toast from 'react-native-toast-message';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { type LocationOption } from '@/components/organisms/MiddleStopSearchOverlay';
 import { NotificationType } from '@/constants/enums';
 import { useLocale } from '@/constants/localization';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import {
+  LocationService,
+  type OlaPrediction,
+} from '@/serviceManager/LocationService';
+import { useLocationStore, type Location } from '@/store/useLocationStore';
+import { useRidePublishStore } from '@/store/useRidePublishStore';
+import { Logger } from '@/utils/logger';
+import { getBoundingBox } from '@/utils/polyline';
 import {
   snapToRoute,
   buildRouteLineGeoJSON,
   buildConnectorLine,
-  SnapResult,
+  type SnapResult,
 } from '@/utils/routeSnap';
-import { getBoundingBox } from '@/utils/polyline';
-import { LocationOption } from '@/components/organisms/MiddleStopSearchOverlay';
-import debounce from 'lodash/debounce';
-import throttle from 'lodash/throttle';
-import { Logger } from '@/utils/logger';
 
 const EMPTY_HISTORY: Location[] = [];
 
@@ -79,6 +79,7 @@ export const useMiddleStopMap = () => {
     if (routeBounds[0] === 0 && routeBounds[2] === 0) {
       return [77.5946, 12.9716]; // Fallback: Bengaluru
     }
+
     return [
       (routeBounds[0] + routeBounds[2]) / 2,
       (routeBounds[1] + routeBounds[3]) / 2,
@@ -90,6 +91,7 @@ export const useMiddleStopMap = () => {
     const startName = startLocation?.name || startLocation?.address || '';
     const destName =
       destinationLocation?.name || destinationLocation?.address || '';
+
     return `${startName} → ${destName}`;
   }, [startLocation, destinationLocation]);
 
@@ -109,6 +111,7 @@ export const useMiddleStopMap = () => {
       selectedLocation.longitude,
       selectedLocation.latitude,
     ];
+
     return buildConnectorLine(from, snapResult.snappedPoint);
   }, [selectedLocation, snapResult]);
 
@@ -117,6 +120,7 @@ export const useMiddleStopMap = () => {
     debounce(async (query: string) => {
       if (query.trim().length <= 2) {
         setSearchResults([]);
+
         return;
       }
       setIsLoading(true);
@@ -139,6 +143,7 @@ export const useMiddleStopMap = () => {
               );
               loc.distanceFromRoute = snap.distanceKm;
             }
+
             return loc;
           },
         );
@@ -282,6 +287,7 @@ export const useMiddleStopMap = () => {
   // Distance text for display
   const distanceText = useMemo(() => {
     if (!snapResult) return '';
+
     return t.distanceFromRoute.replace(
       '{{distance}}',
       String(snapResult.distanceKm),
@@ -332,6 +338,7 @@ export const useMiddleStopMap = () => {
         tStops.duplicateStopTitle,
         tStops.duplicateStopMsg,
       );
+
       return;
     }
 
@@ -414,7 +421,8 @@ export const useMiddleStopMap = () => {
         setSelectedLocation(prev => {
           if (!prev) return null;
           if (prev.latitude === latitude && prev.longitude === longitude)
-            return prev;
+            {return prev;}
+
           return {
             ...prev,
             latitude,
@@ -546,7 +554,7 @@ export const useMiddleStopMap = () => {
   const handleMapPress = useCallback(
     async (feature: any) => {
       if (!feature || !feature.geometry || !feature.geometry.coordinates)
-        return;
+        {return;}
       const [longitude, latitude] = feature.geometry.coordinates;
 
       Toast.hide();

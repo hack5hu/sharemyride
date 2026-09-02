@@ -1,13 +1,13 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useTranslation } from '@/hooks/useTranslation';
 import { useCallback, useState, useEffect, useMemo } from 'react';
-import { useAuthStore } from '@/store/useAuthStore';
-import { launchImageLibrary } from 'react-native-image-picker';
 import { Linking, Platform } from 'react-native';
-import { UserService } from '@/serviceManager/UserService';
-import { computeTotalRides } from '@/utils/user';
+import { launchImageLibrary } from 'react-native-image-picker';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useTranslation } from '@/hooks/useTranslation';
+import { UserService } from '@/serviceManager/UserService';
+import { useAuthStore } from '@/store/useAuthStore';
+import { computeTotalRides } from '@/utils/user';
 
 export const useProfileHub = () => {
   const { t } = useTranslation();
@@ -154,6 +154,7 @@ export const useProfileHub = () => {
         return date.getFullYear();
       }
     }
+
     return 2026;
   }, [user?.createdAt]);
 

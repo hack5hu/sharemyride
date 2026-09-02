@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { moderateScale } from '@/styles';
 import { Typography } from '@/components/atoms/Typography';
+import { moderateScale } from '@/styles';
 
 export const CardContainer = styled.TouchableOpacity<{ active?: boolean }>`
   flex: 1;

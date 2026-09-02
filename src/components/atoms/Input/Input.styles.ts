@@ -17,6 +17,7 @@ export const InputWrapper = styled.View<{
   background-color: ${({ theme, isFocused, hasError }) => {
     if (hasError) return theme.colors.error_container;
     if (isFocused) return theme.colors.surface_container_lowest;
+
     return theme.colors.surface_container;
   }};
   border-radius: ${({ theme }) => theme.roundness.md}px;

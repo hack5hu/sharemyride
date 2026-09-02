@@ -1,7 +1,7 @@
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import LinearGradient from 'react-native-linear-gradient';
 import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale } from '@/styles';
-import LinearGradient from 'react-native-linear-gradient';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 export const ActionModalContainer = styled.View`
   width: 92%;

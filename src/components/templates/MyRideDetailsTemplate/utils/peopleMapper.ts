@@ -1,6 +1,6 @@
-import { MappedDriverData, MappedPassengerData } from './rideMapper';
-import { storage } from '@/utils/storage';
 import { getCityName } from '@/utils/address';
+import { storage } from '@/utils/storage';
+import { type MappedDriverData, type MappedPassengerData } from './rideMapper';
 
 interface Passenger {
   bookingId?: string;

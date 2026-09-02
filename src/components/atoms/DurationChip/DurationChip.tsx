@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChipContainer, ChipText } from './DurationChip.styles';
-import { DurationChipProps } from './types.d';
+import { type DurationChipProps } from './types.d';
 
 export const DurationChip: React.FC<DurationChipProps> = ({
   label,

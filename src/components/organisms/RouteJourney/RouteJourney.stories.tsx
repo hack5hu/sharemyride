@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { RouteJourney } from './RouteJourney';
 import { View } from 'react-native';
+import { RouteJourney } from './RouteJourney';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Organisms/RouteJourney',

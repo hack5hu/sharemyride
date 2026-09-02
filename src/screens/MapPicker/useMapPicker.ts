@@ -1,19 +1,18 @@
+import { useRoute, type RouteProp, useFocusEffect } from '@react-navigation/native';
+import debounce from 'lodash/debounce';
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { useRoute, RouteProp, useFocusEffect } from '@react-navigation/native';
 import { BackHandler } from 'react-native';
-import { RootStackParamList } from '@/navigation/types';
-import { Location, useLocationStore } from '@/store/useLocationStore';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { type RootStackParamList } from '@/navigation/types';
 import {
   LocationService,
-  OlaPrediction,
+  type OlaPrediction,
 } from '@/serviceManager/LocationService';
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useBookRideStore } from '@/store/useBookRideStore';
-import debounce from 'lodash/debounce';
-import { Logger } from '@/utils/logger';
+import { type Location, useLocationStore } from '@/store/useLocationStore';
+import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { formatDisplayAddress } from '@/utils/address';
-
+import { Logger } from '@/utils/logger';
 import { requestLocationPermission, checkGpsAndPrompt } from '@/utils/permissionUtils';
 
 const DEFAULT_REGION = {
@@ -69,6 +68,7 @@ export const useMapPicker = () => {
 
     // Small delay to ensure Activity is attached on Android
     const timer = setTimeout(requestPermission, 500);
+
     return () => clearTimeout(timer);
   }, []);
 
@@ -79,8 +79,10 @@ export const useMapPicker = () => {
         if (isMapVisible) {
           setIsMapVisible(false);
           setSelectedLocation(null);
+
           return true; // Intercepted
         }
+
         return false; // Let navigation handle it
       };
 
@@ -88,6 +90,7 @@ export const useMapPicker = () => {
         'hardwareBackPress',
         onBackPress,
       );
+
       return () => subscription.remove();
     }, [isMapVisible]),
   );
@@ -208,6 +211,7 @@ export const useMapPicker = () => {
           store.setDestinationLocation(location);
         }
         navigation.pop();
+
         return;
       }
 
@@ -297,6 +301,7 @@ export const useMapPicker = () => {
   const handleConfirmLocation = useCallback(() => {
     if (!selectedLocation) {
       navigation.pop();
+
       return;
     }
 

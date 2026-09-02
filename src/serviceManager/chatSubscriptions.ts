@@ -1,12 +1,12 @@
-import { Client, IMessage } from '@stomp/stompjs';
+import { type Client, type IMessage } from '@stomp/stompjs';
 import { MessageStatus, MessageType } from '@/constants/enums';
 import {
   useChatStore,
   getConversationIdForMessage,
 } from '@/store/useChatStore';
-import { ChatMessage } from '@/types/chat';
-import { Logger } from '@/utils/logger';
+import { type ChatMessage } from '@/types/chat';
 import { parseChatTimestamp } from '@/utils/date';
+import { Logger } from '@/utils/logger';
 import { fetchChatUserProfile } from './chatProfile';
 import { NotificationService } from './NotificationService';
 
@@ -42,6 +42,7 @@ const parseMessage = <T>(msg: IMessage): T | null => {
     return JSON.parse(msg.body) as T;
   } catch (error) {
     Logger.error('Failed to parse socket payload:', error);
+
     return null;
   }
 };
@@ -65,6 +66,7 @@ const linkPendingMessage = (data: StatusMessage): boolean => {
         data.messageId,
         data.status,
       );
+
       return true;
     }
   }

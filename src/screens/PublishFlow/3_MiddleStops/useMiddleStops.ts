@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
-import { useRidePublishStore } from '@/store/useRidePublishStore';
-import { LocationService } from '@/serviceManager/LocationService';
+import { useCallback, useEffect, useState } from 'react';
 import { useAppNavigation } from '@/hooks/useAppNavigation'; // ensure custom navigation hook is used
-import { decodePolyline, getBoundingBox } from '@/utils/polyline';
+import { LocationService } from '@/serviceManager/LocationService';
+import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { formatDisplayAddress } from '@/utils/address';
+import { decodePolyline, getBoundingBox } from '@/utils/polyline';
 
 export const useMiddleStops = () => {
   const navigation = useAppNavigation(); // use custom navigation hook per guidelines
@@ -46,6 +46,7 @@ export const useMiddleStops = () => {
   const handleContinuePress = useCallback(async () => {
     if (!startLocation || !destinationLocation) {
       navigation.navigate('DateSelection' as any);
+
       return;
     }
 
@@ -147,6 +148,7 @@ export const useMiddleStops = () => {
     const computeTotal = async () => {
       if (!startLocation || !destinationLocation) {
         setTotalDistanceMeters(null);
+
         return;
       }
       try {

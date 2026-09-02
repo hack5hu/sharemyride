@@ -1,8 +1,8 @@
 import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
+import { type BookRideInfoTranslations } from '@/constants/localization/types';
 import { moderateScale } from '@/styles';
-import { BookRideInfoTranslations } from '@/constants/localization/types';
 import * as S from './LocationStepper.styles';
 
 export interface LocationStepperProps {

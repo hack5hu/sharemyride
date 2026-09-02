@@ -52,7 +52,7 @@ export interface MappedRideDetails {
   isCompleted: boolean;
 }
 
-import { MyRideDetailsData, MyRideStop } from '../types.d';
+import { type MyRideDetailsData, type MyRideStop } from '../types.d';
 
 interface MyRideTranslations {
   common: {
@@ -181,6 +181,7 @@ export const mapRideDetailsData = (
     if (prefs.musicPreference) {
       list.push(`music:${prefs.musicPreference}`);
     }
+
     return list;
   })();
 
@@ -191,6 +192,7 @@ export const mapRideDetailsData = (
   const isArchived = (() => {
     if (!ride) return false;
     const status = ride.rideStatus || ride.status;
+
     return (
       status === RideStatus.COMPLETED ||
       status === RideStatus.CANCELLED ||
@@ -201,6 +203,7 @@ export const mapRideDetailsData = (
   const isCompleted = (() => {
     if (!ride) return false;
     const status = ride.rideStatus || ride.status;
+
     return status === RideStatus.COMPLETED;
   })();
 

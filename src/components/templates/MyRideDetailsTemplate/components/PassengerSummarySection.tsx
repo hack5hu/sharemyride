@@ -1,6 +1,6 @@
 import React from 'react';
-import { useTheme } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { moderateScale } from '@/styles';
 import * as S from '../MyRideDetailsTemplate.styles';

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Animated } from 'react-native';
-import { useTheme } from 'styled-components/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useTheme } from 'styled-components/native';
 import { moderateScale, verticalScale } from '@/styles';
 import * as S from './StopSelectionPin.styles';
 

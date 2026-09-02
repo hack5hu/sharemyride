@@ -1,3 +1,6 @@
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import { useTheme } from 'styled-components/native';
+import { moderateScale } from '@/styles';
 import {
   StyledAvatar,
   AvatarImage,
@@ -6,11 +9,8 @@ import {
   StatusBadge,
   VerifiedBadge,
 } from './Avatar.styles';
-import { AvatarProps } from './types';
+import { type AvatarProps } from './types';
 import { Typography } from '../Typography';
-import { useTheme } from 'styled-components/native';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { moderateScale } from '@/styles';
 
 export const Avatar: React.FC<AvatarProps> = ({
   source,
@@ -41,9 +41,7 @@ export const Avatar: React.FC<AvatarProps> = ({
     const hasSource =
       source &&
       (typeof source === 'number' ||
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
         ((source as any).uri &&
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
           !(source as any).uri.includes('ui-avatars.com')));
 
     if (hasSource) {
@@ -66,6 +64,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       if (!name) return 'U';
       const parts = name.trim().split(' ');
       if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+
       return (
         parts[0].charAt(0) + parts[parts.length - 1].charAt(0)
       ).toUpperCase();

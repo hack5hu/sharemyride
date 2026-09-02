@@ -1,8 +1,8 @@
-import { useState, useCallback, useMemo } from 'react';
 import { format } from 'date-fns';
-import { MonthData } from '@/components/templates/DateSelectionTemplate';
-import { useBookRideStore } from '@/store/useBookRideStore';
+import { useState, useCallback, useMemo } from 'react';
+import { type MonthData } from '@/components/templates/DateSelectionTemplate';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useBookRideStore } from '@/store/useBookRideStore';
 
 const getMonthsData = (): MonthData[] => {
   const today = new Date();

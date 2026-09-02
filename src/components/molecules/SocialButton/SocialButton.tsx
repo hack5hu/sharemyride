@@ -2,7 +2,7 @@ import React from 'react';
 import IconMCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Typography } from '../../atoms/Typography';
 import { StyledSocialButton, IconImage } from './SocialButton.styles';
-import { SocialButtonProps } from './types';
+import { type SocialButtonProps } from './types';
 
 export const SocialButton: React.FC<SocialButtonProps> = ({
   provider,

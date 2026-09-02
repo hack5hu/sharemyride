@@ -1,13 +1,11 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useCallback, useEffect, useState } from 'react';
 import { useIsFocused } from '@react-navigation/native';
-import { useVehicleStore } from '@/store/useVehicleStore';
-import { UseVehicleListReturn } from './types.d';
-
-import { useLocale } from '@/constants/localization';
-
+import { useCallback, useEffect, useState } from 'react';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { useLocale } from '@/constants/localization';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useVehicleStore } from '@/store/useVehicleStore';
+import { type UseVehicleListReturn } from './types.d';
 
 export const useVehicleList = (): UseVehicleListReturn => {
   const navigation = useAppNavigation();

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Location } from './useLocationStore';
+import { type Location } from './useLocationStore';
 
 export interface RouteLeg {
   distanceMeters: number;

@@ -3,7 +3,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '../../atoms/Typography';
 import { StyledInfoBox, IconContainer } from './InfoBox.styles';
-import { InfoBoxProps } from './types';
+import { type InfoBoxProps } from './types';
 
 export const InfoBox: React.FC<InfoBoxProps> = ({ children, style }) => {
   const theme = useTheme();

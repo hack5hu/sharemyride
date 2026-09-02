@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { RideComfortSection } from './RideComfortSection';
 import { View } from 'react-native';
+import { RideComfortSection } from './RideComfortSection';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Organisms/RideComfortSection',

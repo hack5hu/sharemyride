@@ -1,9 +1,9 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { Container, Label } from './MapActionFAB.styles';
-import { MapActionFABProps } from './types.d';
 import { moderateScale } from '@/styles';
+import { Container, Label } from './MapActionFAB.styles';
+import { type MapActionFABProps } from './types.d';
 
 export const MapActionFAB: React.FC<MapActionFABProps> = ({
   onPress,

@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { TouchableOpacityProps, ViewStyle } from 'react-native';
+import { type ReactNode } from 'react';
+import { type TouchableOpacityProps, type ViewStyle } from 'react-native';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost';
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { Toggle } from './Toggle';
 import { View } from 'react-native';
+import { Toggle } from './Toggle';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Atoms/Toggle',

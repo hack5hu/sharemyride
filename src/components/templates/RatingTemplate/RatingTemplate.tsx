@@ -1,16 +1,15 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
 import { Button } from '@/components/atoms/Button';
 import { Input } from '@/components/atoms/Input';
+import { Typography } from '@/components/atoms/Typography';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-
-import * as S from './RatingTemplate.styles';
-import { RatingTemplateProps } from './types';
 import { moderateScale, verticalScale } from '@/styles';
-import { Platform } from 'react-native';
+import * as S from './RatingTemplate.styles';
+import { type RatingTemplateProps } from './types';
 
 export const RatingTemplate: React.FC<RatingTemplateProps> = React.memo(
   ({
@@ -77,6 +76,7 @@ export const RatingTemplate: React.FC<RatingTemplateProps> = React.memo(
                 {/* Rating Categories */}
                 {categories.map(cat => {
                   const currentRating = ratings[cat.key] || 0;
+
                   return (
                     <S.CategoryCard key={cat.key}>
                       <Typography

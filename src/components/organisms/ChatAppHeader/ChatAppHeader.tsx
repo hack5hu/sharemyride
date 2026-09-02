@@ -1,9 +1,10 @@
 import React from 'react';
-import { useTheme } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useTheme } from 'styled-components/native';
 import { Avatar } from '@/components/atoms/Avatar';
-import { Typography } from '@/components/atoms/Typography';
 import { IconButton } from '@/components/atoms/IconButton';
+import { Typography } from '@/components/atoms/Typography';
+import { moderateScale } from '@/styles';
 import {
   Container,
   ProfileInfo,
@@ -14,8 +15,7 @@ import {
   PulseDot,
   Actions,
 } from './ChatAppHeader.styles';
-import { ChatAppHeaderProps } from './types.d';
-import { moderateScale } from '@/styles';
+import { type ChatAppHeaderProps } from './types.d';
 
 export const ChatAppHeader: React.FC<ChatAppHeaderProps> = ({
   name,

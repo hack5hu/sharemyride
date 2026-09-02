@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
+import { type Location } from '@/store/useLocationStore';
+import { moderateScale } from '@/styles';
 import {
   OverlayContainer,
   SearchInputContainer,
@@ -15,8 +17,6 @@ import {
   ResultTitle,
   ResultSubtitle,
 } from './MapSearchOverlay.styles';
-import { moderateScale } from '@/styles';
-import { Location } from '@/store/useLocationStore';
 
 export interface MapSearchOverlayProps {
   onBackPress: () => void;
@@ -39,7 +39,7 @@ export const MapSearchOverlay: React.FC<MapSearchOverlayProps> = ({
   const theme = useTheme();
   const { mapPicker } = useLocale();
   const [isFocused, setIsFocused] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
+   
   const inputRef = React.useRef<any>(null);
 
   // The list is hidden (condensed) when the parent says so (map is showing)

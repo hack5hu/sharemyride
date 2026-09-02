@@ -1,4 +1,4 @@
-import { RatingTranslations } from '@/constants/localization/types';
+import { type RatingTranslations } from '@/constants/localization/types';
 
 export interface RatingTemplateProps {
   t: RatingTranslations;

@@ -1,9 +1,9 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { IconContainer } from './MessageStatus.styles';
-import { MessageStatusProps } from './types.d';
 import { moderateScale } from '@/styles';
+import { IconContainer } from './MessageStatus.styles';
+import { type MessageStatusProps } from './types.d';
 
 export const MessageStatus: React.FC<MessageStatusProps> = ({
   status,
@@ -31,6 +31,7 @@ export const MessageStatus: React.FC<MessageStatusProps> = ({
     if (color) return color;
     if (status?.toLowerCase() === 'read') return theme.colors.read_receipt; // Classic blue for read receipts
     if (status?.toLowerCase() === 'failed') return theme.colors.error;
+
     return theme.colors.on_surface_variant;
   };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { UserRatingsTemplate } from '@/components/templates/UserRatingsTemplate';
+import { type UserRatingsScreenProps } from './types';
 import { useUserRatings } from './useUserRatings';
-import { UserRatingsScreenProps } from './types';
 
 export const UserRatingsScreen: React.FC<UserRatingsScreenProps> = React.memo(
   ({ route }) => {

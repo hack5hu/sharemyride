@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useMyRidesStore } from '@/store/useMyRidesStore';
-import { useRidePublishStore } from '@/store/useRidePublishStore';
-import { RideService } from '@/serviceManager/RideService';
-import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useTranslation } from '@/hooks/useTranslation';
+import { RideService } from '@/serviceManager/RideService';
+import { useMyRidesStore } from '@/store/useMyRidesStore';
+import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { getErrorMessage } from '@/utils/error';
 
 export const useMyRidesActions = (
@@ -29,14 +29,14 @@ export const useMyRidesActions = (
       const s = draftState;
       if (s.startLocation) publishStore.setStartLocation(s.startLocation);
       if (s.destinationLocation)
-        publishStore.setDestinationLocation(s.destinationLocation);
+        {publishStore.setDestinationLocation(s.destinationLocation);}
       if (s.middleStops) publishStore.setMiddleStops(s.middleStops);
       if (s.departureDate) publishStore.setDepartureDate(s.departureDate);
       if (s.departureTime) publishStore.setDepartureTime(s.departureTime);
       if (s.seatCount) publishStore.setSeatCount(s.seatCount);
       if (s.selectedSeatIds) publishStore.setSelectedSeatIds(s.selectedSeatIds);
       if (s.publishVehicleType)
-        publishStore.setPublishVehicleType(s.publishVehicleType);
+        {publishStore.setPublishVehicleType(s.publishVehicleType);}
       if (s.vehicleDetails) publishStore.setVehicleDetails(s.vehicleDetails);
       if (s.vehicleId) publishStore.setVehicleId(s.vehicleId);
       if (s.preferences) publishStore.setPreferences(s.preferences);

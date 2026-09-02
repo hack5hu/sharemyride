@@ -1,4 +1,5 @@
 import React from 'react';
+import { MessageStatus } from '@/components/atoms/MessageStatus';
 import {
   Container,
   BubbleWrapper,
@@ -7,8 +8,7 @@ import {
   Footer,
   Timestamp,
 } from './MessageBubble.styles';
-import { MessageBubbleProps } from './types.d';
-import { MessageStatus } from '@/components/atoms/MessageStatus';
+import { type MessageBubbleProps } from './types.d';
 
 export const MessageBubble: React.FC<MessageBubbleProps> = React.memo(
   ({ content, timestamp, isSender, status, onPress }) => {

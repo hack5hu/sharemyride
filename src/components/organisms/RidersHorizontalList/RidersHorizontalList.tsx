@@ -1,8 +1,8 @@
 import React from 'react';
-import { useLocale } from '@/constants/localization';
 import { RiderCard } from '@/components/molecules/RiderCard';
-import { RidersHorizontalListProps } from './types';
+import { useLocale } from '@/constants/localization';
 import * as S from './RidersHorizontalList.styles';
+import { type RidersHorizontalListProps } from './types';
 
 export const RidersHorizontalList: React.FC<RidersHorizontalListProps> = ({
   riders,

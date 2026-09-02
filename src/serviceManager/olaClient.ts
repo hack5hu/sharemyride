@@ -1,13 +1,12 @@
-import axios from 'axios';
+import axios, { type InternalAxiosRequestConfig, type AxiosError } from 'axios';
 import { OLA_API_KEY } from '@/constants/OlaStyle';
-import { Logger } from '@/utils/logger';
 import { useNetworkLoggerStore } from '@/store/useNetworkLoggerStore';
+import { Logger } from '@/utils/logger';
 import {
   isNetworkLoggerEnabled,
   redactSensitiveData,
   sanitizeHeaders,
 } from '@/utils/networkSecurity';
-import { InternalAxiosRequestConfig, AxiosError } from 'axios';
 import { storage } from '@/utils/storage';
 
 interface TrackedRequestConfig extends InternalAxiosRequestConfig {
@@ -49,6 +48,7 @@ const getCachedResponse = (key: string): unknown | null => {
   } catch (error) {
     Logger.error('[Ola Maps Cache] Failed to read from MMKV:', error);
   }
+
   return null;
 };
 

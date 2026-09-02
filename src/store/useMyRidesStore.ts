@@ -49,6 +49,7 @@ export const useMyRidesStore = create<MyRidesState>()(
                 ? { ...d, state, savedAt: new Date().toISOString() }
                 : d,
             );
+
             return { drafts: newDrafts };
           } else {
             return {
@@ -77,6 +78,7 @@ export const useMyRidesStore = create<MyRidesState>()(
           if (category === 2 && finalData.length > 10) {
             finalData = finalData.slice(0, 10);
           }
+
           return {
             rides: {
               ...state.rides,
@@ -141,6 +143,7 @@ export const useMyRidesStore = create<MyRidesState>()(
           const newData = categoryData.data.filter(
             ride => (ride.id || ride.bookingId) !== id,
           );
+
           return {
             rides: {
               ...state.rides,

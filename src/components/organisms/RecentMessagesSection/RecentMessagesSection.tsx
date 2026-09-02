@@ -1,19 +1,18 @@
-import React, { useCallback } from 'react';
 import { FlashList } from '@shopify/flash-list';
-import { useTranslation } from '@/hooks/useTranslation';
+import React, { useCallback } from 'react';
+import { EmptyState } from '@/components/molecules/EmptyState';
 import {
   MessageItem,
-  MessageItemProps,
+  type MessageItemProps,
 } from '@/components/molecules/MessageItem';
-
+import { useTranslation } from '@/hooks/useTranslation';
+import { verticalScale } from '@/styles';
 import {
   Container,
   TitleContainer,
   SectionTitle,
 } from './RecentMessagesSection.styles';
-import { RecentMessagesSectionProps } from './types';
-import { verticalScale } from '@/styles';
-import { EmptyState } from '@/components/molecules/EmptyState';
+import { type RecentMessagesSectionProps } from './types';
 
 export const RecentMessagesSection: React.FC<RecentMessagesSectionProps> =
   React.memo(({ messages, onMessagePress, onLoadMore, isLoading }) => {

@@ -1,6 +1,6 @@
+import LinearGradient from 'react-native-linear-gradient';
 import styled from 'styled-components/native';
 import { moderateScale, verticalScale, responsiveFont } from '@/styles';
-import LinearGradient from 'react-native-linear-gradient';
 
 export const MonthContainer = styled.View`
   margin-bottom: ${verticalScale(40)}px;
@@ -89,6 +89,7 @@ export const DayText = styled.Text<{
   color: ${({ theme, isSelected, isDisabled }) => {
     if (isSelected) return theme.colors.on_primary;
     if (isDisabled) return theme.colors.outline_variant;
+
     return theme.colors.on_surface;
   }};
 `;

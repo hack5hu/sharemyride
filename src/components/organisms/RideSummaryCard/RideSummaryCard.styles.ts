@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { verticalScale, moderateScale, scale } from '@/styles';
 import { Typography } from '@/components/atoms/Typography';
+import { verticalScale, moderateScale, scale } from '@/styles';
 
 export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};

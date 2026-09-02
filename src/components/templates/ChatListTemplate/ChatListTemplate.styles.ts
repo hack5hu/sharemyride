@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-
 import { verticalScale, scale } from '@/styles';
 
 export const SafeAreaContainer = styled.View`

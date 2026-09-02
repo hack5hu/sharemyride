@@ -15,6 +15,7 @@ export const selectBySize = <T>(values: {
   if (isLargeDevice && values.large !== undefined) return values.large;
   if (isMediumDevice && values.medium !== undefined) return values.medium;
   if (isSmallDevice && values.small !== undefined) return values.small;
+
   return values.default;
 };
 

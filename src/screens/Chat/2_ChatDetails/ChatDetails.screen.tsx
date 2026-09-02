@@ -1,19 +1,19 @@
 import React, { useCallback, useMemo } from 'react';
-import { ChatDetailsTemplate } from '@/components/templates/ChatDetailsTemplate';
-import { ChatAppHeader } from '@/components/organisms/ChatAppHeader';
-import { MessageBubble } from '@/components/molecules/MessageBubble';
-import { ChatInputSection } from '@/components/organisms/ChatInputSection';
-import { useChatDetails } from './useChatDetails';
-import { ChatDetailsScreenProps } from './types';
-import { ReportIssueModal } from '@/components/organisms/ReportIssueModal';
-import { ChatMapPreview } from '@/components/molecules/ChatMapPreview';
 import { Typography } from '@/components/atoms/Typography';
+import { ChatMapPreview } from '@/components/molecules/ChatMapPreview';
+import { MessageBubble } from '@/components/molecules/MessageBubble';
+import { ChatAppHeader } from '@/components/organisms/ChatAppHeader';
+import { ChatInputSection } from '@/components/organisms/ChatInputSection';
+import { ReportIssueModal } from '@/components/organisms/ReportIssueModal';
+import { ChatDetailsTemplate } from '@/components/templates/ChatDetailsTemplate';
 import { ConnectionStatus } from '@/constants/enums';
 import {
   ConnectionBanner,
   DateHeaderContainer,
   DateHeaderPill,
 } from './ChatDetails.styles';
+import { type ChatDetailsScreenProps } from './types';
+import { useChatDetails } from './useChatDetails';
 
 export const ChatDetailsScreen: React.FC<ChatDetailsScreenProps> = ({
   navigation,

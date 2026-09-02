@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { TextProps, TextStyle } from 'react-native';
+import { type ReactNode } from 'react';
+import { type TextProps, type TextStyle } from 'react-native';
 
 export type TypographyVariant =
   | 'display'

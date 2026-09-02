@@ -3,9 +3,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { SectionHeader } from '@/components/atoms/SectionHeader';
 import { Typography } from '@/components/atoms/Typography';
-import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
+import { type MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
 import { useTranslation } from '@/hooks/useTranslation';
-import { RideListItem } from '@/screens/MyRideFlow/1_MyRides/types.d';
+import { type RideListItem } from '@/screens/MyRideFlow/1_MyRides/types.d';
 import { moderateScale } from '@/styles';
 import {
   Container,

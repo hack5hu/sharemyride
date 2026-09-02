@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
+import { VehicleListTemplate } from '@/components/templates/VehicleListTemplate';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useVehicleList } from './useVehicleList';
-import { VehicleListTemplate } from '@/components/templates/VehicleListTemplate';
 
 export const VehicleListScreen: React.FC = () => {
   const { t } = useTranslation();

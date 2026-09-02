@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { PreferencesSection } from './PreferencesSection';
 import { View } from 'react-native';
+import { PreferencesSection } from './PreferencesSection';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Organisms/PreferencesSection',

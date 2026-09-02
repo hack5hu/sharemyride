@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { mmkvStorage } from '@/utils/storage';
-import { Location } from './useLocationStore';
+import { type Location } from './useLocationStore';
 
 export interface RecentSearch {
   id: string;
@@ -101,6 +101,7 @@ export const useBookRideStore = create<BookRideState>()(
               s.destinationLocation.address !==
                 search.destinationLocation.address,
           );
+
           return {
             recentSearches: [newSearch, ...filtered].slice(0, 5), // Keep last 5
           };

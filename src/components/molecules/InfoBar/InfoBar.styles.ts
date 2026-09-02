@@ -1,10 +1,10 @@
 import styled from 'styled-components/native';
 import { moderateScale } from '@/styles';
-import { InfoBarVariant } from './types';
+import { type InfoBarVariant } from './types';
 
 export const StyledInfoBar = styled.View<{
   variant: InfoBarVariant;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
+   
   colors: any;
 }>`
   flex-direction: row;

@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { ViewStyle } from 'react-native';
+import { type ReactNode } from 'react';
+import { type ViewStyle } from 'react-native';
 
 export type SurfaceElevation = 'lowest' | 'low' | 'medium' | 'high';
 export type SurfaceRounded = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';

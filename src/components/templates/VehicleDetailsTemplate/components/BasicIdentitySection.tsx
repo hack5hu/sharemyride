@@ -1,9 +1,9 @@
+import { type FormikProps } from 'formik';
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { type DefaultTheme } from 'styled-components/native';
 import { Input } from '@/components/atoms/Input';
-import { DefaultTheme } from 'styled-components/native';
-import { FormikProps } from 'formik';
-import { VehicleDetailsState } from '@/screens/Profile/VehicleDetails/types.d';
+import { type VehicleDetailsState } from '@/screens/Profile/VehicleDetails/types.d';
 import * as S from '../VehicleDetailsTemplate.styles';
 
 interface BasicIdentitySectionProps {

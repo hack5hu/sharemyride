@@ -1,5 +1,5 @@
-import { MessageStatus } from '@/types/chat';
-import { DefaultTheme } from 'styled-components/native';
+import { type DefaultTheme } from 'styled-components/native';
+import { type MessageStatus } from '@/types/chat';
 
 export const getMessageStatusIcon = (
   status: MessageStatus,

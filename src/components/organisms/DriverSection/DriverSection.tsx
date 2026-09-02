@@ -2,8 +2,8 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
-import { DriverSectionProps } from './types';
 import * as S from './DriverSection.styles';
+import { type DriverSectionProps } from './types';
 
 export const DriverSection: React.FC<DriverSectionProps> = ({
   name,

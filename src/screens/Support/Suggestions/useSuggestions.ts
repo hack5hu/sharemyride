@@ -1,14 +1,14 @@
 import { useState, useCallback, useEffect } from 'react';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { useLocale } from '@/constants/localization';
-import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { type Ticket } from '@/components/templates/SuggestionsTemplate/types.d';
 import {
   NotificationType,
   TicketStatus,
-  TicketCategory,
+  type TicketCategory,
 } from '@/constants/enums';
-import { Ticket } from '@/components/templates/SuggestionsTemplate/types.d';
+import { useLocale } from '@/constants/localization';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { FeedbackService } from '@/serviceManager/FeedbackService';
 import { Logger } from '@/utils/logger';
 import {
@@ -22,6 +22,7 @@ const interpolate = (str: string, params: Record<string, string | number>) => {
   Object.entries(params).forEach(([key, value]) => {
     result = result.replace(`{{${key}}}`, String(value));
   });
+
   return result;
 };
 
@@ -111,8 +112,9 @@ export const useSuggestions = () => {
     if (!selectedCategory) newErrors.category = t.validationErrorCategory;
     if (!summary.trim()) newErrors.summary = t.validationErrorSummary;
     if (!description.trim())
-      newErrors.description = t.validationErrorDescription;
+      {newErrors.description = t.validationErrorDescription;}
     setErrors(newErrors);
+
     return Object.keys(newErrors).length === 0;
   }, [selectedCategory, summary, description, t]);
 

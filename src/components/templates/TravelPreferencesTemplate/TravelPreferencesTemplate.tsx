@@ -1,13 +1,13 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Typography } from '@/components/atoms/Typography';
-import { Toggle } from '@/components/atoms/Toggle';
-import { Chip } from '@/components/atoms/Chip';
 import { Button } from '@/components/atoms/Button';
+import { Chip } from '@/components/atoms/Chip';
+import { Toggle } from '@/components/atoms/Toggle';
+import { Typography } from '@/components/atoms/Typography';
 import { PreferenceCard } from '@/components/molecules/PreferenceCard';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { TravelPreferencesTemplateProps } from './types.d';
 import * as S from './TravelPreferencesTemplate.styles';
+import { type TravelPreferencesTemplateProps } from './types.d';
 
 export const TravelPreferencesTemplate: React.FC<
   TravelPreferencesTemplateProps

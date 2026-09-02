@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Box } from '@/components/atoms/Box';
-import { MyRidesTemplateProps } from './types.d';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { type MyRidesTemplateProps } from './types.d';
 
 export const MyRidesTemplate: React.FC<
   MyRidesTemplateProps & {

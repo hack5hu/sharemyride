@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { ScreenHeader } from './ScreenHeader';
 import { View } from 'react-native';
+import { ScreenHeader } from './ScreenHeader';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/ScreenHeader',

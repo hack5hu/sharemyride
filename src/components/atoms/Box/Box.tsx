@@ -1,5 +1,5 @@
+import { type ViewProps } from 'react-native';
 import styled from 'styled-components/native';
-import { ViewProps } from 'react-native';
 
 export interface BoxProps extends ViewProps {
   flex?: number;

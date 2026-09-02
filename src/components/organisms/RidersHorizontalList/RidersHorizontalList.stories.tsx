@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { RidersHorizontalList } from './RidersHorizontalList';
 import { View } from 'react-native';
+import { RidersHorizontalList } from './RidersHorizontalList';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Organisms/RidersHorizontalList',

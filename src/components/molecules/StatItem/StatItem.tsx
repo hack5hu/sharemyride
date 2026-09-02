@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { Typography } from '../../atoms/Typography';
 import { StatValue } from '@/components/atoms/StatValue';
-
 import { moderateScale } from '@/styles';
+import { Typography } from '../../atoms/Typography';
 
 export interface StatItemProps {
   label: string;

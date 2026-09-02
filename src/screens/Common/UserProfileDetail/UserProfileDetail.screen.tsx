@@ -1,8 +1,8 @@
 import React from 'react';
-import { UserProfileDetailTemplate } from '@/components/templates/UserProfileDetailTemplate';
 import { ReportIssueModal } from '@/components/organisms/ReportIssueModal';
+import { UserProfileDetailTemplate } from '@/components/templates/UserProfileDetailTemplate';
+import { type UserProfileDetailProps } from './types';
 import { useUserProfileDetail } from './useUserProfileDetail';
-import { UserProfileDetailProps } from './types';
 
 export const UserProfileDetail: React.FC<UserProfileDetailProps> = ({
   route,

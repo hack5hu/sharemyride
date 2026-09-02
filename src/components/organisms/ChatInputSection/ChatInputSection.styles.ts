@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-
 import { verticalScale, moderateScale, scale } from '@/styles';
 
 export const Container = styled.View<{ $paddingBottom?: number }>`

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Typography } from '@/components/atoms/Typography';
 import { Button } from '@/components/atoms/Button';
-import { BottomNav } from '@/components/organisms/BottomNav';
+import { Typography } from '@/components/atoms/Typography';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { DummyTemplateProps } from './types.d';
+import { BottomNav } from '@/components/organisms/BottomNav';
 import * as S from './DummyTemplate.styles';
+import { type DummyTemplateProps } from './types.d';
 
 export const DummyTemplate: React.FC<DummyTemplateProps> = ({
   title,

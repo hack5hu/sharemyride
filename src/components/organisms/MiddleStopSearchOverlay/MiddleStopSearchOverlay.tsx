@@ -3,7 +3,7 @@ import { Keyboard } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
-import { Location } from '@/store/useLocationStore';
+import { type Location } from '@/store/useLocationStore';
 import { moderateScale } from '@/styles';
 import { MAX_DEVIATION_KM } from '@/utils/routeSnap';
 import {
@@ -63,6 +63,7 @@ export const MiddleStopSearchOverlay: React.FC<MiddleStopSearchOverlayProps> =
       const renderDistanceBadge = useCallback((distance?: number) => {
         if (distance === undefined) return null;
         const isWarning = distance > MAX_DEVIATION_KM;
+
         return (
           <DistanceBadge isWarning={isWarning}>
             <DistanceBadgeText isWarning={isWarning}>

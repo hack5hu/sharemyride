@@ -1,7 +1,7 @@
-import styled from 'styled-components/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
-import { verticalScale, moderateScale, scale, responsiveFont } from '@/styles';
+import styled from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
+import { verticalScale, moderateScale, scale, responsiveFont } from '@/styles';
 
 export const ScrollContainer = styled(KeyboardAwareScrollView).attrs(() => ({
   showsVerticalScrollIndicator: false,

@@ -1,4 +1,4 @@
-import { UserReview } from '@/screens/Common/UserProfileDetail/types';
+import { type UserReview } from '@/screens/Common/UserProfileDetail/types';
 
 export interface UserRatingsTemplateProps {
   userName: string;

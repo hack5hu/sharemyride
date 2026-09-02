@@ -2,8 +2,8 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
-import { SafetyTrustCardProps } from './types';
 import * as S from './SafetyTrustCard.styles';
+import { type SafetyTrustCardProps } from './types';
 
 export const SafetyTrustCard: React.FC<SafetyTrustCardProps> = ({}) => {
   const theme = useTheme();

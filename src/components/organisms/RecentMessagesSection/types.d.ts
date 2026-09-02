@@ -1,4 +1,4 @@
-import { MessageItemProps } from '@/components/molecules/MessageItem';
+import { type MessageItemProps } from '@/components/molecules/MessageItem';
 
 export interface RecentMessagesSectionProps {
   messages: MessageItemProps[];

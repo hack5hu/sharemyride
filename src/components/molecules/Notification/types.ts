@@ -1,5 +1,5 @@
-import { ToastProps as BaseToastProps } from 'react-native-toast-message';
-import { NotificationType } from '@/constants/enums';
+import { type ToastProps as BaseToastProps } from 'react-native-toast-message';
+import { type NotificationType } from '@/constants/enums';
 
 export interface NotificationProps extends BaseToastProps {
   type?: NotificationType;

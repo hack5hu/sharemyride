@@ -1,6 +1,5 @@
 /* eslint-disable max-lines */
 import React, { useState } from 'react';
-
 import styled, { useTheme } from 'styled-components/native';
 
 const CategoryWrapper = styled.View`
@@ -11,12 +10,14 @@ const ModalPressable = styled.Pressable`
   width: 100%;
   align-items: center;
 `;
-import { Typography } from '@/components/atoms/Typography';
+import { Box } from '@/components/atoms/Box';
+import { type CategoryIconVariant } from '@/components/atoms/CategoryIcon';
 import { IconButton } from '@/components/atoms/IconButton';
+import { Loader } from '@/components/atoms/Loader';
 import { ModalBackdrop } from '@/components/atoms/ModalBackdrop';
+import { Typography } from '@/components/atoms/Typography';
 import { CategoryButton } from '@/components/molecules/CategoryButton';
 import { TrustInfoBar } from '@/components/molecules/TrustInfoBar';
-import { Loader } from '@/components/atoms/Loader';
 import {
   ActionModalContainer as ModalContainer,
   ActionModalHeader as Header,
@@ -32,9 +33,7 @@ import {
   ActionModalCancelButton as CancelButton,
   ActionModalLoadingOverlay as LoadingOverlay,
 } from '@/styles/ActionModalStyles';
-import { CancelRideModalProps } from './types.d';
-import { CategoryIconVariant } from '@/components/atoms/CategoryIcon';
-import { Box } from '@/components/atoms/Box';
+import { type CancelRideModalProps } from './types.d';
 
 export const CancelRideModal: React.FC<CancelRideModalProps> = ({
   isVisible,
@@ -106,6 +105,7 @@ export const CancelRideModal: React.FC<CancelRideModalProps> = ({
         },
       ];
     }
+
     // Passenger reasons
     return [
       {

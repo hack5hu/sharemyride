@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import { calculateDistance } from '@/utils/location';
-import { formatTimeSafely, formatDateSafely } from '@/utils/date';
-import { computeTotalRides } from '@/utils/user';
 import { formatDisplayAddress, formatFullCleanAddress, getShortLocationName } from '@/utils/address';
+import { formatTimeSafely, formatDateSafely } from '@/utils/date';
+import { calculateDistance } from '@/utils/location';
+import { computeTotalRides } from '@/utils/user';
 
 export const mapBackendRideToUI = (
   rideRaw: any,
@@ -32,7 +32,7 @@ export const mapBackendRideToUI = (
   }
 
   if (rideRaw.preferences?.musicPreference)
-    features.push(`music:${rideRaw.preferences.musicPreference}`);
+    {features.push(`music:${rideRaw.preferences.musicPreference}`);}
 
   const firstStop = rideRaw.stops?.[0];
   const lastStop = rideRaw.stops?.[rideRaw.stops.length - 1];
@@ -163,10 +163,12 @@ export const mapBackendRideToUI = (
           }
           if (idx > 0) {
             const prev = arr[idx - 1];
+
             return (
               acc + calculateDistance(prev.lat, prev.lon, stop.lat, stop.lon)
             );
           }
+
           return acc;
         },
         0,

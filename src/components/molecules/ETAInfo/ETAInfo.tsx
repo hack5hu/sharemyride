@@ -2,8 +2,8 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
-import { ETAInfoProps } from './types';
 import * as S from './ETAInfo.styles';
+import { type ETAInfoProps } from './types';
 
 export const ETAInfo: React.FC<ETAInfoProps> = ({
   arrivalTime,

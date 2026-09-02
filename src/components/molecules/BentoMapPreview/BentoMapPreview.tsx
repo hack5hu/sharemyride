@@ -1,19 +1,17 @@
-import React, { useRef, useEffect, useMemo } from 'react';
-// Removed unused View import
-
-import { useTheme } from 'styled-components/native';
-import { useLocale } from '@/constants/localization';
-import { Location } from '@/store/useLocationStore';
-
 import {
   Camera,
   GeoJSONSource,
   Layer,
-  CameraRef,
+  type CameraRef,
 } from '@maplibre/maplibre-react-native';
-import { getBoundingBox } from '@/utils/polyline';
-import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
+import React, { useRef, useEffect, useMemo } from 'react';
+// Removed unused View import
 
+import { useTheme } from 'styled-components/native';
+import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
+import { useLocale } from '@/constants/localization';
+import { type Location } from '@/store/useLocationStore';
+import { getBoundingBox } from '@/utils/polyline';
 import * as S from './BentoMapPreview.styles';
 
 export interface BentoMapPreviewProps {
@@ -35,6 +33,7 @@ export const BentoMapPreview: React.FC<BentoMapPreviewProps> = ({
   // Initial city-level center
   const initialCenter = useMemo((): [number, number] => {
     if (startLocation) return [startLocation.longitude, startLocation.latitude];
+
     return [77.5946, 12.9716]; // Bengaluru default
   }, [startLocation]);
 
@@ -90,12 +89,12 @@ export const BentoMapPreview: React.FC<BentoMapPreviewProps> = ({
     if (cameraRef.current) {
       const allCoords: [number, number][] = [];
       if (startLocation)
-        allCoords.push([startLocation.longitude, startLocation.latitude]);
+        {allCoords.push([startLocation.longitude, startLocation.latitude]);}
       if (destinationLocation)
-        allCoords.push([
+        {allCoords.push([
           destinationLocation.longitude,
           destinationLocation.latitude,
-        ]);
+        ]);}
       middleStops.forEach(s => allCoords.push([s.longitude, s.latitude]));
 
       if (allCoords.length >= 2) {

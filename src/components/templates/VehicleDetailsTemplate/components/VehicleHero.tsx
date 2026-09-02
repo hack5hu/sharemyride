@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { type DefaultTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
-import { DefaultTheme } from 'styled-components/native';
 import * as S from '../VehicleDetailsTemplate.styles';
 
 interface VehicleHeroProps {

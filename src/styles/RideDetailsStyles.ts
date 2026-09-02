@@ -1,6 +1,6 @@
+import { ActivityIndicator as RNActivityIndicator } from 'react-native';
 import styled from 'styled-components/native';
 import { moderateScale, scale, verticalScale } from '@/styles';
-import { ActivityIndicator as RNActivityIndicator } from 'react-native';
 
 export const RideDetailsActivityIndicator = styled(RNActivityIndicator)``;
 

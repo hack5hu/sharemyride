@@ -1,12 +1,12 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
+import { Typography } from '@/components/atoms/Typography';
 import { VerifiedBadge } from '@/components/atoms/VerifiedBadge';
+import { type Translations } from '@/constants/localization/types';
+import { type UserProfile } from '@/screens/Common/UserProfileDetail/types.d';
 import { moderateScale } from '@/styles';
-import { UserProfile } from '@/screens/Common/UserProfileDetail/types.d';
-import { Translations } from '@/constants/localization/types';
 import * as S from '../UserProfileDetailTemplate.styles';
 
 interface ProfileHeroCardProps {

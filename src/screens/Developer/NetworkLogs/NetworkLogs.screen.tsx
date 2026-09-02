@@ -1,6 +1,6 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
 import React, { useCallback } from 'react';
 import { NetworkLogsTemplate } from '@/components/templates/NetworkLogsTemplate';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useNetworkLoggerStore } from '@/store/useNetworkLoggerStore';
 
 export const NetworkLogsScreen: React.FC = React.memo(() => {

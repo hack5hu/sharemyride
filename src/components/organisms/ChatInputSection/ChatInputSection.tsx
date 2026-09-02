@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Keyboard } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { SafetyBanner } from '@/components/molecules/SafetyBanner';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { moderateScale, verticalScale } from '@/styles';
 import {
   Container,
   InputWrapper,
@@ -12,8 +13,7 @@ import {
   StyledInput,
   SendButton,
 } from './ChatInputSection.styles';
-import { ChatInputSectionProps } from './types.d';
-import { moderateScale, verticalScale } from '@/styles';
+import { type ChatInputSectionProps } from './types.d';
 
 export const ChatInputSection: React.FC<ChatInputSectionProps> = ({
   value,

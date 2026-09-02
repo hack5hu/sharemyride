@@ -53,8 +53,10 @@ These development rules are absolute and must be followed by any AI agent or dev
 * Auth tokens, access credentials, and sensitive PII must be stored in `react-native-keychain`.
 * User preferences, lightweight state caching, and non-sensitive configs must be stored in `MMKV`. Do not store sensitive tokens in MMKV.
 
-### 7. Errors & Alerts
-* centralize API errors in `useApi` and log them using the internal `Logger` utility.
-* Never use `Alert.alert`. Display user feedback/confirmations using the custom `ConfirmationModal` or `showNotification` toast notifications.
-* Loader overlays must be set to `width: 100%`, centered, with the `transparent` prop.
-* Major screen segments must be wrapped in an `ErrorBoundary`.
+### 8. Import Ordering Rules
+* Imports must strictly follow this order with alphabetization within each group:
+  1. **External Packages**: Standard and third-party node modules (e.g., `axios`, `react`, `react-native-keychain`).
+  2. **Internal Aliases (`@/*`)**: Absolute alias imports (e.g., `@/constants/apiEndpoints`, `@/store/useAuthStore`, `@/utils/logger`).
+  3. **Relative Imports (`./*`, `../*`)**: Local sibling and parent files (e.g., `./useComponent`, `../types`).
+* Enforced via ESLint `import/order` with auto-fix support (`eslint --fix`).
+

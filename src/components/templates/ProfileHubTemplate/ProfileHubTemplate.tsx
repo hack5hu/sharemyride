@@ -1,10 +1,9 @@
 import React from 'react';
-import { ProfileHeader } from '@/components/organisms/ProfileHeader';
 import { ProfileMenuItem } from '@/components/molecules/ProfileMenuItem';
-import { BottomNav } from '@/components/organisms/BottomNav';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { ActionSheetModal } from '@/components/organisms/ActionSheetModal';
-import { ProfileHubTemplateProps } from './types.d';
+import { BottomNav } from '@/components/organisms/BottomNav';
+import { ProfileHeader } from '@/components/organisms/ProfileHeader';
 import {
   Container,
   Content,
@@ -14,6 +13,7 @@ import {
   BentoGrid,
   ActionGrid,
 } from './ProfileHubTemplate.styles';
+import { type ProfileHubTemplateProps } from './types.d';
 
 export const ProfileHubTemplate: React.FC<ProfileHubTemplateProps> = ({
   t,

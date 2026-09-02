@@ -1,8 +1,8 @@
 import React from 'react';
-import { useRideRouteMap } from './useRideRouteMap';
-import { RideRouteMapProps } from './types';
 import { RideRouteMapTemplate } from '@/components/templates/RideRouteMapTemplate';
 import { useLocale } from '@/constants/localization';
+import { type RideRouteMapProps } from './types';
+import { useRideRouteMap } from './useRideRouteMap';
 
 export const RideRouteMapScreen: React.FC<RideRouteMapProps> = React.memo(
   ({ route }) => {

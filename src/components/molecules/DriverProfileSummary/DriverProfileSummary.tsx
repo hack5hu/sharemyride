@@ -1,6 +1,9 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useTheme } from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
+import { Avatar } from '@/components/atoms/Avatar';
+import { useTranslation } from '@/hooks/useTranslation';
+import { moderateScale } from '@/styles';
 import {
   Container,
   LeftSection,
@@ -12,11 +15,7 @@ import {
   PriceText,
   VehicleSubtitle,
 } from './DriverProfileSummary.styles';
-import { Avatar } from '@/components/atoms/Avatar';
-import { DriverProfileSummaryProps } from './types.d';
-import { moderateScale } from '@/styles';
-import styled from 'styled-components/native';
-import { useTranslation } from '@/hooks/useTranslation';
+import { type DriverProfileSummaryProps } from './types.d';
 
 const StyledStarIcon = styled(Icon)`
   font-variation-settings: 'FILL' 1;

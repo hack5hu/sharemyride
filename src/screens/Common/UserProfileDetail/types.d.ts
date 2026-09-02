@@ -1,6 +1,6 @@
-import { RouteProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '@/navigation/types.d';
+import { type RouteProp } from '@react-navigation/native';
+import { type StackNavigationProp } from '@react-navigation/stack';
+import { type RootStackParamList } from '@/navigation/types.d';
 
 export type UserProfileDetailNavigationProp = StackNavigationProp<
   RootStackParamList,

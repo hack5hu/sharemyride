@@ -1,8 +1,8 @@
 /* eslint-disable no-restricted-imports */
 import {
-  TextInput,
-  NativeSyntheticEvent,
-  TextInputKeyPressEventData,
+  type TextInput,
+  type NativeSyntheticEvent,
+  type TextInputKeyPressEventData,
 } from 'react-native';
 
 export interface OtpInputProps {

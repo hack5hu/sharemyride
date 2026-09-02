@@ -2,8 +2,8 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
+import { type VehicleTypeCardProps } from './types';
 import { Container, IconWrapper } from './VehicleTypeCard.styles';
-import { VehicleTypeCardProps } from './types';
 
 export const VehicleTypeCard: React.FC<VehicleTypeCardProps> = ({
   icon,

@@ -2,6 +2,8 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Toggle } from '@/components/atoms/Toggle';
+import { useTranslation } from '@/hooks/useTranslation';
+import { moderateScale } from '@/styles';
 import {
   Container,
   LeftSection,
@@ -10,9 +12,7 @@ import {
   PrimaryText,
   Description,
 } from './LiveLocationToggle.styles';
-import { LiveLocationToggleProps } from './types.d';
-import { moderateScale } from '@/styles';
-import { useTranslation } from '@/hooks/useTranslation';
+import { type LiveLocationToggleProps } from './types.d';
 
 export const LiveLocationToggle: React.FC<LiveLocationToggleProps> = ({
   isEnabled,

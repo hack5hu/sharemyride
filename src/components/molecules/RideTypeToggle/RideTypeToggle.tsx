@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
-import { Typography } from '@/components/atoms/Typography';
 import { useTheme } from 'styled-components/native';
-import { RideTypeToggleProps, RideType } from './types';
+import { Typography } from '@/components/atoms/Typography';
 import { ToggleContainer, ToggleButton } from './RideTypeToggle.styles';
+import { type RideTypeToggleProps, type RideType } from './types';
 
 export const RideTypeToggle: React.FC<RideTypeToggleProps> = React.memo(
   ({ selected, onSelect, localLabel, intercityLabel }) => {

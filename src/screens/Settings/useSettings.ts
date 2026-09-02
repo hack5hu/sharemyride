@@ -1,14 +1,14 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState } from 'react';
 import { Linking } from 'react-native';
-import { useSettingsStore } from '@/store/settings';
-import { useAuthStore } from '@/store';
-import { useLocale } from '@/constants/localization';
-import { storage } from '@/utils/storage';
-import { AuthService } from '@/serviceManager/AuthService';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { useLocale } from '@/constants/localization';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { AuthService } from '@/serviceManager/AuthService';
+import { useAuthStore } from '@/store';
+import { useSettingsStore } from '@/store/settings';
 import { getErrorMessage } from '@/utils/error';
+import { storage } from '@/utils/storage';
 
 export const useSettings = () => {
   const navigation = useAppNavigation();

@@ -1,12 +1,11 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useEffect } from 'react';
-import { RouteOption } from '@/components/organisms/RouteCard';
-import { useRidePublishStore } from '@/store/useRidePublishStore';
+import { type RouteOption } from '@/components/organisms/RouteCard';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { LocationService } from '@/serviceManager/LocationService';
-import { decodePolyline, getBoundingBox } from '@/utils/polyline';
-
-import { useVehicleStore } from '@/store/useVehicleStore';
+import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { useTravelPrefStore } from '@/store/useTravelPrefStore';
+import { useVehicleStore } from '@/store/useVehicleStore';
+import { decodePolyline, getBoundingBox } from '@/utils/polyline';
 
 export interface RouteData {
   uiData: RouteOption;
@@ -45,6 +44,7 @@ export const useRouteSelection = () => {
         const sortedRoutes = [...routesResponse].sort((a, b) => {
           const distA = a.legs?.[0]?.distance || a.distance || 0;
           const distB = b.legs?.[0]?.distance || b.distance || 0;
+
           return distA - distB;
         });
 

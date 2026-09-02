@@ -1,15 +1,15 @@
+import { Camera } from '@maplibre/maplibre-react-native';
 import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
+import { Button } from '@/components/atoms/Button';
+import { Typography } from '@/components/atoms/Typography';
+import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { OlaMap } from '@/components/organisms/OlaMap';
-import { Camera } from '@maplibre/maplibre-react-native';
-import { Typography } from '@/components/atoms/Typography';
-import { Button } from '@/components/atoms/Button';
-import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
-import { LocalRideResultsTemplateProps } from './types';
 import * as S from './LocalRideResultsTemplate.styles';
 import { mapViewStyle } from './LocalRideResultsTemplate.styles';
+import { type LocalRideResultsTemplateProps } from './types';
 
 export const LocalRideResultsTemplate: React.FC<LocalRideResultsTemplateProps> =
   React.memo(

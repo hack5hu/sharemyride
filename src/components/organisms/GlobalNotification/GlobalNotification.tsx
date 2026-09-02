@@ -1,5 +1,5 @@
 import React from 'react';
-import Toast, { ToastConfig, BaseToastProps } from 'react-native-toast-message';
+import Toast, { type ToastConfig, type BaseToastProps } from 'react-native-toast-message';
 import { Notification } from '@/components/molecules/Notification';
 import { NotificationType } from '@/constants/enums';
 

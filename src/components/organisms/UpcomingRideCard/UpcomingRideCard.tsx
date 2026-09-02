@@ -4,8 +4,8 @@ import { useTheme } from 'styled-components/native';
 import { Avatar } from '@/components/atoms/Avatar';
 import { useTranslation } from '@/hooks/useTranslation';
 import { moderateScale } from '@/styles';
+import { type UpcomingRideCardProps } from './types.d';
 import * as S from './UpcomingRideCard.styles';
-import { UpcomingRideCardProps } from './types.d';
 
 export const UpcomingRideCard: React.FC<UpcomingRideCardProps> = React.memo(
   ({

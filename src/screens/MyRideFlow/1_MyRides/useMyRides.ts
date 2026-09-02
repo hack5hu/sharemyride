@@ -1,17 +1,17 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
 import { useRoute, useIsFocused } from '@react-navigation/native';
-import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
-import { useMyRidesData, TAB_TO_FILTER } from './useMyRidesData';
-import { useMyRidesActions } from './useMyRidesActions';
-import { mapBackendRideToUI } from '@/utils/rideMapper';
-import { MyRidesHookData, RideListItem } from './types.d';
+import { useState, useCallback, useMemo, useEffect } from 'react';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { type MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
+import { NotificationType } from '@/constants/enums';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useTranslation } from '@/hooks/useTranslation';
 import { RideService } from '@/serviceManager/RideService';
-import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
-import { NotificationType } from '@/constants/enums';
 import { getErrorMessage } from '@/utils/error';
+import { mapBackendRideToUI } from '@/utils/rideMapper';
 import { storage } from '@/utils/storage';
-import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { type MyRidesHookData, type RideListItem } from './types.d';
+import { useMyRidesActions } from './useMyRidesActions';
+import { useMyRidesData, TAB_TO_FILTER } from './useMyRidesData';
 
 export const useMyRides = (): MyRidesHookData => {
   const { t } = useTranslation();
@@ -114,6 +114,7 @@ export const useMyRides = (): MyRidesHookData => {
       const dateStr = draft.state.departureDate
         ? new Date(draft.state.departureDate).toLocaleDateString()
         : 'No date';
+
       return {
         id: draft.id,
         title: `${start} to ${end}`,
@@ -150,6 +151,7 @@ export const useMyRides = (): MyRidesHookData => {
       return [...allRides].sort((a, b) => {
         const timeA = a.rawDate?.getTime() || 0;
         const timeB = b.rawDate?.getTime() || 0;
+
         return tab === 'upcoming' ? timeA - timeB : timeB - timeA;
       });
     },
@@ -259,8 +261,10 @@ export const useMyRides = (): MyRidesHookData => {
               p.hasRated === true ||
               ratedUsers.includes(pId) ||
               ratedUsers.includes(`${id}_${pId}`);
+
             return !isPassengerRated;
           });
+
           return hasUnratedPassenger;
         }
       } else {
@@ -284,6 +288,7 @@ export const useMyRides = (): MyRidesHookData => {
           return false;
         }
       }
+
       return true;
     });
 

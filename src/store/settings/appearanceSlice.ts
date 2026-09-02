@@ -1,7 +1,7 @@
-import { StateCreator } from 'zustand';
 import { Appearance } from 'react-native';
+import { type StateCreator } from 'zustand';
 import NativeSplash from '@/specs/NativeSplash';
-import { SettingsStore, AppearanceSlice } from './types';
+import { type SettingsStore, type AppearanceSlice } from './types';
 
 const syncNativeTheme = (theme: 'light' | 'dark') => {
   try {

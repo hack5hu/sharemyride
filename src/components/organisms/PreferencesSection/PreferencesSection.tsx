@@ -1,5 +1,7 @@
 import React from 'react';
 import { Toggle } from '@/components/atoms/Toggle';
+import { Typography } from '@/components/atoms/Typography';
+import { useTranslation } from '@/hooks/useTranslation';
 import {
   ToggleRow,
   Container,
@@ -7,8 +9,6 @@ import {
   NewsletterSurface,
   NewsletterLabel,
 } from './PreferencesSection.styles';
-import { Typography } from '@/components/atoms/Typography';
-import { useTranslation } from '@/hooks/useTranslation';
 
 export interface PreferencesSectionProps {
   values: {

@@ -1,17 +1,17 @@
 import { useState, useCallback, useMemo } from 'react';
-import { useLocale } from '@/constants/localization';
-import { RideData } from './types';
-import { useBookRideStore } from '@/store/useBookRideStore';
-import { calculateDistance } from '@/utils/location';
-import { calculateSegmentPrice } from '@/utils/pricing';
-import { RideService } from '@/serviceManager/RideService';
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { useLocale } from '@/constants/localization';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useTranslation } from '@/hooks/useTranslation';
+import { RideService } from '@/serviceManager/RideService';
+import { useBookRideStore } from '@/store/useBookRideStore';
+import { formatDisplayAddress } from '@/utils/address';
 import { formatTimeSafely, safeParseDate } from '@/utils/date';
 import { getErrorMessage } from '@/utils/error';
-import { formatDisplayAddress } from '@/utils/address';
+import { calculateDistance } from '@/utils/location';
+import { calculateSegmentPrice } from '@/utils/pricing';
+import { type RideData } from './types';
 
 export const useAvailableRides = () => {
   const { navigate, goBack } = useAppNavigation();
@@ -30,7 +30,7 @@ export const useAvailableRides = () => {
 
     if (activeFilters.includes('nearPickup')) payload.proximityType = 'PICKUP';
     if (activeFilters.includes('nearDropoff'))
-      payload.proximityType = 'DROP_OFF';
+      {payload.proximityType = 'DROP_OFF';}
 
     if (activeFilters.includes('noSmoking')) payload.noSmoking = true;
     if (activeFilters.includes('ladiesOnly')) payload.ladiesOnly = true;
@@ -43,6 +43,7 @@ export const useAvailableRides = () => {
       const slots = timeFilters
         .map(f => {
           const [_, s, e] = f.split('_').map(Number);
+
           return { s, e };
         })
         .sort((a, b) => a.s - b.s);
@@ -95,7 +96,7 @@ export const useAvailableRides = () => {
     } = store;
 
     if (isFetchingMore || !curHasMore || !curStart || !curDest || !curDate)
-      return;
+      {return;}
 
     try {
       setIsFetchingMore(true);
@@ -142,7 +143,7 @@ export const useAvailableRides = () => {
       !Array.isArray(searchResults) ||
       searchResults.length === 0
     )
-      return [];
+      {return [];}
 
     return searchResults.filter(Boolean).map((ride, index) => {
       const hasStops = ride.stops && ride.stops.length > 0;
@@ -159,9 +160,9 @@ export const useAvailableRides = () => {
       if (ride.preferences?.petFriendly) features.push('petFriendly');
       if (ride.preferences?.luggageAllowed) features.push('luggageAllowed');
       if (ride.preferences?.manualApproval === false)
-        features.push('autoApproval');
+        {features.push('autoApproval');}
       if (ride.preferences?.musicPreference)
-        features.push(`music:${ride.preferences.musicPreference}`);
+        {features.push(`music:${ride.preferences.musicPreference}`);}
 
       const sLat = hasStops ? firstStop?.lat : ride.sourceLat || 0;
       const sLon = hasStops ? firstStop?.lon : ride.sourceLon || 0;
@@ -259,6 +260,7 @@ export const useAvailableRides = () => {
         totalDuration: (() => {
           const start = safeParseDate(sTime, false);
           const end = safeParseDate(eTime, false);
+
           return start && end
             ? Math.round((end.getTime() - start.getTime()) / (1000 * 60))
             : 0;
@@ -282,8 +284,10 @@ export const useAvailableRides = () => {
       if (timeFilters.length > 0) {
         result = result.filter(ride => {
           if (ride.departureHour === undefined) return false;
+
           return timeFilters.some(slot => {
             const [_, start, end] = slot.split('_').map(Number);
+
             return ride.departureHour! >= start && ride.departureHour! < end;
           });
         });
@@ -300,6 +304,7 @@ export const useAvailableRides = () => {
         if (!a.rawStartTime && !b.rawStartTime) return 0;
         if (!a.rawStartTime) return 1;
         if (!b.rawStartTime) return -1;
+
         return (
           new Date(a.rawStartTime).getTime() -
           new Date(b.rawStartTime).getTime()
@@ -358,6 +363,7 @@ export const useAvailableRides = () => {
         if (filter === 'nearDropoff') {
           return [...prev.filter(f => f !== 'nearPickup'), 'nearDropoff'];
         }
+
         return [...prev, filter];
       }
     });

@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { moderateScale, scale, verticalScale } from '@/styles';
 import { Box } from '@/components/atoms/Box';
+import { moderateScale, scale, verticalScale } from '@/styles';
 
 export const ModalContainer = styled(Box)`
   flex: 1;

@@ -1,16 +1,15 @@
 import React from 'react';
-import { ViewStyle } from 'react-native';
+import { type ViewStyle } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { Avatar } from '@/components/atoms/Avatar';
+import { useTranslation } from '@/hooks/useTranslation';
 import { requestPhotoPermission } from '@/utils/permissionUtils';
-
 import {
   Container,
   AvatarWrapper,
   TouchableAvatar,
   AddPhotoText,
 } from './AvatarPicker.styles';
-import { useTranslation } from '@/hooks/useTranslation';
 
 export interface AvatarPickerProps {
   uri?: string;

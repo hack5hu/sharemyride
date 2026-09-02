@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { MapSearchOverlay } from './MapSearchOverlay';
 import { View } from 'react-native';
+import { MapSearchOverlay } from './MapSearchOverlay';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Organisms/MapSearchOverlay',

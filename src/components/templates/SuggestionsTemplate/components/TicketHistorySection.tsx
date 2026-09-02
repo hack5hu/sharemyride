@@ -1,12 +1,12 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
+import { StatusBadge, type StatusBadgeVariant } from '@/components/atoms/StatusBadge';
 import { Typography } from '@/components/atoms/Typography';
-import { StatusBadge, StatusBadgeVariant } from '@/components/atoms/StatusBadge';
 import { EmptyState } from '@/components/molecules/EmptyState';
-import { TicketCategory } from '@/constants/enums';
-import { SuggestionsTranslations } from '@/constants/localization/types';
-import { Ticket } from '../types.d';
+import { type TicketCategory } from '@/constants/enums';
+import { type SuggestionsTranslations } from '@/constants/localization/types';
 import * as S from '../SuggestionsTemplate.styles';
+import { type Ticket } from '../types.d';
 
 export interface TicketHistorySectionProps {
   tickets: Ticket[];
@@ -44,6 +44,7 @@ export const TicketHistorySection: React.FC<TicketHistorySectionProps> = React.m
       {tickets.map(ticket => {
         const isExpanded = expandedTicketId === ticket.id;
         const categoryObj = categories.find(c => c.id === ticket.category);
+
         return (
           <S.TicketCard
             key={ticket.id}

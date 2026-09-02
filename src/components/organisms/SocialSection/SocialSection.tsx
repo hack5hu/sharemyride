@@ -1,7 +1,7 @@
 import React from 'react';
-import { SocialButton } from '../../molecules/SocialButton';
-import { Typography } from '../../atoms/Typography';
 import { useLocale } from '@/constants/localization';
+import { Typography } from '../../atoms/Typography';
+import { SocialButton } from '../../molecules/SocialButton';
 import {
   Container,
   DividerRow,
@@ -9,7 +9,7 @@ import {
   DividerText,
   ButtonsRow,
 } from './SocialSection.styles';
-import { SocialSectionProps } from './types';
+import { type SocialSectionProps } from './types';
 
 export const SocialSection: React.FC<SocialSectionProps> = ({
   onPressGoogle,

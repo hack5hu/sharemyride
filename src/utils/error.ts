@@ -1,7 +1,7 @@
-import { AxiosError } from 'axios';
-import { useSettingsStore } from '@/store/settings';
+import { type AxiosError } from 'axios';
 import { en } from '@/constants/localization/en';
 import { hi } from '@/constants/localization/hi';
+import { useSettingsStore } from '@/store/settings';
 
 const translations = { en, hi };
 
@@ -40,8 +40,10 @@ export const getErrorMessage = (
         'You already have an active booking during this time. Please complete or cancel it first.'
       ) {
         const lang = useSettingsStore.getState().language || 'en';
+
         return translations[lang].notification.activeBookingOverlap;
       }
+
       return message;
     }
 
@@ -51,5 +53,6 @@ export const getErrorMessage = (
       return axiosError.message;
     }
   }
+
   return fallbackMessage || 'An unexpected error occurred';
 };

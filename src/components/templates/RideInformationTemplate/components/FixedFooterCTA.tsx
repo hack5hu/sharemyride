@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/atoms/Button';
-import { useLocale } from '@/constants/localization';
 import { FixedFooter } from '@/components/molecules/FixedFooter';
+import { useLocale } from '@/constants/localization';
 
 export interface FixedFooterCTAProps {
   isDriver: boolean;

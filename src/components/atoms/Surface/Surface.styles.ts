@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
-import { SurfaceElevation, SurfaceRounded, SurfacePadding } from './types';
+import { type SurfaceElevation, type SurfaceRounded, type SurfacePadding } from './types';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
+ 
 const getElevationStyle = (elevation: SurfaceElevation, theme: any /* TODO: add proper type */) => {
   switch (elevation) {
     case 'lowest':

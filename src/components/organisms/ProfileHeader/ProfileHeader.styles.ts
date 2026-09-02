@@ -1,6 +1,6 @@
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import styled from 'styled-components/native';
 import { moderateScale, scale, verticalScale } from '@/styles';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const HeaderCard = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_low};

@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { ProfileHeader } from './ProfileHeader';
 import { View } from 'react-native';
+import { ProfileHeader } from './ProfileHeader';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Organisms/ProfileHeader',

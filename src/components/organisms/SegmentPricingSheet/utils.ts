@@ -10,6 +10,7 @@ export const buildSegments = (
   destination: string,
 ): StopSegment[] => {
   const points = [start, ...stops.map(s => s.name), destination];
+
   return points.slice(0, -1).map((from, i) => ({
     id: `seg-${i}`,
     from,

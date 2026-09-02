@@ -1,6 +1,6 @@
-import { storage } from '@/utils/storage';
 import { useNetworkLoggerStore } from '@/store/useNetworkLoggerStore';
 import { Logger } from '@/utils/logger';
+import { storage } from '@/utils/storage';
 
 const ADMIN_DEBUGGER_KEY = 'is_admin_debugger_enabled';
 
@@ -12,6 +12,7 @@ export const getIsAdminDebuggerEnabled = (): boolean => {
     return storage.getBoolean(ADMIN_DEBUGGER_KEY) ?? false;
   } catch (error) {
     Logger.error('[AdminDebugger] Failed to read admin debugger status:', error);
+
     return false;
   }
 };

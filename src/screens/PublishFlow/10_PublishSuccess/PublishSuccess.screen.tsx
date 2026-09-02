@@ -1,10 +1,10 @@
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { BackHandler } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
-import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useTheme } from 'styled-components/native';
-import { useLocale } from '@/constants/localization';
 import { PublishSuccessTemplate } from '@/components/templates/PublishSuccessTemplate';
+import { useLocale } from '@/constants/localization';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 
 export const PublishSuccessScreen: React.FC = () => {
   const theme = useTheme();
@@ -21,6 +21,7 @@ export const PublishSuccessScreen: React.FC = () => {
   useFocusEffect(
     React.useCallback(() => {
       const sub = BackHandler.addEventListener('hardwareBackPress', () => true);
+
       return () => sub.remove();
     }, []),
   );

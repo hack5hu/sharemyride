@@ -2,8 +2,8 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
-import { FareCardProps } from './types';
 import * as S from './FareCard.styles';
+import { type FareCardProps } from './types';
 
 export const FareCard: React.FC<FareCardProps> = ({
   amount,

@@ -1,5 +1,5 @@
-import { StateCreator } from 'zustand';
-import { SettingsStore, NotificationSlice } from './types';
+import { type StateCreator } from 'zustand';
+import { type SettingsStore, type NotificationSlice } from './types';
 
 export const createNotificationSlice: StateCreator<
   SettingsStore,

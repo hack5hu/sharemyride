@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
 import { FlashList } from '@shopify/flash-list';
+import React, { useState } from 'react';
 import { useTheme } from 'styled-components/native';
-import { NetworkLog } from '@/store/useNetworkLoggerStore';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Typography } from '@/components/atoms/Typography';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { useLocale } from '@/constants/localization';
-import * as S from './NetworkLogsTemplate.styles';
+import { type NetworkLog } from '@/store/useNetworkLoggerStore';
 import { LogDetailModal } from './components/LogDetailModal';
+import * as S from './NetworkLogsTemplate.styles';
 
 interface NetworkLogsTemplateProps {
   logs: NetworkLog[];

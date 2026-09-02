@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { ConfirmationModal } from './ConfirmationModal';
 import { View } from 'react-native';
+import { ConfirmationModal } from './ConfirmationModal';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Organisms/ConfirmationModal',

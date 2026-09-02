@@ -5,9 +5,8 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from 'react-native';
-import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useTheme } from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import { Input } from '../../atoms/Input';
 import { Typography } from '../../atoms/Typography';
 import {

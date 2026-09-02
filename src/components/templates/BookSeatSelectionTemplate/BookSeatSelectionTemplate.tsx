@@ -1,15 +1,14 @@
 import React from 'react';
-
 import { useTheme } from 'styled-components/native';
-import { Typography } from '@/components/atoms/Typography';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { FixedFooter } from '@/components/molecules/FixedFooter';
 import { Button } from '@/components/atoms/Button';
-import { CarFloorPlan } from '@/components/organisms/CarFloorPlan/CarFloorPlan';
+import { Typography } from '@/components/atoms/Typography';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { SeatLegend } from '@/components/molecules/SeatLegend/SeatLegend';
+import { CarFloorPlan } from '@/components/organisms/CarFloorPlan/CarFloorPlan';
 import { verticalScale } from '@/styles';
 import * as S from './BookSeatSelectionTemplate.styles';
-import { BookSeatSelectionTemplateProps } from './types.d';
+import { type BookSeatSelectionTemplateProps } from './types.d';
 
 export const BookSeatSelectionTemplate: React.FC<
   BookSeatSelectionTemplateProps

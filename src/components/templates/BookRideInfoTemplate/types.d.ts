@@ -1,5 +1,5 @@
-import { RecentSearch } from '@/store/useBookRideStore';
-import { BookRideInfoTranslations } from '@/constants/localization/types';
+import { type BookRideInfoTranslations } from '@/constants/localization/types';
+import { type RecentSearch } from '@/store/useBookRideStore';
 
 export interface BookRideInfoTemplateProps {
   pickup: string | null;

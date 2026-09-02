@@ -54,6 +54,7 @@ export const calculateBlaBlaCarPrice = (
 
   const calculated = distanceKm * ratePerKm * seaterMult;
   const clamped = Math.max(calculated, BLABLACAR_PRICING_CONFIG.MIN_FARE);
+
   return roundToNearest(clamped, 10);
 };
 
@@ -69,6 +70,7 @@ export const calculateBasePrice = (
     type = 'MAX';
   }
   const seater = divisor >= 6 ? '7' : '5';
+
   return calculateBlaBlaCarPrice(distanceKm, type, seater);
 };
 
@@ -79,7 +81,7 @@ export const calculateFrontSeatPrice = (
   return roundToNearest(basePrice * (1 + premiumPercentage / 100), 10);
 };
 
-import { RouteStop } from '@/serviceManager/RideService';
+import { type RouteStop } from '@/serviceManager/RideService';
 
 /**
  * Calculates the segment price using the prefix algorithm (last stop cumulative - first stop cumulative).

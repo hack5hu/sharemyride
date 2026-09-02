@@ -1,27 +1,25 @@
 import React, { useMemo } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
+import { Loader } from '@/components/atoms/Loader';
 import { Typography } from '@/components/atoms/Typography';
 import { RideTimeline } from '@/components/molecules/RideTimeline/RideTimeline';
-import { RideInformationTemplateProps } from './types.d';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-import * as S from './RideInformationTemplate.styles';
-import { moderateScale } from '@/styles';
-import { Loader } from '@/components/atoms/Loader';
 // TODO
 // import { RideStatsStrip } from '@/components/organisms/RideStatsStrip/RideStatsStrip';
-import { RideComfortSection } from '@/components/organisms/RideComfortSection/RideComfortSection';
 import { PassengerManagement } from '@/components/organisms/PassengerManagement/PassengerManagement';
-
+import { RideComfortSection } from '@/components/organisms/RideComfortSection/RideComfortSection';
 import { RideVehicleCard } from '@/components/organisms/RideVehicleCard/RideVehicleCard';
 import { useLocale } from '@/constants/localization';
 import { useAuthStore } from '@/store/useAuthStore';
+import { moderateScale } from '@/styles';
 
 // Subcomponents
 import { CancellationReasonBox } from './components/CancellationReasonBox';
 import { DriverCard } from './components/DriverCard';
-
 import { FixedFooterCTA } from './components/FixedFooterCTA';
+import * as S from './RideInformationTemplate.styles';
+import { type RideInformationTemplateProps } from './types.d';
 
 export const RideInformationTemplate: React.FC<RideInformationTemplateProps> =
   React.memo(
@@ -73,6 +71,7 @@ export const RideInformationTemplate: React.FC<RideInformationTemplateProps> =
 
       const isArchived = useMemo(() => {
         if (!ride) return false;
+
         return (
           ride.status === 'COMPLETED' ||
           ride.status === 'CANCELLED' ||

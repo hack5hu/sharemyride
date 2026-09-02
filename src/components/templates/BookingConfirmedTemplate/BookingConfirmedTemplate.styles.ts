@@ -1,7 +1,7 @@
-import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
-import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+import styled from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
+import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 
 export const Container = styled.View`
   flex: 1;

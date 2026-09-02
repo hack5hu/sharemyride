@@ -3,7 +3,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { moderateScale } from '@/styles';
 import { Container, Label, UncheckedCircle } from './ReasonSelectorItem.styles';
-import { ReasonSelectorItemProps } from './types.d';
+import { type ReasonSelectorItemProps } from './types.d';
 
 export const ReasonSelectorItem: React.FC<ReasonSelectorItemProps> = ({
   label,

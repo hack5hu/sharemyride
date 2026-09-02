@@ -16,7 +16,7 @@ const PREFERENCE_ICONS: Record<string, string> = {
 
 interface RideComfortSectionProps {
   features: string[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
+   
   t: any;
 }
 

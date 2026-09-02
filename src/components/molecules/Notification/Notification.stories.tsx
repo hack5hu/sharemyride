@@ -1,8 +1,8 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { Notification } from './Notification';
 import { View } from 'react-native';
 import { NotificationType } from '@/constants/enums';
+import { Notification } from './Notification';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const wrapperStyle = { padding: 20, alignItems: 'center' as const };
 

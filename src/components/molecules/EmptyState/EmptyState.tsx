@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
+import { moderateScale } from '@/styles';
 import {
   Container,
   IconContainer,
@@ -8,8 +9,7 @@ import {
   Title,
   Description,
 } from './EmptyState.styles';
-import { EmptyStateProps } from './types.d';
-import { moderateScale } from '@/styles';
+import { type EmptyStateProps } from './types.d';
 
 /**
  * EmptyState Molecule

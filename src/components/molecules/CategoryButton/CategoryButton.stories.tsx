@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { CategoryButton } from './CategoryButton';
 import { View } from 'react-native';
+import { CategoryButton } from './CategoryButton';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/CategoryButton',

@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { VehicleTypeCard } from './VehicleTypeCard';
 import { View } from 'react-native';
+import { VehicleTypeCard } from './VehicleTypeCard';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/VehicleTypeCard',

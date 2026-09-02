@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import * as S from './SupportTemplate.styles';
-import { SupportTemplateProps } from './types';
+import { type SupportTemplateProps } from './types';
 
 export const SupportTemplate: React.FC<SupportTemplateProps> = ({
   title,

@@ -1,4 +1,4 @@
-import { MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
+import { type MyRidesTab } from '@/components/organisms/MyRidesHeader/types.d';
 
 export interface RideListItem {
   id: string;

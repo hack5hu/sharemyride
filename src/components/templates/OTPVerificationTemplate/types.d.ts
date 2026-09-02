@@ -1,5 +1,5 @@
-import { DefaultTheme } from 'styled-components/native';
-import { OtpVerificationTranslations } from '@/constants/localization/types';
+import { type DefaultTheme } from 'styled-components/native';
+import { type OtpVerificationTranslations } from '@/constants/localization/types';
 
 export interface OTPVerificationTemplateProps {
   propPhoneNumber?: string;

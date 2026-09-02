@@ -9,7 +9,7 @@ import {
   InfoContainer,
   LocationBlock,
 } from './RouteIndicator.styles';
-import { RouteIndicatorProps } from './types.d';
+import { type RouteIndicatorProps } from './types.d';
 
 export const RouteIndicator: React.FC<RouteIndicatorProps> = ({
   pickup,

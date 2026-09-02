@@ -1,6 +1,6 @@
 import { createNavigationContainerRef } from '@react-navigation/native';
-import { RootStackParamList } from './types';
 import { useAuthStore } from '@/store/useAuthStore';
+import { type RootStackParamList } from './types';
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 

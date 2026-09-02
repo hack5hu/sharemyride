@@ -1,6 +1,6 @@
 import React from 'react';
+import { type TypographyProps } from './types';
 import { StyledText } from './Typography.styles';
-import { TypographyProps } from './types';
 
 export const Typography: React.FC<TypographyProps> = ({
   children,

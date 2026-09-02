@@ -1,9 +1,7 @@
 import React from 'react';
-
-import { useLocale } from '@/constants/localization';
-import { MonthCalendar } from '@/components/organisms/MonthCalendar';
-
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { MonthCalendar } from '@/components/organisms/MonthCalendar';
+import { useLocale } from '@/constants/localization';
 import * as S from './DateSelectionTemplate.styles';
 
 export interface MonthData {

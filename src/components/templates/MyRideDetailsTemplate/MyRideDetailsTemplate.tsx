@@ -1,24 +1,24 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
-import { useLocale } from '@/constants/localization';
-import { MyRideDetailsTemplateProps } from './types.d';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { FixedFooter } from '@/components/molecules/FixedFooter';
-import * as S from './MyRideDetailsTemplate.styles';
 import { Button } from '@/components/atoms/Button';
 import { IconButton } from '@/components/atoms/IconButton';
-import { Typography } from '@/components/atoms/Typography';
 import { Loader } from '@/components/atoms/Loader';
-import { RideComfortSection } from '@/components/organisms/RideComfortSection/RideComfortSection';
-import { PassengerManagement } from '@/components/organisms/PassengerManagement/PassengerManagement';
-import { RideVehicleCard } from '@/components/organisms/RideVehicleCard/RideVehicleCard';
+import { Typography } from '@/components/atoms/Typography';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
 import { RideTimeline } from '@/components/molecules/RideTimeline/RideTimeline';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { PassengerManagement } from '@/components/organisms/PassengerManagement/PassengerManagement';
+import { RideComfortSection } from '@/components/organisms/RideComfortSection/RideComfortSection';
 import { RideStatsStrip } from '@/components/organisms/RideStatsStrip/RideStatsStrip';
-import { DriverCard } from '@/components/templates/RideInformationTemplate/components/DriverCard';
+import { RideVehicleCard } from '@/components/organisms/RideVehicleCard/RideVehicleCard';
 import { CancellationReasonBox } from '@/components/templates/RideInformationTemplate/components/CancellationReasonBox';
-import { mapRideDetailsData } from './utils/rideMapper';
-import { RatingInvitationCard } from './components/RatingInvitationCard';
+import { DriverCard } from '@/components/templates/RideInformationTemplate/components/DriverCard';
+import { useLocale } from '@/constants/localization';
 import { PassengerSummarySection } from './components/PassengerSummarySection';
+import { RatingInvitationCard } from './components/RatingInvitationCard';
+import * as S from './MyRideDetailsTemplate.styles';
+import { type MyRideDetailsTemplateProps } from './types.d';
+import { mapRideDetailsData } from './utils/rideMapper';
 
 export const MyRideDetailsTemplate: React.FC<MyRideDetailsTemplateProps> =
   React.memo(

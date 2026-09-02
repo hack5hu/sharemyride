@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { SearchInput } from './SearchInput';
 import { View } from 'react-native';
+import { SearchInput } from './SearchInput';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/SearchInput',

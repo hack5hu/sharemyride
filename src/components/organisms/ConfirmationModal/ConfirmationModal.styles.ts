@@ -1,6 +1,6 @@
-import styled from 'styled-components/native';
 import { Pressable } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import styled from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { moderateScale, verticalScale } from '@/styles';
 

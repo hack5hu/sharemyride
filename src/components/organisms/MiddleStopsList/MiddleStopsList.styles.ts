@@ -1,6 +1,6 @@
+import LinearGradient from 'react-native-linear-gradient';
 import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
-import LinearGradient from 'react-native-linear-gradient';
 
 export const ListContainer = styled.View`
   position: relative;

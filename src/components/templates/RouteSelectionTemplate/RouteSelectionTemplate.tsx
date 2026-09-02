@@ -1,15 +1,14 @@
+import { type CameraRef } from '@maplibre/maplibre-react-native';
 import React, { useRef, useEffect } from 'react';
-import { CameraRef } from '@maplibre/maplibre-react-native';
-
 import { useTheme } from 'styled-components/native';
-import { useLocale } from '@/constants/localization';
-import { RouteOption, RouteCard } from '@/components/organisms/RouteCard';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Button } from '@/components/atoms/Button';
 import { FixedFooter } from '@/components/molecules/FixedFooter';
-import * as S from './RouteSelectionTemplate.styles';
-import { RouteData } from '@/screens/PublishFlow/2_RouteSelection/useRouteSelection';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { type RouteOption, RouteCard } from '@/components/organisms/RouteCard';
+import { useLocale } from '@/constants/localization';
+import { type RouteData } from '@/screens/PublishFlow/2_RouteSelection/useRouteSelection';
 import { RouteSelectionMap } from './components/RouteSelectionMap';
+import * as S from './RouteSelectionTemplate.styles';
 
 export interface RouteSelectionTemplateProps {
   onBackPress: () => void;
@@ -57,6 +56,7 @@ export const RouteSelectionTemplate: React.FC<RouteSelectionTemplateProps> =
               });
             }
           }, 150);
+
           return () => clearTimeout(timer);
         }
       }, [selectedRouteId, selectedRouteData, mapLoadedTrigger]);

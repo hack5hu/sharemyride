@@ -1,8 +1,8 @@
 import { useState, useCallback, useMemo } from 'react';
-import { useBookRideStore } from '@/store/useBookRideStore';
 import { useLocale } from '@/constants/localization';
-import { Logger } from '@/utils/logger';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useBookRideStore } from '@/store/useBookRideStore';
+import { Logger } from '@/utils/logger';
 
 export const useLocalRideResults = () => {
   const { bookRideInfo: t } = useLocale();
@@ -34,6 +34,7 @@ export const useLocalRideResults = () => {
   // Prepare GeoJSON for the paths
   const pickupLine = useMemo(() => {
     if (!startLocation) return null;
+
     return {
       type: 'Feature',
       properties: {},
@@ -49,6 +50,7 @@ export const useLocalRideResults = () => {
 
   const dropoffLine = useMemo(() => {
     if (!destinationLocation) return null;
+
     return {
       type: 'Feature',
       properties: {},

@@ -1,9 +1,9 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
 import React from 'react';
 import { Linking } from 'react-native';
-import { useTranslation } from '@/hooks/useTranslation';
-import { SupportTemplate } from '@/components/templates/SupportTemplate';
 import { Button } from '@/components/atoms/Button';
+import { SupportTemplate } from '@/components/templates/SupportTemplate';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export const HelpAndSupportScreen: React.FC = () => {
   const navigation = useAppNavigation();

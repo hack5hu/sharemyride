@@ -1,11 +1,11 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
+import { Button } from '@/components/atoms/Button';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { TimePickerCard } from '@/components/organisms/TimePickerCard';
 import { useLocale } from '@/constants/localization';
 import { scale, verticalScale } from '@/styles';
-import { TimePickerCard } from '@/components/organisms/TimePickerCard';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { FixedFooter } from '@/components/molecules/FixedFooter';
-import { Button } from '@/components/atoms/Button';
 import * as S from './TimeSelectionTemplate.styles';
 
 export interface TimeSelectionTemplateProps {

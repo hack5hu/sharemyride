@@ -1,7 +1,7 @@
+import { format } from 'date-fns';
 import React, { useState } from 'react';
 import DatePicker from 'react-native-date-picker';
 import { Input } from '@/components/atoms/Input';
-import { format } from 'date-fns';
 import { StyledTouchable } from './DatePickerInput.styles';
 
 export interface DatePickerInputProps {

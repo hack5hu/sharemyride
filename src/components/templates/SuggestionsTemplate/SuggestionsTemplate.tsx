@@ -3,6 +3,8 @@ import { Platform } from 'react-native';
 import { Typography } from '@/components/atoms/Typography';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { TicketCategory, TicketStatus } from '@/constants/enums';
+import { SubmitFormSection } from './components/SubmitFormSection';
+import { TicketHistorySection } from './components/TicketHistorySection';
 import {
   Container,
   KeyboardAvoidingView,
@@ -10,9 +12,7 @@ import {
   TabButton,
   ScrollContent,
 } from './SuggestionsTemplate.styles';
-import { SuggestionsTemplateProps, Ticket } from './types.d';
-import { SubmitFormSection } from './components/SubmitFormSection';
-import { TicketHistorySection } from './components/TicketHistorySection';
+import { type SuggestionsTemplateProps, type Ticket } from './types.d';
 
 export const SuggestionsTemplate: React.FC<SuggestionsTemplateProps> = React.memo(
   ({

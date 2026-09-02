@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
+import { VehicleDetailsTemplate } from '@/components/templates/VehicleDetailsTemplate';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useVehicleDetails } from './useVehicleDetails';
-import { VehicleDetailsTemplate } from '@/components/templates/VehicleDetailsTemplate';
 
 export const VehicleDetailsScreen: React.FC = () => {
   const theme = useTheme();

@@ -1,16 +1,16 @@
+import { FlashList } from '@shopify/flash-list';
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
-import { Loader } from '@/components/atoms/Loader';
 import { Box } from '@/components/atoms/Box';
-import { FlashList } from '@shopify/flash-list';
+import { Loader } from '@/components/atoms/Loader';
+import { Typography } from '@/components/atoms/Typography';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { type UserReview } from '@/screens/Common/UserProfileDetail/types';
 import { moderateScale } from '@/styles';
-import { UserRatingsTemplateProps } from './types';
+import { type UserRatingsTemplateProps } from './types';
 import * as S from './UserRatingsTemplate.styles';
-import { UserReview } from '@/screens/Common/UserProfileDetail/types';
 
 export const UserRatingsTemplate: React.FC<UserRatingsTemplateProps> = React.memo(
   ({ userName, reviews, isLoading, onBack }) => {
@@ -83,6 +83,7 @@ export const UserRatingsTemplate: React.FC<UserRatingsTemplateProps> = React.mem
 
     const ListHeader = () => {
       if (totalReviews === 0) return null;
+
       return (
         <S.RatingSummaryBanner>
           <S.ScoreRow>

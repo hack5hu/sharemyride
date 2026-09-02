@@ -1,4 +1,4 @@
-import { ViewStyle, ImageSourcePropType } from 'react-native';
+import { type ViewStyle, type ImageSourcePropType } from 'react-native';
 
 export type AvatarSize = 'sm' | 'md' | 'lg' | 'xl';
 

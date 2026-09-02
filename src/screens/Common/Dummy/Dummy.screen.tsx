@@ -1,11 +1,11 @@
+import { useRoute, type RouteProp } from '@react-navigation/native';
 import React from 'react';
 import { Linking } from 'react-native';
-import { useRoute, RouteProp } from '@react-navigation/native';
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { RootStackParamList } from '@/navigation/types';
-import { useTranslation } from '@/hooks/useTranslation';
-import { BottomTabType } from '@/components/organisms/BottomNav';
+import { type BottomTabType } from '@/components/organisms/BottomNav';
 import { DummyTemplate } from '@/components/templates/DummyTemplate';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useTranslation } from '@/hooks/useTranslation';
+import { type RootStackParamList } from '@/navigation/types';
 
 export const DummyScreen: React.FC = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'Dummy'>>();

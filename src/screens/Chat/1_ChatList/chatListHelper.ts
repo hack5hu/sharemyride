@@ -1,4 +1,9 @@
-import { ChatConversation, ChatMessage, UserProfile } from '@/types/chat';
+import {
+  type ChatConversation,
+  type ChatMessage,
+  type ChatMetadata,
+  type UserProfile,
+} from '@/types/chat';
 
 export interface ChatListItemData {
   id: string;
@@ -44,7 +49,7 @@ export const mapConversationToListItem = (
   if (!otherParticipantId || otherParticipantId === 'Unknown') return null;
 
   const cachedUser = users[otherParticipantId];
-  const metadata = conv.metadata || lastMsg.metadata || {};
+  const metadata: ChatMetadata = conv.metadata || lastMsg.metadata || {};
 
   const name = String(
     cachedUser?.name ||
@@ -66,9 +71,7 @@ export const mapConversationToListItem = (
   });
 
   const avatarUri =
-    metadata.avatarUri ||
-    metadata.userAvatar ||
-    cachedUser?.avatarUri;
+    metadata.avatarUri || metadata.userAvatar || cachedUser?.avatarUri;
 
   return {
     id: otherParticipantId,

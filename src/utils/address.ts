@@ -113,6 +113,7 @@ const isTailNoise = (part: string): boolean => {
   ) {
     return true;
   }
+
   return false;
 };
 
@@ -205,6 +206,7 @@ export const formatDisplayAddress = (
         uniqueParts.push(part);
       }
     }
+
     return uniqueParts.join(', ');
   }
 
@@ -280,5 +282,6 @@ export const getShortLocationName = (
   address: string | null | undefined,
 ): string => {
   if (!address) return '';
+
   return address.split(',')[0].trim();
 };

@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { Typography } from '../Typography';
 import { moderateScale } from '@/styles';
-import { ColorToken } from '@/theme/types';
+import { type ColorToken } from '@/theme/types';
+import { Typography } from '../Typography';
 
 export interface BadgeProps {
   label: string;

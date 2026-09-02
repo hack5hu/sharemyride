@@ -1,4 +1,4 @@
-import { Locale } from '@/constants/localization/types';
+import { type Locale } from '@/constants/localization/types';
 
 export interface AppearanceSlice {
   themeMode: 'light' | 'dark';

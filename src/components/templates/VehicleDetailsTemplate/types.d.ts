@@ -1,7 +1,7 @@
-import { FormikProps } from 'formik';
-import { DefaultTheme } from 'styled-components/native';
-import { VehicleDetailsState, VehicleType } from '@/screens/Profile/VehicleDetails/types.d';
-import { VEHICLE_TYPES } from '@/constants/ride';
+import { type FormikProps } from 'formik';
+import { type DefaultTheme } from 'styled-components/native';
+import { type VEHICLE_TYPES } from '@/constants/ride';
+import { type VehicleDetailsState, type VehicleType } from '@/screens/Profile/VehicleDetails/types.d';
 
 export interface VehicleDetailsTemplateProps {
   formik: FormikProps<VehicleDetailsState>;

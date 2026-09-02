@@ -1,8 +1,8 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Typography } from '@/components/atoms/Typography';
+import { type DefaultTheme } from 'styled-components/native';
 import { ColorChip } from '@/components/atoms/ColorChip';
-import { DefaultTheme } from 'styled-components/native';
+import { Typography } from '@/components/atoms/Typography';
 import * as S from '../VehicleDetailsTemplate.styles';
 
 interface ColorSectionProps {

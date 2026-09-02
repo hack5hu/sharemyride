@@ -1,16 +1,16 @@
 import React from 'react';
 import { StatusBar, Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
-import { useLocale } from '@/constants/localization';
-import { Loader } from '@/components/atoms/Loader';
 import { Button } from '@/components/atoms/Button';
-import { moderateScale } from '@/styles';
+import { Loader } from '@/components/atoms/Loader';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
+import { useLocale } from '@/constants/localization';
+import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
+import { moderateScale } from '@/styles';
 import * as S from './SelectLocationTemplate.styles';
-import { SelectLocationTemplateProps } from './types.d';
+import { type SelectLocationTemplateProps } from './types.d';
 
 export interface SelectLocationTemplateExtendedProps
   extends SelectLocationTemplateProps {

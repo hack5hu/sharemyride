@@ -1,5 +1,5 @@
-import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
+import styled from 'styled-components/native';
 import { Box } from '@/components/atoms/Box';
 import { Typography } from '@/components/atoms/Typography';
 import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';

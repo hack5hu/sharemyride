@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { moderateScale } from '@/styles';
-import { IconButtonSize, IconButtonVariant } from './types';
+import { type IconButtonSize, type IconButtonVariant } from './types';
 
 const sizes: Record<IconButtonSize, number> = {
   sm: 28,
@@ -8,7 +8,7 @@ const sizes: Record<IconButtonSize, number> = {
   lg: 48,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
+ 
 const getBackground = (variant: IconButtonVariant, theme: any /* TODO: add proper type */) => {
   switch (variant) {
     case 'primary':

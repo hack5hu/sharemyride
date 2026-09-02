@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { scale, verticalScale, moderateScale } from '@/styles';
 import { IconButton } from '@/components/atoms/IconButton';
+import { scale, verticalScale, moderateScale } from '@/styles';
 
 export const SectionCard = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_lowest};

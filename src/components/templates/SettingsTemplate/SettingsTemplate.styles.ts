@@ -1,6 +1,6 @@
+import styled from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
 import { verticalScale, scale, moderateScale } from '@/styles';
-import styled from 'styled-components/native';
 
 export const ScreenWrapper = styled.View`
   flex: 1;

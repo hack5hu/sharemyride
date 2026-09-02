@@ -1,14 +1,14 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
+import { moderateScale } from '@/styles';
 import {
   Container,
   Message,
   ContentWrapper,
   CloseButton,
 } from './SafetyBanner.styles';
-import { SafetyBannerProps } from './types.d';
-import { moderateScale } from '@/styles';
+import { type SafetyBannerProps } from './types.d';
 
 export const SafetyBanner: React.FC<SafetyBannerProps> = ({
   message,

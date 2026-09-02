@@ -8,8 +8,8 @@
  * The resolved ID is cached in memory after first access for zero-cost reads.
  */
 import { Platform } from 'react-native';
-import * as Keychain from 'react-native-keychain';
 import DeviceInfo from 'react-native-device-info';
+import * as Keychain from 'react-native-keychain';
 import { Logger } from '@/utils/logger';
 
 /** Keychain service name dedicated to the device identifier */
@@ -36,6 +36,7 @@ const generateUUID = (): string => {
       uuid += hex[(Math.random() * 16) | 0];
     }
   }
+
   return uuid;
 };
 
@@ -54,12 +55,14 @@ export const getDeviceId = async (): Promise<string> => {
     if (Platform.OS === 'ios') {
       return await getIOSDeviceId();
     }
+
     return await getAndroidDeviceId();
   } catch (error) {
     Logger.error('[DeviceId] Failed to resolve device ID:', error);
     // Ultimate fallback: generate a transient ID so the app never crashes
     const fallback = generateUUID();
     cachedDeviceId = fallback;
+
     return fallback;
   }
 };
@@ -75,6 +78,7 @@ const getIOSDeviceId = async (): Promise<string> => {
   if (existing && existing.password) {
     cachedDeviceId = existing.password;
     Logger.log('[DeviceId] iOS – restored from Keychain');
+
     return existing.password;
   }
 
@@ -87,6 +91,7 @@ const getIOSDeviceId = async (): Promise<string> => {
 
   cachedDeviceId = newId;
   Logger.log('[DeviceId] iOS – created new ID and stored in Keychain');
+
   return newId;
 };
 
@@ -101,6 +106,7 @@ const getAndroidDeviceId = async (): Promise<string> => {
   if (androidId) {
     cachedDeviceId = androidId;
     Logger.log('[DeviceId] Android – resolved ANDROID_ID');
+
     return androidId;
   }
 
@@ -108,6 +114,7 @@ const getAndroidDeviceId = async (): Promise<string> => {
   const uniqueId = await DeviceInfo.getUniqueId();
   cachedDeviceId = uniqueId;
   Logger.log('[DeviceId] Android – resolved via getUniqueId fallback');
+
   return uniqueId;
 };
 

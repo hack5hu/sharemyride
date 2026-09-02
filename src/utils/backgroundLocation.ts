@@ -1,10 +1,10 @@
-import BackgroundService from 'react-native-background-actions';
 import Geolocation, {
-  GeolocationResponse,
+  type GeolocationResponse,
 } from '@react-native-community/geolocation';
+import { Platform } from 'react-native';
+import BackgroundService from 'react-native-background-actions';
 import { RideService } from '@/serviceManager/RideService';
 import { Logger } from '@/utils/logger';
-import { Platform } from 'react-native';
 import { locationQueue } from './locationQueue';
 
 interface TaskParams {
@@ -49,6 +49,7 @@ const locationTrackingTask = async (
   const rideId = taskDataArguments?.rideId;
   if (!rideId) {
     Logger.error('[BackgroundLocation] Missing rideId in task parameters');
+
     return;
   }
 

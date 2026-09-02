@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { SafetyTrustCard } from './SafetyTrustCard';
 import { View } from 'react-native';
+import { SafetyTrustCard } from './SafetyTrustCard';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Organisms/SafetyTrustCard',

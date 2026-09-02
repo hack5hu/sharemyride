@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-
 import { scale, verticalScale, responsiveFont } from '@/styles';
 
 export const FixedFooter = styled.View`

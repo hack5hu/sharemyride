@@ -1,10 +1,9 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { LoginForm } from '@/components/organisms/LoginForm';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { ZyncRideLogo } from '@/components/atoms/ZyncRideLogo';
-import { LoginTemplateProps } from './types.d';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { LoginForm } from '@/components/organisms/LoginForm';
 import {
   Container,
   ScrollContent,
@@ -18,6 +17,7 @@ import {
   TopLanguageButton,
   LanguageButtonText,
 } from './LoginTemplate.styles';
+import { type LoginTemplateProps } from './types.d';
 
 export const LoginTemplate: React.FC<LoginTemplateProps> = ({
   loading,

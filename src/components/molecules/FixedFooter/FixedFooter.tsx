@@ -1,8 +1,8 @@
 import React from 'react';
-import { verticalScale } from '@/styles';
 import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
+import { verticalScale } from '@/styles';
 import { Container } from './FixedFooter.styles';
-import { FixedFooterProps } from './types';
+import { type FixedFooterProps } from './types';
 
 /**
  * FixedFooter Molecule

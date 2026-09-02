@@ -1,11 +1,11 @@
+import { useRoute, type RouteProp, useFocusEffect } from '@react-navigation/native';
 import { useCallback, useEffect, useMemo } from 'react';
-import { useRoute, RouteProp, useFocusEffect } from '@react-navigation/native';
 import { Share, BackHandler } from 'react-native';
 import { useLocale } from '@/constants/localization';
-import { RootStackParamList } from '@/navigation/types';
-import { useBookRideStore } from '@/store/useBookRideStore';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { RouteStop } from '@/serviceManager/RideService';
+import { type RootStackParamList } from '@/navigation/types';
+import { type RouteStop } from '@/serviceManager/RideService';
+import { useBookRideStore } from '@/store/useBookRideStore';
 import { formatTimeSafely } from '@/utils/date';
 
 export const useBookingConfirmed = () => {

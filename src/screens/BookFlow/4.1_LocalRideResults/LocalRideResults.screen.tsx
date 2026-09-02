@@ -1,6 +1,6 @@
+import { GeoJSONSource, Layer, type MapRef, type CameraRef } from '@maplibre/maplibre-react-native';
 import React, { useRef, useState, useCallback } from 'react';
 import { useTheme } from 'styled-components/native';
-import { GeoJSONSource, Layer, MapRef, CameraRef } from '@maplibre/maplibre-react-native';
 import { LocalRideResultsTemplate } from '@/components/templates/LocalRideResultsTemplate';
 import { useLocalRideResults } from './useLocalRideResults';
 

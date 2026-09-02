@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { SelectionPreviewCard } from './SelectionPreviewCard';
 import { View } from 'react-native';
+import { SelectionPreviewCard } from './SelectionPreviewCard';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/SelectionPreviewCard',

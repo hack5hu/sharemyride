@@ -1,11 +1,11 @@
+import { format } from 'date-fns';
 import React from 'react';
 import { Animated, ActivityIndicator } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { format } from 'date-fns';
 import { moderateScale } from '@/styles';
 import { formatDisplayAddress } from '@/utils/address';
-import { BookingFormProps } from '../types.d';
+import { type BookingFormProps } from '../types.d';
 import * as S from './BookingForm.styles';
 
 export const BookingForm: React.FC<BookingFormProps> = ({

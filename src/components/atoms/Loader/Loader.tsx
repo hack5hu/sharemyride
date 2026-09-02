@@ -1,8 +1,8 @@
 import React from 'react';
-import styled, { useTheme } from 'styled-components/native';
 import { ActivityIndicator, Modal } from 'react-native';
-import { Typography } from '../Typography';
+import styled, { useTheme } from 'styled-components/native';
 import { verticalScale } from '@/styles';
+import { Typography } from '../Typography';
 
 const Container = styled.View<{ transparent?: boolean }>`
   flex: 1;
@@ -41,7 +41,7 @@ interface LoaderProps {
   inline?: boolean;
   size?: 'small' | 'large';
   color?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
+   
   style?: any;
 }
 

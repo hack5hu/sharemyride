@@ -1,4 +1,4 @@
-import { ViewStyle } from 'react-native';
+import { type ViewStyle } from 'react-native';
 
 export type IconButtonSize = 'sm' | 'md' | 'lg';
 export type IconButtonVariant = 'primary' | 'surface' | 'secondary';

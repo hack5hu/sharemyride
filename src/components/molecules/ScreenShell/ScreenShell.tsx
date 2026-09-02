@@ -1,8 +1,8 @@
 import React from 'react';
 import { Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScreenHeader } from '@/components/molecules/ScreenHeader';
 import { Shell } from './ScreenShell.styles';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export interface ScreenShellProps {
   /** Screen title shown in the header. Pass undefined to hide the header entirely. */

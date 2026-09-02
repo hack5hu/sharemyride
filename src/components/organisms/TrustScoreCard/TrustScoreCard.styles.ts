@@ -1,8 +1,8 @@
-import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
-import { moderateScale } from '@/styles';
-import { Typography } from '@/components/atoms/Typography';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import styled from 'styled-components/native';
+import { Typography } from '@/components/atoms/Typography';
+import { moderateScale } from '@/styles';
 
 export const CardContainer = styled(LinearGradient)`
   border-radius: ${moderateScale(24)}px;

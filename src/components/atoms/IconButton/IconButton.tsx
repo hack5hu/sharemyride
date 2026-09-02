@@ -2,7 +2,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { StyledIconButton } from './IconButton.styles';
-import { IconButtonProps } from './types';
+import { type IconButtonProps } from './types';
 
 export const IconButton: React.FC<IconButtonProps> = ({
   icon,

@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { verticalScale } from '@/styles';
 import { Typography } from '@/components/atoms/Typography';
+import { verticalScale } from '@/styles';
 import { SectionCard, SectionLabelRow, SectionDot } from '../MyRideDetailsTemplate.styles';
 
 export const RatingCardContainer = styled(SectionCard)`

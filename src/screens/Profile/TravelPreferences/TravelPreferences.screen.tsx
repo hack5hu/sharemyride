@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
+import { TravelPreferencesTemplate } from '@/components/templates/TravelPreferencesTemplate';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTravelPreferences } from './useTravelPreferences';
-import { TravelPreferencesTemplate } from '@/components/templates/TravelPreferencesTemplate';
 
 export const TravelPreferencesScreen: React.FC = () => {
   const theme = useTheme();

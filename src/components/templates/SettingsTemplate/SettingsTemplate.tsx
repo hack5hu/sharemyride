@@ -1,13 +1,13 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { Typography } from '@/components/atoms/Typography';
 import { Toggle } from '@/components/atoms/Toggle';
+import { Typography } from '@/components/atoms/Typography';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { ConfirmationModal } from '@/components/organisms/ConfirmationModal';
-import { SettingsTemplateProps } from './types.d';
-import * as S from './SettingsTemplate.styles';
-import { AppearanceSection } from './components/AppearanceSection';
 import { AccountSection } from './components/AccountSection';
+import { AppearanceSection } from './components/AppearanceSection';
+import * as S from './SettingsTemplate.styles';
+import { type SettingsTemplateProps } from './types.d';
 
 export const SettingsTemplate: React.FC<SettingsTemplateProps> = React.memo(
   ({

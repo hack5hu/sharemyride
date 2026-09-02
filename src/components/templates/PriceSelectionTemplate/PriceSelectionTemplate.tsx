@@ -1,16 +1,15 @@
 import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
+import { Button } from '@/components/atoms/Button';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
+import { FrontSeatPremium } from '@/components/molecules/FrontSeatPremium';
+import { PriceCounter } from '@/components/molecules/PriceCounter';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { type SegmentPrice } from '@/components/molecules/SegmentPricingCard';
+import { SegmentPricingSheet } from '@/components/organisms/SegmentPricingSheet';
 import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';
-import { PriceCounter } from '@/components/molecules/PriceCounter';
-import { FrontSeatPremium } from '@/components/molecules/FrontSeatPremium';
-import { SegmentPricingSheet } from '@/components/organisms/SegmentPricingSheet';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { FixedFooter } from '@/components/molecules/FixedFooter';
-import { Button } from '@/components/atoms/Button';
-
-import { SegmentPrice } from '@/components/molecules/SegmentPricingCard';
 import * as S from './PriceSelectionTemplate.styles';
 
 /* ── Template Props ── */

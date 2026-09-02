@@ -1,8 +1,8 @@
 import { useState, useCallback, useMemo } from 'react';
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useLocale } from '@/constants/localization';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { useLocale } from '@/constants/localization';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { RideService } from '@/serviceManager/RideService';
 import { getErrorMessage } from '@/utils/error';
 import { storage } from '@/utils/storage';
@@ -72,6 +72,7 @@ export const useRating = (params: {
     );
     if (hasUnrated) {
       showNotification(NotificationType.ERROR, t.title, t.ratingRequired);
+
       return;
     }
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { GenderSelector } from './GenderSelector';
 import { View } from 'react-native';
+import { GenderSelector } from './GenderSelector';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/GenderSelector',

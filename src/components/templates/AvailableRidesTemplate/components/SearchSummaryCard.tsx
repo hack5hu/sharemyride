@@ -1,12 +1,12 @@
-import React from 'react';
-import { useTheme } from 'styled-components/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Typography } from '@/components/atoms/Typography';
-import { safeParseDate } from '@/utils/date';
 import { format } from 'date-fns';
+import React from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useTheme } from 'styled-components/native';
+import { Typography } from '@/components/atoms/Typography';
+import { type AvailableRidesTranslations } from '@/constants/localization/types';
 import { moderateScale } from '@/styles';
 import { formatDisplayAddress } from '@/utils/address';
-import { AvailableRidesTranslations } from '@/constants/localization/types';
+import { safeParseDate } from '@/utils/date';
 import * as S from '../AvailableRidesTemplate.styles';
 
 export interface SearchSummaryCardProps {

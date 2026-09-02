@@ -1,9 +1,9 @@
 import React from 'react';
+import { useTheme } from 'styled-components/native';
+import { RequestTypeTemplate } from '@/components/templates/RequestTypeTemplate';
+import { useLocale } from '@/constants/localization';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
-import { useTheme } from 'styled-components/native';
-import { useLocale } from '@/constants/localization';
-import { RequestTypeTemplate } from '@/components/templates/RequestTypeTemplate';
 
 export const RequestTypeScreen: React.FC = () => {
   const theme = useTheme();

@@ -2,6 +2,7 @@ import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { useLocale } from '@/constants/localization';
+import { moderateScale } from '@/styles';
 import {
   Container,
   VisualPathLine,
@@ -14,7 +15,6 @@ import {
   MockInput,
   MockInputText,
 } from './LocationInputsBento.styles';
-import { moderateScale } from '@/styles';
 
 export interface LocationInputsBentoProps {
   startLocationName?: string;
@@ -31,6 +31,7 @@ export const LocationInputsBento: React.FC<LocationInputsBentoProps> = ({
 }) => {
   const theme = useTheme();
   const { locationSelection } = useLocale();
+
   return (
     <Container>
       <VisualPathLine />

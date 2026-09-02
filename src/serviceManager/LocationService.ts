@@ -1,6 +1,6 @@
-import olaClient from './olaClient';
-import { Logger } from '@/utils/logger';
 import { formatDisplayAddress } from '@/utils/address';
+import { Logger } from '@/utils/logger';
+import olaClient from './olaClient';
 
 export interface OlaPrediction {
   description: string;
@@ -72,9 +72,11 @@ export const LocationService = {
 
       const predictions = response.data.predictions || [];
       autocompleteCache.set(trimmed, predictions);
+
       return predictions;
     } catch (error) {
       Logger.error('Ola Maps Autocomplete Error:', error);
+
       return [];
     }
   },
@@ -104,11 +106,14 @@ export const LocationService = {
           address: formatDisplayAddress(result.formatted_address),
         };
         geocodeCache.set(cacheKey, data);
+
         return data;
       }
+
       return { name: 'Picked Location', address: '' };
     } catch (error) {
       Logger.error('Ola Maps Reverse Geocode Error:', error);
+
       return { name: 'Picked Location', address: '' };
     }
   },
@@ -144,11 +149,14 @@ export const LocationService = {
       if (response.data.status === 'SUCCESS' || response.data.routes) {
         const routes = response.data.routes;
         directionsCache.set(cacheKey, routes);
+
         return routes;
       }
+
       return [];
     } catch (error) {
       Logger.error('Ola Maps Directions Error:', error);
+
       return [];
     }
   },

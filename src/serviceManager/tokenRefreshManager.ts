@@ -1,8 +1,8 @@
 import axios from 'axios';
 import * as Keychain from 'react-native-keychain';
 import { API_ENDPOINTS } from '@/constants/apiEndpoints';
-import { useAuthStore } from '@/store/useAuthStore';
 import { resetAllStores } from '@/store/resetAllStores';
+import { useAuthStore } from '@/store/useAuthStore';
 import { Logger } from '@/utils/logger';
 
 interface FailedRequest {

@@ -1,14 +1,14 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import * as Keychain from 'react-native-keychain';
 import { BASE_URL } from '@/constants/apiEndpoints';
 import { Logger } from '@/utils/logger';
-import { logApiError, logApiRequest, logApiResponse } from './apiConsoleLogger';
 import {
-  TrackedRequestConfig,
+  type TrackedRequestConfig,
   trackRequestLog,
   trackResponseSuccess,
   trackResponseError,
 } from './apiClientHelper';
+import { logApiError, logApiRequest, logApiResponse } from './apiConsoleLogger';
 import {
   isUserNotFoundOrDeleted,
   clearAuthSessionAndLogout,
@@ -69,6 +69,7 @@ axiosClient.interceptors.response.use(
   response => {
     logApiResponse(response);
     trackResponseSuccess(response);
+
     return response;
   },
   async error => {
@@ -90,6 +91,7 @@ axiosClient.interceptors.response.use(
     if (isUserNotFoundOrDeleted(responseData, responseStatus)) {
       Logger.warn('[Auth] User not found / account deleted. Logging out.');
       await clearAuthSessionAndLogout();
+
       return Promise.reject(error);
     }
 
@@ -99,6 +101,7 @@ axiosClient.interceptors.response.use(
       if (originalRequest.url?.includes('/auth/refresh')) {
         Logger.warn('[Auth] 401 received on refresh endpoint. Logging out user.');
         await clearAuthSessionAndLogout();
+
         return Promise.reject(error);
       }
 
@@ -114,6 +117,7 @@ axiosClient.interceptors.response.use(
           })
             .then(token => {
               originalRequest.headers.Authorization = `Bearer ${token}`;
+
               return axiosClient(originalRequest);
             })
             .catch(err => Promise.reject(err));
@@ -129,6 +133,7 @@ axiosClient.interceptors.response.use(
           axiosClient.defaults.headers.common.Authorization = `Bearer ${newToken}`;
           originalRequest.headers.Authorization = `Bearer ${newToken}`;
           processFailedQueue(null, newToken);
+
           return axiosClient(originalRequest);
         } catch (refreshError) {
           processFailedQueue(refreshError, null);
@@ -137,6 +142,7 @@ axiosClient.interceptors.response.use(
             refreshError,
           );
           await clearAuthSessionAndLogout();
+
           return Promise.reject(refreshError);
         } finally {
           setIsRefreshing(false);

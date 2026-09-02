@@ -2,15 +2,15 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Box } from '@/components/atoms/Box';
-import { Typography } from '@/components/atoms/Typography';
 import { Loader } from '@/components/atoms/Loader';
-import { moderateScale } from '@/styles';
-import { UserProfileDetailTemplateProps } from './types';
-import * as S from './UserProfileDetailTemplate.styles';
+import { Typography } from '@/components/atoms/Typography';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { moderateScale } from '@/styles';
 import { ProfileHeroCard } from './components/ProfileHeroCard';
-import { VehicleBentoCard } from './components/VehicleBentoCard';
 import { RecentReviewsList } from './components/RecentReviewsList';
+import { VehicleBentoCard } from './components/VehicleBentoCard';
+import { type UserProfileDetailTemplateProps } from './types';
+import * as S from './UserProfileDetailTemplate.styles';
 
 export const UserProfileDetailTemplate: React.FC<
   UserProfileDetailTemplateProps

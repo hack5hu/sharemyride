@@ -30,6 +30,7 @@ Run every item. Check the box mentally. Only then write code.
 15. ✅ **200-line hard cap per file** — exceed it and refactor immediately.
 16. ✅ **Remove all `console.log`, dead imports, unused variables** before output.
 17. ✅ **No `eslint-disable` comments** — fix the root cause.
+18. ✅ **Enforce strict Import Ordering** — external/npm packages first, `@/` internal aliases second, `./` & `../` relative imports last, alphabetized.
 
 > ⛔ Skipping any item above produces invalid output. Redo from scratch.
 

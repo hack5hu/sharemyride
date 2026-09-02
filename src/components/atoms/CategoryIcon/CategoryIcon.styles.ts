@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { moderateScale } from '@/styles';
-import { CategoryIconVariant } from './types.d';
+import { type CategoryIconVariant } from './types.d';
 
 export const IconWrapper = styled.View<{
   variant: CategoryIconVariant;

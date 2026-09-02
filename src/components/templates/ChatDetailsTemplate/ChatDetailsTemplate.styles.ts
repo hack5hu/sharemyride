@@ -1,6 +1,6 @@
+import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 import { verticalScale, scale, moderateScale } from '@/styles';
-import Animated from 'react-native-reanimated';
 
 export const SafeAreaContainer = styled.View`
   flex: 1;

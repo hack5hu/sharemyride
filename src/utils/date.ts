@@ -42,6 +42,7 @@ export const formatDateToDDMMYYYY = (date: Date): string => {
  */
 export const parseDateFromDDMMYYYY = (text: string): Date => {
   const parsed = parse(text, 'dd/MM/yyyy', new Date());
+
   return isValid(parsed) ? parsed : new Date();
 };
 
@@ -77,6 +78,7 @@ export const safeParseDate = (dateStr: any, isUtc = true): Date | null => {
   }
 
   const d = new Date(dateStr);
+
   return isValid(d) ? d : null;
 };
 
@@ -138,6 +140,7 @@ export const parseChatTimestamp = (message: {
     const parsed = safeParseDate(message.createdAt);
     if (parsed) return parsed.getTime();
   }
+
   return Date.now();
 };
 
@@ -173,6 +176,7 @@ export const getMonthDays = (year: number, month: number) => {
       result.push(i);
     }
   }
+
   return result;
 };
 
@@ -188,6 +192,7 @@ export const getMonthName = (year: number, month: number, locale = 'en-US') => {
 
 export const isSameDate = (date1: Date | null, date2: Date | null) => {
   if (!date1 || !date2) return false;
+
   return (
     date1.getFullYear() === date2.getFullYear() &&
     date1.getMonth() === date2.getMonth() &&
@@ -198,11 +203,13 @@ export const isSameDate = (date1: Date | null, date2: Date | null) => {
 export const isDatePast = (date: Date) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+
   return date.getTime() < today.getTime();
 };
 
 export const formatSelectedDate = (date: Date | null) => {
   if (!date) return '';
+
   // e.g. "Friday, 24 May 2024"
   return new Intl.DateTimeFormat('en-US', {
     weekday: 'long',

@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { FixedFooter } from './FixedFooter';
 import { Button } from '@/components/atoms/Button';
+import { FixedFooter } from './FixedFooter';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta: Meta<typeof FixedFooter> = {
   title: 'Molecules/FixedFooter',

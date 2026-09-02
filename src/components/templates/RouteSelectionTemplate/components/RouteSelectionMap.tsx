@@ -1,9 +1,9 @@
+import { type CameraRef } from '@maplibre/maplibre-react-native';
 import React from 'react';
 import { useTheme } from 'styled-components/native';
-import { CameraRef } from '@maplibre/maplibre-react-native';
-import { Camera, GeoJSONSource, Layer } from '@/components/organisms/OlaMap';
 import { MapControlsFABs } from '@/components/molecules/MapControlsFABs';
-import { RouteData } from '@/screens/PublishFlow/2_RouteSelection/useRouteSelection';
+import { Camera, GeoJSONSource, Layer } from '@/components/organisms/OlaMap';
+import { type RouteData } from '@/screens/PublishFlow/2_RouteSelection/useRouteSelection';
 import * as S from '../RouteSelectionTemplate.styles';
 
 export interface RouteSelectionMapProps {

@@ -1,12 +1,12 @@
 import notifee, { AndroidImportance, EventType, AndroidStyle } from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
 import { Platform } from 'react-native';
-import { Logger } from '@/utils/logger';
-import { navigate } from '@/navigation/navigationService';
-import { useChatStore } from '@/store/useChatStore';
-import { requestNotificationPermission } from '@/utils/permissionUtils';
 import { MessageStatus } from '@/constants/enums';
+import { navigate } from '@/navigation/navigationService';
 import { useAuthStore } from '@/store';
+import { useChatStore } from '@/store/useChatStore';
+import { Logger } from '@/utils/logger';
+import { requestNotificationPermission } from '@/utils/permissionUtils';
 
 export class NotificationService {
   /**
@@ -189,9 +189,11 @@ export class NotificationService {
           await messaging().registerDeviceForRemoteMessages();
         }
       }
+
       return await messaging().getToken();
     } catch (error) {
       Logger.warn('[FCM] Token retrieval failed', error);
+
       return null;
     }
   }
@@ -224,6 +226,7 @@ export class NotificationService {
           Logger.log(
             '[FCM] Suppressed notification: user is already in this chat',
           );
+
           return;
         }
 
@@ -320,7 +323,7 @@ export class NotificationService {
       tag = `ride-${rideIdVal}`;
     }
 
-    let styleConfig: any = undefined;
+    let styleConfig: any;
 
     if (isChat && data?.userId) {
       try {

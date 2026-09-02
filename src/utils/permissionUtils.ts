@@ -1,5 +1,5 @@
-import { PermissionsAndroid, Platform, Linking } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
+import { PermissionsAndroid, Platform, Linking } from 'react-native';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 
@@ -20,12 +20,15 @@ export const requestLocationPermission = async (): Promise<boolean> => {
           buttonPositive: 'OK',
         },
       );
+
       return granted === PermissionsAndroid.RESULTS.GRANTED;
     } catch (err) {
       console.warn('Android Permission Error:', err);
+
       return false;
     }
   }
+
   return true;
 };
 
@@ -75,8 +78,10 @@ export const checkGpsAndPrompt = async (
     setTimeout(() => {
       checkLocationServices();
     }, 1500);
+
     return false;
   }
+
   return true;
 };
 
@@ -92,18 +97,22 @@ export const requestPhotoPermission = async (): Promise<boolean> => {
         const granted = await PermissionsAndroid.request(
           (PermissionsAndroid.PERMISSIONS as any).READ_MEDIA_IMAGES
         );
+
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } else {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
         );
+
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       }
     } catch (err) {
       console.warn('Android Photo Permission Error:', err);
+
       return false;
     }
   }
+
   return true;
 };
 
@@ -119,12 +128,15 @@ export const requestNotificationPermission = async (): Promise<boolean> => {
         const granted = await PermissionsAndroid.request(
           (PermissionsAndroid.PERMISSIONS as any).POST_NOTIFICATIONS
         );
+
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } catch (err) {
         console.warn('Android Notification Permission Error:', err);
+
         return false;
       }
     }
   }
+
   return true;
 };

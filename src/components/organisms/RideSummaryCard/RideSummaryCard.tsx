@@ -10,7 +10,7 @@ import {
   BadgeText,
   RouteWrapper,
 } from './RideSummaryCard.styles';
-import { RideSummaryCardProps } from './types.d';
+import { type RideSummaryCardProps } from './types.d';
 
 export const RideSummaryCard: React.FC<RideSummaryCardProps> = ({
   pickup,

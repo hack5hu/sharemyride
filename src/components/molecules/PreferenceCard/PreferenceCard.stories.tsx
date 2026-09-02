@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { PreferenceCard } from './PreferenceCard';
 import { View } from 'react-native';
+import { PreferenceCard } from './PreferenceCard';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/PreferenceCard',

@@ -1,13 +1,12 @@
 import React from 'react';
-
-import { useTranslation } from '@/hooks/useTranslation';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
-import * as S from './SummaryPublishTemplate.styles';
-import { RouteSummary } from './components/RouteSummary';
-import { ScheduleCard } from './components/ScheduleCard';
+import { useTranslation } from '@/hooks/useTranslation';
 import { GridInfo } from './components/GridInfo';
 import { PreferenceList } from './components/PreferenceList';
 import { PublishFooter } from './components/PublishFooter';
+import { RouteSummary } from './components/RouteSummary';
+import { ScheduleCard } from './components/ScheduleCard';
+import * as S from './SummaryPublishTemplate.styles';
 
 export interface SummaryPublishTemplateProps {
   route: {

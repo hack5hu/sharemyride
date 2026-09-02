@@ -36,6 +36,7 @@ const LegendDot = styled.View<{
   background-color: ${({ theme, variant }) => {
     if (variant === 'selected') return theme.colors.primary;
     if (variant === 'available') return `${theme.colors.primary}18`;
+
     return theme.colors.outline_variant;
   }};
   border-width: ${({ variant }) => (variant === 'available' ? '1.5px' : '0px')};

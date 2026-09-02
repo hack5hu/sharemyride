@@ -1,9 +1,9 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { StyledInfoBar, IconContainer, TextContainer } from './InfoBar.styles';
-import { InfoBarProps } from './types';
 import { Typography } from '../../atoms/Typography';
+import { StyledInfoBar, IconContainer, TextContainer } from './InfoBar.styles';
+import { type InfoBarProps } from './types';
 
 export const InfoBar: React.FC<InfoBarProps> = ({
   title,

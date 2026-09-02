@@ -1,8 +1,8 @@
 import React from 'react';
 import { BookSeatSelectionTemplate } from '@/components/templates/BookSeatSelectionTemplate/BookSeatSelectionTemplate';
-import { useBookSeatSelection } from './useBookSeatSelection';
-import { BookSeatSelectionProps } from './types';
 import { useTranslation } from '@/hooks/useTranslation';
+import { type BookSeatSelectionProps } from './types';
+import { useBookSeatSelection } from './useBookSeatSelection';
 
 export const BookSeatSelectionScreen: React.FC<BookSeatSelectionProps> =
   React.memo(({ route }) => {

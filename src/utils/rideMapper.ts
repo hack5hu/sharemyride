@@ -1,5 +1,5 @@
-import { safeParseDate, formatTimeSafely } from '@/utils/date';
 import { getShortLocationName, formatDisplayAddress } from '@/utils/address';
+import { safeParseDate, formatTimeSafely } from '@/utils/date';
 
 export const mapBackendRideToUI = (
   ride: any,

@@ -1,13 +1,11 @@
 /* eslint-disable max-lines */
 import React from 'react';
-
-import styled, { useTheme } from 'styled-components/native';
-import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
-
-import { PriceCounter } from '@/components/molecules/PriceCounter';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { calculateFrontSeatPrice } from '@/utils/pricing';
+import styled, { useTheme } from 'styled-components/native';
+import { PriceCounter } from '@/components/molecules/PriceCounter';
 import { useTranslation } from '@/hooks/useTranslation';
+import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+import { calculateFrontSeatPrice } from '@/utils/pricing';
 
 export interface SegmentPrice {
   basePrice: number;

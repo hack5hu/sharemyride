@@ -1,14 +1,14 @@
 import { useCallback } from 'react';
 import { Linking } from 'react-native';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
+import { NotificationType } from '@/constants/enums';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { ChatService } from '@/serviceManager/ChatService';
-import { UserService } from '@/serviceManager/UserService';
 import {
   AnalyticsService,
   AnalyticsEvent,
 } from '@/serviceManager/AnalyticsService';
-import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
-import { NotificationType } from '@/constants/enums';
+import { ChatService } from '@/serviceManager/ChatService';
+import { UserService } from '@/serviceManager/UserService';
 
 interface UseChatActionsProps {
   message: string;
@@ -39,7 +39,7 @@ export const useChatActions = ({
 
   const handleSend = useCallback(() => {
     if (!message.trim() || !myUserId || !receiverId || receiverId === 'Unknown')
-      return;
+      {return;}
 
     ChatService.sendMessage({
       senderId: myUserId,

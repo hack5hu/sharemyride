@@ -1,5 +1,6 @@
-import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
+import styled from 'styled-components/native';
+import { OlaMap } from '@/components/organisms/OlaMap';
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
 
 export const Container = styled.View`
@@ -112,7 +113,6 @@ export const LocationPreviewText = styled.Text`
   flex: 1;
 `;
 
-import { OlaMap } from '@/components/organisms/OlaMap';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const StyledOlaMap = styled(OlaMap)<{ $isMapVisible?: boolean }>`

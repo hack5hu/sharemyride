@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { SegmentPricingCard } from './SegmentPricingCard';
 import { View } from 'react-native';
+import { SegmentPricingCard } from './SegmentPricingCard';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/SegmentPricingCard',

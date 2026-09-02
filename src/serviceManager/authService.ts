@@ -1,8 +1,8 @@
-import * as Keychain from 'react-native-keychain';
 import { Platform } from 'react-native';
-import axiosClient from './axiosClient';
+import * as Keychain from 'react-native-keychain';
 import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 import { getDeviceId } from '@/utils/deviceId';
+import axiosClient from './axiosClient';
 
 export interface LoginResponse {
   status: string;
@@ -34,6 +34,7 @@ export const AuthService = {
       API_ENDPOINTS.AUTH.LOGIN,
       { phoneNumber, termandconditionSelected },
     );
+
     return { status: response.status, data: response.data };
   },
 
@@ -61,6 +62,7 @@ export const AuthService = {
         Keychain.setGenericPassword('refresh_token', response.data.refreshToken, { service: 'refresh_token' }),
       ]);
     }
+
     return { status: response.status, data: response.data };
   },
 
@@ -89,6 +91,7 @@ export const AuthService = {
         Keychain.setGenericPassword('refresh_token', response.data.refreshToken, { service: 'refresh_token' }),
       ]);
     }
+
     return { status: response.status, data: response.data };
   },
 
@@ -117,6 +120,7 @@ export const AuthService = {
       },
     );
     await AuthService.clearLocalSession();
+
     return { status: response.status, data: response.data };
   },
 
@@ -138,6 +142,7 @@ export const AuthService = {
       API_ENDPOINTS.AUTH.RESEND_OTP,
       { phoneNumber },
     );
+
     return { status: response.status, data: response.data };
   },
 };

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
-import { useLocale } from '@/constants/localization';
-import { useSettingsStore } from '@/store/settings';
-import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { LoginTemplate } from '@/components/templates/LoginTemplate';
+import { useLocale } from '@/constants/localization';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useSettingsStore } from '@/store/settings';
 import { useLogin } from './useLogin';
 
 export const LoginScreen: React.FC = React.memo(() => {

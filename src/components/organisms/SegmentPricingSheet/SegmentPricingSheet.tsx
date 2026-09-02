@@ -1,11 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { scale, verticalScale } from '@/styles';
+import { Button } from '@/components/atoms/Button';
 import {
   SegmentPricingCard,
-  SegmentPrice,
+  type SegmentPrice,
 } from '@/components/molecules/SegmentPricingCard';
-import { StopSegment } from './utils';
-import { Button } from '@/components/atoms/Button';
+import { scale, verticalScale } from '@/styles';
 import {
   Wrapper,
   Overlay,
@@ -21,6 +20,7 @@ import {
   CancelWrapper,
   SaveWrapper,
 } from './SegmentPricingSheet.styles';
+import { type StopSegment } from './utils';
 
 export interface SegmentPricingSheetProps {
   visible: boolean;
@@ -78,6 +78,7 @@ export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
   }, [localPrices, onSave, onClose]);
 
   if (!visible) return null;
+
   return (
     <Wrapper>
       <Overlay>

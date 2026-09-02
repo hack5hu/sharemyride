@@ -1,6 +1,6 @@
+import MapView from 'react-native-maps';
 import styled from 'styled-components/native';
 import { moderateScale, verticalScale, scale } from '@/styles';
-import MapView from 'react-native-maps';
 
 export const MapContainer = styled.View`
   flex: 1;

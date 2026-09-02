@@ -1,11 +1,12 @@
 import React, { memo } from 'react';
-import { SelectLocationTemplate } from '@/components/templates/SelectLocationTemplate';
 import { MapPin } from '@/components/atoms/MapPin';
-import { OlaMap, Camera, UserLocation } from '@/components/organisms/OlaMap';
-import { useTranslation } from '@/hooks/useTranslation';
-import { useSelectLocation } from './useSelectLocation';
-import { SelectLocationScreenProps } from './types.d';
 import { ConfirmationModal } from '@/components/organisms/ConfirmationModal';
+import { OlaMap, Camera, UserLocation } from '@/components/organisms/OlaMap';
+import { SelectLocationTemplate } from '@/components/templates/SelectLocationTemplate';
+import { useTranslation } from '@/hooks/useTranslation';
+import { type SelectLocationScreenProps } from './types.d';
+import { useSelectLocation } from './useSelectLocation';
+
 
 interface ExtendedUserLocationProps
   extends React.ComponentProps<typeof UserLocation> {

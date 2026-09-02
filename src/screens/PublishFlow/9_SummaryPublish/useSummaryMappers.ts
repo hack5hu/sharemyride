@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
+import { useLocale } from '@/constants/localization';
 import { getColorLabel } from '@/constants/ride';
 import { useTravelPrefStore } from '@/store/useTravelPrefStore';
-import { useLocale } from '@/constants/localization';
 
 export const useSummaryMappers = (publishStore: any) => {
   const { departureDate, seatCount, price, vehicleDetails, requestType } =
@@ -17,6 +17,7 @@ export const useSummaryMappers = (publishStore: any) => {
   const formattedDate = useMemo(() => {
     if (!departureDate) return null;
     const date = new Date(departureDate);
+
     return date.toLocaleDateString('en-GB', {
       day: 'numeric',
       month: 'short',
@@ -27,6 +28,7 @@ export const useSummaryMappers = (publishStore: any) => {
   const vehicleData = useMemo(() => {
     if (!vehicleDetails) return null;
     const colorLabel = getColorLabel(vehicleDetails.color);
+
     return {
       name: `${vehicleDetails.company} ${vehicleDetails.model}`,
       subText: `${vehicleDetails.seater}-Seater • ${colorLabel}`,

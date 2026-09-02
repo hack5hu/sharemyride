@@ -1,5 +1,5 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '@/navigation/types';
+import { type NativeStackScreenProps } from '@react-navigation/native-stack';
+import { type RootStackParamList } from '@/navigation/types';
 
 export type SelectLocationScreenProps = NativeStackScreenProps<
   RootStackParamList,

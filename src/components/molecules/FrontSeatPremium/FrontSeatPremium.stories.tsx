@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { FrontSeatPremium } from './FrontSeatPremium';
 import { View } from 'react-native';
+import { FrontSeatPremium } from './FrontSeatPremium';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/FrontSeatPremium',

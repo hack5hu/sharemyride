@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { Button } from '../../atoms/Button';
-import { Typography } from '../../atoms/Typography';
 import { useLocale } from '@/constants/localization';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Button } from '../../atoms/Button';
 import { Input } from '../../atoms/Input';
+import { Typography } from '../../atoms/Typography';
 import {
   FormContainer,
   InputContainer,
@@ -16,7 +16,7 @@ import {
   SecurityBadge,
   DummyRow,
 } from './LoginForm.styles';
-import { LoginFormProps } from './types';
+import { type LoginFormProps } from './types';
 
 export const LoginForm: React.FC<LoginFormProps> = ({
   value,

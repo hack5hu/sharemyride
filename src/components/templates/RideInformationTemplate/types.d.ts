@@ -1,6 +1,6 @@
 import {
-  TimelinePoint,
-  DriverData,
+  type TimelinePoint,
+  type DriverData,
 } from '@/screens/BookFlow/3_AvailableRides/types';
 
 export interface Passenger {

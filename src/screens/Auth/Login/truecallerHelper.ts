@@ -1,8 +1,8 @@
+import { TRUECALLER_ANDROID_CUSTOMIZATIONS } from '@ajitpatel28/react-native-truecaller';
 import { AuthService } from '@/serviceManager/AuthService';
 import { useAuthStore } from '@/store/useAuthStore';
 import { getDeviceId } from '@/utils/deviceId';
 import { getFcmToken } from '@/utils/fcm';
-import { TRUECALLER_ANDROID_CUSTOMIZATIONS } from '@ajitpatel28/react-native-truecaller';
 
 // User explicitly chose "another method" or tapped cancel/dismiss
 export const USER_DISMISS_CODES =

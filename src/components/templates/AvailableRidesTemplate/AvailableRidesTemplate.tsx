@@ -1,17 +1,17 @@
+import { FlashList } from '@shopify/flash-list';
 import React from 'react';
 import { useTheme } from 'styled-components/native';
-import { FlashList } from '@shopify/flash-list';
 import { Loader } from '@/components/atoms/Loader';
-import { scale, verticalScale } from '@/styles';
-import { useBookRideStore } from '@/store/useBookRideStore';
-import { RideData } from '@/screens/BookFlow/3_AvailableRides/types.d';
+import { EmptyState } from '@/components/molecules/EmptyState';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { RideCard } from '@/components/organisms/RideCard/RideCard';
 import { RideFiltersModal } from '@/components/organisms/RideFiltersModal';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { EmptyState } from '@/components/molecules/EmptyState';
-import { SearchSummaryCard } from './components/SearchSummaryCard';
+import { type AvailableRidesTranslations, type RideFiltersTranslations } from '@/constants/localization/types';
+import { type RideData } from '@/screens/BookFlow/3_AvailableRides/types.d';
+import { useBookRideStore } from '@/store/useBookRideStore';
+import { scale, verticalScale } from '@/styles';
 import * as S from './AvailableRidesTemplate.styles';
-import { AvailableRidesTranslations, RideFiltersTranslations } from '@/constants/localization/types';
+import { SearchSummaryCard } from './components/SearchSummaryCard';
 
 export interface AvailableRidesTemplateProps {
   rides: RideData[];
@@ -82,6 +82,7 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
         </S.LoadingContainer>
       );
     }
+
     return (
       <EmptyState
         icon="search-off"
@@ -99,6 +100,7 @@ export const AvailableRidesTemplate: React.FC<AvailableRidesTemplateProps> = ({
         </S.FetchMoreLoadingContainer>
       );
     }
+
     return <S.FooterSpacer />;
   }, [isFetchingMore, isLoading, rides.length]);
 

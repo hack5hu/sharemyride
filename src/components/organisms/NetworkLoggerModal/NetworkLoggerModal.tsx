@@ -1,21 +1,20 @@
 /* eslint-disable max-lines */
-import React, { useState } from 'react';
-import { Modal } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { FlashList } from '@shopify/flash-list';
+import React, { useState } from 'react';
+import { Modal } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
+import { Typography } from '@/components/atoms/Typography';
+import { BASE_URL } from '@/constants/apiEndpoints';
+import buildEnv from '@/constants/buildEnv.json';
+import { useLocale } from '@/constants/localization';
+import { useAuthStore } from '@/store/useAuthStore';
 import {
   useNetworkLoggerStore,
-  NetworkLog,
+  type NetworkLog,
 } from '@/store/useNetworkLoggerStore';
-import { Typography } from '@/components/atoms/Typography';
-import { useLocale } from '@/constants/localization';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as S from './NetworkLoggerModal.styles';
-
-import { BASE_URL } from '@/constants/apiEndpoints';
-import { useAuthStore } from '@/store/useAuthStore';
-import buildEnv from '@/constants/buildEnv.json';
 
 export const NetworkLoggerModal: React.FC = React.memo(() => {
   const theme = useTheme();
@@ -28,6 +27,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
 
   const filteredLogs = logs.filter(log => {
     const url = log?.url || '';
+
     return activeTab === 'ola'
       ? url.includes('olamaps.io')
       : !url.includes('olamaps.io');
@@ -56,6 +56,7 @@ export const NetworkLoggerModal: React.FC = React.memo(() => {
     if (log.requestBody) {
       curl += ` \\\n  -d '${JSON.stringify(log.requestBody)}'`;
     }
+
     return curl;
   };
 

@@ -1,12 +1,12 @@
-import React from 'react';
-import { useTheme } from 'styled-components/native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useLocale } from '@/constants/localization';
-import { LocationInputsBento } from '@/components/organisms/LocationInputsBento';
 import { format } from 'date-fns';
+import React from 'react';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useTheme } from 'styled-components/native';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { LocationInputsBento } from '@/components/organisms/LocationInputsBento';
+import { useLocale } from '@/constants/localization';
+import { moderateScale } from '@/styles';
 import { getShortLocationName, formatDisplayAddress } from '@/utils/address';
-
 import {
   MainContent,
   HeaderSection,
@@ -27,8 +27,7 @@ import {
   RecentRideRouteText,
   RecentRideSubText,
 } from './LocationSelectionTemplate.styles';
-import { LocationSelectionTemplateProps } from './types.d';
-import { moderateScale } from '@/styles';
+import { type LocationSelectionTemplateProps } from './types.d';
 
 export const LocationSelectionTemplate: React.FC<
   LocationSelectionTemplateProps
@@ -102,6 +101,7 @@ export const LocationSelectionTemplate: React.FC<
                     ride.departureTime
                   }`
                 : '';
+
               return (
                 <RecentRideCard
                   key={index}

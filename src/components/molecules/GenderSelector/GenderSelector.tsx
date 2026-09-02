@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button } from '@/components/atoms/Button';
 import { Typography } from '@/components/atoms/Typography';
+import { useTranslation } from '@/hooks/useTranslation';
 import {
   Container,
   ButtonRow,
   OptionWrapper,
   StyledLabel,
 } from './GenderSelector.styles';
-import { useTranslation } from '@/hooks/useTranslation';
 
 export interface GenderSelectorProps {
   label: string;

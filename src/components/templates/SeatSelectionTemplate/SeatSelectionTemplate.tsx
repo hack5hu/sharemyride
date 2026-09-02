@@ -1,18 +1,18 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
+import { Button } from '@/components/atoms/Button';
 import { Typography } from '@/components/atoms/Typography';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { SeatLegend } from '@/components/molecules/SeatLegend/SeatLegend';
+import { VehicleHorizontalList } from '@/components/molecules/VehicleHorizontalList/VehicleHorizontalList';
 import {
   CarFloorPlan,
   FIVE_SEATER_ROWS,
   SEVEN_SEATER_ROWS,
 } from '@/components/organisms/CarFloorPlan';
-import { SeatLegend } from '@/components/molecules/SeatLegend/SeatLegend';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { FixedFooter } from '@/components/molecules/FixedFooter';
-import { Button } from '@/components/atoms/Button';
-import { VehicleHorizontalList } from '@/components/molecules/VehicleHorizontalList/VehicleHorizontalList';
 import * as S from './SeatSelectionTemplate.styles';
-import { SeatSelectionTemplateProps } from './types';
+import { type SeatSelectionTemplateProps } from './types';
 
 export const SeatSelectionTemplate: React.FC<SeatSelectionTemplateProps> =
   React.memo(

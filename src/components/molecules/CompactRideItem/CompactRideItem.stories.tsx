@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { CompactRideItem } from './CompactRideItem';
 import { View } from 'react-native';
+import { CompactRideItem } from './CompactRideItem';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/CompactRideItem',

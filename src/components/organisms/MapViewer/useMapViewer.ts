@@ -1,15 +1,15 @@
+import { Client, type IMessage } from '@stomp/stompjs';
 import { useState, useEffect, useRef } from 'react';
-import { Client, IMessage } from '@stomp/stompjs';
 import * as Keychain from 'react-native-keychain';
-import MapView from 'react-native-maps';
 import { BASE_URL } from '@/constants/apiEndpoints';
 import { Logger } from '@/utils/logger';
 import {
-  RideDetails,
-  Coordinate,
-  DriverLocationPayload,
+  type RideDetails,
+  type Coordinate,
+  type DriverLocationPayload,
   RideStatus,
 } from './types.d';
+import type MapView from 'react-native-maps';
 
 // STOMP WebSocket requires TextEncoder/TextDecoder inside React Native environments
 import 'fast-text-encoding';

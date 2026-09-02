@@ -1,9 +1,8 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { OtpInput } from '@/components/molecules/OtpInput';
 import { Button } from '@/components/atoms/Button';
-import { OTPVerificationTemplateProps } from './types.d';
+import { OtpInput } from '@/components/molecules/OtpInput';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import {
   KeyboardContainer,
   ScrollContainer,
@@ -21,6 +20,7 @@ import {
   LinkText,
   DotSeparator,
 } from './OTPVerificationTemplate.styles';
+import { type OTPVerificationTemplateProps } from './types.d';
 
 export const OTPVerificationTemplate: React.FC<OTPVerificationTemplateProps> = ({
   propPhoneNumber,

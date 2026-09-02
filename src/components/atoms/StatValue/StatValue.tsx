@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { Typography } from '../Typography';
 import { moderateScale } from '@/styles';
+import { Typography } from '../Typography';
 
 export interface StatValueProps {
   children: string | number;

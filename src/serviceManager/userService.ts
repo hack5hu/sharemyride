@@ -29,6 +29,7 @@ export interface VehiclePayload {
 export const UserService = {
   getProfile: async () => {
     const response = await axiosClient.get(API_ENDPOINTS.USER.PROFILE);
+
     return response.data;
   },
 
@@ -36,16 +37,19 @@ export const UserService = {
     const response = await axiosClient.get(
       `${API_ENDPOINTS.USER.PROFILE}?userId=${userId}`,
     );
+
     return response.data;
   },
 
   getVehicles: async () => {
     const response = await axiosClient.get(API_ENDPOINTS.USER.VEHICLES);
+
     return response.data;
   },
 
   saveVehicle: async (data: VehiclePayload) => {
     const response = await axiosClient.post(API_ENDPOINTS.USER.VEHICLES, data);
+
     return response.data;
   },
 
@@ -54,6 +58,7 @@ export const UserService = {
       `${API_ENDPOINTS.USER.VEHICLES}/${id}`,
       data,
     );
+
     return response.data;
   },
 
@@ -61,6 +66,7 @@ export const UserService = {
     const response = await axiosClient.delete(
       `${API_ENDPOINTS.USER.VEHICLES}/${id}`,
     );
+
     return response.data;
   },
 
@@ -112,6 +118,7 @@ export const UserService = {
       API_ENDPOINTS.USER.PROFILE,
       formData,
     );
+
     return response.data;
   },
 
@@ -127,11 +134,13 @@ export const UserService = {
       API_ENDPOINTS.USER.PROFILE,
       formData,
     );
+
     return response.data;
   },
 
   deleteProfilePhoto: async () => {
     const response = await axiosClient.delete(API_ENDPOINTS.USER.DELETE_PHOTO);
+
     return response.data;
   },
 
@@ -139,6 +148,7 @@ export const UserService = {
     const response = await axiosClient.get(
       API_ENDPOINTS.RIDE.GET_USER_RATINGS(userId),
     );
+
     return response.data;
   },
 
@@ -149,6 +159,7 @@ export const UserService = {
   }) => {
     try {
       const response = await axiosClient.post(API_ENDPOINTS.USER.REPORT, payload);
+
       return response.data;
     } catch (error) {
       console.warn('Report API error:', error);

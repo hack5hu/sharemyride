@@ -1,6 +1,6 @@
 import React from 'react';
-import { UserLocationMarker } from './UserLocationMarker';
 import { Box } from '@/components/atoms/Box';
+import { UserLocationMarker } from './UserLocationMarker';
 
 export default {
   title: 'Atoms/UserLocationMarker',

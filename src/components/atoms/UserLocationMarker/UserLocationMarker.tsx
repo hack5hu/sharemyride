@@ -5,6 +5,7 @@ import {
   withTiming,
   useAnimatedStyle,
 } from 'react-native-reanimated';
+import { type UserLocationMarkerProps } from './types.d';
 import {
   Container,
   PulseCircle,
@@ -12,7 +13,6 @@ import {
   InnerCircle,
   HeadingIndicator,
 } from './UserLocationMarker.styles';
-import { UserLocationMarkerProps } from './types.d';
 
 export const UserLocationMarker: React.FC<UserLocationMarkerProps> = ({
   heading = 0,

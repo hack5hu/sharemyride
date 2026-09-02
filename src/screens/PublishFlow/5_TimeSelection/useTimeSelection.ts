@@ -1,6 +1,6 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useState, useCallback, useMemo } from 'react';
 import { useRoute } from '@react-navigation/native';
+import { useState, useCallback, useMemo } from 'react';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 
 const getNextRounded5 = (date: Date) => {
@@ -11,6 +11,7 @@ const getNextRounded5 = (date: Date) => {
   if (rounded >= 60) {
     return { h: (bufferDate.getHours() + 1) % 24, m: 0 };
   }
+
   return { h: bufferDate.getHours(), m: rounded };
 };
 
@@ -26,6 +27,7 @@ export const useTimeSelection = () => {
     if (!selectedDateISO) return false;
     const selected = new Date(selectedDateISO);
     const today = new Date();
+
     return (
       selected.getFullYear() === today.getFullYear() &&
       selected.getMonth() === today.getMonth() &&
@@ -38,6 +40,7 @@ export const useTimeSelection = () => {
     if (!isToday) return { minHour: undefined, minMinute: undefined };
     const now = new Date();
     const { h, m } = getNextRounded5(now);
+
     return { minHour: h, minMinute: m };
   }, [isToday]);
 
@@ -53,6 +56,7 @@ export const useTimeSelection = () => {
     const isPM = match[3].toUpperCase() === 'PM';
     if (isPM && h !== 12) h += 12;
     if (!isPM && h === 12) h = 0;
+
     return { h, m };
   }, [departureTime]);
 
@@ -62,6 +66,7 @@ export const useTimeSelection = () => {
     if (minHour !== undefined && minMinute !== undefined) {
       return { h: minHour, m: minMinute };
     }
+
     return { h: 8, m: 0 };
   }, [storedTime, minHour, minMinute]);
 
@@ -109,6 +114,7 @@ export const useTimeSelection = () => {
     if (minHour === undefined || minMinute === undefined) return false;
     if (selectedHour < minHour) return true;
     if (selectedHour === minHour && selectedMinute < minMinute) return true;
+
     return false;
   }, [minHour, minMinute, selectedHour, selectedMinute]);
 

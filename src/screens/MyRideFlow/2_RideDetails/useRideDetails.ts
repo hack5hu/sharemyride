@@ -1,20 +1,20 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useRoute, useFocusEffect } from '@react-navigation/native';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 import { Alert, Clipboard, Linking } from 'react-native';
-import { useRoute, useFocusEffect } from '@react-navigation/native';
-import { useTranslation } from '@/hooks/useTranslation';
-import { useAuthStore } from '@/store/useAuthStore';
-import { RideDetailsScreenProps } from './types';
-import { RideService } from '@/serviceManager/RideService';
-import { useMyRidesStore } from '@/store/useMyRidesStore';
-import { Logger } from '@/utils/logger';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
-import { getErrorMessage } from '@/utils/error';
-import { storage } from '@/utils/storage';
-import { useBookRideStore } from '@/store/useBookRideStore';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useTranslation } from '@/hooks/useTranslation';
 import { navigate } from '@/navigation/navigationService';
 import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
+import { RideService } from '@/serviceManager/RideService';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useBookRideStore } from '@/store/useBookRideStore';
+import { useMyRidesStore } from '@/store/useMyRidesStore';
+import { getErrorMessage } from '@/utils/error';
+import { Logger } from '@/utils/logger';
+import { storage } from '@/utils/storage';
+import { type RideDetailsScreenProps } from './types';
 
 export const useRideDetails = () => {
   const navigation = useAppNavigation();

@@ -1,16 +1,16 @@
+import { useRoute } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import { Keyboard } from 'react-native';
-import { useRoute } from '@react-navigation/native';
-import { AuthService } from '@/serviceManager/AuthService';
-import { useAuthStore } from '@/store/useAuthStore';
-import { getDeviceId } from '@/utils/deviceId';
-import { getFcmToken } from '@/utils/fcm';
-import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
-import { getErrorMessage } from '@/utils/error';
+import { useTranslation } from '@/hooks/useTranslation';
 import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
+import { AuthService } from '@/serviceManager/AuthService';
+import { useAuthStore } from '@/store/useAuthStore';
 import { setAdminDebuggerEnabled } from '@/utils/adminDebugger';
+import { getDeviceId } from '@/utils/deviceId';
+import { getErrorMessage } from '@/utils/error';
+import { getFcmToken } from '@/utils/fcm';
 
 export const useOTPVerification = () => {
   const [timer, setTimer] = useState(45);
@@ -25,6 +25,7 @@ export const useOTPVerification = () => {
     const interval = setInterval(() => {
       setTimer(prev => (prev > 0 ? prev - 1 : 0));
     }, 1000);
+
     return () => clearInterval(interval);
   }, []);
 
@@ -40,6 +41,7 @@ export const useOTPVerification = () => {
         t('notification.defaultErrorTitle'),
         t('notification.defaultErrorMessage'),
       );
+
       return;
     }
 

@@ -1,13 +1,12 @@
 import React, { useRef, useCallback, useEffect } from 'react';
 import {
   ScrollView,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
+  type NativeSyntheticEvent,
+  type NativeScrollEvent,
 } from 'react-native';
-import { useTheme } from 'styled-components/native';
-import { moderateScale } from '@/styles';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
+import { moderateScale } from '@/styles';
 
 /* ---- Styles kept inline here since they are tightly scoped ---- */
 
@@ -88,6 +87,7 @@ const getDistance = (index: number, selectedIndex: number) =>
 const getTypographyConfig = (dist: number) => {
   if (dist === 0) return { variant: 'display' as const, size: 'sm' as const };
   if (dist === 1) return { variant: 'headline' as const, size: 'md' as const };
+
   return { variant: 'title' as const, size: 'xl' as const };
 };
 
@@ -167,6 +167,7 @@ export const TimeDial: React.FC<TimeDialProps> = React.memo(
         if (isDisabledItem) return `${theme.colors.outline_variant}4D`;
         if (dist === 0) return theme.colors.primary;
         if (dist === 1) return `${theme.colors.on_surface_variant}99`;
+
         return `${theme.colors.on_surface_variant}66`;
       },
       [theme],

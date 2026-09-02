@@ -1,6 +1,6 @@
-import { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { sanitizeHeaders } from '@/utils/networkSecurity';
+import { type AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 import { Logger } from '@/utils/logger';
+import { sanitizeHeaders } from '@/utils/networkSecurity';
 
 type HeaderRecord = Record<string, unknown>;
 type JsonRecord = Record<string, unknown>;
@@ -57,6 +57,7 @@ const redactConsoleData = (value: unknown): unknown => {
 
   return Object.entries(value).reduce<JsonRecord>((acc, [key, item]) => {
     acc[key] = redactConsoleData(item);
+
     return acc;
   }, {});
 };

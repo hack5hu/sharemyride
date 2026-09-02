@@ -1,6 +1,6 @@
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import styled from 'styled-components/native';
 import { moderateScale } from '@/styles';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const Container = styled.View<{ size: number }>`
   width: ${({ size }) => moderateScale(size)}px;

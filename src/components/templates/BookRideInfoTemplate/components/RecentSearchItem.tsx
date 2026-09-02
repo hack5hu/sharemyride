@@ -1,10 +1,10 @@
+import { format } from 'date-fns';
 import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { format } from 'date-fns';
+import { type RecentSearch } from '@/store/useBookRideStore';
 import { moderateScale } from '@/styles';
 import { getShortLocationName, formatDisplayAddress } from '@/utils/address';
-import { RecentSearch } from '@/store/useBookRideStore';
 import * as S from './RecentSearchItem.styles';
 
 export interface RecentSearchItemProps {

@@ -1,6 +1,6 @@
+import { type Ticket } from '@/components/templates/SuggestionsTemplate/types.d';
 import { TicketCategory, TicketStatus } from '@/constants/enums';
-import { Ticket } from '@/components/templates/SuggestionsTemplate/types.d';
-import { FeedbackItem } from '@/serviceManager/FeedbackService';
+import { type FeedbackItem } from '@/serviceManager/FeedbackService';
 
 export const formatDate = (dateStr?: string): string => {
   if (!dateStr) return 'Recently';
@@ -16,6 +16,7 @@ export const formatDate = (dateStr?: string): string => {
   } catch {
     // fallback
   }
+
   return dateStr;
 };
 

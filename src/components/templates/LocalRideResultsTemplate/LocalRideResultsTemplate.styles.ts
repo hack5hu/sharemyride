@@ -1,6 +1,6 @@
+import { type ViewStyle } from 'react-native';
 import styled from 'styled-components/native';
 import { moderateScale, scale, verticalScale } from '@/styles';
-import { ViewStyle } from 'react-native';
 
 // Static style for the OlaMap native component (StyleProp required, styled-components not applicable)
 export const mapViewStyle: ViewStyle = { flex: 1 };

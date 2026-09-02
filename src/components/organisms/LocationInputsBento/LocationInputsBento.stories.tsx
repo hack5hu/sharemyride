@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { LocationInputsBento } from './LocationInputsBento';
 import { View } from 'react-native';
+import { LocationInputsBento } from './LocationInputsBento';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Organisms/LocationInputsBento',

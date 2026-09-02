@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { MultiStopCard } from './MultiStopCard';
 import { View } from 'react-native';
+import { MultiStopCard } from './MultiStopCard';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/MultiStopCard',

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
 import { StopItem } from '@/components/molecules/StopItem';
-import { RouteJourneyProps } from './types';
 import * as S from './RouteJourney.styles';
+import { type RouteJourneyProps } from './types';
 
 export const RouteJourney: React.FC<RouteJourneyProps> = ({ stops }) => {
   const theme = useTheme();

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useTheme } from 'styled-components/native';
 import { OTPVerificationTemplate } from '@/components/templates/OTPVerificationTemplate';
-import { useOTPVerification } from './useOTPVerification';
-import { OTPVerificationProps } from './types';
 import { useLocale } from '@/constants/localization';
+import { type OTPVerificationProps } from './types';
+import { useOTPVerification } from './useOTPVerification';
 
 export const OTPVerificationScreen: React.FC<OTPVerificationProps> = ({
   phoneNumber: propPhoneNumber,

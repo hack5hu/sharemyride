@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
 import { MapViewer } from './MapViewer';
-import { RideStatus, RideDetails } from './types.d';
+import { RideStatus, type RideDetails } from './types.d';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const mockScheduledRide: RideDetails = {
   id: 'scheduled-101',

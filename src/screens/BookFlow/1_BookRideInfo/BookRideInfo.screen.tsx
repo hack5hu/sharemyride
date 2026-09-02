@@ -1,8 +1,8 @@
 import React from 'react';
-import { useBookRideInfo } from './useBookRideInfo';
-import { BookRideInfoTemplate } from '@/components/templates/BookRideInfoTemplate';
 import { ConfirmationModal } from '@/components/organisms/ConfirmationModal';
+import { BookRideInfoTemplate } from '@/components/templates/BookRideInfoTemplate';
 import { useLocale } from '@/constants/localization';
+import { useBookRideInfo } from './useBookRideInfo';
 
 export const BookRideInfoScreen: React.FC = () => {
   const {

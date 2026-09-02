@@ -1,4 +1,4 @@
-import { MessageType } from '@/constants/enums';
+import type { MessageType } from '@/constants/enums';
 
 export type ChatMessageType = MessageType | 'text' | 'location' | 'image';
 
@@ -12,12 +12,14 @@ export interface LocationMetadata {
 }
 
 export interface ChatMetadata {
+  name?: string;
   userName?: string;
   userAvatar?: string;
   avatarUri?: string;
   userRating?: number;
   rating?: number;
   isVerified?: boolean;
+  source?: string;
   pickup?: string;
   start?: string;
   dropoff?: string;

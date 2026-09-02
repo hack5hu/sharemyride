@@ -1,6 +1,5 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
 import { useTheme } from 'styled-components/native';
 import { Box } from '@/components/atoms/Box';
 import { Typography } from '@/components/atoms/Typography';
@@ -12,7 +11,7 @@ import {
   Indicator,
   StyledStatusText,
 } from './PreferenceCard.styles';
-import { PreferenceCardProps } from './types';
+import { type PreferenceCardProps } from './types';
 
 export const PreferenceCard: React.FC<PreferenceCardProps> = ({
   icon,

@@ -1,5 +1,5 @@
-import { ReactNode, RefObject } from 'react';
-import { MapRef, CameraRef } from '@maplibre/maplibre-react-native';
+import { type MapRef, type CameraRef } from '@maplibre/maplibre-react-native';
+import { type ReactNode, type RefObject } from 'react';
 
 export interface LocalRideResultsTemplateProps {
   onBack: () => void;

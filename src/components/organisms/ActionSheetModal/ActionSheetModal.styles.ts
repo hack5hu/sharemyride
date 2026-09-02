@@ -1,6 +1,6 @@
+import { Pressable } from 'react-native';
 import styled from 'styled-components/native';
 import { scale, moderateScale } from '@/styles';
-import { Pressable } from 'react-native';
 
 export const ModalContainer = styled.View`
   width: ${scale(320)}px;

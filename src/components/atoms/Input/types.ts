@@ -1,4 +1,4 @@
-import { TextInputProps, ViewStyle } from 'react-native';
+import { type TextInputProps, type ViewStyle } from 'react-native';
 
 export interface InputProps extends TextInputProps {
   label?: string;

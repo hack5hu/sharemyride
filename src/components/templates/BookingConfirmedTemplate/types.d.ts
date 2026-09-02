@@ -1,4 +1,4 @@
-import { BookingConfirmedTranslations } from '@/constants/localization/types';
+import { type BookingConfirmedTranslations } from '@/constants/localization/types';
 
 export interface ConfirmedRideData {
   driver: {

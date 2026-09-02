@@ -1,15 +1,15 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { type StackNavigationProp } from '@react-navigation/stack';
 import { useCallback, useEffect, useState } from 'react';
 import { Keyboard } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '@/navigation/types';
-import { useRidePublishStore } from '@/store/useRidePublishStore';
-import { storage } from '@/utils/storage';
-import { calculateDistance } from '@/utils/location';
-import { formatDisplayAddress } from '@/utils/address';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
 import { useLocale } from '@/constants/localization';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { type RootStackParamList } from '@/navigation/types';
+import { useRidePublishStore } from '@/store/useRidePublishStore';
+import { formatDisplayAddress } from '@/utils/address';
+import { calculateDistance } from '@/utils/location';
+import { storage } from '@/utils/storage';
 
 type NavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -77,6 +77,7 @@ export const useLocationSelection = () => {
           t.minDistanceErrorTitle,
           t.minDistanceError,
         );
+
         return;
       }
     }
@@ -119,6 +120,7 @@ export const useLocationSelection = () => {
 
   // Enforce validation: Must have both start and destination to proceed
   const canContinue = !!startLocation && !!destinationLocation;
+
   return {
     startLocationName: formatDisplayAddress(startLocation?.address),
     destinationLocationName: formatDisplayAddress(destinationLocation?.address),

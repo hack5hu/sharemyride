@@ -21,6 +21,7 @@ export const getFcmToken = async (): Promise<string | null> => {
       }
       const token = await messaging().getToken();
       Logger.log('[FCM] Token retrieved successfully:', token);
+
       return token;
     } else {
       Logger.warn('[FCM] Notification permissions not granted');
@@ -28,5 +29,6 @@ export const getFcmToken = async (): Promise<string | null> => {
   } catch (error) {
     Logger.warn('[FCM] Failed to retrieve FCM token:', error);
   }
+
   return null;
 };

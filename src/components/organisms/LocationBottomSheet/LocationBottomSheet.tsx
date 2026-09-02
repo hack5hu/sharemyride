@@ -1,6 +1,5 @@
 import React from 'react';
 import { Handlebar } from '@/components/atoms/Handlebar';
-
 import { LocationListItem } from '@/components/molecules/LocationListItem';
 import { useTranslation } from '@/hooks/useTranslation';
 import {
@@ -10,7 +9,7 @@ import {
   SectionHeader,
   SuggestionsList,
 } from './LocationBottomSheet.styles';
-import { LocationBottomSheetProps } from './types.d';
+import { type LocationBottomSheetProps } from './types.d';
 
 export const LocationBottomSheet: React.FC<LocationBottomSheetProps> = ({
   onLocationSelect,

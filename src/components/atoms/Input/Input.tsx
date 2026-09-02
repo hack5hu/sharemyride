@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useTheme } from 'styled-components/native';
-import { FocusEvent, Keyboard, TextInput } from 'react-native';
+import { type FocusEvent, Keyboard, type TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useTheme } from 'styled-components/native';
 import {
   Container,
   InputWrapper,
@@ -13,7 +13,7 @@ import {
   PrefixContainer,
   PrefixText,
 } from './Input.styles';
-import { InputProps } from './types';
+import { type InputProps } from './types';
 
 export const Input: React.FC<InputProps> = ({
   label,

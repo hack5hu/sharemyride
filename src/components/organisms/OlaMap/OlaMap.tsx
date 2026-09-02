@@ -1,13 +1,13 @@
-import React, { useEffect, forwardRef } from 'react';
 import {
   Map as MapView,
   TransformRequestManager,
   OfflineManager,
   type MapRef,
 } from '@maplibre/maplibre-react-native';
+import React, { useEffect, forwardRef } from 'react';
 import { OLA_API_KEY, getOlaStyleUrl } from '@/constants/OlaStyle';
+import { type OlaMapProps } from './types.d';
 import type { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
-import { OlaMapProps } from './types.d';
 
 // Run setup only once
 let isTransformRequestSetup = false;

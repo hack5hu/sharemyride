@@ -1,14 +1,14 @@
 import React from 'react';
+import { Typography } from '@/components/atoms/Typography';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { useLocale } from '@/constants/localization';
-import { Typography } from '@/components/atoms/Typography';
 import {
   ScrollContainer,
   SearchWrapper,
   FABContainer,
   HeaderWrapper,
 } from './ChatListTemplate.styles';
-import { ChatListTemplateProps } from './types.d';
+import { type ChatListTemplateProps } from './types.d';
 
 export const ChatListTemplate: React.FC<ChatListTemplateProps> = ({
   searchBar,

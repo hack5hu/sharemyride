@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import styled from 'styled-components/native';
 import { moderateScale } from '@/styles';
 
 interface CheckboxProps {
@@ -19,10 +19,12 @@ const CheckboxContainer = styled.TouchableOpacity<{
   border-width: 2px;
   border-color: ${({ theme, checked, disabled }) => {
     if (disabled) return theme.colors.outline_variant;
+
     return checked ? theme.colors.primary : theme.colors.outline_variant;
   }};
   background-color: ${({ theme, checked, disabled }) => {
     if (disabled) return checked ? theme.colors.outline_variant : 'transparent';
+
     return checked ? theme.colors.primary : 'transparent';
   }};
   justify-content: center;

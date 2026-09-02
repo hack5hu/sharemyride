@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { StopItem } from './StopItem';
 import { View } from 'react-native';
+import { StopItem } from './StopItem';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/StopItem',

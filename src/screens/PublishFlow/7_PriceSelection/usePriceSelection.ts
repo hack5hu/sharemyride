@@ -1,16 +1,16 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useState, useCallback, useEffect, useMemo } from 'react';
 import { useRoute } from '@react-navigation/native';
-import { useRidePublishStore } from '@/store/useRidePublishStore';
+import { useState, useCallback, useEffect, useMemo } from 'react';
+import { type SegmentPrice } from '@/components/molecules/SegmentPricingCard';
+import { type StopSegment } from '@/components/organisms/SegmentPricingSheet/utils';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { LocationService } from '@/serviceManager/LocationService';
+import { useRidePublishStore } from '@/store/useRidePublishStore';
 import {
   calculateBasePrice,
   calculateFrontSeatPrice,
   PRICING_MULTIPLIERS,
   roundToNearest,
 } from '@/utils/pricing';
-import { SegmentPrice } from '@/components/molecules/SegmentPricingCard';
-import { StopSegment } from '@/components/organisms/SegmentPricingSheet/utils';
 
 export const usePriceSelection = () => {
   const navigation = useAppNavigation();
@@ -47,6 +47,7 @@ export const usePriceSelection = () => {
         divisor,
       );
     }
+
     return 0;
   }, [totalDistanceKm, divisor]);
 
@@ -72,6 +73,7 @@ export const usePriceSelection = () => {
     ) {
       return storePrice;
     }
+
     return initialPrice;
   }, [storePrice, minPrice, maxPrice, initialPrice]);
 
@@ -134,6 +136,7 @@ export const usePriceSelection = () => {
             setSegmentPricesState(newSegmentPrices);
           }
         }
+
         return;
       }
 
@@ -222,11 +225,13 @@ export const usePriceSelection = () => {
   // 2. Pricing Calculations (Premium)
   const premium = useMemo(() => {
     const frontSeatPrice = calculateFrontSeatPrice(price, premiumPercentage);
+
     return frontSeatPrice - price;
   }, [price, premiumPercentage]);
 
   const segments: StopSegment[] = useMemo(() => {
     if (!routeDetails) return [];
+
     return routeDetails.legs.map((leg, i) => ({
       id: `seg-${i}`,
       from: leg.startAddress,
@@ -264,6 +269,7 @@ export const usePriceSelection = () => {
         ),
       } as any;
     });
+
     return prices;
   }, [segments, segmentPricesState, premiumPercentage, divisor]);
 
@@ -360,6 +366,7 @@ export const usePriceSelection = () => {
         Object.keys(prices).forEach(id => {
           next[id] = prices[id].basePrice;
         });
+
         return next;
       });
     },
@@ -374,6 +381,7 @@ export const usePriceSelection = () => {
       divisor,
     );
     const tolerance = recommendedMid * 0.15;
+
     return Math.abs(price - recommendedMid) <= tolerance;
   }, [price, totalDistanceKm, divisor]);
 

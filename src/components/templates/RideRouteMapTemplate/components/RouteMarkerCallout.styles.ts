@@ -16,6 +16,7 @@ export const CalloutBubble = styled.View<{ $role: string }>`
   border-color: ${({ theme, $role }) => {
     if ($role === 'start' || $role === 'user-pickup') return '#00875a';
     if ($role === 'end' || $role === 'user-dropoff') return theme.colors.error;
+
     return theme.colors.primary;
   }};
   shadow-color: ${({ theme }) => theme.colors.on_surface};
@@ -29,6 +30,7 @@ export const CalloutRoleBadge = styled.View<{ $role: string }>`
   background-color: ${({ theme, $role }) => {
     if ($role === 'start' || $role === 'user-pickup') return '#00875a18';
     if ($role === 'end' || $role === 'user-dropoff') return `${theme.colors.error}18`;
+
     return `${theme.colors.primary}18`;
   }};
   border-radius: ${moderateScale(6)}px;
@@ -45,6 +47,7 @@ export const CalloutRoleText = styled.Text<{ $role: string }>`
   color: ${({ theme, $role }) => {
     if ($role === 'start' || $role === 'user-pickup') return '#00875a';
     if ($role === 'end' || $role === 'user-dropoff') return theme.colors.error;
+
     return theme.colors.primary;
   }};
 `;
@@ -69,6 +72,7 @@ export const CalloutPointer = styled.View<{ $role: string }>`
   border-top-color: ${({ theme, $role }) => {
     if ($role === 'start' || $role === 'user-pickup') return '#00875a';
     if ($role === 'end' || $role === 'user-dropoff') return theme.colors.error;
+
     return theme.colors.primary;
   }};
   margin-bottom: ${verticalScale(2)}px;
@@ -81,6 +85,7 @@ export const MarkerDot = styled.View<{ $role: string }>`
   background-color: ${({ theme, $role }) => {
     if ($role === 'start' || $role === 'user-pickup') return '#00875a';
     if ($role === 'end' || $role === 'user-dropoff') return theme.colors.error;
+
     return theme.colors.primary;
   }};
   border-width: 2.5px;

@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
-import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 import { Box } from '@/components/atoms/Box';
 import { Typography } from '@/components/atoms/Typography';
+import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 
 export const CardContainer = styled(Box)`
   flex-direction: row;

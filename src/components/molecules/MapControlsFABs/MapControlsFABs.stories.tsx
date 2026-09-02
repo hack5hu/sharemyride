@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { MapControlsFABs } from './MapControlsFABs';
 import { View } from 'react-native';
+import { MapControlsFABs } from './MapControlsFABs';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/MapControlsFABs',

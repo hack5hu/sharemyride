@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { SeatButton } from './SeatButton';
 import { View } from 'react-native';
+import { SeatButton } from './SeatButton';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Atoms/SeatButton',

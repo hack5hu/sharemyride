@@ -1,7 +1,7 @@
 import React from 'react';
-import { Container, Chip } from './ColorChip.styles';
 import { Typography } from '@/components/atoms/Typography';
-import { ColorChipProps } from './types';
+import { Container, Chip } from './ColorChip.styles';
+import { type ColorChipProps } from './types';
 
 export const ColorChip: React.FC<ColorChipProps> = ({
   color,

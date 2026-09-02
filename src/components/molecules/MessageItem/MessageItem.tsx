@@ -1,11 +1,11 @@
 import React from 'react';
-import { useTheme } from 'styled-components/native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import { useTheme } from 'styled-components/native';
 import { Avatar } from '@/components/atoms/Avatar';
 import { Typography } from '@/components/atoms/Typography';
-import { getMessageStatusIcon } from '@/utils/messageStatusUtil';
 import { MessageStatus } from '@/constants/enums';
-import { MessageItemProps } from './types';
+import { moderateScale, verticalScale } from '@/styles';
+import { getMessageStatusIcon } from '@/utils/messageStatusUtil';
 import {
   Container,
   ContentContainer,
@@ -16,7 +16,7 @@ import {
   MessageContentRow,
   StatusIconContainer,
 } from './MessageItem.styles';
-import { moderateScale, verticalScale } from '@/styles';
+import { type MessageItemProps } from './types';
 
 export const MessageItem: React.FC<MessageItemProps> = React.memo(
   ({
@@ -52,6 +52,7 @@ export const MessageItem: React.FC<MessageItemProps> = React.memo(
           </BadgeContainer>
         );
       }
+
       return null;
     };
 

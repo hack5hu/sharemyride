@@ -1,5 +1,5 @@
-import { TicketStatus, TicketCategory } from '@/constants/enums';
-import { SuggestionsTranslations } from '@/constants/localization/types';
+import { type TicketStatus, type TicketCategory } from '@/constants/enums';
+import { type SuggestionsTranslations } from '@/constants/localization/types';
 
 export interface TicketUpdate {
   date: string;

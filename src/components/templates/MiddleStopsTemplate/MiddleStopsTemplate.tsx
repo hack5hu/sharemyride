@@ -1,13 +1,12 @@
 import React from 'react';
-import { useLocale } from '@/constants/localization';
+import { Button } from '@/components/atoms/Button';
+import { FixedFooter } from '@/components/molecules/FixedFooter';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import {
   MiddleStopsList,
-  RouteStop,
+  type RouteStop,
 } from '@/components/organisms/MiddleStopsList';
-
-import { ScreenShell } from '@/components/molecules/ScreenShell';
-import { FixedFooter } from '@/components/molecules/FixedFooter';
-import { Button } from '@/components/atoms/Button';
+import { useLocale } from '@/constants/localization';
 import * as S from './MiddleStopsTemplate.styles';
 
 export interface MiddleStopsTemplateProps {
@@ -34,6 +33,7 @@ export const MiddleStopsTemplate: React.FC<MiddleStopsTemplateProps> = ({
   destinationDistanceText,
 }) => {
   const { middleStops: t } = useLocale();
+
   return (
     <ScreenShell noPaddingBottom title={'Add stops'} onBack={onBackPress}>
       <S.ContentLayer showsVerticalScrollIndicator={false}>

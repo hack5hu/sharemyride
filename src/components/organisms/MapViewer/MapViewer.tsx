@@ -1,13 +1,11 @@
 import React, { useMemo } from 'react';
 import { Marker, Polyline, Circle } from 'react-native-maps';
-import { useTheme } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
-import { useMapViewer } from './useMapViewer';
-import { MapViewerProps, RideStatus } from './types.d';
-import { decodePolyline } from '@/utils/polyline';
+import { useTranslation } from '@/hooks/useTranslation';
 import { moderateScale } from '@/styles';
+import { decodePolyline } from '@/utils/polyline';
 import {
   MapContainer,
   StyledMapView,
@@ -15,6 +13,8 @@ import {
   IndicatorDot,
   OverlayTextContainer,
 } from './MapViewer.styles';
+import { type MapViewerProps, RideStatus } from './types.d';
+import { useMapViewer } from './useMapViewer';
 
 export const MapViewer: React.FC<MapViewerProps> = React.memo(
   ({ rideDetails, webSocketUrl }) => {
@@ -33,11 +33,13 @@ export const MapViewer: React.FC<MapViewerProps> = React.memo(
         rideDetails.unifiedPolyline
       ) {
         const decoded = decodePolyline(rideDetails.unifiedPolyline);
+
         return decoded.map(([longitude, latitude]) => ({
           latitude,
           longitude,
         }));
       }
+
       return [];
     }, [rideDetails.status, rideDetails.isDriver, rideDetails.unifiedPolyline]);
 
@@ -56,6 +58,7 @@ export const MapViewer: React.FC<MapViewerProps> = React.memo(
       }
       const initialCoords = driverLocation ||
         rideDetails.driverLocation || { latitude: 28.6139, longitude: 77.209 };
+
       return {
         latitude: initialCoords.latitude,
         longitude: initialCoords.longitude,

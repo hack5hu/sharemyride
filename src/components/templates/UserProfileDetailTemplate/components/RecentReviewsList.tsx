@@ -1,9 +1,9 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
 import { Box } from '@/components/atoms/Box';
+import { Typography } from '@/components/atoms/Typography';
 import { moderateScale } from '@/styles';
 import * as TS from '../UserProfileDetailTemplate.styles';
 import * as S from './RecentReviewsList.styles';

@@ -1,5 +1,5 @@
-import { DefaultTheme } from 'styled-components/native';
-import { SettingsTranslations } from '@/constants/localization/types';
+import { type DefaultTheme } from 'styled-components/native';
+import { type SettingsTranslations } from '@/constants/localization/types';
 
 export interface SettingsTemplateProps {
   t: SettingsTranslations;

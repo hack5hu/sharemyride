@@ -50,6 +50,7 @@ export const StepperButton = styled.TouchableOpacity<{
   border-radius: ${moderateScale(14)}px;
   background-color: ${({ theme, primary, disabled }) => {
     if (disabled) return `${theme.colors.surface_container_highest}80`;
+
     return primary ? theme.colors.primary : theme.colors.surface_container_high;
   }};
   align-items: center;

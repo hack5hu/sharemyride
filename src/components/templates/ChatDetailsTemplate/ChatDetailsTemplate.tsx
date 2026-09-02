@@ -1,8 +1,9 @@
+import { FlashList } from '@shopify/flash-list';
 import React, { useRef, useEffect } from 'react';
 import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller';
 import { useAnimatedStyle } from 'react-native-reanimated';
-import { FlashList } from '@shopify/flash-list';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
+import { moderateScale } from '@/styles';
 import {
   ScreenContainer,
   AnimatedWrapper,
@@ -10,7 +11,6 @@ import {
   HeaderSpacer,
   InputWrapper,
 } from './ChatDetailsTemplate.styles';
-import { moderateScale } from '@/styles';
 
 export interface ChatDetailsTemplateProps<T extends { id: string } = { id: string }> {
   header: React.ReactNode;

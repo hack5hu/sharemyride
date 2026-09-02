@@ -1,13 +1,13 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
-import { useTheme } from 'styled-components/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Typography } from '@/components/atoms/Typography';
-import { Input } from '@/components/atoms/Input';
-import { IconButton } from '@/components/atoms/IconButton';
+import { useTheme } from 'styled-components/native';
 import { Button } from '@/components/atoms/Button';
-import { TicketCategory } from '@/constants/enums';
-import { SuggestionsTranslations } from '@/constants/localization/types';
+import { IconButton } from '@/components/atoms/IconButton';
+import { Input } from '@/components/atoms/Input';
+import { Typography } from '@/components/atoms/Typography';
+import { type TicketCategory } from '@/constants/enums';
+import { type SuggestionsTranslations } from '@/constants/localization/types';
 import * as S from '../SuggestionsTemplate.styles';
 
 export interface SubmitFormSectionProps {

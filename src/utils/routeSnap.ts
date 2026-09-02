@@ -1,6 +1,6 @@
-import nearestPointOnLine from '@turf/nearest-point-on-line';
 import turfDistance from '@turf/distance';
 import { point, lineString } from '@turf/helpers';
+import nearestPointOnLine from '@turf/nearest-point-on-line';
 
 /** Maximum allowed deviation from the route in kilometers */
 export const MAX_DEVIATION_KM = 1;

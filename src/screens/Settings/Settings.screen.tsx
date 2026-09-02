@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
-import { useSettings } from './useSettings';
 import { SettingsTemplate } from '@/components/templates/SettingsTemplate';
+import { useSettings } from './useSettings';
 
 export const SettingsScreen: React.FC = () => {
   const theme = useTheme();

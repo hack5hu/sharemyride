@@ -1,4 +1,4 @@
-import { BottomTabType } from '@/components/organisms/BottomNav';
+import { type BottomTabType } from '@/components/organisms/BottomNav';
 
 export interface DummyTemplateProps {
   title: string;

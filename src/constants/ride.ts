@@ -1,4 +1,4 @@
-import { VehicleType } from '@/screens/Profile/VehicleDetails/types.d';
+import { type VehicleType } from '@/screens/Profile/VehicleDetails/types.d';
 
 export const VEHICLE_TYPES = [
   { type: 'car' as VehicleType, icon: 'directions-car' },
@@ -20,5 +20,6 @@ export const CAR_COLORS = [
 
 export const getColorLabel = (value: string) => {
   const color = CAR_COLORS.find(c => c.value === value || c.label === value);
+
   return color ? color.label : value;
 };

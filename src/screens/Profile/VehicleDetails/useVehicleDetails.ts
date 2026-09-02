@@ -1,18 +1,18 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useCallback, useMemo } from 'react';
-import { useRoute, RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '@/navigation/types.d';
-import { useRidePublishStore } from '@/store/useRidePublishStore';
-import { useVehicleStore } from '@/store/useVehicleStore';
+import { useRoute, type RouteProp } from '@react-navigation/native';
 import { useFormik } from 'formik';
+import { useCallback, useMemo } from 'react';
 import * as Yup from 'yup';
-import { VehicleDetailsState, VehicleType } from './types';
-import { VEHICLE_TYPES, CAR_COLORS } from '@/constants/ride';
-import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
-import { getErrorMessage } from '@/utils/error';
+import { VEHICLE_TYPES, CAR_COLORS } from '@/constants/ride';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useTranslation } from '@/hooks/useTranslation';
+import { type RootStackParamList } from '@/navigation/types.d';
 import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
+import { useRidePublishStore } from '@/store/useRidePublishStore';
+import { useVehicleStore } from '@/store/useVehicleStore';
+import { getErrorMessage } from '@/utils/error';
+import { type VehicleDetailsState, type VehicleType } from './types';
 
 const validationSchema = Yup.object().shape({
   company: Yup.string().required('Vehicle company is required'),
@@ -46,6 +46,7 @@ export const useVehicleDetails = () => {
         };
       }
     }
+
     return {
       company: '',
       model: '',

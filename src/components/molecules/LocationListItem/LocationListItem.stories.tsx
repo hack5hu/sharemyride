@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { LocationListItem } from './LocationListItem';
 import { View } from 'react-native';
+import { LocationListItem } from './LocationListItem';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Molecules/LocationListItem',

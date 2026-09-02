@@ -1,6 +1,6 @@
+import LinearGradient from 'react-native-linear-gradient';
 import styled from 'styled-components/native';
 import { scale, verticalScale, moderateScale } from '@/styles';
-import LinearGradient from 'react-native-linear-gradient';
 
 export const Container = styled.View`
   flex: 1;

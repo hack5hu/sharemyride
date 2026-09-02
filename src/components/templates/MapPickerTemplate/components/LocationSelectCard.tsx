@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTheme } from 'styled-components/native';
-import { moderateScale, verticalScale } from '@/styles';
-import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
 import { Button } from '@/components/atoms/Button';
-import { MapPickerTranslations } from '@/constants/localization/types';
+import { type MapPickerTranslations } from '@/constants/localization/types';
+import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
+import { moderateScale, verticalScale } from '@/styles';
 import * as S from '../MapPickerTemplate.styles';
 
 export interface LocationSelectCardProps {

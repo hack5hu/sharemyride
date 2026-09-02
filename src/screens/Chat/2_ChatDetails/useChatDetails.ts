@@ -1,13 +1,13 @@
-import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useRoute } from '@react-navigation/native';
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
+import { ConnectionStatus, MessageStatus } from '@/constants/enums';
+import { useChatSocket } from '@/hooks/useChatSocket';
 import { useTranslation } from '@/hooks/useTranslation';
-import { useChatStore } from '@/store/useChatStore';
-import { useAuthStore } from '@/store/useAuthStore';
 import { ChatService } from '@/serviceManager/ChatService';
 import { RideService } from '@/serviceManager/RideService';
-import { useChatSocket } from '@/hooks/useChatSocket';
-import { ChatMessage } from '@/types/chat';
-import { ConnectionStatus, MessageStatus } from '@/constants/enums';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useChatStore } from '@/store/useChatStore';
+import { type ChatMessage } from '@/types/chat';
 import { mapChatMessages } from './chatMessageMapper';
 import { useChatActions } from './useChatActions';
 
@@ -135,6 +135,7 @@ export const useChatDetails = () => {
 
   const messages = useMemo(() => {
     const rawMessages = storeMessages[conversationId] || [];
+
     return mapChatMessages(rawMessages, myUserId, t);
   }, [storeMessages, conversationId, myUserId, t]);
 

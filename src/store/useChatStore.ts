@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { mmkvStorage } from '@/utils/storage';
-import { ChatMessage, ChatConversation, UserProfile } from '@/types/chat';
 import { ConnectionStatus, MessageStatus } from '@/constants/enums';
+import { type ChatMessage, type ChatConversation, type UserProfile } from '@/types/chat';
+import { mmkvStorage } from '@/utils/storage';
 
 interface ChatState {
   messages: Record<string, ChatMessage[]>; // Keyed by conversationId
@@ -56,9 +56,11 @@ export const getConversationIdForMessage = (messageId: string): string => {
     const found = messages[convId].some(m => m.messageId === messageId);
     if (found) {
       messageToConvMap.set(messageId, convId);
+
       return convId;
     }
   }
+
   return '';
 };
 
@@ -77,6 +79,7 @@ export const useChatStore = create<ChatState>()(
       upsertUser: user =>
         set(state => {
           const existing = state.users[user.userId] || {};
+
           return {
             users: {
               ...state.users,
@@ -96,7 +99,7 @@ export const useChatStore = create<ChatState>()(
 
           // Check if message ID already exists
           if (chatMessages.some(m => m.messageId === message.messageId))
-            return state;
+            {return state;}
           messageToConvMap.set(message.messageId, conversationId);
 
           // Deduplication Logic: If this is a real message arriving via socket,
@@ -208,6 +211,7 @@ export const useChatStore = create<ChatState>()(
             } else if (isCascadeRead) {
               return { ...m, status: MessageStatus.READ };
             }
+
             return m;
           });
 
@@ -237,6 +241,7 @@ export const useChatStore = create<ChatState>()(
                 };
               }
             }
+
             return c;
           });
 
@@ -270,6 +275,7 @@ export const useChatStore = create<ChatState>()(
                 lastMessage: { ...c.lastMessage, messageId: realId, status },
               };
             }
+
             return c;
           });
 
@@ -418,6 +424,7 @@ export const useChatStore = create<ChatState>()(
                   : c.lastMessage,
               };
             }
+
             return c;
           });
 

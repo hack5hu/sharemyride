@@ -56,6 +56,7 @@ export const useLocationStore = create<LocationStore>()(
               },
             };
           }
+
           return { history: {} };
         }),
     }),

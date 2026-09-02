@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { moderateScale } from '@/styles';
 import { Typography } from '@/components/atoms/Typography';
+import { moderateScale } from '@/styles';
 
 export const HeaderRow = styled.View<{ $disabledOpacity?: number }>`
   flex-direction: row;

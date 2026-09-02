@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box } from '@/components/atoms/Box';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
+import { Box } from '@/components/atoms/Box';
 import { moderateScale } from '@/styles';
 import {
   CardContainer,

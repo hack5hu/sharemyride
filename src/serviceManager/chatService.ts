@@ -1,24 +1,24 @@
 import { Client } from '@stomp/stompjs';
 import * as Keychain from 'react-native-keychain';
+import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { BASE_URL } from '@/constants/apiEndpoints';
-import { useChatStore } from '@/store/useChatStore';
-import { ChatMessage, SendMessagePayload } from '@/types/chat';
 import {
   MessageStatus,
   MessageType,
   ConnectionStatus,
   NotificationType,
 } from '@/constants/enums';
-import axiosClient from './axiosClient';
-import { Logger } from '@/utils/logger';
-import { registerChatSubscriptions } from './chatSubscriptions';
-import { fetchChatUserProfile } from './chatProfile';
-import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
-import { useSettingsStore } from '@/store/settings';
 import { en } from '@/constants/localization/en';
 import { hi } from '@/constants/localization/hi';
-
+import { useSettingsStore } from '@/store/settings';
+import { useChatStore } from '@/store/useChatStore';
+import { type ChatMessage, type SendMessagePayload } from '@/types/chat';
 import { parseChatTimestamp } from '@/utils/date';
+import { Logger } from '@/utils/logger';
+import axiosClient from './axiosClient';
+import { fetchChatUserProfile } from './chatProfile';
+import { registerChatSubscriptions } from './chatSubscriptions';
+
 
 const translations = { en, hi };
 
@@ -53,6 +53,7 @@ class ChatServiceClass {
 
     if (this.client?.active && this.currentUserId === userId) {
       Logger.log('[Socket] Already active for user:', userId);
+
       return;
     }
 
@@ -71,6 +72,7 @@ class ChatServiceClass {
     if (!authCreds) {
       Logger.warn('[Socket] Missing auth token');
       setConnectionStatus(ConnectionStatus.DISCONNECTED);
+
       return;
     }
 
@@ -216,6 +218,7 @@ class ChatServiceClass {
         t.chat.sendFailedTitle,
         t.chat.sendFailedMessage,
       );
+
       return;
     }
 
@@ -242,6 +245,7 @@ class ChatServiceClass {
         t.chat.sendFailedTitle,
         t.chat.sendFailedMessage,
       );
+
       return;
     }
 
@@ -349,9 +353,11 @@ class ChatServiceClass {
       const response = await axiosClient.get(
         `/api/v1/chat/conversations?page=${page}&size=${size}`,
       );
+
       return response.data;
     } catch (error) {
       Logger.error('Failed to fetch conversations:', error);
+
       return null;
     }
   }
@@ -394,9 +400,11 @@ class ChatServiceClass {
       }));
       
       useChatStore.getState().setHistory(conversationId, history);
+
       return { history, isLast };
     } catch (error) {
       Logger.error('Failed to fetch chat history:', error);
+
       return { history: [], isLast: true };
     }
   }

@@ -1,5 +1,5 @@
-import axiosClient from './axiosClient';
 import { API_ENDPOINTS } from '@/constants/apiEndpoints';
+import axiosClient from './axiosClient';
 
 export interface RouteStop {
   name: string;
@@ -65,6 +65,7 @@ export interface SearchRidePayload {
 export const RideService = {
   searchRides: async (payload: SearchRidePayload) => {
     const response = await axiosClient.post(API_ENDPOINTS.RIDE.SEARCH, payload);
+
     return response.data;
   },
 
@@ -73,6 +74,7 @@ export const RideService = {
       API_ENDPOINTS.RIDE.PUBLISH,
       payload,
     );
+
     return response.data;
   },
 
@@ -84,6 +86,7 @@ export const RideService = {
     const response = await axiosClient.get(
       `${API_ENDPOINTS.RIDE.GET_MY_RIDES}?filter=${filter}&page=${page}&size=${size}`,
     );
+
     return response.data;
   },
 
@@ -92,6 +95,7 @@ export const RideService = {
       rideId,
     )}?reason=${encodeURIComponent(reason)}`;
     const response = await axiosClient.put(url);
+
     return response.data;
   },
 
@@ -100,6 +104,7 @@ export const RideService = {
       bookingId,
     )}?reason=${encodeURIComponent(reason)}`;
     const response = await axiosClient.put(url);
+
     return response.data;
   },
 
@@ -108,11 +113,13 @@ export const RideService = {
       API_ENDPOINTS.RIDE.PREFERENCES,
       payload,
     );
+
     return response.data;
   },
 
   getPreferences: async () => {
     const response = await axiosClient.get(API_ENDPOINTS.RIDE.PREFERENCES);
+
     return response.data;
   },
 
@@ -121,11 +128,13 @@ export const RideService = {
       API_ENDPOINTS.RIDE.BOOK_RIDE(rideId),
       payload,
     );
+
     return response.data;
   },
 
   getPendingBookings: async () => {
     const response = await axiosClient.get(API_ENDPOINTS.RIDE.PENDING_BOOKINGS);
+
     return response.data;
   },
 
@@ -133,6 +142,7 @@ export const RideService = {
     const response = await axiosClient.get(
       API_ENDPOINTS.RIDE.DRIVER_PENDING_REQUESTS,
     );
+
     return response.data;
   },
 
@@ -153,13 +163,14 @@ export const RideService = {
     const queryParams: string[] = [];
     if (sourceStopId) queryParams.push(`sourceStopId=${sourceStopId}`);
     if (destinationStopId)
-      queryParams.push(`destinationStopId=${destinationStopId}`);
+      {queryParams.push(`destinationStopId=${destinationStopId}`);}
 
     if (queryParams.length > 0) {
       url += `?${queryParams.join('&')}`;
     }
 
     const response = await axiosClient.get(url);
+
     return response.data;
   },
 
@@ -172,13 +183,14 @@ export const RideService = {
     const queryParams: string[] = [];
     if (sourceStopId) queryParams.push(`sourceStopId=${sourceStopId}`);
     if (destinationStopId)
-      queryParams.push(`destinationStopId=${destinationStopId}`);
+      {queryParams.push(`destinationStopId=${destinationStopId}`);}
 
     if (queryParams.length > 0) {
       url += `?${queryParams.join('&')}`;
     }
 
     const response = await axiosClient.get(url);
+
     return response.data;
   },
 
@@ -190,6 +202,7 @@ export const RideService = {
       bookingId,
     )}?status=${status}`;
     const response = await axiosClient.put(url);
+
     return response.data;
   },
 
@@ -198,6 +211,7 @@ export const RideService = {
       API_ENDPOINTS.RIDE.UPDATE_LOCATION(rideId),
       { lat, lon },
     );
+
     return response.data;
   },
 
@@ -209,6 +223,7 @@ export const RideService = {
       API_ENDPOINTS.RIDE.SYNC_BACKLOG(rideId),
       { backlog },
     );
+
     return response.data;
   },
 
@@ -225,6 +240,7 @@ export const RideService = {
       score: rating,
       comment: review,
     });
+
     return response.data;
   },
 
@@ -238,6 +254,7 @@ export const RideService = {
         ...payload,
         rideId: Number(payload.rideId),
       });
+
       return response.data;
     } catch (error) {
       console.warn('Report Ride API error:', error);

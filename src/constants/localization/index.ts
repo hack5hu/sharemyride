@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import { Locale, Translations } from './types';
 import { en } from './en';
 import { hi } from './hi';
+import { type Locale, type Translations } from './types';
 
 // ─── Translation Map ──────────────────────────────────────────────────────────
 
@@ -13,6 +13,7 @@ import { useSettingsStore } from '../../store/settings';
 
 export const useLocale = (): Translations => {
   const locale = useSettingsStore(state => state.language);
+
   return translations[locale];
 };
 

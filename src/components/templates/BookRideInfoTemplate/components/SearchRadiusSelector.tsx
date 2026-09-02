@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
+import { type BookRideInfoTranslations } from '@/constants/localization/types';
 import { moderateScale } from '@/styles';
-import { BookRideInfoTranslations } from '@/constants/localization/types';
 import * as S from './SearchRadiusSelector.styles';
 
 export interface SearchRadiusSelectorProps {
@@ -91,6 +91,7 @@ export const SearchRadiusSelector: React.FC<SearchRadiusSelectorProps> =
             <S.PresetsContainer>
               {PRESET_OPTIONS.map(preset => {
                 const isSelected = radiusKm === preset;
+
                 return (
                   <S.PresetChip
                     key={preset}

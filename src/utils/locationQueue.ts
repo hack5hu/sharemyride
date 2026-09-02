@@ -1,5 +1,5 @@
-import { storage } from '@/utils/storage';
 import { Logger } from '@/utils/logger';
+import { storage } from '@/utils/storage';
 
 export interface QueuedLocation {
   latitude: number;
@@ -53,6 +53,7 @@ export const locationQueue = {
         error,
       );
     }
+
     return [];
   },
 
@@ -64,9 +65,11 @@ export const locationQueue = {
       const data = locationQueue.get();
       storage.remove(QUEUE_KEY);
       Logger.log('[LocationQueue] Secure cache queue flushed successfully.');
+
       return data;
     } catch (error) {
       Logger.error('[LocationQueue] Failed to purge storage queue:', error);
+
       return [];
     }
   },

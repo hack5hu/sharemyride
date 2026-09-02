@@ -3,6 +3,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { StatusBadge } from '@/components/atoms/StatusBadge';
 import { DriverProfileSummary } from '@/components/molecules/DriverProfileSummary';
+import { moderateScale } from '@/styles';
 import {
   Container,
   GhostIconWrapper,
@@ -19,8 +20,7 @@ import {
   InfoText,
   ActionButtonRow,
 } from './MatchedRideBento.styles';
-import { MatchedRideBentoProps } from './types.d';
-import { moderateScale } from '@/styles';
+import { type MatchedRideBentoProps } from './types.d';
 
 export const MatchedRideBento: React.FC<MatchedRideBentoProps> = ({
   driverName,

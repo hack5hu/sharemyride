@@ -1,4 +1,4 @@
-import { CategoryIconVariant } from '@/components/atoms/CategoryIcon';
+import { type CategoryIconVariant } from '@/components/atoms/CategoryIcon';
 
 export interface CategoryButtonProps {
   label: string;

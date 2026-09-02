@@ -1,18 +1,17 @@
 import { useState, useCallback, useMemo } from 'react';
-import { useBookRideStore } from '@/store/useBookRideStore';
 import {
   FIVE_SEATER_ROWS,
   SEVEN_SEATER_ROWS,
 } from '@/components/organisms/CarFloorPlan/seatConfig';
-import { RideService, RouteStop } from '@/serviceManager/RideService';
-import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { useTranslation } from '@/hooks/useTranslation';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
-import { getErrorMessage } from '@/utils/error';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { useTranslation } from '@/hooks/useTranslation';
 import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
-
-import { BookSeat, Passenger } from './types';
+import { RideService, type RouteStop } from '@/serviceManager/RideService';
+import { useBookRideStore } from '@/store/useBookRideStore';
+import { getErrorMessage } from '@/utils/error';
+import { type BookSeat, type Passenger } from './types';
 
 export const useBookSeatSelection = (
   rideId: string,
@@ -48,6 +47,7 @@ export const useBookSeatSelection = (
 
   const vehicleType = useMemo(() => {
     const t = (passedVehicleType || rideRaw?.vehicleType || '').toUpperCase();
+
     return t.includes('7') ? '7' : '5';
   }, [passedVehicleType, rideRaw]);
 
@@ -78,6 +78,7 @@ export const useBookSeatSelection = (
   const departureDate = useMemo(() => {
     if (passedDate) return passedDate;
     const firstStop = rideRaw?.stops?.[0];
+
     return firstStop?.arrivalTime
       ? new Date(firstStop.arrivalTime).toLocaleDateString('en-IN', {
           day: 'numeric',
@@ -91,6 +92,7 @@ export const useBookSeatSelection = (
     const firstStop = rideRaw?.stops?.[0];
     if (!firstStop?.arrivalTime) return '--:--';
     const date = new Date(firstStop.arrivalTime);
+
     return date.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
@@ -103,6 +105,7 @@ export const useBookSeatSelection = (
     (passedSeats || []).forEach((s: BookSeat) => {
       priceMap[s.seatId] = s.price;
     });
+
     return priceMap;
   }, [passedSeats]);
 
@@ -111,6 +114,7 @@ export const useBookSeatSelection = (
     selectedSeats.forEach(id => {
       total += prices[id] || 0;
     });
+
     return total;
   }, [selectedSeats, prices]);
 
@@ -124,6 +128,7 @@ export const useBookSeatSelection = (
         } else {
           next.add(id);
         }
+
         return next;
       });
     },

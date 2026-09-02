@@ -1,14 +1,14 @@
 /* eslint-disable max-lines */
 import React, { useState } from 'react';
 import {  Modal } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { Typography } from '@/components/atoms/Typography';
-import { moderateScale } from '@/styles';
 import { Checkbox } from '@/components/atoms/Checkbox';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Typography } from '@/components/atoms/Typography';
 import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
 import { useBookRideStore } from '@/store/useBookRideStore';
+import { moderateScale } from '@/styles';
 import * as S from './RideFiltersModal.styles';
 
 export interface RideFiltersModalProps {
@@ -17,7 +17,7 @@ export interface RideFiltersModalProps {
   onClear: () => void;
   onApply: (filters: string[]) => void;
   selectedFilters: string[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TODO: add proper type
+   
   t: any;
 }
 
@@ -252,6 +252,7 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
                   <S.RadiusPresetsContainer>
                     {[5, 10, 20, 25, 30, 40, 50].map(preset => {
                       const isSelected = radiusKm === preset;
+
                       return (
                         <S.RadiusPresetChip
                           key={preset}
@@ -422,18 +423,18 @@ export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
                 if (preferences.noSmoking) activeFilters.push('noSmoking');
                 if (preferences.ladiesOnly) activeFilters.push('ladiesOnly');
                 if (preferences.verifiedOnly)
-                  activeFilters.push('verifiedOnly');
+                  {activeFilters.push('verifiedOnly');}
                 if (preferences.petFriendly) activeFilters.push('petFriendly');
                 if (preferences.luggageAllowed)
-                  activeFilters.push('luggageAllowed');
+                  {activeFilters.push('luggageAllowed');}
                 if (preferences.manualApproval)
-                  activeFilters.push('manualApproval');
+                  {activeFilters.push('manualApproval');}
 
                 selectedTimeSlots.forEach(slot => activeFilters.push(slot));
 
                 if (proximity === 'pickup') activeFilters.push('nearPickup');
                 else if (proximity === 'dropoff')
-                  activeFilters.push('nearDropoff');
+                  {activeFilters.push('nearDropoff');}
 
                 useBookRideStore.getState().setSearchRadiusKm(radiusKm);
                 onApply(activeFilters);

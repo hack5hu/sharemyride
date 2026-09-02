@@ -1,16 +1,16 @@
 import React, { memo } from 'react';
-import { Typography } from '@/components/atoms/Typography';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTheme } from 'styled-components/native';
+import { Typography } from '@/components/atoms/Typography';
+import { NotificationType } from '@/constants/enums';
+import { moderateScale } from '@/styles';
 import {
   NotificationContainer,
   IconContainer,
   ContentContainer,
   CloseButton,
 } from './Notification.styles';
-import { NotificationProps } from './types';
-import { moderateScale } from '@/styles';
-import { NotificationType } from '@/constants/enums';
+import { type NotificationProps } from './types';
 
 export const Notification: React.FC<NotificationProps> = memo(
   ({ type = NotificationType.INFO, text1, text2, onHide }) => {

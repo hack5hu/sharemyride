@@ -1,7 +1,7 @@
 import React from 'react';
-import { VehicleCard } from '../VehicleCard/VehicleCard';
-import { Vehicle } from '@/store/useVehicleStore';
 import { useTheme } from 'styled-components/native';
+import { type Vehicle } from '@/store/useVehicleStore';
+import { VehicleCard } from '../VehicleCard/VehicleCard';
 import {
   Container,
   HeaderRow,

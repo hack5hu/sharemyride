@@ -1,8 +1,8 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { moderateScale } from '@/styles';
 import {
   Wrapper,
@@ -32,6 +32,7 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
       navigation.goBack();
     }
   };
+
   return (
     <Wrapper>
       <LeftSection>

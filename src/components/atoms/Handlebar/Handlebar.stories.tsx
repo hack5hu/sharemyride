@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { Handlebar } from './Handlebar';
 import { View } from 'react-native';
+import { Handlebar } from './Handlebar';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 const meta = {
   title: 'Atoms/Handlebar',

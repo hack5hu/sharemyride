@@ -1,9 +1,9 @@
 import React from 'react';
-import { useTheme } from 'styled-components/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useTheme } from 'styled-components/native';
+import { TimeDial } from '@/components/molecules/TimeDial';
 import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';
-import { TimeDial } from '@/components/molecules/TimeDial';
 import {
   CardContainer,
   SelectedTimeLabel,

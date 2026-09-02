@@ -1,4 +1,4 @@
-import { Theme } from './types';
+import { type Theme } from './types';
 
 export const LightTheme: Theme = {
   name: 'light',

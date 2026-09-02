@@ -2,12 +2,12 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { Typography } from '@/components/atoms/Typography';
 import { Avatar } from '@/components/atoms/Avatar';
+import { Typography } from '@/components/atoms/Typography';
 import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';
-import { storage } from '@/utils/storage';
 import { getCityName, getShortLocationName } from '@/utils/address';
+import { storage } from '@/utils/storage';
 import * as S from './PassengerManagement.styles';
 
 export interface Passenger {
@@ -49,8 +49,10 @@ const formatSegment = (segment?: string) => {
     const end = parts[1]
       ? getCityName(parts[1]) || getShortLocationName(parts[1])
       : '';
+
     return end ? `${start} → ${end}` : start;
   }
+
   return getCityName(segment) || getShortLocationName(segment);
 };
 
@@ -104,6 +106,7 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
       const getFormattedSeats = (p: Passenger) => {
         const seats = p.seatNames || p.seatIds || p.seatId;
         if (!seats || seats.length === 0) return 'N/A';
+
         return seats.map(s => getSeatDescription(s)).join(', ');
       };
 
@@ -299,6 +302,7 @@ export const PassengerManagement: React.FC<PassengerManagementProps> =
                 const passengerId = String(
                   p.passengerId || p.id || p.bookingId || '',
                 );
+
                 return (
                   <S.PassengerCard
                     key={bookingId || passengerId || i}

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
+import { type UserReview } from '@/screens/Common/UserProfileDetail/types';
 import { UserService } from '@/serviceManager/UserService';
-import { UserReview } from '@/screens/Common/UserProfileDetail/types';
 
 export const useUserRatings = (userId: string, userName: string) => {
   const navigation = useAppNavigation();

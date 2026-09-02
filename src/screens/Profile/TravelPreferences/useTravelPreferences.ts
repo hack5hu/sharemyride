@@ -1,13 +1,13 @@
-import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { useTravelPrefStore } from '@/store/useTravelPrefStore';
-import { TravelPreferenceState } from './types';
 import { Notification } from '@/components/molecules/Notification';
 import { showNotification } from '@/components/organisms/GlobalNotification';
 import { NotificationType } from '@/constants/enums';
+import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useTranslation } from '@/hooks/useTranslation';
-import { getErrorMessage } from '@/utils/error';
 import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
+import { useTravelPrefStore } from '@/store/useTravelPrefStore';
+import { getErrorMessage } from '@/utils/error';
+import { type TravelPreferenceState } from './types';
 
 export const useTravelPreferences = () => {
   const navigation = useAppNavigation();
@@ -21,6 +21,7 @@ export const useTravelPreferences = () => {
   // Helper to convert comma-separated string to array
   const parseMusic = (musicStr?: string) => {
     if (!musicStr) return ['Pop'];
+
     return musicStr
       .split(',')
       .map(s => s.trim())
