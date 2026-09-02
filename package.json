@@ -22,7 +22,8 @@
     "release:aab": "node scripts/release.js aab",
     "release:apk": "node scripts/release.js apk",
     "release:ios": "node scripts/release.js ios",
-    "release:ota": "node scripts/release.js ota"
+    "release:ota": "node scripts/release.js ota",
+    "release:dry-run": "node scripts/release.js prod --dry-run"
   },
   "dependencies": {
     "@ajitpatel28/react-native-truecaller": "^0.9.0",

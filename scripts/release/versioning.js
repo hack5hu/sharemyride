@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const releaseIt = require('release-it').default;
-const { ask } = require('./utils');
+const { ask, isDryRun } = require('./utils');
 
 /**
  * ============================================================================
@@ -22,7 +22,11 @@ const { ask } = require('./utils');
  * @param {string|null} preReleaseId - Optional pre-release tag (e.g., 'uat' for 1.5.0-uat.0).
  */
 const autoBumpVersion = async (preReleaseId = null) => {
-  console.log('\n--- 🚀 Auto-Bumping Version with release-it ---');
+  console.log(
+    `\n--- 🚀 Auto-Bumping Version with release-it ${
+      isDryRun ? '(DRY-RUN)' : ''
+    } ---`,
+  );
 
   const answer = await ask(
     'Do you want to bump the version and run release-it? (y/N) [default: N]: ',
@@ -37,6 +41,7 @@ const autoBumpVersion = async (preReleaseId = null) => {
   }
 
   const options = {
+    'dry-run': isDryRun,
     plugins: {
       '@release-it/conventional-changelog': {
         preset: 'angular',
@@ -63,7 +68,11 @@ const autoBumpVersion = async (preReleaseId = null) => {
 
   await releaseIt(options);
 
-  console.log('✅ Version bumped, synced natively, and committed/tagged!');
+  console.log(
+    isDryRun
+      ? '✅ [DRY-RUN] Version bump previewed successfully!'
+      : '✅ Version bumped, synced natively, and committed/tagged!',
+  );
 };
 
 /**
@@ -104,6 +113,13 @@ const handleAndroidVersionCode = async () => {
     }
   }
 
+  if (isDryRun) {
+    console.log(
+      `✅ [DRY-RUN] Would update Android versionCode in build.gradle to: ${targetCode}`,
+    );
+    return;
+  }
+
   content = content.replace(/(versionCode\s+)\d+/, `$1${targetCode}`);
   fs.writeFileSync(buildGradlePath, content, 'utf8');
   console.log(`✅ Android versionCode updated to: ${targetCode}`);
@@ -125,7 +141,9 @@ const sanitizeIosVersion = () => {
     /(<key>CFBundleShortVersionString<\/key>\s*<string>)([\d\.]+)(?:-[^\s<]+)?(<\/string>)/,
     '$1$2$3',
   );
-  fs.writeFileSync(infoPlistPath, content, 'utf8');
+  if (!isDryRun) {
+    fs.writeFileSync(infoPlistPath, content, 'utf8');
+  }
 };
 
 /**
@@ -168,6 +186,13 @@ const handleIosBuildNumber = async () => {
       console.log(`⚠️ Invalid input. Keeping build number at ${currentBuild}.`);
       return;
     }
+  }
+
+  if (isDryRun) {
+    console.log(
+      `✅ [DRY-RUN] Would update iOS build number in Info.plist to: ${targetBuild}`,
+    );
+    return;
   }
 
   content = content.replace(

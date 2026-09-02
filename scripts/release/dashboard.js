@@ -1,5 +1,5 @@
 const { spawn } = require('child_process');
-const { isWin } = require('./utils');
+const { isWin, isDryRun } = require('./utils');
 
 /**
  * ============================================================================
@@ -150,10 +150,24 @@ const runParallel = tasks => {
     let completedCount = 0;
     let hasError = false;
 
-    // Spawn child processes concurrently
+    // Spawn child processes concurrently (or simulate in dry-run mode)
     taskStates.forEach(task => {
+      let executionCmd = task.cmd;
+
+      if (isDryRun) {
+        executionCmd = [
+          `echo "[DRY-RUN] Initializing ${task.name}..."`,
+          'sleep 0.6',
+          `echo "[DRY-RUN] > Validating workspace configuration"`,
+          'sleep 0.6',
+          `echo "[DRY-RUN] > Would execute: ${task.cmd.replace(/"/g, '\\"')}"`,
+          'sleep 0.6',
+          `echo "[DRY-RUN] > Simulated target output generated successfully"`,
+        ].join(' && ');
+      }
+
       const [shell, shellArg] = isWin ? ['cmd.exe', '/c'] : ['/bin/sh', '-c'];
-      const child = spawn(shell, [shellArg, task.cmd], {
+      const child = spawn(shell, [shellArg, executionCmd], {
         env: {
           ...process.env,
           FORCE_COLOR: 'true',

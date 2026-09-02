@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { run, gradlew } = require('./utils');
+const { run, gradlew, isDryRun } = require('./utils');
 
 /**
  * ============================================================================
@@ -18,6 +18,7 @@ const { run, gradlew } = require('./utils');
  * @param {boolean} isApk - True if building APK, false for standard/AAB.
  */
 const setBuildEnv = isApk => {
+  if (isDryRun) return;
   const envPath = path.join(__dirname, '../../src/constants/buildEnv.json');
   fs.writeFileSync(envPath, JSON.stringify({ isApkBuild: isApk }, null, 2));
 };
@@ -46,7 +47,31 @@ const cleanAndroid = () => {
   console.log('✅ Android caches cleaned.');
 };
 
+const AAB_PATH = 'android/app/build/outputs/bundle/release/app-release.aab';
+const APK_PATH = 'android/app/build/outputs/apk/release/app-release.apk';
+
+/**
+ * Reveals a generated binary file in macOS Finder / Windows Explorer
+ * with the file highlighted so it can be dragged & dropped instantly.
+ *
+ * @param {string} relativeFilePath - Path relative to project root.
+ */
+const revealInFinder = relativeFilePath => {
+  const absolutePath = path.join(__dirname, '../../', relativeFilePath);
+  if (fs.existsSync(absolutePath)) {
+    console.log(`📂 Revealing ${relativeFilePath} in Finder...`);
+    const cmd = process.platform === 'win32'
+      ? `explorer.exe /select,"${absolutePath}"`
+      : `open -R "${absolutePath}" || true`;
+    run(cmd);
+  }
+};
+
 module.exports = {
+  AAB_PATH,
+  APK_PATH,
   setBuildEnv,
   cleanAndroid,
+  revealInFinder,
 };
+

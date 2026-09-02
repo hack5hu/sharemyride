@@ -18,7 +18,8 @@
 
 const { rl, gradlew, run } = require('./release/utils');
 const { runParallel } = require('./release/dashboard');
-const { cleanAndroid, setBuildEnv } = require('./release/android');
+const { cleanAndroid, setBuildEnv, revealInFinder, AAB_PATH, APK_PATH } = require('./release/android');
+const { cleanIos, getIosArchiveCommand, buildIosArchive, getArchivePath } = require('./release/ios');
 const { handleStallionOtaRelease } = require('./release/stallion');
 const {
   autoBumpVersion,
@@ -55,13 +56,14 @@ const main = async () => {
     }
 
     // ------------------------------------------------------------------------
-    // 🌟 2. UNIFIED PRODUCTION RELEASE (Android AAB + iOS CocoaPods in Parallel)
+    // 🌟 2. UNIFIED PRODUCTION RELEASE (Android AAB + iOS Archive in Parallel)
     // ------------------------------------------------------------------------
     else if (
       target === 'prod' ||
       target === 'both' ||
       target === 'all' ||
-      target === 'production'
+      target === 'production' ||
+      target === 'dry-run'
     ) {
       console.log('\n🌟 --- Unified Production Release (Android + iOS) ---');
 
@@ -70,28 +72,33 @@ const main = async () => {
       await handleAndroidVersionCode();
       await handleIosBuildNumber();
 
-      // Phase 2: Deep clean Android CMake/Gradle caches
+      // Phase 2: Deep clean Android CMake/Gradle caches and iOS build artifacts
       cleanAndroid();
+      cleanIos();
 
-      // Phase 3: Run Android AAB compilation and iOS Pod installation concurrently in TUI
+      // Phase 3: Run Android AAB compilation and iOS Xcode Archive concurrently in TUI
       await runParallel([
         {
           name: '🤖 Android AAB',
           cmd: `cd android && ${gradlew} bundleRelease --no-daemon`,
         },
         {
-          name: '🍎 iOS Pods',
-          cmd: 'cd ios && pod install',
+          name: '🍎 iOS Archive',
+          cmd: getIosArchiveCommand(),
         },
       ]);
 
+      const archivePath = getArchivePath();
       console.log('\n🎉 --- Production Builds Ready! ---');
-      console.log(
-        '🤖 Android AAB: android/app/build/outputs/bundle/release/app-release.aab',
-      );
-      console.log(
-        '🍎 iOS: Open ios/shareMyRide.xcworkspace in Xcode and click Product -> Archive',
-      );
+      console.log(`🤖 Android AAB: ${AAB_PATH}`);
+      console.log(`🍎 iOS Archive: ${archivePath}`);
+
+      // Auto-reveal Android AAB in Finder for instant Drag-and-Drop
+      revealInFinder(AAB_PATH);
+
+      // Open iOS archive in Xcode Organizer
+      console.log('💡 Opening iOS archive in Xcode Organizer...');
+      run(`open "${archivePath}" || true`);
     }
 
     // ------------------------------------------------------------------------
@@ -107,6 +114,7 @@ const main = async () => {
 
       // Phase 2: Prepare Android APK environment & clean caches
       cleanAndroid();
+      cleanIos();
       setBuildEnv(true);
 
       // Phase 3: Run Android APK assembly and iOS Pod installation concurrently in TUI
@@ -122,9 +130,8 @@ const main = async () => {
       ]);
 
       console.log('\n🎉 --- Dev / UAT Builds Ready! ---');
-      console.log(
-        '🤖 Android APK: android/app/build/outputs/apk/release/app-release.apk',
-      );
+      console.log(`🤖 Android APK: ${APK_PATH}`);
+      revealInFinder(APK_PATH);
       console.log(
         '🍎 iOS: Open ios/shareMyRide.xcworkspace in Xcode for Development/AdHoc Archive',
       );
@@ -139,9 +146,8 @@ const main = async () => {
       await handleAndroidVersionCode();
       cleanAndroid();
       run(`cd android && ${gradlew} bundleRelease --no-daemon`);
-      console.log(
-        '✅ AAB generated at: android/app/build/outputs/bundle/release/app-release.aab',
-      );
+      console.log(`✅ AAB generated at: ${AAB_PATH}`);
+      revealInFinder(AAB_PATH);
     }
 
     // ------------------------------------------------------------------------
@@ -156,23 +162,18 @@ const main = async () => {
       run(
         `cd android && ${gradlew} assembleRelease --no-daemon -PreactNativeArchitectures=armeabi-v7a,arm64-v8a && cd ..`,
       );
-      console.log(
-        '✅ APK generated at: android/app/build/outputs/apk/release/app-release.apk',
-      );
+      console.log(`✅ APK generated at: ${APK_PATH}`);
+      revealInFinder(APK_PATH);
     }
 
     // ------------------------------------------------------------------------
-    // 🍎 6. IOS RELEASE PREP (iOS Only)
+    // 🍎 6. IOS RELEASE ARCHIVE (iOS Only)
     // ------------------------------------------------------------------------
     else if (target === 'ios') {
-      console.log('\n🍎 --- iOS Release Prep (iOS Only) ---');
+      console.log('\n🍎 --- iOS Headless Release Archive (iOS Only) ---');
       await autoBumpVersion();
       await handleIosBuildNumber();
-      run('cd ios && pod install');
-      console.log('✅ iOS version bumped and pods synced.');
-      console.log(
-        '⚠️  To generate the final .ipa, open ios/shareMyRide.xcworkspace in Xcode and click Product -> Archive.',
-      );
+      buildIosArchive();
     }
 
     // ------------------------------------------------------------------------
