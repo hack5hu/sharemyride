@@ -36,7 +36,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>9</string>
+	<string>10</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -53,7 +53,9 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>ZyncRide needs access to your location to find nearby rides and display your route.</string>
+	<string>ZyncRide needs access to your location to find nearby rides, calculate accurate fares, and show your journey on the map.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>ZyncRide needs access to your location to find nearby rides, calculate accurate fares, and show your journey on the map.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>ZyncRide needs access to your photo library to choose a profile picture or upload screenshots.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

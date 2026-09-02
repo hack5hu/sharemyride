@@ -2,6 +2,7 @@ package com.yet.zyncride
 
 import android.content.Context
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatDelegate
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
@@ -14,6 +15,7 @@ class MainActivity : ReactActivity() {
   private var splashOverlay: SplashOverlay? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    enableEdgeToEdge()
     val prefs = getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
     val themeMode = prefs.getString("themeMode", "light")
     when (themeMode) {

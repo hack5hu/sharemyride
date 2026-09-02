@@ -22,28 +22,6 @@ PODS:
     - ReactNativeDependencies
     - TrueSDK (= 0.1.8)
     - Yoga
-  - AsyncStorage (3.0.2):
-    - hermes-engine
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-Core-prebuilt
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-jsi
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-renderercss
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - ReactNativeDependencies
-    - Yoga
   - BVLinearGradient (2.8.3):
     - React-Core
   - FBLazyVector (0.84.1)
@@ -2776,7 +2754,6 @@ PODS:
 
 DEPENDENCIES:
   - "ajit-react-native-truecaller (from `../node_modules/@ajitpatel28/react-native-truecaller`)"
-  - "AsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
@@ -2906,8 +2883,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   ajit-react-native-truecaller:
     :path: "../node_modules/@ajitpatel28/react-native-truecaller"
-  AsyncStorage:
-    :path: "../node_modules/@react-native-async-storage/async-storage"
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
   FBLazyVector:
@@ -3114,7 +3089,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   ajit-react-native-truecaller: 0df8cb069cce7200ccfd162356ed85b65bb15ab8
-  AsyncStorage: 2e1d431842588f5af845737e6435c1fcbecdab51
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   FBLazyVector: e97c19a5a442429d1988f182a1940fb08df514da
   Firebase: 99f203d3a114c6ba591f3b32263a9626e450af65
@@ -3236,6 +3210,6 @@ SPEC CHECKSUMS:
   Yoga: c0b3f2c7e8d3e327e450223a2414ca3fa296b9a2
   ZIPFoundation: dfd3d681c4053ff7e2f7350bc4e53b5dba3f5351
 
-PODFILE CHECKSUM: 849155b01953e41780a3b0debbf0f65a2f2e569d
+PODFILE CHECKSUM: 61aa4e9a075fc69206728b1b677b0f0520ae4b7e
 
 COCOAPODS: 1.16.2
