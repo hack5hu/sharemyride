@@ -1,5 +1,12 @@
 # Changelog
 
+# [1.5.0](https://github.com/hack5hu/sharemyride/compare/v1.5.0-uat.0...v1.5.0) (2026-09-02)
+
+### Features
+
+* add phone number support to chat profiles and improve conversation list mapping efficiency ([dd0cff5](https://github.com/hack5hu/sharemyride/commit/dd0cff5b6ebd9283abe495ebd58a218378d1f27e))
+* implement native theme synchronization via TurboModule for cross-platform persistency ([2a3d5bb](https://github.com/hack5hu/sharemyride/commit/2a3d5bb6094fc910f85c2d5af7f27254be59f9d6))
+
 # [1.5.0-uat.0](https://github.com/hack5hu/sharemyride/compare/v1.4.0...v1.5.0-uat.0) (2026-09-01)
 
 ### Features
