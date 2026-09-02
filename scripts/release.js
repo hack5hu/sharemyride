@@ -1,193 +1,36 @@
-const { execSync } = require('child_process');
-const readline = require('readline');
-const releaseIt = require('release-it').default;
-const fs = require('fs');
-const path = require('path');
+/**
+ * ============================================================================
+ * 🚀 SHAREMYRIDE UNIFIED RELEASE ORCHESTRATOR
+ * ============================================================================
+ *
+ * This script is the single entry point for all mobile app release flows:
+ * - Production Release (Android AAB + iOS Pods in parallel)
+ * - Dev / UAT Release (Android APK + iOS Pods in parallel)
+ * - Platform-specific builds (AAB only, APK only, iOS only, OTA bundle)
+ *
+ * Features:
+ * ✅ Parallel Builds: Compiles Android and syncs iOS at the same time.
+ * ✅ Split Terminal Dashboard: Live interactive TUI showing both logs side-by-side.
+ * ✅ Automatic Versioning: Semantic version bumping & Changelog generation.
+ * ✅ Native Sync: Automatically increments Android versionCode and iOS build numbers.
+ * ✅ Deep Clean: Cleans CMake and Gradle caches before release builds.
+ */
 
-// ==========================================
-// 🛠️ CONFIGURATION
-// ==========================================
-const STALLION_UPLOAD_PATH = 'zyncride/zyncride/zyncride';
+const { rl, gradlew, run } = require('./release/utils');
+const { runParallel } = require('./release/dashboard');
+const { cleanAndroid, setBuildEnv } = require('./release/android');
+const { handleStallionOtaRelease } = require('./release/stallion');
+const {
+  autoBumpVersion,
+  handleAndroidVersionCode,
+  handleIosBuildNumber,
+} = require('./release/versioning');
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-const ask = q => new Promise(resolve => rl.question(q, resolve));
-
-// Cross-platform check so this works on Mac and Windows
-const isWin = process.platform === 'win32';
-const gradlew = isWin ? 'gradlew.bat' : './gradlew';
-
-const run = cmd => {
-  console.log(`\n> Running: ${cmd}`);
-  execSync(cmd, { stdio: 'inherit' });
-};
-
-const setBuildEnv = isApk => {
-  const envPath = path.join(__dirname, '../src/constants/buildEnv.json');
-  fs.writeFileSync(envPath, JSON.stringify({ isApkBuild: isApk }, null, 2));
-};
-
-// Deep-clean Android build caches + stop stale Gradle daemons.
-// Without this, prefab/CMake caches cause persistent build failures.
-const cleanAndroid = () => {
-  console.log('\n🧹 Deep-cleaning Android build caches...');
-  run(`cd android && ${gradlew} --stop || true`);
-  run(
-    [
-      'rm -rf android/.gradle android/.cxx android/app/.cxx android/app/build android/build',
-      'find node_modules -path "*/android/.cxx" -type d -exec rm -rf {} + 2>/dev/null || true',
-      'find node_modules -path "*/android/build" -type d -maxdepth 4 -exec rm -rf {} + 2>/dev/null || true',
-    ].join(' && '),
-  );
-  console.log('✅ Android caches cleaned.');
-};
-
-// Uses release-it to handle semantic versioning, changelog, and git tagging
-const autoBumpVersion = async (preReleaseId = null) => {
-  console.log('\n--- 🚀 Auto-Bumping Version with release-it ---');
-
-  const answer = await ask(
-    'Do you want to bump the version and run release-it? (y/N) [default: N]: ',
-  );
-
-  if (
-    answer.trim().toLowerCase() !== 'y' &&
-    answer.trim().toLowerCase() !== 'yes'
-  ) {
-    console.log('⏭️ Skipping version bump.');
-    return;
-  }
-
-  const options = {
-    plugins: {
-      '@release-it/conventional-changelog': {
-        preset: 'angular',
-        infile: 'CHANGELOG.md',
-      },
-    },
-    git: {
-      requireCleanWorkingDir: false,
-      commitMessage: 'chore: release v${version}',
-      tagName: 'v${version}',
-    },
-    hooks: {
-      // After package.json is bumped (but before git commit), sync to native files
-      'after:bump': 'npx react-native-version -L --never-amend 2>/dev/null',
-    },
-    npm: {
-      publish: false, // We are not publishing this app to the NPM registry
-    },
-  };
-
-  if (preReleaseId) {
-    options.preRelease = preReleaseId;
-  }
-
-  await releaseIt(options);
-
-  console.log('✅ Version bumped, synced natively, and committed/tagged!');
-};
-
-// Manages Android versionCode interactively so Google Play never rejects duplicate build codes
-const handleAndroidVersionCode = async () => {
-  const buildGradlePath = path.join(__dirname, '../android/app/build.gradle');
-  if (!fs.existsSync(buildGradlePath)) return;
-
-  let content = fs.readFileSync(buildGradlePath, 'utf8');
-  const match = content.match(/versionCode\s+(\d+)/);
-  if (!match) return;
-
-  const currentCode = parseInt(match[1], 10);
-  const nextCode = currentCode + 1;
-
-  console.log(`\n📱 Current Android versionCode: ${currentCode}`);
-  const answer = await ask(
-    `Update versionCode? [Press Enter for ${nextCode}, enter custom number, or 'n' to keep ${currentCode}]: `,
-  );
-
-  const trimmed = answer.trim().toLowerCase();
-  let targetCode = currentCode;
-
-  if (trimmed === '' || trimmed === 'y' || trimmed === 'yes') {
-    targetCode = nextCode;
-  } else if (trimmed === 'n' || trimmed === 'no') {
-    console.log(`⏭️ Keeping versionCode at ${currentCode}.`);
-    return;
-  } else {
-    const parsed = parseInt(trimmed, 10);
-    if (!isNaN(parsed) && parsed > 0) {
-      targetCode = parsed;
-    } else {
-      console.log(`⚠️ Invalid input. Keeping versionCode at ${currentCode}.`);
-      return;
-    }
-  }
-
-  content = content.replace(/(versionCode\s+)\d+/, `$1${targetCode}`);
-  fs.writeFileSync(buildGradlePath, content, 'utf8');
-  console.log(`✅ Android versionCode updated to: ${targetCode}`);
-};
-
-// Manages iOS build number (CFBundleVersion) interactively
-const handleIosBuildNumber = async () => {
-  const infoPlistPath = path.join(__dirname, '../ios/shareMyRide/Info.plist');
-  if (!fs.existsSync(infoPlistPath)) return;
-
-  let content = fs.readFileSync(infoPlistPath, 'utf8');
-  const match = content.match(/<key>CFBundleVersion<\/key>\s*<string>(\d+)<\/string>/);
-  if (!match) return;
-
-  const currentBuild = parseInt(match[1], 10);
-  const nextBuild = currentBuild + 1;
-
-  console.log(`\n🍎 Current iOS build number (CFBundleVersion): ${currentBuild}`);
-  const answer = await ask(
-    `Update build number? [Press Enter for ${nextBuild}, enter custom number, or 'n' to keep ${currentBuild}]: `,
-  );
-
-  const trimmed = answer.trim().toLowerCase();
-  let targetBuild = currentBuild;
-
-  if (trimmed === '' || trimmed === 'y' || trimmed === 'yes') {
-    targetBuild = nextBuild;
-  } else if (trimmed === 'n' || trimmed === 'no') {
-    console.log(`⏭️ Keeping build number at ${currentBuild}.`);
-    return;
-  } else {
-    const parsed = parseInt(trimmed, 10);
-    if (!isNaN(parsed) && parsed > 0) {
-      targetBuild = parsed;
-    } else {
-      console.log(`⚠️ Invalid input. Keeping build number at ${currentBuild}.`);
-      return;
-    }
-  }
-
-  content = content.replace(
-    /(<key>CFBundleVersion<\/key>\s*<string>)\d+(<\/string>)/,
-    `$1${targetBuild}$2`,
-  );
-  fs.writeFileSync(infoPlistPath, content, 'utf8');
-  console.log(`✅ iOS build number updated to: ${targetBuild}`);
-  sanitizeIosVersion();
-};
-
-// Ensures CFBundleShortVersionString in Info.plist adheres to Apple's 1-3 integer requirement (e.g., 1.5.0 instead of 1.5.0-uat.0)
-const sanitizeIosVersion = () => {
-  const infoPlistPath = path.join(__dirname, '../ios/shareMyRide/Info.plist');
-  if (!fs.existsSync(infoPlistPath)) return;
-
-  let content = fs.readFileSync(infoPlistPath, 'utf8');
-  content = content.replace(
-    /(<key>CFBundleShortVersionString<\/key>\s*<string>)([\d\.]+)(?:-[^\s<]+)?(<\/string>)/,
-    '$1$2$3',
-  );
-  fs.writeFileSync(infoPlistPath, content, 'utf8');
-};
-
+/**
+ * Main release pipeline controller.
+ */
 const main = async () => {
+  // Ensure production compiler optimizations in Babel/Metro
   process.env.NODE_ENV = 'production';
   process.env.BABEL_ENV = 'production';
 
@@ -201,34 +44,47 @@ const main = async () => {
   }
 
   try {
-    setBuildEnv(false); // Default to false
+    // Reset APK build environment flag by default
+    setBuildEnv(false);
 
+    // ------------------------------------------------------------------------
+    // 📲 1. STALLION OTA RELEASE (Over-The-Air JavaScript & Asset Updates)
+    // ------------------------------------------------------------------------
     if (target === 'ota') {
-      console.log('\n🚀 --- Stallion OTA Release ---');
-      const platform = await ask(
-        'Which platform? (android / ios / both) [default: android]: ',
-      );
-      const notes = await ask('Enter release notes: ');
+      await handleStallionOtaRelease();
+    }
 
-      const selectedPlatform =
-        platform.trim() === 'both'
-          ? ['android', 'ios']
-          : (platform.trim() || 'android').split(',');
-      const escapedNotes = notes.replace(/"/g, '\\"');
-
-      for (const p of selectedPlatform) {
-        run(
-          `$(yarn global bin)/stallion publish-bundle --upload-path=${STALLION_UPLOAD_PATH} --platform=${p.trim()} --release-note="${escapedNotes}"`,
-        );
-      }
-    } else if (target === 'prod' || target === 'all' || target === 'production') {
+    // ------------------------------------------------------------------------
+    // 🌟 2. UNIFIED PRODUCTION RELEASE (Android AAB + iOS CocoaPods in Parallel)
+    // ------------------------------------------------------------------------
+    else if (
+      target === 'prod' ||
+      target === 'both' ||
+      target === 'all' ||
+      target === 'production'
+    ) {
       console.log('\n🌟 --- Unified Production Release (Android + iOS) ---');
+
+      // Phase 1: Interactive version bump, Android versionCode & iOS build number
       await autoBumpVersion();
       await handleAndroidVersionCode();
       await handleIosBuildNumber();
+
+      // Phase 2: Deep clean Android CMake/Gradle caches
       cleanAndroid();
-      run(`cd android && ${gradlew} bundleRelease --no-daemon`);
-      run('cd ios && pod install');
+
+      // Phase 3: Run Android AAB compilation and iOS Pod installation concurrently in TUI
+      await runParallel([
+        {
+          name: '🤖 Android AAB',
+          cmd: `cd android && ${gradlew} bundleRelease --no-daemon`,
+        },
+        {
+          name: '🍎 iOS Pods',
+          cmd: 'cd ios && pod install',
+        },
+      ]);
+
       console.log('\n🎉 --- Production Builds Ready! ---');
       console.log(
         '🤖 Android AAB: android/app/build/outputs/bundle/release/app-release.aab',
@@ -236,17 +92,35 @@ const main = async () => {
       console.log(
         '🍎 iOS: Open ios/shareMyRide.xcworkspace in Xcode and click Product -> Archive',
       );
-    } else if (target === 'dev' || target === 'uat') {
+    }
+
+    // ------------------------------------------------------------------------
+    // 🧪 3. UNIFIED DEV / UAT RELEASE (Android APK + iOS CocoaPods in Parallel)
+    // ------------------------------------------------------------------------
+    else if (target === 'dev' || target === 'uat') {
       console.log('\n🧪 --- Unified Dev / UAT Release (Android + iOS) ---');
+
+      // Phase 1: Bump version with 'uat' pre-release tag
       await autoBumpVersion('uat');
       await handleAndroidVersionCode();
       await handleIosBuildNumber();
+
+      // Phase 2: Prepare Android APK environment & clean caches
       cleanAndroid();
       setBuildEnv(true);
-      run(
-        `cd android && ${gradlew} assembleRelease --no-daemon -PreactNativeArchitectures=armeabi-v7a,arm64-v8a && cd ..`,
-      );
-      run('cd ios && pod install');
+
+      // Phase 3: Run Android APK assembly and iOS Pod installation concurrently in TUI
+      await runParallel([
+        {
+          name: '🤖 Android APK',
+          cmd: `cd android && ${gradlew} assembleRelease --no-daemon -PreactNativeArchitectures=armeabi-v7a,arm64-v8a && cd ..`,
+        },
+        {
+          name: '🍎 iOS Pods',
+          cmd: 'cd ios && pod install',
+        },
+      ]);
+
       console.log('\n🎉 --- Dev / UAT Builds Ready! ---');
       console.log(
         '🤖 Android APK: android/app/build/outputs/apk/release/app-release.apk',
@@ -254,7 +128,12 @@ const main = async () => {
       console.log(
         '🍎 iOS: Open ios/shareMyRide.xcworkspace in Xcode for Development/AdHoc Archive',
       );
-    } else if (target === 'aab') {
+    }
+
+    // ------------------------------------------------------------------------
+    // 📦 4. ANDROID PRODUCTION AAB (Android Only)
+    // ------------------------------------------------------------------------
+    else if (target === 'aab') {
       console.log('\n📦 --- Production AAB Build (Android Only) ---');
       await autoBumpVersion();
       await handleAndroidVersionCode();
@@ -263,7 +142,12 @@ const main = async () => {
       console.log(
         '✅ AAB generated at: android/app/build/outputs/bundle/release/app-release.aab',
       );
-    } else if (target === 'apk') {
+    }
+
+    // ------------------------------------------------------------------------
+    // 📱 5. ANDROID UAT APK (Android Only)
+    // ------------------------------------------------------------------------
+    else if (target === 'apk') {
       console.log('\n📱 --- UAT APK Build (Android Only) ---');
       await autoBumpVersion('uat');
       await handleAndroidVersionCode();
@@ -275,7 +159,12 @@ const main = async () => {
       console.log(
         '✅ APK generated at: android/app/build/outputs/apk/release/app-release.apk',
       );
-    } else if (target === 'ios') {
+    }
+
+    // ------------------------------------------------------------------------
+    // 🍎 6. IOS RELEASE PREP (iOS Only)
+    // ------------------------------------------------------------------------
+    else if (target === 'ios') {
       console.log('\n🍎 --- iOS Release Prep (iOS Only) ---');
       await autoBumpVersion();
       await handleIosBuildNumber();
@@ -284,11 +173,16 @@ const main = async () => {
       console.log(
         '⚠️  To generate the final .ipa, open ios/shareMyRide.xcworkspace in Xcode and click Product -> Archive.',
       );
-    } else {
+    }
+
+    // ------------------------------------------------------------------------
+    // ❌ UNKNOWN TARGET
+    // ------------------------------------------------------------------------
+    else {
       console.error('❌ Unknown command.');
     }
   } catch (error) {
-    console.error('\n❌ Script failed!', error.message);
+    console.error('\n❌ Release process failed!', error.message);
   } finally {
     setBuildEnv(false);
     rl.close();

@@ -1,6 +1,7 @@
 module.exports = {
   root: true,
   extends: ['@react-native', 'plugin:storybook/recommended'],
+  ignorePatterns: ['scripts/**', '*.config.js', '.eslintrc.js'],
   plugins: ['import'],
   rules: {
     // 0. Import Ordering (Normal/external packages first, then @/ aliases, then relative ./ ../ with blank lines)

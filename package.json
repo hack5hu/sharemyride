@@ -17,6 +17,7 @@
     "prettier": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
     "release:prod": "node scripts/release.js prod",
+    "release:both": "node scripts/release.js prod",
     "release:dev": "node scripts/release.js dev",
     "release:aab": "node scripts/release.js aab",
     "release:apk": "node scripts/release.js apk",
