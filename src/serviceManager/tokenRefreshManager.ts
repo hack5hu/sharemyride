@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as Keychain from 'react-native-keychain';
 import { API_ENDPOINTS } from '@/constants/apiEndpoints';
 import { useAuthStore } from '@/store/useAuthStore';
+import { resetAllStores } from '@/store/resetAllStores';
 import { Logger } from '@/utils/logger';
 
 interface FailedRequest {
@@ -45,7 +46,7 @@ export const clearAuthSessionAndLogout = async () => {
   } catch (e) {
     Logger.error('Failed to reset keychain tokens on logout', e);
   }
-  useAuthStore.getState().logout();
+  resetAllStores();
 };
 
 export const processFailedQueue = (
@@ -102,12 +103,19 @@ export const executeTokenRefresh = async (baseURL: string): Promise<string> => {
   const payload =
     (response.data as Record<string, unknown>)?.data || response.data || {};
   const data = payload as Record<string, unknown>;
+  const rawData = response.data as Record<string, unknown>;
+
   const newToken = (data.token ||
     data.accessToken ||
     data.jwtToken ||
-    data.access_token) as string | undefined;
+    data.access_token ||
+    rawData?.token ||
+    rawData?.accessToken) as string | undefined;
+
   const newRefreshToken = (data.refreshToken ||
-    data.refresh_token) as string | undefined;
+    data.refresh_token ||
+    rawData?.refreshToken ||
+    rawData?.refresh_token) as string | undefined;
 
   if (!newToken) {
     throw new Error('Refresh response did not contain a valid token');
@@ -122,5 +130,8 @@ export const executeTokenRefresh = async (baseURL: string): Promise<string> => {
     });
   }
 
+  useAuthStore.setState({ token: newToken });
+
   return newToken;
 };
+
