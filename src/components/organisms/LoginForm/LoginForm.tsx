@@ -45,7 +45,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     prevActiveRef.current = isTruecallerActive;
   }, [isTruecallerActive]);
 
-  const isButtonDisabled = value.length !== 10;
+  const isButtonDisabled = !/^\d{10}$/.test(value);
 
   return (
     <FormContainer>

@@ -83,12 +83,12 @@ export const useBookRideInfo = () => {
     const store = useBookRideStore.getState();
     const current = store.searchRadiusKm || 25;
     const prev = Math.ceil(current / 5) * 5 - 5;
-    store.setSearchRadiusKm(prev <= 0 ? 1 : prev);
+    store.setSearchRadiusKm(Math.max(5, prev));
   }, []);
 
   const handleSetRadius = useCallback((radius: number) => {
     const store = useBookRideStore.getState();
-    store.setSearchRadiusKm(radius);
+    store.setSearchRadiusKm(Math.max(5, Math.min(50, radius)));
   }, []);
 
   const handleSearchRides = useCallback(async () => {

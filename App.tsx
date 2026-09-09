@@ -98,7 +98,7 @@ const App = () => {
           >
             <RootNavigator />
           </NavigationContainer>
-         <NetworkLoggerModal /> 
+         {/* <NetworkLoggerModal />  */}
           <GlobalNotification />
           <StallionUpdateModal />
         </ThemeProvider>

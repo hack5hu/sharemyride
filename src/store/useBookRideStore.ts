@@ -71,7 +71,7 @@ export const useBookRideStore = create<BookRideState>()(
       setTravelDate: date => set({ travelDate: date }),
       setSeatCount: count => set({ seatCount: count }),
       setSearchRadiusKm: radius =>
-        set({ searchRadiusKm: Math.max(1, Math.min(50, radius)) }),
+        set({ searchRadiusKm: Math.max(5, Math.min(50, radius)) }),
       setSearchResults: results =>
         set({
           searchResults: results,

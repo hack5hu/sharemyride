@@ -47,15 +47,15 @@ export const SearchRadiusSelector: React.FC<SearchRadiusSelectorProps> =
 
             <S.StepperControls>
               <S.StepperButton
-                activeOpacity={isSearching || radiusKm <= 1 ? 1 : 0.7}
+                activeOpacity={isSearching || radiusKm <= 5 ? 1 : 0.7}
                 onPress={isSearching ? undefined : onDecrementRadius}
-                disabled={isSearching || radiusKm <= 1}
+                disabled={isSearching || radiusKm <= 5}
               >
                 <MaterialIcons
                   name="remove"
                   size={moderateScale(16)}
                   color={
-                    isSearching || radiusKm <= 1
+                    isSearching || radiusKm <= 5
                       ? theme.colors.outline
                       : theme.colors.primary
                   }

@@ -89,17 +89,37 @@ export const useLogin = () => {
 
   const formik = useFormik({
     initialValues: { phone: '' },
-    validate: v => (/^\d{10}$/.test(v.phone) ? {} : { phone: '' }),
+    validate: v => {
+      const errors: { phone?: string } = {};
+      if (!v.phone) {
+        errors.phone = t('login.phoneError');
+      } else if (!/^\d+$/.test(v.phone)) {
+        errors.phone = t('login.phoneError');
+      } else if (v.phone.length !== 10) {
+        errors.phone = t('login.phoneError');
+      }
+      return errors;
+    },
     onSubmit: v => {
+      if (!/^\d{10}$/.test(v.phone)) {
+        return;
+      }
       Keyboard.dismiss();
       handleGetOtp(v.phone);
     },
   });
 
+  const phoneError =
+    formik.values.phone.length > 0 && !/^\d+$/.test(formik.values.phone)
+      ? t('login.phoneError')
+      : formik.touched.phone && formik.errors.phone
+        ? formik.errors.phone
+        : undefined;
+
   return {
     loading,
     phone: formik.values.phone,
-    error: formik.touched.phone ? formik.errors.phone : undefined,
+    error: phoneError,
     handleChange: formik.handleChange('phone'),
     handleBlur: formik.handleBlur('phone'),
     handleSubmit: formik.handleSubmit,

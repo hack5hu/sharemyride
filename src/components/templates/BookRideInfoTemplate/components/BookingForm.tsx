@@ -159,7 +159,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
             </S.RowText>
             <S.StepperRow>
               <S.StepperBtn
-                $disabled={isSearching || radiusKm <= 1}
+                $disabled={isSearching || radiusKm <= 5}
                 onPress={isSearching ? undefined : onDecrementRadius}
               >
                 <MaterialIcons

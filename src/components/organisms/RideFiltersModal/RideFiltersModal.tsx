@@ -1,458 +1,109 @@
-/* eslint-disable max-lines */
-import React, { useState } from 'react';
-import {  Modal } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import React from 'react';
+import { Modal } from 'react-native';
 import { useTheme } from 'styled-components/native';
-import { Checkbox } from '@/components/atoms/Checkbox';
+import { Button } from '@/components/atoms/Button';
 import { Typography } from '@/components/atoms/Typography';
 import { useBottomSafeArea } from '@/hooks/useBottomSafeArea';
-import { useBookRideStore } from '@/store/useBookRideStore';
-import { moderateScale } from '@/styles';
+import { PreferencesSection } from './PreferencesSection';
+import { ProximitySection } from './ProximitySection';
+import { RadiusSection } from './RadiusSection';
 import * as S from './RideFiltersModal.styles';
+import { TimeSlotSection } from './TimeSlotSection';
+import { type RideFiltersModalProps } from './types.d';
+import { useRideFilters } from './useRideFilters';
 
-export interface RideFiltersModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onClear: () => void;
-  onApply: (filters: string[]) => void;
-  selectedFilters: string[];
-   
-  t: any;
-}
+export const RideFiltersModal: React.FC<RideFiltersModalProps> = React.memo(
+  props => {
+    const { isOpen, onClose, t } = props;
+    const theme = useTheme();
+    const bottomPadding = useBottomSafeArea(16, 16) + 16;
 
-export const RideFiltersModal: React.FC<RideFiltersModalProps> = ({
-  isOpen,
-  onClose,
-  onClear,
-  onApply,
-  selectedFilters,
-  t,
-}) => {
-  const theme = useTheme();
-  const insets = useSafeAreaInsets();
-  const [proximity, setProximity] = useState<'pickup' | 'dropoff'>(
-    selectedFilters.includes('nearDropoff') ? 'dropoff' : 'pickup',
-  );
-  const [preferences, setPreferences] = useState({
-    noSmoking: selectedFilters.includes('noSmoking'),
-    ladiesOnly: selectedFilters.includes('ladiesOnly'),
-    verifiedOnly: selectedFilters.includes('verifiedOnly'),
-    petFriendly: selectedFilters.includes('petFriendly'),
-    luggageAllowed: selectedFilters.includes('luggageAllowed'),
-    manualApproval: selectedFilters.includes('manualApproval'),
-  });
+    const {
+      proximity,
+      setProximity,
+      preferences,
+      togglePreference,
+      radiusKm,
+      setRadiusKm,
+      handleStepRadius,
+      selectedTimeSlots,
+      toggleTimeSlot,
+      timeSlots,
+      handleClearAll,
+      handleApply,
+      activeCount,
+    } = useRideFilters(props);
 
-  const currentStoreRadius = useBookRideStore(s => s.searchRadiusKm || 25);
-  const [radiusKm, setRadiusKm] = useState<number>(currentStoreRadius);
+    const buttonLabel = activeCount > 0
+      ? `${t.applyFilters} (${activeCount})`
+      : t.applyFilters;
 
-  React.useEffect(() => {
-    if (isOpen) {
-      setRadiusKm(useBookRideStore.getState().searchRadiusKm || 25);
-    }
-  }, [isOpen]);
+    return (
+      <Modal
+        visible={isOpen}
+        transparent
+        animationType="slide"
+        onRequestClose={onClose}
+      >
+        <S.ModalContainer>
+          <S.Backdrop onPress={onClose} />
+          <S.SheetContent>
+            <S.Handle />
+            <S.Header>
+              <Typography variant="title" size="md" weight="bold">
+                {t.title}
+              </Typography>
+              <S.ClearButton onPress={handleClearAll} activeOpacity={0.7}>
+                <Typography
+                  variant="label"
+                  size="md"
+                  weight="bold"
+                  color={theme.colors.primary}
+                >
+                  {t.clearAll}
+                </Typography>
+              </S.ClearButton>
+            </S.Header>
 
-  const [selectedTimeSlots, setSelectedTimeSlots] = useState<string[]>(
-    selectedFilters.filter(f => f.startsWith('time_')),
-  );
+            <S.ScrollBody showsVerticalScrollIndicator={false}>
+              <ProximitySection
+                proximity={proximity}
+                onSelect={setProximity}
+                t={t}
+              />
 
-  const TIME_SLOTS = [
-    { id: 'time_0_4', label: t.timeSlot04 || '12-4 AM', icon: 'nights-stay' },
-    { id: 'time_4_8', label: t.timeSlot48 || '4-8 AM', icon: 'wb-twilight' },
-    { id: 'time_8_12', label: t.timeSlot812 || '8-12 AM', icon: 'wb-sunny' },
-    {
-      id: 'time_12_16',
-      label: t.timeSlot1216 || '12-4 PM',
-      icon: 'light-mode',
-    },
-    { id: 'time_16_20', label: t.timeSlot1620 || '4-8 PM', icon: 'wb-cloudy' },
-    { id: 'time_20_24', label: t.timeSlot2024 || '8-12 PM', icon: 'bedtime' },
-  ];
+              <RadiusSection
+                radiusKm={radiusKm}
+                onSelectRadius={setRadiusKm}
+                onStepRadius={handleStepRadius}
+                t={t}
+              />
 
-  const toggleTimeSlot = (id: string) => {
-    setSelectedTimeSlots(prev =>
-      prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id],
+              <TimeSlotSection
+                timeSlots={timeSlots}
+                selectedSlots={selectedTimeSlots}
+                onToggleSlot={toggleTimeSlot}
+                t={t}
+              />
+
+              <PreferencesSection
+                preferences={preferences}
+                onToggle={togglePreference}
+                t={t}
+              />
+            </S.ScrollBody>
+
+            <S.Footer $paddingBottom={bottomPadding}>
+              <Button
+                variant="primary"
+                onPress={handleApply}
+              >
+                {buttonLabel}
+              </Button>
+            </S.Footer>
+          </S.SheetContent>
+        </S.ModalContainer>
+      </Modal>
     );
-  };
-
-  const togglePreference = (key: keyof typeof preferences) => {
-    setPreferences(prev => ({ ...prev, [key]: !prev[key] }));
-  };
-
-  return (
-    <Modal
-      visible={isOpen}
-      transparent
-      animationType="slide"
-      onRequestClose={onClose}
-    >
-      <S.ModalContainer>
-        <S.Backdrop onPress={onClose} />
-        <S.SheetContent>
-          <S.Handle />
-          <S.Header>
-            <Typography variant="title" size="md" weight="bold">
-              {t.title}
-            </Typography>
-            <S.ClearButton
-              onPress={() => {
-                setRadiusKm(25);
-                useBookRideStore.getState().setSearchRadiusKm(25);
-                onClear();
-              }}
-            >
-              <Typography
-                variant="label"
-                size="md"
-                weight="bold"
-                color={theme.colors.primary}
-              >
-                {t.clearAll}
-              </Typography>
-            </S.ClearButton>
-          </S.Header>
-
-          <S.ScrollBody showsVerticalScrollIndicator={false}>
-            {/* Proximity */}
-            <S.Section>
-              <S.SectionTitle>
-                <Typography
-                  variant="label"
-                  size="sm"
-                  weight="bold"
-                  color={theme.colors.on_surface_variant}
-                >
-                  {t.proximityTitle.toUpperCase()}
-                </Typography>
-              </S.SectionTitle>
-              <S.ProximityGrid>
-                <S.ProximityButton
-                  active={proximity === 'pickup'}
-                  onPress={() => setProximity('pickup')}
-                >
-                  <Typography
-                    variant="label"
-                    size="md"
-                    weight="bold"
-                    color={
-                      proximity === 'pickup'
-                        ? theme.colors.primary
-                        : theme.colors.on_surface_variant
-                    }
-                  >
-                    {t.nearPickup}
-                  </Typography>
-                  <Icon
-                    name={
-                      proximity === 'pickup'
-                        ? 'check-circle'
-                        : 'radio-button-unchecked'
-                    }
-                    size={moderateScale(20)}
-                    color={
-                      proximity === 'pickup'
-                        ? theme.colors.primary
-                        : theme.colors.outline_variant
-                    }
-                  />
-                </S.ProximityButton>
-                <S.ProximityButton
-                  active={proximity === 'dropoff'}
-                  onPress={() => setProximity('dropoff')}
-                >
-                  <Typography
-                    variant="label"
-                    size="md"
-                    weight="bold"
-                    color={
-                      proximity === 'dropoff'
-                        ? theme.colors.primary
-                        : theme.colors.on_surface_variant
-                    }
-                  >
-                    {t.nearDropoff}
-                  </Typography>
-                  <Icon
-                    name={
-                      proximity === 'dropoff'
-                        ? 'check-circle'
-                        : 'radio-button-unchecked'
-                    }
-                    size={moderateScale(20)}
-                    color={
-                      proximity === 'dropoff'
-                        ? theme.colors.primary
-                        : theme.colors.outline_variant
-                    }
-                  />
-                </S.ProximityButton>
-              </S.ProximityGrid>
-            </S.Section>
-
-            {/* Search Radius */}
-            <S.Section>
-              <S.SectionTitle>
-                <Typography
-                  variant="label"
-                  size="sm"
-                  weight="bold"
-                  color={theme.colors.on_surface_variant}
-                >
-                  {(t.searchRadiusTitle || 'SEARCH RADIUS').toUpperCase()}
-                </Typography>
-              </S.SectionTitle>
-              <S.RadiusContainer>
-                <S.RadiusTopRow>
-                  <Typography variant="title" size="sm" weight="bold">
-                    {radiusKm} {t.searchRadiusUnit || 'km'}
-                  </Typography>
-                  <S.RadiusStepper>
-                    <S.RadiusStepperBtn
-                      disabled={radiusKm <= 1}
-                      onPress={() => {
-                        const prev = Math.ceil(radiusKm / 5) * 5 - 5;
-                        setRadiusKm(prev <= 0 ? 1 : prev);
-                      }}
-                    >
-                      <Icon
-                        name="remove"
-                        size={moderateScale(16)}
-                        color={
-                          radiusKm <= 1
-                            ? theme.colors.outline
-                            : theme.colors.primary
-                        }
-                      />
-                    </S.RadiusStepperBtn>
-                    <S.RadiusStepperBtn
-                      $primary
-                      disabled={radiusKm >= 50}
-                      onPress={() => {
-                        const next = Math.min(
-                          50,
-                          Math.floor(radiusKm / 5) * 5 + 5,
-                        );
-                        setRadiusKm(next);
-                      }}
-                    >
-                      <Icon
-                        name="add"
-                        size={moderateScale(16)}
-                        color={
-                          radiusKm >= 50
-                            ? theme.colors.outline
-                            : theme.colors.on_primary
-                        }
-                      />
-                    </S.RadiusStepperBtn>
-                  </S.RadiusStepper>
-                </S.RadiusTopRow>
-
-                <S.RadiusPresetsScroll>
-                  <S.RadiusPresetsContainer>
-                    {[5, 10, 20, 25, 30, 40, 50].map(preset => {
-                      const isSelected = radiusKm === preset;
-
-                      return (
-                        <S.RadiusPresetChip
-                          key={preset}
-                          $selected={isSelected}
-                          onPress={() => setRadiusKm(preset)}
-                        >
-                          <S.RadiusPresetText $selected={isSelected}>
-                            {preset} {t.searchRadiusUnit || 'km'}
-                          </S.RadiusPresetText>
-                        </S.RadiusPresetChip>
-                      );
-                    })}
-                  </S.RadiusPresetsContainer>
-                </S.RadiusPresetsScroll>
-              </S.RadiusContainer>
-            </S.Section>
-
-            {/* Departure Time */}
-            <S.Section>
-              <S.SectionTitle>
-                <Typography
-                  variant="label"
-                  size="sm"
-                  weight="bold"
-                  color={theme.colors.on_surface_variant}
-                >
-                  {t.departureTimeTitle.toUpperCase()}
-                </Typography>
-              </S.SectionTitle>
-              <S.TimeGrid>
-                {TIME_SLOTS.map(slot => (
-                  <S.TimeCell
-                    key={slot.id}
-                    active={selectedTimeSlots.includes(slot.id)}
-                    onPress={() => toggleTimeSlot(slot.id)}
-                  >
-                    <Icon
-                      name={slot.icon}
-                      size={moderateScale(20)}
-                      color={
-                        selectedTimeSlots.includes(slot.id)
-                          ? theme.colors.primary
-                          : theme.colors.on_surface_variant
-                      }
-                    />
-                    <Typography
-                      variant="label"
-                      size="xs"
-                      weight="bold"
-                      color={
-                        selectedTimeSlots.includes(slot.id)
-                          ? theme.colors.primary
-                          : theme.colors.on_surface_variant
-                      }
-                    >
-                      {slot.label}
-                    </Typography>
-                  </S.TimeCell>
-                ))}
-              </S.TimeGrid>
-            </S.Section>
-
-            {/* Preferences */}
-            <S.Section>
-              <S.SectionTitle>
-                <Typography
-                  variant="label"
-                  size="sm"
-                  weight="bold"
-                  color={theme.colors.on_surface_variant}
-                >
-                  {t.preferencesTitle.toUpperCase()}
-                </Typography>
-              </S.SectionTitle>
-              <S.PreferenceItem onPress={() => togglePreference('noSmoking')}>
-                <S.PreferenceLeft>
-                  <Icon
-                    name="smoke-free"
-                    size={moderateScale(20)}
-                    color={theme.colors.secondary}
-                  />
-                  <Typography variant="label" size="md" weight="bold">
-                    {t.noSmoking}
-                  </Typography>
-                </S.PreferenceLeft>
-                <Checkbox
-                  checked={preferences.noSmoking}
-                  onToggle={() => togglePreference('noSmoking')}
-                />
-              </S.PreferenceItem>
-              <S.PreferenceItem onPress={() => togglePreference('ladiesOnly')}>
-                <S.PreferenceLeft>
-                  <Icon
-                    name="female"
-                    size={moderateScale(20)}
-                    color={theme.colors.tertiary}
-                  />
-                  <Typography variant="label" size="md" weight="bold">
-                    {t.ladiesOnly}
-                  </Typography>
-                </S.PreferenceLeft>
-                <Checkbox
-                  checked={preferences.ladiesOnly}
-                  onToggle={() => togglePreference('ladiesOnly')}
-                />
-              </S.PreferenceItem>
-              <S.PreferenceItem
-                onPress={() => togglePreference('verifiedOnly')}
-              >
-                <S.PreferenceLeft>
-                  <Icon
-                    name="verified-user"
-                    size={moderateScale(20)}
-                    color={theme.colors.primary}
-                  />
-                  <Typography variant="label" size="md" weight="bold">
-                    {t.verifiedDrivers}
-                  </Typography>
-                </S.PreferenceLeft>
-                <Checkbox
-                  checked={preferences.verifiedOnly}
-                  onToggle={() => togglePreference('verifiedOnly')}
-                />
-              </S.PreferenceItem>
-              <S.PreferenceItem onPress={() => togglePreference('petFriendly')}>
-                <S.PreferenceLeft>
-                  <Icon
-                    name="pets"
-                    size={moderateScale(20)}
-                    color={theme.colors.secondary}
-                  />
-                  <Typography variant="label" size="md" weight="bold">
-                    {t.petFriendly}
-                  </Typography>
-                </S.PreferenceLeft>
-                <Checkbox
-                  checked={preferences.petFriendly}
-                  onToggle={() => togglePreference('petFriendly')}
-                />
-              </S.PreferenceItem>
-              <S.PreferenceItem
-                onPress={() => togglePreference('luggageAllowed')}
-              >
-                <S.PreferenceLeft>
-                  <Icon
-                    name="luggage"
-                    size={moderateScale(20)}
-                    color={theme.colors.outline}
-                  />
-                  <Typography variant="label" size="md" weight="bold">
-                    {t.luggageAllowed}
-                  </Typography>
-                </S.PreferenceLeft>
-                <Checkbox
-                  checked={preferences.luggageAllowed}
-                  onToggle={() => togglePreference('luggageAllowed')}
-                />
-              </S.PreferenceItem>
-            </S.Section>
-          </S.ScrollBody>
-
-          <S.Footer
-            $paddingBottom={useBottomSafeArea(16, 16) + 16}
-          >
-            <S.ApplyButton
-              onPress={() => {
-                const activeFilters = [];
-                if (preferences.noSmoking) activeFilters.push('noSmoking');
-                if (preferences.ladiesOnly) activeFilters.push('ladiesOnly');
-                if (preferences.verifiedOnly)
-                  {activeFilters.push('verifiedOnly');}
-                if (preferences.petFriendly) activeFilters.push('petFriendly');
-                if (preferences.luggageAllowed)
-                  {activeFilters.push('luggageAllowed');}
-                if (preferences.manualApproval)
-                  {activeFilters.push('manualApproval');}
-
-                selectedTimeSlots.forEach(slot => activeFilters.push(slot));
-
-                if (proximity === 'pickup') activeFilters.push('nearPickup');
-                else if (proximity === 'dropoff')
-                  {activeFilters.push('nearDropoff');}
-
-                useBookRideStore.getState().setSearchRadiusKm(radiusKm);
-                onApply(activeFilters);
-                onClose();
-              }}
-            >
-              <Typography
-                variant="title"
-                size="sm"
-                weight="bold"
-                color={theme.colors.on_primary}
-              >
-                {t.applyFilters}
-              </Typography>
-            </S.ApplyButton>
-          </S.Footer>
-        </S.SheetContent>
-      </S.ModalContainer>
-    </Modal>
-  );
-};
+  },
+);
