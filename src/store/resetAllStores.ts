@@ -29,8 +29,13 @@ export const resetAllStores = () => {
     storage.remove('tuktuk-chat-storage');
     storage.remove('auth-storage');
 
-    // Preserve admin debugger status across logouts
-    if (isAdminDebuggerEnabled) {
+    // In production, remove admin debugger permissions and logs on logout
+    if (!__DEV__) {
+      storage.remove('is_admin_debugger_enabled');
+      setAdminDebuggerEnabled(false);
+      useNetworkLoggerStore.getState().setAdminDebuggerEnabled(false);
+      useNetworkLoggerStore.getState().clearLogs();
+    } else if (isAdminDebuggerEnabled) {
       setAdminDebuggerEnabled(true);
     }
   } catch (error) {

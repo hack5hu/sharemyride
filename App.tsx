@@ -75,35 +75,35 @@ const App = () => {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <KeyboardProvider statusBarTranslucent navigationBarTranslucent>
-        <ThemeProvider theme={activeTheme}>
-          <StatusBar
-            barStyle={themeMode === 'dark' ? 'light-content' : 'dark-content'}
-            backgroundColor="transparent"
-            translucent
-          />
-          <NavigationContainer
-            ref={navigationRef}
-            onReady={() => {
-              routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
-            }}
-            onStateChange={async () => {
-              const previousRouteName = routeNameRef.current;
-              const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
+          <ThemeProvider theme={activeTheme}>
+            <StatusBar
+              barStyle={themeMode === 'dark' ? 'light-content' : 'dark-content'}
+              backgroundColor="transparent"
+              translucent
+            />
+            <NavigationContainer
+              ref={navigationRef}
+              onReady={() => {
+                routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
+              }}
+              onStateChange={async () => {
+                const previousRouteName = routeNameRef.current;
+                const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
 
-              if (previousRouteName !== currentRouteName && currentRouteName) {
-                await AnalyticsService.logScreenView(currentRouteName);
-              }
-              routeNameRef.current = currentRouteName;
-            }}
-          >
-            <RootNavigator />
-          </NavigationContainer>
-         {/* <NetworkLoggerModal />  */}
-          <GlobalNotification />
-          <StallionUpdateModal />
-        </ThemeProvider>
-      </KeyboardProvider>
-    </SafeAreaProvider>
+                if (previousRouteName !== currentRouteName && currentRouteName) {
+                  await AnalyticsService.logScreenView(currentRouteName);
+                }
+                routeNameRef.current = currentRouteName;
+              }}
+            >
+              <RootNavigator />
+            </NavigationContainer>
+            <NetworkLoggerModal />
+            <GlobalNotification />
+            <StallionUpdateModal />
+          </ThemeProvider>
+        </KeyboardProvider>
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 };
