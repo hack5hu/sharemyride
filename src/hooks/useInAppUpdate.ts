@@ -1,30 +1,37 @@
 import { useEffect } from 'react';
-import { Platform } from 'react-native';
+import { AppState, type AppStateStatus, Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import SpInAppUpdates, { IAUUpdateKind, type StartUpdateOptions } from 'sp-react-native-in-app-updates';
+import SpInAppUpdates, {
+  IAUUpdateKind,
+  type StartUpdateOptions,
+} from 'sp-react-native-in-app-updates';
 import { Logger } from '@/utils/logger';
 
 export const useInAppUpdate = () => {
   useEffect(() => {
     const inAppUpdates = new SpInAppUpdates(false);
 
-    const checkUpdates = async () => {
+    const checkAndForceUpdate = async () => {
       try {
         const curVersion = DeviceInfo.getVersion();
         const curBuildNumber = DeviceInfo.getBuildNumber();
-        Logger.info(`[InAppUpdate] Checking update (Version: ${curVersion}, Build: ${curBuildNumber})`);
+        Logger.info(
+          `[InAppUpdate] Checking force update (Version: ${curVersion}, Build: ${curBuildNumber})`,
+        );
 
         const checkOptions = Platform.select({
           android: {
             curVersion: curBuildNumber,
-            customVersionComparator: (newV: string, curV: string) => {
+            customVersionComparator: (newV: string, curV: string): -1 | 0 | 1 => {
               const newNum = parseInt(newV, 10);
               const curNum = parseInt(curV, 10);
               if (!isNaN(newNum) && !isNaN(curNum)) {
-                return newNum - curNum;
+                if (newNum > curNum) return 1;
+                if (newNum < curNum) return -1;
+                return 0;
               }
-
-              return newV.localeCompare(curV);
+              const comp = newV.localeCompare(curV);
+              return comp > 0 ? 1 : comp < 0 ? -1 : 0;
             },
           },
           ios: {
@@ -37,22 +44,23 @@ export const useInAppUpdate = () => {
         Logger.info('[InAppUpdate] Check result:', result);
 
         if (result.shouldUpdate) {
-          let updateOptions: StartUpdateOptions = {};
+          let updateOptions: StartUpdateOptions;
+
           if (Platform.OS === 'android') {
-            const isImmediateAllowed = (result.other as any)?.isImmediateUpdateAllowed !== false;
             updateOptions = {
-              updateType: isImmediateAllowed ? IAUUpdateKind.IMMEDIATE : IAUUpdateKind.FLEXIBLE,
+              updateType: IAUUpdateKind.IMMEDIATE,
             };
-          } else if (Platform.OS === 'ios') {
+          } else {
             updateOptions = {
               title: 'Update Available',
               message:
                 'A new version of ZyncRide is available on the App Store. Please update to continue enjoying the latest features.',
               buttonUpgradeText: 'Update Now',
-              buttonCancelText: 'Later',
+              forceUpgrade: true,
               country: 'in',
             };
           }
+
           await inAppUpdates.startUpdate(updateOptions);
         }
       } catch (error: unknown) {
@@ -63,6 +71,19 @@ export const useInAppUpdate = () => {
       }
     };
 
-    checkUpdates();
+    checkAndForceUpdate();
+
+    const subscription = AppState.addEventListener(
+      'change',
+      (status: AppStateStatus) => {
+        if (status === 'active') {
+          checkAndForceUpdate();
+        }
+      },
+    );
+
+    return () => {
+      subscription.remove();
+    };
   }, []);
 };
