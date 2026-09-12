@@ -80,3 +80,7 @@ yarn-error.log
 z_____stitch_splash_screen
 *storybook.log
 storybook-static
+
+# Duplicate code reports
+jscpd-report/
+duplicates_summary.txt
