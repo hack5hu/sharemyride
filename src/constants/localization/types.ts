@@ -455,6 +455,7 @@ export interface DateSelectionTranslations {
   selectedDate: string;
   noneSelected: string;
   next: string;
+  datesSelected: string;
 }
 
 export interface TimeSelectionTranslations {

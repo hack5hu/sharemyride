@@ -28,6 +28,7 @@ export const useSummaryActions = (
     destinationLocation,
     middleStops,
     departureDate,
+    departureDates,
     departureTime,
     seatCount,
     selectedSeatIds,
@@ -59,7 +60,17 @@ export const useSummaryActions = (
       {return;}
     setIsPublishing(true);
     try {
-      const dateObj = new Date(departureDate);
+      const datesToPublish: string[] =
+        departureDates && departureDates.length > 0
+          ? departureDates
+          : [departureDate];
+
+      const rideDates: string[] = datesToPublish.map(d =>
+        format(new Date(d), 'yyyy-MM-dd'),
+      );
+
+      const firstDate = datesToPublish[0];
+      const dateObj = new Date(firstDate);
       const [time, ampm] = departureTime.split(' ');
       const [hours, minutes] = time.split(':').map(Number);
       let h = hours;
@@ -135,8 +146,9 @@ export const useSummaryActions = (
         routeStops,
         fullJourneyPrice: String(fullJourneyPrice),
         frontSeatPrice: String(frontSeatPrice),
+        rideDates,
       };
-      await RideService.publishRide(payload);
+      const response = await RideService.publishRide(payload);
 
       try {
         const existingRidesRaw = storage.getString('recent_published_rides');
@@ -177,9 +189,23 @@ export const useSummaryActions = (
         removeDraft(editingDraftId);
       }
 
+      const hasSkippedDates =
+        Array.isArray(response?.skippedDates) &&
+        response.skippedDates.length > 0;
+      const skippedMessage = hasSkippedDates ? response?.message : undefined;
+
       navigation.reset({
         index: 1,
-        routes: [{ name: 'BookRideInfo' }, { name: 'PublishSuccess' }],
+        routes: [
+          { name: 'BookRideInfo' },
+          {
+            name: 'PublishSuccess',
+            params: {
+              skippedMessage,
+              skippedDates: response?.skippedDates,
+            },
+          },
+        ],
       } as any);
       AnalyticsService.logEvent(AnalyticsEvent.RIDE_PUBLISHED, {
         vehicle_id: vehicleId,
@@ -205,6 +231,7 @@ export const useSummaryActions = (
     destinationLocation,
     middleStops,
     departureDate,
+    departureDates,
     departureTime,
     selectedSeatIds,
     routeDetails,
@@ -228,6 +255,7 @@ export const useSummaryActions = (
       destinationLocation,
       middleStops,
       departureDate,
+      departureDates,
       departureTime,
       seatCount,
       selectedSeatIds,
@@ -257,6 +285,7 @@ export const useSummaryActions = (
     destinationLocation,
     middleStops,
     departureDate,
+    departureDates,
     departureTime,
     seatCount,
     selectedSeatIds,

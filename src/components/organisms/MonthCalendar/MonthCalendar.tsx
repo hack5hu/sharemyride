@@ -24,7 +24,8 @@ export interface MonthCalendarProps {
   year: number;
   month: number;
   isCurrentMonth: boolean;
-  selectedDate: Date | null;
+  selectedDate?: Date | null;
+  selectedDates?: Date[];
   onSelectDate: (date: Date) => void;
   daysOfWeek: string[];
   currentLabel: string;
@@ -35,6 +36,7 @@ export const MonthCalendar: React.FC<MonthCalendarProps> = ({
   month,
   isCurrentMonth,
   selectedDate,
+  selectedDates,
   onSelectDate,
   daysOfWeek,
   currentLabel,
@@ -64,7 +66,10 @@ export const MonthCalendar: React.FC<MonthCalendarProps> = ({
 
           const date = new Date(year, month, day);
           const isPast = isDatePast(date);
-          const isSelected = isSameDate(date, selectedDate);
+          const isSelected =
+            selectedDates && selectedDates.length > 0
+              ? selectedDates.some(d => isSameDate(date, d))
+              : isSameDate(date, selectedDate ?? null);
 
           return (
             <DayCell key={`day-${day}`}>

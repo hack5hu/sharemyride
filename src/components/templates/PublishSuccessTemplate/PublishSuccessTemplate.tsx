@@ -8,6 +8,9 @@ import {
   SuccessIconWrapper,
   Title,
   Subtitle,
+  NoticeCard,
+  NoticeHeader,
+  NoticeText,
   InfoCard,
   InfoHeader,
   InfoTitle,
@@ -21,6 +24,7 @@ export const PublishSuccessTemplate: React.FC<PublishSuccessTemplateProps> = ({
   handleShareResult,
   t,
   theme,
+  skippedMessage,
 }) => {
   return (
     <ScreenShell>
@@ -35,6 +39,19 @@ export const PublishSuccessTemplate: React.FC<PublishSuccessTemplateProps> = ({
 
         <Title>{t.title}</Title>
         <Subtitle>{t.subtitle}</Subtitle>
+
+        {skippedMessage ? (
+          <NoticeCard>
+            <NoticeHeader>
+              <MaterialIcons
+                name="warning-amber"
+                size={moderateScale(20)}
+                color={theme.colors.warning || '#f59e0b'}
+              />
+              <NoticeText>{skippedMessage}</NoticeText>
+            </NoticeHeader>
+          </NoticeCard>
+        ) : null}
 
         <InfoCard>
           <InfoHeader>

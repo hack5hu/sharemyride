@@ -3,6 +3,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { type MonthData } from '@/components/templates/DateSelectionTemplate';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useBookRideStore } from '@/store/useBookRideStore';
+import { isSameDate } from '@/utils/date';
 
 const getMonthsData = (): MonthData[] => {
   const today = new Date();
@@ -33,10 +34,17 @@ const getMonthsData = (): MonthData[] => {
 export const useBookDateSelection = () => {
   const { goBack } = useAppNavigation();
   const travelDate = useBookRideStore(state => state.travelDate);
+  const travelDates = useBookRideStore(state => state.travelDates);
 
-  const [selectedDate, setSelectedDate] = useState<Date | null>(
-    travelDate ? new Date(travelDate) : new Date(),
-  );
+  const [selectedDates, setSelectedDates] = useState<Date[]>(() => {
+    if (travelDates && travelDates.length > 0) {
+      return travelDates.map(d => new Date(d));
+    }
+    if (travelDate) {
+      return [new Date(travelDate)];
+    }
+    return [new Date()];
+  });
 
   const months = useMemo(() => getMonthsData(), []);
 
@@ -44,25 +52,35 @@ export const useBookDateSelection = () => {
     goBack();
   }, [goBack]);
 
-  const handleSelectDate = useCallback(
-    (date: Date) => {
-      setSelectedDate(date);
-      useBookRideStore
-        .getState()
-        .setTravelDate(format(date, "yyyy-MM-dd'T'HH:mm:ss"));
+  const handleSelectDate = useCallback((date: Date) => {
+    setSelectedDates(prev => {
+      const exists = prev.some(d => isSameDate(d, date));
+      if (exists) {
+        return prev.filter(d => !isSameDate(d, date));
+      }
+      return [...prev, date].sort((a, b) => a.getTime() - b.getTime());
+    });
+  }, []);
 
-      // Auto navigation back
-      setTimeout(() => {
-        goBack();
-      }, 200);
-    },
-    [goBack],
-  );
+  const handleContinue = useCallback(() => {
+    if (selectedDates.length === 0) {
+      return;
+    }
+
+    const formattedDates = selectedDates.map(d =>
+      format(d, "yyyy-MM-dd'T'HH:mm:ss"),
+    );
+    useBookRideStore.getState().setTravelDates(formattedDates);
+
+    goBack();
+  }, [selectedDates, goBack]);
 
   return {
     months,
-    selectedDate,
+    selectedDates,
+    selectedDate: selectedDates[0] ?? null,
     handleBackPress,
     handleSelectDate,
+    handleContinue,
   };
 };

@@ -28,6 +28,7 @@ export interface PublishRidePayload {
   routeStops: RouteStop[];
   fullJourneyPrice: number | string;
   frontSeatPrice: number | string;
+  rideDates?: string[];
 }
 
 export interface TravelPreferenceData {

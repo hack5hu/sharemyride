@@ -80,7 +80,12 @@ export type RootStackParamList = {
   };
   RequestType: undefined;
   SummaryPublish: undefined;
-  PublishSuccess: undefined;
+  PublishSuccess:
+    | {
+        skippedMessage?: string;
+        skippedDates?: Array<{ date: string; reason: string }>;
+      }
+    | undefined;
   BookDateSelection: undefined;
   BookRideInfo: undefined;
   LocalRideResults: undefined;

@@ -25,6 +25,7 @@ interface BookRideState {
   startLocation: Location | null;
   destinationLocation: Location | null;
   travelDate: string | null; // ISO string
+  travelDates: string[]; // ISO strings
   seatCount: number;
   searchResults: any[] | null;
   recentSearches: RecentSearch[];
@@ -35,6 +36,7 @@ interface BookRideState {
   setStartLocation: (location: Location | null) => void;
   setDestinationLocation: (location: Location | null) => void;
   setTravelDate: (date: string | null) => void;
+  setTravelDates: (dates: string[]) => void;
   setSeatCount: (count: number) => void;
   setSearchRadiusKm: (radius: number) => void;
   setSearchResults: (results: any[] | null) => void;
@@ -56,6 +58,7 @@ export const useBookRideStore = create<BookRideState>()(
       startLocation: null,
       destinationLocation: null,
       travelDate: null,
+      travelDates: [],
       seatCount: 1,
       searchResults: null,
       currentPage: 0,
@@ -68,7 +71,21 @@ export const useBookRideStore = create<BookRideState>()(
       setStartLocation: location => set({ startLocation: location }),
       setDestinationLocation: location =>
         set({ destinationLocation: location }),
-      setTravelDate: date => set({ travelDate: date }),
+      setTravelDate: date =>
+        set(state => ({
+          travelDate: date,
+          travelDates:
+            state.travelDates.length > 0 && date && state.travelDates.includes(date)
+              ? state.travelDates
+              : date
+              ? [date]
+              : [],
+        })),
+      setTravelDates: dates =>
+        set({
+          travelDates: dates,
+          travelDate: dates[0] ?? null,
+        }),
       setSeatCount: count => set({ seatCount: count }),
       setSearchRadiusKm: radius =>
         set({ searchRadiusKm: Math.max(5, Math.min(50, radius)) }),
@@ -114,6 +131,7 @@ export const useBookRideStore = create<BookRideState>()(
           startLocation: null,
           destinationLocation: null,
           travelDate: null,
+          travelDates: [],
           seatCount: 1,
           searchRadiusKm: 25,
           filters: {},

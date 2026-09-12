@@ -454,6 +454,7 @@ export const en: Translations = {
     selectedDate: 'Selected Date',
     noneSelected: 'None',
     next: 'Next',
+    datesSelected: 'dates selected',
   },
   timeSelection: {
     headerTitle: 'Select Time',

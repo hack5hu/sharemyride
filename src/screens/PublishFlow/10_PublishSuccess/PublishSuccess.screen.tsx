@@ -1,4 +1,4 @@
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useRoute } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { BackHandler } from 'react-native';
 import { useTheme } from 'styled-components/native';
@@ -10,7 +10,11 @@ export const PublishSuccessScreen: React.FC = () => {
   const theme = useTheme();
   const { navigate } = useAppNavigation();
   const navigation = useAppNavigation();
+  const route = useRoute();
   const { publishSuccess: t } = useLocale();
+
+  const params = route.params as any;
+  const skippedMessage: string | undefined = params?.skippedMessage;
 
   // Disable header back button
   useEffect(() => {
@@ -40,6 +44,7 @@ export const PublishSuccessScreen: React.FC = () => {
       handleShareResult={handleShareResult}
       t={t}
       theme={theme}
+      skippedMessage={skippedMessage}
     />
   );
 };

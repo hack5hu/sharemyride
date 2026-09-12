@@ -6,5 +6,6 @@ export interface PublishSuccessTemplateProps {
   handleShareResult: () => void;
   t: PublishSuccessTranslations;
   theme: DefaultTheme;
+  skippedMessage?: string;
 }
 

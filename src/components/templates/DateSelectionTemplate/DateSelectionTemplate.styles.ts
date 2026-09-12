@@ -109,6 +109,9 @@ export const FloatingFooter = styled.View`
   padding-horizontal: ${scale(24)}px;
   padding-bottom: ${verticalScale(24)}px;
   padding-top: ${verticalScale(16)}px;
+  background-color: ${({ theme }) => theme.colors.surface};
+  border-top-width: 1px;
+  border-top-color: ${({ theme }) => `${theme.colors.outline_variant}33`};
 `;
 
 export const FooterGradient = styled(LinearGradient)`

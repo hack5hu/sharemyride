@@ -448,6 +448,7 @@ export const hi: Translations = {
     selectedDate: 'चुनी गई तारीख',
     noneSelected: 'कोई नहीं',
     next: 'अगला',
+    datesSelected: 'तारीखें चुनी गईं',
   },
   timeSelection: {
     headerTitle: 'समय चुनें',

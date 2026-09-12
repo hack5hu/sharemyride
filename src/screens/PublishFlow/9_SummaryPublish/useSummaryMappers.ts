@@ -4,8 +4,14 @@ import { getColorLabel } from '@/constants/ride';
 import { useTravelPrefStore } from '@/store/useTravelPrefStore';
 
 export const useSummaryMappers = (publishStore: any) => {
-  const { departureDate, seatCount, price, vehicleDetails, requestType } =
-    publishStore;
+  const {
+    departureDate,
+    departureDates,
+    seatCount,
+    price,
+    vehicleDetails,
+    requestType,
+  } = publishStore;
 
   const { preferences: storedPrefs } = useTravelPrefStore();
   const {
@@ -15,6 +21,13 @@ export const useSummaryMappers = (publishStore: any) => {
   } = useLocale();
 
   const formattedDate = useMemo(() => {
+    if (departureDates && departureDates.length > 1) {
+      const first = new Date(departureDates[0]).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+      });
+      return `${first} (+${departureDates.length - 1} more)`;
+    }
     if (!departureDate) return null;
     const date = new Date(departureDate);
 
@@ -23,7 +36,7 @@ export const useSummaryMappers = (publishStore: any) => {
       month: 'short',
       year: 'numeric',
     });
-  }, [departureDate]);
+  }, [departureDate, departureDates]);
 
   const vehicleData = useMemo(() => {
     if (!vehicleDetails) return null;

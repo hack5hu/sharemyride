@@ -3,6 +3,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { type MonthData } from '@/components/templates/DateSelectionTemplate';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
+import { isSameDate } from '@/utils/date';
 
 const getMonthsData = (): MonthData[] => {
   const today = new Date();
@@ -34,12 +35,19 @@ export const useDateSelection = () => {
   const navigation = useAppNavigation();
   const route = useRoute();
   const params = route.params as any;
-  const { departureDate, setDepartureDate } = useRidePublishStore();
+  const { departureDate, departureDates, setDepartureDates } =
+    useRidePublishStore();
 
-  // Pre-fill with previously selected date from store
-  const [selectedDate, setSelectedDate] = useState<Date | null>(
-    departureDate ? new Date(departureDate) : new Date(),
-  );
+  // Initialize selected dates array from store
+  const [selectedDates, setSelectedDates] = useState<Date[]>(() => {
+    if (departureDates && departureDates.length > 0) {
+      return departureDates.map(d => new Date(d));
+    }
+    if (departureDate) {
+      return [new Date(departureDate)];
+    }
+    return [new Date()];
+  });
 
   const months = useMemo(() => getMonthsData(), []);
 
@@ -47,26 +55,37 @@ export const useDateSelection = () => {
     navigation.goBack();
   }, [navigation]);
 
-  const handleSelectDate = useCallback(
-    (date: Date) => {
-      setSelectedDate(date);
-      setDepartureDate(date.toISOString());
+  const handleSelectDate = useCallback((date: Date) => {
+    setSelectedDates(prev => {
+      const exists = prev.some(d => isSameDate(d, date));
+      if (exists) {
+        return prev.filter(d => !isSameDate(d, date));
+      }
+      return [...prev, date].sort((a, b) => a.getTime() - b.getTime());
+    });
+  }, []);
 
-      // Slight delay to let the user see the selected state
-      setTimeout(() => {
-        (navigation.navigate as any)('TimeSelection', {
-          selectedDate: date.toISOString(),
-          returnTo: params?.returnTo,
-        });
-      }, 200);
-    },
-    [navigation, setDepartureDate, params],
-  );
+  const handleContinue = useCallback(() => {
+    if (selectedDates.length === 0) {
+      return;
+    }
+
+    const isoDates = selectedDates.map(d => d.toISOString());
+    setDepartureDates(isoDates);
+
+    (navigation.navigate as any)('TimeSelection', {
+      selectedDates: isoDates,
+      selectedDate: isoDates[0],
+      returnTo: params?.returnTo,
+    });
+  }, [selectedDates, setDepartureDates, navigation, params]);
 
   return {
     months,
-    selectedDate,
+    selectedDates,
+    selectedDate: selectedDates[0] ?? null,
     handleBackPress,
     handleSelectDate,
+    handleContinue,
   };
 };

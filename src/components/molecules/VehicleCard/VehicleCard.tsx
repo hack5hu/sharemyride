@@ -25,6 +25,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({
   seater,
   color = '#000000',
   type = 'sedan',
+  plate,
   isSelected,
   onPress,
   onEdit,
@@ -126,6 +127,18 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({
       </S.TopRow>
 
       <S.BadgesRow>
+        {Boolean(plate?.trim()) && (
+          <S.PlateBadge isSelected={isSelected}>
+            <Typography
+              variant="label"
+              size="xs"
+              weight="bold"
+              color={isSelected ? 'on_primary' : 'on_surface'}
+            >
+              {plate!.trim().toUpperCase()}
+            </Typography>
+          </S.PlateBadge>
+        )}
         <S.SpecPill isSelected={isSelected}>
           <Typography
             variant="label"

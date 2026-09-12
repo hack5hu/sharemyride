@@ -41,6 +41,7 @@ interface RidePublishState {
 
   // Schedule
   departureDate: string | null; // ISO string
+  departureDates: string[]; // ISO strings
   departureTime: string | null; // e.g., "08:30 AM"
 
   // Details
@@ -74,6 +75,7 @@ interface RidePublishState {
   setRouteDetails: (details: FinalRouteDetails | null) => void;
   setSelectedRoute: (route: any) => void;
   setDepartureDate: (date: string | null) => void;
+  setDepartureDates: (dates: string[]) => void;
   setDepartureTime: (time: string | null) => void;
   setSeatCount: (count: number) => void;
   setSelectedSeatIds: (ids: number[]) => void;
@@ -94,18 +96,19 @@ interface RidePublishState {
   clearPublishState: () => void;
 }
 
-export const useRidePublishStore = create<RidePublishState>(set => ({
+const INITIAL_PUBLISH_STATE = {
   startLocation: null,
   destinationLocation: null,
   middleStops: [],
   routeDetails: null,
   selectedRoute: null,
   departureDate: null,
+  departureDates: [] as string[],
   departureTime: null,
   seatCount: 3,
   selectedSeatIds: [2, 3, 5],
   vehicleId: null,
-  publishVehicleType: '5',
+  publishVehicleType: '5' as const,
   vehicleDetails: null,
   preferences: {
     nonSmoking: true,
@@ -120,8 +123,12 @@ export const useRidePublishStore = create<RidePublishState>(set => ({
   premiumEnabled: false,
   premiumPercentage: 10,
   segmentPrices: {},
-  requestType: 'instant',
+  requestType: 'instant' as const,
   editingDraftId: null,
+};
+
+export const useRidePublishStore = create<RidePublishState>(set => ({
+  ...INITIAL_PUBLISH_STATE,
 
   setStartLocation: location =>
     set({
@@ -162,7 +169,21 @@ export const useRidePublishStore = create<RidePublishState>(set => ({
     }),
   setRouteDetails: details => set({ routeDetails: details }),
   setSelectedRoute: route => set({ selectedRoute: route }),
-  setDepartureDate: date => set({ departureDate: date }),
+  setDepartureDate: date =>
+    set(state => ({
+      departureDate: date,
+      departureDates:
+        state.departureDates.length > 0 && date && state.departureDates.includes(date)
+          ? state.departureDates
+          : date
+          ? [date]
+          : [],
+    })),
+  setDepartureDates: dates =>
+    set({
+      departureDates: dates,
+      departureDate: dates[0] ?? null,
+    }),
   setDepartureTime: time => set({ departureTime: time }),
   setSeatCount: count => set({ seatCount: count }),
   setSelectedSeatIds: ids => set({ selectedSeatIds: ids }),
@@ -174,34 +195,5 @@ export const useRidePublishStore = create<RidePublishState>(set => ({
   setRequestType: requestType => set({ requestType }),
   setEditingDraftId: editingDraftId => set({ editingDraftId }),
 
-  clearPublishState: () =>
-    set({
-      startLocation: null,
-      destinationLocation: null,
-      middleStops: [],
-      routeDetails: null,
-      selectedRoute: null,
-      departureDate: null,
-      departureTime: null,
-      seatCount: 3,
-      selectedSeatIds: [2, 3, 5],
-      vehicleId: null,
-      publishVehicleType: '5',
-      vehicleDetails: null,
-      preferences: {
-        nonSmoking: true,
-        womenOnly: false,
-        music: 'Pop',
-        luggage: false,
-        pets: false,
-      },
-      price: 0,
-      fullJourneyPrice: 0,
-      frontSeatPrice: 0,
-      premiumEnabled: false,
-      premiumPercentage: 10,
-      segmentPrices: {},
-      requestType: 'instant',
-      editingDraftId: null,
-    }),
+  clearPublishState: () => set(INITIAL_PUBLISH_STATE),
 }));

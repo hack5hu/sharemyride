@@ -81,6 +81,19 @@ export const BadgesRow = styled.View`
   align-items: center;
   gap: ${scale(8)}px;
   margin-top: ${verticalScale(2)}px;
+  flex-wrap: wrap;
+`;
+
+export const PlateBadge = styled.View<{ isSelected?: boolean }>`
+  padding: ${verticalScale(3)}px ${scale(10)}px;
+  border-radius: ${moderateScale(8)}px;
+  background-color: ${({ isSelected, theme }) =>
+    isSelected
+      ? 'rgba(255, 255, 255, 0.25)'
+      : theme.colors.surface_container_highest};
+  border-width: 1px;
+  border-color: ${({ isSelected, theme }) =>
+    isSelected ? 'rgba(255, 255, 255, 0.4)' : theme.colors.outline_variant};
 `;
 
 export const SpecPill = styled.View<{ isSelected?: boolean }>`

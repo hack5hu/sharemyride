@@ -48,12 +48,37 @@ export const Subtitle = styled.Text`
   line-height: ${responsiveFont(24)}px;
 `;
 
+export const NoticeCard = styled.View`
+  background-color: ${({ theme }) => `${theme.colors.warning}15`};
+  border-radius: ${moderateScale(16)}px;
+  padding: ${moderateScale(16)}px;
+  width: 100%;
+  margin-top: ${verticalScale(24)}px;
+  border-width: 1px;
+  border-color: ${({ theme }) => `${theme.colors.warning}50`};
+`;
+
+export const NoticeHeader = styled.View`
+  flex-direction: row;
+  align-items: flex-start;
+  gap: ${scale(10)}px;
+`;
+
+export const NoticeText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 600;
+  font-size: ${responsiveFont(13)}px;
+  color: ${({ theme }) => theme.colors.on_surface};
+  line-height: ${responsiveFont(19)}px;
+  flex: 1;
+`;
+
 export const InfoCard = styled.View`
   background-color: ${({ theme }) => theme.colors.surface_container_low};
   border-radius: ${moderateScale(24)}px;
   padding: ${moderateScale(24)}px;
   width: 100%;
-  margin-top: ${verticalScale(48)}px;
+  margin-top: ${verticalScale(24)}px;
   border-width: 1px;
   border-color: ${({ theme }) => `${theme.colors.on_surface}08`};
 `;

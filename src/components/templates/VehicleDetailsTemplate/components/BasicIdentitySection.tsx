@@ -44,6 +44,20 @@ export const BasicIdentitySection: React.FC<BasicIdentitySectionProps> =
             required={true}
             editable={!isLoading}
           />
+          <Input
+            label={t('vehicleDetails.numberPlate')}
+            placeholder={t('vehicleDetails.platePlaceholder')}
+            value={formik.values.numberPlate}
+            onChangeText={text =>
+              formik.setFieldValue('numberPlate', text.toUpperCase())
+            }
+            error={
+              formik.touched.numberPlate ? formik.errors.numberPlate : undefined
+            }
+            required={true}
+            editable={!isLoading}
+            autoCapitalize="characters"
+          />
         </S.InputGroup>
       </S.CardSection>
     );
