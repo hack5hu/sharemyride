@@ -34,17 +34,13 @@ const getMonthsData = (): MonthData[] => {
 export const useBookDateSelection = () => {
   const { goBack } = useAppNavigation();
   const travelDate = useBookRideStore(state => state.travelDate);
-  const travelDates = useBookRideStore(state => state.travelDates);
 
-  const [selectedDates, setSelectedDates] = useState<Date[]>(() => {
-    if (travelDates && travelDates.length > 0) {
-      return travelDates.map(d => new Date(d));
-    }
+  const selectedDate = useMemo(() => {
     if (travelDate) {
-      return [new Date(travelDate)];
+      return new Date(travelDate);
     }
-    return [new Date()];
-  });
+    return new Date();
+  }, [travelDate]);
 
   const months = useMemo(() => getMonthsData(), []);
 
@@ -52,35 +48,19 @@ export const useBookDateSelection = () => {
     goBack();
   }, [goBack]);
 
-  const handleSelectDate = useCallback((date: Date) => {
-    setSelectedDates(prev => {
-      const exists = prev.some(d => isSameDate(d, date));
-      if (exists) {
-        return prev.filter(d => !isSameDate(d, date));
-      }
-      return [...prev, date].sort((a, b) => a.getTime() - b.getTime());
-    });
-  }, []);
-
-  const handleContinue = useCallback(() => {
-    if (selectedDates.length === 0) {
-      return;
-    }
-
-    const formattedDates = selectedDates.map(d =>
-      format(d, "yyyy-MM-dd'T'HH:mm:ss"),
-    );
-    useBookRideStore.getState().setTravelDates(formattedDates);
-
-    goBack();
-  }, [selectedDates, goBack]);
+  const handleSelectDate = useCallback(
+    (date: Date) => {
+      const formattedDate = format(date, "yyyy-MM-dd'T'HH:mm:ss");
+      useBookRideStore.getState().setTravelDate(formattedDate);
+      goBack();
+    },
+    [goBack],
+  );
 
   return {
     months,
-    selectedDates,
-    selectedDate: selectedDates[0] ?? null,
+    selectedDate,
     handleBackPress,
     handleSelectDate,
-    handleContinue,
   };
 };

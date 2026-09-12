@@ -3,6 +3,7 @@ import { Button } from '@/components/atoms/Button';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { MonthCalendar } from '@/components/organisms/MonthCalendar';
 import { useLocale } from '@/constants/localization';
+import { scale, verticalScale } from '@/styles';
 import * as S from './DateSelectionTemplate.styles';
 
 export interface MonthData {
@@ -18,6 +19,7 @@ export interface DateSelectionTemplateProps {
   selectedDates?: Date[];
   onSelectDate: (date: Date) => void;
   onContinue?: () => void;
+  isMultiSelect?: boolean;
 }
 
 export const DateSelectionTemplate: React.FC<DateSelectionTemplateProps> = ({
@@ -27,17 +29,23 @@ export const DateSelectionTemplate: React.FC<DateSelectionTemplateProps> = ({
   selectedDates,
   onSelectDate,
   onContinue,
+  isMultiSelect,
 }) => {
   const { dateSelection: t } = useLocale();
 
+  const isMulti = isMultiSelect ?? Boolean(selectedDates);
+
   const datesArray = useMemo(() => {
-    if (selectedDates !== undefined) {
+    if (isMulti && selectedDates !== undefined) {
       return selectedDates;
     }
     return selectedDate ? [selectedDate] : [];
-  }, [selectedDates, selectedDate]);
+  }, [isMulti, selectedDates, selectedDate]);
 
   const subtitleText = useMemo(() => {
+    if (!isMulti) {
+      return t.subtitle;
+    }
     if (datesArray.length === 0) {
       return t.subtitle;
     }
@@ -45,14 +53,14 @@ export const DateSelectionTemplate: React.FC<DateSelectionTemplateProps> = ({
       return `1 ${t.selectedDate}`;
     }
     return `${datesArray.length} ${t.datesSelected}`;
-  }, [datesArray.length, t]);
+  }, [isMulti, datesArray.length, t]);
 
   const buttonLabel = useMemo(() => {
-    if (datesArray.length > 1) {
+    if (isMulti && datesArray.length > 1) {
       return `${t.next} (${datesArray.length})`;
     }
     return t.next;
-  }, [datesArray.length, t.next]);
+  }, [isMulti, datesArray.length, t.next]);
 
   return (
     <ScreenShell title={t.headerTitle} onBack={onBackPress}>
@@ -62,7 +70,13 @@ export const DateSelectionTemplate: React.FC<DateSelectionTemplateProps> = ({
       </S.ProgressSection>
 
       {/* Scrollable calendar */}
-      <S.ScrollContent showsVerticalScrollIndicator={false}>
+      <S.ScrollContent
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingHorizontal: scale(24),
+          paddingBottom: onContinue ? verticalScale(160) : verticalScale(32),
+        }}
+      >
         {months.map(m => (
           <MonthCalendar
             key={`${m.year}-${m.month}`}
