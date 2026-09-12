@@ -87,5 +87,21 @@ target 'shareMyRide' do
         File.write(copy_resources_path, content)
       end
     end
+
+    # Fix for prebuilt RN dependencies missing simulator slices in RN 0.84.1
+    pods_root = Pod::Config.instance.project_pods_root.to_s
+    node_binary = ENV['NODE_BINARY'] || `command -v node`.strip
+
+    rn_deps_script = File.join(config[:reactNativePath], 'third-party-podspecs/replace_dependencies_version.js')
+    if File.exist?(rn_deps_script)
+      File.write(File.join(pods_root, 'ReactNativeDependencies/.last_build_configuration'), 'force')
+      system(node_binary, rn_deps_script, '-c', 'Debug', '-r', '0.84.1', '-p', pods_root)
+    end
+
+    rn_core_script = File.join(config[:reactNativePath], 'scripts/replace-rncore-version.js')
+    if File.exist?(rn_core_script)
+      File.write(File.join(pods_root, 'React-Core-prebuilt/.last_build_configuration'), 'force')
+      system(node_binary, rn_core_script, '-c', 'Debug', '-r', '0.84.1', '-p', pods_root)
+    end
   end
 end
