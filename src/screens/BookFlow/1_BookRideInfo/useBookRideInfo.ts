@@ -3,7 +3,7 @@ import { format, isBefore, startOfDay } from 'date-fns';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { BackHandler, ToastAndroid } from 'react-native';
 import { showNotification } from '@/components/organisms/GlobalNotification/GlobalNotification';
-import { NotificationType } from '@/constants/enums';
+import { NotificationType, RideType } from '@/constants/enums';
 import { useLocale } from '@/constants/localization';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -151,7 +151,7 @@ export const useBookRideInfo = () => {
           (Array.isArray(results) ? results : []);
         setSearchResults(ridesList);
 
-        if (curType === 'local') {
+        if (curType === RideType.LOCAL) {
           navigate('LocalRideResults');
         } else {
           navigate('AvailableRides');
@@ -203,7 +203,7 @@ export const useBookRideInfo = () => {
             (Array.isArray(results) ? results : []);
           store.setSearchResults(ridesList);
 
-          if (store.rideType === 'local') {
+          if (store.rideType === RideType.LOCAL) {
             navigate('LocalRideResults');
           } else {
             navigate('AvailableRides');
@@ -225,7 +225,7 @@ export const useBookRideInfo = () => {
     [navigate],
   );
 
-  const handleSetRideType = useCallback((type: 'local' | 'intercity') => {
+  const handleSetRideType = useCallback((type: RideType) => {
     useBookRideStore.getState().setRideType(type);
   }, []);
 

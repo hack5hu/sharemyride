@@ -727,6 +727,10 @@ export interface BookRideInfoTranslations {
   brandName: string;
   local: string;
   intercity: string;
+  cityToCityTitle: string;
+  cityToCitySubtitle: string;
+  withinCityTitle: string;
+  withinCitySubtitle: string;
   localServiceArea: string;
   requestLocalPartner: string;
   searchRadiusLabel: string;

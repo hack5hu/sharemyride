@@ -34,6 +34,8 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
       onSelectRecentSearch,
       onClearRecentSearches,
       t,
+      rideType,
+      onSetRideType,
     }) => {
       const insets = useSafeAreaInsets();
 
@@ -84,6 +86,8 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
               onSelectRadius={onSelectRadius}
               onSearchRides={onSearchRides}
               t={t}
+              rideType={rideType}
+              onSetRideType={onSetRideType}
             />
 
             {recentSearches.length > 0 && (
@@ -122,6 +126,8 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
           onClearRecentSearches,
           recentSearches.length,
           t,
+          rideType,
+          onSetRideType,
         ],
       );
 

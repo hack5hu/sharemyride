@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { RideType } from '@/constants/enums';
 import { mmkvStorage } from '@/utils/storage';
 import { type Location } from './useLocationStore';
 
@@ -30,7 +31,7 @@ interface BookRideState {
   searchResults: any[] | null;
   recentSearches: RecentSearch[];
   filters: SearchFilters;
-  rideType: 'local' | 'intercity';
+  rideType: RideType;
   searchRadiusKm: number;
 
   setStartLocation: (location: Location | null) => void;
@@ -46,7 +47,7 @@ interface BookRideState {
   hasMore: boolean;
   setHasMore: (hasMore: boolean) => void;
   setFilters: (filters: SearchFilters) => void;
-  setRideType: (type: 'local' | 'intercity') => void;
+  setRideType: (type: RideType) => void;
   addRecentSearch: (search: Omit<RecentSearch, 'id'>) => void;
   clearRecentSearches: () => void;
   clearBookState: () => void;
@@ -65,7 +66,7 @@ export const useBookRideStore = create<BookRideState>()(
       hasMore: true,
       recentSearches: [],
       filters: {},
-      rideType: 'intercity',
+      rideType: RideType.INTERCITY,
       searchRadiusKm: 25,
 
       setStartLocation: location => set({ startLocation: location }),
@@ -135,7 +136,7 @@ export const useBookRideStore = create<BookRideState>()(
           seatCount: 1,
           searchRadiusKm: 25,
           filters: {},
-          rideType: 'intercity',
+          rideType: RideType.INTERCITY,
         }),
     }),
     {

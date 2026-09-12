@@ -1,12 +1,13 @@
 import { format } from 'date-fns';
-import React from 'react';
-import { Animated, ActivityIndicator } from 'react-native';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { ActivityIndicator, Animated } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { moderateScale } from '@/styles';
 import { formatDisplayAddress } from '@/utils/address';
 import { type BookingFormProps } from '../types.d';
 import * as S from './BookingForm.styles';
+import { RideTypeTabs } from './RideTypeTabs';
 
 export const BookingForm: React.FC<BookingFormProps> = ({
   pickup,
@@ -26,11 +27,13 @@ export const BookingForm: React.FC<BookingFormProps> = ({
   onDecrementRadius,
   onSearchRides,
   t,
+  rideType,
+  onSetRideType,
 }) => {
   const theme = useTheme();
-  const spinValue = React.useRef(new Animated.Value(0)).current;
+  const spinValue = useRef(new Animated.Value(0)).current;
 
-  React.useEffect(() => {
+  useEffect(() => {
     Animated.timing(spinValue, {
       toValue: isSwapped ? 1 : 0,
       duration: 300,
@@ -43,21 +46,33 @@ export const BookingForm: React.FC<BookingFormProps> = ({
     outputRange: ['0deg', '180deg'],
   });
 
-  const formattedPickup = pickup
-    ? formatDisplayAddress(pickup)
-    : t.pickupPlaceholder;
-  const formattedDestination = destination
-    ? formatDisplayAddress(destination)
-    : t.destinationPlaceholder;
-  const formattedDate = travelDate
-    ? format(travelDate, 'EEE, dd MMM yyyy')
-    : t.datePlaceholder;
+  const formattedPickup = useMemo(
+    () => (pickup ? formatDisplayAddress(pickup) : t.pickupPlaceholder),
+    [pickup, t.pickupPlaceholder],
+  );
+  const formattedDestination = useMemo(
+    () =>
+      destination ? formatDisplayAddress(destination) : t.destinationPlaceholder,
+    [destination, t.destinationPlaceholder],
+  );
+  const formattedDate = useMemo(
+    () => (travelDate ? format(travelDate, 'EEE, dd MMM yyyy') : t.datePlaceholder),
+    [travelDate, t.datePlaceholder],
+  );
   const formattedPassengers = `${peopleCount} ${
     peopleCount === 1 ? 'passenger' : 'passengers'
   }`;
 
   return (
     <S.BookingCard>
+      {/* Intercity vs Intracity Selector */}
+      <RideTypeTabs
+        selected={rideType}
+        onSelect={onSetRideType}
+        disabled={isSearching}
+        t={t}
+      />
+
       <S.FormBody>
         {/* From (Pickup) */}
         <S.FormRow

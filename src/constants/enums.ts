@@ -50,3 +50,9 @@ export enum TicketCategory {
   IMPROVEMENT_IDEA = 'IMPROVEMENT_IDEA',
   OTHER_SUGGESTIONS = 'OTHER_SUGGESTIONS',
 }
+
+export enum RideType {
+  LOCAL = 'local',
+  INTERCITY = 'intercity',
+}
+

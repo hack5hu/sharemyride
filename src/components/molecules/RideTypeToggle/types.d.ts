@@ -1,4 +1,6 @@
-export type RideType = 'local' | 'intercity';
+import { RideType } from '@/constants/enums';
+
+export { RideType };
 
 export interface RideTypeToggleProps {
   selected: RideType;

@@ -1,3 +1,4 @@
+import { RideType } from '@/constants/enums';
 import { type BookRideInfoTranslations } from '@/constants/localization/types';
 import { type RecentSearch } from '@/store/useBookRideStore';
 
@@ -23,8 +24,8 @@ export interface BookRideInfoTemplateProps {
   onSelectRecentSearch: (item: RecentSearch) => void;
   onClearRecentSearches: () => void;
   t: BookRideInfoTranslations;
-  rideType: 'local' | 'intercity';
-  onSetRideType: (type: 'local' | 'intercity') => void;
+  rideType: RideType;
+  onSetRideType: (type: RideType) => void;
 }
 
 export interface BookingFormProps {
@@ -46,5 +47,7 @@ export interface BookingFormProps {
   onSelectRadius: (radius: number) => void;
   onSearchRides: () => void;
   t: BookRideInfoTranslations;
+  rideType: RideType;
+  onSetRideType: (type: RideType) => void;
 }
 
