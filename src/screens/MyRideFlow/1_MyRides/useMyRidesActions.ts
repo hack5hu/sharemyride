@@ -7,6 +7,8 @@ import { RideService } from '@/serviceManager/RideService';
 import { useMyRidesStore } from '@/store/useMyRidesStore';
 import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { getErrorMessage } from '@/utils/error';
+import { restorePublishDraft } from '@/utils/publishDraft';
+import { isPublishRouteValid } from '@/utils/publishRouteValidation';
 
 export const useMyRidesActions = (
   fetchInitialRides: () => void,
@@ -22,40 +24,6 @@ export const useMyRidesActions = (
   const { t } = useTranslation();
   const navigation = useAppNavigation();
   const { drafts, clearDrafts, removeDraft } = useMyRidesStore();
-  const publishStore = useRidePublishStore();
-
-  const restoreDraftToStore = useCallback(
-    (draftState: any) => {
-      const s = draftState;
-      if (s.startLocation) publishStore.setStartLocation(s.startLocation);
-      if (s.destinationLocation)
-        {publishStore.setDestinationLocation(s.destinationLocation);}
-      if (s.middleStops) publishStore.setMiddleStops(s.middleStops);
-      if (s.departureDate) publishStore.setDepartureDate(s.departureDate);
-      if (s.departureTime) publishStore.setDepartureTime(s.departureTime);
-      if (s.seatCount) publishStore.setSeatCount(s.seatCount);
-      if (s.selectedSeatIds) publishStore.setSelectedSeatIds(s.selectedSeatIds);
-      if (s.publishVehicleType)
-        {publishStore.setPublishVehicleType(s.publishVehicleType);}
-      if (s.vehicleDetails) publishStore.setVehicleDetails(s.vehicleDetails);
-      if (s.vehicleId) publishStore.setVehicleId(s.vehicleId);
-      if (s.preferences) publishStore.setPreferences(s.preferences);
-      if (s.routeDetails) publishStore.setRouteDetails(s.routeDetails);
-      if (s.selectedRoute) publishStore.setSelectedRoute(s.selectedRoute);
-      if (s.price !== undefined) {
-        publishStore.setPricing({
-          price: Number(s.price),
-          fullJourneyPrice: Number(s.fullJourneyPrice ?? s.price),
-          frontSeatPrice: Number(s.frontSeatPrice ?? s.price),
-          premiumEnabled: Boolean(s.premiumEnabled),
-          premiumPercentage: Number(s.premiumPercentage || 0),
-          segmentPrices: s.segmentPrices || {},
-        });
-      }
-      if (s.requestType) publishStore.setRequestType(s.requestType);
-    },
-    [publishStore],
-  );
 
   const onRidePress = useCallback(
     (params: {
@@ -68,10 +36,17 @@ export const useMyRidesActions = (
       if (id.startsWith('draft-')) {
         const draft = drafts.find(d => d.id === id);
         if (draft) {
-          publishStore.clearPublishState();
-          publishStore.setEditingDraftId(draft.id);
-          restoreDraftToStore(draft.state);
-          navigation.navigate('SummaryPublish');
+          restorePublishDraft(draft.state, draft.id);
+          const restored = useRidePublishStore.getState();
+          navigation.navigate(
+            isPublishRouteValid(
+              restored.routeDetails,
+              restored.rideType,
+              restored.middleStops.length + 2,
+            ) && restored.selectedRoute?.polylineString
+              ? 'PriceSelection'
+              : 'RouteSelection',
+          );
         }
       } else {
         navigation.navigate('RideDetails', {
@@ -83,7 +58,7 @@ export const useMyRidesActions = (
         });
       }
     },
-    [navigation, drafts, publishStore, restoreDraftToStore],
+    [navigation, drafts],
   );
 
   const onRemoveDraft = useCallback(
@@ -115,7 +90,7 @@ export const useMyRidesActions = (
             try {
               await RideService.cancelRide(id, 'Cancelled from my rides tab');
               fetchInitialRides();
-            } catch (error: any) {
+            } catch (error: unknown) {
               showNotification(
                 NotificationType.ERROR,
                 t('notification.defaultErrorTitle'),

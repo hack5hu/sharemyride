@@ -3,6 +3,7 @@ import {
   setAdminDebuggerEnabled,
 } from '@/utils/adminDebugger';
 import { storage } from '@/utils/storage';
+import { RideType } from '@/constants/enums';
 import { useSettingsStore } from './settings';
 import { useAuthStore } from './useAuthStore';
 import { useBookRideStore } from './useBookRideStore';
@@ -80,6 +81,7 @@ export const resetAllStores = () => {
 
   // 5. Ride Publish Store (Clear current publishing flow)
   useRidePublishStore.setState({
+    rideType: RideType.INTERCITY,
     startLocation: null,
     destinationLocation: null,
     middleStops: [],

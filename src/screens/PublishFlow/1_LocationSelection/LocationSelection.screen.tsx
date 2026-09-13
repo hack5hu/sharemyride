@@ -9,6 +9,7 @@ export const LocationSelectionScreen: React.FC = () => {
     destinationLocationName,
     handlePressStart,
     handlePressDestination,
+    handleSwapLocations,
     handleContinue,
     canContinue,
     recentRides,
@@ -21,6 +22,7 @@ export const LocationSelectionScreen: React.FC = () => {
       destinationLocationName={destinationLocationName}
       onPressStart={handlePressStart}
       onPressDestination={handlePressDestination}
+      onSwapLocations={handleSwapLocations}
       onPressContinue={handleContinue}
       canContinue={canContinue}
       recentRides={recentRides}

@@ -1,4 +1,5 @@
 import { API_ENDPOINTS } from '@/constants/apiEndpoints';
+import { RideType } from '@/constants/enums';
 import axiosClient from './axiosClient';
 
 export interface RouteStop {
@@ -29,6 +30,7 @@ export interface PublishRidePayload {
   fullJourneyPrice: number | string;
   frontSeatPrice: number | string;
   rideDates?: string[];
+  rideType?: RideType;
 }
 
 export interface TravelPreferenceData {

@@ -4,6 +4,7 @@ import { useRidePublishStore } from '@/store/useRidePublishStore';
 import { formatDisplayAddress } from '@/utils/address';
 import { useSummaryActions } from './useSummaryActions';
 import { useSummaryMappers } from './useSummaryMappers';
+import { buildPublishRidePayload } from './utils/publishPayloadBuilder';
 
 export const useSummaryPublish = () => {
   const navigation = useAppNavigation();
@@ -45,20 +46,14 @@ export const useSummaryPublish = () => {
   }, [departureDate, departureTime]);
 
   const canPublish = useMemo(() => {
-    return !!(
-      startLocation &&
-      destinationLocation &&
-      departureDate &&
-      departureTime &&
-      !validationError
-    );
-  }, [
-    startLocation,
-    destinationLocation,
-    departureDate,
-    departureTime,
-    validationError,
-  ]);
+    try {
+      buildPublishRidePayload(publishStore);
+
+      return !isPublishing;
+    } catch {
+      return false;
+    }
+  }, [publishStore, isPublishing]);
 
   return {
     routeData: {

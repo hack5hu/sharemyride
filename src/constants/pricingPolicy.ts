@@ -1,0 +1,29 @@
+export enum PricingBound {
+  MIN = 'MIN',
+  MID = 'MID',
+  MAX = 'MAX',
+}
+
+export const INTERCITY_PRICING_CONFIG = {
+  RECOMMENDED_RATE_PER_KM: 2.25,
+  MIN_RATE_PER_KM: 1.8,
+  MAX_RATE_PER_KM: 2.8,
+  MIN_FARE: 50,
+  MIN_DISTANCE_KM: 5,
+  SEATER_MULTIPLIER: { '5': 1, '7': 1.1 },
+};
+
+export const INTRACITY_PRICING_CONFIG = {
+  MIN_FARE: 50,
+  MIN_DISTANCE_KM: 2,
+  MAX_AUTO_DISTANCE_KM: 50,
+  ROUNDING: 5,
+  MIN_BOUND_FACTOR: 0.75,
+  MAX_BOUND_FACTOR: 1.25,
+  SEATER_MULTIPLIER: { '5': 1, '7': 1.1 },
+  BAND_1_KM: 10,
+  BAND_1_RATE: 5.0,
+  BAND_2_KM: 15,
+  BAND_2_RATE: 4.5,
+  BAND_3_RATE: 2.5,
+};

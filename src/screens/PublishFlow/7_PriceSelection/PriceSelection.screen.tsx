@@ -7,7 +7,6 @@ export const PriceSelectionScreen: React.FC = () => {
     price,
     minPrice,
     maxPrice,
-    isRecommended,
     premiumEnabled,
     premium,
     premiumPercentage,
@@ -16,6 +15,11 @@ export const PriceSelectionScreen: React.FC = () => {
     segmentPrices,
     isLoading,
     showPremium,
+    step,
+    subtitle,
+    badgeLabel,
+    canContinue,
+    maximumPremium,
     handlePriceChange,
     handleTogglePremium,
     handlePremiumChange,
@@ -31,7 +35,11 @@ export const PriceSelectionScreen: React.FC = () => {
       price={price}
       minPrice={minPrice}
       maxPrice={maxPrice}
-      isRecommended={isRecommended}
+      step={step}
+      subtitle={subtitle}
+      badgeLabel={badgeLabel}
+      canContinue={canContinue}
+      maximumPremium={maximumPremium}
       onPriceChange={handlePriceChange}
       premiumEnabled={premiumEnabled}
       onTogglePremium={handleTogglePremium}

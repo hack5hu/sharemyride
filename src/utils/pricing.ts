@@ -1,116 +1,141 @@
-export const PRICING_MULTIPLIERS = {
-  MIN: 7,
-  MID: 10,
-  MAX: 12,
-};
+import { RideType } from '@/constants/enums';
+import {
+  INTERCITY_PRICING_CONFIG,
+  INTRACITY_PRICING_CONFIG,
+  PricingBound,
+} from '@/constants/pricingPolicy';
 
-/**
- * Configurable pricing parameters for BlaBlaCar-style carpool pricing model in India.
- * Modify these rates to tweak recommended, minimum, or maximum pricing rules in the future.
- */
-export const BLABLACAR_PRICING_CONFIG = {
-  /** Recommended rate in INR per km per seat */
-  RECOMMENDED_RATE_PER_KM: 2.25,
-  /** Minimum rate in INR per km per seat */
-  MIN_RATE_PER_KM: 1.80,
-  /** Maximum rate in INR per km per seat */
-  MAX_RATE_PER_KM: 2.80,
-  /** Minimum base fare per seat in INR */
-  MIN_FARE: 50,
-  /** Seater multiplier adjustment */
-  SEATER_MULTIPLIER: {
-    '5': 1.0,
-    '7': 1.1,
-  },
-};
+export { INTERCITY_PRICING_CONFIG, INTRACITY_PRICING_CONFIG };
+export const PRICING_MULTIPLIERS = { MIN: 7, MID: 10, MAX: 12 };
 
-export const roundToNearest = (value: number, nearest: number = 10) => {
-  return Math.round(value / nearest) * nearest;
-};
+/** Round a monetary amount to the supplied increment. */
+export const roundToNearest = (value: number, nearest = 10): number =>
+  Math.round(value / nearest) * nearest;
 
-/**
- * Calculates BlaBlaCar-style seat pricing based on distance in kilometers.
- *
- * @param distanceKm Distance in km
- * @param type 'MID' (Recommended), 'MIN' (Minimum bound), or 'MAX' (Maximum bound)
- * @param seater Vehicle seating capacity ('5' or '7')
- * @returns Fare in INR rounded to nearest 10
- */
+/** Calculate the intercity recommendation or permitted price bound. */
 export const calculateBlaBlaCarPrice = (
   distanceKm: number,
-  type: 'MID' | 'MIN' | 'MAX' = 'MID',
+  type: PricingBound = PricingBound.MID,
   seater: '5' | '7' = '5',
 ): number => {
-  if (!distanceKm || distanceKm <= 0) return 0;
+  if (!Number.isFinite(distanceKm) || distanceKm <= 0) return 0;
+  const config = INTERCITY_PRICING_CONFIG;
+  const rate =
+    type === PricingBound.MIN
+      ? config.MIN_RATE_PER_KM
+      : type === PricingBound.MAX
+        ? config.MAX_RATE_PER_KM
+        : config.RECOMMENDED_RATE_PER_KM;
 
-  const seaterMult = BLABLACAR_PRICING_CONFIG.SEATER_MULTIPLIER[seater] || 1.0;
-
-  let ratePerKm = BLABLACAR_PRICING_CONFIG.RECOMMENDED_RATE_PER_KM;
-  if (type === 'MIN') {
-    ratePerKm = BLABLACAR_PRICING_CONFIG.MIN_RATE_PER_KM;
-  } else if (type === 'MAX') {
-    ratePerKm = BLABLACAR_PRICING_CONFIG.MAX_RATE_PER_KM;
-  }
-
-  const calculated = distanceKm * ratePerKm * seaterMult;
-  const clamped = Math.max(calculated, BLABLACAR_PRICING_CONFIG.MIN_FARE);
-
-  return roundToNearest(clamped, 10);
+  return roundToNearest(
+    Math.max(
+      distanceKm * rate * config.SEATER_MULTIPLIER[seater],
+      config.MIN_FARE,
+    ),
+  );
 };
 
+/** Calculate cumulative city pricing; bounds are rounded inward. */
+export const calculateIntracityPrice = (
+  distanceKm: number,
+  type: PricingBound = PricingBound.MID,
+  seater: '5' | '7' = '5',
+): number => {
+  if (!Number.isFinite(distanceKm) || distanceKm <= 0) return 0;
+  const config = INTRACITY_PRICING_CONFIG;
+  const base =
+    Math.min(distanceKm, config.BAND_1_KM) * config.BAND_1_RATE +
+    Math.min(Math.max(distanceKm - config.BAND_1_KM, 0), config.BAND_2_KM) *
+      config.BAND_2_RATE +
+    Math.max(distanceKm - (config.BAND_1_KM + config.BAND_2_KM), 0) *
+      config.BAND_3_RATE;
+  const recommended = roundToNearest(
+    Math.max(base * config.SEATER_MULTIPLIER[seater], config.MIN_FARE),
+    config.ROUNDING,
+  );
+  const minFloor = roundToNearest(
+    config.MIN_FARE * config.MIN_BOUND_FACTOR,
+    config.ROUNDING,
+  );
+  if (type === PricingBound.MIN) {
+    return Math.max(
+      minFloor,
+      roundToNearest(recommended * config.MIN_BOUND_FACTOR, config.ROUNDING),
+    );
+  }
+  if (type === PricingBound.MAX) {
+    return roundToNearest(
+      recommended * config.MAX_BOUND_FACTOR,
+      config.ROUNDING,
+    );
+  }
+
+  return recommended;
+};
+
+/** Apply the selected ride's policy, independent of the search tab. */
+export const calculateSmartPrice = (
+  distanceKm: number,
+  rideType: RideType = RideType.INTERCITY,
+  type: PricingBound = PricingBound.MID,
+  seater: '5' | '7' = '5',
+): number =>
+  rideType === RideType.LOCAL
+    ? calculateIntracityPrice(distanceKm, type, seater)
+    : calculateBlaBlaCarPrice(distanceKm, type, seater);
+
+/** Compatibility entry point for existing intercity consumers. */
 export const calculateBasePrice = (
   distanceKm: number,
   multiplier: number,
-  divisor: number = 1,
+  divisor = 1,
 ) => {
-  let type: 'MID' | 'MIN' | 'MAX' = 'MID';
-  if (multiplier <= PRICING_MULTIPLIERS.MIN) {
-    type = 'MIN';
-  } else if (multiplier >= PRICING_MULTIPLIERS.MAX) {
-    type = 'MAX';
-  }
-  const seater = divisor >= 6 ? '7' : '5';
+  const bound =
+    multiplier <= PRICING_MULTIPLIERS.MIN
+      ? PricingBound.MIN
+      : multiplier >= PRICING_MULTIPLIERS.MAX
+        ? PricingBound.MAX
+        : PricingBound.MID;
 
-  return calculateBlaBlaCarPrice(distanceKm, type, seater);
+  return calculateBlaBlaCarPrice(distanceKm, bound, divisor >= 6 ? '7' : '5');
 };
 
+/** Apply up to 10% before rounding the extra amount to the nearest step (default ₹10, ₹5 for city). */
 export const calculateFrontSeatPrice = (
   basePrice: number,
-  premiumPercentage: number = 0,
+  premiumPercentage = 0,
+  step = 10,
 ) => {
-  return roundToNearest(basePrice * (1 + premiumPercentage / 100), 10);
+  if (!Number.isFinite(basePrice) || basePrice < 0) return 0;
+  const percentage = Number.isFinite(premiumPercentage)
+    ? Math.min(10, Math.max(0, premiumPercentage))
+    : 0;
+
+  return basePrice + roundToNearest((basePrice * percentage) / 100, step);
 };
 
-import { type RouteStop } from '@/serviceManager/RideService';
+/** Determine whether a selected fare qualifies for the recommendation badge. */
+export const isRecommendedPrice = (price: number, recommended: number) =>
+  recommended > 0 && Math.abs(price - recommended) <= recommended * 0.15;
 
-/**
- * Calculates the segment price using the prefix algorithm (last stop cumulative - first stop cumulative).
- * Fallback to direct price if prefix calculation isn't possible.
- */
+interface PricedStop {
+  priceFromPreviousStop?: number | null;
+  frontSeatPriceFromPreviousStop?: number | null;
+}
+
+/** Read an explicit booking quote, otherwise subtract cumulative stop fares. */
 export const calculateSegmentPrice = (
-  stops: RouteStop[] | any[],
+  stops: PricedStop[],
   directPrice?: number | null,
-  isFrontSeat: boolean = false,
+  isFrontSeat = false,
 ): number => {
-  if (!stops || stops.length === 0) return directPrice ?? 0;
-
-  const firstStop = stops[0];
-  const lastStop = stops[stops.length - 1];
-
-  if (!firstStop || !lastStop) return directPrice ?? 0;
-
-  const priceKey = isFrontSeat
+  if (directPrice !== undefined && directPrice !== null) return directPrice;
+  const first = stops[0],
+    last = stops[stops.length - 1];
+  if (!first || !last) return 0;
+  const key = isFrontSeat
     ? 'frontSeatPriceFromPreviousStop'
     : 'priceFromPreviousStop';
 
-  const cumulativeLast = lastStop[priceKey] || 0;
-  const cumulativeFirst = firstStop[priceKey] || 0;
-
-  const calculated = cumulativeLast - cumulativeFirst;
-
-  // We check for directPrice being exactly null or undefined.
-  // If it's 0, we still respect it as a valid price if it was explicitly provided.
-  return directPrice !== undefined && directPrice !== null
-    ? directPrice
-    : calculated;
+  return (last[key] ?? 0) - (first[key] ?? 0);
 };

@@ -66,7 +66,7 @@ export type RootStackParamList = {
   SeatSelection: {
     flow: 'publish' | 'book';
   };
-  PriceSelection: undefined;
+  PriceSelection: { returnTo?: 'SummaryPublish' } | undefined;
   MyRides: undefined;
   RideDetails: {
     rideId: string;

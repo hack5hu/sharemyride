@@ -8,6 +8,7 @@ import { PriceCounter } from '@/components/molecules/PriceCounter';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { type SegmentPrice } from '@/components/molecules/SegmentPricingCard';
 import { SegmentPricingSheet } from '@/components/organisms/SegmentPricingSheet';
+import { type StopSegment } from '@/components/organisms/SegmentPricingSheet/utils';
 import { useLocale } from '@/constants/localization';
 import { moderateScale } from '@/styles';
 import * as S from './PriceSelectionTemplate.styles';
@@ -27,13 +28,18 @@ export interface PriceSelectionTemplateProps {
   onContinue: () => void;
   onCustomizePricing: () => void;
   sheetVisible: boolean;
-  segments: unknown[];
+  segments: (StopSegment & { distanceKm: number })[];
   segmentPrices: Record<string, SegmentPrice>;
   onSheetClose: () => void;
   onSaveSegmentPrices: (prices: Record<string, { basePrice: number }>) => void;
   isLoading?: boolean;
   isRecommended?: boolean;
   showPremium?: boolean;
+  step?: number;
+  subtitle?: string;
+  badgeLabel?: string;
+  canContinue?: boolean;
+  maximumPremium?: number;
 }
 
 export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
@@ -56,6 +62,12 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
   onSaveSegmentPrices,
   isRecommended = false,
   showPremium = false,
+  step = 10,
+  subtitle,
+  badgeLabel,
+  canContinue = true,
+  maximumPremium,
+  isLoading = false,
 }) => {
   const theme = useTheme();
   const { priceSelection: t } = useLocale();
@@ -65,7 +77,7 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
       <S.MainScrollView>
         <S.TitleSection>
           <S.PageTitle>{t.title}</S.PageTitle>
-          <S.PageSubtitle>{t.subtitle}</S.PageSubtitle>
+          <S.PageSubtitle>{subtitle || t.subtitle}</S.PageSubtitle>
         </S.TitleSection>
 
         {/* Main price counter */}
@@ -73,10 +85,12 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
           price={price}
           onPriceChange={onPriceChange}
           label={t.basePriceLabel}
-          badgeLabel={isRecommended ? t.recommendedBadge : undefined}
+          badgeLabel={
+            badgeLabel || (isRecommended ? t.recommendedBadge : undefined)
+          }
           minPrice={minPrice}
           maxPrice={maxPrice}
-          step={10}
+          step={step}
         />
 
         {/* Front seat premium */}
@@ -87,6 +101,8 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
             premium={premium}
             onPremiumChange={onPremiumChange}
             basePrice={price}
+            maximumPremium={maximumPremium}
+            step={step}
             title={t.frontSeatPremiumTitle}
             description={t.frontSeatPremiumDesc}
             amountLabel={t.premiumAmountLabel}
@@ -130,6 +146,7 @@ export const PriceSelectionTemplate: React.FC<PriceSelectionTemplateProps> = ({
           icon="chevron-right"
           iconPosition="right"
           onPress={onContinue}
+          disabled={isLoading || !canContinue}
         >
           {t.continueButton}
         </Button>

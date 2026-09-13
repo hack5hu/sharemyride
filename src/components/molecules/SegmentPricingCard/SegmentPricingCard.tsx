@@ -1,10 +1,9 @@
-/* eslint-disable max-lines */
 import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import styled, { useTheme } from 'styled-components/native';
+import { useTheme } from 'styled-components/native';
 import { PriceCounter } from '@/components/molecules/PriceCounter';
 import { useTranslation } from '@/hooks/useTranslation';
-import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
+import { moderateScale } from '@/styles';
 import { calculateFrontSeatPrice } from '@/utils/pricing';
 
 export interface SegmentPrice {
@@ -13,119 +12,7 @@ export interface SegmentPrice {
   maxPrice: number;
 }
 
-/* ──── Styles ──── */
-const Card = styled.View`
-  background-color: ${({ theme }) => theme.colors.surface_container_low};
-  border-radius: ${moderateScale(16)}px;
-  padding: ${moderateScale(16)}px;
-  gap: ${verticalScale(12)}px;
-`;
-
-const HeaderRow = styled.View`
-  flex-direction: column;
-  align-items: flex-start;
-  gap: ${scale(10)}px;
-`;
-
-const SegmentBadge = styled.View`
-  background-color: ${({ theme }) => theme.colors.primary_container};
-  padding-horizontal: ${scale(8)}px;
-  padding-vertical: ${verticalScale(4)}px;
-  border-radius: ${moderateScale(6)}px;
-`;
-
-const SegmentBadgeText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${responsiveFont(9)}px;
-  color: ${({ theme }) => theme.colors.on_primary_container};
-  text-transform: uppercase;
-`;
-
-const RouteContainer = styled.View`
-  flex: 1;
-  flex-direction: column;
-  align-items: flex-start;
-`;
-
-const RouteItem = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(6)}px;
-`;
-const Line = styled.View`
-  width: ${scale(2)}px;
-  height: ${verticalScale(20)}px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  margin-left: ${scale(6)}px;
-`;
-const RouteText = styled.Text`
-  flex: 1;
-  font-family: 'Plus Jakarta Sans';
-  font-size: ${responsiveFont(14)}px;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.on_surface};
-`;
-
-const PriceSection = styled.View`
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  padding: ${moderateScale(12)}px ${moderateScale(4)}px;
-  border-radius: ${moderateScale(12)}px;
-  gap: ${scale(10)}px;
-`;
-
-/* Front seat section — Using 'No-Line' rule with subtle surface variance */
-const FrontSeatSection = styled.View`
-  padding: ${moderateScale(14)}px;
-  background-color: ${({ theme }) => `${theme.colors.secondary_container}20`};
-  border-radius: ${moderateScale(12)}px;
-  gap: ${verticalScale(4)}px;
-`;
-
-const FrontSeatTop = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const FrontSeatLabelRow = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(6)}px;
-`;
-
-const FrontSeatLabel = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(11)}px;
-  color: ${({ theme }) => theme.colors.secondary};
-  text-transform: uppercase;
-`;
-
-const MathBreakdown = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 600;
-  font-size: ${responsiveFont(13)}px;
-  color: ${({ theme }) => theme.colors.on_surface_variant};
-  letter-spacing: 0.2px;
-`;
-
-const TotalFrontSeatPrice = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 800;
-  font-size: ${responsiveFont(18)}px;
-  color: ${({ theme }) => theme.colors.on_surface};
-`;
-
-const HelperText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-size: ${responsiveFont(10)}px;
-  color: ${({ theme }) => theme.colors.outline};
-  font-style: italic;
-`;
+import { Card, HeaderRow, SegmentBadge, SegmentBadgeText, RouteContainer, RouteItem, Line, RouteText, PriceSection, FrontSeatSection, FrontSeatTop, FrontSeatLabelRow, FrontSeatLabel, MathBreakdown, TotalFrontSeatPrice, HelperText } from './SegmentPricingCard.styles';
 
 /* ──── Component ──── */
 export interface SegmentPricingCardProps {
@@ -138,6 +25,7 @@ export interface SegmentPricingCardProps {
   premiumEnabled: boolean;
   frontSeatLabel: string;
   premiumPercentage: number;
+  projectedFrontSeatPrice?: number;
 }
 
 export const SegmentPricingCard: React.FC<SegmentPricingCardProps> = ({
@@ -150,12 +38,13 @@ export const SegmentPricingCard: React.FC<SegmentPricingCardProps> = ({
   premiumEnabled,
   frontSeatLabel,
   premiumPercentage,
+  projectedFrontSeatPrice,
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
   // Calculate front seat price dynamically based on current basePrice
-  const totalFrontSeatPrice = calculateFrontSeatPrice(
+  const totalFrontSeatPrice = projectedFrontSeatPrice ?? calculateFrontSeatPrice(
     segmentPrice.basePrice,
     premiumPercentage,
   );

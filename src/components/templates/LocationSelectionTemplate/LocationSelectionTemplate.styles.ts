@@ -1,17 +1,11 @@
 import LinearGradient from 'react-native-linear-gradient';
-import styled from 'styled-components/native';
+import styled, { type DefaultTheme } from 'styled-components/native';
 import { scale, verticalScale, moderateScale, responsiveFont } from '@/styles';
-
-
-export const SafeContainer = styled.View`
-  flex: 1;
-  background-color: ${({ theme }) => theme.colors.surface};
-`;
 
 export const MainContent = styled.ScrollView.attrs({
   contentContainerStyle: {
-    paddingHorizontal: scale(24),
-    paddingTop: verticalScale(32),
+    paddingHorizontal: scale(20),
+    paddingTop: verticalScale(24),
     paddingBottom: verticalScale(120),
   },
   keyboardShouldPersistTaps: 'handled',
@@ -20,186 +14,178 @@ export const MainContent = styled.ScrollView.attrs({
 `;
 
 export const HeaderSection = styled.View`
-  margin-bottom: ${verticalScale(40)};
+  margin-bottom: ${verticalScale(20)}px;
+`;
+
+export const HeroBadge = styled.View`
+  align-self: flex-start;
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(6)}px;
+  background-color: ${({ theme }) => `${theme.colors.primary}18`};
+  padding-horizontal: ${scale(12)}px;
+  padding-vertical: ${verticalScale(5)}px;
+  border-radius: 9999px;
+  margin-bottom: ${verticalScale(10)}px;
+`;
+
+export const HeroBadgeText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 700;
+  font-size: ${responsiveFont(11)}px;
+  color: ${({ theme }) => theme.colors.primary};
+  letter-spacing: 0.2px;
 `;
 
 export const TitleContainer = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 800;
-  font-size: ${responsiveFont(36)}px;
+  font-size: ${responsiveFont(30)}px;
   color: ${({ theme }) => theme.colors.on_surface};
-  line-height: ${verticalScale(44)}px;
+  line-height: ${verticalScale(38)}px;
+  letter-spacing: -0.5px;
 `;
 
 export const TitleHighlight = styled.Text`
-  font-style: italic;
   color: ${({ theme }) => theme.colors.primary};
 `;
 
 export const Subtitle = styled.Text`
   font-family: 'Plus Jakarta Sans';
-  font-size: ${responsiveFont(14)}px;
+  font-size: ${responsiveFont(13.5)}px;
   color: ${({ theme }) => theme.colors.on_surface_variant};
-  margin-top: ${verticalScale(12)}px;
-  opacity: 0.8;
-  line-height: ${verticalScale(22)}px;
-`;
-
-export const FixedFooter = styled.View`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding-horizontal: ${scale(24)}px;
-  padding-top: ${verticalScale(16)}px;
-  padding-bottom: ${verticalScale(8)}px;
-  background-color: ${({ theme }) => theme.colors.surface};
-  elevation: 8;
-  shadow-color: ${({ theme }) => theme.colors.shadow};
-  shadow-offset: 0px -4px;
-  shadow-opacity: 0.08;
-  shadow-radius: 12px;
-`;
-
-export const FooterAboveNav = styled.View`
-  position: absolute;
-  bottom: ${verticalScale(72)}px;
-  left: 0;
-  right: 0;
-  padding-horizontal: ${scale(24)}px;
-  padding-vertical: ${verticalScale(16)}px;
-  background-color: ${({ theme }) => theme.colors.surface};
-  elevation: 8;
-  shadow-color: ${({ theme }) => theme.colors.shadow};
-  shadow-offset: 0px -4px;
-  shadow-opacity: 0.08;
-  shadow-radius: 12px;
-`;
-
-export const ContextualInfoBox = styled.View`
-  margin-top: ${verticalScale(48)}px;
-  padding: ${moderateScale(24)}px;
-  border-radius: ${moderateScale(12)}px;
-  background-color: ${({ theme }) => `${theme.colors.primary_container}1A`};
-  border-width: 1px;
-  border-color: ${({ theme }) => `${theme.colors.primary_container}33`};
-  flex-direction: row;
-  align-items: flex-start;
-  gap: ${scale(16)}px;
-`;
-
-export const ContextualInfoText = styled.Text`
-  flex: 1;
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 500;
-  font-size: ${responsiveFont(12)}px;
-  color: ${({ theme }) => theme.colors.primary};
+  margin-top: ${verticalScale(6)}px;
   line-height: ${verticalScale(20)}px;
 `;
 
 export const ContinueButtonSection = styled.View`
-  margin-top: ${verticalScale(32)}px;
+  margin-top: ${verticalScale(20)}px;
 `;
 
-export const ContinueGradient = styled(LinearGradient).attrs(({ theme }) => ({
-  colors: [theme.colors.primary, theme.colors.primary_container],
-  start: { x: 0, y: 0 },
-  end: { x: 1, y: 1 },
-}))<{ $disabled?: boolean }>`
-  width: 100%;
-  height: ${verticalScale(64)}px;
-  border-radius: ${moderateScale(12)}px;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  shadow-color: ${({ theme }) => theme.colors.primary};
-  shadow-offset: 0px 8px;
-  shadow-opacity: 0.2;
-  shadow-radius: 20px;
-  elevation: 8;
-  opacity: ${({ $disabled }) => ($disabled ? 0.6 : 1)};
+export const ContinueGradient = styled(LinearGradient).attrs(
+  ({ theme, $disabled }: { theme: DefaultTheme; $disabled?: boolean }) => ({
+    colors: $disabled
+      ? [theme.colors.surface_variant, theme.colors.surface_variant]
+      : [theme.colors.primary, theme.colors.primary_container],
+    start: { x: 0, y: 0 },
+    end: { x: 1, y: 1 },
+  }),
+)<{ $disabled?: boolean }>`
+  border-radius: ${moderateScale(16)}px;
+  elevation: ${({ $disabled }) => ($disabled ? 0 : 4)};
+  shadow-color: ${({ theme, $disabled }) =>
+    $disabled ? 'transparent' : theme.colors.primary};
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.25;
+  shadow-radius: 8px;
 `;
 
 export const ContinueButton = styled.TouchableOpacity`
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
   flex-direction: row;
-  gap: ${scale(12)}px;
+  align-items: center;
+  justify-content: center;
+  padding-vertical: ${verticalScale(16)}px;
+  padding-horizontal: ${scale(24)}px;
 `;
 
 export const ContinueText = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 700;
-  font-size: ${responsiveFont(16)}px;
+  font-size: ${responsiveFont(15.5)}px;
   color: ${({ theme }) => theme.colors.on_primary};
+  margin-right: ${scale(8)}px;
 `;
 
 export const RecentRidesSection = styled.View`
-  margin-top: ${verticalScale(32)}px;
-  padding-horizontal: ${scale(4)}px;
+  margin-top: ${verticalScale(28)}px;
 `;
 
 export const RecentRidesHeader = styled.View`
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: ${verticalScale(16)}px;
+  justify-content: space-between;
+  margin-bottom: ${verticalScale(12)}px;
 `;
 
 export const RecentRidesTitle = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 800;
-  font-size: ${responsiveFont(18)}px;
+  font-size: ${responsiveFont(17)}px;
   color: ${({ theme }) => theme.colors.on_surface};
-  letter-spacing: -0.5px;
+  letter-spacing: -0.3px;
 `;
 
 export const RecentRideCard = styled.TouchableOpacity`
-  background-color: ${({ theme }) => theme.colors.surface_container_low};
+  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
   border-radius: ${moderateScale(16)}px;
-  padding: ${moderateScale(16)}px;
+  border-width: 1px;
+  border-color: ${({ theme }) =>
+    theme.colors.outline_variant || 'rgba(0, 0, 0, 0.06)'};
+  padding: ${moderateScale(14)}px ${moderateScale(16)}px;
   flex-direction: row;
   align-items: center;
-  margin-bottom: ${verticalScale(12)}px;
-  shadow-color: ${({ theme }) => theme.colors.shadow};
+  margin-bottom: ${verticalScale(10)}px;
+  shadow-color: rgb(0, 0, 0);
   shadow-offset: 0px 2px;
-  shadow-opacity: 0.02;
+  shadow-opacity: 0.04;
   shadow-radius: 6px;
-  elevation: 1;
+  elevation: 2;
 `;
 
 export const RecentRideLeft = styled.View`
   flex: 1;
+  gap: ${verticalScale(6)}px;
+`;
+
+export const RecentRideRouteRow = styled.View`
   flex-direction: row;
   align-items: center;
-  gap: ${scale(12)}px;
+  gap: ${scale(8)}px;
 `;
 
-export const RecentRideIconBox = styled.View`
-  width: ${moderateScale(40)}px;
-  height: ${moderateScale(40)}px;
-  border-radius: ${moderateScale(20)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  align-items: center;
-  justify-content: center;
-`;
-
-export const RecentRideTextContainer = styled.View`
-  flex: 1;
-`;
-
-export const RecentRideRouteText = styled.Text`
+export const RecentRideLocationText = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 700;
-  font-size: ${responsiveFont(14)}px;
+  font-size: ${responsiveFont(13.5)}px;
   color: ${({ theme }) => theme.colors.on_surface};
+  max-width: ${scale(120)}px;
+`;
+
+export const RecentRideMetaRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: ${scale(8)}px;
+`;
+
+export const RecentRideTag = styled.View<{ $isLocal?: boolean }>`
+  background-color: ${({ theme, $isLocal }) =>
+    $isLocal ? `${theme.colors.primary}15` : `${theme.colors.tertiary}15`};
+  padding-horizontal: ${scale(8)}px;
+  padding-vertical: ${verticalScale(2)}px;
+  border-radius: 9999px;
+`;
+
+export const RecentRideTagText = styled.Text<{ $isLocal?: boolean }>`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 700;
+  font-size: ${responsiveFont(10)}px;
+  color: ${({ theme, $isLocal }) =>
+    $isLocal ? theme.colors.primary : theme.colors.tertiary};
 `;
 
 export const RecentRideSubText = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-size: ${responsiveFont(11)}px;
   color: ${({ theme }) => theme.colors.on_surface_variant};
-  margin-top: ${verticalScale(2)}px;
+`;
+
+export const RecentRideActionBox = styled.View`
+  width: ${moderateScale(32)}px;
+  height: ${moderateScale(32)}px;
+  border-radius: 9999px;
+  background-color: ${({ theme }) => theme.colors.surface_container_low};
+  align-items: center;
+  justify-content: center;
+  margin-left: ${scale(8)}px;
 `;

@@ -374,6 +374,7 @@ export interface LocationSelectionTranslations {
   titleHighlight: string;
   titleSuffix: string;
   subtitle: string;
+  heroBadge: string;
   startLabel: string;
   startPlaceholder: string;
   destinationLabel: string;
@@ -383,6 +384,9 @@ export interface LocationSelectionTranslations {
   recentRidesTitle: string;
   minDistanceError: string;
   minDistanceErrorTitle: string;
+  localTab: string;
+  intercityTab: string;
+  minDistanceErrorIntracity: string;
 }
 
 export interface MapPickerTranslations {
@@ -885,6 +889,8 @@ export interface PriceSelectionTranslations {
   frontSeatProjectedLabel: string;
   perSeatPrice: string;
   basePlusPremium: string;
+  intracitySubtitle: string;
+  intracityBadge: string;
 }
 
 export interface SeatSelectionTranslations {

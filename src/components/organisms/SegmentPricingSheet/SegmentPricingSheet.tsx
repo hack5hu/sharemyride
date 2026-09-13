@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Button } from '@/components/atoms/Button';
 import {
   SegmentPricingCard,
   type SegmentPrice,
 } from '@/components/molecules/SegmentPricingCard';
 import { scale, verticalScale } from '@/styles';
+import { allocateFrontSeatPrices } from '@/utils/journeyPricing';
 import {
   Wrapper,
   Overlay,
@@ -53,6 +54,9 @@ export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
   t,
 }) => {
   const [localPrices, setLocalPrices] = useState<Record<string, number>>({});
+  const frontPrices = useMemo(() => allocateFrontSeatPrices(
+    localPrices, premiumEnabled ? premiumPercentage : 0,
+  ), [localPrices, premiumEnabled, premiumPercentage]);
 
   React.useEffect(() => {
     if (visible) {
@@ -74,8 +78,7 @@ export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
       final[id] = { basePrice: localPrices[id] };
     });
     onSave(final);
-    onClose();
-  }, [localPrices, onSave, onClose]);
+  }, [localPrices, onSave]);
 
   if (!visible) return null;
 
@@ -119,6 +122,7 @@ export const SegmentPricingSheet: React.FC<SegmentPricingSheetProps> = ({
                   premiumEnabled={premiumEnabled}
                   frontSeatLabel={t.frontSeatProjectedLabel}
                   premiumPercentage={premiumPercentage}
+                  projectedFrontSeatPrice={frontPrices[seg.id]}
                 />
               ))}
             </CardList>
