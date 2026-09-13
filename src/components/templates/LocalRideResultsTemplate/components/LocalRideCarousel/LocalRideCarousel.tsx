@@ -1,5 +1,6 @@
 import { FlashList } from '@shopify/flash-list';
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
+import { type NativeSyntheticEvent, type NativeScrollEvent } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { Button } from '@/components/atoms/Button';
@@ -18,9 +19,51 @@ export const LocalRideCarousel: React.FC<LocalRideCarouselProps> = React.memo(
     onSelectRide,
     onPressDetails,
     onRequestPartner,
+    bottomInset,
   }) => {
     const theme = useTheme();
     const { localRideResults: t } = useLocale();
+    const listRef = useRef<FlashList<LocalRideItemData>>(null);
+    const itemWidth = scale(312);
+    const lastReportedId = useRef<string | null>(selectedRideId);
+
+    useEffect(() => {
+      if (
+        listRef.current &&
+        selectedRideId &&
+        selectedRideId !== lastReportedId.current
+      ) {
+        const index = rides.findIndex(r => r.id === selectedRideId);
+        if (index >= 0) {
+          listRef.current.scrollToIndex({ index, animated: true });
+        }
+        lastReportedId.current = selectedRideId;
+      }
+    }, [selectedRideId, rides]);
+
+    const handleScrollEnd = useCallback(
+      (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+        const offsetX = e.nativeEvent.contentOffset.x;
+        const index = Math.round(offsetX / itemWidth);
+        const clamped = Math.max(0, Math.min(index, rides.length - 1));
+        const snappedRide = rides[clamped];
+        if (snappedRide && snappedRide.id !== selectedRideId) {
+          lastReportedId.current = snappedRide.id;
+          onSelectRide(snappedRide.id);
+        }
+      },
+      [itemWidth, rides, selectedRideId, onSelectRide],
+    );
+
+    const handleScrollEndDrag = useCallback(
+      (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+        const velocity = e.nativeEvent.velocity?.x ?? 0;
+        if (Math.abs(velocity) < 0.05) {
+          handleScrollEnd(e);
+        }
+      },
+      [handleScrollEnd],
+    );
 
     const renderRideItem = useCallback(
       ({ item }: { item: LocalRideItemData }) => (
@@ -41,7 +84,7 @@ export const LocalRideCarousel: React.FC<LocalRideCarouselProps> = React.memo(
 
     if (rides.length === 0) {
       return (
-        <S.CarouselWrapper pointerEvents="box-none">
+        <S.CarouselWrapper bottomInset={bottomInset} pointerEvents="box-none">
           <S.EmptyCard>
             <S.EmptyIconCircle>
               <MaterialIcons
@@ -81,16 +124,19 @@ export const LocalRideCarousel: React.FC<LocalRideCarouselProps> = React.memo(
     }
 
     return (
-      <S.CarouselWrapper pointerEvents="box-none">
+      <S.CarouselWrapper bottomInset={bottomInset} pointerEvents="box-none">
         <FlashList
+          ref={listRef}
           data={rides}
           renderItem={renderRideItem}
           keyExtractor={keyExtractor}
           horizontal
           showsHorizontalScrollIndicator={false}
-          snapToInterval={scale(312)}
+          snapToInterval={itemWidth}
           decelerationRate="fast"
           snapToAlignment="start"
+          onMomentumScrollEnd={handleScrollEnd}
+          onScrollEndDrag={handleScrollEndDrag}
           contentContainerStyle={{
             paddingLeft: scale(16),
             paddingRight: scale(16),

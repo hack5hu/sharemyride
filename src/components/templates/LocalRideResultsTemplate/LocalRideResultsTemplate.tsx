@@ -32,6 +32,7 @@ export const LocalRideResultsTemplate: React.FC<LocalRideResultsTemplateProps> =
       onRegionChangeComplete,
       mapRef,
       cameraRef,
+      onMapLoaded,
       zoom = 14,
       onZoomIn,
       onZoomOut,
@@ -58,12 +59,14 @@ export const LocalRideResultsTemplate: React.FC<LocalRideResultsTemplateProps> =
       );
 
       return (
-        <ScreenShell transparent>
+        <ScreenShell transparent noPaddingTop noPaddingBottom>
           <S.Container>
             <S.MapContainer>
               <OlaMap
                 ref={mapRef}
                 onRegionDidChange={onRegionChangeComplete}
+                onDidFinishLoadingMap={onMapLoaded}
+                onDidFinishLoadingStyle={onMapLoaded}
                 style={mapViewStyle}
               >
                 <Camera
@@ -133,7 +136,7 @@ export const LocalRideResultsTemplate: React.FC<LocalRideResultsTemplateProps> =
                 )}
               </S.HeaderCard>
 
-              <S.ControlsWrapper>
+              <S.ControlsWrapper bottomInset={insets.bottom}>
                 <MapControlsFABs onZoomIn={onZoomIn} onZoomOut={onZoomOut} />
               </S.ControlsWrapper>
 
@@ -143,6 +146,7 @@ export const LocalRideResultsTemplate: React.FC<LocalRideResultsTemplateProps> =
                 onSelectRide={onSelectRide}
                 onPressDetails={onPressDetails}
                 onRequestPartner={onRequestLocalPartner}
+                bottomInset={insets.bottom}
               />
             </S.Overlay>
 

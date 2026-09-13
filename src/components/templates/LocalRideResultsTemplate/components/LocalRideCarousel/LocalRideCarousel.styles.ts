@@ -1,9 +1,10 @@
 import styled from 'styled-components/native';
 import { moderateScale, scale, verticalScale } from '@/styles';
 
-export const CarouselWrapper = styled.View`
+export const CarouselWrapper = styled.View<{ bottomInset?: number }>`
   position: absolute;
-  bottom: ${verticalScale(28)}px;
+  bottom: ${({ bottomInset }) =>
+    bottomInset ? Math.max(bottomInset, verticalScale(8)) : verticalScale(10)}px;
   left: 0;
   right: 0;
   z-index: 10;

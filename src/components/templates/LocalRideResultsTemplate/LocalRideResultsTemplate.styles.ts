@@ -89,10 +89,11 @@ export const ActiveFilterDot = styled.View`
   background-color: ${({ theme }) => theme.colors.primary};
 `;
 
-export const ControlsWrapper = styled.View`
+export const ControlsWrapper = styled.View<{ bottomInset?: number }>`
   position: absolute;
   right: ${scale(16)}px;
-  bottom: ${verticalScale(240)}px;
+  bottom: ${({ bottomInset }) =>
+    (bottomInset ? bottomInset + verticalScale(175) : verticalScale(185))}px;
   z-index: 15;
 `;
 

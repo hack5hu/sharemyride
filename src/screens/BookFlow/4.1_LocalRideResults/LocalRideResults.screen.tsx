@@ -1,5 +1,5 @@
 import { type MapRef, type CameraRef } from '@maplibre/maplibre-react-native';
-import React, { useRef, useCallback, useEffect, useMemo } from 'react';
+import React, { useRef, useCallback, useEffect, useMemo, useState } from 'react';
 import { LocalRideResultsTemplate } from '@/components/templates/LocalRideResultsTemplate';
 import { LocalRideMapLayers } from './components/LocalRideMapLayers';
 import { useLocalRideResults } from './useLocalRideResults';
@@ -35,6 +35,9 @@ export const LocalRideResultsScreen: React.FC = React.memo(() => {
 
   const mapRef = useRef<MapRef>(null);
   const cameraRef = useRef<CameraRef>(null);
+  const [isMapReady, setIsMapReady] = useState(false);
+
+  const handleMapLoaded = useCallback(() => setIsMapReady(true), []);
 
   const handleZoomIn = useCallback(async () => {
     if (cameraRef.current) {
@@ -66,6 +69,12 @@ export const LocalRideResultsScreen: React.FC = React.memo(() => {
     if (activeRide && activeRide.destCoords.latitude !== 0) {
       coords.push([activeRide.destCoords.longitude, activeRide.destCoords.latitude]);
     }
+    if (driverRouteGeoJSON?.geometry && 'coordinates' in driverRouteGeoJSON.geometry) {
+      const lineCoords = driverRouteGeoJSON.geometry.coordinates as [number, number][];
+      if (Array.isArray(lineCoords)) {
+        lineCoords.forEach(c => coords.push(c));
+      }
+    }
 
     if (coords.length >= 2) {
       const lngs = coords.map(c => c[0]);
@@ -75,24 +84,29 @@ export const LocalRideResultsScreen: React.FC = React.memo(() => {
       const minLat = Math.min(...lats);
       const maxLat = Math.max(...lats);
 
-      if (Math.abs(maxLng - minLng) < 0.001 && Math.abs(maxLat - minLat) < 0.001) {
-        cameraRef.current.easeTo({
-          center: [coords[0][0], coords[0][1]],
-          zoom: 14,
-          duration: 500,
-        });
-      } else {
-        cameraRef.current.fitBounds(
-          [minLng, minLat, maxLng, maxLat],
-          {
-            padding: { top: 120, bottom: 260, left: 40, right: 40 },
-            duration: 600,
-            easing: 'ease',
-          },
-        );
-      }
+      const timer = setTimeout(() => {
+        if (!cameraRef.current) return;
+        if (Math.abs(maxLng - minLng) < 0.001 && Math.abs(maxLat - minLat) < 0.001) {
+          cameraRef.current.easeTo({
+            center: [coords[0][0], coords[0][1]],
+            zoom: 14,
+            duration: 500,
+          });
+        } else {
+          cameraRef.current.fitBounds(
+            [minLng, minLat, maxLng, maxLat],
+            {
+              padding: { top: 90, bottom: 190, left: 35, right: 35 },
+              duration: 600,
+              easing: 'ease',
+            },
+          );
+        }
+      }, 80);
+
+      return () => clearTimeout(timer);
     }
-  }, [activeRide?.id, startLocation, destinationLocation]);
+  }, [activeRide?.id, startLocation, destinationLocation, driverRouteGeoJSON, isMapReady]);
 
   const mapChildren = useMemo(
     () => (
@@ -137,6 +151,7 @@ export const LocalRideResultsScreen: React.FC = React.memo(() => {
       mapChildren={mapChildren}
       mapRef={mapRef}
       cameraRef={cameraRef}
+      onMapLoaded={handleMapLoaded}
       onZoomIn={handleZoomIn}
       onZoomOut={handleZoomOut}
       onOpenFilters={handleOpenFilters}

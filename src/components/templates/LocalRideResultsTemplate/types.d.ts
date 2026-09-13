@@ -17,6 +17,7 @@ export interface LocalRideResultsTemplateProps {
   onRegionChangeComplete?: (event: unknown) => void;
   mapRef?: RefObject<MapRef | null>;
   cameraRef?: RefObject<CameraRef | null>;
+  onMapLoaded?: () => void;
   zoom?: number;
   onZoomIn?: () => void;
   onZoomOut?: () => void;
