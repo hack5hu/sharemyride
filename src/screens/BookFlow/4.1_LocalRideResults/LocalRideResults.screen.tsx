@@ -1,117 +1,126 @@
-import { GeoJSONSource, Layer, type MapRef, type CameraRef } from '@maplibre/maplibre-react-native';
-import React, { useRef, useState, useCallback } from 'react';
-import { useTheme } from 'styled-components/native';
+import { type MapRef, type CameraRef } from '@maplibre/maplibre-react-native';
+import React, { useRef, useCallback, useEffect, useMemo } from 'react';
 import { LocalRideResultsTemplate } from '@/components/templates/LocalRideResultsTemplate';
+import { LocalRideMapLayers } from './components/LocalRideMapLayers';
 import { useLocalRideResults } from './useLocalRideResults';
 
 export const LocalRideResultsScreen: React.FC = React.memo(() => {
-  const theme = useTheme();
   const {
+    rides,
+    selectedRideId,
+    activeRide,
+    center,
+    driverRouteGeoJSON,
+    pickupConnectorGeoJSON,
+    dropoffConnectorGeoJSON,
+    pickupDistanceText,
+    dropoffDistanceText,
+    pickupMidpoint,
+    dropoffMidpoint,
     startLocation,
     destinationLocation,
-    center,
-    pickupLine,
-    dropoffLine,
-    handleRegionChange,
+    startAddress,
+    destinationAddress,
+    isFilterModalOpen,
+    selectedFilters,
+    activeFiltersCount,
+    handleOpenFilters,
+    handleCloseFilters,
+    handleClearFilters,
+    handleApplyFilters,
+    handleSelectRide,
+    handleRidePress,
     handleBack,
-    handleRequestLocalPartner,
-    t,
   } = useLocalRideResults();
 
   const mapRef = useRef<MapRef>(null);
   const cameraRef = useRef<CameraRef>(null);
-  const [zoom, setZoom] = useState(14);
 
-  const handleZoomIn = useCallback(() => setZoom(z => Math.min(z + 1, 20)), []);
-  const handleZoomOut = useCallback(() => setZoom(z => Math.max(z - 1, 3)), []);
+  const handleZoomIn = useCallback(async () => {
+    if (cameraRef.current) {
+      const currentZoom = (await mapRef.current?.getZoom()) ?? 13;
+      cameraRef.current.zoomTo(Math.min(currentZoom + 1, 18), { duration: 250 });
+    }
+  }, []);
 
-  const mapChildren = (
-    <>
-      {/* Pickup Path */}
-      {pickupLine && (
-        <GeoJSONSource id="pickup-path-source" data={pickupLine}>
-          <Layer
-            id="pickup-path-layer"
-            type="line"
-            paint={{
-              'line-color': theme.colors.primary,
-              'line-width': 4,
-              'line-dasharray': [2, 2],
-            }}
-          />
-        </GeoJSONSource>
-      )}
+  const handleZoomOut = useCallback(async () => {
+    if (cameraRef.current) {
+      const currentZoom = (await mapRef.current?.getZoom()) ?? 13;
+      cameraRef.current.zoomTo(Math.max(currentZoom - 1, 8), { duration: 250 });
+    }
+  }, []);
 
-      {/* Dropoff Path */}
-      {dropoffLine && (
-        <GeoJSONSource id="dropoff-path-source" data={dropoffLine}>
-          <Layer
-            id="dropoff-path-layer"
-            type="line"
-            paint={{
-              'line-color': theme.colors.tertiary,
-              'line-width': 4,
-              'line-dasharray': [2, 2],
-            }}
-          />
-        </GeoJSONSource>
-      )}
+  useEffect(() => {
+    if (!cameraRef.current) return;
 
-      {/* Start Marker */}
-      {startLocation && (
-        <GeoJSONSource
-          id="pickup-marker-source"
-          data={{
-            type: 'Feature',
-            properties: {},
-            geometry: {
-              type: 'Point',
-              coordinates: [startLocation.longitude, startLocation.latitude],
-            },
-          }}
-        >
-          <Layer
-            id="pickup-marker-layer"
-            type="circle"
-            paint={{
-              'circle-color': theme.colors.primary,
-              'circle-radius': 8,
-              'circle-stroke-width': 3,
-              'circle-stroke-color': theme.colors.surface_container_lowest,
-            }}
-          />
-        </GeoJSONSource>
-      )}
+    const coords: [number, number][] = [];
+    if (startLocation) {
+      coords.push([startLocation.longitude, startLocation.latitude]);
+    }
+    if (destinationLocation) {
+      coords.push([destinationLocation.longitude, destinationLocation.latitude]);
+    }
+    if (activeRide && activeRide.sourceCoords.latitude !== 0) {
+      coords.push([activeRide.sourceCoords.longitude, activeRide.sourceCoords.latitude]);
+    }
+    if (activeRide && activeRide.destCoords.latitude !== 0) {
+      coords.push([activeRide.destCoords.longitude, activeRide.destCoords.latitude]);
+    }
 
-      {/* Destination Marker */}
-      {destinationLocation && (
-        <GeoJSONSource
-          id="dropoff-marker-source"
-          data={{
-            type: 'Feature',
-            properties: {},
-            geometry: {
-              type: 'Point',
-              coordinates: [
-                destinationLocation.longitude,
-                destinationLocation.latitude,
-              ],
-            },
-          }}
-        >
-          <Layer
-            id="dropoff-marker-layer"
-            type="circle"
-            paint={{
-              'circle-color': theme.colors.tertiary,
-              'circle-radius': 8,
-              'circle-stroke-width': 3,
-              'circle-stroke-color': theme.colors.surface_container_lowest,
-            }}
-          />
-        </GeoJSONSource>
-      )}
-    </>
+    if (coords.length >= 2) {
+      const lngs = coords.map(c => c[0]);
+      const lats = coords.map(c => c[1]);
+      const minLng = Math.min(...lngs);
+      const maxLng = Math.max(...lngs);
+      const minLat = Math.min(...lats);
+      const maxLat = Math.max(...lats);
+
+      if (Math.abs(maxLng - minLng) < 0.001 && Math.abs(maxLat - minLat) < 0.001) {
+        cameraRef.current.easeTo({
+          center: [coords[0][0], coords[0][1]],
+          zoom: 14,
+          duration: 500,
+        });
+      } else {
+        cameraRef.current.fitBounds(
+          [minLng, minLat, maxLng, maxLat],
+          {
+            padding: { top: 120, bottom: 260, left: 40, right: 40 },
+            duration: 600,
+            easing: 'ease',
+          },
+        );
+      }
+    }
+  }, [activeRide?.id, startLocation, destinationLocation]);
+
+  const mapChildren = useMemo(
+    () => (
+      <LocalRideMapLayers
+        driverRouteGeoJSON={driverRouteGeoJSON}
+        pickupConnectorGeoJSON={pickupConnectorGeoJSON}
+        dropoffConnectorGeoJSON={dropoffConnectorGeoJSON}
+        pickupDistanceText={pickupDistanceText}
+        dropoffDistanceText={dropoffDistanceText}
+        pickupMidpoint={pickupMidpoint}
+        dropoffMidpoint={dropoffMidpoint}
+        startLocation={startLocation}
+        destinationLocation={destinationLocation}
+        activeRide={activeRide}
+      />
+    ),
+    [
+      driverRouteGeoJSON,
+      pickupConnectorGeoJSON,
+      dropoffConnectorGeoJSON,
+      pickupDistanceText,
+      dropoffDistanceText,
+      pickupMidpoint,
+      dropoffMidpoint,
+      startLocation,
+      destinationLocation,
+      activeRide,
+    ],
   );
 
   return (
@@ -119,16 +128,24 @@ export const LocalRideResultsScreen: React.FC = React.memo(() => {
       onBack={handleBack}
       latitude={center.latitude}
       longitude={center.longitude}
-      localServiceAreaLabel={t.localServiceArea}
-      requestLocalPartnerLabel={t.requestLocalPartner}
-      onRequestLocalPartner={handleRequestLocalPartner}
+      rides={rides}
+      selectedRideId={selectedRideId}
+      onSelectRide={handleSelectRide}
+      onPressDetails={handleRidePress}
+      startAddress={startAddress}
+      destinationAddress={destinationAddress}
       mapChildren={mapChildren}
-      onRegionChangeComplete={handleRegionChange}
       mapRef={mapRef}
       cameraRef={cameraRef}
-      zoom={zoom}
       onZoomIn={handleZoomIn}
       onZoomOut={handleZoomOut}
+      onOpenFilters={handleOpenFilters}
+      activeFiltersCount={activeFiltersCount}
+      isFilterModalOpen={isFilterModalOpen}
+      onCloseFilters={handleCloseFilters}
+      onClearFilters={handleClearFilters}
+      onApplyFilters={handleApplyFilters}
+      selectedFilters={selectedFilters}
     />
   );
 });

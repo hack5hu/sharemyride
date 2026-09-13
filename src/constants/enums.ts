@@ -56,3 +56,21 @@ export enum RideType {
   INTERCITY = 'intercity',
 }
 
+export enum RouteLineType {
+  DRIVER_ROUTE = 'driver_route',
+  PICKUP_CONNECTOR = 'pickup_connector',
+  DROPOFF_CONNECTOR = 'dropoff_connector',
+}
+
+export enum MapMarkerType {
+  USER_PICKUP = 'user_pickup',
+  USER_DROPOFF = 'user_dropoff',
+  DRIVER_PICKUP = 'driver_pickup',
+  DRIVER_DROPOFF = 'driver_dropoff',
+}
+
+export enum LocalRideCardAction {
+  SELECT = 'select',
+  VIEW_DETAILS = 'view_details',
+}
+

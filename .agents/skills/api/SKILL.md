@@ -62,5 +62,6 @@ const useAvailableRides = () => {
 
 ## Guardrails
 - **NEVER** use `fetch` or call Axios directly inside a component or custom hook. All requests must go through a class/object in `src/serviceManager/`.
+- Define and use **Enums** for query parameters, response statuses, and action types; never compare raw strings.
 - Handle errors gracefully: surface friendly messages using `showNotification(NotificationType.ERROR, ...)` instead of `Alert.alert`.
 - Centralize auth header injection and base URL logic inside `axiosClient.ts`.

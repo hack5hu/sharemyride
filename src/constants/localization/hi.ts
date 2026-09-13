@@ -600,6 +600,18 @@ export const hi: Translations = {
     noRidesFoundDesc:
       'इस रास्ते और तारीख के लिए कोई राइड नहीं मिली। समय या फिल्टर बदलकर देखें।',
   },
+  localRideResults: {
+    title: 'लोकल राइड्स',
+    walkToPickup: 'पिकअप तक पैदल',
+    walkFromDropoff: 'गंतव्य तक पैदल',
+    noRidesFound: 'आसपास कोई लोकल राइड नहीं मिली',
+    noRidesSub: 'सर्च दायरा बढ़ाएं या लोकल पार्टनर का अनुरोध करें।',
+    viewDetails: 'विवरण देखें',
+    seatsAvailable: '{count} सीटें बची हैं',
+    requestLocalPartner: 'लोकल पार्टनर अनुरोध करें',
+    estimatedPickup: 'पिकअप पॉइंट',
+    routeOverview: 'रूट विवरण',
+  },
   rideFilters: {
     title: 'फिल्टर',
     proximityTitle: 'दूरी',

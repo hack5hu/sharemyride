@@ -540,6 +540,7 @@ export interface Translations {
   publishSuccess: PublishSuccessTranslations;
   bookRideInfo: BookRideInfoTranslations;
   availableRides: AvailableRidesTranslations;
+  localRideResults: LocalRideResultsTranslations;
   rideFilters: RideFiltersTranslations;
   rideInformation: RideInformationTranslations;
   selectSeat: SelectSeatTranslations;
@@ -759,6 +760,19 @@ export interface AvailableRidesTranslations {
   fetchingRides: string;
   noRidesFoundTitle: string;
   noRidesFoundDesc: string;
+}
+
+export interface LocalRideResultsTranslations {
+  title: string;
+  walkToPickup: string;
+  walkFromDropoff: string;
+  noRidesFound: string;
+  noRidesSub: string;
+  viewDetails: string;
+  seatsAvailable: string;
+  requestLocalPartner: string;
+  estimatedPickup: string;
+  routeOverview: string;
 }
 
 export interface RideFiltersTranslations {

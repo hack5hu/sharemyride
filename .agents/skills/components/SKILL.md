@@ -44,4 +44,5 @@ import { Typography } from 'atoms/Typography';
 - **NEVER** write inline styles or use `StyleSheet.create`.
 - **ALWAYS** wrap dimensions, fonts, paddings, and radii in scaling functions (`scale`, `verticalScale`, `moderateScale`, `responsiveFont`).
 - Strict TypeScript: `any` is forbidden.
+- Define and use **Enums** for all variants, statuses, and types; never use raw string comparisons.
 - Maximum line limit: **200 lines per file**.

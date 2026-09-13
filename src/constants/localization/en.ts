@@ -608,6 +608,18 @@ export const en: Translations = {
     noRidesFoundDesc:
       "We couldn't find any rides for this route and date. Try adjusting your filters or checking a different time.",
   },
+  localRideResults: {
+    title: 'Local Rides',
+    walkToPickup: 'walk to pickup',
+    walkFromDropoff: 'walk to dropoff',
+    noRidesFound: 'No Local Rides Found',
+    noRidesSub: 'Try expanding your search radius or request a local partner.',
+    viewDetails: 'View Details',
+    seatsAvailable: '{count} seats left',
+    requestLocalPartner: 'Request Local Partner',
+    estimatedPickup: 'Pickup point',
+    routeOverview: 'Route Overview',
+  },
   rideFilters: {
     title: 'Filters',
     proximityTitle: 'Proximity',

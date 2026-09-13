@@ -169,11 +169,10 @@ export const useBookRideInfo = () => {
   }, [navigate]);
 
   const handleSelectRecentSearch = useCallback(
-    async (search: RecentSearch) => {
+    (search: RecentSearch) => {
       const store = useBookRideStore.getState();
       store.setStartLocation(search.startLocation);
       store.setDestinationLocation(search.destinationLocation);
-      store.setTravelDate(search.travelDate);
       store.setSeatCount(search.seatCount);
 
       const selectedDate = new Date(search.travelDate);
@@ -181,45 +180,7 @@ export const useBookRideInfo = () => {
         store.setTravelDate(null);
         navigate('BookDateSelection');
       } else {
-        try {
-          setIsSearching(true);
-          const radiusKm = store.searchRadiusKm || 25;
-          const payload: SearchRidePayload = {
-            sourceLat: search.startLocation.latitude,
-            sourceLon: search.startLocation.longitude,
-            destLat: search.destinationLocation.latitude,
-            destLon: search.destinationLocation.longitude,
-            travelDate: format(selectedDate, "yyyy-MM-dd'T'HH:mm:ss"),
-            requestedSeats: search.seatCount,
-            radiusInMeters: radiusKm * 1000,
-            page: 0,
-            size: 15,
-          };
-
-          const results = await RideService.searchRides(payload);
-          const ridesList =
-            results?.rides ||
-            results?.data ||
-            (Array.isArray(results) ? results : []);
-          store.setSearchResults(ridesList);
-
-          if (store.rideType === RideType.LOCAL) {
-            navigate('LocalRideResults');
-          } else {
-            navigate('AvailableRides');
-          }
-        } catch (error: any) {
-          console.error('Failed to search rides from recent search:', error);
-          showNotification(
-            NotificationType.ERROR,
-            translate('notification.defaultErrorTitle'),
-            getErrorMessage(
-              error,
-              translate('notification.defaultErrorMessage'),
-            ),
-          );
-          setIsSearching(false);
-        }
+        store.setTravelDate(search.travelDate);
       }
     },
     [navigate],

@@ -54,6 +54,7 @@ export const OlaMap = React.memo(
         touchRotate = false,
         touchPitch = false,
         compass = false,
+        preferredFramesPerSecond = 60,
         ...rest
       },
       ref,
@@ -69,6 +70,7 @@ export const OlaMap = React.memo(
           touchRotate={touchRotate}
           touchPitch={touchPitch}
           compass={compass}
+          preferredFramesPerSecond={preferredFramesPerSecond}
           {...rest}
         >
           {children}

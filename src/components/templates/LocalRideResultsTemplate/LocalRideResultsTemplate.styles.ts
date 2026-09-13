@@ -2,7 +2,6 @@ import { type ViewStyle } from 'react-native';
 import styled from 'styled-components/native';
 import { moderateScale, scale, verticalScale } from '@/styles';
 
-// Static style for the OlaMap native component (StyleProp required, styled-components not applicable)
 export const mapViewStyle: ViewStyle = { flex: 1 };
 
 export const Container = styled.View`
@@ -22,33 +21,79 @@ export const Overlay = styled.View`
   bottom: 0;
 `;
 
-export const BackButtonContainer = styled.TouchableOpacity`
+export const HeaderCard = styled.View<{ topInset: number }>`
   position: absolute;
-  top: ${verticalScale(50)}px;
-  left: ${scale(20)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_highest};
-  padding: ${moderateScale(12)}px;
-  border-radius: ${moderateScale(30)}px;
+  top: ${({ topInset }) => topInset + verticalScale(6)}px;
+  left: ${scale(14)}px;
+  right: ${scale(14)}px;
+  flex-direction: row;
+  align-items: center;
+  z-index: 20;
+  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
+  border-radius: ${moderateScale(20)}px;
+  padding-horizontal: ${scale(8)}px;
+  padding-vertical: ${verticalScale(7)}px;
   shadow-color: ${({ theme }) => theme.colors.shadow};
   shadow-offset: 0px 4px;
-  shadow-opacity: 0.1;
-  shadow-radius: 8px;
-  elevation: 4;
+  shadow-opacity: 0.16;
+  shadow-radius: ${moderateScale(10)}px;
+  elevation: 8;
 `;
 
-export const InfoCard = styled.View`
+export const HeaderIconButton = styled.Pressable<{ hasActiveFilters?: boolean }>`
+  width: ${scale(36)}px;
+  height: ${scale(36)}px;
+  border-radius: ${scale(18)}px;
+  background-color: ${({ theme, hasActiveFilters }) =>
+    hasActiveFilters
+      ? theme.colors.primary_container
+      : theme.colors.surface_container_high};
+  align-items: center;
+  justify-content: center;
+`;
+
+export const RouteColumn = styled.View`
+  flex: 1;
+  margin-horizontal: ${scale(8)}px;
+  justify-content: center;
+`;
+
+export const RouteItemRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const RouteDot = styled.View<{ color: string }>`
+  width: ${scale(7)}px;
+  height: ${scale(7)}px;
+  border-radius: ${scale(3.5)}px;
+  background-color: ${({ color }) => color};
+  margin-right: ${scale(6)}px;
+`;
+
+export const RouteItemDivider = styled.View`
+  height: 1px;
+  background-color: ${({ theme }) => theme.colors.surface_variant};
+  margin-vertical: ${verticalScale(3)}px;
+  margin-left: ${scale(13)}px;
+  opacity: 0.4;
+`;
+
+export const ActiveFilterDot = styled.View`
   position: absolute;
-  bottom: ${verticalScale(8)}px;
-  left: ${scale(20)}px;
-  right: ${scale(20)}px;
-  background-color: ${({ theme }) => theme.colors.surface_container_lowest};
-  border-radius: ${moderateScale(24)}px;
-  padding: ${moderateScale(24)}px;
-  shadow-color: ${({ theme }) => theme.colors.shadow};
-  shadow-offset: 0px 8px;
-  shadow-opacity: 0.12;
-  shadow-radius: 16px;
-  elevation: 8;
+  top: ${scale(6)}px;
+  right: ${scale(6)}px;
+  width: ${scale(8)}px;
+  height: ${scale(8)}px;
+  border-radius: ${scale(4)}px;
+  background-color: ${({ theme }) => theme.colors.primary};
+`;
+
+export const ControlsWrapper = styled.View`
+  position: absolute;
+  right: ${scale(16)}px;
+  bottom: ${verticalScale(240)}px;
+  z-index: 15;
 `;
 
 export const CenterMarkerContainer = styled.View`
@@ -69,22 +114,4 @@ export const CenterMarkerPulse = styled.View`
   opacity: 0.3;
   position: absolute;
   bottom: 0;
-`;
-
-export const ControlsWrapper = styled.View`
-  position: absolute;
-  right: ${scale(20)}px;
-  bottom: ${verticalScale(240)}px;
-`;
-
-export const InfoCardTitle = styled.View`
-  margin-bottom: ${verticalScale(4)}px;
-`;
-
-export const InfoCardSubtitle = styled.View`
-  margin-bottom: ${verticalScale(16)}px;
-`;
-
-export const StyledOlaMap = styled.View`
-  flex: 1;
 `;
