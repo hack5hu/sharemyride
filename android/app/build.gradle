@@ -119,16 +119,22 @@ android {
             keyPassword 'android'
         }
         release {
-            Properties properties = new Properties()
-            File localPropertiesFile = project.rootProject.file('local.properties')
-            if (localPropertiesFile.exists()) {
-                properties.load(localPropertiesFile.newDataInputStream())
+            def keystorePropertiesFile = rootProject.file("keystore.properties")
+            def keystoreProperties = new Properties()
+            if (keystorePropertiesFile.exists()) {
+                keystorePropertiesFile.withInputStream { keystoreProperties.load(it) }
             }
 
-            def storeFileProp = properties.getProperty('signing.storeFile') ?: System.getenv("SIGNING_STORE_FILE")
-            def storePasswordProp = properties.getProperty('signing.storePassword') ?: System.getenv("SIGNING_STORE_PASSWORD")
-            def keyAliasProp = properties.getProperty('signing.keyAlias') ?: System.getenv("SIGNING_STORE_KEY_ALIAS")
-            def keyPasswordProp = properties.getProperty('signing.keyPassword') ?: System.getenv("SIGNING_STORE_KEY_PASSWORD")
+            File localPropertiesFile = project.rootProject.file('local.properties')
+            Properties localProperties = new Properties()
+            if (localPropertiesFile.exists()) {
+                localProperties.load(localPropertiesFile.newDataInputStream())
+            }
+
+            def storeFileProp = keystoreProperties['STORE_FILE'] ?: localProperties.getProperty('signing.storeFile') ?: System.getenv("SIGNING_STORE_FILE")
+            def storePasswordProp = keystoreProperties['STORE_PASSWORD'] ?: localProperties.getProperty('signing.storePassword') ?: System.getenv("SIGNING_STORE_PASSWORD")
+            def keyAliasProp = keystoreProperties['KEY_ALIAS'] ?: localProperties.getProperty('signing.keyAlias') ?: System.getenv("SIGNING_STORE_KEY_ALIAS")
+            def keyPasswordProp = keystoreProperties['KEY_PASSWORD'] ?: localProperties.getProperty('signing.keyPassword') ?: System.getenv("SIGNING_STORE_KEY_PASSWORD")
 
             if (storeFileProp) {
                 storeFile file(storeFileProp)
