@@ -10,14 +10,22 @@ export const HeroCard = styled(LinearGradient).attrs(({ theme }) => ({
   start: { x: 0, y: 0 },
   end: { x: 1, y: 1 },
 }))`
-  border-radius: ${moderateScale(24)}px;
-  padding: ${moderateScale(20)}px;
+  width: 100%;
+  border-radius: ${moderateScale(20)}px;
+  padding: ${moderateScale(16)}px;
   margin-bottom: ${verticalScale(12)}px;
   shadow-color: ${({ theme }) => theme.colors.shadow};
-  shadow-offset: 0px 6px;
-  shadow-opacity: 0.18;
-  shadow-radius: 14px;
-  elevation: 6;
+  shadow-offset: 0px 4px;
+  shadow-opacity: 0.12;
+  shadow-radius: 12px;
+  elevation: 4;
+  overflow: hidden;
+`;
+
+export const HeroTopRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export const HeroBadgeContainer = styled.View`
@@ -26,7 +34,6 @@ export const HeroBadgeContainer = styled.View`
   padding-vertical: ${verticalScale(3.5)}px;
   border-radius: ${moderateScale(10)}px;
   align-self: flex-start;
-  margin-bottom: ${verticalScale(2)}px;
 `;
 
 export const HeroLabel = styled.Text`
@@ -38,11 +45,29 @@ export const HeroLabel = styled.Text`
   text-transform: uppercase;
 `;
 
+export const DistancePill = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(4)}px;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding-horizontal: ${scale(8)}px;
+  padding-vertical: ${verticalScale(3.5)}px;
+  border-radius: ${moderateScale(10)}px;
+`;
+
+export const DistanceText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 700;
+  font-size: ${responsiveFont(10.5)}px;
+  color: ${({ theme }) => theme.colors.on_primary};
+  letter-spacing: 0.2px;
+`;
+
 export const ETARow = styled.View`
   flex-direction: row;
   align-items: baseline;
   gap: ${scale(6)}px;
-  margin-top: ${verticalScale(2)}px;
+  margin-top: ${verticalScale(8)}px;
 `;
 
 export const ETANumber = styled.Text`
@@ -61,15 +86,17 @@ export const ETAMinutesText = styled.Text`
 `;
 
 export const NextStopContainer = styled.View`
-  margin-top: ${verticalScale(10)}px;
-  background-color: rgba(255, 255, 255, 0.15);
+  margin-top: ${verticalScale(12)}px;
+  background-color: rgba(255, 255, 255, 0.16);
   padding: ${moderateScale(12)}px;
   border-radius: ${moderateScale(14)}px;
+  border-width: 1px;
+  border-color: rgba(255, 255, 255, 0.15);
 `;
 
 export const NextStopRow = styled.View`
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   gap: ${scale(8)}px;
 `;
 
@@ -86,17 +113,17 @@ export const HeroActionsRow = styled.View`
   flex-direction: row;
   align-items: center;
   gap: ${scale(8)}px;
-  margin-top: ${verticalScale(8)}px;
+  margin-top: ${verticalScale(10)}px;
   padding-left: ${scale(24)}px;
 `;
 
 export const HeroActionPill = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  gap: ${scale(4)}px;
-  background-color: rgba(255, 255, 255, 0.22);
-  padding-horizontal: ${scale(9)}px;
-  padding-vertical: ${verticalScale(4.5)}px;
+  gap: ${scale(5)}px;
+  background-color: rgba(255, 255, 255, 0.24);
+  padding-horizontal: ${scale(10)}px;
+  padding-vertical: ${verticalScale(5)}px;
   border-radius: ${moderateScale(10)}px;
 `;
 
@@ -104,24 +131,5 @@ export const HeroActionPillText = styled.Text`
   font-family: 'Plus Jakarta Sans';
   font-weight: 700;
   font-size: ${responsiveFont(11)}px;
-  color: ${({ theme }) => theme.colors.on_primary};
-`;
-
-export const DistancePill = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: ${scale(5)}px;
-  margin-top: ${verticalScale(10)}px;
-  background-color: rgba(255, 255, 255, 0.22);
-  padding-horizontal: ${scale(10)}px;
-  padding-vertical: ${verticalScale(5)}px;
-  border-radius: ${moderateScale(16)}px;
-  align-self: flex-start;
-`;
-
-export const DistanceText = styled.Text`
-  font-family: 'Plus Jakarta Sans';
-  font-weight: 700;
-  font-size: ${responsiveFont(11.5)}px;
   color: ${({ theme }) => theme.colors.on_primary};
 `;

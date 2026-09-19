@@ -89,7 +89,6 @@ const App = () => {
             ref={navigationRef}
             onReady={() => {
               routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
-              BootSplash.hide().catch(() => {});
             }}
             onStateChange={async () => {
               const previousRouteName = routeNameRef.current;

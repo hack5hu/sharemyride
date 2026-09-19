@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
 import { moderateScale } from '@/styles';
@@ -43,11 +43,28 @@ export const PassengerHeroCard: React.FC<PassengerHeroCardProps> = React.memo(
       }
     }, [nextStopLat, nextStopLon, nextStopName, onOpenMap]);
 
+    const formattedDistance = useMemo(() => {
+      if (!safeDistance || safeDistance <= 0) return null;
+      if (t.distanceLabel && t.distanceLabel.includes('{{km}}')) {
+        return t.distanceLabel.replace('{{km}}', safeDistance.toFixed(1));
+      }
+      return `${safeDistance.toFixed(1)} km`;
+    }, [safeDistance, t.distanceLabel]);
+
     return (
       <S.HeroCard>
-        <S.HeroBadgeContainer>
-          <S.HeroLabel>{t.driverArrivingIn}</S.HeroLabel>
-        </S.HeroBadgeContainer>
+        <S.HeroTopRow>
+          <S.HeroBadgeContainer>
+            <S.HeroLabel>{t.driverArrivingIn}</S.HeroLabel>
+          </S.HeroBadgeContainer>
+          {!!formattedDistance && (
+            <S.DistancePill>
+              <Icon name="navigation" size={moderateScale(11)} color={theme.colors.on_primary} />
+              <S.DistanceText>{formattedDistance}</S.DistanceText>
+            </S.DistancePill>
+          )}
+        </S.HeroTopRow>
+
         <S.ETARow>
           <S.ETANumber>{safeEta}</S.ETANumber>
           <S.ETAMinutesText>{safeEta === 1 ? t.min : t.mins}</S.ETAMinutesText>
@@ -57,7 +74,9 @@ export const PassengerHeroCard: React.FC<PassengerHeroCardProps> = React.memo(
           <S.NextStopContainer>
             <S.NextStopRow>
               <Icon name="place" size={moderateScale(16)} color={theme.colors.on_primary} />
-              <S.NextStopText>{t.arrivingAt.replace('{{stop}}', nextStopName)}</S.NextStopText>
+              <S.NextStopText numberOfLines={2}>
+                {t.arrivingAt.replace('{{stop}}', nextStopName)}
+              </S.NextStopText>
             </S.NextStopRow>
             <S.HeroActionsRow>
               <S.HeroActionPill onPress={handleCopyNextStop} activeOpacity={0.75}>
@@ -77,13 +96,6 @@ export const PassengerHeroCard: React.FC<PassengerHeroCardProps> = React.memo(
             </S.HeroActionsRow>
           </S.NextStopContainer>
         )}
-
-        <S.DistancePill>
-          <Icon name="navigation" size={moderateScale(13)} color={theme.colors.on_primary} />
-          <S.DistanceText>
-            {t.distanceLabel.replace('{{km}}', safeDistance.toFixed(1))}
-          </S.DistanceText>
-        </S.DistancePill>
       </S.HeroCard>
     );
   },

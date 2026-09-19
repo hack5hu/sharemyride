@@ -46,9 +46,9 @@ export const useVehicleStore = create<VehicleState>()(
         try {
           const { UserService } = require('@/serviceManager/UserService');
 
-          // Map to backend schema (Capitalized number plate)
+          // Map to backend schema (Capitalized number plate if provided)
           const payload = {
-            vehicleNumber: vehicle.numberPlate.toUpperCase(),
+            vehicleNumber: (vehicle.numberPlate || '').toUpperCase(),
             vehicleTypeId: SEATER_TO_TYPE_ID[vehicle.seater] || 1,
             company: vehicle.company,
             model: vehicle.model,
@@ -66,7 +66,7 @@ export const useVehicleStore = create<VehicleState>()(
               {
                 ...vehicle,
                 id: newId,
-                numberPlate: vehicle.numberPlate.toUpperCase(),
+                numberPlate: (vehicle.numberPlate || '').toUpperCase(),
               },
             ],
             isLoading: false,
@@ -178,7 +178,7 @@ export const useVehicleStore = create<VehicleState>()(
 
           // Map to backend schema
           const payload = {
-            vehicleNumber: merged.numberPlate.toUpperCase(),
+            vehicleNumber: (merged.numberPlate || '').toUpperCase(),
             vehicleTypeId: SEATER_TO_TYPE_ID[merged.seater] || 1,
             company: merged.company,
             model: merged.model,
@@ -194,7 +194,7 @@ export const useVehicleStore = create<VehicleState>()(
                     ...v,
                     ...updates,
                     numberPlate: (
-                      updates.numberPlate || v.numberPlate
+                      updates.numberPlate || v.numberPlate || ''
                     ).toUpperCase(),
                   }
                 : v,

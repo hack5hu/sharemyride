@@ -74,14 +74,24 @@ export const useActiveRideDriver = (): UseActiveRideReturn => {
 
   const vehicleInfo = useMemo<DriverVehicleInfo>(() => {
     const v = rideDetails?.vehicle;
+    const plate =
+      v?.vehicleNumber ||
+      v?.numberPlate ||
+      v?.licensePlate ||
+      v?.registrationNumber ||
+      v?.number;
     return {
       company: v?.company?.trim() || 'Active',
       model: v?.model?.trim() || 'Vehicle',
-      licensePlate: v?.licensePlate || v?.registrationNumber || v?.number,
+      licensePlate: plate,
+      vehicleNumber: plate,
       color: getReadableColorName(v?.color),
       fuelType: v?.fuelType,
-      batteryPercentage: v?.batteryPercentage !== undefined ? Number(v.batteryPercentage) : undefined,
-      type: v?.type ? v.type.replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) : undefined,
+      batteryPercentage:
+        v?.batteryPercentage !== undefined ? Number(v.batteryPercentage) : undefined,
+      type: v?.type
+        ? v.type.replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())
+        : undefined,
     };
   }, [rideDetails?.vehicle]);
 

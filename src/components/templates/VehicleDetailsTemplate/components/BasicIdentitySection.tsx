@@ -54,7 +54,7 @@ export const BasicIdentitySection: React.FC<BasicIdentitySectionProps> =
             error={
               formik.touched.numberPlate ? formik.errors.numberPlate : undefined
             }
-            required={true}
+            required={false}
             editable={!isLoading}
             autoCapitalize="characters"
           />

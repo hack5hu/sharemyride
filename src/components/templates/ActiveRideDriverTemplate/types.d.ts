@@ -11,6 +11,7 @@ export interface DriverVehicleInfo {
   company: string;
   model: string;
   licensePlate?: string;
+  vehicleNumber?: string;
   color?: string;
   fuelType?: string;
   batteryPercentage?: number;

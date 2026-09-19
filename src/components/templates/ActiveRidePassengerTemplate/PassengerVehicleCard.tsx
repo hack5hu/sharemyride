@@ -43,9 +43,11 @@ export const PassengerVehicleCard: React.FC<PassengerVehicleCardProps> = React.m
               <S.VehicleBadgeText>{vehicleInfo.type}</S.VehicleBadgeText>
             </S.VehicleBadge>
           )}
-          {!!vehicleInfo.licensePlate && (
+          {!!vehicleInfo.vehicleNumber && (
             <S.VehicleBadge>
-              <S.VehicleBadgeText>{vehicleInfo.licensePlate}</S.VehicleBadgeText>
+              <S.VehicleBadgeText>
+                {vehicleInfo.vehicleNumber}
+              </S.VehicleBadgeText>
             </S.VehicleBadge>
           )}
         </S.VehicleBadgesRow>
