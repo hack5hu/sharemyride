@@ -83,3 +83,4 @@ storybook-static
 # Duplicate code reports
 jscpd-report/
 duplicates_summary.txt
+ios/LiveLocation/.build

@@ -1,5 +1,6 @@
+import { LiveRideStatus } from '@/constants/liveLocation';
 import { ActiveRideRole } from '@/navigation/types.d';
-import { ActiveRideLiveInfo } from './useLiveRideStore';
+import type { ActiveRideLiveInfo, LiveRidePayload } from './liveRideTypes';
 
 export const sanitizeMetric = (
   val: number | null | undefined,
@@ -7,6 +8,7 @@ export const sanitizeMetric = (
   if (val === null || val === undefined || isNaN(Number(val))) return undefined;
   const num = Number(val);
   if (num < 0) return undefined;
+
   return num;
 };
 
@@ -30,11 +32,13 @@ export const formatLiveLocationNotificationBody = (
         .replace('{{eta}}', etaStr)
         .replace('{{distance}}', distStr);
     }
+
     return `ETA: ${etaStr} • ${distStr}`;
   }
 
   if (hasEta) {
     const minText = etaMinutes === 1 ? 'min' : 'mins';
+
     return `ETA: ${etaMinutes} ${minText}`;
   }
 
@@ -57,6 +61,7 @@ export const computeDynamicSubtitle = (
       Number(distanceKm) > 0
         ? ` • ${Number(distanceKm).toFixed(1)} km`
         : '';
+
     return `${etaMinutes} mins away${distPart}`;
   }
 
@@ -77,6 +82,7 @@ export const computeDynamicSubtitle = (
       } else if (diffMinutes > 60 && diffMinutes < 1440) {
         const hours = Math.floor(diffMinutes / 60);
         const mins = diffMinutes % 60;
+
         return `Starts in ${hours}h ${mins > 0 ? `${mins}m ` : ''}• ${formattedTime}`;
       } else {
         return `Scheduled for ${formattedTime}`;
@@ -89,16 +95,14 @@ export const computeDynamicSubtitle = (
   return undefined;
 };
 
-export const parseLiveRidePayload = (data: any): ActiveRideLiveInfo | null => {
+export const parseLiveRidePayload = (data: LiveRidePayload): ActiveRideLiveInfo | null => {
   if (!data || !data.rideFound || !data.ride) return null;
 
   const role =
-    String(data.role || data.ride.role || '').toUpperCase() === 'PASSENGER'
-      ? ActiveRideRole.PASSENGER
-      : ActiveRideRole.DRIVER;
+    Object.values(ActiveRideRole).find(value => value === String(data.role || data.ride?.role || '').toUpperCase());
 
   const isStarted =
-    data.ride.rideStatus === 'STARTED' || data.ride.rideStatus === 'ACTIVE';
+    data.ride.rideStatus === LiveRideStatus.STARTED || data.ride.rideStatus === LiveRideStatus.ACTIVE;
 
   const firstPassenger = data.ride.passengers?.[0];
   const passengerDistance =
@@ -143,7 +147,7 @@ export const parseLiveRidePayload = (data: any): ActiveRideLiveInfo | null => {
     hasActiveRide: true,
     rideId: data.ride.rideId ? String(data.ride.rideId) : undefined,
     role,
-    status: data.ride.rideStatus || 'CREATED',
+    status: data.ride.rideStatus || LiveRideStatus.CREATED,
     message: isStarted
       ? 'Active Ride in Progress'
       : 'Your ride is about to start!',
@@ -151,6 +155,6 @@ export const parseLiveRidePayload = (data: any): ActiveRideLiveInfo | null => {
     etaMinutes,
     distanceKm,
     startTime: data.ride.startTime,
-    rideDetails: data.ride,
+    rideDetails: { ...data.ride, stops: data.ride.stops ?? [] },
   };
 };

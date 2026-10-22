@@ -1,13 +1,14 @@
+import { RideType } from '@/constants/enums';
 import {
   getIsAdminDebuggerEnabled,
   setAdminDebuggerEnabled,
 } from '@/utils/adminDebugger';
 import { storage } from '@/utils/storage';
-import { RideType } from '@/constants/enums';
 import { useSettingsStore } from './settings';
 import { useAuthStore } from './useAuthStore';
 import { useBookRideStore } from './useBookRideStore';
 import { useChatStore } from './useChatStore';
+import { useLiveRideStore } from './useLiveRideStore';
 import { useLocationStore } from './useLocationStore';
 import { useMyRidesStore } from './useMyRidesStore';
 import { useNetworkLoggerStore } from './useNetworkLoggerStore';
@@ -16,6 +17,7 @@ import { useTravelPrefStore } from './useTravelPrefStore';
 import { useVehicleStore } from './useVehicleStore';
 
 export const resetAllStores = () => {
+  useLiveRideStore.getState().resetLiveRide();
   const isAdminDebuggerEnabled =
     useNetworkLoggerStore.getState().isAdminDebuggerEnabled ||
     getIsAdminDebuggerEnabled();

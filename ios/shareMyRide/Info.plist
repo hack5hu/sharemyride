@@ -55,9 +55,7 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>ZyncRide needs access to your location to find nearby rides, calculate accurate fares, and show your journey on the map.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>ZyncRide needs access to your location to find nearby rides, calculate accurate fares, and show your journey on the map.</string>
+	<string>ZyncRide uses your location to find rides and share your position with riders during an active ride, including while the screen is locked. You can stop sharing in the app.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>ZyncRide needs access to your photo library to choose a profile picture or upload screenshots.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
@@ -94,6 +92,7 @@
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>location</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

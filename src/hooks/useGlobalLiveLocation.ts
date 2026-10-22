@@ -1,78 +1,52 @@
-import { useEffect, useRef } from 'react';
-import { AppState, AppStateStatus } from 'react-native';
-import { useAuthStore } from '@/store';
+import { useEffect } from 'react';
+import { AppState } from 'react-native';
+import { AppVisibility, TrackingReason } from '@/constants/liveLocation';
+import { LiveLocationService } from '@/serviceManager/LiveLocationService';
+import { useAuthStore } from '@/store/useAuthStore';
 import { useLiveRideStore } from '@/store/useLiveRideStore';
-import { NotificationService } from '@/serviceManager/NotificationService';
-import { getTranslations } from '@/constants/localization';
-import { formatLiveLocationNotificationBody } from '@/store/liveRideHelpers';
 
 export const useGlobalLiveLocation = () => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const isLiveLocationEnabled = useLiveRideStore(
-    (state) => state.isLiveLocationEnabled,
-  );
-  const fetchLiveStatus = useLiveRideStore((state) => state.fetchLiveStatus);
-  const activeRide = useLiveRideStore((state) => state.activeRide);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
   useEffect(() => {
-    if (!isAuthenticated) {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
+    const store = useLiveRideStore;
+    const reconcile = async () => {
+      if (!useAuthStore.getState().isAuthenticated) {
+        store.getState().resetLiveRide();
+
+        return;
       }
-      NotificationService.cancelLiveLocationNotification();
-      return;
-    }
-
-    // Initial fetch on mount or auth change
-    fetchLiveStatus();
-
-    // If live location tracking is enabled by the user, poll periodically across all screens
-    if (isLiveLocationEnabled) {
-      const t = getTranslations().notification;
-      const bodyText = formatLiveLocationNotificationBody(
-        activeRide?.etaMinutes,
-        activeRide?.distanceKm,
-        t.liveLocationActiveMessage,
-        t.liveLocationTrackingBody,
-      );
-      NotificationService.displayLiveLocationNotification(
-        t.liveLocationActiveTitle,
-        bodyText,
-      );
-
-      intervalRef.current = setInterval(() => {
-        if (AppState.currentState === 'active') {
-          fetchLiveStatus();
-        }
-      }, 10000);
-    } else if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-      NotificationService.cancelLiveLocationNotification();
-    }
+      const state = await LiveLocationService.getTrackingState();
+      if (!useAuthStore.getState().isAuthenticated) return;
+      store.getState().reconcileTracking(state);
+      await store.getState().fetchLiveStatus();
+    };
+    const unsubscribeNative = LiveLocationService.onTrackingStateChanged(state => {
+      if (useAuthStore.getState().isAuthenticated) store.getState().reconcileTracking(state);
+    });
+    const unsubscribeAuth = useAuthStore.subscribe((state, previous) => {
+      const userId = state.user?.userId ?? state.user?.id;
+      const previousId = previous.user?.userId ?? previous.user?.id;
+      if (!state.isAuthenticated || (previousId && userId !== previousId)) {
+        store.getState().resetLiveRide();
+      } else if (state.token && state.token !== previous.token) {
+        LiveLocationService.updateAuthToken(state.token);
+      }
+    });
+    const subscription = AppState.addEventListener('change', state => {
+      if (state === AppVisibility.ACTIVE) reconcile();
+    });
+    const timer = setInterval(() => {
+      if (AppState.currentState === AppVisibility.ACTIVE && useAuthStore.getState().isAuthenticated) {
+        store.getState().fetchLiveStatus();
+      }
+    }, 30000);
+    reconcile();
 
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
+      clearInterval(timer);
+      subscription.remove();
+      unsubscribeNative();
+      unsubscribeAuth();
+      if (!useAuthStore.getState().isAuthenticated) LiveLocationService.stopTracking(TrackingReason.AUTH);
     };
-  }, [isAuthenticated, isLiveLocationEnabled, fetchLiveStatus]);
-
-  // Handle app state changes (e.g. user returns to foreground)
-  useEffect(() => {
-    const handleAppStateChange = (nextAppState: AppStateStatus) => {
-      if (nextAppState === 'active' && isAuthenticated) {
-        fetchLiveStatus();
-      }
-    };
-
-    const subscription = AppState.addEventListener(
-      'change',
-      handleAppStateChange,
-    );
-    return () => subscription.remove();
-  }, [isAuthenticated, fetchLiveStatus]);
+  }, []);
 };

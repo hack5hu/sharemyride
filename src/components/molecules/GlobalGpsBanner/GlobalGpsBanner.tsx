@@ -1,22 +1,19 @@
 import React, { useCallback } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocale } from '@/constants/localization';
-import { checkLocationServices } from '@/utils/permissionUtils';
 import { useLiveRideStore } from '@/store/useLiveRideStore';
 import { moderateScale } from '@/styles';
-import { GlobalGpsBannerProps } from './types';
+import { checkLocationServices } from '@/utils/permissionUtils';
 import * as S from './GlobalGpsBanner.styles';
+import type { GlobalGpsBannerProps } from './types';
 
 export const GlobalGpsBanner: React.FC<GlobalGpsBannerProps> = React.memo(
   ({ testID, onPress }) => {
     const theme = useTheme();
     const insets = useSafeAreaInsets();
     const { notification: t } = useLocale();
-    const isLiveLocationEnabled = useLiveRideStore(
-      (state) => state.isLiveLocationEnabled,
-    );
     const isGpsDisabled = useLiveRideStore((state) => state.isGpsDisabled);
 
     const handlePress = useCallback(() => {
@@ -27,7 +24,7 @@ export const GlobalGpsBanner: React.FC<GlobalGpsBannerProps> = React.memo(
       }
     }, [onPress]);
 
-    if (!isLiveLocationEnabled || !isGpsDisabled) {
+    if (!isGpsDisabled) {
       return null;
     }
 

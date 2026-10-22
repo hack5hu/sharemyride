@@ -1,0 +1,8 @@
+<resources>
+    <string name="tracking_channel">राइड की लोकेशन</string>
+    <string name="tracking_title">राइड जारी है</string>
+    <string name="tracking_active">लाइव लोकेशन साझा हो रही है</string>
+    <string name="tracking_offline">कनेक्शन नहीं है। फिर से प्रयास हो रहा है।</string>
+    <string name="tracking_waiting">नई लोकेशन का इंतज़ार है</string>
+    <string name="tracking_stop">साझा करना बंद करें</string>
+</resources>

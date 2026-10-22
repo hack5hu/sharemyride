@@ -1,14 +1,16 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { useLocale } from '@/constants/localization';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Toggle } from '@/components/atoms/Toggle';
-import { moderateScale } from '@/styles';
-import { ActiveRideDriverTemplateProps } from './types.d';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { StopGroupCard } from '@/components/molecules/StopGroupCard';
-import { DriverVehicleCard } from './DriverVehicleCard';
+import { TrackingFeedback } from '@/components/molecules/TrackingFeedback';
+import { useLocale } from '@/constants/localization';
+import { useTrackingFeedback } from '@/hooks/useTrackingFeedback';
+import { moderateScale } from '@/styles';
 import * as S from './ActiveRideDriverTemplate.styles';
+import { DriverVehicleCard } from './DriverVehicleCard';
+import { type ActiveRideDriverTemplateProps } from './types.d';
 
 export const ActiveRideDriverTemplate: React.FC<ActiveRideDriverTemplateProps> =
   React.memo(
@@ -25,11 +27,9 @@ export const ActiveRideDriverTemplate: React.FC<ActiveRideDriverTemplateProps> =
       onOpenMap,
     }) => {
       const theme = useTheme();
+      const tracking = useTrackingFeedback();
       const { activeRideDriver: t } = useLocale();
 
-      const subtitleText = isLiveLocationEnabled
-        ? t.liveLocationSubtitleOn
-        : t.liveLocationSubtitleOff;
 
       return (
         <ScreenShell title={t.screenTitle} onBack={onBack}>
@@ -54,22 +54,16 @@ export const ActiveRideDriverTemplate: React.FC<ActiveRideDriverTemplateProps> =
                       <S.LiveLocationTextGroup>
                         <S.LiveLocationTitleRow>
                           <S.LiveLocationText>{t.liveLocationTitle}</S.LiveLocationText>
-                          {isLiveLocationEnabled && (
-                            <S.LiveBadge>
-                              <S.LiveDot />
-                              <S.LiveBadgeText>{t.liveLocationBadge}</S.LiveBadgeText>
-                            </S.LiveBadge>
-                          )}
                         </S.LiveLocationTitleRow>
                       </S.LiveLocationTextGroup>
                     </S.LiveLocationLeft>
                     <Toggle
-                      value={isLiveLocationEnabled}
+                      value={isLiveLocationEnabled || tracking.isStarting}
                       onValueChange={onToggleLiveLocation}
                     />
                   </S.LiveLocationTopRow>
 
-                  <S.LiveLocationSubtitle>{subtitleText}</S.LiveLocationSubtitle>
+                  <TrackingFeedback status={tracking.status} secondsSinceUpload={tracking.secondsSinceUpload} />
                 </S.LiveLocationCard>
 
                 {/* Stops List */}
@@ -98,7 +92,7 @@ export const ActiveRideDriverTemplate: React.FC<ActiveRideDriverTemplateProps> =
 
                 {/* Safety Center */}
                 <S.SafetyButton onPress={onSafetyCenterPress}>
-                  <Icon name="shield" size={moderateScale(20)} color={theme.colors.error || '#ba1a1a'} />
+                  <Icon name="shield" size={moderateScale(20)} color={theme.colors.error} />
                   <S.SafetyButtonText>{t.safetyCenter}</S.SafetyButtonText>
                 </S.SafetyButton>
               </S.BodyContent>

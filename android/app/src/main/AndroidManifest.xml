@@ -55,5 +55,10 @@
       android:name="com.asterinet.react.bgactions.RNBackgroundActionsTask"
       android:foregroundServiceType="location"
       android:exported="false" />
+
+    <service
+      android:name=".location.LiveLocationForegroundService"
+      android:foregroundServiceType="location"
+      android:exported="false" />
   </application>
 </manifest>

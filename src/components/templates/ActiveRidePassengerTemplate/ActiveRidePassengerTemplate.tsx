@@ -1,16 +1,18 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components/native';
-import { useLocale } from '@/constants/localization';
-import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { Toggle } from '@/components/atoms/Toggle';
-import { moderateScale } from '@/styles';
-import { ActiveRidePassengerTemplateProps } from './types.d';
+import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { TimelineStopItem } from '@/components/molecules/TimelineStopItem';
-import { PassengerHeroCard } from './PassengerHeroCard';
-import { PassengerDriverCard } from './PassengerDriverCard';
-import { PassengerVehicleCard } from './PassengerVehicleCard';
+import { TrackingFeedback } from '@/components/molecules/TrackingFeedback';
+import { useLocale } from '@/constants/localization';
+import { useTrackingFeedback } from '@/hooks/useTrackingFeedback';
+import { moderateScale } from '@/styles';
 import * as S from './ActiveRidePassengerTemplate.styles';
+import { PassengerDriverCard } from './PassengerDriverCard';
+import { PassengerHeroCard } from './PassengerHeroCard';
+import { PassengerVehicleCard } from './PassengerVehicleCard';
+import { type ActiveRidePassengerTemplateProps } from './types.d';
 
 export const ActiveRidePassengerTemplate: React.FC<ActiveRidePassengerTemplateProps> =
   React.memo(
@@ -33,13 +35,11 @@ export const ActiveRidePassengerTemplate: React.FC<ActiveRidePassengerTemplatePr
       onOpenMap,
     }) => {
       const theme = useTheme();
+      const tracking = useTrackingFeedback();
       const { activeRidePassenger: t } = useLocale();
 
       const safeEta = Number(etaMinutes || 0);
       const safeDistance = Number(distanceKm || 0);
-      const liveSubtitle = isLiveLocationEnabled
-        ? t.liveLocationSubtitleOn
-        : t.liveLocationSubtitleOff;
 
       return (
         <ScreenShell title={t.screenTitle} onBack={onBack}>
@@ -74,21 +74,15 @@ export const ActiveRidePassengerTemplate: React.FC<ActiveRidePassengerTemplatePr
                     <S.LiveLocationTextGroup>
                       <S.LiveLocationTitleRow>
                         <S.LiveLocationText>{t.shareMyLocation}</S.LiveLocationText>
-                        {isLiveLocationEnabled && (
-                          <S.LiveBadge>
-                            <S.LiveDot />
-                            <S.LiveBadgeText>{t.liveLocationBadge}</S.LiveBadgeText>
-                          </S.LiveBadge>
-                        )}
                       </S.LiveLocationTitleRow>
                     </S.LiveLocationTextGroup>
                   </S.LiveLocationLeft>
                   <Toggle
-                    value={isLiveLocationEnabled}
+                    value={isLiveLocationEnabled || tracking.isStarting}
                     onValueChange={onToggleLiveLocation}
                   />
                 </S.LiveLocationTopRow>
-                <S.LiveLocationSubtitle>{liveSubtitle}</S.LiveLocationSubtitle>
+                <TrackingFeedback status={tracking.status} secondsSinceUpload={tracking.secondsSinceUpload} />
               </S.LiveLocationCard>
 
               {/* Driver Section */}
@@ -127,7 +121,7 @@ export const ActiveRidePassengerTemplate: React.FC<ActiveRidePassengerTemplatePr
                 <Icon
                   name="shield"
                   size={moderateScale(18)}
-                  color={theme.colors.error || '#ba1a1a'}
+                  color={theme.colors.error}
                 />
                 <S.SafetyCenterButtonText>
                   {t.safetyEmergencyCenter}

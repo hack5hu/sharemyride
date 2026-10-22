@@ -18,6 +18,7 @@ import {
   setIsRefreshing,
   executeTokenRefresh,
 } from './tokenRefreshManager';
+import { handleTrackingResponse } from './trackingResponse';
 
 const axiosClient = axios.create({
   baseURL: BASE_URL,
@@ -46,8 +47,8 @@ axiosClient.interceptors.request.use(
       config.data &&
       (config.data instanceof FormData ||
         (typeof config.data === 'object' &&
-          typeof (config.data as any).append === 'function' &&
-          Array.isArray((config.data as any)._parts)));
+          typeof (config.data as { append?: unknown }).append === 'function' &&
+          Array.isArray((config.data as { _parts?: unknown })._parts)));
 
     if (isFormDataPayload) {
       config.transformRequest = [(data: unknown) => data];
@@ -67,6 +68,7 @@ axiosClient.interceptors.request.use(
 
 axiosClient.interceptors.response.use(
   response => {
+    handleTrackingResponse(response.config.url);
     logApiResponse(response);
     trackResponseSuccess(response);
 

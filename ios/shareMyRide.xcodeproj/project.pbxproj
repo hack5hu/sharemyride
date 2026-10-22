@@ -7,15 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A9B009705FCF1A16BF2C5D4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2964C48076D1B416A0944480 /* InfoPlist.strings */; };
+		0E654995DBB5E324390EFE2B /* TrackingTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 506094A6BDA3E62AAC098054 /* TrackingTypes.swift */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		1B7ADA071FBA225326026944 /* libPods-shareMyRide.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9C74957C18BBE7C7C3183B9 /* libPods-shareMyRide.a */; };
+		1CB27F9A581EBF64DA7E27AC /* TrackingRequestLifetime.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF610F3D5AA58BDD2DB61F4B /* TrackingRequestLifetime.swift */; };
+		25BD80460CCF8515E1771AF0 /* LiveLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EAF1B0F5B2F26F43043215 /* LiveLocationManager.swift */; };
 		521E8CE63031D33C0089D613 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 521E8CE53031D33C0089D613 /* GoogleService-Info.plist */; };
 		528A3CD22FBCDC4D0085121A /* MapLibre in Frameworks */ = {isa = PBXBuildFile; productRef = E630FD9EAA88FBECF7D233A2 /* MapLibre */; };
 		52A29B78303086CD00CBA48E /* SplashOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52A29B77303086CD00CBA48E /* SplashOverlayView.swift */; };
 		52A29B7C303086CD00CBA48E /* NativeSplashModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 52A29B7B303086CD00CBA48E /* NativeSplashModule.m */; };
+		642A5BFC914AE1E5EB337199 /* TrackingHTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A12132C956DB3690451154 /* TrackingHTTP.swift */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		83114073AAF45CE93B75ADE3 /* LiveLocationModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3E1FE05327AB15620F2F9C65 /* LiveLocationModule.mm */; };
 		BB51A4C2D198D1BBD0A9FAAF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		D5F9D0036D607ED6C9F99363 /* TrackingPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CC901D8FCDC650435CB138 /* TrackingPolicy.swift */; };
+		F47DA63C8ACBD06379D119FB /* LiveLocationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA866E016AD8891F6BD6096A /* LiveLocationDelegate.swift */; };
+		F9888AA58E65101E3A1A78A0 /* TrackingTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465E487AA8CB6A9589F8635D /* TrackingTransport.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,34 +34,45 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = shareMyRide/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = shareMyRide/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = shareMyRide/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		15E759F60155416E2C0FC2F2 /* hi */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = hi; path = shareMyRide/hi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2038E39BCC705F4D7A6DC3FB /* en */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = en; path = shareMyRide/en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		36AA414C384B420C98427A26 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		3E1FE05327AB15620F2F9C65 /* LiveLocationModule.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = LiveLocationModule.mm; sourceTree = "<group>"; };
 		41839DBDDF5647AE9570D528 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		41BA60ADBF9842DCBAF4778C /* FontAwesome6_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome6_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Brands.ttf"; sourceTree = "<group>"; };
 		43886D0EB5BB4FE9AEEE1DFE /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		465E487AA8CB6A9589F8635D /* TrackingTransport.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TrackingTransport.swift; sourceTree = "<group>"; };
+		49CC901D8FCDC650435CB138 /* TrackingPolicy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TrackingPolicy.swift; sourceTree = "<group>"; };
+		506094A6BDA3E62AAC098054 /* TrackingTypes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TrackingTypes.swift; sourceTree = "<group>"; };
 		521E8CE53031D33C0089D613 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		528A3CD52FBCE1F60085121A /* shareMyRide.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = shareMyRide.entitlements; path = shareMyRide/shareMyRide.entitlements; sourceTree = "<group>"; };
 		52A29B76303086CD00CBA48E /* shareMyRideDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = shareMyRideDebug.entitlements; path = shareMyRide/shareMyRideDebug.entitlements; sourceTree = "<group>"; };
 		52A29B77303086CD00CBA48E /* SplashOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SplashOverlayView.swift; path = shareMyRide/SplashOverlayView.swift; sourceTree = "<group>"; };
 		52A29B79303086CD00CBA48E /* NativeSplashModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NativeSplashModule.h; path = shareMyRide/NativeSplashModule.h; sourceTree = "<group>"; };
 		52A29B7B303086CD00CBA48E /* NativeSplashModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NativeSplashModule.m; path = shareMyRide/NativeSplashModule.m; sourceTree = "<group>"; };
+		556E9A48418AFDBCBA6D5C9F /* LiveLocationModule.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = LiveLocationModule.h; sourceTree = "<group>"; };
 		5ECC87D0EEC8B320D63BAC77 /* Pods-shareMyRide.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shareMyRide.release.xcconfig"; path = "Target Support Files/Pods-shareMyRide/Pods-shareMyRide.release.xcconfig"; sourceTree = "<group>"; };
 		60CE331F8E674A2C9F1B86F9 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = shareMyRide/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = shareMyRide/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		86337A76F5BD4DC7A95DE38D /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		88EAF1B0F5B2F26F43043215 /* LiveLocationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LiveLocationManager.swift; sourceTree = "<group>"; };
 		9E3A4ADC50624CE6808382DC /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		9EB2BDC677E2F00BF4F17578 /* Pods-shareMyRide.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-shareMyRide.debug.xcconfig"; path = "Target Support Files/Pods-shareMyRide/Pods-shareMyRide.debug.xcconfig"; sourceTree = "<group>"; };
+		AF610F3D5AA58BDD2DB61F4B /* TrackingRequestLifetime.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TrackingRequestLifetime.swift; sourceTree = "<group>"; };
 		B39E06A4977B481C98AD7A8F /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		D721A0E3BD55413F9CFB57B6 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		DA23D507D046431DAEBFF71E /* FontAwesome6_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome6_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome6_Regular.ttf"; sourceTree = "<group>"; };
 		DDAD59E88A664FF39CDE793C /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		DE88A4ECF2ED4AD7B21E20B8 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		DEFC5A6A23724B43B3E5F33F /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		E5A12132C956DB3690451154 /* TrackingHTTP.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TrackingHTTP.swift; sourceTree = "<group>"; };
 		E6064403F196481984AAFA4F /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F09962C0709A4918854C090F /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		F73320D32908497D90C9183B /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		F9C74957C18BBE7C7C3183B9 /* libPods-shareMyRide.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-shareMyRide.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA866E016AD8891F6BD6096A /* LiveLocationDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LiveLocationDelegate.swift; sourceTree = "<group>"; };
 		FB18DB0B8E36489CB2A09A8B /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -82,6 +102,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				2964C48076D1B416A0944480 /* InfoPlist.strings */,
 			);
 			name = shareMyRide;
 			sourceTree = "<group>";
@@ -138,6 +159,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
 				78C58BD11B8D44B3917EC60F /* Resources */,
+				CE9796DC364FDA4EEF4BB59E /* LiveLocation */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -159,6 +181,23 @@
 				5ECC87D0EEC8B320D63BAC77 /* Pods-shareMyRide.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		CE9796DC364FDA4EEF4BB59E /* LiveLocation */ = {
+			isa = PBXGroup;
+			children = (
+				FA866E016AD8891F6BD6096A /* LiveLocationDelegate.swift */,
+				88EAF1B0F5B2F26F43043215 /* LiveLocationManager.swift */,
+				556E9A48418AFDBCBA6D5C9F /* LiveLocationModule.h */,
+				3E1FE05327AB15620F2F9C65 /* LiveLocationModule.mm */,
+				E5A12132C956DB3690451154 /* TrackingHTTP.swift */,
+				49CC901D8FCDC650435CB138 /* TrackingPolicy.swift */,
+				465E487AA8CB6A9589F8635D /* TrackingTransport.swift */,
+				506094A6BDA3E62AAC098054 /* TrackingTypes.swift */,
+				AF610F3D5AA58BDD2DB61F4B /* TrackingRequestLifetime.swift */,
+			);
+			name = LiveLocation;
+			path = LiveLocation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -211,6 +250,7 @@
 			knownRegions = (
 				en,
 				Base,
+				hi,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			packageReferences = (
@@ -234,6 +274,7 @@
 				521E8CE63031D33C0089D613 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				BB51A4C2D198D1BBD0A9FAAF /* PrivacyInfo.xcprivacy in Resources */,
+				0A9B009705FCF1A16BF2C5D4 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,10 +405,30 @@
 				761780ED2CA45674006654EE /* AppDelegate.swift in Sources */,
 				52A29B78303086CD00CBA48E /* SplashOverlayView.swift in Sources */,
 				52A29B7C303086CD00CBA48E /* NativeSplashModule.m in Sources */,
+				F47DA63C8ACBD06379D119FB /* LiveLocationDelegate.swift in Sources */,
+				25BD80460CCF8515E1771AF0 /* LiveLocationManager.swift in Sources */,
+				83114073AAF45CE93B75ADE3 /* LiveLocationModule.mm in Sources */,
+				642A5BFC914AE1E5EB337199 /* TrackingHTTP.swift in Sources */,
+				D5F9D0036D607ED6C9F99363 /* TrackingPolicy.swift in Sources */,
+				F9888AA58E65101E3A1A78A0 /* TrackingTransport.swift in Sources */,
+				0E654995DBB5E324390EFE2B /* TrackingTypes.swift in Sources */,
+				1CB27F9A581EBF64DA7E27AC /* TrackingRequestLifetime.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		2964C48076D1B416A0944480 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2038E39BCC705F4D7A6DC3FB /* en */,
+				15E759F60155416E2C0FC2F2 /* hi */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {

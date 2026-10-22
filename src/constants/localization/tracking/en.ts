@@ -1,0 +1,11 @@
+export const en = { title: 'Location sharing paused', detail: 'Open the app, check location permission and your connection, then enable sharing again.', ineligible: 'Location sharing is available to confirmed ride participants for upcoming and active rides.',
+  connecting: 'Connecting', connectingDetail: 'Checking your ride and location permission. You can switch sharing off to cancel.',
+  live: 'Live location shared', liveDetail: 'Your latest location reached the server.',
+  delayed: 'Location delayed', delayedDetail: 'Waiting for a fresh location. The last shared position may be out of date.',
+  offline: 'Connection interrupted', offlineDetail: 'Location sharing is retrying. Other riders may see your last position.',
+  paused: 'Sharing paused', pausedDetail: 'Your location is not being shared.',
+  authRequired: 'Sign-in needs attention', authRequiredDetail: 'Open the app and check your sign-in, then enable sharing again.',
+  permissionRequired: 'Location access needed', permissionRequiredDetail: 'Enable precise location and location services in Settings, then try again.',
+  unavailable: 'Sharing unavailable', unavailableDetail: 'Location sharing could not start. Check your app version and try again.',
+  lastShared: 'Last shared location: {seconds}s ago',
+};

@@ -1,0 +1,8 @@
+<resources>
+    <string name="tracking_channel">Ride location</string>
+    <string name="tracking_title">Ride in progress</string>
+    <string name="tracking_active">Sharing live location</string>
+    <string name="tracking_offline">Connection lost. Retrying location sharing.</string>
+    <string name="tracking_waiting">Waiting for a fresh location</string>
+    <string name="tracking_stop">Stop sharing</string>
+</resources>

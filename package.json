@@ -140,6 +140,11 @@
   "codegenConfig": {
     "name": "AppSpecs",
     "type": "modules",
-    "jsSrcsDir": "src/specs"
+    "jsSrcsDir": "src/specs",
+    "ios": {
+      "modulesProvider": {
+        "NativeLiveLocation": "LiveLocationModule"
+      }
+    }
   }
 }
