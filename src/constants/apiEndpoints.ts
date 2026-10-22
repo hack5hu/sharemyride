@@ -1,4 +1,18 @@
-export const BASE_URL = 'https://api.zyncride.com';
+import { API_BASE_URL as ENV_API_BASE_URL } from '@env';
+import buildEnv from '@/constants/buildEnv.json';
+
+export const PROD_BASE_URL = 'https://api.zyncride.com';
+export const DEV_BASE_URL = 'https://user-service-i6mi.onrender.com';
+
+const isDev = __DEV__ || Boolean(buildEnv?.isApkBuild);
+
+export const BASE_URL =
+  ENV_API_BASE_URL && ENV_API_BASE_URL.trim().length > 0
+    ? ENV_API_BASE_URL.trim()
+    : isDev
+    ? DEV_BASE_URL
+    : PROD_BASE_URL;
+
 
 export const API_ENDPOINTS = {
   AUTH: {
