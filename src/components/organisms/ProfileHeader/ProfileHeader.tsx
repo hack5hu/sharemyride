@@ -4,6 +4,7 @@ import { useTheme } from 'styled-components/native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Avatar } from '../../atoms/Avatar';
 import { Badge } from '../../atoms/Badge';
+import { CoinBadge } from '../../atoms/CoinBadge';
 import { IconButton } from '../../atoms/IconButton';
 import { Loader } from '../../atoms/Loader';
 import { Typography } from '../../atoms/Typography';
@@ -21,6 +22,8 @@ export interface ProfileHeaderProps {
   onEditPress?: () => void;
   onSettingsPress?: () => void;
   onAvatarEditPress?: () => void;
+  coins?: number;
+  onCoinsPress?: () => void;
 }
 
 export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
@@ -33,6 +36,8 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   isUpdatingAvatar = false,
   onSettingsPress,
   onAvatarEditPress,
+  coins,
+  onCoinsPress,
 }) => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -40,6 +45,13 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   return (
     <S.HeaderCard>
       <S.SettingsButtonWrapper>
+        {coins !== undefined && (
+          <CoinBadge
+            coins={coins}
+            onPress={onCoinsPress}
+            variant="compact"
+          />
+        )}
         <IconButton
           icon="settings"
           variant="surface"

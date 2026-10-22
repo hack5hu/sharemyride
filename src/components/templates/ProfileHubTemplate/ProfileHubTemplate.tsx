@@ -1,9 +1,13 @@
 import React from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useTheme } from 'styled-components/native';
+import { CoinBadge } from '@/components/atoms/CoinBadge';
 import { ProfileMenuItem } from '@/components/molecules/ProfileMenuItem';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { ActionSheetModal } from '@/components/organisms/ActionSheetModal';
 import { BottomNav } from '@/components/organisms/BottomNav';
 import { ProfileHeader } from '@/components/organisms/ProfileHeader';
+import { moderateScale } from '@/styles';
 import {
   Container,
   Content,
@@ -12,6 +16,12 @@ import {
   SectionTitleText,
   BentoGrid,
   ActionGrid,
+  ReferEarnCard,
+  ReferIconWrapper,
+  ReferContent,
+  ReferTitle,
+  ReferSubtitle,
+  ReferRight,
 } from './ProfileHubTemplate.styles';
 import { type ProfileHubTemplateProps } from './types.d';
 
@@ -29,6 +39,7 @@ export const ProfileHubTemplate: React.FC<ProfileHubTemplateProps> = ({
   navigateToAboutUs,
   navigateToHelpAndSupport,
   navigateToSuggestions,
+  navigateToReferAndEarn,
   isAvatarModalVisible,
   setAvatarModalVisible,
   handleOpenGallery,
@@ -36,8 +47,11 @@ export const ProfileHubTemplate: React.FC<ProfileHubTemplateProps> = ({
   rating,
   rides,
   memberSince,
+  coins,
   isVerified,
 }) => {
+  const theme = useTheme();
+
   return (
     <ScreenShell noPaddingBottom>
       <Container showsVerticalScrollIndicator={false}>
@@ -54,14 +68,35 @@ export const ProfileHubTemplate: React.FC<ProfileHubTemplateProps> = ({
               onSettingsPress={navigateToSettings}
               onAvatarEditPress={handleAvatarEdit}
               isUpdatingAvatar={isUpdatingAvatar}
+              coins={coins}
+              onCoinsPress={navigateToReferAndEarn}
             />
+
+            <ReferEarnCard
+              onPress={navigateToReferAndEarn}
+              accessibilityRole="button"
+            >
+              <ReferIconWrapper>
+                <Icon name="campaign" size={moderateScale(24)} color="#D97706" />
+              </ReferIconWrapper>
+              <ReferContent>
+                <ReferTitle>{t('rewards.referAndEarn')}</ReferTitle>
+                <ReferSubtitle>{t('rewards.earnCoinsBanner')}</ReferSubtitle>
+              </ReferContent>
+              <ReferRight>
+                {coins !== undefined && <CoinBadge coins={coins} variant="compact" />}
+                <Icon
+                  name="chevron-right"
+                  size={moderateScale(22)}
+                  color={theme.colors.on_surface_variant}
+                />
+              </ReferRight>
+            </ReferEarnCard>
           </BentoGrid>
 
           <Section>
             <SectionTitle>
-              <SectionTitleText>
-                {t('profileHub.accountManagement')}
-              </SectionTitleText>
+              <SectionTitleText>{t('profileHub.accountManagement')}</SectionTitleText>
             </SectionTitle>
             <ActionGrid>
               <ProfileMenuItem

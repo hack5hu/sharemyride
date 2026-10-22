@@ -561,6 +561,7 @@ export interface Translations {
   rating: RatingTranslations;
   otaUpdate: OtaUpdateTranslations;
   suggestions: SuggestionsTranslations;
+  rewards: RewardsTranslations;
 }
 
 export interface NotificationTranslations {
@@ -1034,3 +1035,58 @@ export interface OtaUpdateTranslations {
   message: string;
   confirmBtn: string;
 }
+
+export interface RewardsTranslations {
+  coins: string;
+  coinBalance: string;
+  referAndEarn: string;
+  referAndEarnTitle: string;
+  referAndEarnSubtitle: string;
+  yourReferralCode: string;
+  copyCode: string;
+  codeCopied: string;
+  codeCopiedMessage: string;
+  shareOnWhatsApp: string;
+  shareViaOther: string;
+  shareMessage: string;
+  howItWorks: string;
+  step1Title: string;
+  step1Desc: string;
+  step2Title: string;
+  step2Desc: string;
+  step3Title: string;
+  step3Desc: string;
+  rulesAndFaq: string;
+  rulesModalTitle: string;
+  rulesModalSubtitle: string;
+  howToEarnTitle: string;
+  earnSignup: string;
+  earnSignupCoins: string;
+  earnReferral: string;
+  earnReferralCoins: string;
+  earnRideComplete: string;
+  earnRideCompleteCoins: string;
+  earnPublish: string;
+  earnPublishCoins: string;
+  earnRating: string;
+  earnRatingCoins: string;
+  faqTitle: string;
+  faq1Q: string;
+  faq1A: string;
+  faq2Q: string;
+  faq2A: string;
+  faq3Q: string;
+  faq3A: string;
+  faq4Q: string;
+  faq4A: string;
+  termsTitle: string;
+  term1: string;
+  term2: string;
+  term3: string;
+  term4: string;
+  gotIt: string;
+  inviteFriends: string;
+  rewardsHub: string;
+  earnCoinsBanner: string;
+}
+

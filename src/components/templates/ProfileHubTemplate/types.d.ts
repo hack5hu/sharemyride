@@ -20,6 +20,8 @@ export interface ProfileHubTemplateProps {
   navigateToAboutUs: () => void;
   navigateToHelpAndSupport: () => void;
   navigateToSuggestions: () => void;
+  navigateToReferAndEarn?: () => void;
+  coins?: number;
   isAvatarModalVisible: boolean;
   setAvatarModalVisible: (visible: boolean) => void;
   handleOpenGallery: () => void;

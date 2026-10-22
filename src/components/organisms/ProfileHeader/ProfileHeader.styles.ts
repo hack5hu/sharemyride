@@ -18,6 +18,9 @@ export const SettingsButtonWrapper = styled.View`
   top: ${moderateScale(14)}px;
   right: ${scale(14)}px;
   z-index: 10;
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(8)}px;
 `;
 
 export const IdentitySection = styled.View`

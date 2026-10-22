@@ -17,6 +17,7 @@ export const ScrollContent = styled.ScrollView.attrs({
 export const Header = styled.View<{ $paddingTop?: number }>`
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   padding-horizontal: ${scale(24)}px;
   padding-bottom: ${verticalScale(16)}px;
   padding-top: ${({ $paddingTop }) => ($paddingTop !== undefined ? $paddingTop : verticalScale(16))}px;

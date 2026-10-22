@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { Typography } from '@/components/atoms/Typography';
-import { moderateScale, scale, verticalScale } from '@/styles';
+import { moderateScale, scale, verticalScale, responsiveFont } from '@/styles';
 
 export const ScreenWrapper = styled.View`
   flex: 1;
@@ -76,3 +76,53 @@ export const NavItem = styled.TouchableOpacity<{ active?: boolean }>`
   background-color: ${({ active, theme }) =>
     active ? theme.colors.primary_container + '33' : 'transparent'};
 `;
+
+export const ReferEarnCard = styled.Pressable`
+  flex-direction: row;
+  align-items: center;
+  background-color: ${({ theme }) => theme.colors.surface};
+  border-radius: ${moderateScale(18)}px;
+  padding: ${moderateScale(16)}px;
+  border-width: 1px;
+  border-color: ${({ theme }) => theme.colors.outline_variant};
+  gap: ${scale(12)}px;
+  elevation: 1;
+`;
+
+export const ReferIconWrapper = styled.View`
+  width: ${moderateScale(44)}px;
+  height: ${moderateScale(44)}px;
+  border-radius: ${moderateScale(22)}px;
+  background-color: ${({ theme }) =>
+    theme.name === 'dark' ? 'rgba(245, 158, 11, 0.15)' : '#FFFBEB'};
+  border-width: 1px;
+  border-color: #FCD34D;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ReferContent = styled.View`
+  flex: 1;
+`;
+
+export const ReferTitle = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 700;
+  font-size: ${responsiveFont(14)}px;
+  color: ${({ theme }) => theme.colors.on_surface};
+`;
+
+export const ReferSubtitle = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 500;
+  font-size: ${responsiveFont(12)}px;
+  color: ${({ theme }) => theme.colors.on_surface_variant};
+  margin-top: ${verticalScale(2)}px;
+`;
+
+export const ReferRight = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: ${scale(6)}px;
+`;
+

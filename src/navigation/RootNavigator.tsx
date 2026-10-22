@@ -49,6 +49,7 @@ import { ProfileSetupScreen } from '@/screens/Profile/ProfileSetup';
 import { RatingScreen } from '@/screens/Rating';
 import { AboutUsScreen } from '@/screens/Support/AboutUs';
 import { HelpAndSupportScreen } from '@/screens/Support/HelpAndSupport';
+import { ReferAndEarnScreen } from '@/screens/Rewards/ReferAndEarn';
 import { SuggestionsScreen } from '@/screens/Support/Suggestions';
 import { TermsAndConditionsScreen } from '@/screens/Support/TermsAndConditions';
 
@@ -261,6 +262,10 @@ export const RootNavigator = () => {
           <Stack.Screen
             name="Suggestions"
             component={SuggestionsScreen as any}
+          />
+          <Stack.Screen
+            name="ReferAndEarn"
+            component={ReferAndEarnScreen}
           />
         </>
       )}

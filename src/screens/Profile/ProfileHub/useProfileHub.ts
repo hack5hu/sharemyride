@@ -7,12 +7,14 @@ import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { useTranslation } from '@/hooks/useTranslation';
 import { UserService } from '@/serviceManager/UserService';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useRewardsStore } from '@/store/useRewardsStore';
 import { computeTotalRides } from '@/utils/user';
 
 export const useProfileHub = () => {
   const { t } = useTranslation();
   const navigation = useAppNavigation();
   const { user, fetchProfile } = useAuthStore();
+  const coins = useRewardsStore(state => state.coins);
   const [isUpdatingAvatar, setIsUpdatingAvatar] = useState(false);
   const [isAvatarModalVisible, setAvatarModalVisible] = useState(false);
 
@@ -112,31 +114,27 @@ export const useProfileHub = () => {
   }, [navigation]);
 
   const navigateToHelpAndSupport = useCallback(() => {
-    Linking.openURL('https://www.zyncride.com/contact').catch(err =>
-      console.error('Failed to open support URL', err),
-    );
+    Linking.openURL('https://www.zyncride.com/contact').catch(() => {});
   }, []);
 
   const navigateToTermsAndConditions = useCallback(() => {
-    Linking.openURL('https://www.zyncride.com/terms-and-conditions').catch(err =>
-      console.error('Failed to open terms URL', err),
-    );
+    Linking.openURL('https://www.zyncride.com/terms-and-conditions').catch(() => {});
   }, []);
 
   const navigateToPrivacyPolicy = useCallback(() => {
-    Linking.openURL('https://www.zyncride.com/privacy-policy').catch(err =>
-      console.error('Failed to open privacy policy URL', err),
-    );
+    Linking.openURL('https://www.zyncride.com/privacy-policy').catch(() => {});
   }, []);
 
   const navigateToAboutUs = useCallback(() => {
-    Linking.openURL('https://www.zyncride.com').catch(err =>
-      console.error('Failed to open about us URL', err),
-    );
+    Linking.openURL('https://www.zyncride.com').catch(() => {});
   }, []);
 
   const navigateToSuggestions = useCallback(() => {
     navigation.navigate('Suggestions');
+  }, [navigation]);
+
+  const navigateToReferAndEarn = useCallback(() => {
+    navigation.navigate('ReferAndEarn');
   }, [navigation]);
 
   const rating = useMemo(() => {
@@ -180,6 +178,8 @@ export const useProfileHub = () => {
     navigateToAboutUs,
     navigateToHelpAndSupport,
     navigateToSuggestions,
+    navigateToReferAndEarn,
+    coins,
     rating,
     rides,
     memberSince,

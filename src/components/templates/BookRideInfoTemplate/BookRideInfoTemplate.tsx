@@ -1,6 +1,7 @@
 import { FlashList } from '@shopify/flash-list';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { CoinBadge } from '@/components/atoms/CoinBadge';
 import { ScreenShell } from '@/components/molecules/ScreenShell';
 import { BottomNav } from '@/components/organisms/BottomNav';
 import { type RecentSearch } from '@/store/useBookRideStore';
@@ -36,6 +37,8 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
       t,
       rideType,
       onSetRideType,
+      coins,
+      onPressRewards,
     }) => {
       const insets = useSafeAreaInsets();
 
@@ -60,6 +63,14 @@ export const BookRideInfoTemplate: React.FC<BookRideInfoTemplateProps> =
                   {t.brandName.slice(4)}
                 </S.HeaderTitleHighlight>
               </S.HeaderTitle>
+              {coins !== undefined && onPressRewards && (
+                <CoinBadge
+                  coins={coins}
+                  onPress={onPressRewards}
+                  variant="header"
+                  showHelpIcon
+                />
+              )}
             </S.Header>
 
             <S.HeroSection>

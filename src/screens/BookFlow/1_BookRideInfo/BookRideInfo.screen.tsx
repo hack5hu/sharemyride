@@ -33,6 +33,8 @@ export const BookRideInfoScreen: React.FC = () => {
     isRatingPromptVisible,
     handleConfirmRating,
     handleDismissRating,
+    coins,
+    handlePressRewards,
   } = useBookRideInfo();
 
   const { rating: tRating, common: tCommon } = useLocale();
@@ -68,6 +70,8 @@ export const BookRideInfoScreen: React.FC = () => {
         t={t}
         rideType={rideType}
         onSetRideType={setRideType}
+        coins={coins}
+        onPressRewards={handlePressRewards}
       />
 
       {isRatingPromptVisible && (

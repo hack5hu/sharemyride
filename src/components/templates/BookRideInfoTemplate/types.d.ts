@@ -26,6 +26,8 @@ export interface BookRideInfoTemplateProps {
   t: BookRideInfoTranslations;
   rideType: RideType;
   onSetRideType: (type: RideType) => void;
+  coins?: number;
+  onPressRewards?: () => void;
 }
 
 export interface BookingFormProps {

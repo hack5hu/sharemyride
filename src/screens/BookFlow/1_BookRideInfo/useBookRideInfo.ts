@@ -10,6 +10,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { AnalyticsService, AnalyticsEvent } from '@/serviceManager/AnalyticsService';
 import { RideService, type SearchRidePayload } from '@/serviceManager/RideService';
 import { useBookRideStore, type RecentSearch } from '@/store/useBookRideStore';
+import { useRewardsStore } from '@/store/useRewardsStore';
 import { getErrorMessage } from '@/utils/error';
 import { storage } from '@/utils/storage';
 
@@ -31,6 +32,12 @@ export const useBookRideInfo = () => {
     recentSearches,
     rideType,
   } = useBookRideStore();
+
+  const coins = useRewardsStore(state => state.coins);
+
+  const handlePressRewards = useCallback(() => {
+    navigate('ReferAndEarn');
+  }, [navigate]);
 
   const handlePressPickup = useCallback(() => {
     navigate('MapPicker', {
@@ -444,5 +451,7 @@ export const useBookRideInfo = () => {
     isRatingPromptVisible,
     handleConfirmRating,
     handleDismissRating,
+    coins,
+    handlePressRewards,
   };
 };

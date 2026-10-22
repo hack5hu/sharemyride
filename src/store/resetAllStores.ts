@@ -29,6 +29,7 @@ export const resetAllStores = () => {
     storage.remove('location_backlog');
     storage.remove('tuktuk-chat-storage');
     storage.remove('auth-storage');
+    storage.remove('rewards-storage');
 
     // In production, remove admin debugger permissions and logs on logout
     if (!__DEV__) {
@@ -147,6 +148,20 @@ export const resetAllStores = () => {
     language: 'en',
     region: 'INDIA',
   });
+
+  // 10. Rewards Store (Reset coins and referral)
+  try {
+    const { useRewardsStore } = require('./useRewardsStore');
+    useRewardsStore.setState({
+      coins: 200,
+      referralCode: '',
+      totalEarned: 200,
+      referralsCount: 0,
+      isRulesModalVisible: false,
+    });
+  } catch (error) {
+    console.error('[Storage] Failed to reset rewards store:', error);
+  }
 
   // Disconnect chat WebSocket on logout
   try {

@@ -160,4 +160,6 @@ export type RootStackParamList = {
     userName: string;
   };
   Suggestions: undefined;
+  ReferAndEarn: undefined;
 };
+
