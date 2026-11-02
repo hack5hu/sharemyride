@@ -37,6 +37,7 @@ export const ReferAndEarnTemplate: React.FC<ReferAndEarnTemplateProps> = memo(
     onShareOther,
     onOpenRulesModal,
     onCloseRulesModal,
+    onNavigateToLeaderboard,
   }) => {
     const { t } = useTranslation();
     const theme = useTheme();
@@ -93,6 +94,17 @@ export const ReferAndEarnTemplate: React.FC<ReferAndEarnTemplateProps> = memo(
 
             {/* How It Works */}
             <HowItWorksCard />
+
+            {onNavigateToLeaderboard && (
+              <FaqTeaserCard onPress={onNavigateToLeaderboard} accessibilityRole="button">
+                <FaqTeaserText>{t('rewards.leaderboardTitle')}</FaqTeaserText>
+                <Icon
+                  name="chevron-right"
+                  size={moderateScale(22)}
+                  color={theme.colors.on_surface_variant}
+                />
+              </FaqTeaserCard>
+            )}
 
             {/* Rules & FAQ Teaser */}
             <FaqTeaserCard onPress={onOpenRulesModal} accessibilityRole="button">

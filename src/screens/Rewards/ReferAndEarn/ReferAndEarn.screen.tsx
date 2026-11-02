@@ -13,6 +13,7 @@ export const ReferAndEarnScreen: React.FC = memo(() => {
     handleShareOther,
     handleOpenRulesModal,
     handleCloseRulesModal,
+    handleNavigateToLeaderboard,
   } = useReferAndEarn();
 
   return (
@@ -26,6 +27,7 @@ export const ReferAndEarnScreen: React.FC = memo(() => {
       onShareOther={handleShareOther}
       onOpenRulesModal={handleOpenRulesModal}
       onCloseRulesModal={handleCloseRulesModal}
+      onNavigateToLeaderboard={handleNavigateToLeaderboard}
     />
   );
 });

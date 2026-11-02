@@ -8,4 +8,5 @@ export interface ReferAndEarnTemplateProps {
   onShareOther: () => void;
   onOpenRulesModal: () => void;
   onCloseRulesModal: () => void;
+  onNavigateToLeaderboard?: () => void;
 }

@@ -137,6 +137,10 @@ export const useProfileHub = () => {
     navigation.navigate('ReferAndEarn');
   }, [navigation]);
 
+  const navigateToLeaderboard = useCallback(() => {
+    navigation.navigate('Leaderboard');
+  }, [navigation]);
+
   const rating = useMemo(() => {
     return user?.rating !== undefined ? Number(user.rating) : 0;
   }, [user?.rating]);
@@ -179,6 +183,7 @@ export const useProfileHub = () => {
     navigateToHelpAndSupport,
     navigateToSuggestions,
     navigateToReferAndEarn,
+    navigateToLeaderboard,
     coins,
     rating,
     rides,

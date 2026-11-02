@@ -18,6 +18,7 @@ export const ProfileHubScreen: React.FC = () => {
     navigateToHelpAndSupport,
     navigateToSuggestions,
     navigateToReferAndEarn,
+    navigateToLeaderboard,
     coins,
     isAvatarModalVisible,
     setAvatarModalVisible,
@@ -45,6 +46,7 @@ export const ProfileHubScreen: React.FC = () => {
       navigateToHelpAndSupport={navigateToHelpAndSupport}
       navigateToSuggestions={navigateToSuggestions}
       navigateToReferAndEarn={navigateToReferAndEarn}
+      navigateToLeaderboard={navigateToLeaderboard}
       coins={coins}
       isAvatarModalVisible={isAvatarModalVisible}
       setAvatarModalVisible={setAvatarModalVisible}

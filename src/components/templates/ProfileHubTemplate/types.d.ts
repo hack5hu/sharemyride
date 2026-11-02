@@ -21,6 +21,7 @@ export interface ProfileHubTemplateProps {
   navigateToHelpAndSupport: () => void;
   navigateToSuggestions: () => void;
   navigateToReferAndEarn?: () => void;
+  navigateToLeaderboard?: () => void;
   coins?: number;
   isAvatarModalVisible: boolean;
   setAvatarModalVisible: (visible: boolean) => void;

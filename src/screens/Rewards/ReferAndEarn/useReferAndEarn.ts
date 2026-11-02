@@ -76,6 +76,10 @@ export const useReferAndEarn = () => {
     navigation.goBack();
   }, [navigation]);
 
+  const handleNavigateToLeaderboard = useCallback(() => {
+    navigation.navigate('Leaderboard');
+  }, [navigation]);
+
   return {
     coins,
     referralCode,
@@ -86,5 +90,6 @@ export const useReferAndEarn = () => {
     handleShareOther,
     handleOpenRulesModal,
     handleCloseRulesModal,
+    handleNavigateToLeaderboard,
   };
 };

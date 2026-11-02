@@ -158,6 +158,9 @@ export const resetAllStores = () => {
       totalEarned: 200,
       referralsCount: 0,
       isRulesModalVisible: false,
+      claimedCoupons: [],
+      activeRole: 'driver',
+      activeTab: 'leaderboard',
     });
   } catch (error) {
     console.error('[Storage] Failed to reset rewards store:', error);

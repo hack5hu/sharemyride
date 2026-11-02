@@ -40,6 +40,7 @@ export const ProfileHubTemplate: React.FC<ProfileHubTemplateProps> = ({
   navigateToHelpAndSupport,
   navigateToSuggestions,
   navigateToReferAndEarn,
+  navigateToLeaderboard,
   isAvatarModalVisible,
   setAvatarModalVisible,
   handleOpenGallery,
@@ -117,6 +118,12 @@ export const ProfileHubTemplate: React.FC<ProfileHubTemplateProps> = ({
                 subtitle={t('profileHub.travelPreferencesDescr')}
                 onPress={navigateToTravelPreferences}
               />
+              <ProfileMenuItem
+                icon="emoji-events"
+                title={t('rewards.leaderboardTitle')}
+                subtitle={t('rewards.leaderboardSubtitle')}
+                onPress={navigateToLeaderboard}
+              />
             </ActionGrid>
           </Section>
 
@@ -167,24 +174,11 @@ export const ProfileHubTemplate: React.FC<ProfileHubTemplateProps> = ({
       <ActionSheetModal
         isVisible={isAvatarModalVisible}
         onClose={() => setAvatarModalVisible(false)}
-        title={t('profileHub.editProfilePic') || 'Edit Profile Picture'}
+        title={t('profileHub.editProfilePic')}
         options={[
-          {
-            id: 'gallery',
-            label: t('profileHub.chooseFromGallery'),
-            icon: 'photo-library',
-            onPress: handleOpenGallery,
-          },
+          { id: 'gallery', label: t('profileHub.chooseFromGallery'), icon: 'photo-library', onPress: handleOpenGallery },
           ...(user?.profilePhotoUrl
-            ? [
-                {
-                  id: 'remove',
-                  label: t('profileHub.removePhoto'),
-                  icon: 'delete-outline',
-                  isDestructive: true,
-                  onPress: handleRemoveAvatar,
-                },
-              ]
+            ? [{ id: 'remove', label: t('profileHub.removePhoto'), icon: 'delete-outline', isDestructive: true, onPress: handleRemoveAvatar }]
             : []),
         ]}
       />
