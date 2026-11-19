@@ -19,3 +19,14 @@ export const Default: Story = {
     icon: 'star',
   },
 };
+
+export const WithBadge: Story = {
+  args: {
+    onPress: () => console.log('Pressed'),
+    title: 'Leaderboard & Rewards',
+    subtitle: 'Top 3 win prizes',
+    icon: 'emoji-events',
+    iconBgColor: '#FEF3C7',
+    iconColor: '#D97706',
+  },
+};

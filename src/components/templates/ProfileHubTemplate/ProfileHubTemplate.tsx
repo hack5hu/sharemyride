@@ -22,6 +22,8 @@ import {
   ReferTitle,
   ReferSubtitle,
   ReferRight,
+  RankBadge,
+  RankBadgeText,
 } from './ProfileHubTemplate.styles';
 import { type ProfileHubTemplateProps } from './types.d';
 
@@ -50,6 +52,7 @@ export const ProfileHubTemplate: React.FC<ProfileHubTemplateProps> = ({
   memberSince,
   coins,
   isVerified,
+  userRank,
 }) => {
   const theme = useTheme();
 
@@ -73,10 +76,7 @@ export const ProfileHubTemplate: React.FC<ProfileHubTemplateProps> = ({
               onCoinsPress={navigateToReferAndEarn}
             />
 
-            <ReferEarnCard
-              onPress={navigateToReferAndEarn}
-              accessibilityRole="button"
-            >
+            <ReferEarnCard onPress={navigateToReferAndEarn} accessibilityRole="button">
               <ReferIconWrapper>
                 <Icon name="campaign" size={moderateScale(24)} color="#D97706" />
               </ReferIconWrapper>
@@ -86,11 +86,7 @@ export const ProfileHubTemplate: React.FC<ProfileHubTemplateProps> = ({
               </ReferContent>
               <ReferRight>
                 {coins !== undefined && <CoinBadge coins={coins} variant="compact" />}
-                <Icon
-                  name="chevron-right"
-                  size={moderateScale(22)}
-                  color={theme.colors.on_surface_variant}
-                />
+                <Icon name="chevron-right" size={moderateScale(22)} color={theme.colors.on_surface_variant} />
               </ReferRight>
             </ReferEarnCard>
           </BentoGrid>
@@ -123,15 +119,23 @@ export const ProfileHubTemplate: React.FC<ProfileHubTemplateProps> = ({
                 title={t('rewards.leaderboardTitle')}
                 subtitle={t('rewards.leaderboardSubtitle')}
                 onPress={navigateToLeaderboard}
+                iconBgColor={theme.name === 'dark' ? 'rgba(245, 158, 11, 0.2)' : '#FEF3C7'}
+                iconColor="#D97706"
+                rightBadge={
+                  userRank ? (
+                    <RankBadge>
+                      <Icon name="military-tech" size={moderateScale(14)} color="#D97706" />
+                      <RankBadgeText>{t('rewards.rankText', { rank: userRank })}</RankBadgeText>
+                    </RankBadge>
+                  ) : null
+                }
               />
             </ActionGrid>
           </Section>
 
           <Section>
             <SectionTitle>
-              <SectionTitleText>
-                {t('profileHub.supportLegal')}
-              </SectionTitleText>
+              <SectionTitleText>{t('profileHub.supportLegal')}</SectionTitleText>
             </SectionTitle>
             <ActionGrid>
               <ProfileMenuItem

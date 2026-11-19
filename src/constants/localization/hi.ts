@@ -1056,6 +1056,16 @@ export const hi: Translations = {
     validTill: '{date} तक वैध',
     minRideAmount: 'न्यूनतम राइड: ₹{min}',
     activeBadge: 'सक्रिय',
+    coinsHistoryTitle: 'कॉइन्स हिस्ट्री',
+    coinsHistorySubtitle: 'अपनी अर्जित और खर्च की गई कॉइन गतिविधियों को देखें',
+    totalEarnedLabel: 'कुल अर्जित',
+    totalSpentLabel: 'कुल खर्च',
+    currentBalanceLabel: 'मौजूदा बैलेंस',
+    filterAll: 'सभी',
+    filterEarned: 'अर्जित',
+    filterSpent: 'खर्च',
+    noTransactionsTitle: 'कोई कॉइन गतिविधि नहीं',
+    noTransactionsDesc: 'आपने अभी तक कोई ज़िंक कॉइन्स अर्जित या खर्च नहीं किए हैं।',
   },
 };
 

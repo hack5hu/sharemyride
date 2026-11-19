@@ -8,3 +8,5 @@ export interface CoinBadgeProps {
   showHelpIcon?: boolean;
   testID?: string;
 }
+
+

@@ -21,6 +21,7 @@ export const LeaderboardScreen: React.FC = memo(() => {
     handleBack,
     handleOpenRules,
     handleCloseRules,
+    handleOpenCoinsHistory,
   } = useLeaderboard();
 
   return (
@@ -40,6 +41,7 @@ export const LeaderboardScreen: React.FC = memo(() => {
         onCopyCouponCode={handleCopyCouponCode}
         onBack={handleBack}
         onOpenRules={handleOpenRules}
+        onOpenCoinsHistory={handleOpenCoinsHistory}
       />
 
       <CoinRulesModal

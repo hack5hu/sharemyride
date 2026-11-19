@@ -23,6 +23,7 @@ export interface ProfileHubTemplateProps {
   navigateToReferAndEarn?: () => void;
   navigateToLeaderboard?: () => void;
   coins?: number;
+  userRank?: number;
   isAvatarModalVisible: boolean;
   setAvatarModalVisible: (visible: boolean) => void;
   handleOpenGallery: () => void;

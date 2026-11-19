@@ -24,3 +24,4 @@ export const Compact: Story = {
     showHelpIcon: false,
   },
 };
+

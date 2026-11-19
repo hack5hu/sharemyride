@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'styled-components/native';
 import { CouponCard } from '@/components/molecules/CouponCard';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -16,10 +17,12 @@ export const MyCouponsView: React.FC<MyCouponsViewProps> = memo(
   ({ claimedCoupons, onCopyCouponCode }) => {
     const { t } = useTranslation();
     const theme = useTheme();
+    const insets = useSafeAreaInsets();
+    const contentBottomPadding = moderateScale(40) + insets.bottom;
 
     return (
       <S.ScrollArea
-        contentContainerStyle={{ paddingBottom: moderateScale(40) }}
+        contentContainerStyle={{ paddingBottom: contentBottomPadding }}
         showsVerticalScrollIndicator={false}
       >
         {claimedCoupons.length === 0 ? (

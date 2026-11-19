@@ -1066,6 +1066,16 @@ export const en: Translations = {
     validTill: 'Valid till {date}',
     minRideAmount: 'Min ride value: ₹{min}',
     activeBadge: 'Active',
+    coinsHistoryTitle: 'Coins History',
+    coinsHistorySubtitle: 'View all your earned and spent coin activities',
+    totalEarnedLabel: 'Total Earned',
+    totalSpentLabel: 'Total Spent',
+    currentBalanceLabel: 'Current Balance',
+    filterAll: 'All',
+    filterEarned: 'Earned',
+    filterSpent: 'Spent',
+    noTransactionsTitle: 'No Coin Activity',
+    noTransactionsDesc: 'You have not earned or spent any Zync Coins yet.',
   },
 };
 

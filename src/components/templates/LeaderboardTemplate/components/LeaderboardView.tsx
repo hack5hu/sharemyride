@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'styled-components/native';
 import { LeaderboardRow } from '@/components/molecules/LeaderboardRow';
 import { PodiumCard } from '@/components/molecules/PodiumCard';
@@ -21,10 +22,12 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = memo(
   ({ activeRole, topDrivers, topRiders, currentUser, onSelectRole }) => {
     const { t } = useTranslation();
     const theme = useTheme();
+    const insets = useSafeAreaInsets();
 
     const currentList = activeRole === 'driver' ? topDrivers : topRiders;
     const topThree = currentList.slice(0, 3);
     const restList = currentList.slice(3);
+    const listBottomPadding = moderateScale(90) + insets.bottom;
 
     return (
       <>
@@ -75,7 +78,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = memo(
         </S.InfoBanner>
 
         <S.ScrollArea
-          contentContainerStyle={{ paddingBottom: moderateScale(90) }}
+          contentContainerStyle={{ paddingBottom: listBottomPadding }}
           showsVerticalScrollIndicator={false}
         >
           <PodiumCard topThree={topThree} />

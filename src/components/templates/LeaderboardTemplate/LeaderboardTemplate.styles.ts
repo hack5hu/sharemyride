@@ -9,21 +9,35 @@ export const Container = styled.View`
 export const Header = styled.View`
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   padding-horizontal: ${scale(16)}px;
-  padding-vertical: ${verticalScale(12)}px;
+  padding-vertical: ${verticalScale(10)}px;
 `;
 
-export const HeaderTitle = styled.Text`
-  font-family: 'PlusJakartaSans-Bold';
-  font-size: ${responsiveFont(18)}px;
-  color: ${props => props.theme.colors.on_surface};
-  font-weight: 700;
+export const HeaderLeft = styled.View`
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+  margin-right: ${scale(8)}px;
 `;
 
 export const BackButton = styled.Pressable`
   padding: ${moderateScale(4)}px;
+  margin-right: ${scale(6)}px;
 `;
+
+export const HeaderTitle = styled.Text`
+  font-family: 'PlusJakartaSans-Bold';
+  font-size: ${responsiveFont(17)}px;
+  color: ${props => props.theme.colors.on_surface};
+  font-weight: 700;
+  flex-shrink: 1;
+`;
+
+export const HeaderRight = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
 
 export const TabBar = styled.View`
   flex-direction: row;

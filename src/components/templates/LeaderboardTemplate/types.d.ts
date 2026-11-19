@@ -21,4 +21,6 @@ export interface LeaderboardTemplateProps {
   onCopyCouponCode: (code: string) => void;
   onBack: () => void;
   onOpenRules: () => void;
+  onOpenCoinsHistory?: () => void;
 }
+

@@ -2,7 +2,7 @@ import { API_BASE_URL as ENV_API_BASE_URL } from '@env';
 import buildEnv from '@/constants/buildEnv.json';
 
 export const PROD_BASE_URL = 'https://api.zyncride.com';
-export const DEV_BASE_URL = 'https://user-service-i6mi.onrender.com';
+export const DEV_BASE_URL = 'http://localhost:8096';
 
 const isDev = __DEV__ || Boolean(buildEnv?.isApkBuild);
 

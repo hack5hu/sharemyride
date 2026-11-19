@@ -10,6 +10,9 @@ export interface ProfileMenuItemProps {
   subtitle?: string;
   onPress?: () => void;
   showChevron?: boolean;
+  rightBadge?: React.ReactNode;
+  iconBgColor?: string;
+  iconColor?: string;
 }
 
 export const ProfileMenuItem: React.FC<ProfileMenuItemProps> = ({
@@ -18,13 +21,16 @@ export const ProfileMenuItem: React.FC<ProfileMenuItemProps> = ({
   subtitle,
   onPress,
   showChevron = true,
+  rightBadge,
+  iconBgColor,
+  iconColor,
 }) => {
   const theme = useTheme();
 
   return (
     <S.Container onPress={onPress} activeOpacity={0.7}>
-      <S.IconBox>
-        <Icon name={icon} size={22} color={theme.colors.primary} />
+      <S.IconBox bgcolor={iconBgColor}>
+        <Icon name={icon} size={22} color={iconColor || theme.colors.primary} />
       </S.IconBox>
       <S.Content>
         <Typography variant="body" size="md" weight="bold" color="on_surface">
@@ -36,6 +42,7 @@ export const ProfileMenuItem: React.FC<ProfileMenuItemProps> = ({
           </Typography>
         )}
       </S.Content>
+      {rightBadge}
       {showChevron && (
         <S.ChevronCircle>
           <Icon

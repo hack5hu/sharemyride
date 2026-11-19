@@ -162,5 +162,6 @@ export type RootStackParamList = {
   Suggestions: undefined;
   ReferAndEarn: undefined;
   Leaderboard: undefined;
+  CoinsHistory: undefined;
 };
 

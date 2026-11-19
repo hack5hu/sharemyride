@@ -52,4 +52,5 @@ export const CoinBadge: React.FC<CoinBadgeProps> = memo(
   },
 );
 
+
 CoinBadge.displayName = 'CoinBadge';

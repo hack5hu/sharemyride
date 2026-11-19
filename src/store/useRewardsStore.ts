@@ -1,6 +1,14 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { type ClaimedCoupon, type LeaderboardRole, type LeaderboardTab, type RedeemableCoupon } from '@/types/rewards';
+import { CoinTransactionType } from '@/constants/enums';
+import { DEFAULT_COIN_TRANSACTIONS } from '@/constants/rewards';
+import {
+  type ClaimedCoupon,
+  type CoinTransaction,
+  type LeaderboardRole,
+  type LeaderboardTab,
+  type RedeemableCoupon,
+} from '@/types/rewards';
 import { mmkvStorage } from '@/utils/storage';
 import { useAuthStore } from './useAuthStore';
 
@@ -11,6 +19,7 @@ interface RewardsState {
   referralsCount: number;
   isRulesModalVisible: boolean;
   claimedCoupons: ClaimedCoupon[];
+  transactions: CoinTransaction[];
   activeRole: LeaderboardRole;
   activeTab: LeaderboardTab;
   setCoins: (coins: number) => void;
@@ -18,7 +27,7 @@ interface RewardsState {
   setRulesModalVisible: (visible: boolean) => void;
   setActiveRole: (role: LeaderboardRole) => void;
   setActiveTab: (tab: LeaderboardTab) => void;
-  addCoins: (amount: number) => void;
+  addCoins: (amount: number, reason?: string) => void;
   redeemCoupon: (coupon: RedeemableCoupon) => boolean;
   getReferralCode: () => string;
 }
@@ -32,6 +41,7 @@ export const useRewardsStore = create<RewardsState>()(
       referralsCount: 0,
       isRulesModalVisible: false,
       claimedCoupons: [],
+      transactions: DEFAULT_COIN_TRANSACTIONS,
       activeRole: 'driver',
       activeTab: 'leaderboard',
 
@@ -41,11 +51,22 @@ export const useRewardsStore = create<RewardsState>()(
       setActiveRole: activeRole => set({ activeRole }),
       setActiveTab: activeTab => set({ activeTab }),
 
-      addCoins: amount =>
+      addCoins: (amount, reason) => {
+        const newTx: CoinTransaction = {
+          id: `tx_${Date.now()}`,
+          title: reason || 'Earned Coins',
+          description: 'Bonus credited to wallet',
+          amount,
+          type: CoinTransactionType.EARNED,
+          date: 'Just now',
+          iconName: 'toll',
+        };
         set(state => ({
           coins: state.coins + amount,
           totalEarned: state.totalEarned + amount,
-        })),
+          transactions: [newTx, ...state.transactions],
+        }));
+      },
 
       redeemCoupon: coupon => {
         const currentCoins = get().coins;
@@ -68,9 +89,20 @@ export const useRewardsStore = create<RewardsState>()(
           isUsed: false,
         };
 
+        const newTx: CoinTransaction = {
+          id: `tx_${Date.now()}`,
+          title: coupon.title,
+          description: `Voucher Code: ${coupon.code}`,
+          amount: coupon.coinCost,
+          type: CoinTransactionType.SPENT,
+          date: 'Just now',
+          iconName: 'local-offer',
+        };
+
         set(state => ({
           coins: state.coins - coupon.coinCost,
           claimedCoupons: [newClaimedCoupon, ...state.claimedCoupons],
+          transactions: [newTx, ...state.transactions],
         }));
 
         return true;
@@ -103,6 +135,7 @@ export const useRewardsStore = create<RewardsState>()(
         totalEarned: state.totalEarned,
         referralsCount: state.referralsCount,
         claimedCoupons: state.claimedCoupons,
+        transactions: state.transactions,
       }),
     },
   ),

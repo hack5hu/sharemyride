@@ -1,4 +1,5 @@
-import { type LeaderboardUser, type RedeemableCoupon } from '@/types/rewards';
+import { CoinTransactionType } from '@/constants/enums';
+import { type CoinTransaction, type LeaderboardUser, type RedeemableCoupon } from '@/types/rewards';
 
 export const DEFAULT_REDEEMABLE_COUPONS: RedeemableCoupon[] = [
   {
@@ -157,3 +158,43 @@ export const MOCK_TOP_RIDERS: LeaderboardUser[] = [
     rating: 4.8,
   },
 ];
+
+export const DEFAULT_COIN_TRANSACTIONS: CoinTransaction[] = [
+  {
+    id: 'tx_1',
+    title: 'Referral Bonus',
+    description: 'Rahul Sharma completed first verified ride',
+    amount: 200,
+    type: CoinTransactionType.EARNED,
+    date: 'Yesterday, 4:30 PM',
+    iconName: 'group-add',
+  },
+  {
+    id: 'tx_2',
+    title: 'Ride Completed',
+    description: 'Carpool from Cyber City to Sector 62',
+    amount: 20,
+    type: CoinTransactionType.EARNED,
+    date: '14 Nov 2026, 7:15 PM',
+    iconName: 'directions-car',
+  },
+  {
+    id: 'tx_3',
+    title: 'Published Ride Bonus',
+    description: '3 co-riders joined your shared trip',
+    amount: 50,
+    type: CoinTransactionType.EARNED,
+    date: '12 Nov 2026, 9:00 AM',
+    iconName: 'alt-route',
+  },
+  {
+    id: 'tx_4',
+    title: 'Welcome Bonus',
+    description: 'Profile registration and vehicle verification',
+    amount: 50,
+    type: CoinTransactionType.EARNED,
+    date: '10 Nov 2026, 2:10 PM',
+    iconName: 'celebration',
+  },
+];
+

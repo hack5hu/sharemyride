@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'styled-components/native';
 import { CoinBadge } from '@/components/atoms/CoinBadge';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -26,22 +27,35 @@ export const LeaderboardTemplate: React.FC<LeaderboardTemplateProps> = memo(
     onCopyCouponCode,
     onBack,
     onOpenRules,
+    onOpenCoinsHistory,
   }) => {
     const { t } = useTranslation();
     const theme = useTheme();
+    const insets = useSafeAreaInsets();
 
     return (
-      <S.Container>
+      <S.Container style={{ paddingTop: insets.top }}>
         <S.Header>
-          <S.BackButton onPress={onBack} accessibilityRole="button">
-            <Icon
-              name="arrow-back"
-              size={moderateScale(24)}
-              color={theme.colors.on_surface}
+          <S.HeaderLeft>
+            <S.BackButton onPress={onBack} accessibilityRole="button">
+              <Icon
+                name="arrow-back"
+                size={moderateScale(24)}
+                color={theme.colors.on_surface}
+              />
+            </S.BackButton>
+            <S.HeaderTitle numberOfLines={1}>
+              {t('rewards.leaderboardTitle')}
+            </S.HeaderTitle>
+          </S.HeaderLeft>
+          <S.HeaderRight>
+            <CoinBadge
+              coins={coins}
+              onPress={onOpenCoinsHistory || onOpenRules}
+              onHelpPress={onOpenRules}
+              showHelpIcon={false}
             />
-          </S.BackButton>
-          <S.HeaderTitle>{t('rewards.leaderboardTitle')}</S.HeaderTitle>
-          <CoinBadge coins={coins} onPress={onOpenRules} />
+          </S.HeaderRight>
         </S.Header>
 
         <S.TabBar>

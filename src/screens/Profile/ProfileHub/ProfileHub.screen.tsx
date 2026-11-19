@@ -28,6 +28,7 @@ export const ProfileHubScreen: React.FC = () => {
     rides,
     memberSince,
     isVerified,
+    userRank,
   } = useProfileHub();
 
   return (
@@ -56,6 +57,7 @@ export const ProfileHubScreen: React.FC = () => {
       rides={rides}
       memberSince={memberSince}
       isVerified={isVerified}
+      userRank={userRank}
     />
   );
 };

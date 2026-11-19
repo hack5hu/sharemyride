@@ -1123,5 +1123,16 @@ export interface RewardsTranslations {
   validTill: string;
   minRideAmount: string;
   activeBadge: string;
+  coinsHistoryTitle: string;
+  coinsHistorySubtitle: string;
+  totalEarnedLabel: string;
+  totalSpentLabel: string;
+  currentBalanceLabel: string;
+  filterAll: string;
+  filterEarned: string;
+  filterSpent: string;
+  noTransactionsTitle: string;
+  noTransactionsDesc: string;
 }
+
 

@@ -1,3 +1,5 @@
+import { type CoinTransactionType } from '@/constants/enums';
+
 export interface LeaderboardUser {
   id: string;
   name: string;
@@ -32,6 +34,16 @@ export interface ClaimedCoupon {
   claimedAt: string;
   expiresAt: string;
   isUsed: boolean;
+}
+
+export interface CoinTransaction {
+  id: string;
+  title: string;
+  description: string;
+  amount: number;
+  type: CoinTransactionType;
+  date: string;
+  iconName?: string;
 }
 
 export type LeaderboardRole = 'driver' | 'rider';

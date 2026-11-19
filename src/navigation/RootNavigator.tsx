@@ -49,6 +49,7 @@ import { ProfileSetupScreen } from '@/screens/Profile/ProfileSetup';
 import { RatingScreen } from '@/screens/Rating';
 import { AboutUsScreen } from '@/screens/Support/AboutUs';
 import { HelpAndSupportScreen } from '@/screens/Support/HelpAndSupport';
+import { CoinsHistoryScreen } from '@/screens/Rewards/CoinsHistory';
 import { LeaderboardScreen } from '@/screens/Rewards/Leaderboard';
 import { ReferAndEarnScreen } from '@/screens/Rewards/ReferAndEarn';
 import { SuggestionsScreen } from '@/screens/Support/Suggestions';
@@ -271,6 +272,10 @@ export const RootNavigator = () => {
           <Stack.Screen
             name="Leaderboard"
             component={LeaderboardScreen}
+          />
+          <Stack.Screen
+            name="CoinsHistory"
+            component={CoinsHistoryScreen}
           />
         </>
       )}

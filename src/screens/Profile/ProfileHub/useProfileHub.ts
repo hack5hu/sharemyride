@@ -164,6 +164,9 @@ export const useProfileHub = () => {
     return !!(user?.emailVerified || user?.phoneVerified);
   }, [user?.emailVerified, user?.phoneVerified]);
 
+  const activeRole = useRewardsStore(state => state.activeRole);
+  const userRank = activeRole === 'driver' ? 7 : 6;
+
   return {
     t,
     user,
@@ -189,5 +192,6 @@ export const useProfileHub = () => {
     rides,
     memberSince,
     isVerified,
+    userRank,
   };
 };

@@ -106,6 +106,10 @@ export const useLeaderboard = () => {
     setRulesModalVisible(false);
   }, [setRulesModalVisible]);
 
+  const handleOpenCoinsHistory = useCallback(() => {
+    navigation.navigate('CoinsHistory');
+  }, [navigation]);
+
   return {
     coins,
     activeTab,
@@ -123,5 +127,6 @@ export const useLeaderboard = () => {
     handleBack,
     handleOpenRules,
     handleCloseRules,
+    handleOpenCoinsHistory,
   };
 };

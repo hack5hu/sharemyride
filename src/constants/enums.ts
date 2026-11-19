@@ -74,3 +74,8 @@ export enum LocalRideCardAction {
   VIEW_DETAILS = 'view_details',
 }
 
+export enum CoinTransactionType {
+  EARNED = 'EARNED',
+  SPENT = 'SPENT',
+}
+

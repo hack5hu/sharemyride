@@ -126,3 +126,26 @@ export const ReferRight = styled.View`
   gap: ${scale(6)}px;
 `;
 
+export const RankBadge = styled.View`
+  flex-direction: row;
+  align-items: center;
+  background-color: ${({ theme }) =>
+    theme.name === 'dark' ? 'rgba(245, 158, 11, 0.2)' : '#FEF3C7'};
+  border-width: 1px;
+  border-color: ${({ theme }) =>
+    theme.name === 'dark' ? 'rgba(251, 191, 36, 0.4)' : '#FCD34D'};
+  border-radius: ${moderateScale(999)}px;
+  padding-horizontal: ${scale(10)}px;
+  padding-vertical: ${verticalScale(4)}px;
+  gap: ${scale(4)}px;
+`;
+
+export const RankBadgeText = styled.Text`
+  font-family: 'Plus Jakarta Sans';
+  font-weight: 800;
+  font-size: ${responsiveFont(11)}px;
+  color: ${({ theme }) => (theme.name === 'dark' ? '#FBBF24' : '#B45309')};
+  letter-spacing: -0.2px;
+`;
+
+

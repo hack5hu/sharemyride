@@ -11,7 +11,6 @@ export const StickyContainer = styled.View`
   border-top-color: ${props => props.theme.colors.outline_variant};
   padding-horizontal: ${scale(16)}px;
   padding-top: ${verticalScale(10)}px;
-  padding-bottom: ${verticalScale(16)}px;
   elevation: 8;
   shadow-color: #000000;
   shadow-offset: 0px -2px;
